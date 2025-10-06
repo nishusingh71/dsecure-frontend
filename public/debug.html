@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environment Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        code {
+            background: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .test-image {
+            max-width: 100px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .url-test {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Cloudinary Environment Debug</h1>
+        
+        <div id="env-status"></div>
+        <div id="url-tests"></div>
+        
+        <h3>📝 Instructions</h3>
+        <p>If the environment variable is missing:</p>
+        <ol>
+            <li>Go to your Vercel dashboard</li>
+            <li>Project Settings → Environment Variables</li>
+            <li>Add: <code>VITE_CLOUDINARY_CLOUD_NAME=dhwi5wevf</code></li>
+            <li>Set for <strong>Production</strong> environment</li>
+            <li>Redeploy your app</li>
+        </ol>
+    </div>
+
+    <script>
+        // Check environment variable
+        const cloudName = import.meta?.env?.VITE_CLOUDINARY_CLOUD_NAME;
+        const envStatus = document.getElementById('env-status');
+        
+        if (cloudName) {
+            envStatus.innerHTML = `
+                <div class="status success">
+                    ✅ Environment Variable Set: <code>${cloudName}</code>
+                </div>
+            `;
+        } else {
+            envStatus.innerHTML = `
+                <div class="status error">
+                    ❌ Environment Variable Missing: <code>VITE_CLOUDINARY_CLOUD_NAME</code>
+                </div>
+            `;
+        }
+
+        // Test URLs
+        const testUrls = [
+            {
+                name: 'Main Logo',
+                url: `https://res.cloudinary.com/${cloudName || 'dhwi5wevf'}/image/upload/dsecure/logos/logo`
+            },
+            {
+                name: 'White Logo',
+                url: `https://res.cloudinary.com/${cloudName || 'dhwi5wevf'}/image/upload/dsecure/logos/logo-white`
+            }
+        ];
+
+        const urlTestsDiv = document.getElementById('url-tests');
+        
+        testUrls.forEach(test => {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'url-test';
+            testDiv.innerHTML = `
+                <h4>${test.name}</h4>
+                <p><strong>URL:</strong> <code>${test.url}</code></p>
+                <img src="${test.url}" alt="${test.name}" class="test-image" 
+                     onload="this.nextElementSibling.innerHTML='✅ Image loaded successfully'"
+                     onerror="this.nextElementSibling.innerHTML='❌ Failed to load image'">
+                <div class="status warning">⏳ Loading...</div>
+            `;
+            urlTestsDiv.appendChild(testDiv);
+        });
+
+        // Console logging for additional debugging
+        // //console.log('Environment Debug Info:');
+        // //console.log('VITE_CLOUDINARY_CLOUD_NAME:', cloudName);
+        // //console.log('import.meta.env:', import.meta?.env);
+    </script>
+</body>
+</html>

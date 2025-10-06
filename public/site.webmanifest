@@ -1,0 +1,26 @@
+{
+  "name": "D-Secure - Data Erasure Solutions",
+  "short_name": "D-Secure",
+  "description": "Secure data erasure and device sanitization platform for enterprises",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#06b6d4",
+  "background_color": "#1e293b"
+}

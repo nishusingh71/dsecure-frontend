@@ -1,0 +1,81 @@
+/* Critical CSS for above-the-fold content */
+@layer critical {
+  /* Font preload and display optimizations */
+  body {
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent layout shift for hero section */
+  .hero-section {
+    min-height: 70vh;
+    contain: layout style paint;
+  }
+
+  /* Optimize card hover animations */
+  .card {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Reduce repaints for interactive elements */
+  .btn-primary,
+  .btn-secondary {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Optimize gradient backgrounds */
+  .gradient-bg {
+    background-attachment: fixed;
+    will-change: scroll-position;
+  }
+
+  /* Image loading optimization */
+  img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  img[loading="lazy"].loaded {
+    opacity: 1;
+  }
+
+  /* Preload hints for critical resources */
+  .preload-hint {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 300px;
+  }
+
+  /* Reduce motion for accessibility and performance */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Optimize scroll performance */
+  * {
+    scroll-behavior: smooth;
+  }
+
+  /* Critical layout containers */
+  .container-app {
+    contain: layout style;
+  }
+
+  /* Optimize text rendering */
+  h1, h2, h3, h4, h5, h6 {
+    text-rendering: optimizeSpeed;
+  }
+
+  /* Reduce paint complexity */
+  .shadow-lg {
+    filter: drop-shadow(0 10px 15px rgb(0 0 0 / 0.1));
+  }
+}
