@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const DiagnosticsPage: React.FC = () => {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
@@ -16,6 +17,24 @@ const DiagnosticsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-8">
+      <Helmet>
+        <title>System Diagnostics | DSecure Tech - Cloud Configuration Status</title>
+        <meta name="description" content="DSecure Tech system diagnostics page. Check cloud configuration status, environment variables, and service connectivity for optimal performance." />
+        <meta name="keywords" content="DSecure diagnostics, system status, cloud configuration, environment check, service monitoring" />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://dsecuretech.com/diagnostics" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="System Diagnostics | DSecure Tech" />
+        <meta property="og:description" content="Check DSecure Tech system status and configuration diagnostics." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://dsecuretech.com/diagnostics" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="System Diagnostics | DSecure Tech" />
+        <meta name="twitter:description" content="Check DSecure Tech system status and configuration diagnostics." />
+      </Helmet>
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-bold mb-8">Cloudinary Diagnostics</h1>
         

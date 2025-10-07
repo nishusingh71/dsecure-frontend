@@ -1,12 +1,14 @@
 import React, { useState, useCallback, memo } from "react";
-import Head from "next/head";
+import { Helmet } from 'react-helmet-async'
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { LicenseForm, type LicenseFormData } from "@/components/forms";
+import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 
 const SupportPage: React.FC = memo(() => {
   const [activeTicketForm, setActiveTicketForm] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
+  const [showPartnershipModal, setShowPartnershipModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [ticketForm, setTicketForm] = useState({
     name: "",
@@ -20,54 +22,141 @@ const SupportPage: React.FC = memo(() => {
   const handleLicenseSubmit = useCallback((formData: LicenseFormData) => {
     console.log('License request from Support Page:', formData);
     
-    // Prepare email data for license request
+    // Prepare email data for EmailJS
     const emailData = {
-      to: 'license@dsecure.com',
-      subject: 'Free License Request from Support Page - ' + formData.company,
-      body: `
-        New Free License Request from Support Page:
-        
-        Usage Type: ${formData.usage}
-        
-        Personal Information:
-        - Full Name: ${formData.fullName}
-        - Email: ${formData.email}
-        - Phone: ${formData.phone}
-        
-        Company Information:
-        - Company: ${formData.company}
-        - Country: ${formData.country}
-        - Business Type: ${formData.businessType}
-        - Compliance Requirements: ${formData.compliance}
-        
-        Erasure Requirements:
-        - What to Erase: ${formData.eraseOption}
-        - Number of Devices: ${formData.deviceCount}
-        
-        Additional Requirements:
-        ${formData.requirements}
-        
-        Request submitted from: Support Page
-        Timestamp: ${new Date().toLocaleString()}
-      `
+      service_id: 'your_service_id',
+      template_id: 'your_license_template_id',
+      user_id: 'your_user_id',
+      template_params: {
+        to_email: 'license@dsecuretech.com',
+        from_name: formData.fullName,
+        from_email: formData.email,
+        subject: `Free License Request - ${formData.company}`,
+        usage_type: formData.usage,
+        company_name: formData.company,
+        country: formData.country,
+        business_type: formData.businessType,
+        compliance_requirements: formData.compliance,
+        erase_option: formData.eraseOption,
+        device_count: formData.deviceCount,
+        phone_number: formData.phone,
+        additional_requirements: formData.requirements,
+        submission_source: 'Support Page',
+        submission_date: new Date().toLocaleString()
+      }
     };
 
-    // Here you would integrate with your email service (EmailJS, etc.)
-    console.log('Email data:', emailData);
+    // Log email data for debugging
+    console.log('License email data prepared:', emailData);
     
-    // Simulate API call
+    // Example EmailJS call (uncomment when configured):
+    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
+    //   .then(() => {
+    //     alert('Free license request submitted successfully! We will send you the license details soon.');
+    //     setShowLicenseModal(false);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Email sending failed:', error);
+    //     alert('There was an error submitting your request. Please try again.');
+    //   });
+    
+    // Temporary success simulation
     setTimeout(() => {
       alert('Free license request submitted successfully! We will send you the license details soon.');
       setShowLicenseModal(false);
     }, 1000);
   }, []);
 
+  const handlePartnershipSubmit = useCallback((formData: PartnershipFormData) => {
+    console.log('Partnership request from Support Page:', formData);
+    
+    // Prepare email data for EmailJS
+    const emailData = {
+      service_id: 'your_service_id',
+      template_id: 'your_partnership_template_id',
+      user_id: 'your_user_id',
+      template_params: {
+        to_email: 'partnerships@dsecuretech.com',
+        from_name: formData.fullName,
+        from_email: formData.businessEmail,
+        subject: `Partnership Request - ${formData.companyName}`,
+        company_name: formData.companyName,
+        website: formData.website,
+        country: formData.country,
+        partner_type: formData.partnerType,
+        phone_number: formData.phoneNo,
+        business_description: formData.businessDescription,
+        submission_source: 'Support Page',
+        submission_date: new Date().toLocaleString()
+      }
+    };
+    
+    // Log email data for debugging
+    console.log('Partnership email data prepared:', emailData);
+    
+    // Example EmailJS call (uncomment when configured):
+    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
+    //   .then(() => {
+    //     alert('Partnership request submitted successfully! We will review your application and get back to you soon.');
+    //     setShowPartnershipModal(false);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Email sending failed:', error);
+    //     alert('There was an error submitting your request. Please try again.');
+    //   });
+    
+    // Temporary success simulation
+    setTimeout(() => {
+      alert('Partnership request submitted successfully! We will review your application and get back to you soon.');
+      setShowPartnershipModal(false);
+    }, 1000);
+  }, []);
+
   const handleTicketSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    // Handle ticket submission
-    alert(
-      "Support ticket submitted successfully! We will get back to you soon."
-    );
+    
+    // Prepare email data for EmailJS
+    const emailData = {
+      service_id: 'your_service_id',
+      template_id: 'your_support_template_id',
+      user_id: 'your_user_id',
+      template_params: {
+        to_email: 'support@dsecuretech.com',
+        from_name: ticketForm.name,
+        from_email: ticketForm.email,
+        subject: `Support Ticket: ${ticketForm.subject}`,
+        priority: ticketForm.priority,
+        category: ticketForm.category,
+        description: ticketForm.description,
+        submission_source: 'Support Page',
+        submission_date: new Date().toLocaleString()
+      }
+    };
+
+    // Log email data for debugging
+    console.log('Support ticket email data prepared:', emailData);
+    
+    // Example EmailJS call (uncomment when configured):
+    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
+    //   .then(() => {
+    //     alert('Support ticket submitted successfully! We will get back to you soon.');
+    //     setActiveTicketForm(false);
+    //     setTicketForm({
+    //       name: "",
+    //       email: "",
+    //       subject: "",
+    //       priority: "medium",
+    //       category: "general",
+    //       description: "",
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.error('Email sending failed:', error);
+    //     alert('There was an error submitting your ticket. Please try again.');
+    //   });
+    
+    // Temporary success simulation
+    alert("Support ticket submitted successfully! We will get back to you soon.");
     setActiveTicketForm(false);
     setTicketForm({
       name: "",
@@ -77,7 +166,7 @@ const SupportPage: React.FC = memo(() => {
       category: "general",
       description: "",
     });
-  }, []);
+  }, [ticketForm]);
 
   const handleInputChange = useCallback((
     e: React.ChangeEvent<
@@ -91,22 +180,22 @@ const SupportPage: React.FC = memo(() => {
     }));
   }, []);
 
-  const trendingSearches = [
-    "How many overwrites should I do on a Hard Drive?",
-    "How can I Wipe Hard Drives and SSDs?",
-    "How to Wipe SAS Drives Permanently?",
-    "How can I wipe 12 board Mac Machines?",
-    "How to customize ISO file using DSecure?",
-    "How do I wipe everything and retain my OS?",
-    "How can I Wipe a MacOS with M1 Chip?",
-    "How to use DSecure Cloud Console?",
-    "How do I Perform Cryptographic Erasure on SSD?",
-    "How can I diagnose my smartphone using DSecure?",
-  ];
+  const trendingSearches = {
+    "How many overwrites should I do on a Hard Drive?":"/support/overwrite-guide",
+    "How can I Wipe Hard Drives and SSDs?":"/support/wipe-guide",
+    "How to Wipe SAS Drives Permanently?":"/support/sas-wipe-guide",
+    "How can I wipe 12 board Mac Machines?":"/support/mac-wipe-guide",
+    // "How to customize ISO file using DSecure?":"/support/iso-customization-guide",
+    "How do I wipe everything and retain my OS?":"/support/retain-os-guide",
+    "How can I Wipe a MacOS with M1 Chip?":"/support/m1-mac-wipe-guide",
+    "How to use DSecure Cloud Console?":"/support/cloud-console-guide",
+    "How do I Perform Cryptographic Erasure on SSD?":"/support/ssd-cryptographic-erasure-guide",
+    // "How can I diagnose my smartphone using DSecure?":"/support/smartphone-diagnosis-guide",
+  };
 
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/support" />
         <title>Support | DSecure Customer Support & Help Center</title>
         <meta
@@ -118,12 +207,12 @@ const SupportPage: React.FC = memo(() => {
           content="DSecure support, customer help, technical support, data erasure help, documentation, troubleshooting"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
-        <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-16 md:py-24">
-          <div className="container-app">
+        <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 md:py-24">
+          <div className="container-responsive">
             <Reveal>
               <div className="text-center">
                 <div className="mb-8">
@@ -182,17 +271,18 @@ const SupportPage: React.FC = memo(() => {
 
         {/* Trending Searches */}
         <section className="py-8 bg-white border-b border-slate-200">
-          <div className="container-app">
+          <div className="container-responsive">
             <Reveal>
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-4">
                   TRENDING SEARCHES
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {trendingSearches.map((search, index) => (
+                  {Object.entries(trendingSearches).map(([search, url], index) => (
                     <button
                       key={index}
                       className="text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
+                      onClick={() => window.location.href = url}
                     >
                       → {search}
                     </button>
@@ -205,7 +295,7 @@ const SupportPage: React.FC = memo(() => {
 
         {/* Self Help & Support Section */}
         <section className="py-16 md:py-24 bg-slate-50">
-          <div className="container-app">
+          <div className="container-responsive">
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
@@ -220,35 +310,35 @@ const SupportPage: React.FC = memo(() => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* FAQs */}
               <Reveal delayMs={100}>
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
                   <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
                     <svg
                       className="w-8 h-8 text-blue-600"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     FAQs
                   </h3>
-                  <p className="text-slate-600 mb-6 leading-relaxed">
+                  <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Frequently Asked Questions By Our Customers That Might Help
                     You.
                   </p>
-                  <button className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link to="/support/faqs" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     Learn More →
-                  </button>
+                  </Link>
                 </div>
               </Reveal>
 
               {/* Knowledge Base */}
               <Reveal delayMs={200}>
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
-                  <div className="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-red-200 transition-colors">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
+                  <div className="w-16 h-16 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-emerald-200 transition-colors">
                     <svg
-                      className="w-8 h-8 text-red-600"
+                      className="w-8 h-8 text-emerald-600"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -258,19 +348,19 @@ const SupportPage: React.FC = memo(() => {
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Knowledge Base
                   </h3>
-                  <p className="text-slate-600 mb-6 leading-relaxed">
+                  <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Step By Step Guide To Securely Wipe Data On Different
                     Devices.
                   </p>
-                  <button className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link to="/support/knowledge-base" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     Learn More →
-                  </button>
+                  </Link>
                 </div>
               </Reveal>
 
               {/* Get Started */}
               <Reveal delayMs={300}>
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
                   <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
                     <svg
                       className="w-8 h-8 text-green-600"
@@ -283,18 +373,18 @@ const SupportPage: React.FC = memo(() => {
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Get Started
                   </h3>
-                  <p className="text-slate-600 mb-6 leading-relaxed">
+                  <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Learn How To Wipe PC, Mac, Server & Mobile Devices.
                   </p>
-                  <button className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link to="/support/get-started" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     Learn More →
-                  </button>
+                  </Link>
                 </div>
               </Reveal>
 
               {/* Help Manual */}
               <Reveal delayMs={400}>
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
                   <div className="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-200 transition-colors">
                     <svg
                       className="w-8 h-8 text-purple-600"
@@ -311,18 +401,18 @@ const SupportPage: React.FC = memo(() => {
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Help Manual
                   </h3>
-                  <p className="text-slate-600 mb-6 leading-relaxed">
+                  <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Consult The Guide To Learn More About DSecure Products.
                   </p>
-                  <button className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link to="/support/help-manual" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     View Help Manual →
-                  </button>
+                  </Link>
                 </div>
               </Reveal>
 
               {/* Product Videos */}
               <Reveal delayMs={500}>
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
                   <div className="w-16 h-16 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-orange-200 transition-colors">
                     <svg
                       className="w-8 h-8 text-orange-600"
@@ -335,12 +425,12 @@ const SupportPage: React.FC = memo(() => {
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Product Videos
                   </h3>
-                  <p className="text-slate-600 mb-6 leading-relaxed">
+                  <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Product Walkthroughs & How To Videos.
                   </p>
-                  <button className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link to="/support/product-videos" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     Learn More →
-                  </button>
+                  </Link>
                 </div>
               </Reveal>
             </div>
@@ -349,7 +439,7 @@ const SupportPage: React.FC = memo(() => {
 
         {/* Assisted Support Section */}
         <section className="py-16 md:py-24 bg-white">
-          <div className="container-app">
+          <div className="container-responsive">
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
@@ -463,8 +553,8 @@ const SupportPage: React.FC = memo(() => {
         </section>
 
         {/* Let's Get Started Section */}
-        <section className="py-16 md:py-24 bg-gradient-to-r from-red-500 via-purple-500 to-blue-600">
-          <div className="container-app">
+        <section className="py-16 md:py-24 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
+          <div className="container-responsive">
             <Reveal>
               <div className="text-center text-white">
                 <div className="flex items-center justify-center mb-8">
@@ -500,7 +590,7 @@ const SupportPage: React.FC = memo(() => {
 
         {/* Company Stats */}
         {/* <section className="py-16 md:py-24 bg-slate-900 text-white">
-          <div className="container-app">
+          <div className="container-responsive">
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
@@ -517,7 +607,7 @@ const SupportPage: React.FC = memo(() => {
             <div className="grid grid-cols-2 md:grid-cols-6 gap-8 text-center">
               {[
                 { number: "3M+", label: "CUSTOMERS" },
-                { number: "30+", label: "YEARS OF EXPERIENCE" },
+                { number: "24/7", label: "SUPPORT AVAILABLE" },
                 { number: "100+", label: "R&D ENGINEERS" },
                 { number: "190+", label: "COUNTRIES" },
                 { number: "8000+", label: "PARTNERS" },
@@ -542,30 +632,29 @@ const SupportPage: React.FC = memo(() => {
       {/* Support Ticket Modal */}
       {activeTicketForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div
-            className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto scrollbar-hide"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            <style>
-              {`.scrollbar-hide::-webkit-scrollbar { display: none; }`}
-            </style>
-
-            <div className="bg-gradient-to-r from-brand to-brand-600 text-white p-6 rounded-t-xl">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            {/* Fixed Header */}
+            <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
                 <button
                   onClick={() => setActiveTicketForm(false)}
-                  className="text-white hover:text-gray-300 transition-colors text-2xl"
+                  className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
                 >
                   ×
                 </button>
               </div>
-              <p className="mt-2 text-blue-100">
+              <p className="mt-2 text-emerald-100">
                 We'll get back to you as soon as possible!
               </p>
             </div>
 
-            <form onSubmit={handleTicketSubmit} className="p-6 space-y-6">
+            {/* Scrollable Form Content */}
+            <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
+              <style>
+                {`.modal-scroll::-webkit-scrollbar { display: none; }`}
+              </style>
+              <form onSubmit={handleTicketSubmit} className="p-6 space-y-6 modal-scroll">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -577,7 +666,7 @@ const SupportPage: React.FC = memo(() => {
                     value={ticketForm.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand focus:border-transparent"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -592,7 +681,7 @@ const SupportPage: React.FC = memo(() => {
                     value={ticketForm.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand focus:border-transparent"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                     placeholder="Enter your email address"
                   />
                 </div>
@@ -608,7 +697,7 @@ const SupportPage: React.FC = memo(() => {
                   value={ticketForm.subject}
                   onChange={handleInputChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand focus:border-transparent"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                   placeholder="Brief description of your issue"
                 />
               </div>
@@ -622,7 +711,7 @@ const SupportPage: React.FC = memo(() => {
                     name="priority"
                     value={ticketForm.priority}
                     onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand focus:border-transparent bg-white"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
                   >
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -639,7 +728,7 @@ const SupportPage: React.FC = memo(() => {
                     name="category"
                     value={ticketForm.category}
                     onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand focus:border-transparent bg-white"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
                   >
                     <option value="general">General Support</option>
                     <option value="technical">Technical Issue</option>
@@ -660,15 +749,15 @@ const SupportPage: React.FC = memo(() => {
                   onChange={handleInputChange}
                   required
                   rows={6}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand focus:border-transparent resize-none"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
                   placeholder="Please provide detailed information about your issue or question..."
                 />
               </div>
 
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
                 <button
                   type="submit"
-                  className="flex-1 bg-gradient-to-r from-brand to-brand-600 text-white py-3 px-6 rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all duration-300 font-semibold"
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
                 >
                   Submit Ticket
                 </button>
@@ -680,7 +769,8 @@ const SupportPage: React.FC = memo(() => {
                   Cancel
                 </button>
               </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       )}
@@ -691,6 +781,15 @@ const SupportPage: React.FC = memo(() => {
           onSubmit={handleLicenseSubmit}
           onClose={() => setShowLicenseModal(false)}
           title="Request Free License - Support"
+        />
+      )}
+
+      {/* Partnership Request Modal */}
+      {showPartnershipModal && (
+        <PartnershipForm
+          onSubmit={handlePartnershipSubmit}
+          onClose={() => setShowPartnershipModal(false)}
+          title="Partnership Request - Support"
         />
       )}
     </>

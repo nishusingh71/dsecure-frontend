@@ -5,6 +5,7 @@ import App from "./App";
 import "./index.css";
 import "./critical.css";
 import "./responsive.css";
+import { HelmetProvider } from "react-helmet-async";
 
 // Performance monitoring
 if ("performance" in window) {
@@ -57,10 +58,12 @@ if (sessionStorage.redirect) {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-    >
-      <App />
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
+        <App />
+      </BrowserRouter>
+    </HelmetProvider>
   </React.StrictMode>
 );

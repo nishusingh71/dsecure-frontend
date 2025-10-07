@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/auth/AuthContext';
-import Head from 'next/head';
+import { Helmet } from 'react-helmet-async';
 
 interface PlanDetails {
   title: string;
@@ -118,7 +118,7 @@ export default function PaymentPage() {
 
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/payment" />
         <title>
           Payment | DSecure Data Erasure Service Purchase
@@ -132,7 +132,7 @@ export default function PaymentPage() {
           content="secure payment, data erasure purchase, enterprise payment, DSecure billing, payment gateway"
         />
         <meta name="robots" content="noindex, nofollow" />
-      </Head>
+      </Helmet>
       
       <div className="container-app py-12">
       <div className="max-w-4xl mx-auto">

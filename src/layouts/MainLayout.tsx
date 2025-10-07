@@ -3,7 +3,7 @@ import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect, useCallback, memo } from "react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import OptimizedImage from "@/components/OptimizedImage";
-import Head from "next/head";
+import { Helmet } from 'react-helmet-async';
 import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -31,7 +31,7 @@ export default function MainLayout() {
 
   return (
     <>
-    <Head>
+    <Helmet>
       <link rel="canonical" href="https://dsecuretech.com/" />
           <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
@@ -43,7 +43,7 @@ export default function MainLayout() {
             content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
           />
           <meta name="robots" content="index, follow" />
-        </Head>
+        </Helmet>
     <div className="min-h-dvh flex flex-col">
       <header
         className={`border-b sticky top-0 z-50 transition-all duration-300 ${
@@ -78,312 +78,39 @@ export default function MainLayout() {
             >
               Home
             </NavLink> */}
-            <div className="relative group">
-              <NavLink
-                to="/services"
-                className={({ isActive }) =>
-                  (isActive
-                    ? "text-brand font-medium"
-                    : "text-slate-600 hover:text-slate-900") +
-                  " inline-flex items-center gap-2 py-2"
-                }
-                aria-haspopup="true"
-                aria-expanded="false"
-                role="button"
-              >
-                Services
-                <span className="text-slate-400 group-hover:rotate-180 transition-transform duration-300">
-                  ▾
-                </span>
-              </NavLink>
-              <div 
-                className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out absolute left-0 top-full mt-2 w-64 lg:w-72 xl:w-80 xxl:w-96 card bg-white/95 backdrop-blur-lg border shadow-xl z-50"
-                role="menu"
-                aria-label="Services submenu"
-              >
-                <NavLink
-                  to="/services?type=device"
-                  className="block px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Device erasure services - Secure data wiping for all devices"
-                  role="menuitem"
-                >
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-slate-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      />
-                    </svg>
-                    <div className="min-w-0">
-                      <div className="font-medium">Device Erasure</div>
-                      <div className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                        Secure data wiping for all devices
-                      </div>
-                    </div>
-                  </div>
-                </NavLink>
-                <NavLink
-                  to="/services?type=server"
-                  className="block px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Server erasure services - Enterprise-grade server sanitization"
-                  role="menuitem"
-                >
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-slate-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
-                      />
-                    </svg>
-                    <div className="min-w-0">
-                      <div className="font-medium">Server Erasure</div>
-                      <div className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                        Enterprise-grade server sanitization
-                      </div>
-                    </div>
-                  </div>
-                </NavLink>
-                <NavLink
-                  to="/services?type=cloud"
-                  className="block px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Cloud erasure services - Cloud storage data removal"
-                  role="menuitem"
-                >
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-slate-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
-                      />
-                    </svg>
-                    <div className="min-w-0">
-                      <div className="font-medium">Cloud Erasure</div>
-                      <div className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                        Cloud storage data removal
-                      </div>
-                    </div>
-                  </div>
-                </NavLink>
-              </div>
-            </div>
-            <div className="relative group">
-              <NavLink
-                to="/solutions"
-                className={({ isActive }) =>
-                  (isActive
-                    ? "text-brand font-medium"
-                    : "text-slate-600 hover:text-slate-900") +
-                  " inline-flex items-center gap-2 py-2"
-                }
-                aria-haspopup="true"
-                aria-expanded="false"
-                role="button"
-              >
-                Solutions
-                <span className="text-slate-400 group-hover:rotate-180 transition-transform duration-300">
-                  ▾
-                </span>
-              </NavLink>
-              <div 
-                className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out absolute left-0 top-full mt-2 w-64 lg:w-72 xl:w-80 xxl:w-96 card bg-white/95 backdrop-blur-lg border shadow-xl z-50"
-                role="menu"
-                aria-label="Solutions submenu"
-              >
-                <NavLink
-                  to="/solutions?type=enterprise"
-                  className="flex items-center gap-2 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Enterprise solutions - Data security for large organizations"
-                  role="menuitem"
-                >
-                  <svg
-                    className="w-5 h-5 text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                    />
-                  </svg>
-                  Enterprise
-                </NavLink>
-                <NavLink
-                  to="/solutions?type=itad"
-                  className="flex items-center gap-2 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="ITAD solutions - IT Asset Disposition services"
-                  role="menuitem"
-                >
-                  <svg
-                    className="w-5 h-5 text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                    />
-                  </svg>
-                  ITAD
-                </NavLink>
-                <NavLink
-                  to="/solutions?type=service-providers"
-                  className="flex items-center gap-2 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Service providers solutions - Data security for MSPs and service companies"
-                  role="menuitem"
-                >
-                  <svg
-                    className="w-5 h-5 text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                  Service Providers
-                </NavLink>
-              </div>
-            </div>
-            <div className="relative group">
-              <NavLink
-                to="/resources"
-                className={({ isActive }) =>
-                  (isActive
-                    ? "text-brand font-medium"
-                    : "text-slate-600 hover:text-slate-900") +
-                  " inline-flex items-center gap-2 py-2"
-                }
-                aria-haspopup="true"
-                aria-expanded="false"
-                role="button"
-              >
-                Resources
-                <span className="text-slate-400 group-hover:rotate-180 transition-transform duration-300">
-                  ▾
-                </span>
-              </NavLink>
-              <div 
-                className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 ease-in-out absolute left-0 top-full mt-2 w-64 lg:w-72 xl:w-80 xxl:w-96 card bg-white/95 backdrop-blur-lg border shadow-xl z-50"
-                role="menu"
-                aria-label="Resources submenu"
-              >
-                <NavLink
-                  to="/resources?type=documentation"
-                  className="block px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Documentation - Technical guides and manuals"
-                  role="menuitem"
-                >
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-slate-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    <div className="min-w-0">
-                      <div className="font-medium">Documentation</div>
-                      <div className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                        Technical guides and manuals
-                      </div>
-                    </div>
-                  </div>
-                </NavLink>
-                <NavLink
-                  to="/resources?type=case-studies"
-                  className="block px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Case Studies - Real-world implementation examples"
-                  role="menuitem"
-                >
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-slate-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                      />
-                    </svg>
-                    <div className="min-w-0">
-                      <div className="font-medium">Case Studies</div>
-                      <div className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                        Real-world implementation examples
-                      </div>
-                    </div>
-                  </div>
-                </NavLink>
-                <NavLink
-                  to="/compliance"
-                  className="block px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand/50"
-                  aria-label="Compliance Guides - Regulatory compliance resources"
-                  role="menuitem"
-                >
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-slate-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                    <div className="min-w-0">
-                      <div className="font-medium">Compliance Guides</div>
-                      <div className="text-xs text-slate-500 mt-0.5 line-clamp-1">
-                        compliance resources
-                      </div>
-                    </div>
-                  </div>
-                </NavLink>
-              </div>
-            </div>
+            <NavLink
+              to="/features"
+              className={({ isActive }) =>
+                (isActive
+                  ? "text-brand font-medium"
+                  : "text-slate-600 hover:text-slate-900") +
+                " inline-flex items-center gap-2 py-2"
+              }
+            >
+              Features
+            </NavLink>
+            <NavLink
+              to="/solutions"
+              className={({ isActive }) =>
+                (isActive
+                  ? "text-brand font-medium"
+                  : "text-slate-600 hover:text-slate-900") +
+                " inline-flex items-center gap-2 py-2"
+              }
+            >
+              Solutions
+            </NavLink>
+            <NavLink
+              to="/resources"
+              className={({ isActive }) =>
+                (isActive
+                  ? "text-brand font-medium"
+                  : "text-slate-600 hover:text-slate-900") +
+                " inline-flex items-center gap-2 py-2"
+              }
+            >
+              Resources
+            </NavLink>
             <NavLink
               to="/partners"
               className={({ isActive }) =>
@@ -539,9 +266,9 @@ export default function MainLayout() {
             <div className="mx-auto max-w-7xl px-4 xs:px-4 sm:px-6 md:px-6 py-4 xs:py-5 sm:py-6 md:py-6 space-y-1 xs:space-y-2 sm:space-y-2 md:space-y-2">
               <NavLink
                 onClick={() => setOpen(false)}
-                to="/services"
+                to="/features"
                 className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                aria-label="View all data erasure services"
+                aria-label="View all security features"
               >
                 <svg
                   className="w-5 h-5 text-slate-400"
@@ -556,7 +283,7 @@ export default function MainLayout() {
                     d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"
                   />
                 </svg>
-                Services
+                Features
               </NavLink>
               <NavLink
                 onClick={() => setOpen(false)}
@@ -923,43 +650,43 @@ export default function MainLayout() {
                 {/* Services */}
                 <div>
                   <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                    Services
+                    Features
                   </h4>
                   <ul className="space-y-4 text-slate-300">
                     <li>
                       <Link
-                        to="/#services"
+                        to="/#features"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         onClick={(e) => {
                           e.preventDefault();
-                          window.location.href = '/#services';
+                          window.location.href = '/#features';
                         }}
                       >
-                        All Services
+                        All Features
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="/services?type=device"
+                        to="/services/device-erasure"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
-                        DSecure Pro
+                        Device Erasure
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="/services?type=server"
+                        to="/services/network-erasure"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
-                        DSecure Enterprise
+                        Network Erasure
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="/services?type=cloud"
+                        to="/services/cloud-erasure"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
-                        DSecure Cloud
+                        Cloud Erasure
                       </Link>
                     </li>
                     <li>
@@ -1150,20 +877,20 @@ export default function MainLayout() {
                 >
                   Cookie Policy
                 </Link>
-                <Link
+                {/* <Link
                   to="/security"
                   className="hover:text-brand transition-colors"
                   aria-label="View our security practices and certifications"
                 >
                   Security
-                </Link>
-                <Link
+                </Link> */}
+                {/* <Link
                   to="/status"
                   className="hover:text-brand transition-colors"
                   aria-label="Check system status and service availability"
                 >
                   Status
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

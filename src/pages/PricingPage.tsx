@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/auth/AuthContext";
-import Head from "next/head";
+import { Helmet } from 'react-helmet-async';
 import {
   CheckIcon,
   HoverIcon,
@@ -19,7 +19,7 @@ import {
 export default function PricingPage() {
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/pricing" />
         <title>
           DSecure Pricing | Data Erasure Solutions Plans
@@ -33,7 +33,7 @@ export default function PricingPage() {
           content="data erasure pricing, secure data deletion cost, enterprise data destruction plans, compliance solutions pricing"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
       <PricingPageContent />
     </>
@@ -250,7 +250,7 @@ function PricingPageContent() {
 
   return (
     <>
-    <Head>
+    <Helmet>
       <link rel="canonical" href="https://dsecuretech.com/pricing" />
       <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
       <meta
@@ -262,7 +262,7 @@ function PricingPageContent() {
         content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
       />
       <meta name="robots" content="index, follow" />
-    </Head>
+    </Helmet>
     <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 w-full overflow-hidden">
       {/* <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-slate-900 mb-4">Subscription Plans</h1>
@@ -383,30 +383,36 @@ function PricingPageContent() {
 
             <br />
             <span className="text-3xl md:text-4xl text-slate-800">
-              Full Feature & Services Sheet
+              Complete Feature & Services Pricing Sheet
             </span>
           </h2>
 
           <p className="text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            Compare all features across our complete product lineup. Explore
-            detailed capabilities, platform support, and enterprise-grade
-            security features.
+            Comprehensive comparison of all data erasure features across our complete product lineup. 
+            Explore detailed capabilities, platform support, enterprise-grade security features,
+            and compliance standards for device, network, and cloud erasure solutions.
             <br />
             <span className="text-purple-600 font-medium">
-              Contact sales for custom pricing and enterprise quotes.
+              Professional data sanitization with verifiable compliance reporting • Custom enterprise pricing available
             </span>
           </p>
 
-          {/* Quick stats */}
-          <div className="flex flex-wrap justify-center gap-6 mt-8">
+          {/* Enhanced stats */}
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
             <div className="bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-white/40">
-              <span className="text-sm text-slate-600">6 Plans Available</span>
+              <span className="text-sm text-slate-600">6 Service Tiers</span>
             </div>
             <div className="bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-white/40">
-              <span className="text-sm text-slate-600">50+ Features</span>
+              <span className="text-sm text-slate-600">75+ Features</span>
             </div>
             <div className="bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-white/40">
               <span className="text-sm text-slate-600">Enterprise Ready</span>
+            </div>
+            <div className="bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-white/40">
+              <span className="text-sm text-slate-600">NIST Compliant</span>
+            </div>
+            <div className="bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-white/40">
+              <span className="text-sm text-slate-600">Global Standards</span>
             </div>
           </div>
         </div>

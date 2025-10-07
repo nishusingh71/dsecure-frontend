@@ -1,10 +1,10 @@
 import React from "react";
-import Head from "next/head";
+import { Helmet } from 'react-helmet-async';
 
 const PrivacyPolicy = () => {
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/privacy-policy" />
         <title>
           Privacy Policy | DSecure Data Protection & Privacy
@@ -18,242 +18,168 @@ const PrivacyPolicy = () => {
           content="privacy policy, data protection, personal information, privacy rights, DSecure privacy, GDPR compliance"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
-      <div className="min-h-screen bg-gray-50 light:bg-gray-900 text-gray-800 light:text-gray-200 p-8">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-2">
-          <span className="text-blue-600 light:text-blue-400 text-sm">D-Secure</span>
-          <br />
-          Privacy Policy
-        </h1>
-        {/* <p className="text-center text-sm text-gray-600 light:text-gray-400 mb-8">
-          (Last updated: 16th Dec, 2020)
-        </p> */}
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          {/* Header Section */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">D-Secure</span>
+            </div>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Privacy Policy
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+              Learn how we collect, use, and protect your personal information
+            </p>
+          </div>
 
-        <p className="mb-6">
-          Our Privacy Policy informs you on how your personal information is
-          collected, used, and protected by{" "}
-          <strong>D-Secure Technologies Pvt. Ltd.</strong>
-        </p>
+          {/* Content */}
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 md:p-12">
+            <div className="prose prose-slate dark:prose-invert max-w-none">
+              <p className="text-lg text-slate-700 dark:text-slate-300 mb-8 leading-relaxed">
+                Our Privacy Policy informs you on how your personal information is
+                collected, used, and protected by{" "}
+                <strong className="text-slate-900 dark:text-white">D-Secure Technologies Pvt. Ltd.</strong>
+              </p>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">1. Introduction</h2>
-        <p>
-          Welcome to <strong>D-Secure</strong> website and software privacy
-          policy, provided by D-Secure Technologies Pvt. Ltd. with registered
-          office address: 205, Skipper Corner, 88, Nehru Place, New Delhi -
-          110019, India.
-        </p>
-        <p className="mt-2">
-          D-Secure (“we”, “us”, or “our”) respects the privacy rights of its
-          users and understands the importance of protecting and handling
-          information collected about you in accordance with law and best
-          practices. This Privacy Notice explains how we collect, process, and
-          secure your data, and your rights as a user.
-        </p>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  1. Introduction
+                </h2>
+                <div className="space-y-4 text-slate-700 dark:text-slate-300">
+                  <p className="leading-relaxed">
+                    Welcome to <strong className="text-slate-900 dark:text-white">D-Secure</strong> website and software privacy
+                    policy, provided by D-Secure Technologies Pvt. Ltd. with registered
+                    office address: 205, Skipper Corner, 88, Nehru Place, New Delhi -
+                    110019, India.
+                  </p>
+                  <p className="leading-relaxed">
+                    D-Secure ("we", "us", or "our") respects the privacy rights of its
+                    users and understands the importance of protecting and handling
+                    information collected about you in accordance with law and best
+                    practices. This Privacy Notice explains how we collect, process, and
+                    secure your data, and your rights as a user.
+                  </p>
+                </div>
+              </section>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          2. Acceptance and Use
-        </h2>
-        <p>
-          By downloading or using the D-Secure website or software, you signify
-          acceptance of this Privacy Policy. Clicking “Accept” when this policy
-          appears on our site constitutes official consent to collect, use, and
-          disclose your personal information as described here.
-        </p>
-        <p className="mt-2">
-          If you do not agree with or are not comfortable with any aspect of
-          this Privacy Policy, you should immediately discontinue using the
-          D-Secure website and its related services.
-        </p>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  2. Acceptance and Use
+                </h2>
+                <div className="space-y-4 text-slate-700 dark:text-slate-300">
+                  <p className="leading-relaxed">
+                    By downloading or using the D-Secure website or software, you signify
+                    acceptance of this Privacy Policy. Clicking "Accept" when this policy
+                    appears on our site constitutes official consent to collect, use, and
+                    disclose your personal information as described here.
+                  </p>
+                  <p className="leading-relaxed">
+                    If you do not agree with or are not comfortable with any aspect of
+                    this Privacy Policy, you should immediately discontinue using the
+                    D-Secure website and its related services.
+                  </p>
+                </div>
+              </section>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">3. Who We Are</h2>
-        <p>
-          We specialize in Data Recovery, Email Repair, File Repair, and Secure
-          Data Erasure solutions under the D-Secure brand.
-        </p>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  3. Who We Are
+                </h2>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                  We specialize in Data Recovery, Email Repair, File Repair, and Secure
+                  Data Erasure solutions under the D-Secure brand.
+                </p>
+              </section>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          4. Summary of Personal Information and Use
-        </h2>
-        <p>
-          D-Secure may collect or obtain personal data about you through various
-          methods including:
-        </p>
-        <ul className="list-disc ml-8 mt-2 space-y-1">
-          <li>Directly from you (e.g., when you contact us)</li>
-          <li>When you visit, download, or install our software</li>
-          <li>When you sign up or sign in to use our services</li>
-          <li>From third-party service providers or partners</li>
-        </ul>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  4. Summary of Personal Information and Use
+                </h2>
+                <div className="space-y-4 text-slate-700 dark:text-slate-300">
+                  <p className="leading-relaxed">
+                    D-Secure may collect or obtain personal data about you through various
+                    methods including:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-4">
+                    <li>Directly from you (e.g., when you contact us)</li>
+                    <li>When you visit, download, or install our software</li>
+                    <li>When you sign up or sign in to use our services</li>
+                    <li>From third-party service providers or partners</li>
+                  </ul>
+                </div>
+              </section>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          5. Purposes of Data Collection
-        </h2>
-        <ul className="list-disc ml-8 space-y-1">
-          <li>To provide and improve our services</li>
-          <li>To complete your purchase and maintain communication</li>
-          <li>To comply with legal obligations</li>
-          <li>For user engagement, marketing, and analytics</li>
-        </ul>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  5. Purposes of Data Collection
+                </h2>
+                <ul className="list-disc list-inside space-y-2 ml-4 text-slate-700 dark:text-slate-300">
+                  <li>To provide and improve our services</li>
+                  <li>To complete your purchase and maintain communication</li>
+                  <li>To comply with legal obligations</li>
+                  <li>For user engagement, marketing, and analytics</li>
+                </ul>
+              </section>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          6. Data Collection Methods
-        </h2>
-        <p>
-          We collect data when you use our software, contact us (via chat,
-          email, or form), or use our services as an authorized user.
-        </p>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  6. Your Rights
+                </h2>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                    You have the right to:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-4 text-slate-700 dark:text-slate-300">
+                    <li>Access your personal data</li>
+                    <li>Request correction of inaccurate data</li>
+                    <li>Request deletion of your data</li>
+                    <li>Object to processing of your data</li>
+                    <li>Request data portability</li>
+                  </ul>
+                </div>
+              </section>
 
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          7. Data Protection Principles
-        </h2>
-        <p>
-          D-Secure ensures your personal data is used lawfully, fairly, and
-          securely. Your data is:
-        </p>
-        <ul className="list-disc ml-8 mt-2 space-y-1">
-          <li>Collected only for clear and valid purposes</li>
-          <li>Accurate and kept up to date</li>
-          <li>Stored securely and retained only as necessary</li>
-        </ul>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          8. Collection of Data From You
-        </h2>
-        <p>We may collect:</p>
-        <ul className="list-disc ml-8 mt-2 space-y-1">
-          <li>Name, phone number, email address, billing info</li>
-          <li>Geo-location and usage information</li>
-          <li>Device and transaction information (encrypted)</li>
-        </ul>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          9. We Do Not Collect the Following
-        </h2>
-        <ul className="list-disc ml-8 space-y-1">
-          <li>Children’s personal or biometric data</li>
-          <li>Health data or direct identifiers of minors</li>
-        </ul>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          10. Information Collected Through Technology
-        </h2>
-        <p>
-          D-Secure may collect non-personal information like browser type, IP
-          address, and cookies. Cookies help improve your experience but can be
-          disabled in your browser.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          11. How We Use Your Data
-        </h2>
-        <ul className="list-disc ml-8 space-y-1">
-          <li>To provide access and updates to our software</li>
-          <li>To process transactions and prevent fraud</li>
-          <li>To improve user experience and offer support</li>
-          <li>To comply with applicable laws</li>
-        </ul>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          12. Disclosure of Information with Your Consent
-        </h2>
-        <p>
-          We may share your data with trusted service providers for hosting,
-          analytics, advertising, or legal compliance — only with your consent
-          or as required by law.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          13. Your Information Rights
-        </h2>
-        <p>
-          You can access, update, or request deletion of your data anytime by
-          contacting us at{" "}
-          <span className="text-blue-600 light:text-blue-400">
-            privacy@dsecure.com
-          </span>
-          .
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          14. Data Subjects for (EEA, California & Nevada)
-        </h2>
-        <p>
-          D-Secure complies with GDPR, CCPA, and Nevada privacy laws. Users can
-          opt out of data sale, request access, or withdraw consent.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          15. Your Data Protection Rights
-        </h2>
-        <ul className="list-disc ml-8 space-y-1">
-          <li>Access, correct, or delete your personal data</li>
-          <li>Opt-out of marketing communications</li>
-          <li>Withdraw consent at any time</li>
-          <li>Complain to data protection authorities if necessary</li>
-        </ul>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          16. Our Policy Towards Children
-        </h2>
-        <p>
-          D-Secure does not knowingly collect personal data from children under
-          18. Any access must be supervised by a parent or guardian.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          17. Do Not Track Disclosures
-        </h2>
-        <p>
-          Currently, D-Secure does not respond to browser “Do Not Track” signals
-          or similar mechanisms.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">18. Data Security</h2>
-        <p>
-          We employ secure data centers, firewalls, encryption, and access
-          controls to prevent unauthorized access or misuse of your personal
-          information.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">
-          19. Changes to our Privacy Policy
-        </h2>
-        <p>
-          D-Secure may update this Privacy Policy from time to time. Updates
-          will be posted on this page, and changes will never reduce your
-          privacy rights.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">20. Terms of Use</h2>
-        <p>
-          For details on our website and software usage terms, please visit our{" "}
-          <a
-            href="/terms"
-            className="text-blue-600 light:text-blue-400 hover:underline"
-          >
-            Terms of Use
-          </a>{" "}
-          page.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">21. Jurisdiction</h2>
-        <p>
-          This Privacy Policy is governed by Indian law and subject to the
-          jurisdiction of courts in Delhi / New Delhi, India.
-        </p>
-
-        <h2 className="text-2xl font-semibold mt-10 mb-4">22. Contact Us</h2>
-        <p>
-          If you have any questions, please contact us at{" "}
-          <span className="text-blue-600 light:text-blue-400">
-            privacy@dsecuretech.com
-          </span>
-          .
-        </p>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  7. Contact Us
+                </h2>
+                <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6">
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                    If you have any questions about this Privacy Policy, please contact us:
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                      </svg>
+                      <a href="mailto:privacy@dsecuretech.com" className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-semibold">
+                        privacy@dsecuretech.com
+                      </a>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-slate-700 dark:text-slate-300">
+                        205, Skipper Corner, 88, Nehru Place, New Delhi - 110019, India
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
     </>
   );
 };

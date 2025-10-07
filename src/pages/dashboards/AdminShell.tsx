@@ -1,10 +1,10 @@
-import Head from 'next/head'
+import { Helmet } from 'react-helmet-async'
 import { NavLink, Outlet } from 'react-router-dom'
 
 export default function AdminShell() {
   return (
     <>
-    <Head>
+    <Helmet>
 +      <link rel="canonical" href="https://dsecuretech.com/admin" />
           <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
@@ -16,7 +16,7 @@ export default function AdminShell() {
             content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
           />
           <meta name="robots" content="index, follow" />
-        </Head>
+        </Helmet>
     <div className="container-app py-4 sm:py-8 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
       {/* Mobile Header */}
       <div className="mb-4 sm:mb-6 md:hidden">

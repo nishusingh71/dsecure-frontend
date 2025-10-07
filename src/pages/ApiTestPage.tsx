@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { checkApiAvailability } from '@/utils/api'
 import { useUsers, useMachines, useReports } from '@/utils/dataService'
+import { Helmet } from 'react-helmet-async'
 
 export default function ApiTestPage() {
   const [apiAvailable, setApiAvailable] = useState<boolean | null>(null)
@@ -28,6 +29,11 @@ export default function ApiTestPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
+      <Helmet>
+        <title>API Integration Test | DSecure Tech - Development Tools</title>
+        <meta name="description" content="DSecure Tech API integration testing page for developers and system administrators." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-2xl font-bold text-slate-900">API Integration Test</h1>
         

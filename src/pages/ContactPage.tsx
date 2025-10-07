@@ -11,13 +11,13 @@ import {
   MobileIcon,
   HoverIcon 
 } from '@/components/FlatIcons';
-import Head from "next/head";
+import { Helmet } from 'react-helmet-async';
 
 
 export default function ContactPage() {
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/contact" />
         <title>
           Contact DSecure | Data Erasure Solutions Support
@@ -31,7 +31,7 @@ export default function ContactPage() {
           content="contact DSecure, data erasure support, NIST compliance contact, secure data deletion help, GDPR data destruction"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
       <ContactPageContent />
     </>
@@ -231,7 +231,7 @@ function ContactPageContent() {
 
   return (
     <>
-    <Head>
+    <Helmet>
       <link rel="canonical" href="https://dsecuretech.com/contact" />
           <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
@@ -243,7 +243,7 @@ function ContactPageContent() {
             content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
           />
           <meta name="robots" content="index, follow" />
-        </Head>
+        </Helmet>
       {/* Toast Notification */}
       {toast && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
@@ -277,8 +277,8 @@ function ContactPageContent() {
       )}
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-emerald-50 via-white to-teal-50">
-        <div className="container-app py-10 md:py-18">
+      <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+        <div className="container-responsive py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
           <div className="text-center max-w-3xl mx-auto">
             <Reveal>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
@@ -900,8 +900,8 @@ function ContactPageContent() {
       </section>
 
       {/* Support Options */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-emerald-50 via-white to-teal-50">
-        <div className="container-app">
+      <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
               How Can We Help?

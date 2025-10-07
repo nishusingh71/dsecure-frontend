@@ -11,7 +11,7 @@ import {
   ArrowRightIcon,
   HoverIcon 
 } from '@/components/FlatIcons'
-import Head from 'next/head';
+import { Helmet } from 'react-helmet-async';
 type Standard = {
   title: string;
   fullName: string;
@@ -29,7 +29,7 @@ type Standards = {
 export default function CompliancePage() {
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/compliance" />
         <title>
           Data Erasure Compliance | NIST, GDPR, HIPAA Standards
@@ -43,7 +43,7 @@ export default function CompliancePage() {
           content="data erasure compliance, NIST 800-88, GDPR compliance, HIPAA data security, SOX PCI DSS standards, regulatory compliance"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
       <CompliancePageContent />
     </>
@@ -229,7 +229,7 @@ function CompliancePageContent() {
 
   return (
     <>
-    <Head>
+    <Helmet>
       <link rel="canonical" href="https://dsecuretech.com/compliance" />
       <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
       <meta
@@ -241,7 +241,7 @@ function CompliancePageContent() {
         content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
       />
       <meta name="robots" content="index, follow" />
-    </Head>
+    </Helmet>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-white to-teal-50">
         <div className="container-app py-16 md:py-24">

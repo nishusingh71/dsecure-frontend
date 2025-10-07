@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/auth/AuthContext'
 import { SkeletonForm } from '@/components/Skeleton'
+import { Helmet } from 'react-helmet-async'
 
 export default function RegisterPage() {
   const { register, loading: authLoading } = useAuth()
@@ -109,7 +110,25 @@ export default function RegisterPage() {
   }
 
   return (
-        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
+      <Helmet>
+        <title>Create Account | DSecure Tech - Secure Data Erasure Solutions</title>
+        <meta name="description" content="Create your DSecure Tech account to access professional data erasure solutions. Join thousands of enterprises securing their data with certified erasure." />
+        <meta name="keywords" content="DSecure register, create account, data erasure signup, enterprise data security, secure erasure account" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://dsecuretech.com/register" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Create Account | DSecure Tech" />
+        <meta property="og:description" content="Join DSecure Tech for professional data erasure solutions. Create your account today." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://dsecuretech.com/register" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Create Account | DSecure Tech" />
+        <meta name="twitter:description" content="Join DSecure Tech for professional data erasure solutions." />
+      </Helmet>
       <div className="w-full max-w-lg px-6 sm:px-8 py-8 sm:py-12 rounded-2xl bg-white/60 backdrop-blur-xl shadow-2xl shadow-slate-900/10 overflow-hidden">
         {authLoading ? (
           <SkeletonForm fields={4} hasTitle={true} hasSubmitButton={true} className="p-0" />

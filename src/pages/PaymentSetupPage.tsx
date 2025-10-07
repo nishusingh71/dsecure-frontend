@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/auth/AuthContext'
 import { SetupStatusAlert, useSetupStatus } from '@/components/PaymentLicenseGuard'
 import { authService } from '../utils/authService'
+import { Helmet } from 'react-helmet-async'
 
 interface PlanDetails {
   title: string
@@ -444,6 +445,24 @@ export default function PaymentSetupPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
+      <Helmet>
+        <title>Payment & License Setup | DSecure Tech - Complete Your Setup</title>
+        <meta name="description" content="Complete your DSecure Tech payment and license setup. Configure billing details and license requirements to access all data erasure features." />
+        <meta name="keywords" content="DSecure payment setup, license configuration, billing, enterprise license, data erasure license" />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://dsecuretech.com/payment" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Payment & License Setup | DSecure Tech" />
+        <meta property="og:description" content="Complete your DSecure Tech setup with payment and license configuration." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://dsecuretech.com/payment" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Payment & License Setup | DSecure Tech" />
+        <meta name="twitter:description" content="Complete your DSecure Tech setup with payment and license configuration." />
+      </Helmet>
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Setup Status Alert */}
         <SetupStatusAlert />

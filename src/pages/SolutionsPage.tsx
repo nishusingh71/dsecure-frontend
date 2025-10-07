@@ -1,7 +1,7 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import Head from 'next/head';
+import { useSearchParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async';
 import { 
   BuildingIcon, 
   ShieldIcon, 
@@ -20,7 +20,7 @@ import {
 export default function SolutionsPage() {
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/solutions" />
         <title>
           Enterprise Data Security Solutions | DSecure
@@ -34,7 +34,7 @@ export default function SolutionsPage() {
           content="enterprise data security, healthcare data compliance, financial data protection, government data security, GDPR HIPAA SOX"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
       <SolutionsPageContent />
     </>
@@ -241,9 +241,23 @@ function SolutionsPageContent() {
     }
   ]
 
+  // Helper function to get the sub-page link for each industry
+  const getIndustryLink = (industry: IndustryKey): string => {
+    switch (industry) {
+      case 'enterprise':
+        return '/solutions/enterprise'
+      case 'healthcare':
+        return '/solutions/healthcare'
+      case 'financial':
+        return '/solutions/financial'
+      default:
+        return '/contact' // For industries without dedicated sub-pages yet
+    }
+  }
+
   return (
     <>
-    <Head>
+    <Helmet>
       <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
       <meta
         name="description"
@@ -254,9 +268,9 @@ function SolutionsPageContent() {
         content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
       />
       <meta name="robots" content="index, follow" />
-    </Head>
+    </Helmet>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(6,182,212,0.08),transparent_50%)]"></div>
         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_30%,rgba(255,255,255,0.1)_50%,transparent_70%)]"></div>
@@ -266,7 +280,7 @@ function SolutionsPageContent() {
         <div className="absolute top-40 right-20 w-32 h-32 bg-teal-200/20 rounded-full blur-2xl animate-pulse delay-1000"></div>
         <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-emerald-300/25 rounded-full blur-lg animate-pulse delay-500"></div>
         
-        <div className="container-app relative py-20 md:py-32">
+        <div className="container-responsive relative py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Content */}
             <div className="text-center lg:text-left">
@@ -343,7 +357,7 @@ function SolutionsPageContent() {
                   {/* Main Image Container */}
                   <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/50 overflow-hidden">
                     {/* Data Security Illustration */}
-                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-50 to-slate-100 p-8 flex items-center justify-center">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-emerald-50 to-emerald-100 p-8 flex items-center justify-center">
                       <div className="relative w-full h-full">
                         {/* Central Server/Database Icon */}
                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
@@ -459,8 +473,8 @@ function SolutionsPageContent() {
       </section>
 
       {/* Solutions Grid */}
-      <section id="solutions" className="py-16 md:py-24">
-        <div className="container-app">
+      <section id="solutions" className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50/50">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Solutions by Industry</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -547,7 +561,12 @@ function SolutionsPageContent() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <a href="/contact" className="btn-primary">
+                    {(activeIndustry === 'enterprise' || activeIndustry === 'healthcare' || activeIndustry === 'financial') && (
+                      <Link to={getIndustryLink(activeIndustry)} className="btn-primary">
+                        Learn More About {solutions[activeIndustry].title}
+                      </Link>
+                    )}
+                    <a href="/contact" className="btn-secondary">
                       Request Demo
                     </a>
                     <a href="/pricing" className="btn-secondary">
@@ -663,7 +682,7 @@ function SolutionsPageContent() {
 
       {/* Case Studies */}
       <section className="py-16 md:py-24 bg-slate-50">
-        <div className="container-app">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Case Studies</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -702,7 +721,7 @@ function SolutionsPageContent() {
 
       {/* CTA Section */}
       <section className="py-16 md:py-24">
-        <div className="container-app">
+        <div className="container-responsive">
           <Reveal>
             <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-8 md:p-12 text-center text-white">
               <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Data Erasure Process?</h2>

@@ -3,7 +3,7 @@ import { exportToCsv } from '@/utils/csv'
 import { useMachines, dataService } from '@/utils/dataService'
 import { Machine } from '@/utils/api'
 import { SkeletonTable, SkeletonCard } from '@/components/Skeleton'
-import Head from 'next/head'
+import { Helmet } from 'react-helmet-async'
 
 
 export default function AdminMachines() {
@@ -98,7 +98,7 @@ export default function AdminMachines() {
   }
   return (
     <>
-    <Head>
+    <Helmet>
 +      <link rel="canonical" href="https://dsecuretech.com/admin/machines" />
           <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
@@ -110,7 +110,7 @@ export default function AdminMachines() {
             content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
           />
           <meta name="robots" content="index, follow" />
-        </Head>
+        </Helmet>
     <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">Machines</h1>

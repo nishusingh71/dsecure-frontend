@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MainLayout from "./layouts/MainLayout";
@@ -10,11 +10,43 @@ import { useSEOMonitoring } from "./utils/seoMonitor";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const FeaturePage = lazy(() => import("./pages/FeaturePage"));
+const DeviceErasurePage = lazy(
+  () => import("./pages/services/DeviceErasurePage")
+);
+const NetworkErasurePage = lazy(
+  () => import("./pages/services/NetworkErasurePage")
+);
+const CloudErasurePage = lazy(
+  () => import("./pages/services/CloudErasurePage")
+);
 const SolutionsPage = lazy(() => import("./pages/SolutionsPage"));
+const EnterpriseSolutionsPage = lazy(
+  () => import("./pages/solutions/EnterpriseSolutionsPage")
+);
+const HealthcareSolutionsPage = lazy(
+  () => import("./pages/solutions/HealthcareSolutionsPage")
+);
+const FinancialSolutionsPage = lazy(
+  () => import("./pages/solutions/FinancialSolutionsPage")
+);
 const CompliancePage = lazy(() => import("./pages/CompliancePage"));
 const ResourcesPage = lazy(() => import("./pages/ResourcesPage"));
+const DocumentationResourcesPage = lazy(
+  () => import("./pages/resources/DocumentationResourcesPage")
+);
+const CaseStudiesResourcesPage = lazy(
+  () => import("./pages/resources/CaseStudiesResourcesPage")
+);
+const ComplianceResourcesPage = lazy(
+  () => import("./pages/resources/ComplianceResourcesPage")
+);
+const WhitepapersResourcesPage = lazy(
+  () => import("./pages/resources/WhitepapersResourcesPage")
+);
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const PricingPage = lazy(() => import("./pages/PricingPage"));
+const PricingAndPlanPage = lazy(() => import("./pages/PricingAndPlanPage"));
 const About = lazy(() => import("./pages/About"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
 const DiagnosticsPage = lazy(() => import("./pages/DiagnosticsPage"));
@@ -37,6 +69,21 @@ import AdminMachines from "./pages/dashboards/AdminMachines";
 import AdminLogs from "./pages/dashboards/AdminLogs";
 import AdminSubusers from "./pages/dashboards/AdminSubusers";
 import LegalPolicy from "./pages/LegalPolicy";
+import OverwriteGuide from "./pages/OverwriteGuide";
+import WipeSASDrives from "./pages/WipeSASDrive";
+import WipeMacM1 from "./pages/WipeMacM1";
+import MacEraseGuide from "./pages/MacEraseGuide";
+import FileEraserGuide from "./pages/FileEraserGuide";
+import SecureEraseHDDSSD from "./pages/SecureEraseHDDSDD";
+import CloudConsoleGuide from "./pages/CloudConsoleGuide";
+import NotFoundPage from "./pages/NotFoundPage";
+
+// Support pages
+const FAQsPage = lazy(() => import("./pages/support/FAQsPage"));
+const KnowledgeBasePage = lazy(() => import("./pages/support/KnowledgeBasePage"));
+const GetStartedPage = lazy(() => import("./pages/support/GetStartedPage"));
+const HelpManualPage = lazy(() => import("./pages/support/HelpManualPage"));
+const ProductVideosPage = lazy(() => import("./pages/support/ProductVideosPage"));
 
 // Analytics Integration Component
 function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
@@ -53,21 +100,80 @@ function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// ScrollToTop Component - Scrolls to top on route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Smooth scroll to top when route changes
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, [pathname]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <AuthProvider>
       <AnalyticsWrapper>
+        <ScrollToTop />
         <Suspense fallback={<PageLoadingSkeleton />}>
           <Routes>
             <Route element={<MainLayout />}>
               <Route index element={<HomePage />} />
               <Route path="services" element={<ServicesPage />} />
+              <Route path="features" element={<FeaturePage />} />
+              <Route
+                path="services/device-erasure"
+                element={<DeviceErasurePage />}
+              />
+              <Route
+                path="services/network-erasure"
+                element={<NetworkErasurePage />}
+              />
+              <Route
+                path="services/cloud-erasure"
+                element={<CloudErasurePage />}
+              />
               <Route path="solutions" element={<SolutionsPage />} />
+              <Route
+                path="solutions/enterprise"
+                element={<EnterpriseSolutionsPage />}
+              />
+              <Route
+                path="solutions/healthcare"
+                element={<HealthcareSolutionsPage />}
+              />
+              <Route
+                path="solutions/financial"
+                element={<FinancialSolutionsPage />}
+              />
               <Route path="compliance" element={<CompliancePage />} />
               <Route path="resources" element={<ResourcesPage />} />
+              <Route
+                path="resources/documentation"
+                element={<DocumentationResourcesPage />}
+              />
+              <Route
+                path="resources/case-studies"
+                element={<CaseStudiesResourcesPage />}
+              />
+              <Route
+                path="resources/compliance"
+                element={<ComplianceResourcesPage />}
+              />
+              <Route
+                path="resources/whitepapers"
+                element={<WhitepapersResourcesPage />}
+              />
               <Route path="contact" element={<ContactPage />} />
               <Route path="about" element={<About />} />
               <Route path="pricing" element={<PricingPage />} />
+              <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
               <Route path="payment" element={<PaymentPage />} />
               <Route path="diagnostics" element={<DiagnosticsPage />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
@@ -121,9 +227,43 @@ export default function App() {
                 <Route path="logs" element={<AdminLogs />} />
                 <Route path="subusers" element={<AdminSubusers />} />
               </Route>
+              <Route
+                path="/support/overwrite-guide"
+                element={<OverwriteGuide />}
+              />
+              <Route path="/support/wipe-guide" element={<OverwriteGuide />} />
+              <Route
+                path="/support/sas-wipe-guide"
+                element={<WipeSASDrives />}
+              />
+              <Route path="/support/mac-wipe-guide" element={<WipeMacM1 />} />
+              <Route
+                path="/support/mac-eraser-guide"
+                element={<MacEraseGuide />}
+              />
 
+              <Route
+                path="/support/file-eraser-guide"
+                element={<FileEraserGuide />}
+              />
+              <Route
+                path="/support/secure-erase-hddssd"
+                element={<SecureEraseHDDSSD />}
+              />
+              <Route
+                path="/support/cloud-console-guide"
+                element={<CloudConsoleGuide />}
+              />
+              
+              {/* New Support Pages */}
+              <Route path="/support/faqs" element={<FAQsPage />} />
+              <Route path="/support/knowledge-base" element={<KnowledgeBasePage />} />
+              <Route path="/support/get-started" element={<GetStartedPage />} />
+              <Route path="/support/help-manual" element={<HelpManualPage />} />
+              <Route path="/support/product-videos" element={<ProductVideosPage />} />
+              
               {/* Catch-all route for unmatched paths */}
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </Suspense>

@@ -1,7 +1,7 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import Head from 'next/head'
+import { Helmet } from 'react-helmet-async'
 import { 
   CheckIcon, 
   MobileIcon, 
@@ -20,7 +20,7 @@ import {
 export default function ServicesPage() {
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/services" />
         <title>
           Data Erasure Services | DSecure Professional Solutions
@@ -34,7 +34,7 @@ export default function ServicesPage() {
           content="data erasure services, device sanitization, server data destruction, cloud data removal, NIST 800-88, secure data wiping"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
       <ServicesPageContent />
     </>
@@ -210,7 +210,7 @@ function ServicesPageContent() {
 
   return (
     <>
-    <Head>
+    <Helmet>
       <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
       <meta
         name="description"
@@ -221,11 +221,11 @@ function ServicesPageContent() {
         content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
       />
       <meta name="robots" content="index, follow" />
-    </Head>
-    <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 w-full overflow-hidden">
+    </Helmet>
+    <div className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 w-full overflow-hidden">
       {/* Hero Section */}
-      <section>
-        <div className="container-app py-16 md:py-24">
+      <section className="py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
+        <div className="container-responsive">
           <div className="text-center max-w-4xl mx-auto">
             <Reveal>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
@@ -253,8 +253,8 @@ function ServicesPageContent() {
       </section>
 
       {/* Service Tabs */}
-      <section className="py-16 md:py-24">
-        <div className="container-app">
+      <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50/50">
+        <div className="container-responsive">
           <div className="text-center mb-8 xs:mb-10 sm:mb-12 md:mb-12 lg:mb-12 xl:mb-14 xxl:mb-16">
             <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl xxl:text-5xl font-bold text-slate-900 mb-3 xs:mb-4 sm:mb-4 md:mb-4 lg:mb-4 xl:mb-5 xxl:mb-6">Choose Your Service</h2>
             <p className="text-base xs:text-lg sm:text-lg md:text-xl lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 max-w-xl xs:max-w-2xl sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl xxl:max-w-5xl mx-auto">
@@ -288,7 +288,7 @@ function ServicesPageContent() {
             <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 p-6 md:p-8 lg:p-12">
                 <div>
-                  <div className="inline-flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-brand to-brand/80 rounded-2xl text-white mb-4 lg:mb-6">
+                  <div className="inline-flex items-center justify-center w-12 h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl text-white mb-4 lg:mb-6">
                     {services[activeTab].icon}
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">
@@ -385,11 +385,11 @@ function ServicesPageContent() {
 
       {/* Comprehensive Plan Comparison */}
       <section className="py-16 md:py-24 bg-slate-50">
-        <div className="container-app">
+        <div className="container-responsive">
           <div className="relative bg-gradient-to-br from-green-50 via-blue-50 to-teal-50 rounded-3xl p-8 md:p-12 border border-green-100 shadow-lg mb-12">
             {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-br from-green-200/30 to-blue-200/30 rounded-full blur-3xl -translate-y-12 translate-x-12"></div>
-            <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-blue-200/30 to-teal-200/30 rounded-full blur-2xl translate-y-8 -translate-x-8"></div>
+            <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-br from-emerald-200/30 to-teal-200/30 rounded-full blur-3xl -translate-y-12 translate-x-12"></div>
+            <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-teal-200/30 to-cyan-200/30 rounded-full blur-2xl translate-y-8 -translate-x-8"></div>
             
             <div className="relative text-center">
               <div className="inline-flex items-center gap-3 bg-white/60 backdrop-blur-sm px-6 py-3 rounded-full border border-white/40 mb-6">
@@ -398,7 +398,7 @@ function ServicesPageContent() {
               </div>
               
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                <span className="bg-gradient-to-r from-green-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                  <span><img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg" alt="" className='w-10 h-10 inline-block -mt-1'/></span> D-SecureErase
                 </span>
                 <br />
@@ -429,7 +429,7 @@ function ServicesPageContent() {
             <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden">
               
               {/* Free Enterprise Trial Banner */}
-              <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 text-center">
+              <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6 text-center">
                 <h3 className="text-xl font-bold mb-2">🎉 Try Enterprise FREE for 14 Days</h3>
                 <p className="mb-4">Test all Enterprise features on 1 device - No credit card required</p>
                 <Link to="/contact" className="bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
@@ -440,13 +440,13 @@ function ServicesPageContent() {
               {/* Core Erasure Capabilities Table */}
               <div className="mb-4">
                 <div 
-                  className="group cursor-pointer bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100 hover:border-green-200 transition-all duration-300 hover:shadow-lg"
+                  className="group cursor-pointer bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 hover:border-emerald-200 transition-all duration-300 hover:shadow-lg"
                   onClick={() => toggleSection('capabilities')}
                 >
                   <div className="p-4 md:p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                           <ShieldIcon className="w-6 h-6 text-white" filled={true} />
                         </div>
                         <div>
@@ -524,7 +524,7 @@ function ServicesPageContent() {
                   <div className="p-4 md:p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                           <MobileIcon className="w-6 h-6 text-white" filled={true} />
                         </div>
                         <div>
@@ -598,7 +598,7 @@ function ServicesPageContent() {
                   <div className="p-4 md:p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                           <DatabaseIcon className="w-6 h-6 text-white" filled={true} />
                         </div>
                         <div>
@@ -801,11 +801,11 @@ function ServicesPageContent() {
               </div>
 
               {/* Contact Sales CTA */}
-              <div className="bg-gradient-to-r from-brand to-brand/80 p-8 text-center text-white">
+              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-8 text-center text-white">
                 <h3 className="text-xl font-bold mb-4">Ready to Choose Your Service Plan?</h3>
                 <p className="mb-6 opacity-90">Contact our sales team for custom pricing and enterprise quotes</p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/contact" className="bg-white text-brand px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                  <Link to="/contact" className="bg-white text-emerald-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
                     Contact Sales for Quote
                   </Link>
                   <Link to="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
@@ -820,7 +820,7 @@ function ServicesPageContent() {
 
       {/* Contact Sales CTA Section */}
       <section className="py-16 md:py-24 bg-slate-50">
-        <div className="container-app">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <Reveal>
               <h2 className="text-3xl font-bold text-slate-900 mb-4">Ready to Get Started?</h2>
@@ -887,8 +887,8 @@ function ServicesPageContent() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24">
-        <div className="container-app">
+      <section className="py-16 md:py-20 lg:py-24">
+        <div className="container-responsive">
           <Reveal>
             <div className="bg-gradient-to-r from-brand to-brand/80 rounded-2xl p-8 md:p-12 text-center text-white">
               <h2 className="text-3xl font-bold mb-4">Ready to Secure Your Data?</h2>

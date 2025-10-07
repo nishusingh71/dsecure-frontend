@@ -1,5 +1,5 @@
 import Reveal from '@/components/Reveal'
-import Head from 'next/head'
+import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
@@ -7,7 +7,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 export default function ResourcesPage() {
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/resources" />
         <title>
           Data Security Resources | DSecure Documentation & Guides
@@ -21,7 +21,7 @@ export default function ResourcesPage() {
           content="data security resources, NIST 800-88 guide, compliance documentation, data erasure whitepapers, security best practices"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
       <ResourcesPageContent />
     </>
@@ -224,7 +224,7 @@ function ResourcesPageContent() {
 
   return (
     <>
-    <Head>
+    <Helmet>
       <link rel="canonical" href="https://dsecuretech.com/resources" />
       <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
       <meta
@@ -236,11 +236,11 @@ function ResourcesPageContent() {
         content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
       />
       <meta name="robots" content="index, follow" />
-    </Head>
+    </Helmet>
       {/* Hero Section */}
 
-      <section className="bg-gradient-to-br from-emerald-50 via-white to-teal-50">
-        <div className="container-app py-16 md:py-24">
+      <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+        <div className="container-responsive py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
           <div className="text-center max-w-4xl mx-auto">
             <Reveal>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
@@ -273,9 +273,200 @@ function ResourcesPageContent() {
         </div>
       </section>
 
+      {/* Resource Categories */}
+      <section className="py-16 md:py-20 lg:py-24 bg-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50/30 via-transparent to-teal-50/20"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-teal-100/20 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-emerald-100/20 to-transparent rounded-full blur-3xl"></div>
+        
+        <div className="container-responsive relative z-10">
+          <div className="text-center mb-16">
+        <Reveal>
+          <div className="inline-flex items-center gap-2 bg-teal-50 text-teal-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 00-2 2v2a2 2 0 002 2m0 0h14m-14 0a2 2 0 002 2v2a2 2 0 01-2 2" />
+            </svg>
+            Resource Categories
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+            Comprehensive Knowledge
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
+          Resource Library
+            </span>
+          </h2>
+        </Reveal>
+        <Reveal delayMs={10}>
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            Access our expertly curated collection of resources, designed to help you navigate 
+            data security challenges with confidence and expertise.
+          </p>
+        </Reveal>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+        <Reveal delayMs={10}>
+          <Link to="/resources/documentation" className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-blue-300/50 hover:-translate-y-2 overflow-hidden">
+            {/* Card background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-blue-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            {/* Icon container with enhanced styling */}
+            <div className="relative w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-blue-500/25">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          {/* Decorative dot */}
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-300 rounded-full opacity-75"></div>
+            </div>
+            
+            <div className="relative">
+          <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+            Technical Documentation
+          </h3>
+          <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+            Comprehensive API guides, implementation documentation, and quick-start resources for developers.
+          </p>
+          
+          {/* Enhanced CTA */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center text-blue-600 text-sm font-semibold group-hover:text-blue-700 transition-colors">
+              Explore Documentation
+              <svg className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+            <div className="text-xs text-slate-400 font-medium">15+ Guides</div>
+          </div>
+            </div>
+          </Link>
+        </Reveal>
+
+        <Reveal delayMs={20}>
+          <Link to="/resources/case-studies" className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-green-300/50 hover:-translate-y-2 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-green-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <div className="relative w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-green-500/25">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-300 rounded-full opacity-75"></div>
+            </div>
+            
+            <div className="relative">
+          <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-green-600 transition-colors duration-300">
+            Customer Success Stories
+          </h3>
+          <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+            Real-world case studies showcasing implementation success and measurable ROI outcomes.
+          </p>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center text-green-600 text-sm font-semibold group-hover:text-green-700 transition-colors">
+              View Case Studies
+              <svg className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+            <div className="text-xs text-slate-400 font-medium">8 Studies</div>
+          </div>
+            </div>
+          </Link>
+        </Reveal>
+
+        <Reveal delayMs={30}>
+          <Link to="/resources/compliance" className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-purple-300/50 hover:-translate-y-2 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-purple-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <div className="relative w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-purple-500/25">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-300 rounded-full opacity-75"></div>
+            </div>
+            
+            <div className="relative">
+          <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">
+            Compliance Frameworks
+          </h3>
+          <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+            Navigate GDPR, HIPAA, PCI DSS, and SOX requirements with our detailed compliance guides.
+          </p>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center text-purple-600 text-sm font-semibold group-hover:text-purple-700 transition-colors">
+              Browse Compliance
+              <svg className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+            <div className="text-xs text-slate-400 font-medium">12 Frameworks</div>
+          </div>
+            </div>
+          </Link>
+        </Reveal>
+
+        <Reveal delayMs={40}>
+          <Link to="/resources/whitepapers" className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-orange-300/50 hover:-translate-y-2 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-orange-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            <div className="relative w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-orange-500/25">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-300 rounded-full opacity-75"></div>
+            </div>
+            
+            <div className="relative">
+          <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">
+            Research Whitepapers
+          </h3>
+          <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+            In-depth research, industry analysis, and technical insights on data security trends.
+          </p>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center text-orange-600 text-sm font-semibold group-hover:text-orange-700 transition-colors">
+              Read Whitepapers
+              <svg className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+            <div className="text-xs text-slate-400 font-medium">25+ Papers</div>
+          </div>
+            </div>
+          </Link>
+        </Reveal>
+          </div>
+
+          {/* Additional stats section */}
+          <Reveal delayMs={50}>
+        <div className="mt-16 pt-12 border-t border-slate-200/60">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="group cursor-default">
+          <div className="text-3xl font-bold text-teal-600 mb-2 group-hover:scale-110 transition-transform">500+</div>
+          <div className="text-sm text-slate-600">Total Resources</div>
+            </div>
+            <div className="group cursor-default">
+          <div className="text-3xl font-bold text-emerald-600 mb-2 group-hover:scale-110 transition-transform">50k+</div>
+          <div className="text-sm text-slate-600">Downloads</div>
+            </div>
+            <div className="group cursor-default">
+          <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:scale-110 transition-transform">98%</div>
+          <div className="text-sm text-slate-600">Satisfaction Rate</div>
+            </div>
+            <div className="group cursor-default">
+          <div className="text-3xl font-bold text-purple-600 mb-2 group-hover:scale-110 transition-transform">24/7</div>
+          <div className="text-sm text-slate-600">Access Available</div>
+            </div>
+          </div>
+        </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* Featured Resources */}
-      <section className="py-16 md:py-24">
-        <div className="container-app">
+      <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50/50">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Featured Resources</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -319,7 +510,7 @@ function ResourcesPageContent() {
 
       {/* All Resources */}
       <section className="py-16 md:py-24 bg-slate-50">
-        <div className="container-app">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">All Resources</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -400,7 +591,7 @@ function ResourcesPageContent() {
 
       {/* Webinars Section */}
       <section className="py-16 md:py-24">
-        <div className="container-app">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Webinars & Events</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -467,7 +658,7 @@ function ResourcesPageContent() {
 
       {/* Support Section */}
       <section className="py-16 md:py-24 bg-slate-50">
-        <div className="container-app">
+        <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Need Additional Support?</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">

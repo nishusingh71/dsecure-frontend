@@ -4,7 +4,7 @@ import { authService } from '@/utils/authService'
 import { apiClient } from '@/utils/enhancedApiClient'
 import { useState, useEffect } from 'react'
 import Reveal from '@/components/Reveal'
-import Head from 'next/head'
+import { Helmet } from 'react-helmet-async'
 interface DashboardStats {
   monthlyErasures: number
   totalDevices: number
@@ -91,7 +91,7 @@ export default function EnhancedUserDashboard() {
 
   return (
     <>
-    <Head>
+    <Helmet>
       <link rel="canonical" href="https://dsecuretech.com/admin/userdashboard" />
           <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
@@ -103,7 +103,7 @@ export default function EnhancedUserDashboard() {
             content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
           />
           <meta name="robots" content="index, follow" />
-        </Head>
+        </Helmet>
     <div className="container-app py-12">
       {/* Header with JWT-based user info */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">

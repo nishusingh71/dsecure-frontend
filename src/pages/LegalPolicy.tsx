@@ -1,6 +1,6 @@
 import React from "react";
-import Head from "next/head";
-import { useNavigate } from "react-router-dom"; // If using React Router (optional)
+import { Helmet } from 'react-helmet-async';
+import { useNavigate } from "react-router-dom";
 
 const LegalPolicy: React.FC = () => {
   const navigate = useNavigate?.();
@@ -12,7 +12,7 @@ const LegalPolicy: React.FC = () => {
 
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/legal-policy" />
         <title>
           Legal Policy | DSecure Terms & Regulations
@@ -26,120 +26,136 @@ const LegalPolicy: React.FC = () => {
           content="legal policy, terms of service, data erasure regulations, compliance framework, DSecure legal terms"
         />
         <meta name="robots" content="index, follow" />
-      </Head>
+      </Helmet>
       
-      <div className="min-h-screen flex flex-col bg-gray-50 light:bg-gray-900 text-black-800 light:text-gray-200">
-      {/* Header */}
-      {/* <header className="bg-white dark:bg-gray-800 shadow-md py-4 px-8 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-700 dark:text-blue-400">
-          D-Secure
-        </h1>
-        <button
-          onClick={handleBack}
-          className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-all"
-        >
-          Back to Home
-        </button>
-      </header> */}
-
-      {/* Main Content */}
-      <main className="flex-1 max-w-4xl mx-auto p-8">
-        <h2 className="text-3xl text-black-800 font-bold mb-6 text-center">Legal Policy</h2>
-
-        <p className="mb-6 text-center text-lg text-gray-600 dark:text-gray-400">
-          D-Secure — Legal Policy
-        </p>
-
-        <section className="space-y-6">
-          <div>
-            <p>
-              D-Secure is a product of <strong>D-Secure Technologies Pvt. Ltd.</strong>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          {/* Header Section */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm8 0a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V8zm0 4a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1v-2z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">D-Secure</span>
+            </div>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Legal Policy
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+              Our legal framework and compliance requirements
             </p>
           </div>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Copyright</h3>
-            <p>
-              © {new Date().getFullYear()} D-Secure Technologies Pvt. Ltd. All Rights Reserved.
-            </p>
-            <p className="mt-2">
-              The information contained in this site is copyrighted and may not be
-              distributed, modified, or reproduced in whole or in part without the prior
-              written permission of D-Secure Technologies Pvt. Ltd. The images from this
-              site may not be reproduced in any form without prior written consent.
-            </p>
-          </div>
+          {/* Content */}
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8 md:p-12">
+            <div className="prose prose-slate dark:prose-invert max-w-none">
+              
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  1. Legal Framework
+                </h2>
+                <div className="space-y-4 text-slate-700 dark:text-slate-300">
+                  <p className="leading-relaxed">
+                    D-Secure Technologies Pvt. Ltd. operates under the legal framework established by Indian law 
+                    and international data protection standards. Our services comply with applicable regulations 
+                    and industry best practices for data erasure and security.
+                  </p>
+                </div>
+              </section>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Trademarks</h3>
-            <p>
-              D-Secure, D-Shield, and all related logos are trademarks or registered
-              trademarks of D-Secure Technologies Pvt. Ltd. in India and/or other
-              countries. All other brand or product names referenced on this website are
-              either trademarks or registered trademarks of their respective owners.
-            </p>
-            <p className="mt-2">
-              The absence of a brand or product name or logo from this list does not
-              constitute a waiver of any D-Secure or other intellectual property rights
-              concerning that name or logo.
-            </p>
-          </div>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  2. Service Agreement
+                </h2>
+                <div className="space-y-4 text-slate-700 dark:text-slate-300">
+                  <p className="leading-relaxed">
+                    By using D-Secure services, you agree to our terms of service and acknowledge 
+                    that you have read and understood our legal obligations and your rights as a user.
+                  </p>
+                  <p className="leading-relaxed">
+                    Our software solutions are provided "as is" with appropriate warranties and 
+                    limitations as outlined in our complete terms of service.
+                  </p>
+                </div>
+              </section>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Content Copyright</h3>
-            <p>
-              The entire content of this website is copyrighted to D-Secure Technologies
-              Pvt. Ltd., India, and should never be reproduced or copied to another
-              website without written authorization from the owners of D-Secure
-              Technologies Pvt. Ltd.
-            </p>
-            <p className="mt-2">
-              Websites that scrape content using RSS feeds, bots, or manual methods will
-              be reported to their web host with a DMCA takedown notice.
-            </p>
-          </div>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  3. Compliance Standards
+                </h2>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                    D-Secure follows international standards including:
+                  </p>
+                  <ul className="list-disc list-inside space-y-2 ml-4 text-slate-700 dark:text-slate-300">
+                    <li>NIST 800-88 Guidelines for Media Sanitization</li>
+                    <li>Common Criteria for Information Technology Security Evaluation</li>
+                    <li>GDPR compliance for data protection</li>
+                    <li>ISO/IEC standards for information security</li>
+                  </ul>
+                </div>
+              </section>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Electronic Communication</h3>
-            <p>
-              When you visit our website or send emails to us, you are communicating with
-              us electronically. You consent to receive communications from us
-              electronically. We will communicate with you by email or by posting notices
-              on this site. You agree that all agreements, notices, disclosures, and
-              other communications that we provide to you electronically satisfy any
-              legal requirement that such communications be in writing.
-            </p>
-          </div>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  4. Liability and Limitations
+                </h2>
+                <div className="space-y-4 text-slate-700 dark:text-slate-300">
+                  <p className="leading-relaxed">
+                    D-Secure's liability is limited to the extent permitted by applicable law. 
+                    Users are responsible for ensuring proper backup and testing before using 
+                    our data erasure solutions.
+                  </p>
+                </div>
+              </section>
 
-          <div>
-            <h3 className="text-xl font-semibold mb-2">Applicable Law</h3>
-            <p>
-              By visiting{" "}
-              <a
-                href="https://www.dsecuretech.com"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                www.dsecuretech.com
-              </a>
-              , you agree that the laws of the state of Delhi, without regard to
-              principles of conflict of laws, will govern these Conditions of Use and any
-              dispute that might arise between you and D-Secure Technologies Pvt. Ltd.
-            </p>
-            <p className="mt-2">
-              Any disputes must be settled in the courts of Delhi, India, and you agree
-              to jurisdiction in such courts.
-            </p>
-          </div>
-        </section>
-      </main>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  5. Jurisdiction
+                </h2>
+                <div className="space-y-4 text-slate-700 dark:text-slate-300">
+                  <p className="leading-relaxed">
+                    This Legal Policy is governed by Indian law and subject to the exclusive 
+                    jurisdiction of courts in Delhi/New Delhi, India.
+                  </p>
+                </div>
+              </section>
 
-      {/* Footer */}
-      {/* <footer className="bg-white dark:bg-gray-800 text-center py-4 border-t border-gray-200 dark:border-gray-700">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          © {new Date().getFullYear()} D-Secure Technologies Pvt. Ltd. | All Rights Reserved.
-        </p>
-      </footer> */}
-    </div>
+              <section className="mb-10">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 pb-2 border-b border-slate-200 dark:border-slate-600">
+                  6. Contact Information
+                </h2>
+                <div className="bg-slate-50 dark:bg-slate-900/20 border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+                    For legal inquiries or concerns, please contact us:
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                      </svg>
+                      <a href="mailto:legal@dsecuretech.com" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
+                        legal@dsecuretech.com
+                      </a>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-slate-700 dark:text-slate-300">
+                        205, Skipper Corner, 88, Nehru Place, New Delhi - 110019, India
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

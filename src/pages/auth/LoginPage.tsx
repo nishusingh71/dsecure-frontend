@@ -1,7 +1,7 @@
 import { FormEvent, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
-import Head from "next/head";
+import { Helmet } from 'react-helmet-async';
 
 export default function LoginPage() {
   const { login, demoLogin, getSmartRedirectPath } = useAuth();
@@ -98,7 +98,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <Head>
+      <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/login" />
         <title>
           DSecureTech Compliance | Data Erasure Standards & Regulations
@@ -107,7 +107,7 @@ export default function LoginPage() {
           name="description"
           content="Login to your DSecureTech account to manage data erasure tasks, view reports, and ensure compliance with industry standards."
         />
-      </Head>
+      </Helmet>
       {/* Toast Notification */}
       {toast && (
         <div

@@ -10,6 +10,38 @@ Allow: /resources
 Allow: /about
 Allow: /contact
 Allow: /diagnostics
+Allow: /partners
+Allow: /support
+Allow: /features
+Allow: /security
+Allow: /status
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /cookie-policy
+Allow: /legal-policy
+
+# Allow specific service pages
+Allow: /services/device-erasure
+Allow: /services/network-erasure
+Allow: /services/cloud-erasure
+
+# Allow specific solution pages
+Allow: /solutions/enterprise
+Allow: /solutions/healthcare
+Allow: /solutions/financial
+
+# Allow specific resource pages
+Allow: /resources/documentation
+Allow: /resources/case-studies
+Allow: /resources/compliance
+Allow: /resources/whitepapers
+
+# Allow support pages
+Allow: /support/faqs
+Allow: /support/knowledge-base
+Allow: /support/get-started
+Allow: /support/help-manual
+Allow: /support/product-videos
 
 # Block admin and auth pages from search engines
 Disallow: /admin
@@ -30,7 +62,7 @@ Disallow: /vercel.json
 Disallow: /api/
 
 # Sitemap location for search engines
-Sitemap: https://www.dsecuretech.com/sitemap.xml
+Sitemap: https://dsecuretech.com/sitemap.xml
 
 # Crawl delay for polite crawling (1 second)
 Crawl-delay: 1
@@ -45,4 +77,4 @@ Allow: /
 User-agent: Slurp
 Allow: /
 
-# Last updated: 2025-10-03
+# Last updated: 2025-10-07
