@@ -651,7 +651,7 @@ const PartnersPage: React.FC = () => {
                             </div>
                             <div>
                                 <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-teal-700 bg-clip-text text-transparent mb-3">
-                                    DSecure<sup className="text-brand text-lg">®</sup> {partnerTypes[activePartnerType].title}
+                                    D-Secure<sup className="text-brand text-lg">®</sup> {partnerTypes[activePartnerType].title}
                                 </h3>
                                 <div className="w-24 h-1.5 bg-gradient-to-r from-brand via-brand-500 to-brand-600 rounded-full"></div>
                             </div>
