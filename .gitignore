@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Screenshots and Images (unwanted tracking)
+src/assets/Screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.webp
+
+# Test files and examples
+src/test-*.tsx
+src/examples/
+
+# Build files
+tsconfig.tsbuildinfo
+
+# Desktop.ini files
+desktop.ini
