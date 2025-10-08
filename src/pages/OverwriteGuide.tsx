@@ -1,17 +1,13 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import Reveal from "@/components/Reveal";
 
 const OverwriteGuide: React.FC = () => {
   return (
     <>
-      <Helmet>
-        <title>Overwrite Guide | DSecure - How Many Overwrites for Hard Drive</title>
-        <meta
-          name="description"
-          content="Learn how many overwrites you should perform on a hard drive for secure data erasure, compliance with standards like NIST 800-88, DoD 5220.22-M, and environmental sustainability."
-        />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('overwrite-guide')} />
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Hero Section */}

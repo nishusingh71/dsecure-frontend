@@ -23,7 +23,7 @@ export default function DeviceErasurePage() {
         </title>
         <meta
           name="description"
-          content="Professional device erasure service for laptops, desktops, mobile devices, and storage media. NIST 800-88 compliant with certified compliance reporting."
+          content="Professional device erasure service for laptops, desktops, mobile devices, and storage media. NIST 800-88 compliant with Compliant compliance reporting."
         />
         <meta
           name="keywords"
@@ -183,7 +183,7 @@ function DeviceErasureContent() {
                 <Reveal delayMs={20}>
                   <p className="text-xl text-slate-600 mb-8 leading-relaxed">
                     Military-grade data sanitization for all device types. Secure, compliant, 
-                    and certified erasure for laptops, mobile devices, and storage media.
+                    and Compliant erasure for laptops, mobile devices, and storage media.
                   </p>
                 </Reveal>
                 <Reveal delayMs={30}>

@@ -157,7 +157,7 @@ function CompliancePageContent() {
         'Regularly monitor and test networks',
         'Secure disposal of cardholder data'
       ],
-      implementation: 'DSecure ensures PCI DSS compliance with certified sanitization methods and detailed compliance reporting.'
+      implementation: 'DSecure ensures PCI DSS compliance with Compliant sanitization methods and detailed compliance reporting.'
     }
   }
 
@@ -277,7 +277,7 @@ function CompliancePageContent() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Supported Standards & Regulations</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              DSecure is certified and compliant with major international standards and regulations.
+              DSecure is Compliant and compliant with major international standards and regulations.
             </p>
           </div>
 

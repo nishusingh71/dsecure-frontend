@@ -33,10 +33,10 @@ export default function MainLayout() {
     <>
     <Helmet>
       <link rel="canonical" href="https://dsecuretech.com/" />
-          <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
+          <title>D-SecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
             name="description"
-            content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+            content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
           />
           <meta
             name="keywords"
@@ -56,7 +56,7 @@ export default function MainLayout() {
           <Link
             to="/"
             className="flex items-center gap-2 xs:gap-3 font-bold text-slate-800 hover:opacity-80 transition-opacity"
-            aria-label="DSecure homepage"
+            aria-label="D-Secure homepage"
           >
             <ThemeAwareLogo 
               className="h-6 xs:h-7 sm:h-8 md:h-9 lg:h-10 xl:h-11 xxl:h-12 w-auto"
@@ -306,7 +306,7 @@ export default function MainLayout() {
                 </svg>
                 Solutions
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 onClick={() => setOpen(false)}
                 to="/compliance"
                 className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
@@ -347,7 +347,7 @@ export default function MainLayout() {
                   />
                 </svg>
                 Pricing
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 onClick={() => setOpen(false)}
                 to="/resources"
@@ -373,7 +373,7 @@ export default function MainLayout() {
                 onClick={() => setOpen(false)}
                 to="/partners"
                 className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                aria-label="Partner with DSecure"
+                aria-label="Partner with D-Secure"
               >
                 <svg
                   className="w-5 h-5 text-slate-400"
@@ -411,7 +411,7 @@ export default function MainLayout() {
                 </svg>
                 Support
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 onClick={() => setOpen(false)}
                 to="/contact"
                 className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
@@ -431,7 +431,7 @@ export default function MainLayout() {
                   />
                 </svg>
                 Contact
-              </NavLink>
+              </NavLink> */}
               {user ? (
                 <div className="flex flex-col gap-3 px-4 pt-6 mt-4 border-t border-slate-200/60">
                   <NavLink
@@ -551,7 +551,7 @@ export default function MainLayout() {
                 <Link
                   to="/"
                   className="flex items-center gap-2 xs:gap-3 font-bold text-white hover:opacity-80 transition-opacity mb-4 xs:mb-5 sm:mb-6"
-                  aria-label="DSecure homepage"
+                  aria-label="D-Secure homepage"
                 >
                   <ThemeAwareLogoFooter 
                     className="h-8 xs:h-9 sm:h-10 md:h-11 lg:h-12 xl:h-13 xxl:h-14 w-auto"
@@ -560,7 +560,7 @@ export default function MainLayout() {
                   />
                 </Link>
                 <p className="text-slate-300 leading-relaxed mb-4 xs:mb-5 sm:mb-6 text-sm xs:text-base sm:text-base md:text-base lg:text-base xl:text-lg xxl:text-lg">
-                  Leading provider of certified data erasure solutions for
+                  Leading provider of Compliant data erasure solutions for
                   enterprises worldwide. Secure your data lifecycle with our
                   enterprise-grade security solutions.
                 </p>
@@ -581,7 +581,7 @@ export default function MainLayout() {
                   <a
                     href="https://twitter.com/dsecuretech"
                     className="text-slate-400 hover:text-brand transition-colors group"
-                    aria-label="Follow DSecure on Twitter"
+                    aria-label="Follow D-Secure on Twitter"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -596,7 +596,7 @@ export default function MainLayout() {
                   <a
                     href="https://linkedin.com/company/dsecuretech"
                     className="text-slate-400 hover:text-brand transition-colors group"
-                    aria-label="Connect with DSecure on LinkedIn"
+                    aria-label="Connect with D-Secure on LinkedIn"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -611,7 +611,7 @@ export default function MainLayout() {
                   <a
                     href="https://github.com/dsecuretech"
                     className="text-slate-400 hover:text-brand transition-colors group"
-                    aria-label="View DSecure projects on GitHub"
+                    aria-label="View D-Secure projects on GitHub"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -630,7 +630,7 @@ export default function MainLayout() {
                   <a
                     href="https://youtube.com/dsecuretech"
                     className="text-slate-400 hover:text-brand transition-colors group"
-                    aria-label="Subscribe to DSecure YouTube channel"
+                    aria-label="Subscribe to D-Secure YouTube channel"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -838,7 +838,7 @@ export default function MainLayout() {
             <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
               <div className="flex flex-col sm:flex-row gap-6 items-center text-slate-400 text-sm">
                 <p>
-                  © {new Date().getFullYear()} DSecure Inc. All rights reserved.
+                  © {new Date().getFullYear()} D-Secure Inc. All rights reserved.
                 </p>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-green-400">

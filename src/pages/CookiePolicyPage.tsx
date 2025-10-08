@@ -1,24 +1,12 @@
 import React from "react";
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 
 const CookiePolicyPage: React.FC = () => {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/cookie-policy" />
-        <title>
-          Cookie Policy | DSecure Data Usage & Privacy Settings
-        </title>
-        <meta
-          name="description"
-          content="DSecure Cookie Policy explaining how we use cookies and tracking technologies on our website. Learn about cookie types, purposes, and your control options."
-        />
-        <meta
-          name="keywords"
-          content="cookie policy, website cookies, tracking technologies, privacy settings, DSecure cookies, data usage"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('cookie-policy')} />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="max-w-4xl mx-auto px-6 py-12">

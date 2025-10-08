@@ -1,15 +1,251 @@
-import React, { useState, useCallback, memo } from "react";
-import { Helmet } from 'react-helmet-async'
+import React, { useState, useCallback, useMemo } from "react";
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
+import { useToast } from "@/hooks";
+import { Toast } from "@/components/ui";
 
-const SupportPage: React.FC = memo(() => {
+// Form components - removed memo to prevent focus loss during typing
+const FormInput: React.FC<{ 
+  type: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+  placeholder: string;
+  label: string;
+}> = ({ 
+  type, 
+  name, 
+  value, 
+  onChange, 
+  required, 
+  placeholder, 
+  label 
+}) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label} {required && '*'}
+    </label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      required={required}
+      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+      placeholder={placeholder}
+    />
+  </div>
+);
+
+const FormTextarea: React.FC<{ 
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  required?: boolean;
+  placeholder: string;
+  label: string;
+  rows: number;
+}> = ({ 
+  name, 
+  value, 
+  onChange, 
+  required, 
+  placeholder, 
+  label,
+  rows 
+}) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label} {required && '*'}
+    </label>
+    <textarea
+      name={name}
+      value={value}
+      onChange={onChange}
+      required={required}
+      rows={rows}
+      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+      placeholder={placeholder}
+    />
+  </div>
+);
+
+const FormSelect: React.FC<{ 
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  label: string;
+  options: { value: string; label: string }[];
+}> = ({ 
+  name, 
+  value, 
+  onChange, 
+  label,
+  options 
+}) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label}
+    </label>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
+    >
+      {options.map(option => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+// Support Ticket Modal Component - removed memo for consistency
+const SupportTicketModal: React.FC<{ 
+  isOpen: boolean;
+  onClose: () => void;
+  ticketForm: {
+    name: string;
+    email: string;
+    subject: string;
+    priority: string;
+    category: string;
+    description: string;
+  };
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  onSubmit: (e: React.FormEvent) => void;
+  priorityOptions: { value: string; label: string }[];
+  categoryOptions: { value: string; label: string }[];
+}> = ({ 
+  isOpen, 
+  onClose, 
+  ticketForm, 
+  onInputChange, 
+  onSubmit,
+  priorityOptions,
+  categoryOptions 
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+        {/* Fixed Header */}
+        <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
+            <button
+              onClick={onClose}
+              className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
+            >
+              ×
+            </button>
+          </div>
+          <p className="mt-2 text-emerald-100">
+            We'll get back to you as soon as possible!
+          </p>
+        </div>
+
+        {/* Scrollable Form Content */}
+        <div className="flex-1 overflow-y-auto modal-scroll-container">
+          <form onSubmit={onSubmit} className="p-6 space-y-6 modal-scroll">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormInput
+                type="text"
+                name="name"
+                value={ticketForm.name}
+                onChange={onInputChange}
+                required
+                placeholder="Enter your full name"
+                label="Full Name"
+              />
+
+              <FormInput
+                type="email"
+                name="email"
+                value={ticketForm.email}
+                onChange={onInputChange}
+                required
+                placeholder="Enter your email address"
+                label="Email Address"
+              />
+            </div>
+
+            <FormInput
+              type="text"
+              name="subject"
+              value={ticketForm.subject}
+              onChange={onInputChange}
+              required
+              placeholder="Brief description of your issue"
+              label="Subject"
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormSelect
+                name="priority"
+                value={ticketForm.priority}
+                onChange={onInputChange}
+                label="Priority"
+                options={priorityOptions}
+              />
+
+              <FormSelect
+                name="category"
+                value={ticketForm.category}
+                onChange={onInputChange}
+                label="Category"
+                options={categoryOptions}
+              />
+            </div>
+
+            <FormTextarea
+              name="description"
+              value={ticketForm.description}
+              onChange={onInputChange}
+              required
+              rows={6}
+              placeholder="Please provide detailed information about your issue or question..."
+              label="Description"
+            />
+
+            <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
+              <button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
+              >
+                Submit Ticket
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SupportPage: React.FC = () => {
+  const { toast, showToast, hideToast } = useToast();
   const [activeTicketForm, setActiveTicketForm] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
   const [showPartnershipModal, setShowPartnershipModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [selectedResultIndex, setSelectedResultIndex] = useState(-1);
   const [ticketForm, setTicketForm] = useState({
     name: "",
     email: "",
@@ -18,6 +254,201 @@ const SupportPage: React.FC = memo(() => {
     category: "general",
     description: "",
   });
+
+  // Memoize form options to prevent re-creation
+  const priorityOptions = useMemo(() => [
+    { value: "low", label: "Low" },
+    { value: "medium", label: "Medium" },
+    { value: "high", label: "High" },
+    { value: "urgent", label: "Urgent" }
+  ], []);
+
+  const categoryOptions = useMemo(() => [
+    { value: "general", label: "General Support" },
+    { value: "technical", label: "Technical Issue" },
+    { value: "billing", label: "Billing & Licensing" },
+    { value: "feature", label: "Feature Request" },
+    { value: "bug", label: "Bug Report" }
+  ], []);
+
+  // Searchable content database
+  const searchableContent = useMemo(() => [
+    {
+      id: 'faqs',
+      title: 'Frequently Asked Questions',
+      description: 'Common questions and answers about D-Secure data erasure solutions',
+      url: '/support/faqs',
+      category: 'Support',
+      keywords: ['faq', 'questions', 'answers', 'help', 'common', 'issues', 'problems']
+    },
+    {
+      id: 'knowledge-base',
+      title: 'Knowledge Base',
+      description: 'Step by step guides for secure data wiping on different devices',
+      url: '/support/knowledge-base',
+      category: 'Documentation',
+      keywords: ['guide', 'tutorial', 'documentation', 'steps', 'how-to', 'manual']
+    },
+    {
+      id: 'get-started',
+      title: 'Get Started Guide',
+      description: 'Learn how to wipe PC, Mac, Server & Mobile devices',
+      url: '/support/get-started',
+      category: 'Getting Started',
+      keywords: ['getting started', 'beginner', 'setup', 'installation', 'first time']
+    },
+    {
+      id: 'help-manual',
+      title: 'Help Manual',
+      description: 'Comprehensive user manual for D-Secure products',
+      url: '/support/help-manual',
+      category: 'Documentation',
+      keywords: ['manual', 'documentation', 'user guide', 'reference']
+    },
+    {
+      id: 'product-videos',
+      title: 'Product Videos',
+      description: 'Video tutorials and product demonstrations',
+      url: '/support/product-videos',
+      category: 'Videos',
+      keywords: ['video', 'tutorial', 'demo', 'demonstration', 'visual', 'watch']
+    },
+    {
+      id: 'overwrite-guide',
+      title: 'Hard Drive Overwrite Guide',
+      description: 'How many overwrites should I do on a Hard Drive?',
+      url: '/support/overwrite-guide',
+      category: 'Guides',
+      keywords: ['overwrite', 'hard drive', 'hdd', 'passes', 'multiple', 'secure']
+    },
+    {
+      id: 'wipe-guide',
+      title: 'HDD & SSD Wipe Guide',
+      description: 'How to securely wipe Hard Drives and SSDs',
+      url: '/support/wipe-guide',
+      category: 'Guides',
+      keywords: ['wipe', 'erase', 'delete', 'hdd', 'ssd', 'hard drive', 'solid state']
+    },
+    {
+      id: 'sas-wipe-guide',
+      title: 'SAS Drive Wipe Guide',
+      description: 'How to wipe SAS drives permanently',
+      url: '/support/sas-wipe-guide',
+      category: 'Guides',
+      keywords: ['sas', 'drive', 'wipe', 'permanent', 'enterprise', 'server']
+    },
+    {
+      id: 'mac-wipe-guide',
+      title: 'Mac Machine Wipe Guide',
+      description: 'How to wipe 12 board Mac machines',
+      url: '/support/mac-wipe-guide',
+      category: 'Guides',
+      keywords: ['mac', 'apple', 'macbook', 'imac', 'board', 'wipe']
+    },
+    {
+      id: 'm1-mac-wipe-guide',
+      title: 'M1 Mac Wipe Guide',
+      description: 'How to wipe MacOS with M1 chip',
+      url: '/support/m1-mac-wipe-guide',
+      category: 'Guides',
+      keywords: ['m1', 'mac', 'chip', 'apple silicon', 'new mac', 'arm']
+    },
+    {
+      id: 'cloud-console-guide',
+      title: 'Cloud Console Guide',
+      description: 'How to use D-Secure Cloud Console',
+      url: '/support/cloud-console-guide',
+      category: 'Cloud',
+      keywords: ['cloud', 'console', 'remote', 'management', 'web interface']
+    },
+    {
+      id: 'ssd-cryptographic-erasure',
+      title: 'SSD Cryptographic Erasure',
+      description: 'How to perform cryptographic erasure on SSD',
+      url: '/support/ssd-cryptographic-erasure-guide',
+      category: 'Advanced',
+      keywords: ['ssd', 'cryptographic', 'encryption', 'secure erase', 'crypto']
+    },
+    {
+      id: 'retain-os-guide',
+      title: 'Retain OS Wipe Guide',
+      description: 'How to wipe everything and retain your operating system',
+      url: '/support/retain-os-guide',
+      category: 'Guides',
+      keywords: ['retain', 'os', 'operating system', 'keep', 'preserve', 'selective wipe']
+    }
+  ], []);
+
+  // Search functionality
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    
+    const query = searchQuery.toLowerCase();
+    return searchableContent.filter(item => 
+      item.title.toLowerCase().includes(query) ||
+      item.description.toLowerCase().includes(query) ||
+      item.category.toLowerCase().includes(query) ||
+      item.keywords.some(keyword => keyword.includes(query))
+    ).slice(0, 8); // Limit to 8 results
+  }, [searchQuery, searchableContent]);
+
+  const handleSearch = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setShowSearchResults(true);
+    }
+  }, [searchQuery]);
+
+  const handleSearchInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowSearchResults(value.trim().length > 0);
+    setSelectedResultIndex(-1); // Reset selection
+  }, []);
+
+  const clearSearch = useCallback(() => {
+    setSearchQuery("");
+    setShowSearchResults(false);
+    setSelectedResultIndex(-1);
+  }, []);
+
+  // Handle keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!showSearchResults || searchResults.length === 0) return;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedResultIndex(prev => 
+          prev < searchResults.length - 1 ? prev + 1 : 0
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedResultIndex(prev => 
+          prev > 0 ? prev - 1 : searchResults.length - 1
+        );
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (selectedResultIndex >= 0 && selectedResultIndex < searchResults.length) {
+          window.location.href = searchResults[selectedResultIndex].url;
+        } else {
+          handleSearch(e as any);
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        clearSearch();
+        break;
+    }
+  }, [showSearchResults, searchResults, selectedResultIndex, handleSearch, clearSearch]);
+
+  // Handle trending search click
+  const handleTrendingSearchClick = useCallback((searchText: string) => {
+    setSearchQuery(searchText);
+    setShowSearchResults(true);
+  }, []);
 
   const handleLicenseSubmit = useCallback((formData: LicenseFormData) => {
     console.log('License request from Support Page:', formData);
@@ -52,20 +483,20 @@ const SupportPage: React.FC = memo(() => {
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
     //   .then(() => {
-    //     alert('Free license request submitted successfully! We will send you the license details soon.');
+    //     showToast('Free license request submitted successfully! We will send you the license details soon.', 'success');
     //     setShowLicenseModal(false);
     //   })
     //   .catch((error) => {
     //     console.error('Email sending failed:', error);
-    //     alert('There was an error submitting your request. Please try again.');
+    //     showToast('There was an error submitting your request. Please try again.', 'error');
     //   });
     
     // Temporary success simulation
     setTimeout(() => {
-      alert('Free license request submitted successfully! We will send you the license details soon.');
+      showToast('Free license request submitted successfully! We will send you the license details soon.', 'success');
       setShowLicenseModal(false);
     }, 1000);
-  }, []);
+  }, [showToast]);
 
   const handlePartnershipSubmit = useCallback((formData: PartnershipFormData) => {
     console.log('Partnership request from Support Page:', formData);
@@ -97,20 +528,20 @@ const SupportPage: React.FC = memo(() => {
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
     //   .then(() => {
-    //     alert('Partnership request submitted successfully! We will review your application and get back to you soon.');
+    //     showToast('Partnership request submitted successfully! We will review your application and get back to you soon.', 'success');
     //     setShowPartnershipModal(false);
     //   })
     //   .catch((error) => {
     //     console.error('Email sending failed:', error);
-    //     alert('There was an error submitting your request. Please try again.');
+    //     showToast('There was an error submitting your request. Please try again.', 'error');
     //   });
     
     // Temporary success simulation
     setTimeout(() => {
-      alert('Partnership request submitted successfully! We will review your application and get back to you soon.');
+      showToast('Partnership request submitted successfully! We will review your application and get back to you soon.', 'success');
       setShowPartnershipModal(false);
     }, 1000);
-  }, []);
+  }, [showToast]);
 
   const handleTicketSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -139,7 +570,7 @@ const SupportPage: React.FC = memo(() => {
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
     //   .then(() => {
-    //     alert('Support ticket submitted successfully! We will get back to you soon.');
+    //     showToast('Support ticket submitted successfully! We will get back to you soon.', 'success');
     //     setActiveTicketForm(false);
     //     setTicketForm({
     //       name: "",
@@ -152,11 +583,11 @@ const SupportPage: React.FC = memo(() => {
     //   })
     //   .catch((error) => {
     //     console.error('Email sending failed:', error);
-    //     alert('There was an error submitting your ticket. Please try again.');
+    //     showToast('There was an error submitting your ticket. Please try again.', 'error');
     //   });
     
     // Temporary success simulation
-    alert("Support ticket submitted successfully! We will get back to you soon.");
+    showToast("Support ticket submitted successfully! We will get back to you soon.", 'success');
     setActiveTicketForm(false);
     setTicketForm({
       name: "",
@@ -166,7 +597,7 @@ const SupportPage: React.FC = memo(() => {
       category: "general",
       description: "",
     });
-  }, [ticketForm]);
+  }, [ticketForm, showToast]);
 
   const handleInputChange = useCallback((
     e: React.ChangeEvent<
@@ -174,10 +605,16 @@ const SupportPage: React.FC = memo(() => {
     >
   ) => {
     const { name, value } = e.target;
-    setTicketForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setTicketForm((prev) => {
+      // Only update if the value actually changed
+      if (prev[name as keyof typeof prev] === value) {
+        return prev;
+      }
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   }, []);
 
   const trendingSearches = {
@@ -185,29 +622,18 @@ const SupportPage: React.FC = memo(() => {
     "How can I Wipe Hard Drives and SSDs?":"/support/wipe-guide",
     "How to Wipe SAS Drives Permanently?":"/support/sas-wipe-guide",
     "How can I wipe 12 board Mac Machines?":"/support/mac-wipe-guide",
-    // "How to customize ISO file using DSecure?":"/support/iso-customization-guide",
+    // "How to customize ISO file using D-Secure?":"/support/iso-customization-guide",
     "How do I wipe everything and retain my OS?":"/support/retain-os-guide",
     "How can I Wipe a MacOS with M1 Chip?":"/support/m1-mac-wipe-guide",
-    "How to use DSecure Cloud Console?":"/support/cloud-console-guide",
+    "How to use D-Secure Cloud Console?":"/support/cloud-console-guide",
     "How do I Perform Cryptographic Erasure on SSD?":"/support/ssd-cryptographic-erasure-guide",
-    // "How can I diagnose my smartphone using DSecure?":"/support/smartphone-diagnosis-guide",
+    // "How can I diagnose my smartphone using D-Secure?":"/support/smartphone-diagnosis-guide",
   };
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support" />
-        <title>Support | DSecure Customer Support & Help Center</title>
-        <meta
-          name="description"
-          content="Get comprehensive support for DSecure data erasure solutions. Access documentation, technical support, and help resources for secure data destruction services."
-        />
-        <meta
-          name="keywords"
-          content="DSecure support, customer help, technical support, data erasure help, documentation, troubleshooting"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('support')} />
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -217,9 +643,9 @@ const SupportPage: React.FC = memo(() => {
               <div className="text-center">
                 <div className="mb-8">
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
-                    <span className="text-brand">D</span>SECURE
-                    <sup className="text-2xl text-brand"></sup> CUSTOMER
-                    SUPPORT
+                    <span className="text-brand">D-Secure</span>
+                    <sup className="text-2xl text-brand"></sup> Customer
+                    Support
                   </h1>
                   <h2 className="text-3xl md:text-4xl font-bold text-slate-700 mb-6">
                     How can we help you today?
@@ -227,29 +653,26 @@ const SupportPage: React.FC = memo(() => {
 
                   {/* Search Bar */}
                   <div className="max-w-2xl mx-auto relative">
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Search documents and help Resources"
-                      className="w-full px-6 py-4 pl-12 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-lg"
-                    />
-                    <svg
-                      className="w-6 h-6 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    {/* Search Results Backdrop */}
+                    {showSearchResults && (
+                      <div 
+                        className="fixed inset-0 bg-black/20 z-[998]"
+                        onClick={clearSearch}
                       />
-                    </svg>
-                    <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-600 text-white px-4 py-2 rounded-md transition-colors">
+                    )}
+                    
+                    <form onSubmit={handleSearch}>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleSearchInputChange}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Search documents and help Resources"
+                        className="w-full px-6 py-4 pl-12 pr-24 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-lg relative z-[1000]"
+                        autoComplete="off"
+                      />
                       <svg
-                        className="w-5 h-5"
+                        className="w-6 h-6 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2 z-[1001]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -261,7 +684,102 @@ const SupportPage: React.FC = memo(() => {
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         />
                       </svg>
-                    </button>
+                      {searchQuery && (
+                        <button
+                          type="button"
+                          onClick={clearSearch}
+                          className="absolute right-16 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-[1001]"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      )}
+                      <button 
+                        type="submit"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-600 text-white px-4 py-2 rounded-md transition-colors z-[1001]"
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          />
+                        </svg>
+                      </button>
+                    </form>
+                    
+                    {/* Search Results Dropdown */}
+                    {showSearchResults && searchResults.length > 0 && (
+                      <div className="absolute top-full mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-xl z-[999] max-h-96 overflow-y-auto h-32">
+                        <div className="p-3 border-b border-slate-100">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-slate-700">
+                              {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
+                            </span>
+                            <button
+                              onClick={clearSearch}
+                              className="text-slate-400 hover:text-slate-600 transition-colors"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        {searchResults.map((result, index) => (
+                          <Link
+                            key={result.id}
+                            to={result.url}
+                            className={`block p-4 hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-b-0 ${
+                              index === selectedResultIndex ? 'bg-brand/5 border-brand/20' : ''
+                            }`}
+                            onClick={clearSearch}
+                            onMouseEnter={() => setSelectedResultIndex(index)}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-slate-900 mb-1">
+                                  {result.title}
+                                </h3>
+                                <p className="text-sm text-slate-600 mb-2">
+                                  {result.description}
+                                </p>
+                                <span className="inline-block px-2 py-1 text-xs font-medium text-brand bg-brand/10 rounded-full">
+                                  {result.category}
+                                </span>
+                              </div>
+                              <svg className="w-4 h-4 text-slate-400 mt-1 ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* No Results Message */}
+                    {showSearchResults && searchQuery && searchResults.length === 0 && (
+                      <div className="absolute top-full mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-xl z-[999] p-6 text-center">
+                        <svg className="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <p className="text-slate-600 mb-2">No results found for "{searchQuery}"</p>
+                        <p className="text-sm text-slate-500">Try searching with different keywords or browse our support sections below.</p>
+                        <button
+                          onClick={clearSearch}
+                          className="mt-3 text-brand hover:text-brand-600 font-medium text-sm"
+                        >
+                          Clear search
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -279,14 +797,28 @@ const SupportPage: React.FC = memo(() => {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {Object.entries(trendingSearches).map(([search, url], index) => (
-                    <button
-                      key={index}
-                      className="text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
-                      onClick={() => window.location.href = url}
-                    >
-                      → {search}
-                    </button>
+                    <div key={index} className="flex gap-2">
+                      <button
+                        className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
+                        onClick={() => handleTrendingSearchClick(search)}
+                        title="Search for this topic"
+                      >
+                        🔍 {search}
+                      </button>
+                      <Link
+                        to={url}
+                        className="text-slate-500 hover:text-brand transition-colors p-2 rounded-md hover:bg-slate-50"
+                        title="Go directly to guide"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </Link>
+                    </div>
                   ))}
+                </div>
+                <div className="mt-4 text-sm text-slate-600">
+                  💡 Click 🔍 to search or click → to go directly to the guide
                 </div>
               </div>
             </Reveal>
@@ -299,7 +831,7 @@ const SupportPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  SELF HELP & SUPPORT
+                  Self Help & Support
                 </h2>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                   Access Support Information For Your DSecure Products
@@ -321,7 +853,7 @@ const SupportPage: React.FC = memo(() => {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    FAQs
+                    Frequently Asked Questions
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Frequently Asked Questions By Our Customers That Might Help
@@ -443,7 +975,7 @@ const SupportPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  ASSISTED SUPPORT
+                  Assisted Support
                 </h2>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                   Raise a Ticket or Call us for support queries
@@ -594,8 +1126,8 @@ const SupportPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                  <span className="text-brand">DSECURE</span>
-                  <sup className="text-brand text-lg"></sup> IS AN INNOVATION
+                  <span className="text-brand">DSecure</span>
+                  <sup className="text-brand text-lg"></sup> Is An Innovation
                   FROM STELLAR
                 </h2>
                 <p className="text-xl text-slate-300">
@@ -606,12 +1138,12 @@ const SupportPage: React.FC = memo(() => {
 
             <div className="grid grid-cols-2 md:grid-cols-6 gap-8 text-center">
               {[
-                { number: "3M+", label: "CUSTOMERS" },
-                { number: "24/7", label: "SUPPORT AVAILABLE" },
-                { number: "100+", label: "R&D ENGINEERS" },
-                { number: "190+", label: "COUNTRIES" },
-                { number: "8000+", label: "PARTNERS" },
-                { number: "100+", label: "AWARDS RECEIVED" },
+                { number: "3M+", label: "Customers" },
+                { number: "24/7", label: "Support Available" },
+                { number: "100+", label: "R&D Engineers" },
+                { number: "190+", label: "Countries" },
+                { number: "8000+", label: "Partners" },
+                { number: "100+", label: "Awards Received" },
               ].map((stat, index) => (
                 <Reveal key={stat.label} delayMs={index * 100}>
                   <div className="group">
@@ -630,150 +1162,15 @@ const SupportPage: React.FC = memo(() => {
       </div>
 
       {/* Support Ticket Modal */}
-      {activeTicketForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-            {/* Fixed Header */}
-            <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
-                <button
-                  onClick={() => setActiveTicketForm(false)}
-                  className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
-                >
-                  ×
-                </button>
-              </div>
-              <p className="mt-2 text-emerald-100">
-                We'll get back to you as soon as possible!
-              </p>
-            </div>
-
-            {/* Scrollable Form Content */}
-            <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
-              <style>
-                {`.modal-scroll::-webkit-scrollbar { display: none; }`}
-              </style>
-              <form onSubmit={handleTicketSubmit} className="p-6 space-y-6 modal-scroll">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={ticketForm.name}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                    placeholder="Enter your full name"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={ticketForm.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                    placeholder="Enter your email address"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Subject *
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={ticketForm.subject}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                  placeholder="Brief description of your issue"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Priority
-                  </label>
-                  <select
-                    name="priority"
-                    value={ticketForm.priority}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
-                  >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="urgent">Urgent</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Category
-                  </label>
-                  <select
-                    name="category"
-                    value={ticketForm.category}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
-                  >
-                    <option value="general">General Support</option>
-                    <option value="technical">Technical Issue</option>
-                    <option value="billing">Billing & Licensing</option>
-                    <option value="feature">Feature Request</option>
-                    <option value="bug">Bug Report</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Description *
-                </label>
-                <textarea
-                  name="description"
-                  value={ticketForm.description}
-                  onChange={handleInputChange}
-                  required
-                  rows={6}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
-                  placeholder="Please provide detailed information about your issue or question..."
-                />
-              </div>
-
-              <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
-                <button
-                  type="submit"
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
-                >
-                  Submit Ticket
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTicketForm(false)}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
-                >
-                  Cancel
-                </button>
-              </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+      <SupportTicketModal
+        isOpen={activeTicketForm}
+        onClose={() => setActiveTicketForm(false)}
+        ticketForm={ticketForm}
+        onInputChange={handleInputChange}
+        onSubmit={handleTicketSubmit}
+        priorityOptions={priorityOptions}
+        categoryOptions={categoryOptions}
+      />
 
       {/* License Request Modal */}
       {showLicenseModal && (
@@ -792,9 +1189,12 @@ const SupportPage: React.FC = memo(() => {
           title="Partnership Request - Support"
         />
       )}
+
+      {/* Toast Notification */}
+      {toast && <Toast toast={toast} onClose={hideToast} />}
     </>
   );
-});
+};
 
 export default SupportPage;
 //               View Documentation →

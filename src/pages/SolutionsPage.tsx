@@ -1,7 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '@/components/SEOHead'
+import { getSEOForPage } from '@/utils/seo'
 import { 
   BuildingIcon, 
   ShieldIcon, 
@@ -20,21 +21,8 @@ import {
 export default function SolutionsPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/solutions" />
-        <title>
-          Enterprise Data Security Solutions | DSecure
-        </title>
-        <meta
-          name="description"
-          content="Comprehensive data security solutions for enterprises, healthcare, finance, and government. GDPR, HIPAA, and SOX compliant data erasure."
-        />
-        <meta
-          name="keywords"
-          content="enterprise data security, healthcare data compliance, financial data protection, government data security, GDPR HIPAA SOX"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('solutions')} />
       
       <SolutionsPageContent />
     </>
@@ -70,7 +58,7 @@ function SolutionsPageContent() {
     enterprise: {
       title: 'Enterprise Solutions',
       subtitle: 'Complete IT asset lifecycle management',
-      description: 'Ease enterprise cloud migrations, IT asset decommissioning and end-of-life data erasure with certified and secure data erasure software. Get certified erasure at scale for all your IT data storage assets across workforce, operations, and data centers.',
+      description: 'Ease enterprise cloud migrations, IT asset decommissioning and end-of-life data erasure with Compliant and secure data erasure software. Get Compliant erasure at scale for all your IT data storage assets across workforce, operations, and data centers.',
       icon: (
         <HoverIcon>
           {(filled) => <BuildingIcon className="w-8 h-8" filled={filled} />}
@@ -175,7 +163,7 @@ function SolutionsPageContent() {
       benefits: [
         'NIST 800-88, DoD 3/7 pass global data erasure standards compliance',
         'FISMA, CMMC 2.0, HIPAA, GLBA regulatory compliance support',
-        'Common Criteria Certified for Assurance Level EAL 2',
+        'Common Criteria Compliant for Assurance Level EAL 2',
         'Wipe up to 100 drives and devices simultaneously',
         'Cloud and offline (USB boot) deployment options',
         'ISO customization for standardizing erasure across locations',
@@ -257,18 +245,6 @@ function SolutionsPageContent() {
 
   return (
     <>
-    <Helmet>
-      <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-      <meta
-        name="description"
-        content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-      />
-      <meta
-        name="keywords"
-        content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-      />
-      <meta name="robots" content="index, follow" />
-    </Helmet>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Background Pattern */}
@@ -332,7 +308,7 @@ function SolutionsPageContent() {
                     <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span>50+ Industries Served</span>
+                    <span> Industries Served</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">

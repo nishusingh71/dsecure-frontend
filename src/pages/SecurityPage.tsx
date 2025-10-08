@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 
 export default function SecurityPage() {
   useEffect(() => {
@@ -8,21 +9,8 @@ export default function SecurityPage() {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/security" />
-        <title>
-          DSecureTech Compliance | Data Erasure Standards & Regulations
-        </title>
-        <meta
-          name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('security')} />
 
       <div className="min-h-screen bg-white light:bg-slate-900 py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
         <div className="max-w-6xl mx-auto px-4 xs:px-5 sm:px-6 md:px-8 lg:px-10 xl:px-12 xxl:px-16">
@@ -260,7 +248,7 @@ export default function SecurityPage() {
                   Secure Data Destruction
                 </h3>
                 <p className="text-base xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 light:text-slate-300 leading-relaxed">
-                  Certified data erasure ensuring complete data destruction with
+                  Compliant data erasure ensuring complete data destruction with
                   verifiable certificates.
                 </p>
               </div>

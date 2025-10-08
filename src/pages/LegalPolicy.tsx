@@ -1,5 +1,6 @@
 import React from "react";
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import { useNavigate } from "react-router-dom";
 
 const LegalPolicy: React.FC = () => {
@@ -12,21 +13,8 @@ const LegalPolicy: React.FC = () => {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/legal-policy" />
-        <title>
-          Legal Policy | DSecure Terms & Regulations
-        </title>
-        <meta
-          name="description"
-          content="DSecure Legal Policy outlining our terms, conditions, and legal framework for data erasure services and enterprise compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="legal policy, terms of service, data erasure regulations, compliance framework, DSecure legal terms"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('legal-policy')} />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="max-w-4xl mx-auto px-6 py-12">

@@ -15,10 +15,11 @@ import {
   CloudIcon,
   ServerIcon,
 } from "@/components/FlatIcons";
-import { Helmet } from "react-helmet-async";
-import { useEffect } from "react";
-// import { useHashNavigation } from '@/utils/scrollUtils';
-export default function HomePage() {
+import { useEffect, memo } from "react";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
+
+const HomePage = memo(function HomePage() {
   // const { navigateToHash } = useHashNavigation();
 
   useEffect(() => {
@@ -38,22 +39,9 @@ export default function HomePage() {
 
   return (
     <>
-      {/* --- SEO Head --- */}
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/" />
-        <title>
-          DSecureTech Compliance | Data Erasure Standards & Regulations
-        </title>
-        <meta
-          name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('home')} />
+      
       <section
         id="hero"
         className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28"
@@ -71,8 +59,8 @@ export default function HomePage() {
                     </span>
                   </h1>
                   <p className="text-base xs:text-lg sm:text-lg md:text-xl lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 leading-relaxed xs:leading-relaxed sm:leading-relaxed md:leading-relaxed lg:leading-relaxed xl:leading-relaxed xxl:leading-relaxed">
-                    DSecure helps organizations permanently erase data across
-                    devices and clouds with certified workflows that meet global
+                    D-Secure helps organizations permanently erase data across
+                    devices and clouds with Compliant workflows that meet global
                     compliance standards.
                   </p>
                 </div>
@@ -358,10 +346,10 @@ export default function HomePage() {
           <div className="text-center mb-12 lg:mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
-                Why Choose DSecure?
+                Why Choose D-Secure?
               </h2>
               <p className="text-lg md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-                Leading organizations trust DSecure for comprehensive data
+                Leading organizations trust D-Secure for comprehensive data
                 erasure solutions that ensure security, compliance, and peace of
                 mind.
               </p>
@@ -421,7 +409,7 @@ export default function HomePage() {
               {
                 title: "Global Compliance",
                 description:
-                  "Meet GDPR, HIPAA, SOX, and other international data protection standards with certified workflows.",
+                  "Meet GDPR, HIPAA, SOX, and other international data protection standards with Compliant workflows.",
                 icon: (
                   <HoverIcon>
                     {(filled) => (
@@ -646,7 +634,7 @@ export default function HomePage() {
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                 Trusted by{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-                  50+ Industries
+                   Industries
                 </span>
               </h2>
             </Reveal>
@@ -772,7 +760,7 @@ export default function HomePage() {
                   </div>
                   <p className="text-slate-600 mb-4">
                     NIST 800-88, DoD 3/7 pass compliance with Common Criteria
-                    Certified security for federal agencies.
+                    Compliant security for federal agencies.
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
@@ -1000,7 +988,7 @@ export default function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      DOD 5220.22-M & NIST 800-88 Certified
+                      DOD 5220.22-M & NIST 800-88 Compliant
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1301,7 +1289,7 @@ export default function HomePage() {
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                Certified and compliant with major international standards and
+                Compliant and compliant with major international standards and
                 regulations. Meet the most stringent regulatory requirements
                 with verifiable, repeatable erasure protocols.
               </p>
@@ -1563,7 +1551,7 @@ export default function HomePage() {
                     Global Standards
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Compliance with international frameworks across 50+
+                    Compliance with international frameworks across 
                     countries and jurisdictions
                   </p>
                 </div>
@@ -1608,7 +1596,7 @@ export default function HomePage() {
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-white/90 max-w-3xl mx-auto">
-                DSecure has become the global standard for secure data erasure,
+                D-Secure has become the global standard for secure data erasure,
                 protecting millions of devices and serving the world's most
                 security-conscious organizations.
               </p>
@@ -1616,11 +1604,11 @@ export default function HomePage() {
           </div>
 
           {/* Main Statistics Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
+          {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
             <Reveal delayMs={200}>
               <div className="text-center group">
                 <div className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 group-hover:scale-110 transition-transform duration-300">
-                  50+
+                  
                 </div>
                 <div className="text-lg md:text-xl font-semibold text-yellow-300 mb-2">
                   Industries Served
@@ -1672,7 +1660,7 @@ export default function HomePage() {
                 </div>
               </div>
             </Reveal>
-          </div>
+          </div> */}
 
           {/* Feature Highlights */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -1697,7 +1685,7 @@ export default function HomePage() {
                   <h3 className="text-xl font-bold">Military-Grade Security</h3>
                 </div>
                 <p className="text-white/90">
-                  DOD 5220.22-M and NIST 800-88 certified erasure methods with
+                  DOD 5220.22-M and NIST 800-88 Compliant erasure methods with
                   Common Criteria EAL 4+ validation.
                 </p>
               </div>
@@ -2290,7 +2278,7 @@ export default function HomePage() {
                 </div>
                 <blockquote className="text-slate-600 italic leading-relaxed flex-1">
                   "We needed a reliable data erasure solution for our startup.
-                  DSecure exceeded our expectations with its intuitive interface
+                  D-Secure exceeded our expectations with its intuitive interface
                   and comprehensive security features."
                 </blockquote>
                 {/* <div className="mt-6 pt-4 border-t border-slate-100">
@@ -2325,7 +2313,7 @@ export default function HomePage() {
                 </div>
 
                 <blockquote className="text-slate-600 italic leading-relaxed">
-                  "As an early adopter, I'm impressed by DSecure's innovative
+                  "As an early adopter, I'm impressed by D-Secure's innovative
                   approach to data security. The team is responsive and the
                   product keeps improving."
                 </blockquote>
@@ -2352,7 +2340,7 @@ export default function HomePage() {
                 </div>
 
                 <blockquote className="text-slate-600 italic leading-relaxed">
-                  "DSecure's fresh take on data erasure is exactly what the
+                  "D-Secure's fresh take on data erasure is exactly what the
                   market needs. Simple, secure, and built with modern compliance
                   standards in mind."
                 </blockquote>
@@ -2372,7 +2360,7 @@ export default function HomePage() {
               </div>
               <div className="w-px h-6 bg-slate-300"></div>
               <div className="text-sm font-medium text-slate-500">
-                ISO 27001 Certified
+                ISO 27001 Compliant
               </div>
             </div>
           </div> */}
@@ -2380,4 +2368,6 @@ export default function HomePage() {
       </section>
     </>
   );
-}
+})
+
+export default HomePage

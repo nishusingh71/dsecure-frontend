@@ -9,26 +9,14 @@ import {
   HeartIcon,
   HoverIcon 
 } from '@/components/FlatIcons';
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 
 export default function AboutPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/about" />
-        <title>
-          About DSecure | Professional Data Erasure Solutions
-        </title>
-        <meta
-          name="description"
-          content="Learn about DSecure's mission to provide secure, compliant data erasure solutions. Professional data destruction services for enterprises worldwide."
-        />
-        <meta
-          name="keywords"
-          content="about DSecure, data erasure company, secure data destruction, enterprise data security, NIST compliance experts"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('about')} />
       
       <AboutPageContent />
     </>
@@ -217,19 +205,6 @@ function AboutPageContent() {
 
   return (
     <>
-    <Helmet>
-      <link rel="canonical" href="https://dsecuretech.com/about" />
-      <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-      <meta
-        name="description"
-        content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-      />
-      <meta
-        name="keywords"
-        content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-      />
-      <meta name="robots" content="index, follow" />
-    </Helmet>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-white to-teal-50">
         <div className="container-app py-16 md:py-24">
@@ -441,7 +416,7 @@ function AboutPageContent() {
                     </h4>
                     <ul className="text-slate-600 text-sm space-y-1">
                       <li>• Process 500K+ devices annually</li>
-                      <li>• Expand to 50+ countries globally</li>
+                      <li>• Expand to  countries globally</li>
                       <li>• Achieve 100% automated compliance</li>
                       <li>• Lead in AI-powered data discovery</li>
                     </ul>

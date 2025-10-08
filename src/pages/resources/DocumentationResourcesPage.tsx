@@ -197,10 +197,10 @@ function DocumentationResourcesContent() {
               </Reveal>
               <Reveal delayMs={30}>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link to="#api-docs" className="btn-primary">
+                  <Link to="#api-docs" className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
                     Browse API Docs
                   </Link>
-                  <Link to="/contact" className="btn-secondary">
+                  <Link to="/contact" className="inline-flex items-center justify-center px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
                     Get Technical Support
                   </Link>
                 </div>
@@ -247,7 +247,7 @@ function DocumentationResourcesContent() {
                       </div>
                     ))}
                   </div>
-                  <Link to="/contact" className="mt-6 btn-secondary w-full justify-center">
+                  <Link to="/contact" className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors">
                     Start Guide
                   </Link>
                 </div>

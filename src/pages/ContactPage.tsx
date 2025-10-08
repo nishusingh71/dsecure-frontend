@@ -11,27 +11,14 @@ import {
   MobileIcon,
   HoverIcon 
 } from '@/components/FlatIcons';
-import { Helmet } from 'react-helmet-async';
-
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 
 export default function ContactPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/contact" />
-        <title>
-          Contact DSecure | Data Erasure Solutions Support
-        </title>
-        <meta
-          name="description"
-          content="Contact DSecure for professional data erasure solutions. Get support for NIST 800-88, GDPR compliance, and secure data destruction services."
-        />
-        <meta
-          name="keywords"
-          content="contact DSecure, data erasure support, NIST compliance contact, secure data deletion help, GDPR data destruction"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('contact')} />
       
       <ContactPageContent />
     </>
@@ -231,19 +218,6 @@ function ContactPageContent() {
 
   return (
     <>
-    <Helmet>
-      <link rel="canonical" href="https://dsecuretech.com/contact" />
-          <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-          <meta
-            name="description"
-            content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-          />
-          <meta
-            name="keywords"
-            content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-          />
-          <meta name="robots" content="index, follow" />
-        </Helmet>
       {/* Toast Notification */}
       {toast && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
@@ -763,7 +737,7 @@ function ContactPageContent() {
 
                     {/* Certification Logos */}
                     {/* <div className="text-center">
-                      <div className="text-sm text-slate-600 mb-4">Tested & Certified.</div>
+                      <div className="text-sm text-slate-600 mb-4">Tested & Compliant.</div>
                       <div className="flex items-center justify-center gap-6 opacity-60">
                         <div className="text-xs bg-slate-100 px-3 py-2 rounded">NIST</div>
                         <div className="text-xs bg-slate-100 px-3 py-2 rounded">ADISA</div>

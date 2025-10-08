@@ -1,21 +1,30 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useCallback } from 'react'
 
 interface ScrollToTopProps {
   threshold?: number
   className?: string
 }
 
-export default function ScrollToTop({ threshold = 300, className = '' }: ScrollToTopProps) {
+const ScrollToTop = memo(function ScrollToTop({ threshold = 300, className = '' }: ScrollToTopProps) {
   const [isVisible, setIsVisible] = useState(false)
+
+  const toggleVisibility = useCallback(() => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    setIsVisible(scrollTop > threshold);
+  }, [threshold])
+
+  const scrollToTop = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }, [])
 
   useEffect(() => {
     // Check if we're in browser environment
     if (typeof window === 'undefined') return;
-
-    const toggleVisibility = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      setIsVisible(scrollTop > threshold);
-    }
 
     // Check initial scroll position
     toggleVisibility();
@@ -23,16 +32,7 @@ export default function ScrollToTop({ threshold = 300, className = '' }: ScrollT
     window.addEventListener('scroll', toggleVisibility, { passive: true });
 
     return () => window.removeEventListener('scroll', toggleVisibility);
-  }, [threshold])
-
-  const scrollToTop = () => {
-    if (typeof window === 'undefined') return;
-    
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
-  }
+  }, [toggleVisibility])
 
   if (!isVisible) {
     return null
@@ -62,4 +62,6 @@ export default function ScrollToTop({ threshold = 300, className = '' }: ScrollT
       </svg>
     </button>
   )
-}
+})
+
+export default ScrollToTop

@@ -3,6 +3,7 @@ import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MainLayout from "./layouts/MainLayout";
 import PageLoadingSkeleton from "./components/PageLoadingSkeleton";
+import { ToastProvider } from "./components/ToastProvider";
 import { Suspense, lazy, useEffect } from "react";
 import { useGoogleAnalytics } from "./utils/analytics";
 import { useMicrosoftClarity } from "./utils/microsoftClarity";
@@ -49,6 +50,8 @@ const PricingPage = lazy(() => import("./pages/PricingPage"));
 const PricingAndPlanPage = lazy(() => import("./pages/PricingAndPlanPage"));
 const About = lazy(() => import("./pages/About"));
 const PaymentPage = lazy(() => import("./pages/PaymentPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const OrderSuccessPage = lazy(() => import("./pages/OrderSuccessPage"));
 const DiagnosticsPage = lazy(() => import("./pages/DiagnosticsPage"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
@@ -118,10 +121,11 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AnalyticsWrapper>
-        <ScrollToTop />
-        <Suspense fallback={<PageLoadingSkeleton />}>
+    <ToastProvider>
+      <AuthProvider>
+        <AnalyticsWrapper>
+          <ScrollToTop />
+          <Suspense fallback={<PageLoadingSkeleton />}>
           <Routes>
             <Route element={<MainLayout />}>
               <Route index element={<HomePage />} />
@@ -174,6 +178,8 @@ export default function App() {
               <Route path="about" element={<About />} />
               <Route path="pricing" element={<PricingPage />} />
               <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
+              <Route path="checkout" element={<CheckoutPage />} />
+              <Route path="order-success" element={<OrderSuccessPage />} />
               <Route path="payment" element={<PaymentPage />} />
               <Route path="diagnostics" element={<DiagnosticsPage />} />
               <Route path="privacy-policy" element={<PrivacyPolicy />} />
@@ -269,5 +275,6 @@ export default function App() {
         </Suspense>
       </AnalyticsWrapper>
     </AuthProvider>
+    </ToastProvider>
   );
 }

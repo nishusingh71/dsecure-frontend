@@ -1,5 +1,6 @@
 import Reveal from '@/components/Reveal'
-import { Helmet } from 'react-helmet-async'
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 
@@ -7,21 +8,8 @@ import { Link, useSearchParams } from 'react-router-dom'
 export default function ResourcesPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/resources" />
-        <title>
-          Data Security Resources | DSecure Documentation & Guides
-        </title>
-        <meta
-          name="description"
-          content="Access comprehensive resources on data erasure, compliance guides, whitepapers, and documentation for secure data destruction best practices."
-        />
-        <meta
-          name="keywords"
-          content="data security resources, NIST 800-88 guide, compliance documentation, data erasure whitepapers, security best practices"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('resources')} />
       
       <ResourcesPageContent />
     </>
@@ -224,19 +212,6 @@ function ResourcesPageContent() {
 
   return (
     <>
-    <Helmet>
-      <link rel="canonical" href="https://dsecuretech.com/resources" />
-      <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-      <meta
-        name="description"
-        content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-      />
-      <meta
-        name="keywords"
-        content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-      />
-      <meta name="robots" content="index, follow" />
-    </Helmet>
       {/* Hero Section */}
 
       <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">

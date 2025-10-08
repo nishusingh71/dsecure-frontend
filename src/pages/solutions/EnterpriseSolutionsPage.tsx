@@ -23,7 +23,7 @@ export default function EnterpriseSolutionsPage() {
         </title>
         <meta
           name="description"
-          content="Complete enterprise data security solutions for IT asset lifecycle management, cloud migrations, and data center operations. Certified secure data erasure at scale."
+          content="Complete enterprise data security solutions for IT asset lifecycle management, cloud migrations, and data center operations. Compliant secure data erasure at scale."
         />
         <meta
           name="keywords"
@@ -119,7 +119,7 @@ function EnterpriseSolutionsContent() {
                 </Reveal>
                 <Reveal delayMs={20}>
                   <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                    Complete IT asset lifecycle management with certified secure data erasure. 
+                    Complete IT asset lifecycle management with Compliant secure data erasure. 
                     Streamline cloud migrations, data center operations, and endpoint management 
                     while maintaining enterprise-grade security and compliance.
                   </p>

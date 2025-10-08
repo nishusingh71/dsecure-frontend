@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react'
 import { authService } from '../utils/authService'
 import { apiClient } from '../utils/enhancedApiClient'
 import type { User } from '../utils/enhancedApiClient'
@@ -149,7 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     setLoading(true)
     setError(null)
 
@@ -191,10 +191,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   // Demo login function that bypasses all backend authentication
-  const demoLogin = async () => {
+  const demoLogin = useCallback(async () => {
     setLoading(true)
     setError(null)
 
@@ -274,9 +274,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const register = async (registrationData: {
+  const register = useCallback(async (registrationData: {
     user_name: string
     user_email: string
     user_password: string
@@ -338,9 +338,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     setLoading(true)
     
     try {
@@ -366,9 +366,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Dispatch auth state change event
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
     }
-  }
+  }, [])
 
-  const refreshToken = async (): Promise<boolean> => {
+  const refreshToken = useCallback(async (): Promise<boolean> => {
     try {
       const success = await authService.manualRefreshToken()
       
@@ -390,35 +390,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Token refresh failed:', error)
       return false
     }
-  }
+  }, [])
 
   const isAuthenticated = useMemo(() => {
     return authService.isAuthenticated()
   }, [user])
 
-  const hasRole = (role: string): boolean => {
+  const hasRole = useCallback((role: string): boolean => {
     return authService.hasRole(role)
-  }
+  }, [])
 
-  const hasPermission = (permission: string): boolean => {
+  const hasPermission = useCallback((permission: string): boolean => {
     return authService.hasPermission(permission)
-  }
+  }, [])
 
-  const hasValidPaymentDetails = (): boolean => {
+  const hasValidPaymentDetails = useCallback((): boolean => {
     return authService.hasValidPaymentDetails(user)
-  }
+  }, [user])
 
-  const hasValidLicenseDetails = (): boolean => {
+  const hasValidLicenseDetails = useCallback((): boolean => {
     return authService.hasValidLicenseDetails(user)
-  }
+  }, [user])
 
-  const isUserSetupComplete = (): boolean => {
+  const isUserSetupComplete = useCallback((): boolean => {
     return authService.isUserSetupComplete(user)
-  }
+  }, [user])
 
-  const getSmartRedirectPath = (): string => {
+  const getSmartRedirectPath = useCallback((): string => {
     return authService.getRedirectPath(user)
-  }
+  }, [user])
 
   const value = useMemo(() => ({ 
     user, 
@@ -437,7 +437,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     hasValidLicenseDetails,
     isUserSetupComplete,
     getSmartRedirectPath
-  }), [user, isUsingApi, loading, error, isAuthenticated])
+  }), [user, login, demoLogin, register, logout, isUsingApi, loading, error, isAuthenticated, hasRole, hasPermission, refreshToken, hasValidPaymentDetails, hasValidLicenseDetails, isUserSetupComplete, getSmartRedirectPath])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

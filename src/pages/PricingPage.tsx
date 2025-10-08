@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/auth/AuthContext";
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import {
   CheckIcon,
   HoverIcon,
@@ -19,21 +20,8 @@ import {
 export default function PricingPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/pricing" />
-        <title>
-          DSecure Pricing | Data Erasure Solutions Plans
-        </title>
-        <meta
-          name="description"
-          content="Affordable data erasure solutions pricing. Choose from professional, enterprise, and custom plans for secure data destruction and compliance."
-        />
-        <meta
-          name="keywords"
-          content="data erasure pricing, secure data deletion cost, enterprise data destruction plans, compliance solutions pricing"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('pricing')} />
       
       <PricingPageContent />
     </>
@@ -250,19 +238,6 @@ function PricingPageContent() {
 
   return (
     <>
-    <Helmet>
-      <link rel="canonical" href="https://dsecuretech.com/pricing" />
-      <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-      <meta
-        name="description"
-        content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-      />
-      <meta
-        name="keywords"
-        content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-      />
-      <meta name="robots" content="index, follow" />
-    </Helmet>
     <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 w-full overflow-hidden">
       {/* <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-slate-900 mb-4">Subscription Plans</h1>

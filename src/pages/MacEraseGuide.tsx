@@ -1,17 +1,13 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import Reveal from "@/components/Reveal";
 
 const MacEraseGuide: React.FC = () => {
   return (
     <>
-      <Helmet>
-        <title>Mac Erase Guide | DSecure - How to Wipe Mac Devices</title>
-        <meta
-          name="description"
-          content="Complete guide to securely erase Apple Silicon and Intel-based Mac devices using DSecureTech Drive Eraser for compliance and data sanitization."
-        />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('mac-erase-guide')} />
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Hero Section */}

@@ -207,10 +207,10 @@ function CaseStudiesResourcesContent() {
               </Reveal>
               <Reveal delayMs={30}>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link to="#case-studies" className="btn-primary">
+                  <Link to="#case-studies" className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors inline-flex items-center">
                     Explore Case Studies
                   </Link>
-                  <Link to="/contact" className="btn-secondary">
+                  <Link to="/contact" className="border-2 border-purple-600 text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors inline-flex items-center">
                     Share Your Success Story
                   </Link>
                 </div>
@@ -329,7 +329,7 @@ function CaseStudiesResourcesContent() {
                           </div>
                           
                           <div className="mt-6">
-                            <Link to="/contact" className="btn-secondary w-full justify-center text-sm">
+                            <Link to="/contact" className="border-2 border-purple-600 text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors w-full justify-center text-sm inline-flex items-center">
                               Download Full Case Study
                               <ArrowDownIcon className="w-4 h-4 ml-1" filled={true} />
                             </Link>

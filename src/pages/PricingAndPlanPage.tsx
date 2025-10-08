@@ -1,566 +1,532 @@
-import React, { useState, useCallback, memo } from "react";
+import React, { useState, memo } from "react";
 import { Helmet } from 'react-helmet-async'
-import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
-import { LicenseForm, type LicenseFormData } from "@/components/forms";
-import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
-
-interface Plan {
-  id: string;
-  name: string;
-  price: string;
-  originalPrice?: string;
-  period: string;
-  description: string;
-  features: string[];
-  highlighted?: boolean;
-  mostPopular?: boolean;
-  buttonText: string;
-  deviceLimit: string;
-  support: string;
-  compliance: string[];
-}
+import { Link, useNavigate } from "react-router-dom";
+import CustomLicenseModal, { CustomLicenseData } from '../components/CustomLicenseModal';
+import { useToast } from "@/hooks";
+import { Toast } from "@/components/ui";
+import { ProductImage } from "@/components/ProductImage";
+import { getProductIcon } from "@/utils/productIcons";
 
 const PricingAndPlanPage: React.FC = memo(() => {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
-  const [showLicenseModal, setShowLicenseModal] = useState(false);
-  const [showPartnershipModal, setShowPartnershipModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const { toast, showToast, hideToast } = useToast();
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState('drive-eraser');
+  const [selectedLicenses, setSelectedLicenses] = useState('10');
+  const [selectedYears, setSelectedYears] = useState('1');
+  const [selectedOS, setSelectedOS] = useState('Select');
+  const [deliveryMethod, setDeliveryMethod] = useState('electronic');
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
+  const [showCustomModal, setShowCustomModal] = useState(false);
 
-  const handleLicenseSubmit = useCallback((formData: LicenseFormData) => {
-    console.log('License request from Pricing Page:', formData);
-    
-    // Prepare email data for license request
-    const emailData = {
-      to: 'license@dsecure.com',
-      subject: 'Free License Request from Pricing Page - ' + formData.company,
-      body: `
-        New Free License Request from Pricing Page:
-        
-        Usage Type: ${formData.usage}
-        
-        Personal Information:
-        - Full Name: ${formData.fullName}
-        - Email: ${formData.email}
-        - Phone: ${formData.phone}
-        
-        Company Information:
-        - Company: ${formData.company}
-        - Country: ${formData.country}
-        - Business Type: ${formData.businessType}
-        - Compliance Requirements: ${formData.compliance}
-        
-        Erasure Requirements:
-        - What to Erase: ${formData.eraseOption}
-        - Number of Devices: ${formData.deviceCount}
-        
-        Additional Requirements:
-        ${formData.requirements}
-        
-        Request submitted from: Pricing and Plan Page
-        Timestamp: ${new Date().toLocaleString()}
-      `
-    };
-
-    // Here you would integrate with your email service (EmailJS, etc.)
-    console.log('Email data:', emailData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      alert('Free license request submitted successfully! We will send you the license details soon.');
-      setShowLicenseModal(false);
-    }, 1000);
-  }, []);
-
-  const handlePartnershipSubmit = useCallback((formData: PartnershipFormData) => {
-    console.log('Partnership request from Pricing Page:', formData);
-    
-    // Prepare email data for partnership request
-    const emailData = {
-      to: 'partnerships@dsecure.com',
-      subject: 'Partnership Request from Pricing Page - ' + formData.companyName,
-      body: `
-        New Partnership Request from Pricing Page:
-        
-        Personal Information:
-        - Full Name: ${formData.fullName}
-        - Business Email: ${formData.businessEmail}
-        - Phone: ${formData.phoneNo}
-        
-        Company Information:
-        - Company Name: ${formData.companyName}
-        - Website: ${formData.website}
-        - Country: ${formData.country}
-        - Partner Type: ${formData.partnerType}
-        
-        Business Description:
-        ${formData.businessDescription}
-        
-        Request submitted from: Pricing and Plan Page
-        Timestamp: ${new Date().toLocaleString()}
-      `
-    };
-    
-    // Here you would integrate with your email service (EmailJS, etc.)
-    console.log('Partnership email data:', emailData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      alert('Partnership request submitted successfully! We will review your application and get back to you soon.');
-      setShowPartnershipModal(false);
-    }, 1000);
-  }, []);
-
-  const plans: Plan[] = [
-    {
-      id: 'starter',
-      name: 'Starter',
-      price: billingCycle === 'annual' ? '$49' : '$59',
-      originalPrice: billingCycle === 'annual' ? '$59' : undefined,
-      period: billingCycle === 'annual' ? '/month billed annually' : '/month',
-      description: 'Perfect for individuals and small businesses',
-      deviceLimit: 'Up to 10 devices',
-      support: 'Email support',
-      compliance: ['NIST 800-88', 'DoD 5220.22-M'],
-      features: [
-        'Secure data erasure for HDDs and SSDs',
-        'Windows and Mac support',
-        'Basic erasure certificates',
-        'Email support',
-        'Up to 10 devices per month',
-        'Standard erasure algorithms',
-        'Basic reporting'
-      ],
-      buttonText: 'Start Free Trial'
-    },
-    {
-      id: 'professional',
-      name: 'Professional',
-      price: billingCycle === 'annual' ? '$149' : '$179',
-      originalPrice: billingCycle === 'annual' ? '$179' : undefined,
-      period: billingCycle === 'annual' ? '/month billed annually' : '/month',
-      description: 'Ideal for growing businesses and IT departments',
-      deviceLimit: 'Up to 100 devices',
-      support: 'Priority email & phone support',
-      compliance: ['NIST 800-88', 'DoD 5220.22-M', 'Common Criteria'],
-      features: [
-        'Everything in Starter plan',
-        'Mobile device erasure (iOS/Android)',
-        'Advanced erasure algorithms',
-        'Detailed audit reports',
-        'Priority support',
-        'Up to 100 devices per month',
-        'Batch operations',
-        'Custom erasure profiles'
-      ],
-      mostPopular: true,
-      highlighted: true,
-      buttonText: 'Start Free Trial'
-    },
-    {
-      id: 'enterprise',
-      name: 'Enterprise',
-      price: billingCycle === 'annual' ? '$399' : '$479',
-      originalPrice: billingCycle === 'annual' ? '$479' : undefined,
-      period: billingCycle === 'annual' ? '/month billed annually' : '/month',
-      description: 'Comprehensive solution for large organizations',
-      deviceLimit: 'Unlimited devices',
-      support: '24/7 dedicated support',
-      compliance: ['NIST 800-88', 'DoD 5220.22-M', 'Common Criteria', 'FIPS 140-2'],
-      features: [
-        'Everything in Professional plan',
-        'Cloud console management',
-        'Remote device erasure',
-        'Enterprise-grade reporting',
-        'API access',
-        'Unlimited devices',
-        'White-label certificates',
-        'Custom branding',
-        'SLA guarantee',
-        'On-site training'
-      ],
-      buttonText: 'Contact Sales'
-    },
-    {
-      id: 'custom',
-      name: 'Custom',
-      price: 'Contact us',
-      period: 'for pricing',
-      description: 'Tailored solutions for specific requirements',
-      deviceLimit: 'Custom limits',
-      support: 'Dedicated account manager',
-      compliance: ['All standards', 'Custom compliance'],
-      features: [
-        'Custom feature development',
-        'Dedicated infrastructure',
-        'Custom compliance requirements',
-        'Volume licensing discounts',
-        'Multi-region deployment',
-        'Custom integrations',
-        'Advanced security features',
-        'Dedicated account manager'
-      ],
-      buttonText: 'Contact Sales'
-    }
+  const categories = [
+    { id: 'drive-eraser', name: 'Drive Eraser', subtitle: 'Erase HDDs, SSDs in PCs, Mac & Servers' },
+    { id: 'admin-console', name: 'Drive Eraser with Admin Console', subtitle: 'Bulk Erasure Over a Network' },
+    { id: 'mobile-eraser', name: 'Mobile Eraser and Diagnostics', subtitle: 'Erase & Diagnose for iOS & Android • Devices' },
+    { id: 'file-eraser', name: 'File Eraser', subtitle: 'Erase Files, Folders & Volumes' },
   ];
 
-  const handlePlanSelection = (planId: string) => {
-    setSelectedPlan(planId);
-    const plan = plans.find(p => p.id === planId);
+  // Dynamic pricing calculation
+  const calculatePrice = (category: string, licenses: string, years: string) => {
+    const basePrices: { [key: string]: number } = {
+      'drive-eraser': 9.9,
+      'admin-console': 12.9,
+      'mobile-eraser': 5.0,
+      'file-eraser': 3.99
+    };
     
-    if (plan?.buttonText === 'Contact Sales') {
-      // Redirect to contact page or open contact modal
-      window.location.href = '/contact';
-    } else {
-      // Handle trial signup or purchase
-      console.log(`Selected plan: ${plan?.name}`);
-      // Here you would integrate with your payment system
-      alert(`Starting free trial for ${plan?.name} plan. Redirecting to signup...`);
+    const basePrice = basePrices[category] || 9.9;
+    const licenseCount = licenses === 'custom' ? 0 : parseInt(licenses);
+    const yearCount = parseInt(years);
+    
+    // Volume discounts
+    let discount = 1;
+    if (licenseCount >= 100) discount = 0.8;
+    else if (licenseCount >= 50) discount = 0.85;
+    else if (licenseCount >= 25) discount = 0.9;
+    
+    // Multi-year discounts
+    let yearDiscount = 1;
+    if (yearCount >= 3) yearDiscount = 0.85;
+    else if (yearCount >= 2) yearDiscount = 0.9;
+    
+    return Math.round(basePrice * licenseCount * yearCount * discount * yearDiscount * 100) / 100;
+  };
+
+  const productData = {
+    'drive-eraser': {
+      title: 'D-Secure Drive Eraser',
+      subtitle: 'Secure Data Erasure Software for HDD, SSD, PC, Laptop, Mac, Chromebook & Server',
+      image: getProductIcon('drive-eraser', 64),
+      imageCategory: 'drive-eraser',
+      version: 'V9.0.9.1 Enterprise',
+      basePrice: 9.9,
+      features: [
+        '🔒 NIST & DoD Compliant Erasure Standards',
+        '☁️ Free Cloud Console & Reporting',
+        '🛡️ Lifetime Technical Support',
+        '⚡ Works on All Device Types',
+        '📊 Detailed Audit Reports'
+      ],
+      selectionLabel: 'Number of Licenses:',
+      selectionNote: 'Volume discounts available',
+      options: ['1','10', '25', '50', '100','250','300','500', '1000', 'custom'],
+      showDeliveryOptions: true
+    },
+    'admin-console': {
+      title: 'D-Secure Drive Eraser with Admin Console',
+      subtitle: 'Enterprise-Grade Centralized Data Erasure Management',
+      image: getProductIcon('admin-console', 64),
+      imageCategory: 'admin-console',
+      version: 'Enterprise Edition',
+      basePrice: 12.9,
+      features: [
+        '🏢 Centralized Network Management',
+        '📈 Advanced Analytics & Reporting',
+        '👥 Multi-User Role Management',
+        '🔄 Automated Scheduling & Workflows',
+        '🛡️ Priority Enterprise Support'
+      ],
+      selectionLabel: 'Number of Licenses:',
+      selectionNote: 'Enterprise volume pricing',
+      options: ['1','10', '25', '50', '100','250','300','500', '1000', 'custom'],
+      showDeliveryOptions: true
+    },
+    'mobile-eraser': {
+      title: 'D-Secure Mobile Eraser & Diagnostics',
+      subtitle: 'Complete Mobile Device Erasure & Health Diagnostics for iOS & Android',
+      image: getProductIcon('mobile-eraser', 64),
+      imageCategory: 'mobile-eraser',
+      version: 'Professional',
+      basePrice: 5.0,
+      features: [
+        '📱 iOS & Android Support',
+        '🔍 Built-in Device Diagnostics',
+        '☁️ Cloud-Based Processing',
+        '📄 Instant Certificate Generation',
+        '🔒 GDPR & HIPAA Compliant'
+      ],
+      selectionLabel: 'Number of Devices:',
+      selectionNote: 'Cloud-based solution',
+      options: ['1','10', '25', '50', '100','250','300','500', '1000', 'custom'],
+      showDeliveryOptions: false,
+      deliveryText: 'Cloud-based application requires internet connection. Licenses delivered instantly via email.'
+    },
+    'file-eraser': {
+      title: 'D-Secure File Eraser Professional',
+      subtitle: 'Complete File, Folder & Application Trace Elimination',
+      image: getProductIcon('file-eraser', 64),
+      imageCategory: 'file-eraser',
+      version: 'Professional',
+      basePrice: 3.99,
+      features: [
+        '📁 Files, Folders & System Traces',
+        '💻 Cross-Platform Support',
+        '⚡ Fast & Efficient Processing',
+        '🔄 Scheduled Automatic Cleaning',
+        '🛡️ Privacy Protection Tools'
+      ],
+      selectionLabel: 'Number of Licenses:',
+      selectionNote: 'Per device licensing',
+      options: ['1','10', '25', '50', '100','250','300','500', '1000', 'custom'],
+      showDeliveryOptions: false,
+      deliveryText: 'Digital download with instant activation. Internet connection required for initial setup.'
     }
   };
+
+  const getCurrentProduct = () => productData[selectedCategory as keyof typeof productData];
+
+  const getDisplayPrice = () => {
+    if (selectedCategory === 'admin-console') return 'Contact Us';
+    if (selectedLicenses === 'custom') return 'Custom Quote';
+    
+    const totalPrice = calculatePrice(selectedCategory, selectedLicenses, selectedYears);
+    return `$${totalPrice.toFixed(2)}`;
+  };
+
+  const getPriceSubtitle = () => {
+    if (selectedCategory === 'admin-console') return 'Enterprise Pricing';
+    if (selectedLicenses === 'custom') return 'Get Personalized Quote';
+    
+    const yearText = selectedYears === '1' ? 'year' : 'years';
+    return `${selectedLicenses} licenses × ${selectedYears} ${yearText}`;
+  };
+
+  const getPriceNote = () => {
+    if (selectedLicenses === 'custom') return 'Tailored to your needs';
+    
+    const basePrice = getCurrentProduct().basePrice;
+    const yearText = selectedYears === '1' ? '/license/year' : `/license/${selectedYears}yr`;
+    return `Starting @ $${basePrice.toFixed(2)}${yearText}`;
+  };
+
+  const handleCustomLicenseSubmit = (data: CustomLicenseData) => {
+    // In a real app, this would send to your API
+    console.log('Custom license request:', data);
+    // For now, just show a success message or redirect
+    showToast('Thank you! We will contact you within 24 hours with a custom quote.', 'success');
+    setShowCustomModal(false);
+  };
+
+  const handleBuyNow = () => {
+    if (selectedLicenses === 'custom') {
+      setShowCustomModal(true);
+      return;
+    }
+
+    const paymentData = {
+      productName: getCurrentProduct().title,
+      productImage: getCurrentProduct().image,
+      productImageCategory: getCurrentProduct().imageCategory,
+      productVersion: getCurrentProduct().version,
+      quantity: selectedLicenses,
+      duration: selectedYears,
+      unitPrice: getCurrentProduct().basePrice,
+      totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears),
+      deliveryMethod: deliveryMethod,
+      features: getCurrentProduct().features,
+      category: selectedCategory
+    };
+
+    // Store payment data in localStorage for the payment page
+    localStorage.setItem('paymentData', JSON.stringify(paymentData));
+    
+    // Navigate directly to payment page without login requirement
+    navigate('/checkout');
+  };
+
+  const faqs = [
+    {
+      question: "How do I get my License?",
+      answer: "The product comes with Digital Delivery or Physical Delivery. If you select Digital delivery, you will receive an email with your login credentials to D-Secure Cloud and product ISO. For physical delivery, you will receive a shipment containing Bootable USB device which includes the application and License USB with the number of ordered licenses. Once the order is confirmed, the product will be delivered to you in 3-4 business days."
+    },
+    {
+      question: "If I order 1000 licenses, how many drives can I wipe?",
+      answer: "Each license allows you to wipe one drive. So with 1000 licenses, you can wipe 1000 drives."
+    },
+    {
+      question: "Are there any shipping charges?",
+      answer: "We offer FREE shipping for all physical deliveries worldwide. For digital delivery, you receive instant access via email."
+    },
+    {
+      question: "What payment methods do you accept?",
+      answer: "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, bank transfers, and purchase orders for enterprise customers."
+    },
+    {
+      question: "Do you offer volume discounts?",
+      answer: "Yes! We offer automatic volume discounts: 10% off for 25+ licenses, 15% off for 50+ licenses, and 20% off for 100+ licenses. Contact us for custom pricing on larger orders."
+    },
+    {
+      question: "What kind of support do you provide?",
+      answer: "All licenses include lifetime technical support via email, phone, and live chat. Enterprise customers receive priority support with dedicated account managers."
+    }
+  ];
 
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/pricing-and-plan" />
-        <title>Pricing & Plans | DSecure Data Erasure Solutions - Choose Your Plan</title>
-        <meta
-          name="description"
-          content="Choose the perfect DSecure data erasure plan for your needs. From individual users to enterprise organizations, find flexible pricing options with comprehensive features."
-        />
-        <meta
-          name="keywords"
-          content="DSecure pricing, data erasure plans, secure deletion pricing, enterprise data security, license options"
-        />
-        <meta name="robots" content="index, follow" />
+        <title>Pricing & Plans - D-Secure Data Erasure Software | Professional Licenses</title>
+        <meta name="description" content="Choose the perfect D-Secure data erasure license plan. Drive Eraser, Admin Console, Mobile Eraser & File Eraser. Volume discounts available. Free shipping worldwide." />
+        <meta name="keywords" content="data erasure pricing, secure delete software cost, NIST compliant erasure license, enterprise data wiping plans" />
       </Helmet>
 
-      <div className="min-h-screen bg-slate-50">
-        {/* Header Section */}
-        <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 md:py-24">
-          <div className="container-responsive">
-            <Reveal>
-              <div className="text-center">
-                <div className="mb-8">
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
-                    Choose Your <span className="text-brand">Perfect Plan</span>
-                  </h1>
-                  <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
-                    Secure data erasure solutions for every need. From individual users to enterprise organizations.
-                  </p>
-
-                  {/* Billing Toggle */}
-                  <div className="flex items-center justify-center mb-8">
-                    <div className="bg-white rounded-lg p-1 shadow-sm">
-                      <div className="flex">
-                        <button
-                          onClick={() => setBillingCycle('monthly')}
-                          className={`px-6 py-2 rounded-md font-medium transition-all ${
-                            billingCycle === 'monthly'
-                              ? 'bg-emerald-500 text-white shadow-sm'
-                              : 'text-slate-700 hover:text-emerald-600'
-                          }`}
-                        >
-                          Monthly
-                        </button>
-                        <button
-                          onClick={() => setBillingCycle('annual')}
-                          className={`px-6 py-2 rounded-md font-medium transition-all relative ${
-                            billingCycle === 'annual'
-                              ? 'bg-emerald-500 text-white shadow-sm'
-                              : 'text-slate-700 hover:text-emerald-600'
-                          }`}
-                        >
-                          Annual
-                          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                            Save 20%
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
+        <div className="container mx-auto px-4 py-12 max-w-7xl">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6 shadow-lg">
+              🔒 SECURE • CERTIFIED • COMPLIANT
+            </div>
+            <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              Choose Your <span className="bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent">D-Secure</span> License
+            </h1>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Professional data erasure solutions trusted by enterprises worldwide. 
+              NIST & DoD compliant with lifetime support and instant deployment.
+            </p>
           </div>
-        </section>
 
-        {/* Pricing Plans */}
-        <section className="py-16 md:py-24">
-          <div className="container-responsive">
-            <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
-              {plans.map((plan, index) => (
-                <Reveal key={plan.id} delayMs={index * 100}>
-                  <div className={`relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ${
-                    plan.highlighted ? 'ring-2 ring-emerald-500 transform scale-105' : ''
-                  }`}>
-                    {plan.mostPopular && (
-                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                          Most Popular
-                        </span>
+          {/* Category Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`p-6 rounded-xl text-left transition-all duration-300 border-2 ${
+                  selectedCategory === category.id
+                    ? 'bg-gradient-to-br from-teal-500 to-teal-600 text-white border-teal-500 shadow-xl transform scale-105'
+                    : 'bg-white text-gray-700 border-gray-200 hover:border-teal-300 hover:shadow-lg hover:scale-102'
+                }`}
+              >
+                <h3 className="font-semibold text-sm mb-1">{category.name}</h3>
+                <p className="text-xs opacity-90">{category.subtitle}</p>
+              </button>
+            ))}
+          </div>
+
+          {/* Product Details Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            {/* Product Image and Info */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-lg p-6 shadow-sm">
+                <div className="flex items-start space-x-6">
+                  {/* Enhanced Product Image */}
+                  <ProductImage
+                    category={selectedCategory}
+                    productName={getCurrentProduct().title}
+                    version={getCurrentProduct().version}
+                    size="large"
+                    className="flex-shrink-0"
+                  />
+                  
+                  {/* Product Info */}
+                  <div className="flex-1">
+                    {selectedCategory === 'admin-console' && (
+                      <div className="text-center mb-4">
+                        <div className="text-teal-500 font-semibold text-sm">REQUEST PRICING</div>
+                      </div>
+                    )}
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                      {getCurrentProduct().title}
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                      {getCurrentProduct().subtitle}
+                    </p>
+
+                    {/* Features */}
+                    {getCurrentProduct().features.length > 0 && (
+                      <div className="space-y-3 mb-6">
+                        {getCurrentProduct().features.map((feature, index) => (
+                          <div key={index} className="flex items-center space-x-2">
+                            <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                            </svg>
+                            <span className="text-sm text-gray-700">{feature}</span>
+                          </div>
+                        ))}
                       </div>
                     )}
 
-                    <div className="p-8">
-                      {/* Plan Header */}
-                      <div className="text-center mb-8">
-                        <h3 className="text-2xl font-bold text-slate-900 mb-2">{plan.name}</h3>
-                        <p className="text-slate-600 mb-4">{plan.description}</p>
+                    {/* Selection Criteria */}
+                    <div className="mb-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        📋 Configure Your License
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* License Quantity */}
+                        <div className="space-y-2">
+                          <label className="block text-sm font-semibold text-gray-700">
+                            {getCurrentProduct().selectionLabel}
+                          </label>
+                          {getCurrentProduct().selectionNote && (
+                            <p className="text-xs text-gray-500">{getCurrentProduct().selectionNote}</p>
+                          )}
+                          <select
+                            value={selectedLicenses}
+                            onChange={(e) => setSelectedLicenses(e.target.value)}
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                          >
+                            {getCurrentProduct().options.map((option) => (
+                              <option key={option} value={option}>
+                                {option === 'custom' ? '🎯 Custom Quantity' : `${option} licenses`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                         
-                        <div className="mb-4">
-                          <div className="flex items-baseline justify-center gap-2">
-                            {plan.originalPrice && (
-                              <span className="text-lg text-slate-400 line-through">{plan.originalPrice}</span>
-                            )}
-                            <span className="text-4xl font-bold text-slate-900">{plan.price}</span>
-                          </div>
-                          <span className="text-slate-600">{plan.period}</span>
-                        </div>
-
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center justify-center gap-2">
-                            <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span className="text-slate-700">{plan.deviceLimit}</span>
-                          </div>
-                          <div className="flex items-center justify-center gap-2">
-                            <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 019.75 9.75c0 .414-.025.825-.072 1.233M12 21.75A9.75 9.75 0 012.25 12c0-.414.025-.825.072-1.233" />
-                            </svg>
-                            <span className="text-slate-700">{plan.support}</span>
-                          </div>
+                        {/* License Duration */}
+                        <div className="space-y-2">
+                          <label className="block text-sm font-semibold text-gray-700">
+                            ⏱️ License Duration:
+                          </label>
+                          <p className="text-xs text-gray-500">Multi-year discounts available</p>
+                          <select
+                            value={selectedYears}
+                            onChange={(e) => setSelectedYears(e.target.value)}
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                          >
+                            <option value="1">1 Year</option>
+                            <option value="2">2 Years (10% off) 💰</option>
+                            <option value="3">3 Years (15% off) 💰</option>
+                            <option value="5">5 Years (20% off) 💰</option>
+                          </select>
                         </div>
                       </div>
-
-                      {/* Features List */}
-                      <div className="mb-8">
-                        <ul className="space-y-3">
-                          {plan.features.map((feature, featureIndex) => (
-                            <li key={featureIndex} className="flex items-start gap-3">
-                              <svg className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                              </svg>
-                              <span className="text-slate-700 text-sm">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Compliance Badges */}
-                      <div className="mb-6">
-                        <div className="text-xs text-slate-600 mb-2">Compliance Standards:</div>
-                        <div className="flex flex-wrap gap-1">
-                          {plan.compliance.map((standard, standardIndex) => (
-                            <span key={standardIndex} className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs">
-                              {standard}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* CTA Button */}
-                      <button
-                        onClick={() => handlePlanSelection(plan.id)}
-                        className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
-                          plan.highlighted
-                            ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600'
-                            : 'bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50'
-                        }`}
-                      >
-                        {plan.buttonText}
-                      </button>
                     </div>
+
+                    {/* Delivery Options */}
+                    {getCurrentProduct().showDeliveryOptions ? (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">
+                          Delivery Option:
+                        </label>
+                        <div className="space-y-3">
+                          <label className="flex items-start space-x-3">
+                            <input
+                              type="radio"
+                              value="electronic"
+                              checked={deliveryMethod === 'electronic'}
+                              onChange={(e) => setDeliveryMethod(e.target.value)}
+                              className="mt-1 text-teal-500 focus:ring-teal-500"
+                            />
+                            <div>
+                              <div className="font-medium text-gray-900">Electronic Delivery</div>
+                              <div className="text-sm text-gray-600">
+                                You will get license through a downloadable link via email.
+                              </div>
+                            </div>
+                          </label>
+                          <label className="flex items-start space-x-3">
+                            <input
+                              type="radio"
+                              value="physical"
+                              checked={deliveryMethod === 'physical'}
+                              onChange={(e) => setDeliveryMethod(e.target.value)}
+                              className="mt-1 text-teal-500 focus:ring-teal-500"
+                            />
+                            <div>
+                              <div className="font-medium text-gray-900">Physical Delivery</div>
+                              <div className="text-sm text-gray-600">
+                                Receive bootable USB device without internet connectivity for PCs, laptops, and servers.
+                              </div>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div className="text-sm text-blue-800">
+                          {(getCurrentProduct() as any).deliveryText || 'Digital delivery via email'}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </Reveal>
+                </div>
+              </div>
+            </div>
+
+            {/* Enhanced Pricing Card */}
+            <div className="lg:col-span-1">
+              <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-8 shadow-xl border-2 border-blue-100 sticky top-8">
+                {/* Price Display */}
+                <div className="text-center mb-8">
+                  {selectedCategory === 'admin-console' ? (
+                    <>
+                      <div className="text-5xl font-bold bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent mb-3">Contact Us</div>
+                      <div className="text-sm text-teal-500 font-semibold bg-teal-50 px-3 py-1 rounded-full inline-block">
+                        {getPriceSubtitle()}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-5xl font-bold bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent mb-3">
+                        {getDisplayPrice()}
+                      </div>
+                      <div className="text-sm text-teal-500 font-semibold bg-teal-50 px-3 py-1 rounded-full inline-block mb-2">
+                        {getPriceSubtitle()}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {getPriceNote()}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Action Button */}
+                <button
+                  onClick={handleBuyNow}
+                  className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-6 text-lg"
+                >
+                  {selectedLicenses === 'custom' ? '🎯 Request Custom Quote' : 
+                   selectedCategory === 'admin-console' ? '📞 Contact Sales' : 
+                   '🛒 Buy Now'}
+                </button>
+
+                {/* Trust Indicators */}
+                <div className="space-y-3 text-center">
+                  <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                    <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
+                    <span>30-day money-back guarantee</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                    <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
+                    <span>Free worldwide shipping</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                    <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
+                    <span>Instant activation & support</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* OS Compatibility */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+            <div className="text-center">
+              <span className="text-blue-700 font-medium">
+                🖥️ OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS | 
+                🔒 Certified: NIST SP 800-88, DoD 5220.22-M, Common Criteria | 
+                ⚡ Instant Delivery Available
+              </span>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
+              ❓ Frequently Asked Questions
+            </h2>
+            <div className="space-y-4 max-w-4xl mx-auto">
+              {faqs.map((faq, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                  <button
+                    onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                    className="w-full px-6 py-4 text-left font-semibold text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center"
+                  >
+                    <span>{faq.question}</span>
+                    <svg
+                      className={`w-5 h-5 transform transition-transform ${expandedFaq === index ? 'rotate-180' : ''}`}
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+                    </svg>
+                  </button>
+                  {expandedFaq === index && (
+                    <div className="px-6 py-4 text-gray-700 bg-white">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+        
+        {/* Toast Component */}
+        {toast && (
+          <Toast
+            toast={toast}
+            onClose={hideToast}
+          />
+        )}
 
-        {/* Features Comparison */}
-        <section className="py-16 bg-white">
-          <div className="container-responsive">
-            <Reveal>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  Compare Features
-                </h2>
-                <p className="text-xl text-slate-700 max-w-2xl mx-auto">
-                  Detailed comparison of features across all plans
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="overflow-x-auto">
-              <table className="w-full bg-white rounded-xl shadow-sm">
-                <thead>
-                  <tr className="border-b border-slate-200">
-                    <th className="text-left p-6 font-semibold text-slate-900">Features</th>
-                    <th className="text-center p-6 font-semibold text-slate-900">Starter</th>
-                    <th className="text-center p-6 font-semibold text-slate-900">Professional</th>
-                    <th className="text-center p-6 font-semibold text-slate-900">Enterprise</th>
-                    <th className="text-center p-6 font-semibold text-slate-900">Custom</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { feature: 'Device Limit', starter: '10', professional: '100', enterprise: 'Unlimited', custom: 'Custom' },
-                    { feature: 'Windows Support', starter: '✓', professional: '✓', enterprise: '✓', custom: '✓' },
-                    { feature: 'Mac Support', starter: '✓', professional: '✓', enterprise: '✓', custom: '✓' },
-                    { feature: 'Mobile Devices', starter: '✗', professional: '✓', enterprise: '✓', custom: '✓' },
-                    { feature: 'Cloud Console', starter: '✗', professional: '✗', enterprise: '✓', custom: '✓' },
-                    { feature: 'API Access', starter: '✗', professional: '✗', enterprise: '✓', custom: '✓' },
-                    { feature: 'Priority Support', starter: '✗', professional: '✓', enterprise: '✓', custom: '✓' },
-                    { feature: '24/7 Support', starter: '✗', professional: '✗', enterprise: '✓', custom: '✓' },
-                    { feature: 'Custom Branding', starter: '✗', professional: '✗', enterprise: '✓', custom: '✓' },
-                    { feature: 'SLA Guarantee', starter: '✗', professional: '✗', enterprise: '✓', custom: '✓' }
-                  ].map((row, index) => (
-                    <tr key={index} className="border-b border-slate-100 hover:bg-slate-50">
-                      <td className="p-6 font-medium text-slate-900">{row.feature}</td>
-                      <td className="p-6 text-center">{row.starter}</td>
-                      <td className="p-6 text-center">{row.professional}</td>
-                      <td className="p-6 text-center">{row.enterprise}</td>
-                      <td className="p-6 text-center">{row.custom}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-16 bg-slate-50">
-          <div className="container-responsive">
-            <Reveal>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  Frequently Asked Questions
-                </h2>
-                <p className="text-xl text-slate-700 max-w-2xl mx-auto">
-                  Common questions about our pricing and plans
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="max-w-3xl mx-auto">
-              <div className="space-y-4">
-                {[
-                  {
-                    question: "Can I switch plans anytime?",
-                    answer: "Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately, and billing is prorated."
-                  },
-                  {
-                    question: "Is there a free trial available?",
-                    answer: "Yes, we offer a 14-day free trial for all paid plans. No credit card required to start."
-                  },
-                  {
-                    question: "What happens if I exceed my device limit?",
-                    answer: "You'll receive a notification before reaching your limit. You can either upgrade your plan or purchase additional device credits."
-                  },
-                  {
-                    question: "Do you offer volume discounts?",
-                    answer: "Yes, we offer volume discounts for large deployments. Contact our sales team for custom pricing."
-                  },
-                  {
-                    question: "Is my data secure during the erasure process?",
-                    answer: "Absolutely. All data is encrypted during transmission and our erasure methods meet international standards including NIST and DoD requirements."
-                  }
-                ].map((faq, index) => (
-                  <Reveal key={index} delayMs={index * 100}>
-                    <div className="bg-white rounded-lg p-6 shadow-sm">
-                      <h3 className="font-semibold text-slate-900 mb-2">{faq.question}</h3>
-                      <p className="text-slate-700">{faq.answer}</p>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
-          <div className="container-responsive">
-            <Reveal>
-              <div className="text-center text-white">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Ready to Get Started?
-                </h2>
-                <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                  Join thousands of organizations worldwide who trust DSecure for their data erasure needs
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button 
-                    onClick={() => setShowLicenseModal(true)}
-                    className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300"
-                  >
-                    Request Free License
-                  </button>
-                  <button 
-                    onClick={() => setShowPartnershipModal(true)}
-                    className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300"
-                  >
-                    Become Partner
-                  </button>
-                  <Link
-                    to="/contact"
-                    className="bg-white text-emerald-600 hover:bg-slate-100 font-semibold px-8 py-3 rounded-lg transition-all duration-300 inline-flex items-center justify-center"
-                  >
-                    Contact Sales
-                  </Link>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Trust Section */}
-        <section className="py-16 bg-white">
-          <div className="container-responsive">
-            <Reveal>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  Trusted by Organizations Worldwide
-                </h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-60">
-                  {[
-                    { name: "Fortune 500", count: "50+" },
-                    { name: "Government Agencies", count: "100+" },
-                    { name: "Healthcare Organizations", count: "200+" },
-                    { name: "Financial Institutions", count: "150+" }
-                  ].map((stat, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-2xl font-bold text-emerald-600">{stat.count}</div>
-                      <div className="text-slate-600">{stat.name}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        {/* Custom License Modal */}
+        {showCustomModal && (
+          <CustomLicenseModal
+            onSubmit={handleCustomLicenseSubmit}
+            onClose={() => setShowCustomModal(false)}
+            isOpen={showCustomModal}
+            productName={getCurrentProduct().title}
+          />
+        )}
       </div>
-
-      {/* License Request Modal */}
-      {showLicenseModal && (
-        <LicenseForm
-          onSubmit={handleLicenseSubmit}
-          onClose={() => setShowLicenseModal(false)}
-          title="Request Free License - Pricing"
-        />
-      )}
-
-      {/* Partnership Request Modal */}
-      {showPartnershipModal && (
-        <PartnershipForm
-          onSubmit={handlePartnershipSubmit}
-          onClose={() => setShowPartnershipModal(false)}
-          title="Partnership Request - Pricing"
-        />
-      )}
     </>
   );
 });

@@ -1,17 +1,13 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import Reveal from "@/components/Reveal";
 
 const FileEraserGuide: React.FC = () => {
   return (
     <>
-      <Helmet>
-        <title>File Eraser Guide | DSecure - Secure File Deletion Methods</title>
-        <meta
-          name="description"
-          content="Complete guide to securely delete individual files and folders using DSecure File Eraser tools for permanent data removal and privacy protection."
-        />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('file-eraser-guide')} />
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Hero Section */}

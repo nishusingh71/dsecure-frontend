@@ -113,7 +113,7 @@ export default function RegisterPage() {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
       <Helmet>
         <title>Create Account | DSecure Tech - Secure Data Erasure Solutions</title>
-        <meta name="description" content="Create your DSecure Tech account to access professional data erasure solutions. Join thousands of enterprises securing their data with certified erasure." />
+        <meta name="description" content="Create your DSecure Tech account to access professional data erasure solutions. Join thousands of enterprises securing their data with Compliant erasure." />
         <meta name="keywords" content="DSecure register, create account, data erasure signup, enterprise data security, secure erasure account" />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://dsecuretech.com/register" />

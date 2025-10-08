@@ -1,24 +1,12 @@
 import React from "react";
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 
 const PrivacyPolicy = () => {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/privacy-policy" />
-        <title>
-          Privacy Policy | DSecure Data Protection & Privacy
-        </title>
-        <meta
-          name="description"
-          content="DSecure Privacy Policy explaining how we collect, use, and protect your personal information. Learn about our data handling practices and your privacy rights."
-        />
-        <meta
-          name="keywords"
-          content="privacy policy, data protection, personal information, privacy rights, DSecure privacy, GDPR compliance"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('privacy-policy')} />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="max-w-4xl mx-auto px-6 py-12">

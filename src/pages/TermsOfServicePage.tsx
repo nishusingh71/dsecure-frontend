@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
-import { Helmet } from 'react-helmet-async';
+import React from "react";
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 
 export default function TermsOfServicePage() {
   useEffect(() => {
@@ -8,21 +10,8 @@ export default function TermsOfServicePage() {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/terms-of-service" />
-        <title>
-          Terms of Service | DSecure Data Erasure Terms & Conditions
-        </title>
-        <meta
-          name="description"
-          content="DSecure Terms of Service outlining the terms and conditions for using our data erasure software and services. Read our legal terms and user agreements."
-        />
-        <meta
-          name="keywords"
-          content="terms of service, user agreement, data erasure terms, DSecure conditions, software license, legal terms"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('terms-of-service')} />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="max-w-4xl mx-auto px-6 py-12">

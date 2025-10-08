@@ -1,19 +1,14 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
 
 const NotFoundPage: React.FC = () => {
   return (
     <>
-      <Helmet>
-        <title>Page Not Found - 404 | DSecure - Professional Data Security</title>
-        <meta
-          name="description"
-          content="Page not found. The page you're looking for doesn't exist. Return to DSecure homepage for professional data security solutions."
-        />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('not-found')} />
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 flex items-center justify-center px-4">
         <div className="max-w-2xl mx-auto text-center">

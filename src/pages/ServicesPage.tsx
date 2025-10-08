@@ -1,7 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import SEOHead from '@/components/SEOHead'
+import { getSEOForPage } from '@/utils/seo'
 import { 
   CheckIcon, 
   MobileIcon, 
@@ -20,21 +21,8 @@ import {
 export default function ServicesPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/services" />
-        <title>
-          Data Erasure Services | DSecure Professional Solutions
-        </title>
-        <meta
-          name="description"
-          content="Professional data erasure services including device sanitization, server data destruction, and cloud data removal. NIST 800-88 compliant solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure services, device sanitization, server data destruction, cloud data removal, NIST 800-88, secure data wiping"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('services')} />
       
       <ServicesPageContent />
     </>
@@ -137,7 +125,7 @@ function ServicesPageContent() {
     device: {
       title: 'Device Erasure',
       subtitle: 'Comprehensive data sanitization for all device types',
-      description: 'Military-grade data erasure for laptops, desktops, mobile devices, and storage media with certified compliance reporting.',
+      description: 'Military-grade data erasure for laptops, desktops, mobile devices, and storage media with Compliant compliance reporting.',
       icon: (
         <HoverIcon>
           {(filled) => <MobileIcon className="w-8 h-8" filled={filled} />}
@@ -145,7 +133,7 @@ function ServicesPageContent() {
       ),
       features: [
         'DOD 5220.22-M compliant erasure',
-        'NIST 800-88 certified methods',
+        'NIST 800-88 Compliant methods',
         'Support for 1000+ device types',
         'Automated inventory management',
         'Tamper-proof certificates',
@@ -210,18 +198,6 @@ function ServicesPageContent() {
 
   return (
     <>
-    <Helmet>
-      <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-      <meta
-        name="description"
-        content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-      />
-      <meta
-        name="keywords"
-        content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-      />
-      <meta name="robots" content="index, follow" />
-    </Helmet>
     <div className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 w-full overflow-hidden">
       {/* Hero Section */}
       <section className="py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">

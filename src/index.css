@@ -26,6 +26,15 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Safari and Chrome */
   }
+
+  /* Modal scroll container styles */
+  .modal-scroll-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .modal-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
   .btn-primary {
     @apply px-6 py-3 rounded-lg bg-gradient-to-r from-brand to-brand-600 text-white font-medium 
            shadow-lg shadow-brand/30 hover:shadow-xl hover:shadow-brand/40 

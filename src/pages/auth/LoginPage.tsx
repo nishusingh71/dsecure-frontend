@@ -413,7 +413,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-8 text-center text-sm text-slate-500">
+          {/* <p className="mt-8 text-center text-sm text-slate-500">
             Not registered yet?{" "}
             <a
               href="/register"
@@ -421,7 +421,7 @@ export default function LoginPage() {
             >
               Create an account
             </a>
-          </p>
+          </p> */}
         </div>
       </div>
     </>

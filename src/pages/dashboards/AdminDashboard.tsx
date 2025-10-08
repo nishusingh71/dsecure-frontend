@@ -51,7 +51,7 @@ export default function AdminDashboard() {
           <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
             name="description"
-            content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+            content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
           />
           <meta
             name="keywords"
@@ -78,12 +78,12 @@ export default function AdminDashboard() {
             </svg>
             Add User
           </button>
-          <button className="btn-primary flex items-center gap-2">
+          {/* <button className="btn-primary flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
             Generate Report
-          </button>
+          </button> */}
         </div>
       </div>
 

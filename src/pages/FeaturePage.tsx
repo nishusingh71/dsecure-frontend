@@ -1,7 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import { 
   CheckIcon, 
   MobileIcon, 
@@ -17,21 +18,8 @@ import {
 export default function FeaturePage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/features" />
-        <title>
-          DSecure Features | Comprehensive Data Security Solutions
-        </title>
-        <meta
-          name="description"
-          content="Explore DSecure's comprehensive features including device erasure, network security, and cloud data protection. Professional data security solutions for enterprises."
-        />
-        <meta
-          name="keywords"
-          content="data security features, device erasure, network security, cloud protection, enterprise data solutions, data sanitization"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('features')} />
       
       <FeaturePageContent />
     </>

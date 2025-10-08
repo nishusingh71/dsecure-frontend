@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from 'react-helmet-async';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 import { 
@@ -8,9 +10,13 @@ import {
   type PartnershipFormData, 
   type LicenseFormData 
 } from "@/components/forms";
+import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField, TextAreaField, SelectField } from "@/components/ui";
+import { useToast } from "@/hooks";
+import { Toast } from "@/components/ui";
 
 const PartnersPage: React.FC = () => {
+  const { toast, showToast, hideToast } = useToast();
   const [showPartnerModal, setShowPartnerModal] = useState(false);
   const [showFindPartnerModal, setShowFindPartnerModal] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
@@ -293,105 +299,16 @@ const PartnersPage: React.FC = () => {
     document.body.removeChild(link);
   };
 
-  const handlePartnerSubmit = (formData: PartnershipFormData) => {
-    // Check reCAPTCHA verification
-    if (!partnerRecaptchaVerified) {
-      alert('Please complete the reCAPTCHA verification.');
-      return;
-    }
-    
-    // Send email using EmailJS or your preferred service
-    const emailData = {
-      service_id: 'your_service_id',
-      template_id: 'your_template_id',
-      user_id: 'your_user_id',
-      template_params: {
-        to_email: 'dhruv.rai@dsecuretech.com',
-        from_name: formData.fullName,
-        from_email: formData.businessEmail,
-        subject: `New Partner Application - ${formData.companyName}`,
-        company_name: formData.companyName,
-        website: formData.website,
-        country: formData.country,
-        partner_type: formData.partnerType,
-        phone_number: formData.phoneNo,
-        business_description: formData.businessDescription,
-        submission_date: new Date().toLocaleString()
-      }
-    };
-
-    // Simulate email sending (replace with actual EmailJS call)
+  const handlePartnerSubmit = async (formData: PartnershipFormData) => {
+    // This is now just for backward compatibility and logging
+    // The actual submission is handled by the form component itself
     console.log('Partner application submitted:', formData);
-    console.log('Email data prepared:', emailData);
-    
-    // Example EmailJS call (uncomment when configured):
-    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
-    //   .then(() => {
-    //     alert('Partner application submitted successfully! We will contact you soon.');
-    //     setShowPartnerModal(false);
-    //     setPartnerRecaptchaVerified(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Email sending failed:', error);
-    //     alert('There was an error submitting your application. Please try again.');
-    //   });
-    
-    // Temporary success simulation
-    setTimeout(() => {
-      alert('Partner application submitted successfully! We will contact you soon.');
-      setShowPartnerModal(false);
-      setPartnerRecaptchaVerified(false);
-    }, 1000);
   };
 
-  const handleLicenseSubmit = (formData: LicenseFormData) => {
-    // Check reCAPTCHA verification
-    if (!licenseRecaptchaVerified) {
-      alert('Please complete the reCAPTCHA verification.');
-      return;
-    }
-    
-    // Prepare email data for license request
-    const emailData = {
-      to: 'license@dsecure.com',
-      subject: 'Free License Request - ' + formData.company,
-      body: `
-        New Free License Request Received:
-        
-        Usage Type: ${formData.usage}
-        
-        Personal Information:
-        - Full Name: ${formData.fullName}
-        - Email: ${formData.email}
-        - Phone: ${formData.phone}
-        
-        Company Information:
-        - Company: ${formData.company}
-        - Country: ${formData.country}
-        - Business Type: ${formData.businessType}
-        - Compliance Requirements: ${formData.compliance}
-        
-        Erasure Requirements:
-        - What to Erase: ${formData.eraseOption}
-        - Number of Devices: ${formData.deviceCount}
-        
-        Additional Requirements:
-        ${formData.requirements}
-        
-        Request submitted on: ${new Date().toLocaleString()}
-      `
-    };
-
-    // Here you would integrate with your email service (EmailJS, etc.)
+  const handleLicenseSubmit = async (formData: LicenseFormData) => {
+    // This is now just for backward compatibility and logging
+    // The actual submission is handled by the form component itself
     console.log('License request submitted:', formData);
-    console.log('Email data:', emailData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      alert('Free license request submitted successfully! We will send you the license details soon.');
-      setShowLicenseModal(false);
-      setLicenseRecaptchaVerified(false);
-    }, 1000);
   };
 
   const handleContactRedirect = () => {
@@ -436,21 +353,12 @@ const PartnersPage: React.FC = () => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('partners')} />
+      
+      {/* reCAPTCHA Scripts specific to Partners page */}
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/partners" />
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-        <title>
-          Partners | DSecure Technology Partners & Integrations
-        </title>
-        <meta
-          name="description"
-          content="Partner with DSecure for data erasure solutions. Explore our technology partnerships, integrations, and collaborative opportunities for secure data destruction."
-        />
-        <meta
-          name="keywords"
-          content="DSecure partners, technology partnerships, data erasure integrations, partner program, collaboration opportunities"
-        />
-        <meta name="robots" content="index, follow" />
         <script>
           {`
             window.onPartnerRecaptchaChange = function(token) {
@@ -465,71 +373,71 @@ const PartnersPage: React.FC = () => {
       
       <div className="min-h-screen bg-slate-50">
         {/* Hero Section */}
-        <section className="relative py-20 md:py-32 bg-gradient-to-br from-emerald-50 via-white to-teal-50 overflow-hidden">
+        <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-br from-emerald-50 via-white to-teal-50 overflow-hidden">
           {/* Background Elements */}
           <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-10 left-10 w-32 h-32 bg-emerald-200 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-20 w-40 h-40 bg-teal-200 rounded-full blur-3xl"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full blur-3xl opacity-50"></div>
+            <div className="absolute top-5 sm:top-10 left-5 sm:left-10 w-16 sm:w-24 md:w-32 h-16 sm:h-24 md:h-32 bg-emerald-200 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-10 sm:bottom-20 right-10 sm:right-20 w-20 sm:w-32 md:w-40 h-20 sm:h-32 md:h-40 bg-teal-200 rounded-full blur-3xl"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full blur-3xl opacity-50"></div>
           </div>
           
-          <div className="container-responsive relative z-10">
+          <div className="container-responsive relative z-10 px-4 sm:px-6">
             <Reveal>
               <div className="text-center">
-                <div className="mb-12">
+                <div className="mb-8 sm:mb-12">
                   {/* Logo and Title */}
-                  <div className="mb-8">
-                    <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl mb-6 shadow-2xl transform hover:scale-110 transition-transform duration-300">
-                      <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="mb-6 sm:mb-8">
+                    <div className="inline-flex items-center justify-center w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 shadow-2xl transform hover:scale-110 transition-transform duration-300">
+                      <svg className="w-8 sm:w-10 md:w-12 h-8 sm:h-10 md:h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
                       </svg>
                     </div>
-                    <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-4">
-                      <span className="text-brand">D</span>Secure<sup className="text-3xl text-brand">®</sup>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 mb-3 sm:mb-4">
+                      <span className="text-brand">D</span>Secure<sup className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-brand"></sup>
                     </h1>
                     <div className="relative inline-block">
-                      <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent mb-6 relative z-10">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent mb-4 sm:mb-6 relative z-10">
                         Partner Program
                       </h2>
-                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"></div>
+                      <div className="absolute -bottom-1 sm:-bottom-2 left-1/2 transform -translate-x-1/2 w-20 sm:w-24 md:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"></div>
                     </div>
                   </div>
                   
                   {/* Enhanced Description */}
-                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 mb-10 border border-emerald-200/50 shadow-xl max-w-4xl mx-auto">
-                    <p className="text-xl text-slate-700 leading-relaxed mb-4">
+                  <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 md:mb-10 border border-emerald-200/50 shadow-xl max-w-4xl mx-auto">
+                    <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-2 sm:mb-4">
                       🚀 <strong>Join our Partner Program</strong> today and become a part of our extensive global network!
                     </p>
-                    <p className="text-lg text-slate-600 leading-relaxed">
+                    <p className="text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed">
                       Unlock new business opportunities with our best-in-class cutting-edge data erasure solutions. 
                       Partner with us to advance sustainability while leveraging our innovative products for your success.
                     </p>
                   </div>
                   
                   {/* Enhanced CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
                     <button 
                       onClick={() => openPartnerModal()}
-                      className="group bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:via-emerald-700 hover:to-teal-700 text-white font-bold px-10 py-4 rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 flex items-center gap-3"
+                      className="w-full sm:w-auto group bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:via-emerald-700 hover:to-teal-700 text-white font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3"
                     >
-                      <span className="text-lg">🤝 Join Partnership</span>
-                      <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                      <span className="text-base sm:text-lg">🤝 Join Partnership</span>
+                      <svg className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M13 7l5 5-5 5M6 12h12"/>
                       </svg>
                     </button>
                     <button 
                       onClick={() => downloadPDF('partner-catalog.pdf', 'DSecure_Partner_Catalog.pdf')}
-                      className="group border-3 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50 text-emerald-700 hover:text-emerald-800 font-bold px-10 py-4 rounded-2xl transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-3"
+                      className="w-full sm:w-auto group border-2 sm:border-3 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50 text-emerald-700 hover:text-emerald-800 font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3"
                     >
-                      <span className="text-lg">📄 Download Catalog</span>
-                      <svg className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                      <span className="text-base sm:text-lg">📄 Download Catalog</span>
+                      <svg className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2v13l4-4m-4 4l-4-4m4 4v5"/>
                       </svg>
                     </button>
                   </div>
                   
                   {/* Trust Indicators */}
-                  <div className="mt-12 flex flex-wrap justify-center items-center gap-8 opacity-70">
+                  {/* <div className="mt-12 flex flex-wrap justify-center items-center gap-8 opacity-70">
                     <div className="flex items-center gap-2 text-slate-600">
                       <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
                       <span className="font-medium">1000+ Global Partners</span>
@@ -542,7 +450,7 @@ const PartnersPage: React.FC = () => {
                       <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
                       <span className="font-medium">Best Practice Standards</span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Reveal>
@@ -550,137 +458,104 @@ const PartnersPage: React.FC = () => {
         </section>
 
         {/* Partnership Types */}
-        <section className="py-20 md:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
-          <div className="container-responsive">
+        <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
+          <div className="container-responsive px-4 sm:px-6">
             <Reveal>
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <div className="text-center mb-12 sm:mb-16">
+                <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
                   ⭐ Partnership Excellence
                 </div>
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                  <span className="text-brand">GROW YOUR BUSINESS WITH </span>
-                  <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">DSECURE</span><sup className="text-brand text-2xl">®</sup>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+                  <span className="text-brand">Grow Your Business With </span>
+                  <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">D-Secure</span><sup className="text-brand text-base sm:text-lg md:text-2xl"></sup>
                 </h2>
-                <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-4">
+                <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
                   Choose your partnership type to unlock specialized benefits and opportunities
                 </p>
-                <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
+                <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
               </div>
             </Reveal>
             
             {/* Enhanced Partner Type Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 sm:gap-3">
               {(Object.keys(partnerTypes) as Array<keyof typeof partnerTypes>).map((partnerTitle, index) => {
-                const isActive = activePartnerType === partnerTitle;
-                return (
-                  <Reveal key={partnerTitle} delayMs={index * 100}>
-                    <button 
-                      onClick={() => setActivePartnerType(partnerTitle)}
-                      className={`group relative px-6 py-6 rounded-2xl font-bold transition-all duration-500 transform hover:scale-105 hover:-rotate-1 ${
-                        isActive
-                          ? 'bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 text-white shadow-2xl shadow-emerald-500/25 scale-105'
-                          : 'bg-white hover:bg-gradient-to-br hover:from-emerald-500 hover:via-emerald-600 hover:to-teal-600 hover:text-white text-slate-700 border-2 border-slate-200 hover:border-transparent shadow-lg hover:shadow-2xl hover:shadow-emerald-500/20'
-                      }`}
-                    >
-                      {/* Animated Background Effect */}
-                      {!isActive && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      )}
-                      
-                      {/* Content */}
-                      <div className="relative z-10 text-center">
-                        {/* Icon */}
-                        <div className={`w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                          isActive ? 'bg-white/20' : 'bg-emerald-100 group-hover:bg-white/20'
-                        }`}>
-                          <svg className={`w-6 h-6 transition-colors duration-300 ${
-                            isActive ? 'text-white' : 'text-emerald-600 group-hover:text-white'
-                          }`} fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
-                          </svg>
-                        </div>
-                        
-                        {/* Title */}
-                        <div className="text-sm leading-tight">
-                          {partnerTitle}
-                        </div>
-                        
-                        {/* Active Indicator */}
-                        {isActive && (
-                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                            <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                          </div>
-                        )}
-                      </div>
-                      
-                      {/* Hover Effect Border */}
-                      <div className={`absolute inset-0 rounded-2xl transition-all duration-300 ${
-                        isActive ? 'ring-4 ring-emerald-300/50' : 'group-hover:ring-4 group-hover:ring-emerald-300/50'
-                      }`}></div>
-                    </button>
-                  </Reveal>
-                );
+              const isActive = activePartnerType === partnerTitle;
+              return (
+                <Reveal key={partnerTitle} delayMs={index * 10}>
+                <button 
+                  onClick={() => setActivePartnerType(partnerTitle)}
+                  className={`group relative px-3 sm:px-6 md:px-12 lg:px-16 xl:px-20 py-4 sm:py-5 md:py-6 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 border-b-2 sm:border-b-3 text-center w-full ${
+                  isActive
+                    ? 'bg-white text-emerald-600 border-emerald-500 shadow-lg'
+                    : 'bg-transparent text-slate-600 border-transparent hover:text-emerald-600 hover:bg-emerald-50/50'
+                  }`}
+                >
+                  {/* Content */}
+                  <div className="relative z-10 text-center">
+                  {/* Title */}
+                  <div className="text-xs sm:text-sm md:text-base leading-tight font-medium break-words">
+                    {partnerTitle}
+                  </div>
+                  
+                  {/* Active Indicator Line */}
+                  <div className={`absolute -bottom-2 sm:-bottom-3 left-1/2 transform -translate-x-1/2 h-0.5 sm:h-1 bg-emerald-500 rounded-full transition-all duration-300 ${
+                    isActive ? 'w-full opacity-100' : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-100'
+                  }`}></div>
+                  </div>
+                </button>
+                </Reveal>
+              );
               })}
             </div>
-            
-            {/* Partner Type Description */}
-            <Reveal>
-              <div className="text-center bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-emerald-200/50 shadow-lg max-w-4xl mx-auto">
-                <p className="text-lg text-slate-600 leading-relaxed">
-                  Selected: <strong className="text-emerald-600">{activePartnerType}</strong> - 
-                  {partnerTypes[activePartnerType].description.split('.')[0]}.
-                </p>
-              </div>
-            </Reveal>
           </div>
         </section>
 
         {/* ITAD Partner Program */}
-        <section className="py-20 md:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
-          <div className="container-responsive">
-            <div className="grid lg:grid-cols-1 gap-12 items-center">
+        <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
+          <div className="container-responsive px-4 sm:px-6">
+            <div className="grid lg:grid-cols-1 gap-8 sm:gap-12 items-center">
             <Reveal>
-                <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 backdrop-blur-sm">
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 backdrop-blur-sm">
                     {/* Header with Enhanced Gradient */}
-                    <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50/30 border-b border-slate-200/60 p-8">
-                        <div className="flex items-center gap-6 mb-6">
-                            <div className="w-20 h-20 bg-gradient-to-br from-brand via-brand-500 to-brand-600 rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 transition-transform duration-300">
-                                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50/30 border-b border-slate-200/60 p-4 sm:p-6 md:p-8">
+                        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-4 sm:mb-6">
+                            <div className="w-16 sm:w-18 md:w-20 h-16 sm:h-18 md:h-20 bg-gradient-to-br from-brand via-brand-500 to-brand-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-xl hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                                <svg className="w-8 sm:w-9 md:w-10 h-8 sm:h-9 md:h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
                                 </svg>
                             </div>
-                            <div>
-                                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-teal-700 bg-clip-text text-transparent mb-3">
-                                    D-Secure<sup className="text-brand text-lg">®</sup> {partnerTypes[activePartnerType].title}
+                            <div className="text-center sm:text-left flex-1">
+                                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 via-emerald-800 to-teal-700 bg-clip-text text-transparent mb-2 sm:mb-3">
+                                    D-Secure<sup className="text-brand text-xs sm:text-sm md:text-lg"></sup> {partnerTypes[activePartnerType].title}
                                 </h3>
-                                <div className="w-24 h-1.5 bg-gradient-to-r from-brand via-brand-500 to-brand-600 rounded-full"></div>
+                                <div className="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-gradient-to-r from-brand via-brand-500 to-brand-600 rounded-full mx-auto sm:mx-0"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="p-8">
+                    <div className="p-4 sm:p-6 md:p-8">
                         {/* Description Card */}
-                        <div className="bg-slate-50/50 rounded-xl p-6 mb-8 border border-slate-200/30 shadow-sm hover:shadow-md transition-shadow duration-300">
-                            <p className="text-slate-700 leading-relaxed text-lg font-medium">
+                        <div className="bg-slate-50/50 rounded-lg sm:rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 border border-slate-200/30 shadow-sm hover:shadow-md transition-shadow duration-300">
+                            <p className="text-slate-700 leading-relaxed text-sm sm:text-base md:text-lg font-medium">
                                 {partnerTypes[activePartnerType].description}
                             </p>
                         </div>
 
                         {/* Benefits Grid */}
-                        <div className="grid gap-6 mb-8">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
-                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <div className="grid gap-4 sm:gap-6 mb-6 sm:mb-8">
+                            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                                <div className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md sm:rounded-lg flex items-center justify-center">
+                                    <svg className="w-3 sm:w-3.5 md:w-4 h-3 sm:h-3.5 md:h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </div>
-                                <h4 className="text-xl font-bold text-slate-900">Key Benefits</h4>
+                                <h4 className="text-lg sm:text-xl font-bold text-slate-900">Key Benefits</h4>
                             </div>
-                            <div className="grid gap-6">
+                            <div className="grid gap-4 sm:gap-6">
                                 {partnerTypes[activePartnerType].detailedBenefits?.map((benefit, index) => (
-                                    <div key={index} className="bg-white rounded-xl shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300 group transform hover:-translate-y-1 overflow-hidden">
-                                        <div className="p-6">
-                                            <div className="flex items-start gap-4">
+                                    <div key={index} className="bg-white rounded-lg sm:rounded-xl shadow-lg border border-slate-200/60 hover:shadow-xl transition-all duration-300 group transform hover:-translate-y-1 overflow-hidden">
+                                        <div className="p-4 sm:p-6">
+                                            <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
                                                 <div className="w-12 h-12 bg-gradient-to-br from-brand via-brand-500 to-brand-600 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                                                     <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -715,22 +590,22 @@ const PartnersPage: React.FC = () => {
                         </div>
 
                         {/* Call to Action */}
-                        <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-slate-200/30">
+                        <div className="flex flex-col gap-3 sm:gap-4 pt-6 sm:pt-8 border-t border-slate-200/30">
                             <button 
                                 onClick={() => openPartnerModal(activePartnerType)}
-                                className="flex-1 bg-gradient-to-r from-brand via-brand-500 to-brand-600 hover:from-brand-600 hover:via-brand-600 hover:to-brand-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 flex items-center justify-center gap-3 group"
+                                className="w-full bg-gradient-to-r from-brand via-brand-500 to-brand-600 hover:from-brand-600 hover:via-brand-600 hover:to-brand-700 text-white font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 group"
                             >
-                                <span className="text-lg">Join Partnership Program</span>
-                                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <span className="text-sm sm:text-base md:text-lg">Join Partnership Program</span>
+                                <svg className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M13 7l5 5-5 5M6 12h12"/>
                                 </svg>
                             </button>
                             <button 
                               onClick={() => downloadPDF('partnership-brochure.pdf', 'DSecure_Partnership_Brochure.pdf')}
-                              className="flex-1 bg-white border-2 border-slate-200/60 hover:border-brand hover:bg-gradient-to-r hover:from-brand/5 hover:to-brand/10 text-slate-700 hover:text-brand font-semibold px-8 py-4 rounded-xl transition-all duration-300 hover:shadow-lg group"
+                              className="w-full bg-white border-2 border-slate-200/60 hover:border-brand hover:bg-gradient-to-r hover:from-brand/5 hover:to-brand/10 text-slate-700 hover:text-brand font-semibold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg group flex items-center justify-center gap-2"
                             >
-                                <span>Download Brochure</span>
-                                <svg className="w-4 h-4 inline-block ml-2 group-hover:translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                <span className="text-sm sm:text-base">Download Brochure</span>
+                                <svg className="w-3 sm:w-4 h-3 sm:h-4 group-hover:translate-y-0.5 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2v13l4-4m-4 4l-4-4m4 4v5"/>
                                 </svg>
                             </button>
@@ -743,8 +618,7 @@ const PartnersPage: React.FC = () => {
         </section>
 
         {/* Downloads Section */}
-        <section className="py-24 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative overflow-hidden">
-          {/* Background Pattern */}
+        {/* <section className="py-24 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative overflow-hidden">
           <div className="absolute inset-0 opacity-5">
             <div className="absolute inset-0" style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -834,10 +708,10 @@ const PartnersPage: React.FC = () => {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Find A Partner */}
-        <section className="py-20 md:py-28 bg-gradient-to-br from-slate-900 via-emerald-900 to-teal-900 relative overflow-hidden">
+        <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-900 via-emerald-900 to-teal-900 relative overflow-hidden">
           {/* Background Elements */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-full h-full" style={{
@@ -845,33 +719,34 @@ const PartnersPage: React.FC = () => {
             }}></div>
           </div>
           
-          <div className="container-responsive relative z-10">
+          <div className="container-responsive relative z-10 px-4 sm:px-6">
             <Reveal>
               <div className="text-center">
                 {/* Enhanced Header */}
-                <div className="mb-12">
-                  <div className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                <div className="mb-8 sm:mb-12">
+                  <div className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-sm text-emerald-300 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
                     🔍 Partner Discovery
                   </div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
                     Find A <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">Partner</span>
                   </h2>
-                  <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+                  <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
                     Get to know about our global partners and easily locate them. 
                     Connect with qualified DSecure partners in your region for seamless collaboration.
                   </p>
                   
                   {/* Feature Pills */}
-                  <div className="flex flex-wrap justify-center gap-4 mb-10">
+                  <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-10 max-w-lg sm:max-w-none mx-auto">
                     {[
                       { icon: '🌍', text: 'Global Network' },
                       { icon: '📍', text: 'Location-Based' },
                       { icon: '✅', text: 'Qualified Partners' },
                       { icon: '🤝', text: 'Direct Contact' }
                     ].map((feature, index) => (
-                      <div key={index} className="bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium border border-white/20">
-                        <span className="mr-2">{feature.icon}</span>
-                        {feature.text}
+                      <div key={index} className="bg-white/10 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-white/20 text-center">
+                        <span className="mr-1 sm:mr-2">{feature.icon}</span>
+                        <span className="hidden sm:inline">{feature.text}</span>
+                        <span className="sm:hidden">{feature.text.split(' ')[0]}</span>
                       </div>
                     ))}
                   </div>
@@ -879,23 +754,23 @@ const PartnersPage: React.FC = () => {
                   {/* Enhanced CTA Button */}
                   <button 
                     onClick={() => setShowFindPartnerModal(true)}
-                    className="group bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:via-emerald-500 hover:to-teal-500 text-white font-bold px-12 py-5 rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 flex items-center gap-4 mx-auto text-lg"
+                    className="w-full sm:w-auto group bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:via-emerald-500 hover:to-teal-500 text-white font-bold px-6 sm:px-8 md:px-12 py-4 sm:py-5 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 flex items-center justify-center gap-3 sm:gap-4 mx-auto text-base sm:text-lg"
                   >
-                    <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-colors duration-300">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <div className="w-6 sm:w-8 h-6 sm:h-8 bg-white/20 rounded-md sm:rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-colors duration-300">
+                      <svg className="w-4 sm:w-5 h-4 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
                       </svg>
                     </div>
                     <span>Find Partners Near You</span>
-                    <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 sm:w-6 h-5 sm:h-6 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M13 7l5 5-5 5M6 12h12"/>
                     </svg>
                   </button>
                   
                   {/* Additional Info */}
-                  <div className="mt-8 text-slate-400 text-sm">
+                  {/* <div className="mt-8 text-slate-400 text-sm">
                     <p>Over 1000+ verified partners across 190+ countries</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Reveal>
@@ -903,31 +778,31 @@ const PartnersPage: React.FC = () => {
         </section>
 
         {/* Partner Benefits */}
-        <section className="py-20 md:py-28 bg-gradient-to-br from-white via-emerald-50/30 to-slate-50">
-          <div className="container-responsive">
+        <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-white via-emerald-50/30 to-slate-50">
+          <div className="container-responsive px-4 sm:px-6">
             <Reveal>
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <div className="text-center mb-12 sm:mb-16">
+                <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
                   🚀 Partnership Benefits
                 </div>
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                  <span className="text-brand">WHY COLLABORATE WITH </span>
-                  <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">DSECURE</span><sup className="text-brand text-2xl">®</sup>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+                  <span className="text-brand">Why Collaborate With </span>
+                  <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">D-Secure</span><sup className="text-brand text-base sm:text-lg md:text-2xl"></sup>
                 </h2>
-                <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-4">
+                <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
                   Unlock exclusive advantages and grow your business with our comprehensive partner benefits
                 </p>
-                <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
+                <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
               </div>
             </Reveal>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {[
                 {
                   title: 'Standards-Compliant Data Erasure Products',
                   description: 'Access to standards-compliant data erasure solutions following international best practices and algorithms. Get quality solutions meeting 40+ international standards by integrating our data erasure technology.',
                   icon: (
-                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
                     </svg>
                   ),
@@ -973,36 +848,36 @@ const PartnersPage: React.FC = () => {
                 }
               ].map((benefit, index) => (
                 <Reveal key={benefit.title} delayMs={index * 150}>
-                  <div className={`group bg-white rounded-2xl shadow-xl border border-slate-200/60 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-rotate-1 p-8 h-full relative overflow-hidden hover:border-emerald-300/50`}>
+                  <div className={`group bg-white rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/60 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-rotate-1 p-4 sm:p-6 md:p-8 h-full relative overflow-hidden hover:border-emerald-300/50`}>
                     {/* Background Gradient Effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-transparent to-emerald-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
                     {/* Content */}
                     <div className="relative z-10 text-center h-full flex flex-col">
                       {/* Icon */}
-                      <div className={`w-20 h-20 bg-gradient-to-br ${benefit.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 text-white group-hover:scale-110 transition-transform duration-300 shadow-xl`}>
+                      <div className={`w-14 sm:w-16 md:w-18 lg:w-20 h-14 sm:h-16 md:h-18 lg:h-20 bg-gradient-to-br ${benefit.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 text-white group-hover:scale-110 transition-transform duration-300 shadow-xl`}>
                         {benefit.icon}
                       </div>
                       
                       {/* Title */}
-                      <h4 className="font-bold text-slate-900 mb-4 text-xl group-hover:text-emerald-800 transition-colors duration-300">
+                      <h4 className="font-bold text-slate-900 mb-3 sm:mb-4 text-base sm:text-lg md:text-xl group-hover:text-emerald-800 transition-colors duration-300">
                         {benefit.title}
                       </h4>
                       
                       {/* Description */}
-                      <p className="text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors duration-300 flex-grow">
+                      <p className="text-slate-600 text-sm sm:text-base leading-relaxed group-hover:text-slate-700 transition-colors duration-300 flex-grow">
                         {benefit.description}
                       </p>
                       
                       {/* Hover indicator */}
-                      <div className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="w-12 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
+                      <div className="mt-4 sm:mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="w-8 sm:w-10 md:w-12 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
                       </div>
                     </div>
                     
                     {/* Floating Elements */}
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
-                    <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
+                    <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
+                    <div className="absolute -bottom-1 sm:-bottom-2 -left-1 sm:-left-2 w-3 sm:w-4 h-3 sm:h-4 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse"></div>
                   </div>
                 </Reveal>
               ))}
@@ -1010,21 +885,21 @@ const PartnersPage: React.FC = () => {
             
             {/* Call to Action */}
             <Reveal delayMs={600}>
-              <div className="text-center mt-16">
-                <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 p-8 max-w-2xl mx-auto overflow-hidden">
+              <div className="text-center mt-12 sm:mt-16">
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/60 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 p-6 sm:p-8 max-w-2xl mx-auto overflow-hidden relative">
                   {/* Background gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-teal-50/30 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
                   
                   <div className="relative z-10">
-                    <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+                    <p className="text-base sm:text-lg text-slate-600 mb-4 sm:mb-6 leading-relaxed">
                       Ready to unlock these exclusive benefits and transform your business?
                     </p>
                     <button 
                       onClick={() => openPartnerModal()}
-                      className="group bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:via-emerald-700 hover:to-teal-700 text-white font-bold px-10 py-4 rounded-xl transition-all duration-300 shadow-xl hover:shadow-emerald-500/25 transform hover:scale-105 flex items-center gap-3 mx-auto"
+                      className="w-full sm:w-auto group bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:via-emerald-700 hover:to-teal-700 text-white font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 shadow-xl hover:shadow-emerald-500/25 transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 mx-auto"
                     >
-                      <span className="text-lg">🤝 Start Partnership Journey</span>
-                      <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                      <span className="text-base sm:text-lg">🤝 Start Partnership Journey</span>
+                      <svg className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M13 7l5 5-5 5M6 12h12"/>
                       </svg>
                     </button>
@@ -1070,9 +945,8 @@ const PartnersPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Statistics Section */}
-        <section className="py-20 md:py-28 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 relative overflow-hidden">
-          {/* Background Animation */}
+        
+        {/* <section className="py-20 md:py-28 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 relative overflow-hidden">
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse"></div>
             <div className="absolute bottom-20 right-20 w-40 h-40 bg-teal-300 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -1103,17 +977,14 @@ const PartnersPage: React.FC = () => {
               ].map((stat, index) => (
                 <Reveal key={index} delayMs={index * 200}>
                   <div className="group text-center bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-500 transform hover:scale-110 hover:-rotate-2 overflow-hidden shadow-xl hover:shadow-2xl p-8">
-                    {/* Animated Background */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
-                    {/* Content */}
                     <div className="relative z-10">
-                      {/* Icon */}
+                      
                       <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center text-2xl shadow-2xl transform group-hover:scale-110 transition-transform duration-300`}>
                         {stat.icon}
                       </div>
                       
-                      {/* Number with Animation */}
                       <div className="mb-4">
                         <div className="text-4xl md:text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform duration-300">
                           {stat.number}
@@ -1121,24 +992,21 @@ const PartnersPage: React.FC = () => {
                         <div className="w-12 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full mx-auto opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                       </div>
                       
-                      {/* Label */}
                       <p className="text-emerald-100 font-semibold text-lg leading-tight group-hover:text-white transition-colors duration-300">
                         {stat.label}
                       </p>
                     </div>
                     
-                    {/* Glow Effect */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-400/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
                   </div>
                 </Reveal>
               ))}
             </div>
             
-            {/* Call to Action */}
+            
             <Reveal delayMs={800}>
               <div className="text-center mt-16">
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 overflow-hidden p-8 max-w-2xl mx-auto">
-                  {/* Background overlay */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/15 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
                   
                   <div className="relative z-10">
@@ -1159,9 +1027,9 @@ const PartnersPage: React.FC = () => {
               </div>
             </Reveal>
           </div>
-        </section>
+        </section> */}
 
-        {/* Statistics Section */}
+        
         {/* <section className="py-16 md:py-24 bg-white">
           <div className="container-responsive">
             <Reveal>
@@ -1179,7 +1047,7 @@ const PartnersPage: React.FC = () => {
               {[
                 { number: '500K+', label: 'CUSTOMERS' },
                 { number: '24/7', label: 'SUPPORT AVAILABLE' },
-                { number: '50+', label: 'R&D ENGINEERS' },
+                { number: '', label: 'R&D ENGINEERS' },
                 { number: '100+', label: 'COUNTRIES' },
                 { number: '1000+', label: 'PARTNERS' }
               ].map((stat, index) => (
@@ -1203,6 +1071,20 @@ const PartnersPage: React.FC = () => {
           onSubmit={handlePartnerSubmit}
           onClose={() => setShowPartnerModal(false)}
           preSelectedPartnerType={activePartnerType}
+          customConfig={{
+            ...formConfigs.partnership,
+            customValidation: (data: any) => {
+              // Add reCAPTCHA verification
+              if (!partnerRecaptchaVerified) {
+                return 'Please complete the reCAPTCHA verification.';
+              }
+              return null;
+            },
+            onSuccess: () => {
+              setShowPartnerModal(false);
+              setPartnerRecaptchaVerified(false);
+            }
+          }}
         />
       )}
 
@@ -1347,6 +1229,20 @@ const PartnersPage: React.FC = () => {
         <LicenseForm
           onSubmit={handleLicenseSubmit}
           onClose={() => setShowLicenseModal(false)}
+          customConfig={{
+            ...formConfigs.license,
+            customValidation: (data: any) => {
+              // Add reCAPTCHA verification
+              if (!licenseRecaptchaVerified) {
+                return 'Please complete the reCAPTCHA verification.';
+              }
+              return null;
+            },
+            onSuccess: () => {
+              setShowLicenseModal(false);
+              setLicenseRecaptchaVerified(false);
+            }
+          }}
         />
       )}
 
@@ -1459,7 +1355,7 @@ const PartnersPage: React.FC = () => {
                       className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
                       onClick={(e) => {
                         e.preventDefault();
-                        alert('Message sent successfully! The partner will contact you soon.');
+                        showToast('Message sent successfully! The partner will contact you soon.', 'success');
                         setShowContactModal(false);
                       }}
                     >
@@ -1570,7 +1466,7 @@ const PartnersPage: React.FC = () => {
                       healthcare, finance, and government organizations.
                     </p>
                     <p className="text-slate-700 leading-relaxed">
-                      Our team of certified professionals ensures complete data destruction compliance with international 
+                      Our team of Compliant professionals ensures complete data destruction compliance with international 
                       standards including NIST 800-88, DOD 5220.22-M, and Common Criteria. We provide comprehensive 
                       certificates of destruction for audit purposes and maintain the highest levels of security throughout 
                       the data erasure process.
@@ -1656,6 +1552,9 @@ const PartnersPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Toast Notification */}
+      {toast && <Toast toast={toast} onClose={hideToast} />}
     </>
   );
 };
