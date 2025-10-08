@@ -1,5 +1,99 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { useForm, validationRules } from "@/hooks";
+
+// Form input components - removed memo to prevent focus loss during typing
+const FormInput: React.FC<{
+  type: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className: string;
+  placeholder: string;
+  required?: boolean;
+  hasError?: boolean;
+}> = ({ type, name, value, onChange, className, placeholder, required, hasError }) => (
+  <input
+    type={type}
+    name={name}
+    value={value}
+    onChange={onChange}
+    className={className}
+    placeholder={placeholder}
+    required={required}
+  />
+);
+
+const FormSelect: React.FC<{
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  className: string;
+  children: React.ReactNode;
+  required?: boolean;
+}> = ({ name, value, onChange, className, children, required }) => (
+  <select
+    name={name}
+    value={value}
+    onChange={onChange}
+    className={className}
+    required={required}
+  >
+    {children}
+  </select>
+);
+
+const FormTextarea: React.FC<{
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  className: string;
+  placeholder: string;
+  rows?: number;
+  required?: boolean;
+}> = ({ name, value, onChange, className, placeholder, rows, required }) => (
+  <textarea
+    name={name}
+    value={value}
+    onChange={onChange}
+    className={className}
+    placeholder={placeholder}
+    rows={rows}
+    required={required}
+  />
+);
+
+const FormRadio: React.FC<{
+  name: string;
+  value: string;
+  checked: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className: string;
+}> = ({ name, value, checked, onChange, className }) => (
+  <input
+    type="radio"
+    name={name}
+    value={value}
+    checked={checked}
+    onChange={onChange}
+    className={className}
+  />
+);
+
+// Modal wrapper component - moved outside to prevent recreation on every render
+const ModalWrapper: React.FC<{ 
+  isModal: boolean; 
+  children: React.ReactNode 
+}> = ({ isModal, children }) => {
+  if (!isModal) return <>{children}</>;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[95vh] flex flex-col overflow-hidden">
+        {children}
+      </div>
+    </div>
+  );
+};
 
 // License form data type
 export interface LicenseFormData {
@@ -27,6 +121,7 @@ export interface LicenseFormProps {
   showRecaptcha?: boolean;
   showPrivacyPolicy?: boolean;
   submitButtonText?: string;
+  customConfig?: any; // Allow custom form submission configuration
 }
 
 // Default initial values for the license form
@@ -48,6 +143,7 @@ export const defaultLicenseFormData: LicenseFormData = {
 export const licenseValidationRules = {
   fullName: [validationRules.required("Full Name")],
   email: [validationRules.required("Email"), validationRules.email()],
+  phone: [validationRules.phone()],  // Added phone validation
   company: [validationRules.required("Company")],
   country: [validationRules.required("Country")],
   eraseOption: [validationRules.required("Erase Option")],
@@ -57,7 +153,7 @@ export const licenseValidationRules = {
   ],
 };
 
-// Reusable LicenseForm component
+// Reusable LicenseForm component - removed memo to prevent focus issues
 export const LicenseForm: React.FC<LicenseFormProps> = ({
   onSubmit,
   onClose,
@@ -68,12 +164,13 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
   showRecaptcha = true,
   showPrivacyPolicy = true,
   submitButtonText = "Request Free License",
+  customConfig,
 }) => {
   // Initialize form with useForm hook
   const licenseForm = useForm<LicenseFormData>(defaultLicenseFormData);
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate form
@@ -84,25 +181,46 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
 
     // Call onSubmit callback with form data
     onSubmit(licenseForm.formData);
-  };
+    
+    // Reset form after successful submission
+    licenseForm.resetForm();
+  }, [onSubmit, licenseForm]);
 
-  // Modal wrapper
-  const ModalWrapper: React.FC<{ children: React.ReactNode }> = ({
-    children,
-  }) => {
-    if (!isModal) return <>{children}</>;
+  // Memoized country options
+  const countryOptions = useMemo(() => [
+    "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
+    "India", "China", "Japan", "South Korea", "Singapore", "Netherlands",
+    "Switzerland", "Sweden", "Norway", "Denmark", "Italy", "Spain", "Brazil",
+    "Mexico", "Russia", "Turkey", "South Africa", "United Arab Emirates",
+    "Saudi Arabia", "Hong Kong", "Other"
+  ], []);
 
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-hidden">
-        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[95vh] flex flex-col overflow-hidden">
-          {children}
-        </div>
-      </div>
-    );
-  };
+  // Memoized business type options
+  const businessTypeOptions = useMemo(() => [
+    "Technology/Software", "Healthcare", "Finance/Banking", "Education",
+    "Government", "Manufacturing", "Retail", "Consulting", "Non-profit",
+    "Legal", "Real Estate", "Other"
+  ], []);
+
+  // Memoized compliance options
+  const complianceOptions = useMemo(() => [
+    "GDPR", "HIPAA", "SOX", "PCI DSS", "ISO 27001", "Other", "Not Required"
+  ], []);
+
+  // Memoized erase options
+  const eraseOptions = useMemo(() => [
+    "DoD 5220.22-M (3-pass)", "DoD 5220.22-M (7-pass)", "NIST 800-88",
+    "Gutmann (35-pass)", "Random Data (1-pass)", "Zero Fill (1-pass)",
+    "Custom Pattern"
+  ], []);
+
+  // Memoized device count options
+  const deviceCountOptions = useMemo(() => [
+    "1-10", "11-50", "51-100", "101-500", "501-1000", "1000+"
+  ], []);
 
   return (
-    <ModalWrapper>
+    <ModalWrapper isModal={isModal}>
       <div className={`${className} flex flex-col h-full overflow-hidden`}>
         {/* Fixed Header */}
         {showHeader && (
@@ -138,8 +256,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
               {/* <label className="block text-lg font-semibold text-gray-700 mb-4">Usage:</label> */}
               <div className="flex items-center justify-center gap-8">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
+                  <FormRadio
                     name="usage"
                     value="business"
                     checked={licenseForm.formData.usage === "business"}
@@ -151,8 +268,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   </span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
+                  <FormRadio
                     name="usage"
                     value="personal"
                     checked={licenseForm.formData.usage === "personal"}
@@ -168,7 +284,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
 
             {/* Full Name */}
             <div>
-              <input
+              <FormInput
                 type="text"
                 name="fullName"
                 value={licenseForm.formData.fullName}
@@ -187,7 +303,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
             {/* Email and Phone Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <input
+                <FormInput
                   type="email"
                   name="email"
                   value={licenseForm.formData.email}
@@ -202,66 +318,70 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   </p>
                 )}
               </div>
-              <div className="flex">
-                <select className="border border-gray-300 border-r-0 rounded-l-lg px-3 py-4 bg-gray-50 text-gray-600">
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+91">🇮🇳 +91</option>
-                  <option value="+86">🇨🇳 +86</option>
-                  <option value="+49">🇩🇪 +49</option>
-                  <option value="+33">🇫🇷 +33</option>
-                  <option value="+81">🇯🇵 +81</option>
-                  <option value="+61">🇦🇺 +61</option>
-                  <option value="+39">🇮🇹 +39</option>
-                  <option value="+34">🇪🇸 +34</option>
-                  <option value="+31">🇳🇱 +31</option>
-                  <option value="+41">🇨🇭 +41</option>
-                  <option value="+46">🇸🇪 +46</option>
-                  <option value="+47">🇳🇴 +47</option>
-                  <option value="+45">🇩🇰 +45</option>
-                  <option value="+82">🇰🇷 +82</option>
-                  <option value="+65">🇸🇬 +65</option>
-                  <option value="+852">🇭🇰 +852</option>
-                  <option value="+971">🇦🇪 +971</option>
-                  <option value="+966">🇸🇦 +966</option>
-                  <option value="+55">🇧🇷 +55</option>
-                  <option value="+52">🇲🇽 +52</option>
-                  <option value="+7">🇷🇺 +7</option>
-                  <option value="+90">🇹🇷 +90</option>
-                  <option value="+27">🇿🇦 +27</option>
-                </select>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={licenseForm.formData.phone}
-                  onChange={licenseForm.handleInputChange}
-                  required
-                  className="flex-1 border border-gray-300 rounded-r-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                  placeholder="Phone No"
-                />
+              <div className="flex flex-col">
+                <div className="flex">
+                  <select className="border border-gray-300 border-r-0 rounded-l-lg px-3 py-4 bg-gray-50 text-gray-600">
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+86">🇨🇳 +86</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="+33">🇫🇷 +33</option>
+                    <option value="+81">🇯🇵 +81</option>
+                    <option value="+61">🇦🇺 +61</option>
+                    <option value="+39">🇮🇹 +39</option>
+                    <option value="+34">🇪🇸 +34</option>
+                    <option value="+31">🇳🇱 +31</option>
+                    <option value="+41">🇨🇭 +41</option>
+                    <option value="+46">🇸🇪 +46</option>
+                    <option value="+47">🇳🇴 +47</option>
+                    <option value="+45">🇩🇰 +45</option>
+                    <option value="+82">🇰🇷 +82</option>
+                    <option value="+65">🇸🇬 +65</option>
+                    <option value="+852">🇭🇰 +852</option>
+                    <option value="+971">🇦🇪 +971</option>
+                    <option value="+966">🇸🇦 +966</option>
+                    <option value="+55">🇧🇷 +55</option>
+                    <option value="+52">🇲🇽 +52</option>
+                    <option value="+7">🇷🇺 +7</option>
+                    <option value="+90">🇹🇷 +90</option>
+                    <option value="+27">🇿🇦 +27</option>
+                  </select>
+                  <FormInput
+                    type="tel"
+                    name="phone"
+                    value={licenseForm.formData.phone}
+                    onChange={licenseForm.handleInputChange}
+                    required
+                    className="flex-1 border border-gray-300 rounded-r-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                    placeholder="Phone No"
+                  />
+                </div>
+                {licenseForm.errors.phone && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {licenseForm.errors.phone}
+                  </p>
+                )}
               </div>
             </div>
 
             {/* Business Type and Company Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <select
+              <FormSelect
                 name="businessType"
                 value={licenseForm.formData.businessType}
                 onChange={licenseForm.handleInputChange}
                 className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
               >
                 <option value="">Business Type</option>
-                <option value="Technology">Technology</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Finance">Finance</option>
-                <option value="Education">Education</option>
-                <option value="Government">Government</option>
-                <option value="Manufacturing">Manufacturing</option>
-                <option value="Retail">Retail</option>
-                <option value="Other">Other</option>
-              </select>
+                {businessTypeOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </FormSelect>
               <div>
-                <input
+                <FormInput
                   type="text"
                   name="company"
                   value={licenseForm.formData.company}

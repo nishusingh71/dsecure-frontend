@@ -1,7 +1,84 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useForm, validationRules } from "@/hooks";
+import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField } from "@/components/ui";
+
+// Form input components - removed memo to prevent focus loss during typing
+const FormInput: React.FC<{
+  type: string;
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className: string;
+  placeholder: string;
+  required?: boolean;
+}> = ({ type, name, value, onChange, className, placeholder, required }) => (
+  <input
+    type={type}
+    name={name}
+    value={value}
+    onChange={onChange}
+    className={className}
+    placeholder={placeholder}
+    required={required}
+  />
+);
+
+const FormSelect: React.FC<{
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  className: string;
+  children: React.ReactNode;
+  required?: boolean;
+}> = ({ name, value, onChange, className, children, required }) => (
+  <select
+    name={name}
+    value={value}
+    onChange={onChange}
+    className={className}
+    required={required}
+  >
+    {children}
+  </select>
+);
+
+const FormTextarea: React.FC<{
+  name: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  className: string;
+  placeholder: string;
+  rows?: number;
+  required?: boolean;
+}> = ({ name, value, onChange, className, placeholder, rows, required }) => (
+  <textarea
+    name={name}
+    value={value}
+    onChange={onChange}
+    className={className}
+    placeholder={placeholder}
+    rows={rows}
+    required={required}
+  />
+);
+
+// Modal wrapper component - moved outside to prevent recreation on every render
+const ModalWrapper: React.FC<{ 
+  isModal: boolean; 
+  children: React.ReactNode 
+}> = ({ isModal, children }) => {
+  if (!isModal) return <>{children}</>;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-hidden">
+      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+        {children}
+      </div>
+    </div>
+  );
+};
 
 // Partnership form data type
 export interface PartnershipFormData {
@@ -17,7 +94,7 @@ export interface PartnershipFormData {
 
 // Props for the PartnershipForm component
 export interface PartnershipFormProps {
-  onSubmit: (formData: PartnershipFormData) => void;
+  onSubmit?: (formData: PartnershipFormData) => void; // Made optional since we can handle submission internally
   onClose?: () => void;
   isModal?: boolean;
   className?: string;
@@ -27,6 +104,7 @@ export interface PartnershipFormProps {
   showPrivacyPolicy?: boolean;
   submitButtonText?: string;
   preSelectedPartnerType?: string;
+  customConfig?: any; // Allow custom form submission configuration
 }
 
 // Default initial values for the partnership form
@@ -58,7 +136,7 @@ export const partnershipValidationRules = {
   ],
 };
 
-// Reusable PartnershipForm component
+// Reusable PartnershipForm component - removed memo to prevent focus issues
 export const PartnershipForm: React.FC<PartnershipFormProps> = ({
   onSubmit,
   onClose,
@@ -70,6 +148,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
   showPrivacyPolicy = true,
   submitButtonText = "Submit",
   preSelectedPartnerType,
+  customConfig,
 }) => {
   // Initialize form with useForm hook
   const partnerForm = useForm<PartnershipFormData>({
@@ -78,8 +157,26 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
       preSelectedPartnerType || defaultPartnershipFormData.partnerType,
   });
 
+  // Setup form submission with our reusable system
+  const { isSubmitting, submitForm } = useFormSubmission(
+    customConfig || {
+      ...formConfigs.partnership,
+      onSuccess: (data) => {
+        // Call external onSubmit if provided (for backward compatibility)
+        if (onSubmit) {
+          onSubmit(data as PartnershipFormData);
+        }
+        // Close modal on success
+        if (onClose) {
+          setTimeout(() => onClose(), 2000);
+        }
+      }
+    },
+    partnerForm.resetForm
+  );
+
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate form
@@ -88,27 +185,35 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
       return;
     }
 
-    // Call onSubmit callback with form data
-    onSubmit(partnerForm.formData);
-  };
+    // Submit using our reusable system
+    await submitForm(partnerForm.formData);
+    
+    // Reset form after successful submission
+    partnerForm.resetForm();
+  }, [partnerForm, submitForm]);
 
-  // Modal wrapper
-  const ModalWrapper: React.FC<{ children: React.ReactNode }> = ({
-    children,
-  }) => {
-    if (!isModal) return <>{children}</>;
+  // Memoized partner type options
+  const partnerTypeOptions = useMemo(() => [
+    "ITAD Partner",
+    "Reseller Partner", 
+    "Technology Partner",
+    "Consulting Partner",
+    "Integration Partner",
+    "Distributor Partner",
+    "Other"
+  ], []);
 
-    return (
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-hidden">
-        <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-          {children}
-        </div>
-      </div>
-    );
-  };
+  // Memoized country options
+  const countryOptions = useMemo(() => [
+    "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
+    "India", "China", "Japan", "South Korea", "Singapore", "Netherlands",
+    "Switzerland", "Sweden", "Norway", "Denmark", "Italy", "Spain", "Brazil",
+    "Mexico", "Russia", "Turkey", "South Africa", "United Arab Emirates",
+    "Saudi Arabia", "Hong Kong", "Other"
+  ], []);
 
   return (
-    <ModalWrapper>
+    <ModalWrapper isModal={isModal}>
       <div className={`${className} flex flex-col h-full overflow-hidden`}>
         {/* Fixed Header */}
         {showHeader && (
@@ -150,7 +255,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <input
+                <FormInput
                   type="email"
                   name="businessEmail"
                   placeholder="Business Email*"
@@ -166,7 +271,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                 )}
               </div>
               <div>
-                <input
+                <FormInput
                   type="tel"
                   name="phoneNo"
                   placeholder="Phone No*"
@@ -185,7 +290,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <input
+                <FormInput
                   type="text"
                   name="companyName"
                   placeholder="Company Name*"
@@ -201,7 +306,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                 )}
               </div>
               <div>
-                <input
+                <FormInput
                   type="url"
                   name="website"
                   placeholder="Website*"
@@ -220,41 +325,19 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <select
+                <FormSelect
                   name="country"
                   value={partnerForm.formData.country}
                   onChange={partnerForm.handleInputChange}
                   required
                   className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-white"
                 >
-                  <option value="United States">United States</option>
-                  <option value="Canada">Canada</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Germany">Germany</option>
-                  <option value="France">France</option>
-                  <option value="Italy">Italy</option>
-                  <option value="Spain">Spain</option>
-                  <option value="Netherlands">Netherlands</option>
-                  <option value="Switzerland">Switzerland</option>
-                  <option value="Sweden">Sweden</option>
-                  <option value="Norway">Norway</option>
-                  <option value="Denmark">Denmark</option>
-                  <option value="India">India</option>
-                  <option value="China">China</option>
-                  <option value="Japan">Japan</option>
-                  <option value="South Korea">South Korea</option>
-                  <option value="Singapore">Singapore</option>
-                  <option value="Hong Kong">Hong Kong</option>
-                  <option value="Australia">Australia</option>
-                  <option value="UAE">United Arab Emirates</option>
-                  <option value="Saudi Arabia">Saudi Arabia</option>
-                  <option value="Brazil">Brazil</option>
-                  <option value="Mexico">Mexico</option>
-                  <option value="Russia">Russia</option>
-                  <option value="Turkey">Turkey</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Other">Other</option>
-                </select>
+                  {countryOptions.map(country => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </FormSelect>
                 {partnerForm.errors.country && (
                   <p className="text-red-500 text-sm mt-1">
                     {partnerForm.errors.country}
@@ -263,7 +346,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
               </div>
 
               <div>
-                <select
+                <FormSelect
                   name="partnerType"
                   value={partnerForm.formData.partnerType}
                   onChange={partnerForm.handleInputChange}
@@ -271,12 +354,12 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-white"
                 >
                   <option value="">Partner Type*</option>
-                  <option value="ITAD">ITAD Partner</option>
-                  <option value="MSP">MSP Partner</option>
-                  <option value="Distributor">Distributor Partner</option>
-                  <option value="Reseller">Reseller Partner</option>
-                  <option value="OEM">OEM Partner</option>
-                </select>
+                  {partnerTypeOptions.map(type => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </FormSelect>
                 {partnerForm.errors.partnerType && (
                   <p className="text-red-500 text-sm mt-1">
                     {partnerForm.errors.partnerType}
@@ -286,7 +369,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
             </div>
 
             <div>
-              <textarea
+              <FormTextarea
                 name="businessDescription"
                 placeholder="Tell us more about your business."
                 value={partnerForm.formData.businessDescription}
@@ -327,9 +410,20 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
 
             <button
               type="submit"
-              className="w-full bg-brand hover:bg-brand-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+              disabled={isSubmitting || partnerForm.isSubmitting}
+              className="w-full bg-brand hover:bg-brand-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {submitButtonText}
+              {(isSubmitting || partnerForm.isSubmitting) ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Submitting...
+                </>
+              ) : (
+                submitButtonText
+              )}
             </button>
           </form>
         </div>

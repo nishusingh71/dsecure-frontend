@@ -32,6 +32,9 @@ src/assets/Screenshots/
 *.bmp
 *.webp
 
+# Desktop folder and unwanted assets
+src/assets/Desktop/
+
 # Test files and examples
 src/test-*.tsx
 src/examples/
@@ -41,3 +44,18 @@ tsconfig.tsbuildinfo
 
 # Desktop.ini files
 desktop.ini
+
+# Large binary files
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Package locks from subprojects
+**/package-lock.json
+**/yarn.lock
+
+# Browser data and cache
+**/Old Firefox Data/
+**/cache/
+**/temp/

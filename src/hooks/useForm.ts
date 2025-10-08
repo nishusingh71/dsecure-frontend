@@ -13,17 +13,28 @@ export function useForm<T extends Record<string, any>>(initialValues: T) {
     }));
     
     // Clear error for this field when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({
-        ...prev,
-        [field]: undefined
-      }));
-    }
-  }, [errors]);
+    setErrors(prev => {
+      if (prev[field]) {
+        return {
+          ...prev,
+          [field]: undefined
+        };
+      }
+      return prev;
+    });
+  }, []); // Removed errors dependency to make callback more stable
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    updateField(name as keyof T, value as T[keyof T]);
+    
+    // Filter phone number input to allow only numbers and formatting characters
+    let filteredValue = value;
+    if (name === 'phone' || name === 'phoneNo' || name.toLowerCase().includes('phone')) {
+      // Allow digits, +, spaces, hyphens, parentheses, and dots
+      filteredValue = value.replace(/[^\d\+\s\-\(\)\.]/g, '');
+    }
+    
+    updateField(name as keyof T, filteredValue as T[keyof T]);
   }, [updateField]);
 
   const resetForm = useCallback(() => {
@@ -95,9 +106,31 @@ export const validationRules = {
   },
   
   phone: (): ValidationRule<string> => (value: string) => {
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    if (value && !phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
-      return 'Please enter a valid phone number';
+    if (!value) return; // Allow empty for optional fields
+    
+    // Remove all non-digit characters except + for country code
+    const cleanPhone = value.replace(/[\s\-\(\)\.]/g, '');
+    
+    // Check if it contains only digits and optionally starts with +
+    const phoneRegex = /^[\+]?[0-9]{7,15}$/;
+    
+    if (!phoneRegex.test(cleanPhone)) {
+      return 'Phone number should contain only numbers (7-15 digits)';
+    }
+    
+    // Additional check for country code format
+    if (cleanPhone.startsWith('+')) {
+      const withoutPlus = cleanPhone.substring(1);
+      if (withoutPlus.length < 7 || withoutPlus.length > 15) {
+        return 'Phone number should be 7-15 digits after country code';
+      }
+    }
+  },
+  
+  // New validation rule for numeric-only input
+  numericOnly: (): ValidationRule<string> => (value: string) => {
+    if (value && !/^[\+\d\s\-\(\)\.]*$/.test(value)) {
+      return 'Only numbers, spaces, and phone formatting characters are allowed';
     }
   },
   
