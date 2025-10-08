@@ -211,7 +211,7 @@ const SupportTicketModal: React.FC<{
               value={ticketForm.description}
               onChange={onInputChange}
               required
-              rows={6}
+              rows={1}
               placeholder="Please provide detailed information about your issue or question..."
               label="Description"
             />
@@ -223,13 +223,13 @@ const SupportTicketModal: React.FC<{
               >
                 Submit Ticket
               </button>
-              <button
+              {/* <button
                 type="button"
                 onClick={onClose}
                 className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
               >
                 Cancel
-              </button>
+              </button> */}
             </div>
           </form>
         </div>
@@ -961,6 +961,30 @@ const SupportPage: React.FC = () => {
                     Product Walkthroughs & How To Videos.
                   </p>
                   <Link to="/support/product-videos" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                    Learn More →
+                  </Link>
+                </div>
+              </Reveal>
+
+              {/* Technical Blog */}
+              <Reveal delayMs={600}>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
+                  <div className="w-16 h-16 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-teal-200 transition-colors">
+                    <svg
+                      className="w-8 h-8 text-teal-600"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-4">
+                    Technical Blog
+                  </h3>
+                  <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
+                    Insights and practical guides on data erasure, cybersecurity, and IT asset lifecycle management.
+                  </p>
+                  <Link to="/blog" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     Learn More →
                   </Link>
                 </div>

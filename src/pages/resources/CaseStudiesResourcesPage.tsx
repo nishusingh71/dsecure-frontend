@@ -1,6 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { downloadResource } from '../../utils/downloadUtils'
+import { useToast } from '@/components/Toast'
 import { 
   CheckIcon, 
   BriefcaseIcon, 
@@ -38,6 +40,7 @@ export default function CaseStudiesResourcesPage() {
 }
 
 function CaseStudiesResourcesContent() {
+  const toast = useToast()
   const featuredCaseStudies = [
     {
       title: 'Fortune 500 Manufacturing: 60% Faster IT Refresh',
@@ -329,10 +332,17 @@ function CaseStudiesResourcesContent() {
                           </div>
                           
                           <div className="mt-6">
-                            <Link to="/contact" className="border-2 border-purple-600 text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors w-full justify-center text-sm inline-flex items-center">
+                            <button 
+                              onClick={() => {
+                                const ok = downloadResource({ title: study.title, downloadSize: study.downloadSize, pages: study.pages, type: 'case-study' })
+                                if (ok) toast.showToast(`Downloaded: ${study.title}`, 'success')
+                                else toast.showToast('Download failed. Please try again.', 'error')
+                              }}
+                              className="border-2 border-purple-600 text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors w-full justify-center text-sm inline-flex items-center"
+                            >
                               Download Full Case Study
                               <ArrowDownIcon className="w-4 h-4 ml-1" filled={true} />
-                            </Link>
+                            </button>
                             <div className="text-xs text-slate-500 text-center mt-2">
                               {study.pages} pages • {study.downloadSize}
                             </div>

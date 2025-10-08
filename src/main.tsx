@@ -6,6 +6,7 @@ import "./index.css";
 import "./critical.css";
 import "./responsive.css";
 import { HelmetProvider } from "react-helmet-async";
+import { ToastProvider } from './components/Toast';
 
 // Performance monitoring
 if ("performance" in window) {
@@ -62,7 +63,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter
         future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
       >
-        <App />
+        <ToastProvider>
+          <App />
+        </ToastProvider>
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>

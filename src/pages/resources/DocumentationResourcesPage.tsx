@@ -1,6 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { downloadResource } from '../../utils/downloadUtils'
+import { useToast } from '@/components/Toast'
 import { 
   CheckIcon, 
   DatabaseIcon, 
@@ -18,15 +20,15 @@ export default function DocumentationResourcesPage() {
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/resources/documentation" />
         <title>
-          Technical Documentation | DSecure API & Integration Guides
+          Technical Documentation | DSecure Data Erasure Solutions
         </title>
         <meta
           name="description"
-          content="Comprehensive technical documentation for DSecure data erasure solutions. API guides, integration tutorials, and developer resources."
+          content="Comprehensive technical documentation for DSecure data erasure solutions. Integration guides, tutorials, and developer resources."
         />
         <meta
           name="keywords"
-          content="DSecure documentation, API integration guide, developer resources, technical documentation, data erasure integration"
+          content="DSecure documentation, integration guide, developer resources, technical documentation, data erasure integration"
         />
         <meta name="robots" content="index, follow" />
       </Helmet>
@@ -37,35 +39,9 @@ export default function DocumentationResourcesPage() {
 }
 
 function DocumentationResourcesContent() {
+  const toast = useToast()
+  
   const documentationCategories = [
-    {
-      title: 'API Integration',
-      description: 'Complete guides for integrating DSecure APIs into your systems',
-      icon: <GearIcon className="w-6 h-6" filled={true} />,
-      documents: [
-        {
-          title: 'REST API Documentation',
-          description: 'Complete REST API reference with endpoints and examples',
-          pages: 45,
-          format: 'PDF',
-          size: '3.2 MB'
-        },
-        {
-          title: 'SDK Integration Guide',
-          description: 'Step-by-step guide for integrating our SDKs',
-          pages: 32,
-          format: 'PDF',
-          size: '2.8 MB'
-        },
-        {
-          title: 'Webhook Configuration',
-          description: 'Setting up webhooks for real-time notifications',
-          pages: 18,
-          format: 'PDF',
-          size: '1.5 MB'
-        }
-      ]
-    },
     {
       title: 'Implementation Guides',
       description: 'Step-by-step implementation guides for different environments',
@@ -132,10 +108,10 @@ function DocumentationResourcesContent() {
       time: '5 min'
     },
     {
-      title: 'API Quick Integration',
-      description: 'Integrate DSecure API into your application quickly',
-      steps: ['Get API credentials', 'Make first API call', 'Handle responses', 'Error handling'],
-      time: '10 min'
+      title: 'Google Drive Erasure Setup',
+      description: 'Secure Google Drive data erasure configuration and usage',
+      steps: ['Install DSecure extension', 'Configure erasure settings', 'Connect to Google Drive', 'Execute secure erasure'],
+      time: '15 min'
     },
     {
       title: 'Enterprise Setup',
@@ -191,14 +167,14 @@ function DocumentationResourcesContent() {
               </Reveal>
               <Reveal delayMs={20}>
                 <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl mx-auto">
-                  Comprehensive technical documentation, API guides, and integration resources 
+                  Comprehensive technical documentation and user guides 
                   to help you implement and optimize DSecure data erasure solutions.
                 </p>
               </Reveal>
               <Reveal delayMs={30}>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link to="#api-docs" className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
-                    Browse API Docs
+                  <Link to="#documentation" className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+                    Browse Documentation
                   </Link>
                   <Link to="/contact" className="inline-flex items-center justify-center px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition-colors">
                     Get Technical Support
@@ -258,7 +234,7 @@ function DocumentationResourcesContent() {
       </section>
 
       {/* Documentation Categories */}
-      <section id="api-docs" className="py-16 md:py-24">
+      <section id="documentation" className="py-16 md:py-24">
         <div className="container-app">
           <div className="text-center mb-12">
             <Reveal>
@@ -298,9 +274,21 @@ function DocumentationResourcesContent() {
                             <span>{doc.format}</span>
                             <span>{doc.size}</span>
                           </div>
-                          <Link to="/contact" className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1">
+                          <button 
+                            onClick={() => {
+                              const ok = downloadResource({
+                                title: doc.title,
+                                downloadSize: doc.size,
+                                pages: Number(doc.pages) || 1,
+                                type: 'documentation'
+                              })
+                              if (ok) toast.showToast(`Downloaded: ${doc.title}`, 'success')
+                              else toast.showToast('Download failed. Please try again.', 'error')
+                            }}
+                            className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1 bg-transparent border-none cursor-pointer"
+                          >
                             Download <ArrowDownIcon className="w-4 h-4" filled={true} />
-                          </Link>
+                          </button>
                         </div>
                       ))}
                     </div>

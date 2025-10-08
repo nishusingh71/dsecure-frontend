@@ -2,6 +2,7 @@ import React, { useState, useEffect, memo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { assets, getOptimizedImageUrl } from '@/utils/cloudinary';
 import { ProductImage } from '@/components/ProductImage';
+import { useToast } from '@/components/Toast';
 
 interface PaymentData {
   productName: string;
@@ -15,10 +16,19 @@ interface PaymentData {
   deliveryMethod: string;
   features: string[];
   category: string;
+  selectedAddons?: string[];
+  addonsData?: Array<{
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    icon: string;
+  }>;
 }
 
 const CheckoutPage = memo(function CheckoutPage() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [customerInfo, setCustomerInfo] = useState({
     firstName: '',
@@ -42,8 +52,8 @@ const CheckoutPage = memo(function CheckoutPage() {
     if (savedPaymentData) {
       setPaymentData(JSON.parse(savedPaymentData));
     } else {
-      // Redirect back to pricing if no payment data
-      navigate('/pricing');
+      // Redirect back to pricing and plan if no payment data
+      navigate('/pricing-and-plan');
     }
   }, [navigate]);
 
@@ -55,7 +65,7 @@ const CheckoutPage = memo(function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!agreedToTerms) {
-      alert('Please agree to the terms and conditions');
+      toast.showToast('Please agree to the terms and conditions', 'error');
       return;
     }
 
@@ -83,7 +93,7 @@ const CheckoutPage = memo(function CheckoutPage() {
       navigate('/order-success');
       
     } catch (error) {
-      alert('Payment failed. Please try again.');
+      toast.showToast('Payment failed. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -142,17 +152,80 @@ const CheckoutPage = memo(function CheckoutPage() {
                   </div>
                 </div>
                 
+                {/* Add-ons Section */}
+                {paymentData.addonsData && paymentData.addonsData.length > 0 && (
+                  <div className="border-t pt-4">
+                    <h4 className="font-semibold text-gray-900 mb-3">🚀 Premium Add-ons:</h4>
+                    <div className="space-y-3">
+                      {paymentData.addonsData.map((addon) => (
+                        <div key={addon.id} className="flex items-center justify-between p-3 bg-teal-50 rounded-lg border border-teal-100">
+                          <div className="flex items-center space-x-3">
+                            <span className="text-lg">{addon.icon}</span>
+                            <div>
+                              <p className="font-medium text-gray-900">{addon.name}</p>
+                              <p className="text-xs text-gray-600">{addon.description}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-semibold text-teal-600">
+                              ${addon.price}/license
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              ${(addon.price * parseInt(paymentData.quantity) * parseInt(paymentData.duration)).toLocaleString()} total
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 <div className="border-t pt-4">
+                  {/* Base Product Pricing */}
                   <div className="flex justify-between text-sm">
-                    <span>Subtotal:</span>
+                    <span>Base Product ({paymentData.quantity} licenses × {paymentData.duration} year{parseInt(paymentData.duration) > 1 ? 's' : ''}):</span>
                     <span>${(paymentData.unitPrice * parseInt(paymentData.quantity) * parseInt(paymentData.duration)).toLocaleString()}</span>
                   </div>
-                  {paymentData.totalPrice < (paymentData.unitPrice * parseInt(paymentData.quantity) * parseInt(paymentData.duration)) && (
-                    <div className="flex justify-between text-sm text-green-600">
-                      <span>Discount:</span>
-                      <span>-${((paymentData.unitPrice * parseInt(paymentData.quantity) * parseInt(paymentData.duration)) - paymentData.totalPrice).toLocaleString()}</span>
+                  
+                  {/* Add-ons Pricing */}
+                  {paymentData.addonsData && paymentData.addonsData.length > 0 && (
+                    <div className="space-y-1 mt-1">
+                      {paymentData.addonsData.map((addon) => (
+                        <div key={addon.id} className="flex justify-between text-sm text-teal-600">
+                          <span>{addon.name} ({paymentData.quantity} licenses × {paymentData.duration} year{parseInt(paymentData.duration) > 1 ? 's' : ''}):</span>
+                          <span>+${(addon.price * parseInt(paymentData.quantity) * parseInt(paymentData.duration)).toLocaleString()}</span>
+                        </div>
+                      ))}
                     </div>
                   )}
+                  
+                  {/* Calculate subtotal including add-ons */}
+                  {(() => {
+                    const baseTotal = paymentData.unitPrice * parseInt(paymentData.quantity) * parseInt(paymentData.duration);
+                    const addonsTotal = paymentData.addonsData ? 
+                      paymentData.addonsData.reduce((total, addon) => 
+                        total + (addon.price * parseInt(paymentData.quantity) * parseInt(paymentData.duration)), 0
+                      ) : 0;
+                    const subtotal = baseTotal + addonsTotal;
+                    
+                    return (
+                      <>
+                        {paymentData.addonsData && paymentData.addonsData.length > 0 && (
+                          <div className="flex justify-between text-sm font-medium border-t pt-2 mt-2">
+                            <span>Subtotal:</span>
+                            <span>${subtotal.toLocaleString()}</span>
+                          </div>
+                        )}
+                        
+                        {paymentData.totalPrice < subtotal && (
+                          <div className="flex justify-between text-sm text-green-600">
+                            <span>Volume/Multi-year Discount:</span>
+                            <span>-${(subtotal - paymentData.totalPrice).toLocaleString()}</span>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                   <div className="flex justify-between text-lg font-bold border-t pt-2 mt-2">
                     <span>Total:</span>
                     <span className="text-blue-600">${paymentData.totalPrice.toLocaleString()}</span>
@@ -429,10 +502,10 @@ const CheckoutPage = memo(function CheckoutPage() {
 
                   <div className="text-center">
                     <Link 
-                      to="/pricing" 
+                      to="/pricing-and-plan" 
                       className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
                     >
-                      ← Back to Pricing
+                      ← Back to Pricing & Plans
                     </Link>
                   </div>
                 </div>

@@ -181,7 +181,7 @@ function ServicesPageContent() {
       ),
       features: [
         'Multi-cloud platform support',
-        'API-based data discovery',
+        'Cloud-based data discovery',
         'Automated retention policies',
         'Cross-region data mapping',
         'SaaS application integration',

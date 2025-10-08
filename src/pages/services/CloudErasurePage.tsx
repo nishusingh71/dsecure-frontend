@@ -66,11 +66,11 @@ function CloudErasureContent() {
     {
       name: 'Multi-Cloud Platform Support',
       description: 'Comprehensive data discovery and erasure across all major cloud platforms',
-      technology: 'REST APIs, GraphQL, SDK integration',
+      technology: 'Cloud-native protocols, secure connections',
       coverage: 'AWS, Azure, GCP, Office 365'
     },
     {
-      name: 'API-Based Data Discovery',
+      name: 'Cloud-Based Data Discovery',
       description: 'Intelligent scanning and mapping of cloud data assets',
       technology: 'AI-powered data classification',
       coverage: '200+ SaaS integrations'
@@ -106,7 +106,7 @@ function CloudErasureContent() {
       icon: <CloudIcon className="w-5 h-5" filled={true} />
     },
     {
-      title: 'API-Based Data Discovery',
+      title: 'Cloud-Based Data Discovery',
       description: 'AI-powered data classification and intelligent scanning across cloud environments',
       icon: <DatabaseIcon className="w-5 h-5" filled={true} />
     },
@@ -155,7 +155,7 @@ function CloudErasureContent() {
       title: 'Enterprise Integration',
       features: [
         '200+ SaaS application integrations',
-        'REST API and GraphQL support',
+        'Enterprise application integrations',
         'Container orchestration (K8s, Docker)',
         'Hybrid cloud and edge computing support'
       ]

@@ -1,6 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { downloadResource } from '../../utils/downloadUtils'
+import { useToast } from '@/components/Toast'
 import { 
   CheckIcon, 
   ShieldIcon,
@@ -36,6 +38,7 @@ export default function ComplianceResourcesPage() {
 }
 
 function ComplianceResourcesContent() {
+  const toast = useToast()
   const complianceStandards = [
     {
       title: 'GDPR Data Protection Guide',
@@ -338,10 +341,17 @@ function ComplianceResourcesContent() {
               <div className="text-xs text-slate-500 mb-3">
             Last updated: {standard.lastUpdated}
               </div>
-              <Link to="/contact" className="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-800 transition-all duration-200 text-sm">
+              <button 
+                onClick={() => {
+                  const ok = downloadResource({ title: standard.title, downloadSize: standard.downloadSize, pages: standard.pages, type: 'compliance-guide' })
+                  if (ok) toast.showToast(`Downloaded: ${standard.title}`, 'success')
+                  else toast.showToast('Download failed. Please try again.', 'error')
+                }}
+                className="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-800 transition-all duration-200 text-sm"
+              >
             Download Guide
             <ArrowDownIcon className="w-4 h-4 ml-1" filled={true} />
-              </Link>
+              </button>
             </div>
           </div>
             </div>
@@ -435,14 +445,14 @@ function ComplianceResourcesContent() {
             ))}
           </div>
 
-          <div className="text-center mt-8">
+          {/* <div className="text-center mt-8">
             <Reveal delayMs={40}>
               <Link to="/contact" className="btn-secondary">
                 Subscribe to Updates
                 <ArrowRightIcon className="w-4 h-4 ml-1" filled={true} />
               </Link>
             </Reveal>
-          </div>
+          </div> */}
         </div>
       </section>
 

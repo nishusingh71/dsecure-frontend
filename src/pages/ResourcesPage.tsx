@@ -1,8 +1,10 @@
 import Reveal from '@/components/Reveal'
 import SEOHead from '../components/SEOHead';
 import { getSEOForPage } from '../utils/seo';
+import { downloadResource } from '../utils/downloadUtils';
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { useToast } from '@/components/Toast'
 
 
 export default function ResourcesPage() {
@@ -17,6 +19,7 @@ export default function ResourcesPage() {
 }
 
 function ResourcesPageContent() {
+  const toast = useToast()
   const [activeCategory, setActiveCategory] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
   const [searchParams] = useSearchParams()
@@ -64,17 +67,6 @@ function ResourcesPageContent() {
       featured: true,
       referenceUrl: 'https://www.sans.org/white-papers/1907/'
     },
-    // {
-    //   id: 3,
-    //   title: 'API Integration Documentation',
-    //   type: 'documentation',
-    //   category: 'technical',
-    //   description: 'Complete developer guide for integrating DSecure APIs into your existing systems.',
-    //   downloadSize: '3.2 MB',
-    //   pages: 45,
-    //   icon: '⚙️',
-    //   featured: false
-    // },
     {
       id: 4,
       title: 'HIPAA Compliance in Healthcare',
@@ -299,7 +291,7 @@ function ResourcesPageContent() {
             Technical Documentation
           </h3>
           <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-            Comprehensive API guides, implementation documentation, and quick-start resources for developers.
+            Comprehensive user guides, implementation documentation, and quick-start resources for administrators.
           </p>
           
           {/* Enhanced CTA */}
@@ -467,14 +459,32 @@ function ResourcesPageContent() {
                       <span>{resource.downloadSize}</span>
                       <span className="capitalize">{resource.type}</span>
                     </div>
-                    <a 
-                      href={resource.referenceUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-full btn-primary text-sm inline-block text-center"
-                    >
-                      Read More
-                    </a>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => {
+                          const ok = downloadResource(resource)
+                          if (ok) toast.showToast(`Downloaded: ${resource.title}`, 'success')
+                          else toast.showToast('Download failed. Please try again.', 'error')
+                        }}
+                        className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 text-sm inline-flex items-center justify-center"
+                      >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download
+                      </button>
+                      <a 
+                        href={resource.referenceUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm inline-flex items-center justify-center"
+                        title="View Reference"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </Reveal>
@@ -541,14 +551,32 @@ function ResourcesPageContent() {
                     <span>{resource.pages} pages</span>
                     <span>{resource.downloadSize}</span>
                   </div>
-                  <a 
-                    href={resource.referenceUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-full btn-secondary text-xs inline-block text-center"
-                  >
-                    Read More
-                  </a>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => {
+                        const ok = downloadResource(resource)
+                        if (ok) toast.showToast(`Downloaded: ${resource.title}`, 'success')
+                        else toast.showToast('Download failed. Please try again.', 'error')
+                      }}
+                      className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 text-xs inline-flex items-center justify-center"
+                    >
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Download
+                    </button>
+                    <a 
+                      href={resource.referenceUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-2 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-xs inline-flex items-center justify-center"
+                      title="View Reference"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               </Reveal>
             ))}

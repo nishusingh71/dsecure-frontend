@@ -21,6 +21,14 @@ interface OrderData {
   paymentMethod: string;
   status: string;
   orderDate: string;
+  selectedAddons?: string[];
+  addonsData?: Array<{
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    icon: string;
+  }>;
 }
 
 export default function OrderSuccessPage() {
@@ -32,7 +40,7 @@ export default function OrderSuccessPage() {
     if (savedOrderData) {
       setOrderData(JSON.parse(savedOrderData));
     } else {
-      navigate('/pricing');
+      navigate('/pricing-and-plan');
     }
   }, [navigate]);
 
@@ -118,6 +126,31 @@ export default function OrderSuccessPage() {
                     </p>
                   </div>
                 </div>
+                
+                {/* Add-ons Section */}
+                {orderData.addonsData && orderData.addonsData.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Premium Add-ons</h4>
+                    <div className="space-y-2">
+                      {orderData.addonsData.map((addon) => (
+                        <div key={addon.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm">{addon.icon}</span>
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">{addon.name}</p>
+                              <p className="text-xs text-gray-600">{addon.description}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-gray-500">
+                              ${(addon.price * parseInt(orderData.quantity) * parseInt(orderData.duration)).toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

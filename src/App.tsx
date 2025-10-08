@@ -88,6 +88,14 @@ const GetStartedPage = lazy(() => import("./pages/support/GetStartedPage"));
 const HelpManualPage = lazy(() => import("./pages/support/HelpManualPage"));
 const ProductVideosPage = lazy(() => import("./pages/support/ProductVideosPage"));
 
+// Blog pages
+const BlogPage = lazy(() => import("./components/blog/BlogPage"));
+const OverwriteGuideBlog = lazy(() => import("./components/blog/OverwriteGuideBlog"));
+const SSDWipeGuideBlog = lazy(() => import("./components/blog/SSDWipeGuideBlog"));
+const ErasureVsDestructionBlog = lazy(() => import("./components/blog/ErasureVsDestructionBlog"));
+const DataDeletionMythsBlog = lazy(() => import("./components/blog/DataDeletionMythsBlog"));
+const DataSanitizationComplianceBlog = lazy(() => import("./components/blog/DataSanitizationComplianceBlog"));
+
 // Analytics Integration Component
 function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
   // Initialize all analytics tracking
@@ -267,6 +275,14 @@ export default function App() {
               <Route path="/support/get-started" element={<GetStartedPage />} />
               <Route path="/support/help-manual" element={<HelpManualPage />} />
               <Route path="/support/product-videos" element={<ProductVideosPage />} />
+              
+              {/* Blog Routes */}
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/overwrite-guide" element={<OverwriteGuideBlog />} />
+              <Route path="/blog/ssd-wipe-guide" element={<SSDWipeGuideBlog />} />
+              <Route path="/blog/erasure-vs-destruction" element={<ErasureVsDestructionBlog />} />
+              <Route path="/blog/data-deletion-myths" element={<DataDeletionMythsBlog />} />
+              <Route path="/blog/data-sanitization-compliance" element={<DataSanitizationComplianceBlog />} />
               
               {/* Catch-all route for unmatched paths */}
               <Route path="*" element={<NotFoundPage />} />

@@ -4,6 +4,7 @@ import { useAuth } from '@/auth/AuthContext'
 import { SetupStatusAlert, useSetupStatus } from '@/components/PaymentLicenseGuard'
 import { authService } from '../utils/authService'
 import { Helmet } from 'react-helmet-async'
+import { useToast } from '@/components/Toast'
 
 interface PlanDetails {
   title: string
@@ -31,6 +32,7 @@ export default function PaymentSetupPage() {
   const navigate = useNavigate()
   const { user, getSmartRedirectPath } = useAuth()
   const setupStatus = useSetupStatus()
+  const toast = useToast()
   
   const [selectedPlan, setSelectedPlan] = useState<PlanDetails | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
@@ -123,7 +125,7 @@ export default function PaymentSetupPage() {
       
     } catch (error) {
       console.error('Payment setup failed:', error)
-      alert('Payment setup failed. Please try again.')
+      toast.showToast('Payment setup failed. Please try again.', 'error')
     } finally {
       setIsProcessing(false)
     }
@@ -161,7 +163,7 @@ export default function PaymentSetupPage() {
       
     } catch (error) {
       console.error('License setup failed:', error)
-      alert('License setup failed. Please try again.')
+      toast.showToast('License setup failed. Please try again.', 'error')
     } finally {
       setIsProcessing(false)
     }

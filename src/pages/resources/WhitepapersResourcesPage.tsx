@@ -1,6 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { downloadResource } from '../../utils/downloadUtils'
+import { useToast } from '@/components/Toast'
 import { 
   CheckIcon, 
   DatabaseIcon,
@@ -37,6 +39,7 @@ export default function WhitepapersResourcesPage() {
 }
 
 function WhitepapersResourcesContent() {
+  const toast = useToast()
   const featuredWhitepapers = [
     {
       title: 'The Complete Guide to Secure Data Erasure',
@@ -360,13 +363,17 @@ function WhitepapersResourcesContent() {
                           </div>
                           
                           <div className="mt-6">
-                            <Link 
-                              to="/contact" 
+                            <button 
+                              onClick={() => {
+                                const ok = downloadResource({ title: paper.title, downloadSize: paper.downloadSize, pages: paper.pages, type: 'whitepaper' })
+                                if (ok) toast.showToast(`Downloaded: ${paper.title}`, 'success')
+                                else toast.showToast('Download failed. Please try again.', 'error')
+                              }}
                               className="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-lg hover:from-emerald-600 hover:to-teal-600 transform hover:scale-[1.02] transition-all duration-300 shadow-md hover:shadow-lg group"
                             >
                               <ArrowDownIcon className="w-4 h-4 mr-2 group-hover:animate-bounce" filled={true} />
                               Download Whitepaper
-                            </Link>
+                            </button>
                             <div className="text-xs text-slate-500 text-center mt-2 flex items-center justify-center gap-1">
                               <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
@@ -481,7 +488,7 @@ function WhitepapersResourcesContent() {
                 Subscribe to receive new whitepapers and research updates directly in your inbox.
               </p>
             </Reveal>
-            <Reveal delayMs={20}>
+            {/* <Reveal delayMs={20}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link 
                   to="/contact" 
@@ -502,7 +509,7 @@ function WhitepapersResourcesContent() {
                   All Resources
                 </Link>
               </div>
-            </Reveal>
+            </Reveal> */}
           </div>
         </div>
       </section>

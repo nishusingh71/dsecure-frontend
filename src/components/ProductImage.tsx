@@ -38,9 +38,9 @@ export const ProductImage: React.FC<ProductImageProps> = ({
           alt={productName}
           className={`${currentSize.icon} object-contain filter drop-shadow-lg`}
           onError={(e) => {
-            // Fallback to D-Secure logo if icon fails to load
+            // Fallback to Cloudinary image if icon fails to load
             const target = e.target as HTMLImageElement;
-            target.src = '/src/assets/dsecure-logo-white.svg';
+            target.src = 'https://res.cloudinary.com/dhwi5wevf/image/upload/v1759928831/bwsswefvwhdvuy8yrplk.png';
           }}
         />
       </div>

@@ -22,7 +22,7 @@ export default function StatusPage() {
     // Simulate service status data
     const mockServices: ServiceStatus[] = [
       {
-        name: "Data Erasure API",
+        name: "Data Erasure Service",
         status: "operational",
         uptime: "99.98%",
         responseTime: "145ms",
@@ -399,9 +399,9 @@ export default function StatusPage() {
                 /status/rss
                 <br />
                 <strong className="text-slate-900 light:text-white">
-                  API:
+                  Status Endpoint:
                 </strong>{" "}
-                /api/status
+                /status
               </p>
               <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-4 md:gap-5 lg:gap-5 xl:gap-6 xxl:gap-7">
                 <input

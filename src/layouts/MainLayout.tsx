@@ -777,7 +777,7 @@ export default function MainLayout() {
                     </li>
                     <li>
                       <Link
-                        to="/resources?type=case-studies"
+                        to="/blog"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
                         Blog

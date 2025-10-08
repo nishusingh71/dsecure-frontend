@@ -161,8 +161,8 @@ const HelpManualPage: React.FC = memo(() => {
         },
         {
           id: 43,
-          title: "Scripting & APIs",
-          description: "Automation through command-line tools and programming interfaces",
+          title: "Scripting & Automation",
+          description: "Automation through command-line tools and batch processing",
           url: "/support/manual/scripting",
           pageCount: 22
         },

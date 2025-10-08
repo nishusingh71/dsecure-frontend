@@ -1,16 +1,7 @@
 // Product icon utility functions
 export const getProductIcon = (category: string, size: number = 128): string => {
-  // Map category to appropriate icon size from DSecureIcon.iconset
-  // Use absolute path from public folder
-  const iconPath = `/src/assets/DSecureIcon.iconset/icon_${size}x${size}.png`;
-  
-  // For different screen densities, we can use @2x versions
-  const isHighDensity = typeof window !== 'undefined' && window.devicePixelRatio > 1;
-  if (isHighDensity && size <= 256) {
-    return `/src/assets/DSecureIcon.iconset/icon_${size}x${size}@2x.png`;
-  }
-  
-  return iconPath;
+  // Use the Cloudinary image for all products
+  return 'https://res.cloudinary.com/dhwi5wevf/image/upload/v1759928831/bwsswefvwhdvuy8yrplk.png';
 };
 
 // Get icon for different product categories with specific styling
