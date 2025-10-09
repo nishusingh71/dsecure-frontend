@@ -221,7 +221,7 @@ const SupportTicketModal: React.FC<{
                 type="submit"
                 className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
               >
-                Submit Ticket
+                Submit Ticket 
               </button>
               {/* <button
                 type="button"
