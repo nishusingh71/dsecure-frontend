@@ -4,39 +4,49 @@ import Reveal from "@/components/Reveal";
 
 const blogs = [
   {
-    title: "Overwrite Guide – How Many Passes Are Enough?",
-    image: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759939004/zmeyhnzz2zsp2y9byyik.png",
+    title: "Overwrite Guid – How Many Passes Are Enough?",
+    image:
+      "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759939004/zmeyhnzz2zsp2y9byyik.png",
     link: "/blog/overwrite-guide",
     tag: "Data Erasure",
-    excerpt: "Understanding the science behind data overwriting and determining the optimal number of passes for complete data erasure following NIST and DoD standards.",
+    excerpt:
+      "Understanding the science behind data overwriting and determining the optimal number of passes for complete data erasure following NIST and DoD standards.",
   },
   {
     title: "Securely Wiping SSDs & Flash Drives",
-    image: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=1000&h=400&fit=crop&crop=center",
+    image:
+      "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=1000&h=400&fit=crop&crop=center",
     link: "/blog/ssd-wipe-guide",
     tag: "Storage Security",
-    excerpt: "Learn the special considerations and techniques required for securely erasing solid-state drives and flash storage devices, including wear-leveling challenges.",
+    excerpt:
+      "Learn the special considerations and techniques required for securely erasing solid-state drives and flash storage devices, including wear-leveling challenges.",
   },
   {
     title: "Data Erasure vs Data Destruction – What’s the Difference?",
-    image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1000&h=400&fit=crop&crop=center",
+    image:
+      "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1000&h=400&fit=crop&crop=center",
     link: "/blog/erasure-vs-destruction",
     tag: "Compliance",
-    excerpt: "Compare the advantages and use cases of data erasure versus physical destruction for secure data disposal and compliance requirements.",
+    excerpt:
+      "Compare the advantages and use cases of data erasure versus physical destruction for secure data disposal and compliance requirements.",
   },
   {
     title: "Top 5 Myths About Secure Data Deletion",
-    image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1000&h=400&fit=crop&crop=center",
+    image:
+      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1000&h=400&fit=crop&crop=center",
     link: "/blog/data-deletion-myths",
     tag: "Awareness",
-    excerpt: "Debunking common misconceptions about data deletion and revealing the truth about secure data erasure practices in modern IT environments.",
+    excerpt:
+      "Debunking common misconceptions about data deletion and revealing the truth about secure data erasure practices in modern IT environments.",
   },
   {
     title: "Data Sanitization & Compliance",
-    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&h=400&fit=crop&crop=center",
+    image:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&h=400&fit=crop&crop=center",
     link: "/blog/data-sanitization-compliance",
     tag: "Compliance",
-    excerpt: "Navigate the complex landscape of compliance requirements and ensure your data sanitization meets GDPR, HIPAA, and other industry standards.",
+    excerpt:
+      "Navigate the complex landscape of compliance requirements and ensure your data sanitization meets GDPR, HIPAA, and other industry standards.",
   },
 ];
 
@@ -50,8 +60,8 @@ const BlogPage: React.FC = () => {
             DSecure Technical Blog
           </h1>
           <p className="text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
-            Expert insights and practical guides on data erasure, cybersecurity, and IT
-            asset lifecycle management from our security professionals.
+            Expert insights and practical guides on data erasure, cybersecurity,
+            and IT asset lifecycle management from our security professionals.
           </p>
         </Reveal>
       </section>
@@ -83,7 +93,7 @@ const BlogPage: React.FC = () => {
                     {blog.excerpt}
                   </p>
                   <span className="text-emerald-600 font-semibold text-sm group-hover:underline mt-auto flex-shrink-0">
-                    Read Full Article →
+                    Rea Full Articl →
                   </span>
                 </div>
               </Link>
