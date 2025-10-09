@@ -221,7 +221,7 @@ const SupportTicketModal: React.FC<{
                 type="submit"
                 className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
               >
-                Submit Ticket
+                Submit Ticket 
               </button>
               {/* <button
                 type="button"
@@ -801,7 +801,7 @@ const SupportPage: React.FC = () => {
                       <button
                         className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
                         onClick={() => handleTrendingSearchClick(search)}
-                        title="Search for this topic"
+                        
                       >
                         🔍 {search}
                       </button>
@@ -810,9 +810,7 @@ const SupportPage: React.FC = () => {
                         className="text-slate-500 hover:text-brand transition-colors p-2 rounded-md hover:bg-slate-50"
                         title="Go directly to guide"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
+                        
                       </Link>
                     </div>
                   ))}

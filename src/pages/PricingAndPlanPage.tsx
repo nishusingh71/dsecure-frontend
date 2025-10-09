@@ -30,28 +30,28 @@ const PricingAndPlanPage: React.FC = memo(() => {
       name: "Command Jobs Feature",
       description: "Automated command-line job scheduling and execution",
       price: 29.99,
-      icon: "⚡"
+      // icon: "⚡"
     },
     {
       id: "private-cloud",
       name: "Private Cloud Integration",
       description: "Secure private cloud storage and backup capabilities",
       price: 49.99,
-      icon: "☁️"
+      // icon: "☁️"
     },
     {
       id: "enterprise",
       name: "Enterprise Management",
       description: "Advanced enterprise-grade management and reporting tools",
       price: 99.99,
-      icon: "🏢"
+      // icon: "🏢"
     },
     {
       id: "network",
       name: "Network Management",
       description: "Network-wide deployment and centralized control",
       price: 79.99,
-      icon: "🌐"
+      // icon: "🌐"
     }
   ];
 
@@ -129,14 +129,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
       version: "V9.0.9.1 Enterprise",
       basePrice: 9.9,
       features: [
-        "🔒 NIST & DoD Compliant Erasure Standards",
-        "☁️ Free Cloud Console & Reporting",
-        "🛡️ Lifetime Technical Support",
-        "⚡ Works on All Device Types",
-        "📊 Detailed Audit Reports",
+        " NIST & DoD Compliant Erasure Standards",
+        " Free Cloud Console & Reporting",
+        " Lifetime Technical Support",
+        " Works on All Device Types",
+        " Detailed Audit Reports",
       ],
       selectionLabel: "Number of Licenses:",
-      selectionNote: "Volume discounts available",
+      selectionNote: "(Pay Per License)",
       options: [
         "1",
         "10",
@@ -159,14 +159,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
       version: "Professional",
       basePrice: 3.99,
       features: [
-        "📁 Files, Folders & System Traces",
-        "💻 Cross-Platform Support",
-        "⚡ Fast & Efficient Processing",
-        "🔄 Scheduled Automatic Cleaning",
-        "🛡️ Privacy Protection Tools",
+        " Files, Folders &  Traces",
+        " Cross-Platform Support",
+        " Fast & Efficient Processing",
+        " Scheduled Automatic Cleaning",
+        " Privacy Protection Tools",
       ],
       selectionLabel: "Number of Licenses:",
-      selectionNote: "Per device licensing",
+      selectionNote: "(Pay Per License)",
       options: [
         "1",
         "10",
@@ -180,8 +180,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "custom",
       ],
       showDeliveryOptions: false,
-      deliveryText:
-        "Digital download with instant activation. Internet connection required for initial setup.",
+      // deliveryText:
+      //   "Digital download with instant activation. Internet connection required for initial setup.",
     },
   };
 
@@ -333,7 +333,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6 shadow-lg">
-              🔒 SECURE • COMPLIANT
+               SECURE • COMPLIANT
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
               Choose Your{" "}
@@ -431,7 +431,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     {/* Selection Criteria */}
                     <div className="mb-6">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        📋 Configure Your License
+                         Configure Your License
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* License Quantity */}
@@ -454,7 +454,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             {getCurrentProduct().options.map((option) => (
                               <option key={option} value={option}>
                                 {option === "custom"
-                                  ? "🎯 Custom Quantity"
+                                  ? " Custom Quantity"
                                   : `${option} licenses`}
                               </option>
                             ))}
@@ -462,9 +462,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         </div>
 
                         {/* License Duration */}
-                        <div className="space-y-2">
+                        {/* <div className="space-y-2">
                           <label className="block text-sm font-semibold text-gray-700">
-                            ⏱️ License Duration:
+                             License Duration:
                           </label>
                           <p className="text-xs text-gray-500">
                             Multi-year discounts available
@@ -480,15 +480,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             <option value="5">5 Years</option>
                             <option value="15">15 Years</option>
                           </select>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 
                     {/* File Eraser Add-ons */}
-                    {selectedCategory === "file-eraser" && (
+                    {/* {selectedCategory === "file-eraser" && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                          🚀 Premium Add-ons
+                           Premium Add-ons
                         </h3>
                         <p className="text-sm text-gray-600 mb-4">
                           Enhance your File Eraser with powerful additional features
@@ -504,7 +504,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                               />
                               <div className="flex-1">
                                 <div className="flex items-center space-x-2">
-                                  <span className="text-lg">{addon.icon}</span>
+                                  <span className="text-lg">{}</span>
                                   <span className="font-medium text-gray-900">{addon.name}</span>
                                   <span className="text-sm font-semibold text-teal-600">
                                     +${addon.price}/license
@@ -525,11 +525,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
                           </div>
                         )}
                       </div>
-                    )}
+                    )} */}
 
                     {/* Delivery Options */}
-                    {getCurrentProduct().showDeliveryOptions ? (
-                      <div>
+                    {/* {getCurrentProduct().showDeliveryOptions ? ( */}
+                      {/* <div> */}
                         {/* <label className="block text-sm font-medium text-gray-700 mb-3">
                           Number of License Count for per device.
                         </label>
@@ -578,15 +578,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             </div>
                           </label>
                         </div> */}
-                      </div>
-                    ) : (
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      {/* </div> */}
+                    {/* ) : ( */}
+                      {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div className="text-sm text-blue-800">
                           {(getCurrentProduct() as any).deliveryText ||
                             "Digital delivery via email"}
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
@@ -612,8 +612,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-6 text-lg"
                 >
                   {selectedLicenses === "custom"
-                    ? "🎯 Request Custom Quote"
-                    : "🛒 Buy Now"}
+                    ? " Request Custom Quote"
+                    : " Buy Now"}
                 </button>
 
                 {/* Trust Indicators */}
@@ -669,8 +669,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
             <div className="text-center">
               <span className="text-blue-700 font-medium">
-                🖥️ OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS | 🔒
-                Certified: NIST SP 800-88, DoD 5220.22-M, Common Criteria | ⚡
+                 OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS | 
+                Certified: NIST SP 800-88, DoD 5220.22-M, Common Criteria | 
                 Instant Delivery Available
               </span>
             </div>
@@ -679,7 +679,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* FAQ Section */}
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-              ❓ Frequently Asked Questions
+               Frequently Asked Questions
             </h2>
             <div className="space-y-4 max-w-4xl mx-auto">
               {faqs.map((faq, index) => (
