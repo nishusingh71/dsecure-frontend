@@ -415,7 +415,7 @@ function AboutPageContent() {
                       2027 Goals
                     </h4>
                     <ul className="text-slate-600 text-sm space-y-1">
-                      <li>• Process 500K+ devices annually</li>
+                      <li>• Process 100k+ devices annually</li>
                       <li>• Expand to  countries globally</li>
                       <li>• Achieve 100% automated compliance</li>
                       <li>• Lead in AI-powered data discovery</li>

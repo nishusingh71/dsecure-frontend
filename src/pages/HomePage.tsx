@@ -505,7 +505,7 @@ const HomePage = memo(function HomePage() {
                   <Reveal delayMs={20}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        500K+
+                        100k+
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
                         Devices Secured

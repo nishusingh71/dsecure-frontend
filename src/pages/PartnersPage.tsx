@@ -1045,7 +1045,7 @@ const PartnersPage: React.FC = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
               {[
-                { number: '500K+', label: 'CUSTOMERS' },
+                { number: '100k+', label: 'CUSTOMERS' },
                 { number: '24/7', label: 'SUPPORT AVAILABLE' },
                 { number: '', label: 'R&D ENGINEERS' },
                 { number: '100+', label: 'COUNTRIES' },

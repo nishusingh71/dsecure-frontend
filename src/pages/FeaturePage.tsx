@@ -165,25 +165,25 @@ function FeaturePageContent() {
           </div>
 
           {/* Feature Navigation */}
-          <div className="flex items-center justify-center mb-8 xs:mb-10 sm:mb-12 md:mb-12 lg:mb-12 xl:mb-14 xxl:mb-16">
+            <div className="flex items-center justify-center mb-8 xs:mb-10 sm:mb-12 md:mb-12 lg:mb-12 xl:mb-14 xxl:mb-16">
             <div className="flex flex-col xs:flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row xxl:flex-row rounded-lg xs:rounded-xl sm:rounded-xl md:rounded-xl lg:rounded-xl xl:rounded-xl xxl:rounded-xl bg-slate-100 p-1 w-full sm:w-auto max-w-xs xs:max-w-sm sm:max-w-2xl md:max-w-2xl lg:max-w-2xl xl:max-w-3xl xxl:max-w-4xl">
               {Object.entries(features).map(([key, feature]) => (
-                <button
-                  key={key}
-                  onClick={() => setActiveFeature(key as FeatureType)}
-                  className={`flex items-center justify-center gap-2 xs:gap-3 sm:gap-3 md:gap-3 lg:gap-3 xl:gap-4 xxl:gap-4 px-3 xs:px-4 sm:px-4 md:px-4 lg:px-6 xl:px-6 xxl:px-8 py-2 xs:py-3 sm:py-3 md:py-3 lg:py-3 xl:py-4 xxl:py-4 rounded-md xs:rounded-lg sm:rounded-lg md:rounded-lg lg:rounded-lg xl:rounded-lg xxl:rounded-lg text-xs xs:text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base xxl:text-base font-medium transition-all duration-200 whitespace-nowrap flex-1 sm:flex-none ${
-                    activeFeature === key
-                      ? 'bg-white text-emerald-600 shadow-sm'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  <span className="w-5 h-5 flex-shrink-0">{feature.icon}</span>
-                  <span className="hidden sm:inline">{feature.title.split(' ')[0]}</span>
-                  <span className="sm:hidden text-xs">{feature.title.split(' ')[0]}</span>
-                </button>
+              <button
+                key={key}
+                onClick={() => setActiveFeature(key as FeatureType)}
+                className={`flex items-center justify-center gap-2 xs:gap-3 sm:gap-3 md:gap-3 lg:gap-3 xl:gap-4 xxl:gap-4 px-3 xs:px-4 sm:px-4 md:px-4 lg:px-6 xl:px-6 xxl:px-8 py-2 xs:py-3 sm:py-3 md:py-3 lg:py-3 xl:py-4 xxl:py-4 rounded-md xs:rounded-lg sm:rounded-lg md:rounded-lg lg:rounded-lg xl:rounded-lg xxl:rounded-lg text-xs xs:text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base xxl:text-base font-medium transition-all duration-200 whitespace-nowrap flex-1 sm:flex-none ${
+                activeFeature === key
+                  ? 'bg-white text-emerald-600 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <div className="w-5 h-5 flex-shrink-0 flex items-center justify-center">{feature.icon}</div>
+                <span className="hidden sm:inline text-center">{feature.title.split(' ')[0]}</span>
+                <span className="sm:hidden text-xs text-center">{feature.title.split(' ')[0]}</span>
+              </button>
               ))}
             </div>
-          </div>
+            </div>
 
           {/* Active Feature Content */}
           <Reveal key={activeFeature}>

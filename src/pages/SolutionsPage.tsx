@@ -430,7 +430,7 @@ function SolutionsPageContent() {
                   {/* Floating Stats Cards */}
                   <Reveal delayMs={70}>
                     <div className="absolute -top-4 -right-4 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-xl shadow-lg">
-                      <div className="text-2xl font-bold">500K+</div>
+                      <div className="text-2xl font-bold">100k+</div>
                       <div className="text-xs opacity-90">Devices Secured</div>
                     </div>
                   </Reveal>
@@ -553,7 +553,7 @@ function SolutionsPageContent() {
 
                 {/* Sidebar */}
                 <div className="bg-slate-50 p-8">
-                  <h4 className="font-semibold text-slate-900 mb-6">Why Choose DSecure?</h4>
+                  <h4 className="font-semibold text-slate-900 mb-6">Why Choose D-Secure?</h4>
                   <div className="space-y-6">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -606,7 +606,7 @@ function SolutionsPageContent() {
 
                   <div className="mt-8 pt-6 border-t border-slate-200">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-slate-900">500K+</div>
+                      <div className="text-2xl font-bold text-slate-900">100k+</div>
                       <div className="text-sm text-slate-600">Devices Processed</div>
                     </div>
                   </div>

@@ -325,7 +325,7 @@ const SupportPage: React.FC = () => {
       id: 'wipe-guide',
       title: 'HDD & SSD Wipe Guide',
       description: 'How to securely wipe Hard Drives and SSDs',
-      url: '/support/wipe-guide',
+      url: '/support/secure-erase-hddssd',
       category: 'Guides',
       keywords: ['wipe', 'erase', 'delete', 'hdd', 'ssd', 'hard drive', 'solid state']
     },
@@ -341,7 +341,7 @@ const SupportPage: React.FC = () => {
       id: 'mac-wipe-guide',
       title: 'Mac Machine Wipe Guide',
       description: 'How to wipe 12 board Mac machines',
-      url: '/support/mac-wipe-guide',
+      url: '/support/mac-eraser-guide',
       category: 'Guides',
       keywords: ['mac', 'apple', 'macbook', 'imac', 'board', 'wipe']
     },
@@ -349,7 +349,7 @@ const SupportPage: React.FC = () => {
       id: 'm1-mac-wipe-guide',
       title: 'M1 Mac Wipe Guide',
       description: 'How to wipe MacOS with M1 chip',
-      url: '/support/m1-mac-wipe-guide',
+      url: '/support/mac-wipe-guide',
       category: 'Guides',
       keywords: ['m1', 'mac', 'chip', 'apple silicon', 'new mac', 'arm']
     },
@@ -617,18 +617,18 @@ const SupportPage: React.FC = () => {
     });
   }, []);
 
-  const trendingSearches = {
-    "How many overwrites should I do on a Hard Drive?":"/support/overwrite-guide",
-    "How can I Wipe Hard Drives and SSDs?":"/support/wipe-guide",
-    "How to Wipe SAS Drives Permanently?":"/support/sas-wipe-guide",
-    "How can I wipe 12 board Mac Machines?":"/support/mac-wipe-guide",
-    // "How to customize ISO file using D-Secure?":"/support/iso-customization-guide",
-    "How do I wipe everything and retain my OS?":"/support/retain-os-guide",
-    "How can I Wipe a MacOS with M1 Chip?":"/support/m1-mac-wipe-guide",
-    "How to use D-Secure Cloud Console?":"/support/cloud-console-guide",
-    "How do I Perform Cryptographic Erasure on SSD?":"/support/ssd-cryptographic-erasure-guide",
-    // "How can I diagnose my smartphone using D-Secure?":"/support/smartphone-diagnosis-guide",
-  };
+  const trendingSearches = useMemo(() => ({
+    "How many overwrites should I do on a Hard Drive?": "/support/overwrite-guide",
+    "How can I Wipe Hard Drives and SSDs?": "/support/secure-erase-hddssd",
+    "How to Wipe SAS Drives Permanently?": "/support/sas-wipe-guide",
+    "How can I wipe 12 board Mac Machines?": "/support/mac-eraser-guide",
+    // "How to customize ISO file using D-Secure?": "/support/iso-customization-guide",
+    "How do I wipe everything and retain my OS?": "/support/retain-os-guide",
+    "How can I Wipe a MacOS with M1 Chip?": "/support/mac-wipe-guide",
+    "How to use D-Secure Cloud Console?": "/support/cloud-console-guide",
+    "How do I Perform Cryptographic Erasure on SSD?": "/support/ssd-cryptographic-erasure-guide",
+    // "How can I diagnose my smartphone using D-Secure?": "/support/smartphone-diagnosis-guide",
+  }), []);
 
   return (
     <>

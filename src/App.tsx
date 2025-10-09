@@ -79,6 +79,8 @@ import MacEraseGuide from "./pages/MacEraseGuide";
 import FileEraserGuide from "./pages/FileEraserGuide";
 import SecureEraseHDDSSD from "./pages/SecureEraseHDDSDD";
 import CloudConsoleGuide from "./pages/CloudConsoleGuide";
+import CryptoEraseSSD from "./pages/CryptoEraseSSD";
+import RetainOSGuide from "./pages/RetainOSGuide";
 import NotFoundPage from "./pages/NotFoundPage";
 
 // Support pages
@@ -267,6 +269,14 @@ export default function App() {
               <Route
                 path="/support/cloud-console-guide"
                 element={<CloudConsoleGuide />}
+              />
+              <Route
+                path="/support/ssd-cryptographic-erasure-guide"
+                element={<CryptoEraseSSD />}
+              />
+              <Route
+                path="/support/retain-os-guide"
+                element={<RetainOSGuide />}
               />
               
               {/* New Support Pages */}
