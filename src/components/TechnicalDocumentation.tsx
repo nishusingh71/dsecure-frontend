@@ -29,6 +29,7 @@ const TechnicalDocumentation: React.FC = () => {
                       strokeLinejoin="round"
                       d="M12 3l7.89 3.26a2 2 0 011.11 1.79V12c0 5.52-3.58 10.74-9 12-5.42-1.26-9-6.48-9-12V8.05a2 2 0 011.11-1.79L12 3z"
                     />
+
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
