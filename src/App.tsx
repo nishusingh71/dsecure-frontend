@@ -8,6 +8,7 @@ import { Suspense, lazy, useEffect } from "react";
 import { useGoogleAnalytics } from "./utils/analytics";
 import { useMicrosoftClarity } from "./utils/microsoftClarity";
 import { useSEOMonitoring } from "./utils/seoMonitor";
+import TechnicalDocumentation from "./components/TechnicalDocumentation";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
@@ -85,18 +86,32 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 // Support pages
 const FAQsPage = lazy(() => import("./pages/support/FAQsPage"));
-const KnowledgeBasePage = lazy(() => import("./pages/support/KnowledgeBasePage"));
+const KnowledgeBasePage = lazy(
+  () => import("./pages/support/KnowledgeBasePage")
+);
 const GetStartedPage = lazy(() => import("./pages/support/GetStartedPage"));
 const HelpManualPage = lazy(() => import("./pages/support/HelpManualPage"));
-const ProductVideosPage = lazy(() => import("./pages/support/ProductVideosPage"));
+const ProductVideosPage = lazy(
+  () => import("./pages/support/ProductVideosPage")
+);
 
 // Blog pages
 const BlogPage = lazy(() => import("./components/blog/BlogPage"));
-const OverwriteGuideBlog = lazy(() => import("./components/blog/OverwriteGuideBlog"));
-const SSDWipeGuideBlog = lazy(() => import("./components/blog/SSDWipeGuideBlog"));
-const ErasureVsDestructionBlog = lazy(() => import("./components/blog/ErasureVsDestructionBlog"));
-const DataDeletionMythsBlog = lazy(() => import("./components/blog/DataDeletionMythsBlog"));
-const DataSanitizationComplianceBlog = lazy(() => import("./components/blog/DataSanitizationComplianceBlog"));
+const OverwriteGuideBlog = lazy(
+  () => import("./components/blog/OverwriteGuideBlog")
+);
+const SSDWipeGuideBlog = lazy(
+  () => import("./components/blog/SSDWipeGuideBlog")
+);
+const ErasureVsDestructionBlog = lazy(
+  () => import("./components/blog/ErasureVsDestructionBlog")
+);
+const DataDeletionMythsBlog = lazy(
+  () => import("./components/blog/DataDeletionMythsBlog")
+);
+const DataSanitizationComplianceBlog = lazy(
+  () => import("./components/blog/DataSanitizationComplianceBlog")
+);
 
 // Analytics Integration Component
 function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
@@ -122,7 +137,7 @@ function ScrollToTop() {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }, [pathname]);
 
@@ -136,171 +151,211 @@ export default function App() {
         <AnalyticsWrapper>
           <ScrollToTop />
           <Suspense fallback={<PageLoadingSkeleton />}>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route index element={<HomePage />} />
-              <Route path="services" element={<ServicesPage />} />
-              <Route path="features" element={<FeaturePage />} />
-              <Route
-                path="services/device-erasure"
-                element={<DeviceErasurePage />}
-              />
-              <Route
-                path="services/network-erasure"
-                element={<NetworkErasurePage />}
-              />
-              <Route
-                path="services/cloud-erasure"
-                element={<CloudErasurePage />}
-              />
-              <Route path="solutions" element={<SolutionsPage />} />
-              <Route
-                path="solutions/enterprise"
-                element={<EnterpriseSolutionsPage />}
-              />
-              <Route
-                path="solutions/healthcare"
-                element={<HealthcareSolutionsPage />}
-              />
-              <Route
-                path="solutions/financial"
-                element={<FinancialSolutionsPage />}
-              />
-              <Route path="compliance" element={<CompliancePage />} />
-              <Route path="resources" element={<ResourcesPage />} />
-              <Route
-                path="resources/documentation"
-                element={<DocumentationResourcesPage />}
-              />
-              <Route
-                path="resources/case-studies"
-                element={<CaseStudiesResourcesPage />}
-              />
-              <Route
-                path="resources/compliance"
-                element={<ComplianceResourcesPage />}
-              />
-              <Route
-                path="resources/whitepapers"
-                element={<WhitepapersResourcesPage />}
-              />
-              <Route path="contact" element={<ContactPage />} />
-              <Route path="about" element={<About />} />
-              <Route path="pricing" element={<PricingPage />} />
-              <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
-              <Route path="checkout" element={<CheckoutPage />} />
-              <Route path="order-success" element={<OrderSuccessPage />} />
-              <Route path="payment" element={<PaymentPage />} />
-              <Route path="diagnostics" element={<DiagnosticsPage />} />
-              <Route path="privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="legal-policy" element={<LegalPolicy />} />
-              <Route path="terms-of-service" element={<TermsOfServicePage />} />
-              <Route path="cookie-policy" element={<CookiePolicyPage />} />
-              <Route path="security" element={<SecurityPage />} />
-              <Route path="status" element={<StatusPage />} />
-              <Route path="partners" element={<PartnersPage />} />
-              <Route path="support" element={<SupportPage />} />
-              <Route path="login" element={<LoginPage />} />
-              <Route path="register" element={<RegisterPage />} />
-              {/* <Route path='privacy-policy' element={<PrivacyPolicyPage />} />
+            <Routes>
+              <Route element={<MainLayout />}>
+                <Route index element={<HomePage />} />
+                <Route path="services" element={<ServicesPage />} />
+                <Route path="features" element={<FeaturePage />} />
+                <Route
+                  path="services/device-erasure"
+                  element={<DeviceErasurePage />}
+                />
+                <Route
+                  path="services/network-erasure"
+                  element={<NetworkErasurePage />}
+                />
+                <Route
+                  path="services/cloud-erasure"
+                  element={<CloudErasurePage />}
+                />
+                <Route path="solutions" element={<SolutionsPage />} />
+                <Route
+                  path="solutions/enterprise"
+                  element={<EnterpriseSolutionsPage />}
+                />
+                <Route
+                  path="solutions/healthcare"
+                  element={<HealthcareSolutionsPage />}
+                />
+                <Route
+                  path="solutions/financial"
+                  element={<FinancialSolutionsPage />}
+                />
+                <Route path="compliance" element={<CompliancePage />} />
+                <Route path="resources" element={<ResourcesPage />} />
+                <Route
+                  path="resources/documentation"
+                  element={<DocumentationResourcesPage />}
+                />
+                <Route
+                  path="/technical-documentation"
+                  element={<TechnicalDocumentation />}
+                />
+                <Route
+                  path="resources/case-studies"
+                  element={<CaseStudiesResourcesPage />}
+                />
+                <Route
+                  path="resources/compliance"
+                  element={<ComplianceResourcesPage />}
+                />
+                <Route
+                  path="resources/whitepapers"
+                  element={<WhitepapersResourcesPage />}
+                />
+                <Route path="contact" element={<ContactPage />} />
+                <Route path="about" element={<About />} />
+                <Route path="pricing" element={<PricingPage />} />
+                <Route
+                  path="pricing-and-plan"
+                  element={<PricingAndPlanPage />}
+                />
+                <Route path="checkout" element={<CheckoutPage />} />
+                <Route path="order-success" element={<OrderSuccessPage />} />
+                <Route path="payment" element={<PaymentPage />} />
+                <Route path="diagnostics" element={<DiagnosticsPage />} />
+                <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="legal-policy" element={<LegalPolicy />} />
+                <Route
+                  path="terms-of-service"
+                  element={<TermsOfServicePage />}
+                />
+                <Route path="cookie-policy" element={<CookiePolicyPage />} />
+                <Route path="security" element={<SecurityPage />} />
+                <Route path="status" element={<StatusPage />} />
+                <Route path="partners" element={<PartnersPage />} />
+                <Route path="support" element={<SupportPage />} />
+                <Route path="login" element={<LoginPage />} />
+                <Route path="register" element={<RegisterPage />} />
+                {/* <Route path='privacy-policy' element={<PrivacyPolicyPage />} />
             <Route path='terms-of-service' element={<TermsOfServicePage />} />
             <Route path='cookie-policy' element={<CookiePolicyPage />} />
             <Route path='security' element={<SecurityPage />} /> */}
 
-              {/* Payment/License Setup Page */}
-              <Route
-                path="payment"
-                element={
-                  <ProtectedRoute>
-                    <PaymentSetupPage />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Payment/License Setup Page */}
+                <Route
+                  path="payment"
+                  element={
+                    <ProtectedRoute>
+                      <PaymentSetupPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Protected Routes */}
-              <Route
-                path="dashboard"
-                element={
-                  <ProtectedRoute>
-                    <UserDashboard />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected Routes */}
+                <Route
+                  path="dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <UserDashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Admin Routes - Only accessible by admin role */}
-              <Route
-                path="admin"
-                element={
-                  <ProtectedRoute roles={["admin"]}>
-                    <AdminShell />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<AdminDashboard />} />
-                <Route path="performance" element={<AdminPerformance />} />
-                <Route path="reports" element={<AdminReports />} />
-                <Route path="machines" element={<AdminMachines />} />
-                <Route path="logs" element={<AdminLogs />} />
-                <Route path="subusers" element={<AdminSubusers />} />
+                {/* Admin Routes - Only accessible by admin role */}
+                <Route
+                  path="admin"
+                  element={
+                    <ProtectedRoute roles={["admin"]}>
+                      <AdminShell />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="performance" element={<AdminPerformance />} />
+                  <Route path="reports" element={<AdminReports />} />
+                  <Route path="machines" element={<AdminMachines />} />
+                  <Route path="logs" element={<AdminLogs />} />
+                  <Route path="subusers" element={<AdminSubusers />} />
+                </Route>
+                <Route
+                  path="/support/overwrite-guide"
+                  element={<OverwriteGuide />}
+                />
+                <Route
+                  path="/support/wipe-guide"
+                  element={<OverwriteGuide />}
+                />
+                <Route
+                  path="/support/sas-wipe-guide"
+                  element={<WipeSASDrives />}
+                />
+                <Route path="/support/mac-wipe-guide" element={<WipeMacM1 />} />
+                <Route
+                  path="/support/mac-eraser-guide"
+                  element={<MacEraseGuide />}
+                />
+
+                <Route
+                  path="/support/file-eraser-guide"
+                  element={<FileEraserGuide />}
+                />
+                <Route
+                  path="/support/secure-erase-hddssd"
+                  element={<SecureEraseHDDSSD />}
+                />
+                <Route
+                  path="/support/cloud-console-guide"
+                  element={<CloudConsoleGuide />}
+                />
+                <Route
+                  path="/support/ssd-cryptographic-erasure-guide"
+                  element={<CryptoEraseSSD />}
+                />
+                <Route
+                  path="/support/retain-os-guide"
+                  element={<RetainOSGuide />}
+                />
+
+                {/* New Support Pages */}
+                <Route path="/support/faqs" element={<FAQsPage />} />
+                <Route
+                  path="/support/knowledge-base"
+                  element={<KnowledgeBasePage />}
+                />
+                <Route
+                  path="/support/get-started"
+                  element={<GetStartedPage />}
+                />
+                <Route
+                  path="/support/help-manual"
+                  element={<HelpManualPage />}
+                />
+                <Route
+                  path="/support/product-videos"
+                  element={<ProductVideosPage />}
+                />
+
+                {/* Blog Routes */}
+                <Route path="/blog" element={<BlogPage />} />
+                <Route
+                  path="/blog/overwrite-guide"
+                  element={<OverwriteGuideBlog />}
+                />
+                <Route
+                  path="/blog/ssd-wipe-guide"
+                  element={<SSDWipeGuideBlog />}
+                />
+                <Route
+                  path="/blog/erasure-vs-destruction"
+                  element={<ErasureVsDestructionBlog />}
+                />
+                <Route
+                  path="/blog/data-deletion-myths"
+                  element={<DataDeletionMythsBlog />}
+                />
+                <Route
+                  path="/blog/data-sanitization-compliance"
+                  element={<DataSanitizationComplianceBlog />}
+                />
+
+                {/* Catch-all route for unmatched paths */}
+                <Route path="*" element={<NotFoundPage />} />
               </Route>
-              <Route
-                path="/support/overwrite-guide"
-                element={<OverwriteGuide />}
-              />
-              <Route path="/support/wipe-guide" element={<OverwriteGuide />} />
-              <Route
-                path="/support/sas-wipe-guide"
-                element={<WipeSASDrives />}
-              />
-              <Route path="/support/mac-wipe-guide" element={<WipeMacM1 />} />
-              <Route
-                path="/support/mac-eraser-guide"
-                element={<MacEraseGuide />}
-              />
-
-              <Route
-                path="/support/file-eraser-guide"
-                element={<FileEraserGuide />}
-              />
-              <Route
-                path="/support/secure-erase-hddssd"
-                element={<SecureEraseHDDSSD />}
-              />
-              <Route
-                path="/support/cloud-console-guide"
-                element={<CloudConsoleGuide />}
-              />
-              <Route
-                path="/support/ssd-cryptographic-erasure-guide"
-                element={<CryptoEraseSSD />}
-              />
-              <Route
-                path="/support/retain-os-guide"
-                element={<RetainOSGuide />}
-              />
-              
-              {/* New Support Pages */}
-              <Route path="/support/faqs" element={<FAQsPage />} />
-              <Route path="/support/knowledge-base" element={<KnowledgeBasePage />} />
-              <Route path="/support/get-started" element={<GetStartedPage />} />
-              <Route path="/support/help-manual" element={<HelpManualPage />} />
-              <Route path="/support/product-videos" element={<ProductVideosPage />} />
-              
-              {/* Blog Routes */}
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/overwrite-guide" element={<OverwriteGuideBlog />} />
-              <Route path="/blog/ssd-wipe-guide" element={<SSDWipeGuideBlog />} />
-              <Route path="/blog/erasure-vs-destruction" element={<ErasureVsDestructionBlog />} />
-              <Route path="/blog/data-deletion-myths" element={<DataDeletionMythsBlog />} />
-              <Route path="/blog/data-sanitization-compliance" element={<DataSanitizationComplianceBlog />} />
-              
-              {/* Catch-all route for unmatched paths */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
-          </Routes>
-        </Suspense>
-      </AnalyticsWrapper>
-    </AuthProvider>
+            </Routes>
+          </Suspense>
+        </AnalyticsWrapper>
+      </AuthProvider>
     </ToastProvider>
   );
 }

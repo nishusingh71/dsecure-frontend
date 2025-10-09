@@ -4,7 +4,7 @@ import Reveal from "@/components/Reveal";
 
 const blogs = [
   {
-    title: "Overwrite Guid – How Many Passes Are Enough?",
+    title: "Overwrite Guide – How Many Passes Are Enough?",
     image:
       "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759939004/zmeyhnzz2zsp2y9byyik.png",
     link: "/blog/overwrite-guide",
