@@ -795,26 +795,29 @@ const SupportPage: React.FC = () => {
                 <h3 className="text-lg font-semibold text-slate-900 mb-4">
                   TRENDING SEARCHES
                 </h3>
-<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-  {Object.entries(trendingSearches).map(([search, url], index) => (
-    <div key={index} className="flex gap-2">
-      <Link
-        to={url}
-        className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
-      >
-        🔍 {search}
-      </Link>
-      <Link
-        to={url}
-        
-      >
-        
-      </Link>
-    </div>
-  ))}
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {Object.entries(trendingSearches).map(([search, url], index) => (
+                    <div key={index} className="flex gap-2">
+                      <button
+                        className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
+                        onClick={() => handleTrendingSearchClick(search)}
+                        
+                      >
+                        🔍 {search}
+                      </button>
+                      <Link
+                        to={url}
+                        className="text-slate-500 hover:text-brand transition-colors p-2 rounded-md hover:bg-slate-50"
+                        title="Go directly to guide"
+                      >
+                        
+                      </Link>
+                    </div>
+                  ))}
                 </div>
-                
+                <div className="mt-4 text-sm text-slate-600">
+                  💡 Click 🔍 to search or click → to go directly to the guide
+                </div>
               </div>
             </Reveal>
           </div>
