@@ -1,15 +1,50 @@
 import { useAuth } from '@/auth/AuthContext'
+import { useNotification } from '@/contexts/NotificationContext'
 import Reveal from '@/components/Reveal'
 import { Helmet } from 'react-helmet-async'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function UserDashboard() {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
+  const { showInfo } = useNotification()
+  const navigate = useNavigate()
+  const [showProfileMenu, setShowProfileMenu] = useState(false)
+  const [expandedSections, setExpandedSections] = useState({
+    certificates: false,
+    quickActions: false
+  })
+  const profileMenuRef = useRef<HTMLDivElement>(null)
+
+  // Close profile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }))
+  }
 
   const certificates = [
     { id: 'ER-1001', status: 'completed', date: '2h ago', type: 'Device', devices: 5 },
     { id: 'ER-1002', status: 'completed', date: '1d ago', type: 'Server', devices: 2 },
-    { id: 'ER-1003', status: 'processing', date: 'Just now', type: 'Cloud', devices: 3 }
+    { id: 'ER-1003', status: 'processing', date: 'Just now', type: 'Cloud', devices: 3 },
+    { id: 'ER-1004', status: 'completed', date: '3d ago', type: 'Mobile', devices: 8 },
+    { id: 'ER-1005', status: 'completed', date: '5d ago', type: 'Laptop', devices: 12 },
+    { id: 'ER-1006', status: 'completed', date: '1w ago', type: 'Workstation', devices: 4 }
   ]
+
+  const displayedCertificates = expandedSections.certificates ? certificates : certificates.slice(0, 3)
 
   const stats = {
     monthlyErasures: 132,
@@ -19,11 +54,27 @@ export default function UserDashboard() {
   }
 
   const quickActions = [
-    { name: 'Start New Erasure', icon: 'play', type: 'primary' },
-    { name: 'Download Agent', icon: 'download', type: 'secondary' },
-    { name: 'View Reports', icon: 'chart', type: 'secondary' },
-    { name: 'Get Support', icon: 'help', type: 'secondary' }
+    { name: 'Start New Erasure', icon: 'play', type: 'primary', action: () => navigate('/dashboard/new-erasure') },
+    { name: 'Download Agent', icon: 'download', type: 'secondary', action: () => navigate('/dashboard/download-agent') },
+    { name: 'View Reports', icon: 'chart', type: 'secondary', action: () => navigate('/dashboard/reports') },
+    { name: 'Get Support', icon: 'help', type: 'secondary', action: () => navigate('/support') },
+    { name: 'Bulk Operations', icon: 'stack', type: 'secondary', action: () => showInfo('Feature Coming Soon', 'Bulk Operations feature is currently in development') },
+    { name: 'Schedule Erasure', icon: 'calendar', type: 'secondary', action: () => showInfo('Feature Coming Soon', 'Schedule Erasure feature is currently in development') },
+    { name: 'Compliance Check', icon: 'shield', type: 'secondary', action: () => showInfo('Feature Coming Soon', 'Compliance Check feature is currently in development') },
+    { name: 'Export Data', icon: 'export', type: 'secondary', action: () => navigate('/dashboard/reports') }
   ]
+
+  const displayedQuickActions = expandedSections.quickActions ? quickActions : quickActions.slice(0, 4)
+
+  // Generate user initials for avatar
+  const getUserInitials = (name: string) => {
+    return name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'
+  }
+
+  // Handle certificate actions
+  const viewCertificateDetails = (certId: string) => {
+    navigate('/dashboard/reports')
+  }
 
   return (
     <>
@@ -41,24 +92,88 @@ export default function UserDashboard() {
           <meta name="robots" content="index, follow" />
         </Helmet>
     <div className="container-app py-12">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
-            Welcome back, {user?.name}
-          </h1>
-          <p className="mt-2 text-slate-600 flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-green-400"></span>
-            Your account is active and secure
-          </p>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div className="flex items-center gap-4">
+          {/* Circular Avatar */}
+          <div className="relative">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand to-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+              {getUserInitials(user?.name || '')}
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white"></div>
+          </div>
+          
+          {/* User Info */}
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
+              Welcome back, {user?.name}
+            </h1>
+            <p className="mt-1 text-slate-600 flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-green-400"></span>
+              {user?.email || 'user@example.com'} • Account Active
+            </p>
+          </div>
         </div>
-        <div className="flex gap-3">
-          <button className="btn-primary flex items-center gap-2">
+        
+        <div className="flex items-center gap-3">
+          {/* Settings Dropdown */}
+          <div className="relative" ref={profileMenuRef}>
+            <button 
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors"
+              aria-label="Profile settings"
+            >
+              <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </button>
+            
+            {/* Dropdown Menu */}
+            {showProfileMenu && (
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50">
+                <div className="px-4 py-3 border-b border-slate-100">
+                  <p className="text-sm font-medium text-slate-900">{user?.name}</p>
+                  <p className="text-sm text-slate-500">{user?.email}</p>
+                </div>
+                <button className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Edit Profile
+                </button>
+                <button className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+                  </svg>
+                  Account Settings
+                </button>
+                <button className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Billing & Usage
+                </button>
+                <div className="border-t border-slate-100 my-1"></div>
+                <button 
+                  onClick={logout}
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
+          
+          <Link to="/dashboard/new-erasure" className="btn-primary flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             Start New Erasure
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -144,9 +259,25 @@ export default function UserDashboard() {
 
       {/* Recent Certificates */}
       <div className="mt-8">
-        <h2 className="font-semibold text-slate-900 mb-4">Recent Certificates</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-slate-900">Recent Certificates</h2>
+          <button 
+            onClick={() => toggleSection('certificates')}
+            className="text-brand hover:text-brand-700 text-sm font-medium flex items-center gap-1 transition-colors"
+          >
+            {expandedSections.certificates ? 'Show Less' : 'View All'}
+            <svg 
+              className={`w-4 h-4 transition-transform ${expandedSections.certificates ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {certificates.map((cert, i) => (
+          {displayedCertificates.map((cert, i) => (
             <Reveal key={cert.id} delayMs={i * 100}>
               <div className="card hover:scale-[1.02] transition-transform !p-4 sm:!p-6 min-w-0">
                 <div className="flex items-center justify-between">
@@ -165,7 +296,10 @@ export default function UserDashboard() {
                 </div>
                 <div className="mt-4 text-xs text-slate-500">{cert.date}</div>
                 <div className="mt-4 pt-4 border-t flex justify-end">
-                  <button className="text-brand hover:text-brand-700 text-sm font-medium">
+                  <button 
+                    onClick={() => viewCertificateDetails(cert.id)}
+                    className="text-brand hover:text-brand-700 text-sm font-medium"
+                  >
                     View Details →
                   </button>
                 </div>
@@ -173,19 +307,46 @@ export default function UserDashboard() {
             </Reveal>
           ))}
         </div>
+        {expandedSections.certificates && certificates.length > 3 && (
+          <div className="mt-4 text-center">
+            <button 
+              onClick={() => toggleSection('certificates')}
+              className="text-slate-500 hover:text-slate-700 text-sm"
+            >
+              Collapse
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Quick Actions */}
       <div className="mt-8">
-        <h2 className="font-semibold text-slate-900 mb-4">Quick Actions</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-slate-900">Quick Actions</h2>
+          <button 
+            onClick={() => toggleSection('quickActions')}
+            className="text-brand hover:text-brand-700 text-sm font-medium flex items-center gap-1 transition-colors"
+          >
+            {expandedSections.quickActions ? 'Show Less' : 'View All'}
+            <svg 
+              className={`w-4 h-4 transition-transform ${expandedSections.quickActions ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {quickActions.map((action, i) => (
+          {displayedQuickActions.map((action, i) => (
             <Reveal key={action.name} delayMs={i * 100}>
               <button 
-                className={`card flex flex-col items-center justify-center py-6 sm:py-8 !p-4 sm:!p-6 min-w-0 ${
+                onClick={action.action}
+                className={`card flex flex-col items-center justify-center py-6 sm:py-8 !p-4 sm:!p-6 min-w-0 transition-all duration-200 ${
                   action.type === 'primary' 
                     ? 'bg-gradient-to-br from-brand to-brand-600 hover:to-brand-700' 
-                    : 'hover:bg-slate-50'
+                    : 'hover:bg-slate-50 hover:scale-[1.02]'
                 }`}
               >
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
@@ -214,6 +375,26 @@ export default function UserDashboard() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )}
+                  {action.icon === 'stack' && (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  )}
+                  {action.icon === 'calendar' && (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  )}
+                  {action.icon === 'shield' && (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  )}
+                  {action.icon === 'export' && (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  )}
                 </div>
                 <div className={`mt-3 sm:mt-4 text-xs sm:text-sm font-medium text-center px-2 ${
                   action.type === 'primary' ? 'text-white' : 'text-slate-900'
@@ -224,6 +405,16 @@ export default function UserDashboard() {
             </Reveal>
           ))}
         </div>
+        {expandedSections.quickActions && quickActions.length > 4 && (
+          <div className="mt-4 text-center">
+            <button 
+              onClick={() => toggleSection('quickActions')}
+              className="text-slate-500 hover:text-slate-700 text-sm"
+            >
+              Collapse
+            </button>
+          </div>
+        )}
       </div>
     </div>
     </>

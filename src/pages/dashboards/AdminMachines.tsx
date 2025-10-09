@@ -1,52 +1,42 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import { exportToCsv } from '@/utils/csv'
-import { useMachines, dataService } from '@/utils/dataService'
-import { Machine } from '@/utils/api'
-import { SkeletonTable, SkeletonCard } from '@/components/Skeleton'
 import { Helmet } from 'react-helmet-async'
+import { useNotification } from '@/contexts/NotificationContext'
+
+interface Machine {
+  hostname: string
+  eraseOption: string
+  license: string
+  status: string
+}
 
 
 export default function AdminMachines() {
+  const { showSuccess, showError, showWarning, showInfo } = useNotification()
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
   const [eraseFilter, setEraseFilter] = useState('')
   const [licenseFilter, setLicenseFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
-  const [sortBy, setSortBy] = useState('hostname')
-  const [sortOrder, setSortOrder] = useState('asc')
+  const [sortBy, setSortBy] = useState<keyof Machine>('hostname')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const pageSize = 5
   
-  // Use API data with fallback to default data
-  const { data: apiMachines, loading, error, isUsingApi, refetch } = useMachines()
-  
-  // Transform API data to match the expected format or use default data
-  const allRows = useMemo(() => {
-    if (isUsingApi && apiMachines.length > 0) {
-      // Transform API machine data to match current format
-      return apiMachines.map(machine => ({
-        hostname: machine.hostname,
-        eraseOption: machine.eraseOption,
-        license: machine.license,
-        status: machine.status
-      }))
-    } else {
-      // Use default data
-      return ([
-        ['edge-01','Secure Erase','Enterprise','online'],
-        ['edge-02','Quick Erase','Basic','offline'],
-        ['lab-01','Secure Erase','Enterprise','online'],
-        ['lab-02','Quick Erase','Basic','maintenance'],
-        ['qa-01','Secure Erase','Enterprise','online'],
-        ['qa-02','Quick Erase','Basic','offline'],
-        ['dev-01','Secure Erase','Enterprise','online'],
-        ['prod-01','Quick Erase','Premium','online'],
-        ['prod-02','Secure Erase','Premium','maintenance'],
-        ['test-01','Quick Erase','Basic','offline'],
-        ['edge-01','Secure Erase','Enterprise','online'], // Duplicate for testing
-      ].map(([h,e,l,s])=>({ hostname:h, eraseOption:e, license:l, status:s })))
-    }
-  }, [apiMachines, isUsingApi])
+  // Static data - no loading states needed
+  const allRows: Machine[] = useMemo(() => [
+    { hostname: 'edge-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
+    { hostname: 'edge-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
+    { hostname: 'lab-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
+    { hostname: 'lab-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'maintenance' },
+    { hostname: 'qa-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
+    { hostname: 'qa-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
+    { hostname: 'dev-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
+    { hostname: 'prod-01', eraseOption: 'Quick Erase', license: 'Premium', status: 'online' },
+    { hostname: 'prod-02', eraseOption: 'Secure Erase', license: 'Premium', status: 'maintenance' },
+    { hostname: 'test-01', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
+    { hostname: 'edge-03', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
+  ], [])
   
   const uniqueEraseOptions = useMemo(() => [...new Set(allRows.map(r => r.eraseOption))], [allRows])
   const uniqueLicenses = useMemo(() => [...new Set(allRows.map(r => r.license))], [allRows])
@@ -96,14 +86,50 @@ export default function AdminMachines() {
     setShowUniqueOnly(false)
     setPage(1)
   }
+
+  // Action functions
+  const handleViewDetails = (machine: Machine) => {
+    showInfo(`Viewing details for ${machine.hostname}`)
+    // Additional view logic can be added here
+  }
+
+  const handleEditMachine = (machine: Machine) => {
+    showInfo(`Edit mode enabled for ${machine.hostname}`)
+    // Additional edit logic can be added here
+  }
+
+  const handleDeleteMachine = (machine: Machine) => {
+    if (window.confirm(`Are you sure you want to delete ${machine.hostname}?`)) {
+      showSuccess(`Machine ${machine.hostname} deleted successfully`)
+      // Additional delete logic can be added here
+    }
+  }
+
+  const handleRestartMachine = (machine: Machine) => {
+    if (machine.status === 'offline') {
+      showWarning(`Cannot restart ${machine.hostname} - machine is offline`)
+      return
+    }
+    showSuccess(`Restart initiated for ${machine.hostname}`)
+    // Additional restart logic can be added here
+  }
+
+  const handleRunErase = (machine: Machine) => {
+    if (machine.status === 'offline') {
+      showWarning(`Cannot run erase on ${machine.hostname} - machine is offline`)
+      return
+    }
+    showSuccess(`${machine.eraseOption} initiated on ${machine.hostname}`)
+    // Additional erase logic can be added here
+  }
   return (
     <>
     <Helmet>
 +      <link rel="canonical" href="https://dsecuretech.com/admin/machines" />
-          <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
+          <title>D-SecureTech Compliance | Data Erasure Standards & Regulations</title>
           <meta
             name="description"
-            content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+            content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
           />
           <meta
             name="keywords"
@@ -164,10 +190,7 @@ export default function AdminMachines() {
       )} */}
 
       {/* Advanced Filters */}
-      {loading ? (
-        <SkeletonCard hasHeader={true} contentLines={3} className="p-4" />
-      ) : (
-        <div className="card p-4 space-y-4">
+      <div className="card p-4 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-slate-900">Filters & Search</h3>
           <button 
@@ -256,7 +279,7 @@ export default function AdminMachines() {
             <select 
               className="border rounded px-2 py-1 text-sm"
               value={sortBy}
-              onChange={(e)=>setSortBy(e.target.value)}
+              onChange={(e)=>setSortBy(e.target.value as keyof Machine)}
             >
               <option value="hostname">Hostname</option>
               <option value="eraseOption">Erase Option</option>
@@ -276,21 +299,15 @@ export default function AdminMachines() {
           </div>
         </div>
       </div>
-      )}
 
       {/* Export Actions */}
-      {loading ? null : (
-        <div className="flex justify-end gap-2">
-          <button className="btn-secondary" onClick={()=>exportToCsv('machines.csv', filtered)}>Export All ({filtered.length})</button>
-          <button className="btn-secondary" onClick={()=>exportToCsv('machines-page.csv', rows)}>Export Page ({rows.length})</button>
-        </div>
-      )}
+      <div className="flex justify-end gap-2">
+        <button className="btn-secondary" onClick={()=>exportToCsv('machines.csv', filtered.map(m => ({...m})))}>Export All ({filtered.length})</button>
+        <button className="btn-secondary" onClick={()=>exportToCsv('machines-page.csv', rows.map(m => ({...m})))}>Export Page ({rows.length})</button>
+      </div>
 
       {/* Table */}
-      {loading ? (
-        <SkeletonTable rows={5} columns={4} hasHeader={true} />
-      ) : (
-        <div className="card-content card-table card">
+      <div className="card-content card-table card">
         <table className="w-full text-nowrap">
           <thead>
             <tr className="text-left text-slate-500">
@@ -330,7 +347,53 @@ export default function AdminMachines() {
                   </span>
                 </td>
                 <td className="py-2">
-                  <button className="btn-secondary text-xs">Manage</button>
+                  <div className="flex items-center gap-1">
+                    <button 
+                      onClick={() => handleViewDetails(row)}
+                      className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
+                      title="View Details"
+                    >
+                      View
+                    </button>
+                    <button 
+                      onClick={() => handleEditMachine(row)}
+                      className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
+                      title="Edit Machine"
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleRunErase(row)}
+                      className={`text-xs px-2 py-1 rounded border ${
+                        row.status === 'offline' 
+                          ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
+                          : 'text-purple-600 hover:text-purple-800 border-purple-200 hover:bg-purple-50'
+                      }`}
+                      disabled={row.status === 'offline'}
+                      title={row.status === 'offline' ? 'Machine offline' : 'Run Erase'}
+                    >
+                      Erase
+                    </button>
+                    <button 
+                      onClick={() => handleRestartMachine(row)}
+                      className={`text-xs px-2 py-1 rounded border ${
+                        row.status === 'offline' 
+                          ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
+                          : 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50'
+                      }`}
+                      disabled={row.status === 'offline'}
+                      title={row.status === 'offline' ? 'Machine offline' : 'Restart Machine'}
+                    >
+                      Restart
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteMachine(row)}
+                      className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
+                      title="Delete Machine"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -360,7 +423,6 @@ export default function AdminMachines() {
           </div>
         </div>
       </div>
-      )}
     </div>
     </>
   )

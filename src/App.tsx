@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
+import ToastContainer from "./components/ui/ToastContainer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MainLayout from "./layouts/MainLayout";
 import PageLoadingSkeleton from "./components/PageLoadingSkeleton";
@@ -71,6 +73,19 @@ import AdminReports from "./pages/dashboards/AdminReports";
 import AdminMachines from "./pages/dashboards/AdminMachines";
 import AdminLogs from "./pages/dashboards/AdminLogs";
 import AdminSubusers from "./pages/dashboards/AdminSubusers";
+import NewErasurePage from "./pages/dashboards/NewErasurePage";
+import ReportsPage from "./pages/dashboards/ReportsPage";
+import DownloadAgentPage from "./pages/dashboards/DownloadAgentPage";
+// Admin pages
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminGroups from "./pages/admin/AdminGroups";
+import AdminReportsAdmin from "./pages/admin/AdminReports";
+import AdminSettings from "./pages/admin/AdminSettings";
+import AddUser from "./pages/admin/AddUser";
+import AddGroup from "./pages/admin/AddGroup";
+import GenerateReport from "./pages/admin/GenerateReport";
+import EditUser from "./pages/admin/EditUser";
+import EditGroup from "./pages/admin/EditGroup";
 import LegalPolicy from "./pages/LegalPolicy";
 import OverwriteGuide from "./pages/OverwriteGuide";
 import WipeSASDrives from "./pages/WipeSASDrive";
@@ -133,9 +148,11 @@ export default function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <AnalyticsWrapper>
-          <ScrollToTop />
-          <Suspense fallback={<PageLoadingSkeleton />}>
+        <NotificationProvider>
+          <AnalyticsWrapper>
+            <ScrollToTop />
+            <ToastContainer />
+            <Suspense fallback={<PageLoadingSkeleton />}>
           <Routes>
             <Route element={<MainLayout />}>
               <Route index element={<HomePage />} />
@@ -226,6 +243,30 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="dashboard/new-erasure"
+                element={
+                  <ProtectedRoute>
+                    <NewErasurePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="dashboard/reports"
+                element={
+                  <ProtectedRoute>
+                    <ReportsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="dashboard/download-agent"
+                element={
+                  <ProtectedRoute>
+                    <DownloadAgentPage />
+                  </ProtectedRoute>
+                }
+              />
 
               {/* Admin Routes - Only accessible by admin role */}
               <Route
@@ -242,6 +283,15 @@ export default function App() {
                 <Route path="machines" element={<AdminMachines />} />
                 <Route path="logs" element={<AdminLogs />} />
                 <Route path="subusers" element={<AdminSubusers />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="users/add" element={<AddUser />} />
+                <Route path="users/edit/:userId" element={<EditUser />} />
+                <Route path="groups" element={<AdminGroups />} />
+                <Route path="groups/add" element={<AddGroup />} />
+                <Route path="groups/edit/:groupId" element={<EditGroup />} />
+                <Route path="reports/admin" element={<AdminReportsAdmin />} />
+                <Route path="reports/generate" element={<GenerateReport />} />
+                <Route path="settings" element={<AdminSettings />} />
               </Route>
               <Route
                 path="/support/overwrite-guide"
@@ -300,6 +350,7 @@ export default function App() {
           </Routes>
         </Suspense>
       </AnalyticsWrapper>
+        </NotificationProvider>
     </AuthProvider>
     </ToastProvider>
   );

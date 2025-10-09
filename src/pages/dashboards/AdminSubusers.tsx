@@ -1,43 +1,45 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import { exportToCsv, openPrintView } from '@/utils/csv'
-import { useUsers, dataService } from '@/utils/dataService'
-import { User } from '@/utils/api'
-import { SkeletonTable, SkeletonCard, SkeletonStats } from '@/components/Skeleton'
 import { Helmet } from 'react-helmet-async'
+import { useNotification } from '@/contexts/NotificationContext'
+
+interface User {
+  id: string
+  email: string
+  role: string
+  status: string
+  department: string
+  lastLogin: string
+  name: string
+}
 
 export default function AdminSubusers() {
+  const { showSuccess, showError, showWarning, showInfo } = useNotification()
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
   const [roleFilter, setRoleFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
-  const [sortBy, setSortBy] = useState('email')
-  const [sortOrder, setSortOrder] = useState('asc')
+  const [sortBy, setSortBy] = useState<keyof User>('email')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const pageSize = 5
   
-  // Use API data with fallback to default data
-  const { data: allRows, loading, error, isUsingApi, refetch } = useUsers()
+  // Static data - no loading states needed
+  const allRows: User[] = useMemo(() => [
+    { id: '1', email: 'john.doe@company.com', name: 'John Doe', role: 'admin', status: 'active', department: 'IT', lastLogin: '2025-09-26' },
+    { id: '2', email: 'jane.smith@company.com', name: 'Jane Smith', role: 'user', status: 'active', department: 'HR', lastLogin: '2025-09-25' },
+    { id: '3', email: 'bob.johnson@company.com', name: 'Bob Johnson', role: 'operator', status: 'inactive', department: 'Operations', lastLogin: '2025-09-20' },
+    { id: '4', email: 'alice.brown@company.com', name: 'Alice Brown', role: 'user', status: 'active', department: 'Finance', lastLogin: '2025-09-26' },
+    { id: '5', email: 'charlie.wilson@company.com', name: 'Charlie Wilson', role: 'admin', status: 'pending', department: 'IT', lastLogin: 'Never' },
+  ], [])
   
-  // Transform User data to match the expected format
-  const transformedRows = useMemo(() => {
-    return allRows.map(user => ({
-      email: user.email,
-      role: user.role,
-      status: user.status,
-      department: user.department,
-      lastLogin: user.lastLogin || 'Never',
-      id: user.id,
-      name: user.name,
-    }))
-  }, [allRows])
-  
-  const uniqueRoles = useMemo(() => [...new Set(transformedRows.map(r => r.role))], [transformedRows])
-  const uniqueStatuses = useMemo(() => [...new Set(transformedRows.map(r => r.status))], [transformedRows])
-  const uniqueDepartments = useMemo(() => [...new Set(transformedRows.map(r => r.department))], [transformedRows])
+  const uniqueRoles = useMemo(() => [...new Set(allRows.map(r => r.role))], [allRows])
+  const uniqueStatuses = useMemo(() => [...new Set(allRows.map(r => r.status))], [allRows])
+  const uniqueDepartments = useMemo(() => [...new Set(allRows.map(r => r.department))], [allRows])
   
   const filtered = useMemo(() => {
-    let result = transformedRows.filter(r => {
+    let result = allRows.filter(r => {
       const matchesQuery = r.email.toLowerCase().includes(query.toLowerCase()) ||
                           r.department.toLowerCase().includes(query.toLowerCase())
       const matchesRole = !roleFilter || r.role === roleFilter
@@ -66,7 +68,7 @@ export default function AdminSubusers() {
     })
     
     return result
-  }, [transformedRows, query, roleFilter, statusFilter, departmentFilter, showUniqueOnly, sortBy, sortOrder])
+  }, [allRows, query, roleFilter, statusFilter, departmentFilter, showUniqueOnly, sortBy, sortOrder])
   
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
   const rows = filtered.slice((page-1)*pageSize, page*pageSize)
@@ -78,6 +80,44 @@ export default function AdminSubusers() {
     setDepartmentFilter('')
     setShowUniqueOnly(false)
     setPage(1)
+  }
+
+  // Action functions
+  const handleViewUser = (user: User) => {
+    showInfo(`Viewing profile for ${user.name}`)
+    // Additional view logic can be added here
+  }
+
+  const handleEditUser = (user: User) => {
+    showInfo(`Edit mode enabled for ${user.name}`)
+    // Additional edit logic can be added here
+  }
+
+  const handleDeleteUser = (user: User) => {
+    if (window.confirm(`Are you sure you want to delete user ${user.name}?`)) {
+      showSuccess(`User ${user.name} deleted successfully`)
+      // Additional delete logic can be added here
+    }
+  }
+
+  const handleManagePermissions = (user: User) => {
+    showInfo(`Managing permissions for ${user.name}`)
+    // Additional permissions logic can be added here
+  }
+
+  const handleResetPassword = (user: User) => {
+    if (user.status === 'inactive') {
+      showWarning(`Cannot reset password for ${user.name} - user is inactive`)
+      return
+    }
+    showSuccess(`Password reset email sent to ${user.email}`)
+    // Additional password reset logic can be added here
+  }
+
+  const handleToggleStatus = (user: User) => {
+    const newStatus = user.status === 'active' ? 'inactive' : 'active'
+    showSuccess(`User ${user.name} status changed to ${newStatus}`)
+    // Additional status toggle logic can be added here
   }
   
   return (
@@ -148,16 +188,13 @@ export default function AdminSubusers() {
       )} */}
 
       {/* Advanced Filters */}
-      {loading ? (
-        <SkeletonCard hasHeader={true} contentLines={4} className="p-4" />
-      ) : (
-        <div className="card p-4 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-slate-900">Filters & Search</h3>
-            <button 
-              onClick={clearAllFilters}
-              className="text-sm text-red-600 hover:text-red-800 font-medium"
-            >
+      <div className="card p-4 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-slate-900">Filters & Search</h3>
+          <button 
+            onClick={clearAllFilters}
+            className="text-sm text-red-600 hover:text-red-800 font-medium"
+          >
               Clear All
             </button>
           </div>
@@ -240,7 +277,7 @@ export default function AdminSubusers() {
             <select 
               className="border rounded px-2 py-1 text-sm"
               value={sortBy}
-              onChange={(e)=>setSortBy(e.target.value)}
+              onChange={(e)=>setSortBy(e.target.value as keyof User)}
             >
               <option value="email">Email</option>
               <option value="role">Role</option>
@@ -257,32 +294,26 @@ export default function AdminSubusers() {
           </div>
           
           <div className="text-sm text-slate-600">
-            Showing {filtered.length} of {transformedRows.length} users
+            Showing {filtered.length} of {allRows.length} users
           </div>
         </div>
       </div>
-      )}
 
       {/* Export Actions */}
-      {loading ? null : (
-        <div className="flex justify-end gap-2">
-          <button className="btn-secondary" onClick={()=>exportToCsv('subusers.csv', filtered)}>Export All ({filtered.length})</button>
-          <button className="btn-secondary" onClick={()=>exportToCsv('subusers-page.csv', rows)}>Export Page ({rows.length})</button>
-          <button className="btn-secondary" onClick={()=>{
-            const body = `<h1>Subusers Management</h1>` +
-              `<table border="1" style="border-collapse: collapse; width: 100%;"><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Department</th><th>Last Login</th></tr></thead><tbody>`+
-              filtered.map(u=>`<tr><td>${u.email}</td><td>${u.role}</td><td>${u.status}</td><td>${u.department}</td><td>${u.lastLogin}</td></tr>`).join('')+
-              `</tbody></table>`
-            openPrintView('Subusers Management', body)
-          }}>Print All ({filtered.length})</button>
-        </div>
-      )}
+      <div className="flex justify-end gap-2">
+        <button className="btn-secondary" onClick={()=>exportToCsv('subusers.csv', filtered.map(u => ({...u})))}>Export All ({filtered.length})</button>
+        <button className="btn-secondary" onClick={()=>exportToCsv('subusers-page.csv', rows.map(u => ({...u})))}>Export Page ({rows.length})</button>
+        <button className="btn-secondary" onClick={()=>{
+          const body = `<h1>Subusers Management</h1>` +
+            `<table border="1" style="border-collapse: collapse; width: 100%;"><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Department</th><th>Last Login</th></tr></thead><tbody>`+
+            filtered.map(u=>`<tr><td>${u.email}</td><td>${u.role}</td><td>${u.status}</td><td>${u.department}</td><td>${u.lastLogin}</td></tr>`).join('')+
+            `</tbody></table>`
+          openPrintView('Subusers Management', body)
+        }}>Print All ({filtered.length})</button>
+      </div>
 
       {/* Table */}
-      {loading ? (
-        <SkeletonTable rows={5} columns={6} hasHeader={true} />
-      ) : (
-        <div className="card-content card-table card">
+      <div className="card-content card-table card">
         <table className="w-full text-nowrap">
           <thead>
             <tr className="text-left text-slate-500">
@@ -326,9 +357,58 @@ export default function AdminSubusers() {
                 <td className="py-2">{user.department}</td>
                 <td className="py-2 text-slate-600">{user.lastLogin}</td>
                 <td className="py-2">
-                  <div className="flex gap-1">
-                    <button className="btn-secondary text-xs">Edit</button>
-                    <button className="text-xs px-2 py-1 text-red-600 hover:bg-red-50 rounded">Delete</button>
+                  <div className="flex items-center gap-1">
+                    <button 
+                      onClick={() => handleViewUser(user)}
+                      className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
+                      title="View User"
+                    >
+                      View
+                    </button>
+                    <button 
+                      onClick={() => handleEditUser(user)}
+                      className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
+                      title="Edit User"
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleManagePermissions(user)}
+                      className="text-purple-600 hover:text-purple-800 text-xs px-2 py-1 rounded border border-purple-200 hover:bg-purple-50"
+                      title="Manage Permissions"
+                    >
+                      Permissions
+                    </button>
+                    <button 
+                      onClick={() => handleResetPassword(user)}
+                      className={`text-xs px-2 py-1 rounded border ${
+                        user.status === 'inactive' 
+                          ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
+                          : 'text-orange-600 hover:text-orange-800 border-orange-200 hover:bg-orange-50'
+                      }`}
+                      disabled={user.status === 'inactive'}
+                      title={user.status === 'inactive' ? 'User is inactive' : 'Reset Password'}
+                    >
+                      Reset
+                    </button>
+                    <button 
+                      onClick={() => handleToggleStatus(user)}
+                      className={`text-xs px-2 py-1 rounded border ${
+                        user.status === 'active' 
+                          ? 'text-red-600 hover:text-red-800 border-red-200 hover:bg-red-50' 
+                          : 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50'
+                      }`}
+                      title={user.status === 'active' ? 'Deactivate User' : 'Activate User'}
+                    >
+                      {user.status === 'active' ? 'Deactivate' : 'Activate'}
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteUser(user)}
+                      className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
+                      title="Delete User"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -359,7 +439,6 @@ export default function AdminSubusers() {
           </div>
         </div>
       </div>
-      )}
     </div>
     </>
   )

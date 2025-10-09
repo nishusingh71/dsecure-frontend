@@ -1,48 +1,36 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState } from 'react'
 import { exportToCsv, openPrintView } from '@/utils/csv'
-import { useReports, dataService } from '@/utils/dataService'
-import { Report } from '@/utils/api'
-import { SkeletonTable, SkeletonCard } from '@/components/Skeleton'
 import { Helmet } from 'react-helmet-async'
+import { useNotification } from '@/contexts/NotificationContext'
 
+interface Report {
+  id: string
+  date: string
+  devices: number
+  status: string
+  department: string
+}
 
 export default function AdminReports() {
+  const { showSuccess, showError, showWarning, showInfo } = useNotification()
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
   const [statusFilter, setStatusFilter] = useState('')
   const [dateFilter, setDateFilter] = useState('')
   const [deviceRangeFilter, setDeviceRangeFilter] = useState('')
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
-  const [sortBy, setSortBy] = useState('id')
-  const [sortOrder, setSortOrder] = useState('desc')
+  const [sortBy, setSortBy] = useState<keyof Report>('id')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
   const pageSize = 5
   
-  // Use API data with fallback to default data
-  const { data: apiReports, loading, error, isUsingApi, refetch } = useReports()
-  
-  // Transform API data to match the expected format or use default data
-  const allRows = useMemo(() => {
-    if (isUsingApi && apiReports.length > 0) {
-      // Transform API report data to match current format
-      return apiReports.map(report => ({
-        id: report.id,
-        date: report.date || new Date().toISOString().split('T')[0],
-        devices: report.devices,
-        status: report.status,
-        department: report.department
-      }))
-    } else {
-      // Use default data
-      return [
-        { id: 'AR-2025-1001', date: '2025-09-01', devices: 25, status: 'completed', department: 'IT' },
-        { id: 'AR-2025-1002', date: '2025-09-02', devices: 50, status: 'pending', department: 'HR' },
-        { id: 'AR-2025-1003', date: '2025-09-03', devices: 75, status: 'completed', department: 'Finance' },
-        { id: 'AR-2025-1004', date: '2025-09-04', devices: 100, status: 'failed', department: 'IT' },
-        { id: 'AR-2025-1005', date: '2025-09-05', devices: 125, status: 'completed', department: 'Operations' },
-        { id: 'AR-2025-1001', date: '2025-09-01', devices: 25, status: 'completed', department: 'IT' }, // Duplicate for testing
-      ]
-    }
-  }, [apiReports, isUsingApi])
+  // Static data - no loading states needed
+  const allRows: Report[] = useMemo(() => [
+    { id: 'AR-2025-1001', date: '2025-09-01', devices: 25, status: 'completed', department: 'IT' },
+    { id: 'AR-2025-1002', date: '2025-09-02', devices: 50, status: 'pending', department: 'HR' },
+    { id: 'AR-2025-1003', date: '2025-09-03', devices: 75, status: 'completed', department: 'Finance' },
+    { id: 'AR-2025-1004', date: '2025-09-04', devices: 100, status: 'failed', department: 'IT' },
+    { id: 'AR-2025-1005', date: '2025-09-05', devices: 125, status: 'completed', department: 'Operations' },
+  ], [])
   
   const uniqueStatuses = useMemo(() => [...new Set(allRows.map(r => r.status))], [allRows])
   const uniqueMonths = useMemo(() => [...new Set(allRows.map(r => r.date.substring(0, 7)))], [allRows])
@@ -138,6 +126,42 @@ export default function AdminReports() {
     setPage(1)
   }
 
+  // Action functions
+  const handleViewReport = (report: Report) => {
+    showInfo(`Opening report ${report.id}`)
+    // Additional view logic can be added here
+  }
+
+  const handleDownloadReport = (report: Report) => {
+    showSuccess(`Downloading report ${report.id}`)
+    // Additional download logic can be added here
+  }
+
+  const handleDeleteReport = (report: Report) => {
+    if (window.confirm(`Are you sure you want to delete report ${report.id}?`)) {
+      showSuccess(`Report ${report.id} deleted successfully`)
+      // Additional delete logic can be added here
+    }
+  }
+
+  const handleRegenerateReport = (report: Report) => {
+    if (report.status === 'pending') {
+      showWarning(`Report ${report.id} is already being generated`)
+      return
+    }
+    showSuccess(`Regenerating report ${report.id}`)
+    // Additional regenerate logic can be added here
+  }
+
+  const handleShareReport = (report: Report) => {
+    if (report.status !== 'completed') {
+      showWarning(`Cannot share ${report.id} - report is not completed`)
+      return
+    }
+    showInfo(`Sharing options for report ${report.id}`)
+    // Additional sharing logic can be added here
+  }
+
   return (
     <>
     <Helmet>
@@ -205,10 +229,7 @@ export default function AdminReports() {
       )} */}
 
       {/* Advanced Filters */}
-      {loading ? (
-        <SkeletonCard hasHeader={true} contentLines={4} className="p-4" />
-      ) : (
-        <div className="card p-4 space-y-4">
+      <div className="card p-4 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-slate-900">Filters & Search</h3>
           <button 
@@ -298,7 +319,7 @@ export default function AdminReports() {
             <select 
               className="border rounded px-2 py-1 text-sm"
               value={sortBy}
-              onChange={(e)=>setSortBy(e.target.value)}
+              onChange={(e)=>setSortBy(e.target.value as keyof Report)}
             >
               <option value="id">Report ID</option>
               <option value="date">Date</option>
@@ -319,28 +340,22 @@ export default function AdminReports() {
           </div>
         </div>
       </div>
-      )}
 
       {/* Export Actions */}
-      {loading ? null : (
-        <div className="flex justify-end gap-2">
-          <button className="btn-secondary" onClick={()=>exportToCsv('reports.csv', filtered)}>Export All ({filtered.length})</button>
-          <button className="btn-secondary" onClick={()=>exportToCsv('reports-page.csv', rows)}>Export Page ({rows.length})</button>
-          <button className="btn-secondary" onClick={()=>{
-            const body = `<h1>Audit Reports</h1>` +
-              `<table border="1" style="border-collapse: collapse; width: 100%;"><thead><tr><th>Report ID</th><th>Date</th><th>Devices</th><th>Status</th><th>Department</th></tr></thead><tbody>`+
-              filtered.map(r=>`<tr><td>${r.id}</td><td>${r.date}</td><td>${r.devices}</td><td>${r.status}</td><td>${r.department}</td></tr>`).join('')+
-              `</tbody></table>`
-            openPrintView('Audit Reports', body)
-          }}>Print All ({filtered.length})</button>
-        </div>
-      )}
+      <div className="flex justify-end gap-2">
+        <button className="btn-secondary" onClick={()=>exportToCsv('reports.csv', filtered.map(r => ({...r})))}>Export All ({filtered.length})</button>
+        <button className="btn-secondary" onClick={()=>exportToCsv('reports-page.csv', rows.map(r => ({...r})))}>Export Page ({rows.length})</button>
+        <button className="btn-secondary" onClick={()=>{
+          const body = `<h1>Audit Reports</h1>` +
+            `<table border="1" style="border-collapse: collapse; width: 100%;"><thead><tr><th>Report ID</th><th>Date</th><th>Devices</th><th>Status</th><th>Department</th></tr></thead><tbody>`+
+            filtered.map(r=>`<tr><td>${r.id}</td><td>${r.date}</td><td>${r.devices}</td><td>${r.status}</td><td>${r.department}</td></tr>`).join('')+
+            `</tbody></table>`
+          openPrintView('Audit Reports', body)
+        }}>Print All ({filtered.length})</button>
+      </div>
 
       {/* Table */}
-      {loading ? (
-        <SkeletonTable rows={5} columns={5} hasHeader={true} />
-      ) : (
-      
+      {/* Table */}
       <div className="card-content card-table card">
         <table className="w-full text-nowrap">
           <thead>
@@ -385,9 +400,57 @@ export default function AdminReports() {
                 </td>
                 <td className="py-2">{row.department}</td>
                 <td className="py-2">
-                  <div className="flex gap-1">
-                    <button className="btn-secondary text-xs">View</button>
-                    <button className="text-xs px-2 py-1 text-blue-600 hover:bg-blue-50 rounded">Download</button>
+                  <div className="flex items-center gap-1">
+                    <button 
+                      onClick={() => handleViewReport(row)}
+                      className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
+                      title="View Report"
+                    >
+                      View
+                    </button>
+                    <button 
+                      onClick={() => handleDownloadReport(row)}
+                      className={`text-xs px-2 py-1 rounded border ${
+                        row.status === 'completed' 
+                          ? 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50' 
+                          : 'text-slate-400 border-slate-200 cursor-not-allowed'
+                      }`}
+                      disabled={row.status !== 'completed'}
+                      title={row.status !== 'completed' ? 'Report not ready for download' : 'Download Report'}
+                    >
+                      Download
+                    </button>
+                    <button 
+                      onClick={() => handleShareReport(row)}
+                      className={`text-xs px-2 py-1 rounded border ${
+                        row.status === 'completed' 
+                          ? 'text-purple-600 hover:text-purple-800 border-purple-200 hover:bg-purple-50' 
+                          : 'text-slate-400 border-slate-200 cursor-not-allowed'
+                      }`}
+                      disabled={row.status !== 'completed'}
+                      title={row.status !== 'completed' ? 'Report not ready for sharing' : 'Share Report'}
+                    >
+                      Share
+                    </button>
+                    <button 
+                      onClick={() => handleRegenerateReport(row)}
+                      className={`text-xs px-2 py-1 rounded border ${
+                        row.status === 'pending' 
+                          ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
+                          : 'text-orange-600 hover:text-orange-800 border-orange-200 hover:bg-orange-50'
+                      }`}
+                      disabled={row.status === 'pending'}
+                      title={row.status === 'pending' ? 'Report is being generated' : 'Regenerate Report'}
+                    >
+                      Regenerate
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteReport(row)}
+                      className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
+                      title="Delete Report"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -418,7 +481,6 @@ export default function AdminReports() {
           </div>
         </div>
       </div>
-      )}
     </div>
     </>
   )

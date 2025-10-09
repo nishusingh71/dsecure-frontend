@@ -97,4 +97,20 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-brand to-brand-600;
   }
+
+  /* Toast animations */
+  .animate-slide-in-right {
+    animation: slideInRight 0.3s ease-out;
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 }

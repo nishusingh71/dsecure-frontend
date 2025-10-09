@@ -32,6 +32,21 @@ export default function AdminShell() {
         <aside className="card h-fit md:sticky md:top-24 !p-3 sm:!p-6 overflow-hidden">
           <nav className="flex flex-col sm:flex-row md:flex-col gap-2 text-sm">
             <NavLink 
+              to="/admin" 
+              end
+              className={({isActive}) => `flex items-center gap-2 px-3 py-2.5 rounded-lg transition-colors font-medium ${
+                isActive 
+                  ? 'bg-brand text-white' 
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5v14l7-7z" />
+              </svg>
+              <span className="truncate">Overview</span>
+            </NavLink>
+            <NavLink 
               to="/admin/performance" 
               className={({isActive}) => `flex items-center gap-2 px-3 py-2.5 rounded-lg transition-colors font-medium ${
                 isActive 

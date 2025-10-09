@@ -689,14 +689,14 @@ export default function MainLayout() {
                         Cloud Erasure
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link
                         to="/services?type=device"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
                         Mobile Erasure
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
 
