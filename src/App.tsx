@@ -187,6 +187,7 @@ export default function App() {
                   path="resources/documentation"
                   element={<DocumentationResourcesPage />}
                 />
+
                 <Route
                   path="/technical-documentation"
                   element={<TechnicalDocumentation />}

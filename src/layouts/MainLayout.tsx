@@ -515,38 +515,38 @@ export default function MainLayout() {
           <div className="container-app relative">
             {/* Newsletter CTA Section */}
             {/* <div className="py-12 border-b border-slate-700/50">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 bg-brand/10 text-brand-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                </svg>
-                Newsletter
-              </div>
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                Stay ahead of data security trends
-              </h3>
-              <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
-                Get the latest insights on data erasure, compliance updates, and security best practices delivered to your inbox.
-              </p>
-              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 px-4 py-3 bg-white/10 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent backdrop-blur-sm"
-                />
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-brand to-brand-600 text-white font-semibold rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                >
-                  Subscribe
-                </button>
-              </form>
-              <p className="text-slate-400 text-sm mt-4">
-                Join 10,000+ security professionals. Unsubscribe anytime.
-              </p>
-            </div>
-          </div> */}
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 bg-brand/10 text-brand-300 px-4 py-2 rounded-full text-sm font-medium mb-4">
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+          </svg>
+          Newsletter
+        </div>
+        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          Stay ahead of data security trends
+        </h3>
+        <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
+          Get the latest insights on data erasure, compliance updates, and security best practices delivered to your inbox.
+        </p>
+        <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Enter your email address"
+            className="flex-1 px-4 py-3 bg-white/10 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent backdrop-blur-sm"
+          />
+          <button
+            type="submit"
+            className="px-6 py-3 bg-gradient-to-r from-brand to-brand-600 text-white font-semibold rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+          >
+            Subscribe
+          </button>
+        </form>
+        <p className="text-slate-400 text-sm mt-4">
+          Join 10,000+ security professionals. Unsubscribe anytime.
+        </p>
+      </div>
+    </div> */}
 
             {/* Main Footer Content */}
             <div className="py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 xl:py-18 xxl:py-20">
@@ -572,14 +572,14 @@ export default function MainLayout() {
 
                   {/* Trust Indicators */}
                   {/* <div className="mb-8">
-                  <p className="text-slate-400 text-sm mb-3">Trusted by 1000+ companies worldwide</p>
-                  <div className="flex items-center gap-6 opacity-60">
-                    <div className="text-slate-400 text-xs font-mono">ISO 27001</div>
-                    <div className="text-slate-400 text-xs font-mono">SOC 2</div>
-                    <div className="text-slate-400 text-xs font-mono">GDPR</div>
-                    <div className="text-slate-400 text-xs font-mono">HIPAA</div>
-                  </div>
-                </div> */}
+            <p className="text-slate-400 text-sm mb-3">Trusted by 1000+ companies worldwide</p>
+            <div className="flex items-center gap-6 opacity-60">
+              <div className="text-slate-400 text-xs font-mono">ISO 27001</div>
+              <div className="text-slate-400 text-xs font-mono">SOC 2</div>
+              <div className="text-slate-400 text-xs font-mono">GDPR</div>
+              <div className="text-slate-400 text-xs font-mono">HIPAA</div>
+            </div>
+          </div> */}
 
                   {/* Social Links */}
                   <div className="flex items-center gap-4">
@@ -696,7 +696,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/services?type=device"
+                          to="/services/mobile-erasure"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Mobile Erasure
@@ -725,7 +725,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/solutions?type=enterprise"
+                          to="/solutions/healthcare"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Healthcare
@@ -733,7 +733,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/solutions?type=financial"
+                          to="/solutions/financial-services"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Financial Services
@@ -741,7 +741,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/solutions?type=government"
+                          to="/solutions/government"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Government
@@ -749,7 +749,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/solutions?type=enterprise"
+                          to="/solutions/education"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Education
@@ -774,7 +774,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/compliance"
+                          to="/resources?type=compliance"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Compliance
@@ -829,9 +829,30 @@ export default function MainLayout() {
                           Contact
                         </Link>
                       </li>
-                      {/* <li><a href="#" className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block">Careers</a></li> */}
-                      {/* <li><a href="#" className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block">Partners</a></li> */}
-                      {/* <li><a href="#" className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block">Press</a></li> */}
+                      <li>
+                        <Link
+                          to="/careers"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Careers
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/partners"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Partners
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/press"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Press
+                        </Link>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -883,20 +904,20 @@ export default function MainLayout() {
                   >
                     Cookie Policy
                   </Link>
-                  {/* <Link
-                  to="/security"
-                  className="hover:text-brand transition-colors"
-                  aria-label="View our security practices and certifications"
-                >
-                  Security
-                </Link> */}
-                  {/* <Link
-                  to="/status"
-                  className="hover:text-brand transition-colors"
-                  aria-label="Check system status and service availability"
-                >
-                  Status
-                </Link> */}
+                  <Link
+                    to="/security"
+                    className="hover:text-brand transition-colors"
+                    aria-label="View our security practices and certifications"
+                  >
+                    Security
+                  </Link>
+                  <Link
+                    to="/status"
+                    className="hover:text-brand transition-colors"
+                    aria-label="Check system status and service availability"
+                  >
+                    Status
+                  </Link>
                 </div>
               </div>
             </div>
