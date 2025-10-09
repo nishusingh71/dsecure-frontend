@@ -696,7 +696,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/services/mobile-erasure"
+                          to="/features/mobile-erasure"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Mobile Erasure

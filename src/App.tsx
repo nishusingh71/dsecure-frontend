@@ -82,6 +82,7 @@ import SecureEraseHDDSSD from "./pages/SecureEraseHDDSDD";
 import CloudConsoleGuide from "./pages/CloudConsoleGuide";
 import CryptoEraseSSD from "./pages/CryptoEraseSSD";
 import RetainOSGuide from "./pages/RetainOSGuide";
+import MobileErasureSolutions from "./pages/MobileErasureSolutions";
 import NotFoundPage from "./pages/NotFoundPage";
 
 // Support pages
@@ -348,6 +349,16 @@ export default function App() {
                 <Route
                   path="/blog/data-sanitization-compliance"
                   element={<DataSanitizationComplianceBlog />}
+                />
+
+                <Route
+                  path="/features/mobile-erasure"
+                  element={<MobileErasureSolutions />}
+                />
+
+                <Route
+                  path="/features/mobile-erasure"
+                  element={<MobileErasureSolutions />}
                 />
 
                 {/* Catch-all route for unmatched paths */}
