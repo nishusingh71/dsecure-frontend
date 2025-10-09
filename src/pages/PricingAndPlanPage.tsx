@@ -159,7 +159,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
       version: "Professional",
       basePrice: 3.99,
       features: [
-        " Files, Folders & System Traces",
+        " Files, Folders &  Traces",
         " Cross-Platform Support",
         " Fast & Efficient Processing",
         " Scheduled Automatic Cleaning",
@@ -180,8 +180,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "custom",
       ],
       showDeliveryOptions: false,
-      deliveryText:
-        "Digital download with instant activation. Internet connection required for initial setup.",
+      // deliveryText:
+      //   "Digital download with instant activation. Internet connection required for initial setup.",
     },
   };
 
@@ -485,7 +485,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     </div>
 
                     {/* File Eraser Add-ons */}
-                    {selectedCategory === "file-eraser" && (
+                    {/* {selectedCategory === "file-eraser" && (
                       <div className="mb-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
                            Premium Add-ons
@@ -525,11 +525,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
                           </div>
                         )}
                       </div>
-                    )}
+                    )} */}
 
                     {/* Delivery Options */}
-                    {getCurrentProduct().showDeliveryOptions ? (
-                      <div>
+                    {/* {getCurrentProduct().showDeliveryOptions ? ( */}
+                      {/* <div> */}
                         {/* <label className="block text-sm font-medium text-gray-700 mb-3">
                           Number of License Count for per device.
                         </label>
@@ -578,15 +578,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             </div>
                           </label>
                         </div> */}
-                      </div>
-                    ) : (
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      {/* </div> */}
+                    {/* ) : ( */}
+                      {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div className="text-sm text-blue-800">
                           {(getCurrentProduct() as any).deliveryText ||
                             "Digital delivery via email"}
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>

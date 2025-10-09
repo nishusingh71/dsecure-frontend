@@ -251,7 +251,7 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
               />
             </div>
 
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Number of Licenses *
               </label>
@@ -267,8 +267,8 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
               {errors.numberOfLicenses && (
                 <p className="text-red-500 text-sm mt-1">{errors.numberOfLicenses}</p>
               )}
-            </div>
-
+            </div> */}
+{/* 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 License Duration
@@ -285,7 +285,7 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
                   </option>
                 ))}
               </FormSelect>
-            </div>
+            </div> */}
           </div>
 
           <div>
@@ -296,12 +296,12 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
               name="requirements"
               value={formData.requirements}
               onChange={handleInputChange}
-              rows={4}
+              rows={2}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
               placeholder="Describe any specific requirements, integrations, or features you need..."
             />
           </div>
-
+{/* 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Budget Range (Optional)
@@ -318,19 +318,19 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
                 </option>
               ))}
             </FormSelect>
-          </div>
+          </div> */}
 
           <div className="flex gap-4 pt-4">
-            <button
+            {/* <button
               type="button"
               onClick={onClose}
               className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
               Cancel
-            </button>
+            </button> */}
             <button
               type="submit"
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-brand to-brand-600 text-white rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all transform hover:scale-105 font-medium shadow-lg"
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-brand to-brand-600 text-white rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all transform hover:scale-105 font-medium shadow-lg"
             >
               Submit Request
             </button>
