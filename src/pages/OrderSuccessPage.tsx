@@ -119,7 +119,7 @@ export default function OrderSuccessPage() {
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900">{orderData.productName}</h4>
                     <p className="text-gray-600">
-                      {orderData.quantity} licenses × {orderData.duration} year{parseInt(orderData.duration) > 1 ? 's' : ''}
+                      {orderData.quantity} licenses × {orderData.duration} term{parseInt(orderData.duration) > 1 ? 's' : ''}
                     </p>
                     <p className="text-lg font-bold text-blue-600 mt-1">
                       ${orderData.totalPrice.toLocaleString()}

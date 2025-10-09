@@ -147,7 +147,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                     <h3 className="font-semibold text-gray-900">{paymentData.productName}</h3>
                     <p className="text-sm text-gray-500">{paymentData.productVersion}</p>
                     <p className="text-sm text-gray-600">
-                      {paymentData.quantity} licenses × {paymentData.duration} year{parseInt(paymentData.duration) > 1 ? 's' : ''}
+                      {paymentData.quantity} licenses × {paymentData.duration} term{parseInt(paymentData.duration) > 1 ? 's' : ''}
                     </p>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                 <div className="border-t pt-4">
                   {/* Base Product Pricing */}
                   <div className="flex justify-between text-sm">
-                    <span>Base Product ({paymentData.quantity} licenses × {paymentData.duration} year{parseInt(paymentData.duration) > 1 ? 's' : ''}):</span>
+                    <span>Base Product ({paymentData.quantity} licenses × {paymentData.duration} term{parseInt(paymentData.duration) > 1 ? 's' : ''}):</span>
                     <span>${(paymentData.unitPrice * parseInt(paymentData.quantity) * parseInt(paymentData.duration)).toLocaleString()}</span>
                   </div>
                   
@@ -192,7 +192,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                     <div className="space-y-1 mt-1">
                       {paymentData.addonsData.map((addon) => (
                         <div key={addon.id} className="flex justify-between text-sm text-teal-600">
-                          <span>{addon.name} ({paymentData.quantity} licenses × {paymentData.duration} year{parseInt(paymentData.duration) > 1 ? 's' : ''}):</span>
+                          <span>{addon.name} ({paymentData.quantity} licenses × {paymentData.duration} term{parseInt(paymentData.duration) > 1 ? 's' : ''}):</span>
                           <span>+${(addon.price * parseInt(paymentData.quantity) * parseInt(paymentData.duration)).toLocaleString()}</span>
                         </div>
                       ))}
@@ -219,7 +219,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                         
                         {paymentData.totalPrice < subtotal && (
                           <div className="flex justify-between text-sm text-green-600">
-                            <span>Volume/Multi-year Discount:</span>
+                            <span>Volume/Multi-term Discount:</span>
                             <span>-${(subtotal - paymentData.totalPrice).toLocaleString()}</span>
                           </div>
                         )}

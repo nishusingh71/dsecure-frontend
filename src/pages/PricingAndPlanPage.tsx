@@ -84,13 +84,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
     addons: string[] = []
   ) => {
     const basePrices: { [key: string]: number } = {
-      "drive-eraser": 9.9,
-      "file-eraser": 3.99,
+      "drive-eraser": 20,
+      "file-eraser": 40,
     };
 
     const basePrice = basePrices[category] || 9.9;
     const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
-    const yearCount = parseInt(years);
+    // const yearCount = parseInt(years);
 
     // Volume discounts
     let discount = 1;
@@ -99,21 +99,21 @@ const PricingAndPlanPage: React.FC = memo(() => {
     else if (licenseCount >= 25) discount = 0.9;
 
     // Multi-year discounts
-    let yearDiscount = 1;
-    if (yearCount >= 3) yearDiscount = 0.85;
-    else if (yearCount >= 2) yearDiscount = 0.9;
+    // let yearDiscount = 1;
+    // if (yearCount >= 3) yearDiscount = 0.85;
+    // else if (yearCount >= 2) yearDiscount = 0.9;
 
     let baseTotal = Math.round(
-      basePrice * licenseCount * yearCount * discount * yearDiscount * 100
+      basePrice * licenseCount * discount * 100
     ) / 100;
 
     // Add-ons pricing (only for File Eraser)
     if (category === "file-eraser" && addons.length > 0) {
       const addonsCost = addons.reduce((total, addonId) => {
         const addon = fileEraserAddons.find(a => a.id === addonId);
-        return total + (addon ? addon.price * licenseCount * yearCount : 0);
+        return total + (addon ? addon.price * licenseCount : 0);
       }, 0);
-      baseTotal += Math.round(addonsCost * discount * yearDiscount * 100) / 100;
+      baseTotal += Math.round(addonsCost * discount * 100) / 100;
     }
 
     return baseTotal;
@@ -126,8 +126,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "Secure Data Erasure Software for HDD, SSD, PC, Laptop, Mac, Chromebook & Server",
       image: getProductIcon("drive-eraser", 64),
       imageCategory: "drive-eraser",
-      version: "V9.0.9.1 Enterprise",
-      basePrice: 9.9,
+      version: "V1.0.0.0 Enterprise",
+      basePrice: 20,
       features: [
         " NIST & DoD Compliant Erasure Standards",
         " Free Cloud Console & Reporting",
@@ -157,7 +157,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
       image: getProductIcon("file-eraser", 64),
       imageCategory: "file-eraser",
       version: "Professional",
-      basePrice: 3.99,
+      basePrice: 40,
       features: [
         " Files, Folders &  Traces",
         " Cross-Platform Support",
@@ -204,15 +204,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
     if (selectedLicenses === "custom") return "Get Personalized Quote";
 
     const yearText = selectedYears === "1" ? "year" : "years";
-    return `${selectedLicenses} licenses × ${selectedYears} ${yearText}`;
+    return `${selectedLicenses} licenses`;
   };
 
   const getPriceNote = () => {
     if (selectedLicenses === "custom") return "Tailored to your needs";
 
     const basePrice = getCurrentProduct().basePrice;
-    const yearText =
-      selectedYears === "1" ? "/license/year" : `/license/${selectedYears}yr`;
+    const yearText = selectedYears === "1" ? "/license" : `/license`;
     
     let note = `Starting @ $${basePrice.toFixed(2)}${yearText}`;
     
