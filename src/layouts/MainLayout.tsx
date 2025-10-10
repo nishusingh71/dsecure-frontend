@@ -82,7 +82,7 @@ export default function MainLayout() {
               Home
             </NavLink> */}
               <NavLink
-                to="/features"
+                to="/products"
                 className={({ isActive }) =>
                   (isActive
                     ? "text-brand font-medium"
@@ -90,7 +90,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                Features
+                Products
               </NavLink>
               <NavLink
                 to="/solutions"
@@ -271,9 +271,9 @@ export default function MainLayout() {
               <div className="mx-auto max-w-7xl px-4 xs:px-4 sm:px-6 md:px-6 py-4 xs:py-5 sm:py-6 md:py-6 space-y-1 xs:space-y-2 sm:space-y-2 md:space-y-2">
                 <NavLink
                   onClick={() => setOpen(false)}
-                  to="/features"
+                  to="/products"
                   className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="View all security features"
+                  aria-label="View all security products"
                 >
                   <svg
                     className="w-5 h-5 text-slate-400"
@@ -288,7 +288,7 @@ export default function MainLayout() {
                       d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"
                     />
                   </svg>
-                  Features
+                  products
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -655,19 +655,19 @@ export default function MainLayout() {
                   {/* Services */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      Features
+                      products
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
                         <Link
-                          to="/#features"
+                          to="/#products"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                           onClick={(e) => {
                             e.preventDefault();
-                            window.location.href = "/#features";
+                            window.location.href = "/#products";
                           }}
                         >
-                          All Features
+                          All products
                         </Link>
                       </li>
                       <li>
@@ -696,7 +696,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/features/mobile-erasure"
+                          to="/products/mobile-erasure"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Mobile Erasure

@@ -1535,7 +1535,7 @@ const HomePage = memo(function HomePage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50/50">
+      {/* <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50/50">
         <div className="container-app">
           <div className="text-center mb-12 lg:mb-16">
             <Reveal>
@@ -1624,7 +1624,7 @@ const HomePage = memo(function HomePage() {
             </Reveal>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 });

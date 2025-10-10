@@ -10,9 +10,10 @@ import { useMicrosoftClarity } from "./utils/microsoftClarity";
 import { useSEOMonitoring } from "./utils/seoMonitor";
 import TechnicalDocumentation from "./components/TechnicalDocumentation";
 
+// Lazy pages
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
-const FeaturePage = lazy(() => import("./pages/FeaturePage"));
+const ProductPage = lazy(() => import("./pages/ProductPage")); // ✅ Added ProductPage
 const DeviceErasurePage = lazy(
   () => import("./pages/services/DeviceErasurePage")
 );
@@ -114,34 +115,21 @@ const DataSanitizationComplianceBlog = lazy(
   () => import("./components/blog/DataSanitizationComplianceBlog")
 );
 
-// Analytics Integration Component
+// Analytics Wrapper
 function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
-  // Initialize all analytics tracking
   useGoogleAnalytics();
   useMicrosoftClarity();
   useSEOMonitoring();
-
-  useEffect(() => {
-    // Track initial page load
-    //console.log('🎯 DSecure Analytics & SEO Monitoring Initialized');
-  }, []);
-
+  useEffect(() => {}, []);
   return <>{children}</>;
 }
 
-// ScrollToTop Component - Scrolls to top on route change
+// Scroll To Top on route change
 function ScrollToTop() {
   const { pathname } = useLocation();
-
   useEffect(() => {
-    // Smooth scroll to top when route changes
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [pathname]);
-
   return null;
 }
 
@@ -154,9 +142,12 @@ export default function App() {
           <Suspense fallback={<PageLoadingSkeleton />}>
             <Routes>
               <Route element={<MainLayout />}>
+                {/* Core Routes */}
                 <Route index element={<HomePage />} />
                 <Route path="services" element={<ServicesPage />} />
-                <Route path="features" element={<FeaturePage />} />
+                <Route path="products" element={<ProductPage />} />{" "}
+                {/* ✅ Corrected Route */}
+                {/* Services */}
                 <Route
                   path="services/device-erasure"
                   element={<DeviceErasurePage />}
@@ -169,6 +160,7 @@ export default function App() {
                   path="services/cloud-erasure"
                   element={<CloudErasurePage />}
                 />
+                {/* Solutions */}
                 <Route path="solutions" element={<SolutionsPage />} />
                 <Route
                   path="solutions/enterprise"
@@ -182,15 +174,14 @@ export default function App() {
                   path="solutions/financial"
                   element={<FinancialSolutionsPage />}
                 />
-                <Route path="compliance" element={<CompliancePage />} />
+                {/* Resources */}
                 <Route path="resources" element={<ResourcesPage />} />
                 <Route
                   path="resources/documentation"
                   element={<DocumentationResourcesPage />}
                 />
-
                 <Route
-                  path="/technical-documentation"
+                  path="technical-documentation"
                   element={<TechnicalDocumentation />}
                 />
                 <Route
@@ -205,6 +196,8 @@ export default function App() {
                   path="resources/whitepapers"
                   element={<WhitepapersResourcesPage />}
                 />
+                {/* Other Pages */}
+                <Route path="compliance" element={<CompliancePage />} />
                 <Route path="contact" element={<ContactPage />} />
                 <Route path="about" element={<About />} />
                 <Route path="pricing" element={<PricingPage />} />
@@ -229,22 +222,15 @@ export default function App() {
                 <Route path="support" element={<SupportPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
-                {/* <Route path='privacy-policy' element={<PrivacyPolicyPage />} />
-            <Route path='terms-of-service' element={<TermsOfServicePage />} />
-            <Route path='cookie-policy' element={<CookiePolicyPage />} />
-            <Route path='security' element={<SecurityPage />} /> */}
-
-                {/* Payment/License Setup Page */}
+                {/* Protected Routes */}
                 <Route
-                  path="payment"
+                  path="payment/setup"
                   element={
                     <ProtectedRoute>
                       <PaymentSetupPage />
                     </ProtectedRoute>
                   }
                 />
-
-                {/* Protected Routes */}
                 <Route
                   path="dashboard"
                   element={
@@ -253,8 +239,6 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 />
-
-                {/* Admin Routes - Only accessible by admin role */}
                 <Route
                   path="admin"
                   element={
@@ -270,98 +254,87 @@ export default function App() {
                   <Route path="logs" element={<AdminLogs />} />
                   <Route path="subusers" element={<AdminSubusers />} />
                 </Route>
+                {/* Support Guides */}
                 <Route
-                  path="/support/overwrite-guide"
+                  path="support/overwrite-guide"
                   element={<OverwriteGuide />}
                 />
+                <Route path="support/wipe-guide" element={<OverwriteGuide />} />
                 <Route
-                  path="/support/wipe-guide"
-                  element={<OverwriteGuide />}
-                />
-                <Route
-                  path="/support/sas-wipe-guide"
+                  path="support/sas-wipe-guide"
                   element={<WipeSASDrives />}
                 />
-                <Route path="/support/mac-wipe-guide" element={<WipeMacM1 />} />
+                <Route path="support/mac-wipe-guide" element={<WipeMacM1 />} />
                 <Route
-                  path="/support/mac-eraser-guide"
+                  path="support/mac-eraser-guide"
                   element={<MacEraseGuide />}
                 />
-
                 <Route
-                  path="/support/file-eraser-guide"
+                  path="support/file-eraser-guide"
                   element={<FileEraserGuide />}
                 />
                 <Route
-                  path="/support/secure-erase-hddssd"
+                  path="support/secure-erase-hddssd"
                   element={<SecureEraseHDDSSD />}
                 />
                 <Route
-                  path="/support/cloud-console-guide"
+                  path="support/cloud-console-guide"
                   element={<CloudConsoleGuide />}
                 />
                 <Route
-                  path="/support/ssd-cryptographic-erasure-guide"
+                  path="support/ssd-cryptographic-erasure-guide"
                   element={<CryptoEraseSSD />}
                 />
                 <Route
-                  path="/support/retain-os-guide"
+                  path="support/retain-os-guide"
                   element={<RetainOSGuide />}
                 />
-
-                {/* New Support Pages */}
-                <Route path="/support/faqs" element={<FAQsPage />} />
+                {/* Support Pages */}
+                <Route path="support/faqs" element={<FAQsPage />} />
                 <Route
-                  path="/support/knowledge-base"
+                  path="support/knowledge-base"
                   element={<KnowledgeBasePage />}
                 />
                 <Route
-                  path="/support/get-started"
+                  path="support/get-started"
                   element={<GetStartedPage />}
                 />
                 <Route
-                  path="/support/help-manual"
+                  path="support/help-manual"
                   element={<HelpManualPage />}
                 />
                 <Route
-                  path="/support/product-videos"
+                  path="support/product-videos"
                   element={<ProductVideosPage />}
                 />
-
-                {/* Blog Routes */}
-                <Route path="/blog" element={<BlogPage />} />
+                {/* Blog */}
+                <Route path="blog" element={<BlogPage />} />
                 <Route
-                  path="/blog/overwrite-guide"
+                  path="blog/overwrite-guide"
                   element={<OverwriteGuideBlog />}
                 />
                 <Route
-                  path="/blog/ssd-wipe-guide"
+                  path="blog/ssd-wipe-guide"
                   element={<SSDWipeGuideBlog />}
                 />
                 <Route
-                  path="/blog/erasure-vs-destruction"
+                  path="blog/erasure-vs-destruction"
                   element={<ErasureVsDestructionBlog />}
                 />
                 <Route
-                  path="/blog/data-deletion-myths"
+                  path="blog/data-deletion-myths"
                   element={<DataDeletionMythsBlog />}
                 />
                 <Route
-                  path="/blog/data-sanitization-compliance"
+                  path="blog/data-sanitization-compliance"
                   element={<DataSanitizationComplianceBlog />}
                 />
-
+                {/* Product-specific Feature */}
                 <Route
-                  path="/features/mobile-erasure"
+                  path="products/mobile-erasure"
                   element={<MobileErasureSolutions />}
                 />
-
-                <Route
-                  path="/features/mobile-erasure"
-                  element={<MobileErasureSolutions />}
-                />
-
-                {/* Catch-all route for unmatched paths */}
+                {/* Catch-all */}
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>
