@@ -58,7 +58,7 @@ const FinancialServices: React.FC = () => {
               <Reveal>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1760089424/cctijcsqv0m78nfmmocv.jpg"
+                    src="https://images.unsplash.com/photo-1556741533-f6acd6476f21?auto=format&fit=crop&w=1200&q=80"
                     alt="Financial Security Overview"
                     className="rounded-xl mb-6"
                   />
@@ -91,7 +91,7 @@ const FinancialServices: React.FC = () => {
                       {
                         title: "Regulatory Compliance Erasure",
                         desc: "Ensure full compliance with PCI DSS, GLBA, and SEC data retention guidelines.",
-                        img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760090537/axob47fesej4jehz3oet.jpg",
+                        img: "https://images.unsplash.com/photo-1556742049-9089da8b0f6a?auto=format&fit=crop&w=600&q=80",
                       },
                       {
                         title: "Secure Cloud Deletion",
@@ -101,7 +101,7 @@ const FinancialServices: React.FC = () => {
                       {
                         title: "Auditable Reports",
                         desc: "Generate tamper-proof digital certificates for every data erasure operation.",
-                        img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760090536/bwfxnasge68rv2y4pgyj.jpg",
+                        img: "https://images.unsplash.com/photo-1508385082359-f38ae991e8f0?auto=format&fit=crop&w=600&q=80",
                       },
                     ].map((item, i) => (
                       <div

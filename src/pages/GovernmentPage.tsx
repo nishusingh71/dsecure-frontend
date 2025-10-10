@@ -2,7 +2,6 @@ import React from "react";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
 
 const GovernmentSecuritySolutions: React.FC = () => {
   return (
@@ -89,7 +88,7 @@ const GovernmentSecuritySolutions: React.FC = () => {
                     {
                       title: "Data Protection",
                       desc: "End-to-end encryption and secure storage solutions ensuring confidentiality of sensitive governmental information.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
+                      img: "https://images.unsplash.com/photo-1563013541-2d0c41c8264c?auto=format&fit=crop&w=800&q=80",
                     },
                     {
                       title: "Physical Security",
@@ -315,23 +314,17 @@ const GovernmentSecuritySolutions: React.FC = () => {
                   your agency's security posture.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link
-                    to="https://www.dsecuretech.com/contact"
-                    className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-center"
-                    >
+                  <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
                     Schedule Consultation
-                    </Link>
-                    {/* <Link
-                    to="https://www.dsecuretech.com/solutions/government"
-                    className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors text-center"
-                    >
+                  </button>
+                  <button className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
                     Learn More
-                    </Link> */}
+                  </button>
                 </div>
                 <div className="text-center mt-8 text-blue-100">
-                  <p>Email: government@dsecuretech.com</p>
+                  <p>Email: government@d-secure.com</p>
                   <p>Phone: +91-XXXX-XXXXXX</p>
-                  <p>Website: www.dsecuretech.com</p>
+                  <p>Website: www.d-secure.com</p>
                 </div>
               </div>
             </Reveal>
