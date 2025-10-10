@@ -11,7 +11,7 @@ interface Agent {
   size: string
   platform: string
   description: string
-  icon: string
+  iconSvg: React.ReactElement
   compatibility: string[]
 }
 
@@ -27,7 +27,7 @@ const DownloadAgentPage: React.FC = () => {
       size: '45.2 MB',
       platform: 'windows',
       description: 'Complete data erasure solution for Windows systems including drives, files, and network storage.',
-      icon: '🖥️',
+      iconSvg: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h2a2 2 0 002-2z" /></svg>,
       compatibility: ['Windows 10', 'Windows 11', 'Windows Server 2019', 'Windows Server 2022']
     },
     {
@@ -37,7 +37,7 @@ const DownloadAgentPage: React.FC = () => {
       size: '52.1 MB',
       platform: 'mac',
       description: 'Secure data erasure for macOS and Mac hardware including M1/M2 chip support.',
-      icon: '🍎',
+      iconSvg: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
       compatibility: ['macOS 12.0+', 'Apple Silicon (M1/M2)', 'Intel-based Macs']
     },
     {
@@ -47,7 +47,7 @@ const DownloadAgentPage: React.FC = () => {
       size: '38.7 MB',
       platform: 'linux',
       description: 'Command-line and GUI data erasure tools for Linux distributions.',
-      icon: '🐧',
+      iconSvg: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
       compatibility: ['Ubuntu 20.04+', 'CentOS 8+', 'RHEL 8+', 'Debian 11+']
     },
     {
@@ -57,7 +57,7 @@ const DownloadAgentPage: React.FC = () => {
       size: '67.3 MB',
       platform: 'server',
       description: 'Enterprise-grade erasure solution for server environments and data centers.',
-      icon: '🖥️',
+      iconSvg: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg>,
       compatibility: ['Windows Server', 'Linux Server', 'VMware ESXi', 'Hyper-V']
     },
     {
@@ -67,7 +67,7 @@ const DownloadAgentPage: React.FC = () => {
       size: '23.9 MB',
       platform: 'mobile',
       description: 'Mobile device diagnostics and secure data removal for smartphones and tablets.',
-      icon: '📱',
+      iconSvg: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a1 1 0 001-1V4a1 1 0 00-1-1H8a1 1 0 00-1 1v16a1 1 0 001 1z" /></svg>,
       compatibility: ['Android 8.0+', 'iOS 14.0+']
     },
     {
@@ -77,7 +77,7 @@ const DownloadAgentPage: React.FC = () => {
       size: '41.8 MB',
       platform: 'network',
       description: 'Network storage and cloud data erasure with remote management capabilities.',
-      icon: '🌐',
+      iconSvg: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>,
       compatibility: ['NAS Systems', 'Cloud Storage', 'Network Drives']
     }
   ]
@@ -184,7 +184,7 @@ const DownloadAgentPage: React.FC = () => {
               <Reveal key={agent.id} delayMs={index * 100}>
                 <div className="card p-6 h-full flex flex-col">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="text-4xl">{agent.icon}</div>
+                    <div className="text-slate-600">{agent.iconSvg}</div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-slate-900 mb-1">{agent.name}</h3>
                       <div className="flex items-center gap-3 text-sm text-slate-600">

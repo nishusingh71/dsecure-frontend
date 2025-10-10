@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from "react";
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
@@ -240,6 +240,7 @@ const SupportTicketModal: React.FC<{
 
 const SupportPage: React.FC = () => {
   const { toast, showToast, hideToast } = useToast();
+  const navigate = useNavigate();
   const [activeTicketForm, setActiveTicketForm] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
   const [showPartnershipModal, setShowPartnershipModal] = useState(false);
@@ -379,18 +380,61 @@ const SupportPage: React.FC = () => {
     }
   ], []);
 
+  // Trending searches data
+  const trendingSearches = useMemo(() => ({
+    "How many overwrites should I do on a Hard Drive?": "/support/overwrite-guide",
+    "How can I Wipe Hard Drives and SSDs?": "/support/secure-erase-hddssd",
+    "How to Wipe SAS Drives Permanently?": "/support/sas-wipe-guide",
+    "How can I wipe 12 board Mac Machines?": "/support/mac-eraser-guide",
+    // "How to customize ISO file using D-Secure?": "/support/iso-customization-guide",
+    "How do I wipe everything and retain my OS?": "/support/retain-os-guide",
+    "How can I Wipe a MacOS with M1 Chip?": "/support/mac-wipe-guide",
+    "How to use D-Secure Cloud Console?": "/support/cloud-console-guide",
+    "How do I Perform Cryptographic Erasure on SSD?": "/support/ssd-cryptographic-erasure-guide",
+    // "How can I diagnose my smartphone using D-Secure?": "/support/smartphone-diagnosis-guide",
+  }), []);
+
   // Search functionality
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
     
     const query = searchQuery.toLowerCase();
-    return searchableContent.filter(item => 
+    
+    // First, search through regular searchable content
+    const contentResults = searchableContent.filter(item => 
       item.title.toLowerCase().includes(query) ||
       item.description.toLowerCase().includes(query) ||
       item.category.toLowerCase().includes(query) ||
       item.keywords.some(keyword => keyword.includes(query))
-    ).slice(0, 8); // Limit to 8 results
-  }, [searchQuery, searchableContent]);
+    );
+    
+    // Then, search through trending searches for keyword matches
+    const trendingResults = Object.entries(trendingSearches)
+      .filter(([searchText, url]) => {
+        const searchTextLower = searchText.toLowerCase();
+        return searchTextLower.includes(query) || 
+               query.split(' ').some(word => 
+                 word.length > 2 && searchTextLower.includes(word)
+               );
+      })
+      .map(([searchText, url]) => ({
+        title: searchText,
+        description: "Popular support question",
+        category: "Trending",
+        url: url,
+        keywords: searchText.toLowerCase().split(' ')
+      }));
+    
+    // Combine results, prioritizing trending searches
+    const combinedResults = [...trendingResults, ...contentResults];
+    
+    // Remove duplicates based on title and limit to 8 results
+    const uniqueResults = combinedResults.filter((item, index, arr) => 
+      arr.findIndex(t => t.title.toLowerCase() === item.title.toLowerCase()) === index
+    );
+    
+    return uniqueResults.slice(0, 8);
+  }, [searchQuery, searchableContent, trendingSearches]);
 
   const handleSearch = useCallback((e: React.FormEvent) => {
     e.preventDefault();
@@ -445,10 +489,9 @@ const SupportPage: React.FC = () => {
   }, [showSearchResults, searchResults, selectedResultIndex, handleSearch, clearSearch]);
 
   // Handle trending search click
-  const handleTrendingSearchClick = useCallback((searchText: string) => {
-    setSearchQuery(searchText);
-    setShowSearchResults(true);
-  }, []);
+  const handleTrendingSearchClick = useCallback((url: string) => {
+    navigate(url);
+  }, [navigate]);
 
   const handleLicenseSubmit = useCallback((formData: LicenseFormData) => {
     console.log('License request from Support Page:', formData);
@@ -617,19 +660,6 @@ const SupportPage: React.FC = () => {
     });
   }, []);
 
-  const trendingSearches = useMemo(() => ({
-    "How many overwrites should I do on a Hard Drive?": "/support/overwrite-guide",
-    "How can I Wipe Hard Drives and SSDs?": "/support/secure-erase-hddssd",
-    "How to Wipe SAS Drives Permanently?": "/support/sas-wipe-guide",
-    "How can I wipe 12 board Mac Machines?": "/support/mac-eraser-guide",
-    // "How to customize ISO file using D-Secure?": "/support/iso-customization-guide",
-    "How do I wipe everything and retain my OS?": "/support/retain-os-guide",
-    "How can I Wipe a MacOS with M1 Chip?": "/support/mac-wipe-guide",
-    "How to use D-Secure Cloud Console?": "/support/cloud-console-guide",
-    "How do I Perform Cryptographic Erasure on SSD?": "/support/ssd-cryptographic-erasure-guide",
-    // "How can I diagnose my smartphone using D-Secure?": "/support/smartphone-diagnosis-guide",
-  }), []);
-
   return (
     <>
       {/* SEO Meta Tags */}
@@ -735,7 +765,7 @@ const SupportPage: React.FC = () => {
                         </div>
                         {searchResults.map((result, index) => (
                           <Link
-                            key={result.id}
+                            key={`${result.title}-${index}`}
                             to={result.url}
                             className={`block p-4 hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-b-0 ${
                               index === selectedResultIndex ? 'bg-brand/5 border-brand/20' : ''
@@ -800,10 +830,10 @@ const SupportPage: React.FC = () => {
                     <div key={index} className="flex gap-2">
                       <button
                         className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
-                        onClick={() => handleTrendingSearchClick(search)}
+                        onClick={() => handleTrendingSearchClick(url)}
                         
                       >
-                        🔍 {search}
+                       {search}
                       </button>
                       <Link
                         to={url}
@@ -816,7 +846,7 @@ const SupportPage: React.FC = () => {
                   ))}
                 </div>
                 <div className="mt-4 text-sm text-slate-600">
-                  💡 Click 🔍 to search or click → to go directly to the guide
+                  
                 </div>
               </div>
             </Reveal>

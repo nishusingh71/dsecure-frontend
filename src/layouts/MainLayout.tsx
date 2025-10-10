@@ -728,7 +728,7 @@ export default function MainLayout() {
                     </li>
                     <li>
                       <Link
-                        to="/solutions?type=financial"
+                        to="/solutions/financial-services"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
                         Financial Services
@@ -736,7 +736,7 @@ export default function MainLayout() {
                     </li>
                     <li>
                       <Link
-                        to="/solutions?type=government"
+                        to="/solutions/government"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
                         Government
@@ -744,7 +744,7 @@ export default function MainLayout() {
                     </li>
                     <li>
                       <Link
-                        to="/solutions?type=enterprise"
+                        to="/solutions/education"
                         className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                       >
                         Education

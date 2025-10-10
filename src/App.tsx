@@ -97,6 +97,9 @@ import CloudConsoleGuide from "./pages/CloudConsoleGuide";
 import CryptoEraseSSD from "./pages/CryptoEraseSSD";
 import RetainOSGuide from "./pages/RetainOSGuide";
 import NotFoundPage from "./pages/NotFoundPage";
+import EducationPage from "./pages/EducationPage";
+import FinancialServices from "./pages/FinancialServices";
+import GovernmentPage from "./pages/GovernmentPage";
 
 // Support pages
 const FAQsPage = lazy(() => import("./pages/support/FAQsPage"));
@@ -183,6 +186,9 @@ export default function App() {
                 path="solutions/financial"
                 element={<FinancialSolutionsPage />}
               />
+              <Route path="solutions/education" element={<EducationPage />} />
+              <Route path="solutions/financial-services" element={<FinancialServices />} />
+              <Route path="solutions/government" element={<GovernmentPage />} />
               <Route path="compliance" element={<CompliancePage />} />
               <Route path="resources" element={<ResourcesPage />} />
               <Route

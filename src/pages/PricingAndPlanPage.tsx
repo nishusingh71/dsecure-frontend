@@ -4,10 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import CustomLicenseModal, {
   CustomLicenseData,
 } from "../components/CustomLicenseModal";
+import SpecialPricingModal from "../components/SpecialPricingModal";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
 import { ProductImage } from "@/components/ProductImage";
 import { getProductIcon } from "@/utils/productIcons";
+import {
+  useFormSubmission,
+  formDataTransformers,
+} from "@/hooks/useFormSubmission";
 
 const PricingAndPlanPage: React.FC = memo(() => {
   const { toast, showToast, hideToast } = useToast();
@@ -19,49 +24,160 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const [deliveryMethod, setDeliveryMethod] = useState("electronic");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
   const [showCustomModal, setShowCustomModal] = useState(false);
-  
-  // File Eraser Add-ons State
-  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const [showSpecialPricingModal, setShowSpecialPricingModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("basic");
 
-  // File Eraser Add-ons Configuration
-  const fileEraserAddons = [
-    {
-      id: "command-jobs",
-      name: "Command Jobs Feature",
-      description: "Automated command-line job scheduling and execution",
-      price: 29.99,
-      // icon: "⚡"
-    },
-    {
-      id: "private-cloud",
-      name: "Private Cloud Integration",
-      description: "Secure private cloud storage and backup capabilities",
-      price: 49.99,
-      // icon: "☁️"
-    },
-    {
-      id: "enterprise",
-      name: "Enterprise Management",
-      description: "Advanced enterprise-grade management and reporting tools",
-      price: 99.99,
-      // icon: "🏢"
-    },
-    {
-      id: "network",
-      name: "Network Management",
-      description: "Network-wide deployment and centralized control",
-      price: 79.99,
-      // icon: "🌐"
-    }
-  ];
+  // Custom License Form Submission Configuration
+  const customLicenseFormConfig = {
+    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
+    requiredFields: ["contactName", "email", "numberOfLicenses", "companyName"],
+    successMessage:
+      "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours with a personalized quote.",
+    errorMessage:
+      "Failed to send your custom license request. Please try again or contact our sales team directly.",
+    resetFormAfterSubmit: false,
+    transformData: (data: Record<string, any>) => {
+      // Transform and enrich the form data with context
+      const enrichedData = {
+        // Form submission identification
+        _subject: `Custom License Request - ${getCurrentProduct().title}`,
+        formType: "Custom License Request",
+        submissionDate: new Date().toLocaleString(),
+        timestamp: new Date().toISOString(),
 
-  const handleAddonToggle = (addonId: string) => {
-    setSelectedAddons(prev => 
-      prev.includes(addonId) 
-        ? prev.filter(id => id !== addonId)
-        : [...prev, addonId]
-    );
+        // Customer Information
+        customerName: data.contactName,
+        customerEmail: data.email,
+        company: data.companyName || "Not provided",
+        phone: data.phone || "Not provided",
+
+        // License Requirements
+        productName: getCurrentProduct().title,
+        productCategory: selectedCategory,
+        selectedPlan: getCurrentPlan().name,
+        planDescription: getCurrentPlan().description,
+        requestedLicenses: data.numberOfLicenses,
+        licenseDuration: data.duration || "Not specified",
+        budgetRange: data.budget || "Not specified",
+        additionalRequirements: data.requirements || "None",
+
+        // Current Product Configuration Context
+        currentBasePrice: `$${getCurrentPlan().basePrice}/license`,
+        currentSelectedPlan: getCurrentPlan().name,
+        currentSelectedLicenses: selectedLicenses,
+        currentSelectedYears: selectedYears,
+        currentDeliveryMethod: deliveryMethod,
+
+        // Marketing/Analytics Data
+        pageUrl: window.location.href,
+        referrer: document.referrer || "Direct",
+        userAgent: navigator.userAgent,
+      };
+
+      return formDataTransformers.removeEmptyFields(enrichedData);
+    },
+    onSuccess: (data: Record<string, any>) => {
+      // Close modal on success
+      setShowCustomModal(false);
+
+      // Optional: Track in analytics
+      if (typeof (window as any).gtag !== "undefined") {
+        (window as any).gtag("event", "custom_license_request", {
+          event_category: "sales",
+          event_label: selectedCategory,
+          value: parseInt(data.numberOfLicenses || "0"),
+        });
+      }
+
+      // Store locally for user reference
+      const enquiryRecord = {
+        id: `req_${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        customerName: data.contactName,
+        customerEmail: data.email,
+        productName: getCurrentProduct().title,
+        licenseQuantity: data.numberOfLicenses,
+        status: "submitted",
+      };
+
+      const existingEnquiries = JSON.parse(
+        localStorage.getItem("customLicenseEnquiries") || "[]"
+      );
+      existingEnquiries.push(enquiryRecord);
+      localStorage.setItem(
+        "customLicenseEnquiries",
+        JSON.stringify(existingEnquiries)
+      );
+    },
+    onError: (error: Error) => {
+      console.error("Custom license form submission error:", error);
+    },
   };
+
+  // Initialize form submission hook
+  const { isSubmitting, submitForm } = useFormSubmission(
+    customLicenseFormConfig
+  );
+
+  // Special Pricing Form Configuration
+  const specialPricingFormConfig = {
+    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
+    requiredFields: ["contactName", "email", "organizationType", "organizationName"],
+    successMessage:
+      "Thank you! Your special pricing request has been submitted successfully. Our team will contact you within 24 hours with customized pricing for your organization.",
+    errorMessage:
+      "Failed to send your special pricing request. Please try again or contact our sales team directly.",
+    resetFormAfterSubmit: false,
+    transformData: (data: Record<string, any>) => {
+      const enrichedData = {
+        _subject: `Special Pricing Request - ${data.organizationType} - ${getCurrentProduct().title}`,
+        formType: "Special Pricing Request",
+        submissionDate: new Date().toLocaleString(),
+        timestamp: new Date().toISOString(),
+
+        // Contact Information
+        contactName: data.contactName,
+        email: data.email,
+        phone: data.phone || "Not provided",
+        
+        // Organization Information
+        organizationType: data.organizationType,
+        organizationName: data.organizationName,
+        numberOfLicenses: data.numberOfLicenses || "Not specified",
+        additionalInfo: data.additionalInfo || "None",
+
+        // Product Context
+        productName: getCurrentProduct().title,
+        productCategory: selectedCategory,
+        currentSelectedPlan: getCurrentPlan().name,
+        
+        // Marketing Data
+        pageUrl: window.location.href,
+        referrer: document.referrer || "Direct",
+        userAgent: navigator.userAgent,
+      };
+
+      return formDataTransformers.removeEmptyFields(enrichedData);
+    },
+    onSuccess: (data: Record<string, any>) => {
+      setShowSpecialPricingModal(false);
+      
+      if (typeof (window as any).gtag !== "undefined") {
+        (window as any).gtag("event", "special_pricing_request", {
+          event_category: "sales",
+          event_label: data.organizationType,
+          value: parseInt(data.numberOfLicenses || "0"),
+        });
+      }
+    },
+    onError: (error: Error) => {
+      console.error("Special pricing form submission error:", error);
+    },
+  };
+
+  const { isSubmitting: isSpecialPricingSubmitting, submitForm: submitSpecialPricingForm } = useFormSubmission(
+    specialPricingFormConfig
+  );
 
   const categories = [
     {
@@ -76,47 +192,290 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
   ];
 
-  // Dynamic pricing calculation
+  // Plans configuration with their features and pricing based on D-Secure feature matrix
+  const planOptions = [
+    {
+      id: "basic",
+      name: "Basic Plan",
+      basePrice: 40,
+      description:
+        "Essential data erasure features for individuals and small teams",
+      category: "Platform & OS Support",
+      features: [
+        "INCLUDED: Windows Support",
+        "INCLUDED: Linux Support",
+        "NOT INCLUDED: macOS Support",
+        "NOT INCLUDED: Multi-Bootable OS Support (3+)",
+        "INCLUDED: Core Erasure Capabilities",
+        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+        "INCLUDED: File & Folder Erase",
+        "NOT INCLUDED: Erase Tracks (Browser, System, App data)",
+        "NOT INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+        "NOT INCLUDED: Erase Volume",
+        "NOT INCLUDED: Erase Disk (Full Devices)",
+        "INCLUDED: Schedule Erase",
+        "NOT INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+        "NOT INCLUDED: Local PDF Reports",
+        "NOT INCLUDED: White Label Reports",
+        "NOT INCLUDED: Compliance Email Report Format",
+        "NOT INCLUDED: XML Report Format",
+        "NOT INCLUDED: Audit Grade Compliance Certificates",
+        "NOT INCLUDED: Inspection Logs",
+      ],
+    },
+    {
+      id: "standard",
+      name: "Standard Plan",
+      basePrice: 80,
+      description:
+        "Enhanced features with broader OS support and core capabilities",
+      category: "Standard Business Solution",
+      features: [
+        "INCLUDED: Windows Support",
+        "INCLUDED: Linux Support",
+        "INCLUDED: macOS Support",
+        "NOT INCLUDED: Multi-Bootable OS Support (3+)",
+        "INCLUDED: Core Erasure Capabilities",
+        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+        "INCLUDED: File & Folder Erase",
+        "INCLUDED: Erase Tracks (Browser, System, App data)",
+        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+        "NOT INCLUDED: Erase Volume",
+        "NOT INCLUDED: Erase Disk (Full Devices)",
+        "INCLUDED: Schedule Erase",
+        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+        "INCLUDED: Local PDF Reports",
+        "NOT INCLUDED: White Label Reports",
+        "NOT INCLUDED: Compliance Email Report Format",
+        "NOT INCLUDED: XML Report Format",
+        "NOT INCLUDED: Audit Grade Compliance Certificates",
+        "NOT INCLUDED: Inspection Logs",
+      ],
+    },
+    {
+      id: "cloud",
+      name: "Cloud Plan",
+      basePrice: 150,
+      description:
+        "Cloud-integrated solution with advanced reporting capabilities",
+      category: "Cloud-Enhanced Solution",
+      features: [
+        "INCLUDED: Windows Support",
+        "INCLUDED: Linux Support",
+        "INCLUDED: macOS Support",
+        "INCLUDED: Multi-Bootable OS Support (3+)",
+        "INCLUDED: Core Erasure Capabilities",
+        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+        "INCLUDED: File & Folder Erase",
+        "INCLUDED: Erase Tracks (Browser, System, App data)",
+        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+        "INCLUDED: Erase Volume",
+        "INCLUDED: Erase Disk (Full Devices)",
+        "INCLUDED: Schedule Erase",
+        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+        "INCLUDED: Local PDF Reports",
+        "NOT INCLUDED: White Label Reports",
+        "INCLUDED: Compliance Email Report Format",
+        "INCLUDED: XML Report Format",
+        "INCLUDED: Audit Grade Compliance Certificates",
+        "INCLUDED: Inspection Logs",
+      ],
+    },
+    {
+      id: "network",
+      name: "Network Plan",
+      basePrice: 250,
+      description: "Network-wide deployment with centralized management",
+      category: "Network & Management Solution",
+      features: [
+        "INCLUDED: Windows Support",
+        "INCLUDED: Linux Support",
+        "INCLUDED: macOS Support",
+        "INCLUDED: Multi-Bootable OS Support (3+)",
+        "INCLUDED: Core Erasure Capabilities",
+        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+        "INCLUDED: File & Folder Erase",
+        "INCLUDED: Erase Tracks (Browser, System, App data)",
+        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+        "INCLUDED: Erase Volume",
+        "INCLUDED: Erase Disk (Full Devices)",
+        "INCLUDED: Schedule Erase",
+        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+        "INCLUDED: Local PDF Reports",
+        "INCLUDED: White Label Reports",
+        "INCLUDED: Compliance Email Report Format",
+        "INCLUDED: XML Report Format",
+        "INCLUDED: Audit Grade Compliance Certificates",
+        "INCLUDED: Inspection Logs",
+        "INCLUDED: Web Dashboard",
+        "INCLUDED: Cloud Commands (Remote Jobs)",
+        "INCLUDED: Custom Installer (Auto-register functions)",
+        "INCLUDED: Private Cloud Support",
+        "INCLUDED: Multi-Level User Logic",
+      ],
+    },
+    {
+      id: "pro",
+      name: "Pro Plan",
+      basePrice: 400,
+      description:
+        "Professional solution with premium add-ons and customization",
+      category: "Professional Solution",
+      features: [
+        "INCLUDED: Windows Support",
+        "INCLUDED: Linux Support",
+        "INCLUDED: macOS Support",
+        "INCLUDED: Multi-Bootable OS Support (3+)",
+        "INCLUDED: Core Erasure Capabilities",
+        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+        "INCLUDED: File & Folder Erase",
+        "INCLUDED: Erase Tracks (Browser, System, App data)",
+        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+        "INCLUDED: Erase Volume",
+        "INCLUDED: Erase Disk (Full Devices)",
+        "INCLUDED: Schedule Erase",
+        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+        "INCLUDED: Local PDF Reports",
+        "INCLUDED: White Label Reports",
+        "INCLUDED: Compliance Email Report Format",
+        "INCLUDED: XML Report Format",
+        "INCLUDED: Audit Grade Compliance Certificates",
+        "INCLUDED: Inspection Logs",
+        "INCLUDED: Web Dashboard",
+        "INCLUDED: Cloud Commands (Remote Jobs)",
+        "INCLUDED: Custom Installer (Auto-register functions)",
+        "ADD-ON: Free + add-on Private Cloud Support",
+        "INCLUDED: Multi-Level User Logic",
+        "ADD-ON: Free + add-on Additional USB Erasure Licenses",
+        "ADD-ON: Free + add-on Additional Volume Erasure Licenses",
+        "ADD-ON: Free + add-on Data Connection Manager",
+        "ADD-ON: Free + add-on Extra Sub Users",
+        "ADD-ON: Free + add-on Extra Private Clouds",
+        "ADD-ON: Free + add-on Bootable Integration (MLO & Quick Tools)",
+        "ADD-ON: Free + add-on Dedicated SLA/Support Manager",
+      ],
+    },
+    {
+      id: "enterprise",
+      name: "Enterprise Plan",
+      basePrice: 500,
+      description:
+        "Complete enterprise solution with all features and dedicated support",
+      category: "Complete Enterprise Solution",
+      features: [
+        "INCLUDED: Windows Support",
+        "INCLUDED: Linux Support",
+        "INCLUDED: macOS Support",
+        "INCLUDED: Multi-Bootable OS Support (3+)",
+        "INCLUDED: Core Erasure Capabilities",
+        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+        "INCLUDED: File & Folder Erase",
+        "INCLUDED: Erase Tracks (Browser, System, App data)",
+        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+        "INCLUDED: Erase Volume",
+        "INCLUDED: Erase Disk (Full Devices)",
+        "INCLUDED: Schedule Erase",
+        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+        "INCLUDED: Local PDF Reports",
+        "INCLUDED: White Label Reports",
+        "INCLUDED: Compliance Email Report Format",
+        "INCLUDED: XML Report Format",
+        "INCLUDED: Audit Grade Compliance Certificates",
+        "INCLUDED: Inspection Logs",
+        "INCLUDED: Web Dashboard",
+        "INCLUDED: Cloud Commands (Remote Jobs)",
+        "INCLUDED: Custom Installer (Auto-register functions)",
+        "INCLUDED: Private Cloud Support (Included)",
+        "INCLUDED: Multi-Level User Logic",
+        "INCLUDED: Additional USB Erasure Licenses (Included)",
+        "INCLUDED: Additional Volume Erasure Licenses (Included)",
+        "INCLUDED: Data Connection Manager (Included)",
+        "INCLUDED: Extra Sub Users (Included)",
+        "INCLUDED: Extra Private Clouds (Included)",
+        "INCLUDED: Bootable Integration (MLO & Quick Tools) (Included)",
+        "INCLUDED: Dedicated SLA/Support Manager (Included)",
+      ],
+    },
+    {
+      id: "custom",
+      name: "Custom Plan",
+      basePrice: 0,
+      description:
+        "Tailored solution designed specifically for your organization's needs",
+      category: "Custom Enterprise Solution",
+      features: [
+        "CUSTOM: Fully Customized Feature Set",
+        "CUSTOM: Bespoke Integration & Development",
+        "CUSTOM: Personalized Training & Onboarding",
+        "CUSTOM: Custom Compliance Requirements",
+        "CUSTOM: Flexible Licensing Model",
+        "CUSTOM: White-label Solutions Available",
+        "CUSTOM: Custom SLA & Support Terms",
+        "CUSTOM: Dedicated Development Team",
+        "CUSTOM: Priority Feature Requests",
+      ],
+    },
+  ];
+
+  // Get current plan details
+  const getCurrentPlan = () => {
+    return (
+      planOptions.find((plan) => plan.id === selectedPlan) || planOptions[0]
+    );
+  };
+
+  // Dynamic pricing calculation based on selected plan
   const calculatePrice = (
     category: string,
     licenses: string,
     years: string,
-    addons: string[] = []
+    plan: string
   ) => {
-    const basePrices: { [key: string]: number } = {
-      "drive-eraser": 20,
-      "file-eraser": 40,
-    };
+    const currentPlan = planOptions.find((p) => p.id === plan);
+    if (!currentPlan || plan === "custom") return 0;
 
-    const basePrice = basePrices[category] || 9.9;
+    const basePrice = currentPlan.basePrice;
     const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
-    // const yearCount = parseInt(years);
+    const yearCount = parseInt(years);
 
-    // Volume discounts
-    let discount = 1;
-    if (licenseCount >= 100) discount = 0.8;
-    else if (licenseCount >= 50) discount = 0.85;
-    else if (licenseCount >= 25) discount = 0.9;
-
-    // Multi-year discounts
-    // let yearDiscount = 1;
-    // if (yearCount >= 3) yearDiscount = 0.85;
-    // else if (yearCount >= 2) yearDiscount = 0.9;
-
-    let baseTotal = Math.round(
-      basePrice * licenseCount * discount * 100
-    ) / 100;
-
-    // Add-ons pricing (only for File Eraser)
-    if (category === "file-eraser" && addons.length > 0) {
-      const addonsCost = addons.reduce((total, addonId) => {
-        const addon = fileEraserAddons.find(a => a.id === addonId);
-        return total + (addon ? addon.price * licenseCount : 0);
-      }, 0);
-      baseTotal += Math.round(addonsCost * discount * 100) / 100;
+    // Calculate total based on category
+    let baseTotal;
+    if (category === "file-eraser") {
+      // File Eraser is sold annually, so multiply by years
+      baseTotal = Math.round(basePrice * licenseCount * yearCount * 100) / 100;
+    } else {
+      // Drive Eraser is pay-per-use (one-time)
+      baseTotal = Math.round(basePrice * licenseCount * 100) / 100;
     }
 
     return baseTotal;
+  };
+
+  // Get plan-specific features for each product
+  const getProductFeatures = (category: string, plan: string) => {
+    const currentPlan = planOptions.find((p) => p.id === plan);
+    if (!currentPlan) return [];
+
+    if (category === "drive-eraser") {
+      return [
+        "Complete Hard Drive & SSD Erasure",
+        "Enterprise-Grade Security Standards",
+        "Multi-Platform Device Support",
+        "Compliance Reporting & Certificates",
+        "Real-time Progress Monitoring",
+        "Batch Processing Capabilities",
+      ];
+    } else if (category === "file-eraser") {
+      return [
+        "Secure File & Folder Deletion",
+        "Application Trace Cleanup",
+        "Cloud Storage Integration",
+        "Privacy Protection Suite",
+        "Scheduled Erasure Tasks",
+        "Cross-Platform Compatibility",
+      ];
+    }
+    return [];
   };
 
   const productData = {
@@ -128,15 +487,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
       imageCategory: "drive-eraser",
       version: "V1.0.0.0 Enterprise",
       basePrice: 20,
-      features: [
-        " NIST & DoD Compliant Erasure Standards",
-        " Free Cloud Console & Reporting",
-        " Lifetime Technical Support",
-        " Works on All Device Types",
-        " Detailed Audit Reports",
-      ],
       selectionLabel: "Number of Licenses:",
-      selectionNote: "(Pay Per License)",
+      selectionNote: "(Pay Per Use)",
       options: [
         "1",
         "10",
@@ -158,13 +510,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
       imageCategory: "file-eraser",
       version: "Professional",
       basePrice: 40,
-      features: [
-        " Files, Folders &  Traces",
-        " Cross-Platform Support",
-        " Fast & Efficient Processing",
-        " Scheduled Automatic Cleaning",
-        " Privacy Protection Tools",
-      ],
       selectionLabel: "Number of Licenses:",
       selectionNote: "(Pay Per License)",
       options: [
@@ -180,8 +525,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "custom",
       ],
       showDeliveryOptions: false,
-      // deliveryText:
-      //   "Digital download with instant activation. Internet connection required for initial setup.",
     },
   };
 
@@ -189,61 +532,60 @@ const PricingAndPlanPage: React.FC = memo(() => {
     productData[selectedCategory as keyof typeof productData];
 
   const getDisplayPrice = () => {
-    if (selectedLicenses === "custom") return "Custom Quote";
+    if (selectedLicenses === "custom" || selectedPlan === "custom")
+      return "Custom Quote";
 
     const totalPrice = calculatePrice(
       selectedCategory,
       selectedLicenses,
       selectedYears,
-      selectedCategory === "file-eraser" ? selectedAddons : []
+      selectedPlan
     );
     return `$${totalPrice.toFixed(2)}`;
   };
 
   const getPriceSubtitle = () => {
-    if (selectedLicenses === "custom") return "Get Personalized Quote";
+    if (selectedLicenses === "custom" || selectedPlan === "custom")
+      return "Get Personalized Quote";
 
-    const yearText = selectedYears === "1" ? "year" : "years";
-    return `${selectedLicenses} licenses`;
+    let subtitle = `${getCurrentPlan().name} - ${selectedLicenses} licenses`;
+    
+    if (selectedCategory === "file-eraser") {
+      subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? 's' : ''}`;
+    }
+    
+    return subtitle;
   };
 
   const getPriceNote = () => {
-    if (selectedLicenses === "custom") return "Tailored to your needs";
+    if (selectedLicenses === "custom" || selectedPlan === "custom")
+      return "Tailored to your needs";
 
-    const basePrice = getCurrentProduct().basePrice;
-    const yearText = selectedYears === "1" ? "/license" : `/license`;
+    const currentPlan = getCurrentPlan();
+    const yearText = selectedCategory === "file-eraser" ? "/license/year" : "/license";
     
-    let note = `Starting @ $${basePrice.toFixed(2)}${yearText}`;
+    let note = `${currentPlan.name} @ $${currentPlan.basePrice.toFixed(2)}${yearText}`;
     
-    // Add add-ons pricing info for File Eraser
-    if (selectedCategory === "file-eraser" && selectedAddons.length > 0) {
-      const addonsTotal = selectedAddons.reduce((total, addonId) => {
-        const addon = fileEraserAddons.find(a => a.id === addonId);
-        return total + (addon ? addon.price : 0);
-      }, 0);
-      note += ` + $${addonsTotal.toFixed(2)}${yearText} (add-ons)`;
+    if (selectedCategory === "file-eraser" && parseInt(selectedYears) > 1) {
+      note += ` × ${selectedYears} years`;
     }
-    
+
     return note;
   };
 
-  const handleCustomLicenseSubmit = (data: CustomLicenseData) => {
-    // In a real app, this would send to your API
-    console.log("Custom license request:", data);
-    // For now, just show a success message or redirect
-    showToast(
-      "Thank you! We will contact you within 24 hours with a custom quote.",
-      "success"
-    );
-    setShowCustomModal(false);
+  const handleCustomLicenseSubmit = async (data: CustomLicenseData) => {
+    console.log("handleCustomLicenseSubmit called with data:", data);
+    // Use the useFormSubmission hook to handle the form submission
+    await submitForm(data);
   };
 
   const handleBuyNow = () => {
-    if (selectedLicenses === "custom") {
+    if (selectedLicenses === "custom" || selectedPlan === "custom") {
       setShowCustomModal(true);
       return;
     }
 
+    const currentPlan = getCurrentPlan();
     const paymentData = {
       productName: getCurrentProduct().title,
       productImage: getCurrentProduct().image,
@@ -251,23 +593,18 @@ const PricingAndPlanPage: React.FC = memo(() => {
       productVersion: getCurrentProduct().version,
       quantity: selectedLicenses,
       duration: selectedYears,
-      unitPrice: getCurrentProduct().basePrice,
+      unitPrice: currentPlan.basePrice,
       totalPrice: calculatePrice(
         selectedCategory,
         selectedLicenses,
         selectedYears,
-        selectedCategory === "file-eraser" ? selectedAddons : []
+        selectedPlan
       ),
       deliveryMethod: deliveryMethod,
-      features: getCurrentProduct().features,
+      features: currentPlan.features,
+      planName: currentPlan.name,
+      planDescription: currentPlan.description,
       category: selectedCategory,
-      // Add file eraser specific data
-      ...(selectedCategory === "file-eraser" && {
-        selectedAddons: selectedAddons,
-        addonsData: selectedAddons.map(addonId => 
-          fileEraserAddons.find(addon => addon.id === addonId)
-        ).filter(Boolean)
-      })
     };
 
     // Store payment data in localStorage for the payment page
@@ -332,7 +669,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6 shadow-lg">
-               SECURE • COMPLIANT
+              SECURE • COMPLIANT
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
               Choose Your{" "}
@@ -350,16 +687,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
           {/* Category Selection */}
           <div className="flex justify-center mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4  max-w-2xl">
               {categories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => {
                     setSelectedCategory(category.id);
-                    // Reset add-ons when switching away from file-eraser
-                    if (category.id !== "file-eraser") {
-                      setSelectedAddons([]);
-                    }
                   }}
                   className={`p-6 rounded-xl text-left transition-all duration-300 border-2 ${
                     selectedCategory === category.id
@@ -400,16 +733,19 @@ const PricingAndPlanPage: React.FC = memo(() => {
                       {getCurrentProduct().subtitle}
                     </p>
 
-                    {/* Features */}
-                    {getCurrentProduct().features.length > 0 && (
-                      <div className="space-y-3 mb-6">
-                        {getCurrentProduct().features.map((feature, index) => (
+                    {/* Dynamic Product Features */}
+                    <div className="space-y-3 mb-6">
+                      <h4 className="text-sm font-semibold text-gray-800 mb-3">
+                        {getCurrentPlan().name} - Key Features:
+                      </h4>
+                      {getProductFeatures(selectedCategory, selectedPlan).map(
+                        (feature, index) => (
                           <div
                             key={index}
-                            className="flex items-center space-x-2"
+                            className="flex items-center space-x-3 p-2 rounded-lg"
                           >
                             <svg
-                              className="w-5 h-5 text-green-500"
+                              className="w-4 h-4 text-green-600 flex-shrink-0"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -419,20 +755,44 @@ const PricingAndPlanPage: React.FC = memo(() => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <span className="text-sm text-gray-700">
+                            <span className="text-sm font-medium text-gray-700">
                               {feature}
                             </span>
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        )
+                      )}
+                    </div>
 
                     {/* Selection Criteria */}
                     <div className="mb-6">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                         Configure Your License
+                        Configure Your License
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                        {/* Plan Selection */}
+                        <div className="space-y-2">
+                          <label className="block text-sm font-semibold text-gray-700">
+                            Select Plan:
+                          </label>
+                          <p className="text-xs text-gray-500">
+                            Features will update based on your selection
+                          </p>
+                          <select
+                            value={selectedPlan}
+                            onChange={(e) => setSelectedPlan(e.target.value)}
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                          >
+                            {planOptions.map((plan) => (
+                              <option key={plan.id} value={plan.id}>
+                                {plan.name} - $
+                                {plan.basePrice > 0
+                                  ? `${plan.basePrice}/license`
+                                  : "Custom"}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
                         {/* License Quantity */}
                         <div className="space-y-2">
                           <label className="block text-sm font-semibold text-gray-700">
@@ -461,131 +821,52 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         </div>
 
                         {/* License Duration */}
-                        {/* <div className="space-y-2">
+                        <div className="space-y-2">
                           <label className="block text-sm font-semibold text-gray-700">
-                             License Duration:
+                            {selectedCategory === "file-eraser" ? "License Duration:" : "License Type:"}
                           </label>
                           <p className="text-xs text-gray-500">
-                            Multi-year discounts available
+                            {selectedCategory === "file-eraser" 
+                              ? "File Eraser licenses are sold annually" 
+                              : "Drive Eraser is a one-time purchase"}
                           </p>
                           <select
-                            value={selectedYears}
-                            onChange={(e) => setSelectedYears(e.target.value)}
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                            value={selectedCategory === "file-eraser" ? selectedYears : "1"}
+                            onChange={(e) => selectedCategory === "file-eraser" && setSelectedYears(e.target.value)}
+                            disabled={selectedCategory !== "file-eraser"}
+                            className={`w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400 ${
+                              selectedCategory !== "file-eraser" ? "bg-gray-100 cursor-not-allowed" : ""
+                            }`}
                           >
-                            <option value="1">1 Year</option>
-                            <option value="2">2 Years</option>
-                            <option value="3">3 Years</option>
-                            <option value="5">5 Years</option>
-                            <option value="15">15 Years</option>
+                            {selectedCategory === "file-eraser" ? (
+                              <>
+                                <option value="1">1 Year</option>
+                                <option value="2">2 Years</option>
+                                <option value="3">3 Years</option>
+                                <option value="5">5 Years</option>
+                              </>
+                            ) : (
+                              <option value="1">One-time Purchase</option>
+                            )}
                           </select>
-                        </div> */}
+                        </div>
                       </div>
                     </div>
 
-                    {/* File Eraser Add-ons */}
-                    {/* {selectedCategory === "file-eraser" && (
-                      <div className="mb-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                           Premium Add-ons
-                        </h3>
-                        <p className="text-sm text-gray-600 mb-4">
-                          Enhance your File Eraser with powerful additional features
-                        </p>
-                        <div className="space-y-3">
-                          {fileEraserAddons.map((addon) => (
-                            <label key={addon.id} className="flex items-start space-x-3 p-4 border-2 border-gray-200 rounded-lg hover:border-teal-300 transition-colors cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={selectedAddons.includes(addon.id)}
-                                onChange={() => handleAddonToggle(addon.id)}
-                                className="mt-1 text-teal-500 focus:ring-teal-500 h-4 w-4"
-                              />
-                              <div className="flex-1">
-                                <div className="flex items-center space-x-2">
-                                  <span className="text-lg">{}</span>
-                                  <span className="font-medium text-gray-900">{addon.name}</span>
-                                  <span className="text-sm font-semibold text-teal-600">
-                                    +${addon.price}/license
-                                  </span>
-                                </div>
-                                <p className="text-sm text-gray-600 mt-1">
-                                  {addon.description}
-                                </p>
-                              </div>
-                            </label>
-                          ))}
-                        </div>
-                        {selectedAddons.length > 0 && (
-                          <div className="mt-4 p-3 bg-teal-50 rounded-lg">
-                            <p className="text-sm text-teal-700">
-                              <strong>Selected Add-ons:</strong> {selectedAddons.length} item{selectedAddons.length > 1 ? 's' : ''} selected
-                            </p>
-                          </div>
-                        )}
+                    {/* Special Pricing Section */}
+                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                      <div className="text-center">
+                        <h4 className="text-sm font-semibold text-blue-900 mb-2">
+                          Are You An MSP, Academic Institute or Non-Profit Organization?
+                        </h4>
+                        <button
+                          onClick={() => setShowSpecialPricingModal(true)}
+                          className="text-blue-600 hover:text-blue-700 font-medium underline transition-colors"
+                        >
+                          Contact Us For Special Pricing
+                        </button>
                       </div>
-                    )} */}
-
-                    {/* Delivery Options */}
-                    {/* {getCurrentProduct().showDeliveryOptions ? ( */}
-                      {/* <div> */}
-                        {/* <label className="block text-sm font-medium text-gray-700 mb-3">
-                          Number of License Count for per device.
-                        </label>
-                        <label className="block text-sm font-medium text-gray-700 mb-3">
-                          if you purchase more than 3 year plus plan then only cover minor updates.
-                          </label> */}
-                        {/* <div className="space-y-3">
-                          <label className="flex items-start space-x-3">
-                            <input
-                              type="radio"
-                              value="electronic"
-                              checked={deliveryMethod === "electronic"}
-                              onChange={(e) =>
-                                setDeliveryMethod(e.target.value)
-                              }
-                              className="mt-1 text-teal-500 focus:ring-teal-500"
-                            />
-                            <div>
-                              <div className="font-medium text-gray-900">
-                                Electronic Delivery
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                You will get license through a downloadable link
-                                via email.
-                              </div>
-                            </div>
-                          </label>
-                          <label className="flex items-start space-x-3">
-                            <input
-                              type="radio"
-                              value="physical"
-                              checked={deliveryMethod === "physical"}
-                              onChange={(e) =>
-                                setDeliveryMethod(e.target.value)
-                              }
-                              className="mt-1 text-teal-500 focus:ring-teal-500"
-                            />
-                            <div>
-                              <div className="font-medium text-gray-900">
-                                Physical Delivery
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                Receive bootable USB device without internet
-                                connectivity for PCs, laptops, and servers.
-                              </div>
-                            </div>
-                          </label>
-                        </div> */}
-                      {/* </div> */}
-                    {/* ) : ( */}
-                      {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <div className="text-sm text-blue-800">
-                          {(getCurrentProduct() as any).deliveryText ||
-                            "Digital delivery via email"}
-                        </div>
-                      </div>
-                    )} */}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -610,7 +891,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   onClick={handleBuyNow}
                   className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-6 text-lg"
                 >
-                  {selectedLicenses === "custom"
+                  {selectedLicenses === "custom" || selectedPlan === "custom"
                     ? " Request Custom Quote"
                     : " Buy Now"}
                 </button>
@@ -668,8 +949,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
             <div className="text-center">
               <span className="text-blue-700 font-medium">
-                 OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS | 
-                Certified: NIST SP 800-88, DoD 5220.22-M, Common Criteria | 
+                OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS |
+                Certified: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
                 Instant Delivery Available
               </span>
             </div>
@@ -678,7 +959,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* FAQ Section */}
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-               Frequently Asked Questions
+              Frequently Asked Questions
             </h2>
             <div className="space-y-4 max-w-4xl mx-auto">
               {faqs.map((faq, index) => (
@@ -728,6 +1009,18 @@ const PricingAndPlanPage: React.FC = memo(() => {
             onClose={() => setShowCustomModal(false)}
             isOpen={showCustomModal}
             productName={getCurrentProduct().title}
+            isLoading={isSubmitting}
+          />
+        )}
+
+        {/* Special Pricing Modal */}
+        {showSpecialPricingModal && (
+          <SpecialPricingModal
+            onSubmit={submitSpecialPricingForm}
+            onClose={() => setShowSpecialPricingModal(false)}
+            isOpen={showSpecialPricingModal}
+            productName={getCurrentProduct().title}
+            isLoading={isSpecialPricingSubmitting}
           />
         )}
       </div>

@@ -97,7 +97,7 @@ hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-ro
 - **Build Time:** 5.89s (optimized)
 - **CSS Size:** Maintained efficient sizing with Tailwind utilities
 
-## ✨ Visual Consistency Achieved
+## Visual Consistency Achieved
 
 ### **Design Coherence:**
 1. **Cross-Page Consistency:** Partners page now matches Solutions/Services visual language

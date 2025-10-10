@@ -16,6 +16,9 @@ interface PaymentData {
   deliveryMethod: string;
   features: string[];
   category: string;
+  planName?: string;
+  planDescription?: string;
+  planCategory?: string;
   selectedAddons?: string[];
   addonsData?: Array<{
     id: string;
@@ -115,7 +118,7 @@ const CheckoutPage = memo(function CheckoutPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">🛒 Secure Checkout</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Secure Checkout</h1>
           <p className="text-gray-600">Complete your D-Secure purchase in just a few steps</p>
           <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-green-600">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -129,7 +132,7 @@ const CheckoutPage = memo(function CheckoutPage() {
           {/* Order Summary */}
           <div className="lg:col-span-1 order-2 lg:order-1">
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 sticky top-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">📋 Order Summary</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
               
               {/* Product Details */}
               <div className="space-y-4 mb-6">
@@ -146,8 +149,20 @@ const CheckoutPage = memo(function CheckoutPage() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">{paymentData.productName}</h3>
                     <p className="text-sm text-gray-500">{paymentData.productVersion}</p>
-                    <p className="text-sm text-gray-600">
-                      {paymentData.quantity} licenses × {paymentData.duration} term{parseInt(paymentData.duration) > 1 ? 's' : ''}
+                    {paymentData.planName && (
+                      <div className="mt-1">
+                        <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
+                          {paymentData.planName}
+                        </span>
+                        {paymentData.planCategory && (
+                          <span className="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full font-medium ml-1">
+                            {paymentData.planCategory}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <p className="text-sm text-gray-600 mt-1">
+                      {paymentData.quantity} licenses × {paymentData.duration} year{parseInt(paymentData.duration) > 1 ? 's' : ''}
                     </p>
                   </div>
                 </div>
@@ -155,7 +170,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                 {/* Add-ons Section */}
                 {paymentData.addonsData && paymentData.addonsData.length > 0 && (
                   <div className="border-t pt-4">
-                    <h4 className="font-semibold text-gray-900 mb-3">🚀 Premium Add-ons:</h4>
+                    <h4 className="font-semibold text-gray-900 mb-3">Premium Add-ons:</h4>
                     <div className="space-y-3">
                       {paymentData.addonsData.map((addon) => (
                         <div key={addon.id} className="flex items-center justify-between p-3 bg-teal-50 rounded-lg border border-teal-100">
@@ -235,14 +250,16 @@ const CheckoutPage = memo(function CheckoutPage() {
 
               {/* Features Included */}
               <div className="border-t pt-4">
-                <h4 className="font-semibold text-gray-900 mb-3">✨ Features Included:</h4>
+                <h4 className="font-semibold text-gray-900 mb-3">Features Included:</h4>
                 <ul className="space-y-2 text-sm text-gray-600">
-                  {paymentData.features.map((feature, index) => (
+                  {paymentData.features
+                    .filter((feature) => feature.startsWith("INCLUDED:"))
+                    .map((feature, index) => (
                     <li key={index} className="flex items-start space-x-2">
                       <svg className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                       </svg>
-                      <span>{feature}</span>
+                      <span>{feature.replace("INCLUDED: ", "")}</span>
                     </li>
                   ))}
                 </ul>
@@ -255,7 +272,7 @@ const CheckoutPage = memo(function CheckoutPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Customer Information */}
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">👤 Customer Information</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Customer Information</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -316,7 +333,7 @@ const CheckoutPage = memo(function CheckoutPage() {
 
               {/* Billing Address */}
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">📍 Billing Address</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Billing Address</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
@@ -385,7 +402,7 @@ const CheckoutPage = memo(function CheckoutPage() {
 
               {/* Payment Method */}
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">💳 Payment Method</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Payment Method</h2>
                 
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
@@ -399,7 +416,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                       className="w-4 h-4 text-blue-600"
                     />
                     <label htmlFor="card" className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                      <span>💳 Credit/Debit Card</span>
+                      <span>Credit/Debit Card</span>
                       <div className="flex space-x-1">
                         {/* Visa Icon */}
                         <svg className="h-4 w-6" viewBox="0 0 24 16" fill="none">
@@ -432,7 +449,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                       className="w-4 h-4 text-blue-600"
                     />
                     <label htmlFor="paypal" className="text-sm font-medium text-gray-700">
-                      🅿️ PayPal
+                      PayPal
                     </label>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -446,7 +463,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                       className="w-4 h-4 text-blue-600"
                     />
                     <label htmlFor="wire" className="text-sm font-medium text-gray-700">
-                      🏦 Wire Transfer (for orders $5,000+)
+                      Wire Transfer (for orders $5,000+)
                     </label>
                   </div>
                 </div>
@@ -454,7 +471,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                 {paymentMethod === 'card' && (
                   <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                     <p className="text-sm text-blue-700 mb-3 font-medium">
-                      🔒 You will be redirected to our secure payment processor to complete your card payment.
+                      You will be redirected to our secure payment processor to complete your card payment.
                     </p>
                     <p className="text-xs text-blue-600">
                       We never store your card details. All transactions are processed through PCI-compliant payment gateways.
@@ -476,9 +493,9 @@ const CheckoutPage = memo(function CheckoutPage() {
                     />
                     <label htmlFor="terms" className="text-sm text-gray-600">
                       I agree to the{' '}
-                      <Link to="/terms" className="text-blue-600 hover:underline">Terms of Service</Link>
+                      <Link to="/terms-of-service" className="text-blue-600 hover:underline">Terms of Service</Link>
                       {' '}and{' '}
-                      <Link to="/privacy" className="text-blue-600 hover:underline">Privacy Policy</Link>
+                      <Link to="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</Link>
                     </label>
                   </div>
 
@@ -496,7 +513,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                         <span>Processing Payment...</span>
                       </span>
                     ) : (
-                      `🛒 Complete Purchase - $${paymentData.totalPrice.toLocaleString()}`
+                      `Complete Purchase - $${paymentData.totalPrice.toLocaleString()}`
                     )}
                   </button>
 

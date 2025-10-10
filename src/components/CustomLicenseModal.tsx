@@ -5,6 +5,7 @@ interface CustomLicenseModalProps {
   onClose: () => void;
   onSubmit: (data: CustomLicenseData) => void;
   productName: string;
+  isLoading?: boolean;
 }
 
 export interface CustomLicenseData {
@@ -77,7 +78,8 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
   isOpen,
   onClose,
   onSubmit,
-  productName
+  productName,
+  isLoading = false
 }) => {
   const [formData, setFormData] = useState<CustomLicenseData>({
     companyName: '',
@@ -143,19 +145,13 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted with data:', formData);
     if (validateForm()) {
+      console.log('Form validation passed, calling onSubmit');
       onSubmit(formData);
-      onClose();
-      setFormData({
-        companyName: '',
-        contactName: '',
-        email: '',
-        phone: '',
-        numberOfLicenses: '',
-        duration: '1',
-        requirements: '',
-        budget: ''
-      });
+      // Don't close modal or reset form here - let the parent handle success/error
+    } else {
+      console.log('Form validation failed');
     }
   };
 
@@ -330,9 +326,22 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
             </button> */}
             <button
               type="submit"
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-brand to-brand-600 text-white rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all transform hover:scale-105 font-medium shadow-lg"
+              disabled={isLoading}
+              className={`flex-1 px-4 py-3 bg-gradient-to-r from-brand to-brand-600 text-white rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all transform hover:scale-105 font-medium shadow-lg ${
+                isLoading ? 'opacity-70 cursor-not-allowed' : ''
+              }`}
             >
-              Submit Request
+              {isLoading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Submitting...</span>
+                </div>
+              ) : (
+                'Submit Request'
+              )}
             </button>
           </div>
         </form>

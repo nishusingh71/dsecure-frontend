@@ -70,7 +70,7 @@ function updateSitemap() {
     //console.log('✅ Sitemap updated successfully!');
     //console.log(`📅 Updated with date: ${currentDate}`);
     //console.log(`📄 Total URLs: ${routes.length}`);
-    //console.log(`📍 Sitemap location: ${sitemapPath}`);
+    //console.log(`Sitemap location: ${sitemapPath}`);
     
     // Also update robots.txt timestamp in comment
     const robotsPath = path.join(__dirname, '..', 'public', 'robots.txt');
