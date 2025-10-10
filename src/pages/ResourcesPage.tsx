@@ -11,7 +11,6 @@ export default function ResourcesPage() {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("resources")} />
-
       <ResourcesPageContent />
     </>
   );
@@ -41,6 +40,172 @@ function ResourcesPageContent() {
     }
   }, [searchParams]);
 
+  // Helper: Flaticon-style SVG Icons
+  const getIcon = (type: string) => {
+    switch (type) {
+      case "compliance":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
+          </svg>
+        );
+      case "enterprise":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
+          </svg>
+        );
+      case "itad":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+        );
+      case "technical":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+            />
+          </svg>
+        );
+      case "business":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
+          </svg>
+        );
+      case "whitepaper":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        );
+      case "case-study":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        );
+      case "report":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        );
+      case "tool":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+        );
+      default:
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 00-2 2v2a2 2 0 002 2m0 0h14m-14 0a2 2 0 002 2v2a2 2 0 01-2 2"
+            />
+          </svg>
+        );
+    }
+  };
+
   const resources = [
     {
       id: 1,
@@ -51,7 +216,6 @@ function ResourcesPageContent() {
         "Comprehensive guide to implementing NIST 800-88 Rev. 1 standards with DSecure solutions.",
       downloadSize: "2.4 MB",
       pages: 28,
-      icon: "📋",
       featured: true,
       referenceUrl:
         "https://csrc.nist.gov/publications/detail/sp/800-88/rev-1/final",
@@ -65,7 +229,6 @@ function ResourcesPageContent() {
         "How a Fortune 500 company reduced IT refresh cycle time by 60% while maintaining 100% compliance.",
       downloadSize: "1.8 MB",
       pages: 12,
-      icon: "📊",
       featured: true,
       referenceUrl: "https://www.sans.org/white-papers/1907/",
     },
@@ -78,7 +241,6 @@ function ResourcesPageContent() {
         "Best practices for healthcare organizations to maintain HIPAA compliance during device disposal.",
       downloadSize: "2.1 MB",
       pages: 22,
-      icon: "🏥",
       featured: false,
       referenceUrl:
         "https://www.hhs.gov/hipaa/for-professionals/security/guidance/cybersecurity/index.html",
@@ -92,7 +254,6 @@ function ResourcesPageContent() {
         "Step-by-step guide to optimizing IT Asset Disposition workflows for maximum efficiency.",
       downloadSize: "1.9 MB",
       pages: 18,
-      icon: "♻️",
       featured: false,
       referenceUrl: "https://www.itassetmanagement.net/best-practices/",
     },
@@ -105,7 +266,6 @@ function ResourcesPageContent() {
         "Advanced techniques for secure data sanitization in multi-cloud environments.",
       downloadSize: "2.7 MB",
       pages: 31,
-      icon: "☁️",
       featured: true,
       referenceUrl:
         "https://aws.amazon.com/blogs/security/how-to-securely-destroy-data-stored-on-aws/",
@@ -119,7 +279,6 @@ function ResourcesPageContent() {
         "Industry analysis of data protection requirements for financial institutions.",
       downloadSize: "1.5 MB",
       pages: 15,
-      icon: "💰",
       featured: false,
       referenceUrl:
         "https://www.finra.org/rules-guidance/guidance/reports/2022-report-examination-findings",
@@ -133,7 +292,6 @@ function ResourcesPageContent() {
         "Interactive tool to calculate ROI and build business case for data sanitization projects.",
       downloadSize: "0.8 MB",
       pages: 8,
-      icon: "📈",
       featured: false,
       referenceUrl:
         "https://www.gartner.com/en/information-technology/insights/it-asset-disposition",
@@ -147,7 +305,6 @@ function ResourcesPageContent() {
         "Deep dive into DSecure's security architecture and cryptographic implementations.",
       downloadSize: "3.5 MB",
       pages: 38,
-      icon: "🔒",
       featured: false,
       referenceUrl:
         "https://owasp.org/www-project-application-security-architecture/",
@@ -232,7 +389,6 @@ function ResourcesPageContent() {
     },
   ];
 
-  // Filter webinars based on search term
   const filteredWebinars = webinars.filter((webinar) => {
     if (searchTerm === "") return true;
     return (
@@ -246,7 +402,6 @@ function ResourcesPageContent() {
   return (
     <>
       {/* Hero Section */}
-
       <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         <div className="container-responsive py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
           <div className="text-center max-w-4xl mx-auto">
@@ -295,11 +450,9 @@ function ResourcesPageContent() {
 
       {/* Resource Categories */}
       <section className="py-16 md:py-20 lg:py-24 bg-white relative overflow-hidden">
-        {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-50/30 via-transparent to-teal-50/20"></div>
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-teal-100/20 to-transparent rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-emerald-100/20 to-transparent rounded-full blur-3xl"></div>
-
         <div className="container-responsive relative z-10">
           <div className="text-center mb-16">
             <Reveal>
@@ -334,17 +487,13 @@ function ResourcesPageContent() {
               </p>
             </Reveal>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
             <Reveal delayMs={10}>
               <Link
                 to="/resources/documentation"
                 className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-blue-300/50 hover:-translate-y-2 overflow-hidden"
               >
-                {/* Card background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-blue-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                {/* Icon container with enhanced styling */}
                 <div className="relative w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-blue-500/25">
                   <svg
                     className="w-8 h-8"
@@ -359,10 +508,8 @@ function ResourcesPageContent() {
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  {/* Decorative dot */}
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-300 rounded-full opacity-75"></div>
                 </div>
-
                 <div className="relative">
                   <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
                     Technical Documentation
@@ -371,8 +518,6 @@ function ResourcesPageContent() {
                     Comprehensive user guides, implementation documentation, and
                     quick-start resources for administrators.
                   </p>
-
-                  {/* Enhanced CTA */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-blue-600 text-sm font-semibold group-hover:text-blue-700 transition-colors">
                       Explore Documentation
@@ -397,14 +542,12 @@ function ResourcesPageContent() {
                 </div>
               </Link>
             </Reveal>
-
             <Reveal delayMs={20}>
               <Link
                 to="/resources/case-studies"
                 className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-green-300/50 hover:-translate-y-2 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-green-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
                 <div className="relative w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-green-500/25">
                   <svg
                     className="w-8 h-8"
@@ -421,7 +564,6 @@ function ResourcesPageContent() {
                   </svg>
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-300 rounded-full opacity-75"></div>
                 </div>
-
                 <div className="relative">
                   <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-green-600 transition-colors duration-300">
                     Customer Success Stories
@@ -430,7 +572,6 @@ function ResourcesPageContent() {
                     Real-world case studies showcasing implementation success
                     and measurable ROI outcomes.
                   </p>
-
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-green-600 text-sm font-semibold group-hover:text-green-700 transition-colors">
                       View Case Studies
@@ -455,14 +596,12 @@ function ResourcesPageContent() {
                 </div>
               </Link>
             </Reveal>
-
             <Reveal delayMs={30}>
               <Link
                 to="/resources/compliance"
                 className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-purple-300/50 hover:-translate-y-2 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-purple-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
                 <div className="relative w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-purple-500/25">
                   <svg
                     className="w-8 h-8"
@@ -479,7 +618,6 @@ function ResourcesPageContent() {
                   </svg>
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-300 rounded-full opacity-75"></div>
                 </div>
-
                 <div className="relative">
                   <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">
                     Compliance Frameworks
@@ -488,7 +626,6 @@ function ResourcesPageContent() {
                     Navigate GDPR, HIPAA, PCI DSS, and SOX requirements with our
                     detailed compliance guides.
                   </p>
-
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-purple-600 text-sm font-semibold group-hover:text-purple-700 transition-colors">
                       Browse Compliance
@@ -513,14 +650,12 @@ function ResourcesPageContent() {
                 </div>
               </Link>
             </Reveal>
-
             <Reveal delayMs={40}>
               <Link
                 to="/resources/whitepapers"
                 className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-orange-300/50 hover:-translate-y-2 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-orange-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
                 <div className="relative w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-orange-500/25">
                   <svg
                     className="w-8 h-8"
@@ -537,7 +672,6 @@ function ResourcesPageContent() {
                   </svg>
                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-300 rounded-full opacity-75"></div>
                 </div>
-
                 <div className="relative">
                   <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">
                     Research Whitepapers
@@ -546,7 +680,6 @@ function ResourcesPageContent() {
                     In-depth research, industry analysis, and technical insights
                     on data security trends.
                   </p>
-
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-orange-600 text-sm font-semibold group-hover:text-orange-700 transition-colors">
                       Read Whitepapers
@@ -572,8 +705,6 @@ function ResourcesPageContent() {
               </Link>
             </Reveal>
           </div>
-
-          {/* Additional stats section */}
           <Reveal delayMs={50}>
             <div className="mt-16 pt-12 border-t border-slate-200/60">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
@@ -620,14 +751,13 @@ function ResourcesPageContent() {
               Our most popular and comprehensive resources to get you started.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {featuredResources.map((resource, i) => (
               <Reveal key={resource.id} delayMs={i * 100}>
                 <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 overflow-hidden hover:shadow-xl transition-shadow duration-300">
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl">{resource.icon}</div>
+                      <div>{getIcon(resource.category)}</div>
                       <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded-full text-xs font-medium">
                         Featured
                       </span>
@@ -716,8 +846,6 @@ function ResourcesPageContent() {
               Browse our complete library of resources by category.
             </p>
           </div>
-
-          {/* Category Filter */}
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-3 mb-12 max-w-4xl mx-auto">
             {categories.map((category) => (
               <button
@@ -742,14 +870,12 @@ function ResourcesPageContent() {
               </button>
             ))}
           </div>
-
-          {/* Resources Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredResources.map((resource, i) => (
               <Reveal key={resource.id} delayMs={i * 50}>
                 <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="text-2xl">{resource.icon}</div>
+                    <div>{getIcon(resource.category)}</div>
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
                         resource.type === "whitepaper"
@@ -836,10 +962,23 @@ function ResourcesPageContent() {
               </Reveal>
             ))}
           </div>
-
           {filteredResources.length === 0 && (
             <div className="text-center py-12">
-              <div className="text-slate-400 text-5xl mb-4">📝</div>
+              <div className="w-12 h-12 text-slate-400 mx-auto mb-4">
+                <svg
+                  className="w-full h-full"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">
                 No resources found
               </h3>
@@ -863,7 +1002,6 @@ function ResourcesPageContent() {
               practices and industry trends.
             </p>
           </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {filteredWebinars.map((webinar, i) => (
               <Reveal key={i} delayMs={i * 100}>
@@ -880,7 +1018,21 @@ function ResourcesPageContent() {
                         ? "Upcoming"
                         : "Recording Available"}
                     </span>
-                    <div className="text-2xl">🎥</div>
+                    <div className="w-6 h-6 text-slate-700">
+                      <svg
+                        className="w-full h-full"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 10l4.59-4.59a2 2 0 012.83 2.83L18 13l4.59 4.59a2 2 0 01-2.83 2.83L15 18l-4.59 4.59a2 2 0 01-2.83-2.83L12 15l-4.59 4.59a2 2 0 01-2.83-2.83L9 13l-4.59-4.59a2 2 0 012.83-2.83L12 10z"
+                        />
+                      </svg>
+                    </div>
                   </div>
                   <h3 className="font-bold text-slate-900 mb-3">
                     {webinar.title}
@@ -940,10 +1092,23 @@ function ResourcesPageContent() {
               </Reveal>
             ))}
           </div>
-
           {filteredWebinars.length === 0 && searchTerm && (
             <div className="text-center py-12">
-              <div className="text-slate-400 text-5xl mb-4">🎥</div>
+              <div className="w-12 h-12 text-slate-400 mx-auto mb-4">
+                <svg
+                  className="w-full h-full"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 10l4.59-4.59a2 2 0 012.83 2.83L18 13l4.59 4.59a2 2 0 01-2.83 2.83L15 18l-4.59 4.59a2 2 0 01-2.83-2.83L12 15l-4.59 4.59a2 2 0 01-2.83-2.83L9 13l-4.59-4.59a2 2 0 012.83-2.83L12 10z"
+                  />
+                </svg>
+              </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-2">
                 No webinars found
               </h3>
@@ -967,7 +1132,6 @@ function ResourcesPageContent() {
               help.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Reveal delayMs={10}>
               <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200/60">
@@ -997,7 +1161,6 @@ function ResourcesPageContent() {
                 </button>
               </div>
             </Reveal>
-
             <Reveal delayMs={20}>
               <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200/60">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -1024,7 +1187,6 @@ function ResourcesPageContent() {
                 </button>
               </div>
             </Reveal>
-
             <Reveal delayMs={30}>
               <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200/60">
                 <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
