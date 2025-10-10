@@ -11,11 +11,9 @@ import {
   CheckIcon,
   ServerIcon,
   GearIcon,
-  ClockIcon,
-  LockIcon,
-  FileIcon,
-  SpeedIcon,
-  XIcon,
+  ClipboardIcon,
+  StarIcon,
+  LightningIcon,
 } from "@/components/FlatIcons";
 
 const ProductPage: React.FC = () => {
@@ -367,65 +365,69 @@ const ProductPage: React.FC = () => {
       case "check-file":
         return (
           <div className="flex items-center space-x-1">
-            <FileIcon className="w-4 h-4 text-emerald-600" />
+            <ClipboardIcon className="w-4 h-4 text-emerald-600" />
             <span className="text-xs font-medium text-emerald-600">Files</span>
           </div>
         );
       case "check-expanded":
         return (
           <div className="flex items-center space-x-1">
-            <FileIcon className="w-4 h-4 text-emerald-600" />
+            <ClipboardIcon className="w-4 h-4 text-emerald-600" />
             <span className="text-xs font-medium text-emerald-600">All</span>
           </div>
         );
       case "check-slow":
         return (
           <div className="flex items-center space-x-1">
-            <SpeedIcon className="w-4 h-4 text-amber-500" />
+            <LightningIcon className="w-4 h-4 text-amber-500" />
             <span className="text-xs font-medium text-amber-500">Basic</span>
           </div>
         );
       case "check-improved":
         return (
           <div className="flex items-center space-x-1">
-            <SpeedIcon className="w-4 h-4 text-emerald-500" />
+            <LightningIcon className="w-4 h-4 text-emerald-500" />
             <span className="text-xs font-medium text-emerald-500">Fast</span>
           </div>
         );
       case "check-fast":
         return (
           <div className="flex items-center space-x-1">
-            <SpeedIcon className="w-4 h-4 text-emerald-600" />
+            <LightningIcon className="w-4 h-4 text-emerald-600" />
             <span className="text-xs font-medium text-emerald-600">Faster</span>
           </div>
         );
       case "check-fastest":
         return (
           <div className="flex items-center space-x-1">
-            <SpeedIcon className="w-4 h-4 text-purple-600" />
+            <LightningIcon className="w-4 h-4 text-purple-600" />
             <span className="text-xs font-medium text-purple-600">Premium</span>
           </div>
         );
       case "x":
-        return <XIcon className="w-4 h-4 text-red-500" />;
+        return (
+          <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        );
       case "locked":
         return (
           <div className="flex items-center space-x-1">
-            <LockIcon className="w-4 h-4 text-amber-600" />
+            <ShieldIcon className="w-4 h-4 text-amber-600" />
             <span className="text-xs font-medium text-amber-600">Add-on</span>
           </div>
         );
       case "locked-profiles":
         return (
           <div className="flex items-center space-x-1">
-            <LockIcon className="w-4 h-4 text-amber-600" />
+            <ShieldIcon className="w-4 h-4 text-amber-600" />
             <span className="text-xs font-medium text-amber-600">Profiles</span>
           </div>
         );
       case "pending":
         return (
           <div className="flex items-center space-x-1">
-            <ClockIcon className="w-4 h-4 text-blue-600" />
+            <StarIcon className="w-4 h-4 text-blue-600" />
             <span className="text-xs font-medium text-blue-600">
               Coming Soon
             </span>
@@ -1242,14 +1244,14 @@ const ProductPage: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to="/free-license"
+                to="/contact"
                 className="inline-flex items-center px-8 py-4 rounded-xl bg-white text-emerald-700 font-bold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl text-lg"
               >
                 Request Free License
                 <ArrowRightIcon className="ml-3 w-5 h-5" />
               </Link>
               <Link
-                to="/buy-now"
+                to="/pricing-and-plan"
                 className="inline-flex items-center px-8 py-4 rounded-xl border-2 border-white text-white font-bold hover:bg-white hover:text-emerald-700 transition-all text-lg"
               >
                 Buy Licenses Now

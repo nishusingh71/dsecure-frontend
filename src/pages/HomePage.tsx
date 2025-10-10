@@ -60,7 +60,7 @@ const HomePage = memo(function HomePage() {
               <Reveal delayMs={20}>
                 <div className="flex flex-col xs:flex-col sm:flex-row md:flex-row lg:flex-row xl:flex-row xxl:flex-row items-start xs:items-start sm:items-center md:items-center lg:items-center xl:items-center xxl:items-center gap-3 xs:gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-5 xxl:gap-6">
                   <Link
-                    to="/services"
+                    to="/products"
                     className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center"
                   >
                     <HoverIcon>
@@ -71,7 +71,7 @@ const HomePage = memo(function HomePage() {
                         />
                       )}
                     </HoverIcon>
-                    Explore Services
+                    Explore Products
                   </Link>
                   <Link
                     to="/pricing-and-plan"
