@@ -1,7 +1,8 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import Head from 'next/head'
+import { Helmet } from 'react-helmet-async';
+
 import { 
   CheckIcon, 
   MobileIcon, 
@@ -16,26 +17,13 @@ import {
   GearIcon,
   BriefcaseIcon
 } from '@/components/FlatIcons'
+import { getSEOForPage } from '@/utils/seo';
+import SEOHead from '@/components/SEOHead';
 
 export default function ServicesPage() {
   return (
     <>
-      <Head>
-        <link rel="canonical" href="https://dsecuretech.com/services" />
-        <title>
-          Data Erasure Services | DSecure Professional Solutions
-        </title>
-        <meta
-          name="description"
-          content="Professional data erasure services including device sanitization, server data destruction, and cloud data removal. NIST 800-88 compliant solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure services, device sanitization, server data destruction, cloud data removal, NIST 800-88, secure data wiping"
-        />
-        <meta name="robots" content="index, follow" />
-      </Head>
-      
+      <SEOHead seo={getSEOForPage('services')} />     
       <ServicesPageContent />
     </>
   );
@@ -210,18 +198,7 @@ function ServicesPageContent() {
 
   return (
     <>
-    <Head>
-      <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-      <meta
-        name="description"
-        content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-      />
-      <meta
-        name="keywords"
-        content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-      />
-      <meta name="robots" content="index, follow" />
-    </Head>
+    <SEOHead seo={getSEOForPage('services')} />
     <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 w-full overflow-hidden">
       {/* Hero Section */}
       <section>
