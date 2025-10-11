@@ -137,9 +137,9 @@ export default function AdminMachines() {
           />
           <meta name="robots" content="index, follow" />
         </Helmet>
-    <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900">Machines</h1>
+    <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
+      <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
+        <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">Machines</h1>
         {/* <div className="flex items-center space-x-4">
           
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${
@@ -201,7 +201,7 @@ export default function AdminMachines() {
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 xs:gap-4 sm:gap-4">
           {/* Search */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Search</label>

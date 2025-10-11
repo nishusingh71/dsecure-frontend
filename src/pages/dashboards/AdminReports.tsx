@@ -177,9 +177,9 @@ export default function AdminReports() {
           />
           <meta name="robots" content="index, follow" />
         </Helmet>
-    <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900">Audit Reports</h1>
+    <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
+      <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
+        <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">Audit Reports</h1>
         {/* <div className="flex items-center space-x-4">
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${
             loading ? 'bg-yellow-100 text-yellow-800' :
@@ -240,12 +240,12 @@ export default function AdminReports() {
           </button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 xs:gap-4 sm:gap-4">
           {/* Search */}
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Search</label>
             <input 
-              className="w-full border rounded px-3 py-2 text-sm" 
+              className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent" 
               placeholder="Search ID, department" 
               value={query} 
               onChange={(e)=>{setQuery(e.target.value); setPage(1)}} 
@@ -256,7 +256,7 @@ export default function AdminReports() {
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
             <select 
-              className="w-full border rounded px-3 py-2 text-sm"
+              className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
               value={statusFilter}
               onChange={(e)=>{setStatusFilter(e.target.value); setPage(1)}}
             >
@@ -355,24 +355,23 @@ export default function AdminReports() {
       </div>
 
       {/* Table */}
-      {/* Table */}
-      <div className="card-content card-table card">
-        <table className="w-full text-nowrap">
+      <div className="card-content card-table card overflow-x-auto">
+        <table className="w-full text-nowrap min-w-[800px]">
           <thead>
             <tr className="text-left text-slate-500">
-              <th className="py-2">Report ID</th>
-              <th className="py-2">Date</th>
-              <th className="py-2">Devices</th>
-              <th className="py-2">Status</th>
-              <th className="py-2">Department</th>
-              <th className="py-2">Actions</th>
+              <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">Report ID</th>
+              <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">Date</th>
+              <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">Devices</th>
+              <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">Status</th>
+              <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">Department</th>
+              <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, i) => (
               <tr key={`${row.id}-${i}`} className="border-t hover:bg-slate-50">
-                <td className="py-2 font-medium font-mono">{row.id}</td>
-                <td className="py-2">{row.date}</td>
+                <td className="py-3 px-2 font-medium font-mono text-xs xs:text-sm sm:text-sm">{row.id}</td>
+                <td className="py-3 px-2 text-xs xs:text-sm sm:text-sm">{row.date}</td>
                 <td className="py-2">
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     row.devices >= 200 ? 'bg-purple-100 text-purple-800' :

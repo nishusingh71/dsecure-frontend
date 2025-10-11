@@ -136,9 +136,9 @@ export default function PaymentPage() {
       
       <div className="container-app py-12">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-slate-900 mb-8">Complete Your Purchase</h1>
+        <h1 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-6 xs:mb-8 sm:mb-8">Complete Your Purchase</h1>
         
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xs:gap-8 sm:gap-8">
           {/* Order Summary */}
           <div className="order-2 lg:order-1">
             <div className="card">
@@ -197,7 +197,7 @@ export default function PaymentPage() {
                 {/* Payment Method Selection */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-slate-700 mb-3">Payment Method</label>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 xs:grid-cols-3 sm:grid-cols-3 gap-3 xs:gap-4 sm:gap-4">
                     <button
                       type="button"
                       onClick={() => setPaymentMethod('card')}
@@ -284,7 +284,7 @@ export default function PaymentPage() {
                         />
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-3 xs:gap-4 sm:gap-4">
                         <div>
                           <label htmlFor="expiryDate" className="block text-sm font-medium text-slate-700 mb-2">
                             Expiry Date
