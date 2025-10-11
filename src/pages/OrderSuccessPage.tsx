@@ -122,7 +122,7 @@ export default function OrderSuccessPage() {
                   />
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900">{orderData.productName}</h4>
-                    {orderData.planName && (
+                    {orderData.planName && orderData.category !== "drive-eraser" && (
                       <div className="mt-1 mb-2">
                         <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
                           {orderData.planName}
@@ -137,6 +137,16 @@ export default function OrderSuccessPage() {
                     <p className="text-gray-600">
                       {orderData.quantity} licenses × {orderData.duration} year{parseInt(orderData.duration) > 1 ? 's' : ''}
                     </p>
+                    {orderData.category === "file-eraser" && orderData.planDescription && (
+                      <p className="text-xs text-gray-500 mt-1 italic">
+                        {orderData.planDescription}
+                      </p>
+                    )}
+                    {orderData.category === "drive-eraser" && (
+                      <p className="text-xs text-gray-500 mt-1 italic">
+                        Secure drive wiping with military-grade overwriting standards
+                      </p>
+                    )}
                     <p className="text-lg font-bold text-blue-600 mt-1">
                       ${orderData.totalPrice.toLocaleString()}
                     </p>
@@ -303,10 +313,10 @@ export default function OrderSuccessPage() {
         {/* Footer Actions */}
         <div className="text-center mt-8">
           <Link
-            to="/pricing"
+            to="/products"
             className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
           >
-            ← Return to Pricing
+            ← Return to Products
           </Link>
         </div>
       </div>

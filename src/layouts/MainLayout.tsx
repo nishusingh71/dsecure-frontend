@@ -332,27 +332,7 @@ export default function MainLayout() {
                 </svg>
                 Compliance
               </NavLink>
-              <NavLink
-                onClick={() => setOpen(false)}
-                to="/pricing"
-                className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                aria-label="View pricing plans and packages"
-              >
-                <svg
-                  className="w-5 h-5 text-slate-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Pricing
-              </NavLink> */}
+
                 <NavLink
                   onClick={() => setOpen(false)}
                   to="/resources"
@@ -664,7 +644,7 @@ export default function MainLayout() {
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                           onClick={(e) => {
                             e.preventDefault();
-                            window.location.href = "/#products";
+                            window.location.href = "/products";
                           }}
                         >
                           All products
@@ -672,36 +652,36 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/services/device-erasure"
+                          to="/products"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Device Erasure
+                          Drive Erasure
                         </Link>
                       </li>
                       <li>
                         <Link
-                          to="/services/network-erasure"
+                          to="/products"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Network Erasure
+                          File Erasure
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           to="/services/cloud-erasure"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Cloud Erasure
                         </Link>
-                      </li>
-                      <li>
+                      </li> */}
+                      {/* <li>
                         <Link
                           to="/products/mobile-erasure"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Mobile Erasure
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
 
@@ -766,7 +746,7 @@ export default function MainLayout() {
                     <ul className="space-y-4 text-slate-300">
                       <li>
                         <Link
-                          to="/resources?type=documentation"
+                          to="resources/documentation?type=documentation"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Documentation
@@ -774,7 +754,7 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/resources?type=compliance"
+                          to="/resources/compliance?type=compliance"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Compliance
@@ -790,20 +770,20 @@ export default function MainLayout() {
                       </li>
                       <li>
                         <Link
-                          to="/resources?type=case-studies"
+                          to="/solutions?type=case-studies"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Case Studies
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           to="/resources?type=webinars"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Webinars
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
 
@@ -829,14 +809,14 @@ export default function MainLayout() {
                           Contact
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           to="/careers"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Careers
                         </Link>
-                      </li>
+                      </li> */}
                       <li>
                         <Link
                           to="/partners"
@@ -845,14 +825,14 @@ export default function MainLayout() {
                           Partners
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           to="/press"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           Press
                         </Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </div>

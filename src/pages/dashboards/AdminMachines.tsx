@@ -355,13 +355,13 @@ export default function AdminMachines() {
                     >
                       View
                     </button>
-                    <button 
+                    {/* <button 
                       onClick={() => handleEditMachine(row)}
                       className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
                       title="Edit Machine"
                     >
                       Edit
-                    </button>
+                    </button> */}
                     <button 
                       onClick={() => handleRunErase(row)}
                       className={`text-xs px-2 py-1 rounded border ${
@@ -374,7 +374,7 @@ export default function AdminMachines() {
                     >
                       Erase
                     </button>
-                    <button 
+                    {/* <button 
                       onClick={() => handleRestartMachine(row)}
                       className={`text-xs px-2 py-1 rounded border ${
                         row.status === 'offline' 
@@ -385,14 +385,14 @@ export default function AdminMachines() {
                       title={row.status === 'offline' ? 'Machine offline' : 'Restart Machine'}
                     >
                       Restart
-                    </button>
-                    <button 
+                    </button> */}
+                    {/* <button 
                       onClick={() => handleDeleteMachine(row)}
                       className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
                       title="Delete Machine"
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </div>
                 </td>
               </tr>

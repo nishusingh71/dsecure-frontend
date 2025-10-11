@@ -432,7 +432,7 @@ export default function AdminReports() {
                     >
                       Share
                     </button>
-                    <button 
+                    {/* <button 
                       onClick={() => handleRegenerateReport(row)}
                       className={`text-xs px-2 py-1 rounded border ${
                         row.status === 'pending' 
@@ -450,7 +450,7 @@ export default function AdminReports() {
                       title="Delete Report"
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </div>
                 </td>
               </tr>

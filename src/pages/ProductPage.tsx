@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
@@ -17,6 +17,7 @@ import {
 } from "@/components/FlatIcons";
 
 const ProductPage: React.FC = () => {
+  const navigate = useNavigate();
   const [expandedSections, setExpandedSections] = useState<{
     [key: string]: boolean;
   }>({
@@ -32,6 +33,16 @@ const ProductPage: React.FC = () => {
       ...prev,
       [section]: !prev[section],
     }));
+  };
+
+  // Optional: Programmatic navigation function for plan buttons
+  const handlePlanClick = (planName: string) => {
+    const queryParams = new URLSearchParams({
+      plan: planName.toLowerCase(),
+      product: 'file-eraser',
+      section: 'file-eraser'
+    });
+    navigate(`/pricing-and-plan?${queryParams.toString()}`);
   };
 
   const pricingPlans = [
@@ -406,8 +417,18 @@ const ProductPage: React.FC = () => {
         );
       case "x":
         return (
-          <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-4 h-4 text-red-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         );
       case "locked":
@@ -468,10 +489,10 @@ const ProductPage: React.FC = () => {
             <Reveal delayMs={200}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
                 <Link
-                  to="/contact?request=free-license"
+                  to="/contact?request=free-demo"
                   className="inline-flex items-center px-8 py-4 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-all shadow-2xl hover:shadow-2xl hover:scale-105 text-lg"
                 >
-                  Request Free License
+                  Request Free Demo
                   <ArrowRightIcon className="ml-3 w-5 h-5" />
                 </Link>
                 <Link
@@ -485,477 +506,272 @@ const ProductPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Trust Bar
-        <section className="py-12 bg-white border-y border-emerald-100">
-          <div className="max-w-6xl mx-auto px-6">
-            <p className="text-center text-sm uppercase tracking-wider text-slate-500 mb-8 font-semibold">
-              Trusted By Global Companies
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-              {Array.from({ length: 16 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="w-20 h-10 bg-slate-300 rounded-lg flex items-center justify-center text-slate-600 font-semibold text-sm"
-                >
-                  Client {index + 1}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section> */}
-
         {/* Product Cards */}
-        <section className="max-w-7xl mx-auto px-6 sm:px-10 py-20">
-          <div className="grid lg:grid-cols-2 gap-8 h-full">
-            {/* Product 1 - Drive Eraser */}
-            <Reveal>
-              <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-10 border border-emerald-100 group relative overflow-hidden">
-                <div className="absolute top-6 right-6 bg-emerald-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                  MOST POPULAR
-                </div>
-                <div className="flex-none">
-                  <DatabaseIcon className="w-16 h-16 text-emerald-600 mb-6 transition-transform group-hover:scale-110" />
-                  <h3 className="text-3xl font-bold mb-2 text-slate-900">
-                    D-Secure Drive Eraser
-                  </h3>
-                  <p className="text-slate-600 mb-4 leading-relaxed text-lg font-semibold">
-                    Secure Drive Wiping Software
-                  </p>
-                  <p className="text-slate-600 mb-6 leading-relaxed">
-                    Wipe Hard Drive, SSD, PC, Laptop, Mac® & Server. Deploy via
-                    USB & PXE Boot on Supported Devices.
-                  </p>
-                </div>
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-6 sm:px-10">
+            <div className="grid lg:grid-cols-2 gap-8 h-full">
+              {/* Product 1 - Drive Eraser */}
+              <Reveal>
+                <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-10 border border-emerald-100 group relative overflow-hidden">
+                  <div className="absolute top-6 right-6 bg-emerald-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    MOST POPULAR
+                  </div>
+                  <div className="flex-none">
+                    <DatabaseIcon className="w-16 h-16 text-emerald-600 mb-6 transition-transform group-hover:scale-110" />
+                    <h3 className="text-3xl font-bold mb-2 text-slate-900">
+                      D-Secure Drive Eraser
+                    </h3>
+                    <p className="text-slate-600 mb-4 leading-relaxed text-lg font-semibold">
+                      Secure Drive Wiping Software
+                    </p>
+                    <p className="text-slate-600 mb-6 leading-relaxed">
+                      Wipe Hard Drive, SSD, PC, Laptop, Mac® & Server. Deploy via
+                      USB & PXE Boot on Supported Devices.
+                    </p>
+                  </div>
 
-                {/* Certifications */}
-                <div className="mb-6 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
-                  <h4 className="font-semibold text-emerald-800 mb-2">
-                    Tested & Approved
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
-                    <div className="text-center p-2 bg-white rounded border">
-                      <div className="font-semibold text-emerald-700">
-                        NIST Compliance
-                      </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 flex-1">
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-4">
+                        Key Features
+                      </h4>
+                      <ul className="text-slate-700 space-y-3 text-sm">
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          26 Global Erasure Standards
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          Cloud Console Integration
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          USB, PXE Boot & EXE
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          Digitally Signed Certificates
+                        </li>
+                      </ul>
                     </div>
-                    <div className="text-center p-2 bg-white rounded border">
-                      <div className="font-semibold text-emerald-700">
-                        Common Criteria Approved
-                      </div>
-                    </div>
-                    <div className="text-center p-2 bg-white rounded border">
-                      <div className="font-semibold text-emerald-700">
-                        ADISA Approved
+
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-4">
+                        Technical Specs
+                      </h4>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">Supported Types</span>
+                          <span className="font-semibold">HDD,SSD,NVME,etc</span>
+                        </div>
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">Erasure Methods</span>
+                          <span className="font-semibold">26 Standards</span>
+                        </div>
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">Deployment</span>
+                          <span className="font-semibold">USB,EXE</span>
+                        </div>
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">Licenses</span>
+                          <span className="font-semibold">Never Expire</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 flex-1">
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-4">
-                      Key Features
+                  <div className="mb-8">
+                    <h4 className="font-semibold text-slate-900 mb-3">
+                      Key Benefits
                     </h4>
-                    <ul className="text-slate-700 space-y-3 text-sm">
-                      <li className="flex items-center gap-3">
+                    <ul className="text-slate-700 space-y-2 text-sm">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        26 Global Erasure Standards
+                        Safeguard Privacy & Mitigate Risks
                       </li>
-                      <li className="flex items-center gap-3">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Cloud Console Integration
+                        Prevent Data Thefts & Leakage
                       </li>
-                      <li className="flex items-center gap-3">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        USB, PXE Boot & MSI Deployment
+                        Get Maximum Resale Value
                       </li>
-                      <li className="flex items-center gap-3">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Digitally Signed Certificates
-                      </li>
-                      <li className="flex items-center gap-3">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        API & ERP Integration
-                      </li>
-                      <li className="flex items-center gap-3">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Autopilot Detection
+                        Compliance with Global Standards
                       </li>
                     </ul>
                   </div>
 
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-4">
-                      Technical Specs
-                    </h4>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">
-                          Supported Devices
-                        </span>
-                        <span className="font-semibold">1000+ Models</span>
-                      </div>
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">Erasure Methods</span>
-                        <span className="font-semibold">26 Standards</span>
-                      </div>
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">Deployment</span>
-                        <span className="font-semibold">USB, PXE, MSI</span>
-                      </div>
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">Licenses</span>
-                        <span className="font-semibold">Never Expire</span>
+                  <div className="mb-6">
+                    <div className="text-3xl font-bold text-slate-900 mb-2">
+                      Starting at $20
+                    </div>
+                    <div className="text-slate-600">
+                      Pay-per-use licenses that never expire
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <Link
+                      to="/contact?request=free-license&product=drive-eraser"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
+                    >
+                      Request Free Demo
+                      <ArrowRightIcon className="w-4 h-4" />
+                    </Link>
+                    <Link
+                      to="/pricing-and-plan?product=drive-eraser"
+                      className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
+                    >
+                      Buy Now
+                    </Link>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Product 2 - File Eraser */}
+              <Reveal delayMs={100}>
+                <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-10 border border-emerald-100 group relative overflow-hidden">
+                  <div className="absolute top-6 right-6 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    BEST RATED
+                  </div>
+                  <div className="flex-none">
+                    <ServerIcon className="w-16 h-16 text-emerald-600 mb-6 transition-transform group-hover:scale-110" />
+                    <h3 className="text-3xl font-bold mb-2 text-slate-900">
+                      D-Secure File Eraser
+                    </h3>
+                    <p className="text-slate-600 mb-4 leading-relaxed text-lg font-semibold">
+                      File & Folder Erasure Software
+                    </p>
+                    <p className="text-slate-600 mb-6 leading-relaxed">
+                      Wipe Files from Windows, Mac, & Linux Systems. Also Wipe
+                      Servers & Data on Domain Network Connected Computers via
+                      Network Edition.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 flex-1">
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-4">
+                        Key Features
+                      </h4>
+                      <ul className="text-slate-700 space-y-3 text-sm">
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          26 Global Erasure Standards
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          Windows, Mac & Linux Support
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          Google Drive Erasure
+                        </li>
+                        <li className="flex items-center gap-3">
+                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          Comprehensive Reporting
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-slate-900 mb-4">
+                        Platform Support
+                      </h4>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">Windows</span>
+                          <span className="font-semibold">Full Support</span>
+                        </div>
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">macOS</span>
+                          <span className="font-semibold">Full Support</span>
+                        </div>
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">Linux</span>
+                          <span className="font-semibold">Full Support</span>
+                        </div>
+                        <div className="flex justify-between border-b border-slate-200 pb-2">
+                          <span className="text-slate-600">Cloud</span>
+                          <span className="font-semibold">Enterprise</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-8">
-                  <h4 className="font-semibold text-slate-900 mb-3">
-                    Key Benefits
-                  </h4>
-                  <ul className="text-slate-700 space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Safeguard Privacy & Mitigate Risks
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Prevent Data Thefts & Leakage
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Get Maximum Resale Value
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Compliance with Global Standards
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="mb-6">
-                  <div className="text-3xl font-bold text-slate-900 mb-2">
-                    Starting at $299
-                  </div>
-                  <div className="text-slate-600">
-                    Pay-per-use licenses that never expire
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                  <Link
-                    to="/contact?request=free-license&product=drive-eraser"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
-                  >
-                    Request Free License
-                    <ArrowRightIcon className="w-4 h-4" />
-                  </Link>
-                  <Link
-                    to="/pricing-and-plan?product=drive-eraser"
-                    className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
-                  >
-                    Buy Now
-                  </Link>
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Product 2 - File Eraser */}
-            <Reveal delayMs={100}>
-              <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-10 border border-emerald-100 group relative overflow-hidden">
-                <div className="absolute top-6 right-6 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                  BEST RATED
-                </div>
-                <div className="flex-none">
-                  <ServerIcon className="w-16 h-16 text-emerald-600 mb-6 transition-transform group-hover:scale-110" />
-                  <h3 className="text-3xl font-bold mb-2 text-slate-900">
-                    D-Secure File Eraser
-                  </h3>
-                  <p className="text-slate-600 mb-4 leading-relaxed text-lg font-semibold">
-                    File & Folder Erasure Software
-                  </p>
-                  <p className="text-slate-600 mb-6 leading-relaxed">
-                    Wipe Files from Windows, Mac, & Linux Systems. Also Wipe
-                    Servers & Data on Domain Network Connected Computers via
-                    Network Edition.
-                  </p>
-                </div>
-
-                {/* Award */}
-                <div className="mb-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
-                  <h4 className="font-semibold text-amber-800 mb-2 text-center">
-                    Best File Erasure Software
-                  </h4>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 flex-1">
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-4">
-                      Key Features
+                  <div className="mb-8">
+                    <h4 className="font-semibold text-slate-900 mb-3">
+                      Use Cases
                     </h4>
-                    <ul className="text-slate-700 space-y-3 text-sm">
-                      <li className="flex items-center gap-3">
+                    <ul className="text-slate-700 space-y-2 text-sm">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        File & Folder Erasure
+                        Individual Users & Personal Files
                       </li>
-                      <li className="flex items-center gap-3">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Browser History Cleaning
+                        Corporate Data Protection
                       </li>
-                      <li className="flex items-center gap-3">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Volume Erasure
+                        Cloud Erasure
                       </li>
-                      <li className="flex items-center gap-3">
+                      <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Network Edition Available
-                      </li>
-                      <li className="flex items-center gap-3">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Scheduled Automation
-                      </li>
-                      <li className="flex items-center gap-3">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        No System Downtime
+                        Compliance & Audit Requirements
                       </li>
                     </ul>
                   </div>
 
-                  <div>
-                    <h4 className="font-semibold text-slate-900 mb-4">
-                      Platform Support
-                    </h4>
-                    <div className="space-y-3 text-sm">
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">Windows</span>
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      </div>
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">Mac</span>
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      </div>
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">Linux</span>
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      </div>
-                      <div className="flex justify-between border-b border-slate-200 pb-2">
-                        <span className="text-slate-600">Network</span>
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      </div>
+                  <div className="mb-6">
+                    <div className="text-3xl font-bold text-slate-900 mb-2">
+                      Starting at $40
+                    </div>
+                    <div className="text-slate-600">
+                      Individual & enterprise licenses available
                     </div>
                   </div>
-                </div>
 
-                <div className="mb-8">
-                  <h4 className="font-semibold text-slate-900 mb-3">
-                    Use Cases
-                  </h4>
-                  <ul className="text-slate-700 space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Protecting Data Privacy
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Free-Up Disk Space
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Security and Compliance
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckIcon className="w-4 h-4 text-emerald-600" />
-                      Regular Data Hygiene
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="mb-6">
-                  <div className="text-3xl font-bold text-slate-900 mb-2">
-                    Starting at $149
-                  </div>
-                  <div className="text-slate-600">
-                    Individual & enterprise licenses available
+                  <div className="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <Link
+                      to="/contact?request=free-demo&product=file-eraser"
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
+                    >
+                      Request Free Demo
+                      <ArrowRightIcon className="w-4 h-4" />
+                    </Link>
+                    <Link
+                      to="/pricing-and-plan?product=file-eraser"
+                      className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
+                    >
+                      Buy Now
+                    </Link>
                   </div>
                 </div>
-
-                <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                  <Link
-                    to="/contact?request=free-license&product=file-eraser"
-                    className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
-                  >
-                    Request Free License
-                    <ArrowRightIcon className="w-4 h-4" />
-                  </Link>
-                  <Link
-                    to="/pricing-and-plan?product=file-eraser"
-                    className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
-                  >
-                    Buy Now
-                  </Link>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Ideal For Section */}
-        <section className="py-16 bg-white">
-          <div className="max-w-6xl mx-auto px-6 sm:px-10 text-center">
-            <Reveal>
-              <h2 className="text-3xl font-bold text-slate-900 mb-12">
-                IDEAL FOR ENTERPRISE, GOVERNMENT, SMB & ITAD
-              </h2>
-            </Reveal>
-            <Reveal delayMs={100}>
-              <p className="text-lg text-slate-600 mb-8 max-w-4xl mx-auto">
-                Wipe Hard Drives, SSDs & Devices Onsite, Offsite & Remotely.
-                D-Secure serves your needs for a certified data wiping solution
-                that assures permanent erasure of drives & devices.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Features Grid */}
-        <section className="py-20 bg-gradient-to-b from-slate-50 to-white">
-          <div className="max-w-6xl mx-auto px-6 sm:px-10">
-            <Reveal>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                  SCALABLE, MANAGEABLE & COST EFFECTIVE
-                </h2>
-                <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                  Comprehensive data erasure solutions designed for
-                  enterprise-scale deployment
-                </p>
-              </div>
-            </Reveal>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: (
-                    <ShieldIcon className="w-14 h-14 text-emerald-600 mb-4 transition-transform group-hover:scale-110" />
-                  ),
-                  title: "Secure & Certified Data Erasure",
-                  description:
-                    "Permanently wipes data beyond recovery from SSD, HDD, PC, Laptop, Mac, Chromebook & Servers with Common Criteria, NIST & ADISA certifications.",
-                },
-                {
-                  icon: (
-                    <CloudIcon className="w-14 h-14 text-emerald-600 mb-4 transition-transform group-hover:scale-110" />
-                  ),
-                  title: "Cloud Console Management",
-                  description:
-                    "Create/edit users, manage license distribution & maintain central repository of reports. Private Cloud available at additional cost.",
-                },
-                {
-                  icon: (
-                    <ServerIcon className="w-14 h-14 text-emerald-600 mb-4 transition-transform group-hover:scale-110" />
-                  ),
-                  title: "26 Global Wiping Standards",
-                  description:
-                    "Supports international erasure methods including NIST 800-88, DoD 3 & 7 Passes, IEEE 2883:2022 with Random & Total verification.",
-                },
-                {
-                  icon: (
-                    <DatabaseIcon className="w-14 h-14 text-emerald-600 mb-4 transition-transform group-hover:scale-110" />
-                  ),
-                  title: "Flexible Deployment Options",
-                  description:
-                    "Deploy via USB, PXE Boot or MSI. Offline variant available for non-internet locations. Remote wiping via endpoint management systems.",
-                },
-                {
-                  icon: (
-                    <CheckIcon className="w-14 h-14 text-emerald-600 mb-4 transition-transform group-hover:scale-110" />
-                  ),
-                  title: "Certified Compliance",
-                  description:
-                    "100% tamper-proof digitally signed certificate of destruction for compliance with GDPR, CCPA, ISO 27001 & more.",
-                },
-                {
-                  icon: (
-                    <GearIcon className="w-14 h-14 text-emerald-600 mb-4 transition-transform group-hover:scale-110" />
-                  ),
-                  title: "Automated Workflows",
-                  description:
-                    "Fully automate media sanitization using ISO customization. Streamline workflows and eliminate human errors.",
-                },
-              ].map((feature, index) => (
-                <Reveal key={index} delayMs={index * 100}>
-                  <div className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border border-slate-100 h-full">
-                    <div className="flex flex-col items-start">
-                      {feature.icon}
-                      <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors">
-                        {feature.title}
-                      </h3>
-                      <p className="text-slate-600 leading-relaxed">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
+              </Reveal>
             </div>
           </div>
         </section>
 
-        {/* Pricing Comparison Section */}
+        {/* --- Features & Plans for File Eraser --- */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6 sm:px-10">
             <Reveal>
               <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                  Complete Feature & Services Pricing Sheet
+                  File Eraser – Features & Plans
                 </h2>
                 <p className="text-lg text-slate-600 mb-6 max-w-4xl mx-auto">
-                  Comprehensive comparison of all data erasure features across
-                  our complete product lineup. Explore detailed capabilities,
-                  platform support, enterprise-grade security features, and
-                  compliance standards.
-                </p>
-                <p className="text-slate-500 max-w-2xl mx-auto">
-                  Professional data sanitization with verifiable compliance
-                  reporting • Custom enterprise pricing available
+                  Compare all features and plans for D-Secure File Eraser. For Drive Eraser, see services below.
                 </p>
               </div>
             </Reveal>
 
-            {/* Stats */}
+            {/* Pricing Table for File Eraser */}
             <Reveal delayMs={100}>
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-6 mb-12">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-emerald-600">6</div>
-                  <div className="text-sm text-slate-600">Service Tiers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-emerald-600">75+</div>
-                  <div className="text-sm text-slate-600">Features</div>
-                </div>
-                <div className="text-center">
-                  <CheckIcon className="w-6 h-6 text-emerald-600 mx-auto mb-1" />
-                  <div className="text-sm text-slate-600">Enterprise Ready</div>
-                </div>
-                <div className="text-center">
-                  <ShieldIcon className="w-6 h-6 text-emerald-600 mx-auto mb-1" />
-                  <div className="text-sm text-slate-600">NIST Compliant</div>
-                </div>
-                <div className="text-center">
-                  <CloudIcon className="w-6 h-6 text-emerald-600 mx-auto mb-1" />
-                  <div className="text-sm text-slate-600">Global Standards</div>
-                </div>
-                <div className="text-center">
-                  <ServerIcon className="w-6 h-6 text-emerald-600 mx-auto mb-1" />
-                  <div className="text-sm text-slate-600">Multi-Platform</div>
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Pricing Table */}
-            <Reveal delayMs={200}>
               <div className="bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
                 {/* Table Header */}
                 <div className="grid grid-cols-7 gap-0 bg-emerald-600 text-white">
@@ -1101,49 +917,6 @@ const ProductPage: React.FC = () => {
                   )}
                 </div>
 
-                {/* Services & Management Section */}
-                <div className="border-b border-slate-200">
-                  <button
-                    onClick={() => toggleSection("services")}
-                    className="w-full p-6 text-left bg-slate-100 hover:bg-slate-200 transition-colors flex justify-between items-center"
-                  >
-                    <span className="font-semibold text-slate-900">
-                      Services & Management
-                    </span>
-                    {expandedSections.services ? (
-                      <ArrowRightIcon className="w-5 h-5 rotate-[-90deg]" />
-                    ) : (
-                      <ArrowRightIcon className="w-5 h-5 rotate-90" />
-                    )}
-                  </button>
-                  {expandedSections.services && (
-                    <div className="bg-white">
-                      {features.services.map((feature, index) => (
-                        <div
-                          key={index}
-                          className="grid grid-cols-7 gap-0 border-b border-slate-100 last:border-b-0"
-                        >
-                          <div className="p-4 border-r border-slate-100 text-sm text-slate-700 flex items-center">
-                            {feature.name}
-                          </div>
-                          {pricingPlans.map((plan) => (
-                            <div
-                              key={plan.name}
-                              className="p-4 border-r border-slate-100 last:border-r-0 text-center flex items-center justify-center"
-                            >
-                              {renderFeatureIcon(
-                                feature[
-                                  plan.name.toLowerCase() as keyof typeof feature
-                                ]
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
                 {/* Add-Ons Section */}
                 <div className="border-b border-slate-200">
                   <button
@@ -1187,45 +960,91 @@ const ProductPage: React.FC = () => {
                   )}
                 </div>
 
-                {/* Pricing Footer */}
+                {/* Pricing Footer with Plan Buttons */}
                 <div className="bg-white p-8">
                   <div className="grid grid-cols-6 gap-4">
                     {pricingPlans.map((plan, index) => (
-                      <div key={plan.name} className="text-center">
-                        <div className="mb-4">
-                          <div className="text-sm text-slate-600 mb-2">
-                            Starting at
-                          </div>
-                          <div className="text-2xl font-bold text-emerald-600">
-                            Contact Sales
-                          </div>
-                        </div>
-                        <Link
-                          to="/contact"
-                          className="inline-block w-full py-3 px-4 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-semibold"
-                        >
-                          {plan.name} Plan
-                        </Link>
-                      </div>
+                      <Link
+                        key={plan.name}
+                        to={`/pricing-and-plan?plan=${plan.name.toLowerCase()}&product=file-eraser&section=file-eraser`}
+                        className="inline-flex items-center justify-center px-4 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all text-center w-full"
+                      >
+                        {plan.name} Plan
+                      </Link>
                     ))}
                   </div>
-
                   <div className="mt-8 text-center">
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                       <Link
-                        to="/contact"
-                        className="px-8 py-4 bg-slate-800 text-white rounded-xl hover:bg-slate-900 transition-colors font-semibold"
+                        to="/contact?request=free-demo&product=file-eraser"
+                        className="inline-flex items-center px-8 py-4 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl text-lg"
                       >
-                        Request Custom Quote
+                        Request Free Demo
+                        <ArrowRightIcon className="ml-3 w-5 h-5" />
                       </Link>
                       <Link
-                        to="/free-trial"
-                        className="px-8 py-4 border-2 border-emerald-600 text-emerald-700 rounded-xl hover:bg-emerald-50 transition-colors font-semibold"
+                        to="/pricing-and-plan?product=file-eraser"
+                        className="inline-flex items-center px-8 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-bold hover:bg-emerald-50 transition-all text-lg"
                       >
-                        Try Enterprise Free for 1 Device (14 Days)
+                        Buy Licenses
                       </Link>
                     </div>
                   </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* --- Services Table for File & Drive Eraser --- */}
+            <Reveal delayMs={200}>
+              <div className="mt-20 bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
+                <div className="text-center py-10">
+                  <h2 className="text-3xl font-bold text-slate-900 mb-2">Services – Available for File & Drive Eraser</h2>
+                  <p className="text-slate-600 max-w-2xl mx-auto">
+                    The following services are available for both File Eraser and Drive Eraser products.
+                  </p>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-slate-200">
+                    <thead className="bg-emerald-600 text-white">
+                      <tr>
+                        <th className="px-6 py-4 text-left font-semibold">Service</th>
+                        <th className="px-6 py-4 text-center font-semibold">File Eraser</th>
+                        <th className="px-6 py-4 text-center font-semibold">Drive Eraser</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-slate-100">
+                      <tr>
+                        <td className="px-6 py-4">Web Dashboard</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">Cloud Commands (Remote Jobs)</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">Custom Installer (auto-register machine)</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">Private Cloud Support</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">Multi-Level User Logs</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">White-Label Dashboard</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </Reveal>
@@ -1247,7 +1066,7 @@ const ProductPage: React.FC = () => {
                 to="/contact"
                 className="inline-flex items-center px-8 py-4 rounded-xl bg-white text-emerald-700 font-bold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl text-lg"
               >
-                Request Free License
+                Request Free Demo
                 <ArrowRightIcon className="ml-3 w-5 h-5" />
               </Link>
               <Link

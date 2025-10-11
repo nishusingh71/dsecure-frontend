@@ -149,7 +149,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">{paymentData.productName}</h3>
                     <p className="text-sm text-gray-500">{paymentData.productVersion}</p>
-                    {paymentData.planName && (
+                    {paymentData.planName && paymentData.category !== "drive-eraser" && (
                       <div className="mt-1">
                         <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
                           {paymentData.planName}
@@ -164,6 +164,16 @@ const CheckoutPage = memo(function CheckoutPage() {
                     <p className="text-sm text-gray-600 mt-1">
                       {paymentData.quantity} licenses × {paymentData.duration} year{parseInt(paymentData.duration) > 1 ? 's' : ''}
                     </p>
+                    {paymentData.category === "file-eraser" && paymentData.planDescription && (
+                      <p className="text-xs text-gray-500 mt-1 italic">
+                        {paymentData.planDescription}
+                      </p>
+                    )}
+                    {paymentData.category === "drive-eraser" && (
+                      <p className="text-xs text-gray-500 mt-1 italic">
+                        Secure drive wiping with military-grade overwriting standards
+                      </p>
+                    )}
                   </div>
                 </div>
                 
@@ -519,10 +529,10 @@ const CheckoutPage = memo(function CheckoutPage() {
 
                   <div className="text-center">
                     <Link 
-                      to="/pricing-and-plan" 
+                      to="/products" 
                       className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
                     >
-                      ← Back to Pricing & Plans
+                      ← Back to Products
                     </Link>
                   </div>
                 </div>

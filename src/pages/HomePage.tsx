@@ -14,6 +14,7 @@ import {
   HeartIcon,
   CloudIcon,
   ServerIcon,
+  DatabaseIcon,
 } from "@/components/FlatIcons";
 import { useEffect, memo } from "react";
 import SEOHead from "@/components/SEOHead";
@@ -1100,40 +1101,35 @@ const HomePage = memo(function HomePage() {
               </p>
             </Reveal>
           </div>
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
+            {/* D-Secure Drive Eraser */}
             <Reveal delayMs={200}>
-              <div className="group relative bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-8 border border-blue-200/60 hover:border-blue-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
+              <div className="group relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-8 border border-emerald-200/60 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
                 <div className="absolute top-6 right-6">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
                 </div>
                 <div className="mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      />
-                    </svg>
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <HoverIcon>
+                      {(filled) => (
+                        <DatabaseIcon
+                          className="w-8 h-8 text-white"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    Device Erasure
+                    D-Secure Drive Eraser
                   </h3>
                   <p className="text-slate-600 mb-6">
-                    Secure data wiping for 1000+ device types including laptops,
-                    desktops, mobile devices, and storage media.
+                    Secure Drive Wiping Software - Wipe Hard Drive, SSD, PC, Laptop, Mac® & Server. Deploy via USB & PXE Boot on Supported Devices.
                   </p>
                 </div>
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-blue-600"
+                      className="w-5 h-5 text-emerald-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1146,12 +1142,12 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      DOD 5220.22-M & NIST 800-88 Compliant
+                      26 Global Erasure Standards
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-blue-600"
+                      className="w-5 h-5 text-emerald-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1164,12 +1160,12 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Up to 100 devices/hour processing
+                      Cloud Console Integration
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-blue-600"
+                      className="w-5 h-5 text-emerald-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1182,15 +1178,41 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Tamper-proof certificates
+                      USB, PXE Boot & EXE
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <svg
+                      className="w-5 h-5 text-emerald-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    <span className="text-sm text-slate-700">
+                      Digitally Signed Certificates
                     </span>
                   </div>
                 </div>
+                <div className="mb-4">
+                  <div className="text-xl font-bold text-slate-900 mb-2">
+                    Starting at $20
+                  </div>
+                  <div className="text-slate-600 text-sm">
+                    Pay-per-use licenses that never expire
+                  </div>
+                </div>
                 <Link
-                  to="/services?type=device"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium group"
+                  to="/products?focus=drive-eraser"
+                  className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium group"
                 >
-                  <span>Learn More</span>
+                  <span>View Product Details</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
                     fill="none"
@@ -1207,13 +1229,15 @@ const HomePage = memo(function HomePage() {
                 </Link>
               </div>
             </Reveal>
+
+            {/* D-Secure File Eraser */}
             <Reveal delayMs={250}>
-              <div className="group relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-8 border border-emerald-200/60 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
+              <div className="group relative bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-8 border border-blue-200/60 hover:border-blue-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
                 <div className="absolute top-6 right-6">
-                  <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+                  <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
                 </div>
                 <div className="mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                     <HoverIcon>
                       {(filled) => (
                         <ServerIcon
@@ -1224,17 +1248,16 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    Network Erasure
+                    D-Secure File Eraser
                   </h3>
                   <p className="text-slate-600 mb-6">
-                    Enterprise-grade sanitization for servers, storage arrays,
-                    and data center infrastructure.
+                    File & Folder Erasure Software - Wipe Files from Windows, Mac, & Linux Systems. Also Wipe Servers & Data on Domain Network Connected Computers.
                   </p>
                 </div>
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1247,12 +1270,12 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Up to 500 servers concurrently
+                      30+ International Algorithms
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1265,12 +1288,12 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      SAN, NAS, RAID support
+                      Cross-Platform Support
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-blue-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1283,116 +1306,41 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Remote access via HTTPS, SSH, IPMI
+                      Google Drive 
                     </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <svg
+                      className="w-5 h-5 text-blue-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    <span className="text-sm text-slate-700">
+                      Enterprise Licensing
+                    </span>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="text-xl font-bold text-slate-900 mb-2">
+                    Starting at $15
+                  </div>
+                  <div className="text-slate-600 text-sm">
+                    Multiple plans: Base, Standard, Cloud, Network, Pro & Enterprise
                   </div>
                 </div>
                 <Link
-                  to="/services?type=server"
-                  className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium group"
+                  to="/products?focus=file-eraser"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium group"
                 >
-                  <span>Learn More</span>
-                  <svg
-                    className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </Reveal>
-            <Reveal delayMs={300}>
-              <div className="group relative bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl p-8 border border-purple-200/60 hover:border-purple-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-                <div className="absolute top-6 right-6">
-                  <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse"></div>
-                </div>
-                <div className="mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <HoverIcon>
-                      {(filled) => (
-                        <CloudIcon
-                          className="w-8 h-8 text-white"
-                          filled={filled}
-                        />
-                      )}
-                    </HoverIcon>
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    Cloud Erasure
-                  </h3>
-                  <p className="text-slate-600 mb-6">
-                    Secure cloud storage and SaaS data removal for hybrid cloud
-                    environments.
-                  </p>
-                </div>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-purple-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      Multi-cloud platform support
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-purple-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      SaaS application data removal
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-5 h-5 text-purple-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-sm text-slate-700">
-                      Hybrid cloud environments
-                    </span>
-                  </div>
-                </div>
-                <Link
-                  to="/services?type=cloud"
-                  className="inline-flex items-center text-purple-600 hover:text-purple-700 font-medium group"
-                >
-                  <span>Learn More</span>
+                  <span>View Product Details</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
                     fill="none"
@@ -1410,13 +1358,13 @@ const HomePage = memo(function HomePage() {
               </div>
             </Reveal>
           </div>
-          <Reveal delayMs={400}>
+          <Reveal delayMs={300}>
             <div className="text-center mt-12">
               <Link
-                to="/services"
+                to="/products"
                 className="btn-primary inline-flex items-center justify-center"
               >
-                <span>View All Services</span>
+                <span>View All Products</span>
                 <HoverIcon>
                   {(filled) => (
                     <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />

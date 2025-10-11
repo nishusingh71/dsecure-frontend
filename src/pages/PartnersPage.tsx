@@ -14,6 +14,203 @@ import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField, TextAreaField, SelectField } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
+import {
+  GlobeIcon,
+  CheckIcon,
+  StarIcon,
+  ShieldIcon,
+  ClipboardIcon,
+  BriefcaseIcon,
+  HeartIcon,
+  ChatIcon,
+  HoverIcon,
+  ArrowRightIcon,
+  ArrowDownIcon,
+  BuildingIcon,
+  LightningIcon,
+  GearIcon,
+} from "@/components/FlatIcons";
+
+// Partner types definition - moved to top to avoid temporal dead zone
+const partnerTypes = {
+  "ITAD Partner": {
+    title: "ITAD Partner Program",
+    description:
+      "The DSecure ITAD Partner Program is designed for IT asset disposition companies looking to accelerate their data erasure solutions and protocols. Join our ITAD Partner program to offer secure data erasure service using globally tested & approved erasure solutions to your customers and help them meet global data privacy compliance.",
+    benefits: [
+      "Scalable & Automated Data Erasure & Diagnostics Software",
+      "Free Assisted Remote Deployment & Training",
+      "FREE Product Updates",
+      "Price Lock in During Contract Term",
+      "FREE Premium Technical Support - 24*5",
+      "Customized Solution For ITADs",
+    ],
+    detailedBenefits: [
+      {
+        title: "Scalable & Automated Data Erasure & Diagnostics Software",
+        description:
+          "DSecure secure data erasure & diagnostics software allows you to start wiping up to 64 drives simultaneously. The software focus can consolidate the ITAD's data wiping capabilities across all types of storage media, including hard drives, SSDs, built-in drives in computers & Mac systems, servers, and OS & Android devices.",
+      },
+      {
+        title: "Price Lock in During Contract Term",
+        description:
+          "By selecting DSecure solution as a part of the benefit of purchasing bulk licenses of DSecure at a special discounted pricing, the special price lock in for the term of the contract ensures that there is no change in price if you order a data erasure volumes over time.",
+      },
+      {
+        title: "FREE Premium Technical Support - 24*5",
+        description:
+          "DSecure provides free technical support for DSecure on offering assistance from our experts. Whether it is technical assistance or help with deployment and understanding our dedicated support team is here to help DSecure achieve exceptional service to their clients.",
+      },
+      {
+        title: "Customized Solution For ITADs",
+        description:
+          "For large ITAD partners we offer customized solution to automate their data wiping process to maximize human intervention and improve their existing data erasure process. We also help with the consultations to improve the existing process and increase efficiency in operations.",
+      },
+    ],
+  },
+  "MSP Partner": {
+    title: "MSP Partner Program",
+    description:
+      "The DSecure MSP Partner Program empowers IT Managed Service Providers to efficiently incorporate data erasure services into their offerings, expanding their portfolio and adding value to their customers by ensuring the risk of data breach is significantly reduced ensuring relevant laws and regulations such as CCPA, HIPAA, SOX, and ISO 27001.",
+    benefits: [
+      "Expand Your Portfolio",
+      "Comprehensive Training",
+      "Access Marketing Collaterals",
+      "Free Product Updates",
+      "Special MSP Pricing",
+      "Effortless Data Erasure Software",
+      "Get Listed On DSecure Partner Section",
+      "Free Technical Support",
+    ],
+    detailedBenefits: [
+      {
+        title: "Expand Your Portfolio",
+        description:
+          "Managed Service Providers (MSPs) allows MSPs to offer data erasure as a service, enriching their portfolio. This expansion attracts organizations requiring comprehensive data security solutions, positioning MSPs as versatile, end-to-end service providers. By adding data erasure services, MSPs differentiate themselves, enhance revenue, and position as trusted data security partners.",
+      },
+      {
+        title: "Special MSP Pricing",
+        description:
+          "Enrolling in our MSP Partner Program offers pricing as an MSP partner. With DSecure - Purchase licenses at a special price to offer software as a service to your clients. With the special pricing only available to MSPs who are partners with us in the market. Further, partners can get cost reduced erasure solutions ensuring accessibility for MSPs.",
+      },
+      {
+        title: "Effortless Data Erasure Software",
+        description:
+          "DSecure's secure data erasure software enables MSPs to initiate fast and effortless data erasure. The software brings automation, quick identification and erasure for your clients across over 65,000 drives. As part of our Partner Program, you'll receive the same experience at all voluntary programs they call how you operate. This includes services accomplished by user-friendly manual for seamless operations support across all types of drives to provide services to your clients.",
+      },
+      {
+        title: "Get Listed On DSecure Partner Section",
+        description:
+          "By becoming our valuable MSP Partner, you get listed in the partner section of our website. B2B Customers can look out for partners who are experts in their compliance requirements to visit their team that can convert to revenue. Also, your customers gain trust that you are an expert from Authorized MSP Partner.",
+      },
+    ],
+  },
+  "Distributor Partner": {
+    title: "Distributor Partner Program",
+    description:
+      "DSecure Distributor Program for DSecure is meant for all those software distributors that have global partnerships. partner reach in order to sell data erasure products for wiping and asset service. that financial data compliance and software for wiping data permanently from HDDs, SSDs, Tablets, Desktop, service & mobile devices including OS & Android devices.",
+    benefits: [
+      "Go-To-Market Support",
+      "Free 24*7 Technical Support",
+      "Regular Updates",
+      "Product Sales Training",
+      "Trusted Brand",
+      "Deal Registration Benefits",
+    ],
+    detailedBenefits: [
+      {
+        title: "Go-To-Market Support",
+        description:
+          "Distributors are required to increase the generation and reach of DSecure products by fixing business processes and developing solutions for data erasure software with comprehensive go-to-market strategy. Includes DSecure brochures, technical fact sheets, product videos, demo materials to support the distributors business.",
+      },
+      {
+        title: "Product Sales Training",
+        description:
+          "All partners receive training and they get training on the features and functionality of DSecure product to understand the various data structures and compliance. We also advise the partners by providing sales documentation.",
+      },
+      {
+        title: "Trusted Brand",
+        description:
+          "DSecure is a growing brand in the data erasure industry built on technical excellence and best practices. Our solutions follow international standards and provide reliable global service.",
+      },
+      {
+        title: "Deal Registration Benefits",
+        description:
+          "Deal Registration is a great advantage to our Distributors, it allows you to keep a best-foot-in-root your company that particular partner and projects that can be of high priority. We can provide better price for registered deals for our channel partner along with product, support and service deployment.",
+      },
+    ],
+  },
+  "Reseller Partner": {
+    title: "Reseller Partner Program",
+    description:
+      "Become our Reseller to deliver secure & reliable data erasure software to enterprise customers and help them meet compliance. Get great discounts when leveraging our globally tested and standards-compliant solutions, help your customers meet global data privacy compliance requirements, with ease.",
+    benefits: [
+      "Product Sales Training",
+      "Free Assisted Technology Support",
+      "Regular Updates And Communication",
+      "Co-To-Market Enablement",
+      "Deal Registration Benefits",
+      "Quality Solutions",
+    ],
+    detailedBenefits: [
+      {
+        title: "Product Sales Training",
+        description:
+          "The program provides you with simple training on the complete DSecure product lineup and functionality understanding of all features and technical aspects that benefits in advanced knowledge transfer sessions remotely equip you with the level of readiness you need to market the best product in the market.",
+      },
+      {
+        title: "Co-To-Market Enablement",
+        description:
+          "You get all the necessary sales and marketing collaterals when you join the DSecure Reseller Partner Program. We provide campaign brochures, product one-pagers, technical data sheets, prospects, and more to support and roll out your go-to-market strategy for the region that you operate.",
+      },
+      {
+        title: "Deal Registration Benefits",
+        description:
+          "Reseller program allows you look in benefit when you register for a deal through a deal registration, you can look the deal for a given duration such that the DSecure sales team does not directly approach the same prospect. Deal registration also ensures that you do get a lead protection for you totally.",
+      },
+      {
+        title: "Quality Supplier",
+        description:
+          "DSecure is a growing brand renowned for its data erasure solutions. We work to satisfy customers across the world in 190 countries. Our company focuses on innovative software development and providing quality in-lab services.",
+      },
+    ],
+  },
+  "OEM Partner": {
+    title: "OEM Partner Program",
+    description:
+      "DSecure OEM Partnership Program helps you to implement and channel your existing product portfolio by offering data erasure solutions to your customers in order to safeguard their from liability.",
+    benefits: [
+      "Best-Selling Software",
+      "High Conversion Rate",
+      "Strong Technical Support",
+      "Comprehensive Solution",
+      "Standards Compliant",
+      "Trusted Brand Quality",
+    ],
+    detailedBenefits: [
+      {
+        title: "Best-Selling Software",
+        description:
+          "DSecure software is renowned for its reliability, trustworthiness, and ease of use. We enjoy a vast customer base of more users in need of high quality data erasure solutions. Being an OEM partner, you can bundle our in-house professional data erasure software, largely unparalleled in the data erasure software industry.",
+      },
+      {
+        title: "Comprehensive Solution",
+        description:
+          "DSecure software OEM partnership is successfully sync across all the storage drive and devices segments, including the actively operating drive hardware and those being for end-of-lifecycle. Our OEM partnership covers innovative data sanitization solutions for individual Mac, computer and mobile devices, and hybrid cloud drives, and mobile devices.",
+      },
+      {
+        title: "Standards Compliant",
+        description:
+          "DSecure software follows international standards and best practices from leading bodies such as NIST, ADISA, and Common Criteria. Our solutions provide compliance with NIST FIPS 140-2, ADISA standards, and Common Criteria compliant data erasure methods.",
+      },
+      {
+        title: "Trusted Brand Quality",
+        description:
+          "DSecure is a product from DSecure - one of the growing global data tech brands, trusted by companies worldwide. Our quality-focused R&D processes ensure compliance with the highest product standards and the success of our Partner business.",
+      },
+    ],
+  },
+} as const;
 
 const PartnersPage: React.FC = () => {
   const { toast, showToast, hideToast } = useToast();
@@ -37,96 +234,96 @@ const PartnersPage: React.FC = () => {
   const [licenseRecaptchaVerified, setLicenseRecaptchaVerified] =
     useState(false);
   // Mock partner data based on attachment
-  const partnersList = [
-    {
-      company: "ABC International Trading Services Co. ltd",
-      type: "Reseller",
-      location: "Vietnam",
-      contact: {
-        name: "Nguyen Minh Duc",
-        email: "nguyen.duc@international.com.vn",
-        phone: "+84 903 447 799",
-        website: "https://international.vn",
-      },
-    },
-    {
-      company: "Advantage Industries",
-      type: "Distributor",
-      location: "United States",
-      contact: {
-        name: "Michael Johnson",
-        email: "michael.johnson@advantage-corp.com",
-        phone: "+1 763 423 5338",
-        website: "https://www.advantagecorp.com",
-      },
-    },
-    {
-      company: "Alternative Technologies SAC",
-      type: "Reseller",
-      location: "Peru",
-      contact: {
-        name: "Carlos Rodriguez",
-        email: "carlos.rodriguez@alternativetech.com.pe",
-        phone: "+511 200 6215",
-        website: "https://www.alternativetech.com.pe",
-      },
-    },
-    {
-      company: "Asociaci SE De CV",
-      type: "Distributor",
-      location: "Mexico",
-      contact: {
-        name: "Maria Elena Villegas",
-        email: "maria.villegas@asociaci.com",
-        phone: "+52 477 1395",
-        website: "https://www.asociaci.com",
-      },
-    },
-    {
-      company: "Active Link",
-      type: "Distributor",
-      location: "Italy",
-      contact: {
-        name: "Marco Rossi",
-        email: "marco.rossi@activelink.it",
-        phone: "+39 0544 236841",
-        website: "https://www.activelink.it",
-      },
-    },
-    {
-      company: "TechGuard Solutions India",
-      type: "ITAD Partner",
-      location: "India",
-      contact: {
-        name: "Priya Sharma",
-        email: "priya.sharma@techguard.in",
-        phone: "+91 98765 43210",
-        website: "https://www.techguard.in",
-      },
-    },
-    {
-      company: "SecureData UK Ltd",
-      type: "MSP Partner",
-      location: "United Kingdom",
-      contact: {
-        name: "James Wilson",
-        email: "james.wilson@securedata.co.uk",
-        phone: "+44 20 7123 4567",
-        website: "https://www.securedata.co.uk",
-      },
-    },
-    {
-      company: "DataWipe Australia Pty",
-      type: "ITAD Partner",
-      location: "Australia",
-      contact: {
-        name: "Sarah Chen",
-        email: "sarah.chen@datawipe.com.au",
-        phone: "+61 2 9876 5432",
-        website: "https://www.datawipe.com.au",
-      },
-    },
-  ];
+  // const partnersList = [
+  //   {
+  //     company: "ABC International Trading Services Co. ltd",
+  //     type: "Reseller",
+  //     location: "Vietnam",
+  //     contact: {
+  //       name: "Nguyen Minh Duc",
+  //       email: "nguyen.duc@international.com.vn",
+  //       phone: "+84 903 447 799",
+  //       website: "https://international.vn",
+  //     },
+  //   },
+  //   {
+  //     company: "Advantage Industries",
+  //     type: "Distributor",
+  //     location: "United States",
+  //     contact: {
+  //       name: "Michael Johnson",
+  //       email: "michael.johnson@advantage-corp.com",
+  //       phone: "+1 763 423 5338",
+  //       website: "https://www.advantagecorp.com",
+  //     },
+  //   },
+  //   {
+  //     company: "Alternative Technologies SAC",
+  //     type: "Reseller",
+  //     location: "Peru",
+  //     contact: {
+  //       name: "Carlos Rodriguez",
+  //       email: "carlos.rodriguez@alternativetech.com.pe",
+  //       phone: "+511 200 6215",
+  //       website: "https://www.alternativetech.com.pe",
+  //     },
+  //   },
+  //   {
+  //     company: "Asociaci SE De CV",
+  //     type: "Distributor",
+  //     location: "Mexico",
+  //     contact: {
+  //       name: "Maria Elena Villegas",
+  //       email: "maria.villegas@asociaci.com",
+  //       phone: "+52 477 1395",
+  //       website: "https://www.asociaci.com",
+  //     },
+  //   },
+  //   {
+  //     company: "Active Link",
+  //     type: "Distributor",
+  //     location: "Italy",
+  //     contact: {
+  //       name: "Marco Rossi",
+  //       email: "marco.rossi@activelink.it",
+  //       phone: "+39 0544 236841",
+  //       website: "https://www.activelink.it",
+  //     },
+  //   },
+  //   {
+  //     company: "TechGuard Solutions India",
+  //     type: "ITAD Partner",
+  //     location: "India",
+  //     contact: {
+  //       name: "Priya Sharma",
+  //       email: "priya.sharma@techguard.in",
+  //       phone: "+91 98765 43210",
+  //       website: "https://www.techguard.in",
+  //     },
+  //   },
+  //   {
+  //     company: "SecureData UK Ltd",
+  //     type: "MSP Partner",
+  //     location: "United Kingdom",
+  //     contact: {
+  //       name: "James Wilson",
+  //       email: "james.wilson@securedata.co.uk",
+  //       phone: "+44 20 7123 4567",
+  //       website: "https://www.securedata.co.uk",
+  //     },
+  //   },
+  //   {
+  //     company: "DataWipe Australia Pty",
+  //     type: "ITAD Partner",
+  //     location: "Australia",
+  //     contact: {
+  //       name: "Sarah Chen",
+  //       email: "sarah.chen@datawipe.com.au",
+  //       phone: "+61 2 9876 5432",
+  //       website: "https://www.datawipe.com.au",
+  //     },
+  //   },
+  // ];
   const countries = [
     "All Countries",
     "United States",
@@ -152,194 +349,16 @@ const PartnersPage: React.FC = () => {
     "Reseller",
     "OEM Partner",
   ];
-  const filteredPartners = partnersList.filter((partner) => {
-    const countryMatch =
-      selectedCountry === "All Countries" ||
-      partner.location === selectedCountry;
-    const typeMatch =
-      selectedPartnerType === "All Partner Types" ||
-      partner.type === selectedPartnerType;
-    return countryMatch && typeMatch;
-  });
-  const partnerTypes = {
-    "ITAD Partner": {
-      title: "ITAD Partner Program",
-      description:
-        "The DSecure ITAD Partner Program is designed for IT asset disposition companies looking to accelerate their data erasure solutions and protocols. Join our ITAD Partner program to offer secure data erasure service using globally tested & approved erasure solutions to your customers and help them meet global data privacy compliance.",
-      benefits: [
-        "Scalable & Automated Data Erasure & Diagnostics Software",
-        "Free Assisted Remote Deployment & Training",
-        "FREE Product Updates",
-        "Price Lock in During Contract Term",
-        "FREE Premium Technical Support - 24*5",
-        "Customized Solution For ITADs",
-      ],
-      detailedBenefits: [
-        {
-          title: "Scalable & Automated Data Erasure & Diagnostics Software",
-          description:
-            "DSecure secure data erasure & diagnostics software allows you to start wiping up to 64 drives simultaneously. The software focus can consolidate the ITAD's data wiping capabilities across all types of storage media, including hard drives, SSDs, built-in drives in computers & Mac systems, servers, and OS & Android devices.",
-        },
-        {
-          title: "Price Lock in During Contract Term",
-          description:
-            "By selecting DSecure solution as a part of the benefit of purchasing bulk licenses of DSecure at a special discounted pricing, the special price lock in for the term of the contract ensures that there is no change in price if you order a data erasure volumes over time.",
-        },
-        {
-          title: "FREE Premium Technical Support - 24*5",
-          description:
-            "DSecure provides free technical support for DSecure on offering assistance from our experts. Whether it is technical assistance or help with deployment and understanding our dedicated support team is here to help DSecure achieve exceptional service to their clients.",
-        },
-        {
-          title: "Customized Solution For ITADs",
-          description:
-            "For large ITAD partners we offer customized solution to automate their data wiping process to maximize human intervention and improve their existing data erasure process. We also help with the consultations to improve the existing process and increase efficiency in operations.",
-        },
-      ],
-    },
-    "MSP Partner": {
-      title: "MSP Partner Program",
-      description:
-        "The DSecure MSP Partner Program empowers IT Managed Service Providers to efficiently incorporate data erasure services into their offerings, expanding their portfolio and adding value to their customers by ensuring the risk of data breach is significantly reduced ensuring relevant laws and regulations such as CCPA, HIPAA, SOX, and ISO 27001.",
-      benefits: [
-        "Expand Your Portfolio",
-        "Comprehensive Training",
-        "Access Marketing Collaterals",
-        "Free Product Updates",
-        "Special MSP Pricing",
-        "Effortless Data Erasure Software",
-        "Get Listed On DSecure Partner Section",
-        "Free Technical Support",
-      ],
-      detailedBenefits: [
-        {
-          title: "Expand Your Portfolio",
-          description:
-            "Managed Service Providers (MSPs) allows MSPs to offer data erasure as a service, enriching their portfolio. This expansion attracts organizations requiring comprehensive data security solutions, positioning MSPs as versatile, end-to-end service providers. By adding data erasure services, MSPs differentiate themselves, enhance revenue, and position as trusted data security partners.",
-        },
-        {
-          title: "Special MSP Pricing",
-          description:
-            "Enrolling in our MSP Partner Program offers pricing as an MSP partner. With DSecure - Purchase licenses at a special price to offer software as a service to your clients. With the special pricing only available to MSPs who are partners with us in the market. Further, partners can get cost reduced erasure solutions ensuring accessibility for MSPs.",
-        },
-        {
-          title: "Effortless Data Erasure Software",
-          description:
-            "DSecure's secure data erasure software enables MSPs to initiate fast and effortless data erasure. The software brings automation, quick identification and erasure for your clients across over 65,000 drives. As part of our Partner Program, you'll receive the same experience at all voluntary programs they call how you operate. This includes services accomplished by user-friendly manual for seamless operations support across all types of drives to provide services to your clients.",
-        },
-        {
-          title: "Get Listed On DSecure Partner Section",
-          description:
-            "By becoming our valuable MSP Partner, you get listed in the partner section of our website. B2B Customers can look out for partners who are experts in their compliance requirements to visit their team that can convert to revenue. Also, your customers gain trust that you are an expert from Authorized MSP Partner.",
-        },
-      ],
-    },
-    "Distributor Partner": {
-      title: "Distributor Partner Program",
-      description:
-        "DSecure Distributor Program for DSecure is meant for all those software distributors that have global partnerships. partner reach in order to sell data erasure products for wiping and asset service. that financial data compliance and software for wiping data permanently from HDDs, SSDs, Tablets, Desktop, service & mobile devices including OS & Android devices.",
-      benefits: [
-        "Go-To-Market Support",
-        "Free 24*7 Technical Support",
-        "Regular Updates",
-        "Product Sales Training",
-        "Trusted Brand",
-        "Deal Registration Benefits",
-      ],
-      detailedBenefits: [
-        {
-          title: "Go-To-Market Support",
-          description:
-            "Distributors are required to increase the generation and reach of DSecure products by fixing business processes and developing solutions for data erasure software with comprehensive go-to-market strategy. Includes DSecure brochures, technical fact sheets, product videos, demo materials to support the distributors business.",
-        },
-        {
-          title: "Product Sales Training",
-          description:
-            "All partners receive training and they get training on the features and functionality of DSecure product to understand the various data structures and compliance. We also advise the partners by providing sales documentation.",
-        },
-        {
-          title: "Trusted Brand",
-          description:
-            "DSecure is a growing brand in the data erasure industry built on technical excellence and best practices. Our solutions follow international standards and provide reliable global service.",
-        },
-        {
-          title: "Deal Registration Benefits",
-          description:
-            "Deal Registration is a great advantage to our Distributors, it allows you to keep a best-foot-in-root your company that particular partner and projects that can be of high priority. We can provide better price for registered deals for our channel partner along with product, support and service deployment.",
-        },
-      ],
-    },
-    "Reseller Partner": {
-      title: "Reseller Partner Program",
-      description:
-        "Become our Reseller to deliver secure & reliable data erasure software to enterprise customers and help them meet compliance. Get great discounts when leveraging our globally tested and standards-compliant solutions, help your customers meet global data privacy compliance requirements, with ease.",
-      benefits: [
-        "Product Sales Training",
-        "Free Assisted Technology Support",
-        "Regular Updates And Communication",
-        "Co-To-Market Enablement",
-        "Deal Registration Benefits",
-        "Quality Solutions",
-      ],
-      detailedBenefits: [
-        {
-          title: "Product Sales Training",
-          description:
-            "The program provides you with simple training on the complete DSecure product lineup and functionality understanding of all features and technical aspects that benefits in advanced knowledge transfer sessions remotely equip you with the level of readiness you need to market the best product in the market.",
-        },
-        {
-          title: "Co-To-Market Enablement",
-          description:
-            "You get all the necessary sales and marketing collaterals when you join the DSecure Reseller Partner Program. We provide campaign brochures, product one-pagers, technical data sheets, prospects, and more to support and roll out your go-to-market strategy for the region that you operate.",
-        },
-        {
-          title: "Deal Registration Benefits",
-          description:
-            "Reseller program allows you look in benefit when you register for a deal through a deal registration, you can look the deal for a given duration such that the DSecure sales team does not directly approach the same prospect. Deal registration also ensures that you do get a lead protection for you totally.",
-        },
-        {
-          title: "Quality Supplier",
-          description:
-            "DSecure is a growing brand renowned for its data erasure solutions. We work to satisfy customers across the world in 190 countries. Our company focuses on innovative software development and providing quality in-lab services.",
-        },
-      ],
-    },
-    "OEM Partner": {
-      title: "OEM Partner Program",
-      description:
-        "DSecure OEM Partnership Program helps you to implement and channel your existing product portfolio by offering data erasure solutions to your customers in order to safeguard their from liability.",
-      benefits: [
-        "Best-Selling Software",
-        "High Conversion Rate",
-        "Strong Technical Support",
-        "Comprehensive Solution",
-        "Standards Compliant",
-        "Trusted Brand Quality",
-      ],
-      detailedBenefits: [
-        {
-          title: "Best-Selling Software",
-          description:
-            "DSecure software is renowned for its reliability, trustworthiness, and ease of use. We enjoy a vast customer base of more users in need of high quality data erasure solutions. Being an OEM partner, you can bundle our in-house professional data erasure software, largely unparalleled in the data erasure software industry.",
-        },
-        {
-          title: "Comprehensive Solution",
-          description:
-            "DSecure software OEM partnership is successfully sync across all the storage drive and devices segments, including the actively operating drive hardware and those being for end-of-lifecycle. Our OEM partnership covers innovative data sanitization solutions for individual Mac, computer and mobile devices, and hybrid cloud drives, and mobile devices.",
-        },
-        {
-          title: "Standards Compliant",
-          description:
-            "DSecure software follows international standards and best practices from leading bodies such as NIST, ADISA, and Common Criteria. Our solutions provide compliance with NIST FIPS 140-2, ADISA standards, and Common Criteria compliant data erasure methods.",
-        },
-        {
-          title: "Trusted Brand Quality",
-          description:
-            "DSecure is a product from DSecure - one of the growing global data tech brands, trusted by companies worldwide. Our quality-focused R&D processes ensure compliance with the highest product standards and the success of our Partner business.",
-        },
-      ],
-    },
-  } as const;
+  // const filteredPartners = partnersList.filter((partner) => {
+  //   const countryMatch =
+  //     selectedCountry === "All Countries" ||
+  //     partner.location === selectedCountry;
+  //   const typeMatch =
+  //     selectedPartnerType === "All Partner Types" ||
+  //     partner.type === selectedPartnerType;
+  //   return countryMatch && typeMatch;
+  // });
+
   // PDF download function
   const downloadPDF = (filename: string, displayName: string) => {
     const link = document.createElement("a");
@@ -351,14 +370,12 @@ const PartnersPage: React.FC = () => {
     document.body.removeChild(link);
   };
   const handlePartnerSubmit = async (formData: PartnershipFormData) => {
-    // This is now just for backward compatibility and logging
+    // This is now just for backward compatibility
     // The actual submission is handled by the form component itself
-    console.log("Partner application submitted:", formData);
   };
   const handleLicenseSubmit = async (formData: LicenseFormData) => {
-    // This is now just for backward compatibility and logging
+    // This is now just for backward compatibility
     // The actual submission is handled by the form component itself
-    console.log("License request submitted:", formData);
   };
   const handleContactRedirect = () => {
     // Redirect to contact page
@@ -385,12 +402,13 @@ const PartnersPage: React.FC = () => {
   const openPartnerModal = (partnerType?: string) => {
     const typeToSet = partnerType || activePartnerType;
     setActivePartnerType(typeToSet as keyof typeof partnerTypes);
-    (window as any).partnerRecaptchaVerified = false;
+    setPartnerRecaptchaVerified(false);
     setShowPartnerModal(true);
   };
+
   // Function to open license modal
   const openLicenseModal = () => {
-    (window as any).licenseRecaptchaVerified = false;
+    setLicenseRecaptchaVerified(false);
     setShowLicenseModal(true);
   };
   return (
@@ -417,8 +435,8 @@ const PartnersPage: React.FC = () => {
       </Helmet>
       <div className="min-h-screen bg-slate-50">
         {/* Hero Section */}
-        <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-br from-emerald-50 via-white to-teal-50 overflow-hidden">
-          {/* Background Elements */}
+        {/* <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-br from-emerald-50 via-white to-teal-50 overflow-hidden">
+          Background Elements
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-5 sm:top-10 left-5 sm:left-10 w-16 sm:w-24 md:w-32 h-16 sm:h-24 md:h-32 bg-emerald-200 rounded-full blur-3xl"></div>
             <div className="absolute bottom-10 sm:bottom-20 right-10 sm:right-20 w-20 sm:w-32 md:w-40 h-20 sm:h-32 md:h-40 bg-teal-200 rounded-full blur-3xl"></div>
@@ -428,7 +446,7 @@ const PartnersPage: React.FC = () => {
             <Reveal>
               <div className="text-center">
                 <div className="mb-8 sm:mb-12">
-                  {/* Logo and Title */}
+                  Logo and Title
                   <div className="mb-6 sm:mb-8">
                     <div className="inline-flex items-center justify-center w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl sm:rounded-3xl mb-4 sm:mb-6 shadow-2xl transform hover:scale-110 transition-transform duration-300">
                       <svg
@@ -450,7 +468,7 @@ const PartnersPage: React.FC = () => {
                       <div className="absolute -bottom-1 sm:-bottom-2 left-1/2 transform -translate-x-1/2 w-20 sm:w-24 md:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"></div>
                     </div>
                   </div>
-                  {/* Enhanced Description */}
+                  Enhanced Description
                   <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 md:mb-10 border border-emerald-200/50 shadow-xl max-w-4xl mx-auto">
                     <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed mb-2 sm:mb-4">
                       <svg
@@ -477,36 +495,31 @@ const PartnersPage: React.FC = () => {
                       products for your success.
                     </p>
                   </div>
-                  {/* Enhanced CTA Buttons */}
+                  Enhanced CTA Buttons
                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
                     <button
                       onClick={() => openPartnerModal()}
                       className="w-full sm:w-auto group bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:via-emerald-700 hover:to-teal-700 text-white font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3"
                     >
-                      <span className="text-base sm:text-lg flex items-center gap-1">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M12 18v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2"
-                          />
-                        </svg>
+                      <span className="text-base sm:text-lg flex items-center gap-2">
+                        <HoverIcon>
+                          {(filled) => (
+                            <StarIcon
+                              className="w-4 h-4"
+                              filled={filled}
+                            />
+                          )}
+                        </HoverIcon>
                         Join Partnership
                       </span>
-                      <svg
-                        className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M13 7l5 5-5 5M6 12h12" />
-                      </svg>
+                      <HoverIcon>
+                        {(filled) => (
+                          <ArrowRightIcon
+                            className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
+                            filled={filled}
+                          />
+                        )}
+                      </HoverIcon>
                     </button>
                     <button
                       onClick={() =>
@@ -517,39 +530,468 @@ const PartnersPage: React.FC = () => {
                       }
                       className="w-full sm:w-auto group border-2 sm:border-3 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50 text-emerald-700 hover:text-emerald-800 font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3"
                     >
-                      <span className="text-base sm:text-lg flex items-center gap-1">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
+                      <span className="text-base sm:text-lg flex items-center gap-2">
+                        <HoverIcon>
+                          {(filled) => (
+                            <ArrowDownIcon
+                              className="w-4 h-4"
+                              filled={filled}
+                            />
+                          )}
+                        </HoverIcon>
                         Download Catalog
                       </span>
-                      <svg
-                        className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-y-0.5 transition-transform"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 2v13l4-4m-4 4l-4-4m4 4v5" />
-                      </svg>
                     </button>
                   </div>
                 </div>
               </div>
             </Reveal>
           </div>
+        </section> */}
+
+        <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
+          {/* Background Decorative Elements */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-10 left-10 w-32 h-32 bg-emerald-200 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-20 w-40 h-40 bg-teal-200 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Content - Text */}
+              <div className="space-y-8">
+                {/* Main Heading */}
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
+                  <span className="block text-slate-900">
+                    <span>D</span>Secure{" "}
+                  </span>
+                  {/* <span className="block text-slate-900">Erasure for</span> */}
+                  <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
+                    Partner Program
+                  </span>
+                  {/* <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
+              Program
+              </span> */}
+                </h1>
+
+                {/* Description */}
+                <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-xl">
+                  Join our Partner Program today! Become part of our global
+                  network and unlock new opportunities with best-in-class data
+                  erasure solutions for your business success.
+                </p>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {/* Explore Products Button */}
+                  <button
+                    onClick={() => openPartnerModal(activePartnerType)}
+                    className="group bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3"
+                  >
+                    {/* <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg> */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.5 13.5c1.5-2.5 4.2-4 7-4 1.1 0 2.1.3 3 .9l2.6 1.8-3.4 3.4-2.4-1.6c-.7-.45-1.5-.7-2.3-.7-1.8 0-3.5 1.1-4.6 2.6L2.5 15v-1.5z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21.5 10.5c-1.5 2.5-4.2 4-7 4-1.1 0-2.1-.3-3-.9L9 12.8l3.4-3.4 2.4 1.6c.7.45 1.5.7 2.3.7 1.8 0 3.5-1.1 4.6-2.6L21.5 9V10.5z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 11.5l8 8"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12.5 8.5l3 3"
+                      />
+                    </svg>
+
+                    <span> Join Partnership</span>
+                    <svg
+                      className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M13 7l5 5-5 5M6 12h12" />
+                    </svg>
+                  </button>
+
+                  {/* Buy Now Button */}
+                  <button
+                    onClick={() =>
+                      downloadPDF(
+                        "partnership-brochure.pdf",
+                        "DSecure_Partnership_Brochure.pdf"
+                      )
+                    }
+                    className="group bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3"
+                  >
+                    {/* <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg> */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      {/* folder / catalog */}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"
+                      />
+                      {/* list lines inside catalog */}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 11h6M8 14h4"
+                      />
+                      {/* download arrow (centered, on top of folder) */}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v6M9 12l3 3 3-3"
+                      />
+                    </svg>
+
+                    <span>Download Catalog</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Content - Visual Card with Lock */}
+              <div className="relative">
+                {/* <div className="relative bg-gradient-to-br from-green-600 via-green-500 to-emerald-600 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3]"> */}
+                {/*  */}
+                {/* <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 z-20">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z" />
+                </svg>
+                <span>256-bit Encryption</span>
+              </div> */}
+
+                {/* Circuit Board Pattern Background */}
+                {/* <div className="absolute inset-0 opacity-30">
+                <svg className="w-full h-full" viewBox="0 0 400 300">
+                  <defs>
+                    <pattern
+                      id="circuit-pattern"
+                      x="0"
+                      y="0"
+                      width="40"
+                      height="40"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      Horizontal and vertical lines
+                      <path
+                        d="M0 20h40M20 0v40"
+                        stroke="rgba(0,0,0,0.2)"
+                        strokeWidth="1"
+                        fill="none"
+                      />
+                      Circuit nodes
+                      <circle cx="20" cy="20" r="2" fill="rgba(0,0,0,0.3)" />
+                      <circle cx="0" cy="0" r="1.5" fill="rgba(0,0,0,0.2)" />
+                      <circle cx="40" cy="0" r="1.5" fill="rgba(0,0,0,0.2)" />
+                      <circle cx="0" cy="40" r="1.5" fill="rgba(0,0,0,0.2)" />
+                      <circle cx="40" cy="40" r="1.5" fill="rgba(0,0,0,0.2)" />
+                    </pattern>
+                  </defs>
+                  <rect
+                    width="400"
+                    height="300"
+                    fill="url(#circuit-pattern)"
+                  />
+                </svg>
+              </div> */}
+
+                {/* Lock Image Container */}
+                {/* <div className="absolute inset-0 flex items-center justify-center p-8">
+                <div className="relative w-full max-w-xs">
+                  Glow Effect Behind Lock
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/30 via-orange-400/20 to-red-500/30 blur-3xl rounded-full scale-150"></div>
+
+                  Lock Body
+                  <div className="relative">
+                    Shackle (Top Part)
+                    <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-28 h-28 border-[12px] border-gradient-to-br from-yellow-500 to-orange-500 rounded-t-full border-b-0"
+                      style={{
+                        borderColor: 'transparent',
+                        borderTopColor: '#f59e0b',
+                        borderLeftColor: '#f59e0b',
+                        borderRightColor: '#f59e0b',
+                      }}
+                    ></div>
+
+                    Main Lock Body
+                    <div className="relative bg-gradient-to-br from-yellow-500 via-yellow-600 to-orange-600 w-40 h-48 rounded-2xl shadow-2xl">
+                      Shine/Highlight Effect
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-2xl"></div>
+                      
+                      Wood Texture Lines
+                      <div className="absolute inset-0 opacity-20">
+                        <div className="h-full flex flex-col justify-around px-4">
+                          {[...Array(8)].map((_, i) => (
+                            <div
+                              key={i}
+                              className="h-0.5 bg-gradient-to-r from-transparent via-black/40 to-transparent"
+                            ></div>
+                          ))}
+                        </div>
+                      </div>
+
+                      Keyhole
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                        Keyhole Circle
+                        <div className="w-8 h-8 bg-slate-900 rounded-full shadow-inner"></div>
+                        Keyhole Slot
+                        <div className="w-3 h-12 bg-slate-900 rounded-b-full -mt-2"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+
+                {/* Secure Erasure Active Badge - Bottom Left */}
+                {/* <div className="absolute bottom-6 left-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full flex items-center gap-2 z-20">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <span className="text-sm font-semibold">
+                  Secure Erasure Active
+                </span>
+              </div> */}
+
+                {/* Lightning Icon - Bottom Center */}
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+                  <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white/20 transition-all duration-300">
+                    <HoverIcon>
+                      {(filled) => (
+                        <LightningIcon
+                          className="w-6 h-6 text-white"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
+                  </div>
+                </div>
+                {/* </div> */}
+
+                {/* Right Content - Simple Network Diagram */}
+                <div className="relative">
+                  {/* Main Green Gradient Card - Simple */}
+                  <div className="relative bg-gradient-to-br from-green-400 via-teal-400 to-cyan-500 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3] flex items-center justify-center">
+                    {/* Network Diagram Container */}
+                    <div className="relative w-[280px] h-[280px]">
+                      {/* Simple Dotted Circle */}
+                      <svg className="absolute inset-0" viewBox="0 0 280 280">
+                        <circle
+                          cx="140"
+                          cy="140"
+                          r="110"
+                          fill="none"
+                          stroke="rgba(255,255,255,0.3)"
+                          strokeWidth="2"
+                          strokeDasharray="5,8"
+                        />
+                      </svg>
+
+                      {/* Connection Lines */}
+                      <svg className="absolute inset-0" viewBox="0 0 280 280">
+                        <line
+                          x1="140"
+                          y1="140"
+                          x2="140"
+                          y2="20"
+                          stroke="rgba(255,255,255,0.2)"
+                          strokeWidth="1.5"
+                          strokeDasharray="3,5"
+                        />
+                        <line
+                          x1="140"
+                          y1="140"
+                          x2="260"
+                          y2="140"
+                          stroke="rgba(255,255,255,0.2)"
+                          strokeWidth="1.5"
+                          strokeDasharray="3,5"
+                        />
+                        <line
+                          x1="140"
+                          y1="140"
+                          x2="140"
+                          y2="260"
+                          stroke="rgba(255,255,255,0.2)"
+                          strokeWidth="1.5"
+                          strokeDasharray="3,5"
+                        />
+                        <line
+                          x1="140"
+                          y1="140"
+                          x2="20"
+                          y2="140"
+                          stroke="rgba(255,255,255,0.2)"
+                          strokeWidth="1.5"
+                          strokeDasharray="3,5"
+                        />
+                      </svg>
+
+                      {/* Center Shield Icon - Green with White Shield */}
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-2xl p-6 w-24 h-24 flex items-center justify-center hover:scale-105 transition-transform duration-300">
+                          {/* White Shield Icon */}
+                          <HoverIcon>
+                            {(filled) => (
+                              <ShieldIcon
+                                className="w-14 h-14 text-white"
+                                filled={filled}
+                              />
+                            )}
+                          </HoverIcon>
+                        </div>
+                      </div>
+
+                      {/* Top User */}
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2">
+                        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+                          <svg
+                            className="w-7 h-7 text-slate-700"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Right User */}
+                      <div className="absolute top-1/2 right-0 -translate-y-1/2">
+                        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+                          <svg
+                            className="w-7 h-7 text-slate-700"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Bottom User */}
+                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+                        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+                          <svg
+                            className="w-7 h-7 text-slate-700"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Left User */}
+                      <div className="absolute top-1/2 left-0 -translate-y-1/2">
+                        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+                          <svg
+                            className="w-7 h-7 text-slate-700"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Decorative Floating Elements */}
+                {/* <div className="absolute -top-4 -right-4 w-20 h-20 bg-emerald-300 rounded-full blur-2xl opacity-50"></div> */}
+                {/* <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-teal-300 rounded-full blur-2xl opacity-50"></div> */}
+              </div>
+            </div>
+          </div>
         </section>
         {/* Partnership Types */}
-        <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
+        {/* <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
           <div className="container-responsive px-4 sm:px-6">
             <Reveal>
               <div className="text-center mb-12 sm:mb-16">
@@ -578,7 +1020,7 @@ const PartnersPage: React.FC = () => {
                 <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
               </div>
             </Reveal>
-            {/* Enhanced Partner Type Cards */}
+            Enhanced Partner Type Cards
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 sm:gap-3">
               {(
                 Object.keys(partnerTypes) as Array<keyof typeof partnerTypes>
@@ -594,13 +1036,13 @@ const PartnersPage: React.FC = () => {
                           : "bg-transparent text-slate-600 border-transparent hover:text-emerald-600 hover:bg-emerald-50/50"
                       }`}
                     >
-                      {/* Content */}
+                      Content
                       <div className="relative z-10 text-center">
-                        {/* Title */}
+                        Title
                         <div className="text-xs sm:text-sm md:text-base leading-tight font-medium break-words">
                           {partnerTitle}
                         </div>
-                        {/* Active Indicator Line */}
+                        Active Indicator Line
                         <div
                           className={`absolute -bottom-2 sm:-bottom-3 left-1/2 transform -translate-x-1/2 h-0.5 sm:h-1 bg-emerald-500 rounded-full transition-all duration-300 ${
                             isActive
@@ -615,7 +1057,77 @@ const PartnersPage: React.FC = () => {
               })}
             </div>
           </div>
+        </section> */}
+
+        <section className="py-16 bg-slate-50 ">
+          <div className="container-responsive px-4 sm:px-6">
+            <Reveal>
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                  Partnership Excellence
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+                  <span className="text-brand">Grow Your Business With </span>
+                  <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">
+                    D-Secure
+                  </span>
+                  <sup className="text-brand text-base sm:text-lg md:text-2xl"></sup>
+                </h2>
+                {/* <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                  Join our global network of partners and grow your business with our cutting-edge data erasure solutions.
+                </p> */}
+                <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
+                  Choose your partnership type to unlock specialized benefits
+                  and opportunities
+                </p>
+                <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
+              </div>
+            </Reveal>
+
+            {/* Partner Type Cards - Simplified */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {Object.keys(partnerTypes).map((type, index) => (
+                <div
+                  key={type}
+                  className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                >
+                  <button
+                    onClick={() => openPartnerModal(type)}
+                    className="text-left w-full"
+                  >
+                    <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                      {type}
+                    </h3>
+                    <p className="text-slate-600 mb-4">
+                      {partnerTypes[
+                        type as keyof typeof partnerTypes
+                      ].description.substring(0, 120)}
+                      ...
+                    </p>
+                  </button>
+                  {/* <button 
+                    onClick={() => openPartnerModal(type)}
+                    className="text-emerald-600 hover:text-emerald-700 font-medium"
+                  >
+                    Learn More →
+                  </button> */}
+                </div>
+              ))}
+            </div>
+
+            {/* Find Partners Section */}
+          </div>
+                
         </section>
+
         {/* ITAD Partner Program */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
           <div className="container-responsive px-4 sm:px-6">
@@ -652,7 +1164,7 @@ const PartnersPage: React.FC = () => {
                       </p>
                     </div>
                     {/* Benefits Grid */}
-                    <div className="grid gap-4 sm:gap-6 mb-6 sm:mb-8">
+                    {/* <div className="grid gap-4 sm:gap-6 mb-6 sm:mb-8">
                       <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                         <div className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md sm:rounded-lg flex items-center justify-center">
                           <svg
@@ -695,8 +1207,7 @@ const PartnersPage: React.FC = () => {
                                   </div>
                                 </div>
                               </div>
-                              {/* Hover indicator line */}
-                              <div className="h-1 bg-gradient-to-r from-emerald-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                             
                             </div>
                           )
                         ) ||
@@ -724,7 +1235,140 @@ const PartnersPage: React.FC = () => {
                             )
                           )}
                       </div>
+                    </div> */}
+
+                    <div className="mb-8 sm:mb-12">
+                      {/* Section Header */}
+                      <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                        <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+                          <svg
+                            className="w-5 h-5 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <h4 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+                          Key Benefits
+                        </h4>
+                      </div>
+
+                      {/* Vertical Cards Grid - 2 columns per row */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {partnerTypes[activePartnerType].detailedBenefits?.map(
+                          (benefit, index) => (
+                            <div
+                              key={index}
+                              className="group relative bg-white rounded-2xl shadow-lg border border-slate-200/60 hover:shadow-2xl hover:border-emerald-300/50 transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
+                            >
+                              {/* Card Content */}
+                              <div className="p-6 sm:p-8 flex flex-col h-full">
+                                {/* Icon */}
+                                <div className="mb-6">
+                                  <div className="inline-flex w-16 h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 rounded-2xl items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                                    <HoverIcon>
+                                      {(filled) => (
+                                        <CheckIcon
+                                          className="w-8 h-8 text-white"
+                                          filled={filled}
+                                        />
+                                      )}
+                                    </HoverIcon>
+                                  </div>
+                                </div>
+
+                                {/* Title */}
+                                <h5 className="font-bold text-xl sm:text-2xl text-slate-900 mb-4 group-hover:text-emerald-600 transition-colors duration-300 leading-tight">
+                                  {benefit.title}
+                                </h5>
+
+                                {/* Description */}
+                                <p className="text-slate-600 leading-relaxed text-base group-hover:text-slate-700 transition-colors duration-300 flex-grow">
+                                  {benefit.description}
+                                </p>
+
+                                {/* Bottom Decorative Element */}
+                                {/* <div className="mt-6 pt-4 border-t border-slate-100">
+              <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span>Learn More</span>
+                <svg
+                  className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </div>
+            </div> */}
+                              </div>
+
+                              {/* Background Pattern - Decorative */}
+                              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-50 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-0"></div>
+                            </div>
+                          )
+                        ) ||
+                          partnerTypes[activePartnerType].benefits.map(
+                            (benefit, index) => (
+                              <div
+                                key={index}
+                                className="group relative bg-white rounded-2xl shadow-lg border border-slate-200/60 hover:shadow-2xl hover:border-emerald-300/50 transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
+                              >
+                                {/* Card Content */}
+                                <div className="p-6 sm:p-8 flex flex-col h-full">
+                                  {/* Icon */}
+                                  <div className="mb-6">
+                                    <div className="inline-flex w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                      <HoverIcon>
+                                        {(filled) => (
+                                          <CheckIcon
+                                            className="w-7 h-7 text-white"
+                                            filled={filled}
+                                          />
+                                        )}
+                                      </HoverIcon>
+                                    </div>
+                                  </div>
+
+                                  {/* Benefit Text */}
+                                  <p className="text-slate-700 font-semibold text-lg leading-relaxed group-hover:text-slate-900 transition-colors duration-300 flex-grow">
+                                    {benefit}
+                                  </p>
+
+                                  {/* Bottom Decorative Arrow */}
+                                  <div className="mt-4 pt-4 border-t border-slate-100">
+                                    <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                      <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M13 7l5 5m0 0l-5 5m5-5H6"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Background Glow */}
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-50 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                              </div>
+                            )
+                          )}
+                      </div>
                     </div>
+
                     {/* Call to Action */}
                     <div className="flex flex-col gap-3 sm:gap-4 pt-6 sm:pt-8 border-t border-slate-200/30">
                       <button
@@ -818,92 +1462,55 @@ const PartnersPage: React.FC = () => {
                     {[
                       {
                         icon: (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M9 7a2 2 0 11-4 0 2 2 0 014 0z"
-                            />
-                          </svg>
+                          <HoverIcon>
+                            {(filled) => (
+                              <GlobeIcon className="w-4 h-4" filled={filled} />
+                            )}
+                          </HoverIcon>
                         ),
                         text: "Global Network",
                       },
                       {
                         icon: (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                          </svg>
+                          <HoverIcon>
+                            {(filled) => (
+                              <BuildingIcon
+                                className="w-4 h-4"
+                                filled={filled}
+                              />
+                            )}
+                          </HoverIcon>
                         ),
                         text: "Location-Based",
                       },
                       {
                         icon: (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
+                          <HoverIcon>
+                            {(filled) => (
+                              <CheckIcon className="w-4 h-4" filled={filled} />
+                            )}
+                          </HoverIcon>
                         ),
                         text: "Qualified Partners",
                       },
                       {
                         icon: (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M12 18v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2"
-                            />
-                          </svg>
+                          <HoverIcon>
+                            {(filled) => (
+                              <ChatIcon className="w-4 h-4" filled={filled} />
+                            )}
+                          </HoverIcon>
                         ),
                         text: "Direct Contact",
                       },
                     ].map((feature, index) => (
                       <div
                         key={index}
-                        className="bg-white/10 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-white/20 text-center"
+                        className="bg-white/10 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-white/20 text-center flex items-center justify-center gap-1 sm:gap-2"
                       >
-                        <span className="mr-1 sm:mr-2">{feature.icon}</span>
+                        <span className="flex items-center justify-center">
+                          {feature.icon}
+                        </span>
                         <span className="hidden sm:inline">{feature.text}</span>
                         <span className="sm:hidden">
                           {feature.text.split(" ")[0]}
@@ -982,13 +1589,14 @@ const PartnersPage: React.FC = () => {
                   description:
                     "Access to standards-compliant data erasure solutions following international best practices and algorithms. Get quality solutions meeting 40+ international standards by integrating our data erasure technology.",
                   icon: (
-                    <svg
-                      className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z" />
-                    </svg>
+                    <HoverIcon>
+                      {(filled) => (
+                        <ShieldIcon
+                          className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
                   ),
                   gradient: "from-red-500 to-red-600",
                   bgColor: "bg-red-50",
@@ -999,13 +1607,14 @@ const PartnersPage: React.FC = () => {
                   description:
                     "Partners get access to our sales enablement and analytics to help them understand customer requirements. Get comprehensive marketing materials and product selling aids.",
                   icon: (
-                    <svg
-                      className="w-8 h-8"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-                    </svg>
+                    <HoverIcon>
+                      {(filled) => (
+                        <ClipboardIcon
+                          className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
                   ),
                   gradient: "from-blue-500 to-blue-600",
                   bgColor: "bg-blue-50",
@@ -1016,13 +1625,14 @@ const PartnersPage: React.FC = () => {
                   description:
                     "Get the best pre-sales & after sales support for all DSecure solutions. Our staff provides regular training and extended deployments with dedicated expertise.",
                   icon: (
-                    <svg
-                      className="w-8 h-8"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                    </svg>
+                    <HoverIcon>
+                      {(filled) => (
+                        <HeartIcon
+                          className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
                   ),
                   gradient: "from-green-500 to-green-600",
                   bgColor: "bg-green-50",
@@ -1033,13 +1643,14 @@ const PartnersPage: React.FC = () => {
                   description:
                     "We give you the opportunity to achieve bigger goals providing you the power around gaining a global data client with our track record of bringing innovation & trust.",
                   icon: (
-                    <svg
-                      className="w-8 h-8"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
+                    <HoverIcon>
+                      {(filled) => (
+                        <StarIcon
+                          className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
                   ),
                   gradient: "from-purple-500 to-purple-600",
                   bgColor: "bg-purple-50",
@@ -1056,7 +1667,7 @@ const PartnersPage: React.FC = () => {
                     <div className="relative z-10 text-center h-full flex flex-col">
                       {/* Icon */}
                       <div
-                        className={`w-14 sm:w-16 md:w-18 lg:w-20 h-14 sm:h-16 md:h-18 lg:h-20 bg-gradient-to-br ${benefit.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 text-white group-hover:scale-110 transition-transform duration-300 shadow-xl`}
+                        className={`w-16 sm:w-18 md:w-20 lg:w-22 h-16 sm:h-18 md:h-20 lg:h-22 bg-gradient-to-br ${benefit.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 text-white group-hover:scale-110 transition-transform duration-300 shadow-xl`}
                       >
                         {benefit.icon}
                       </div>
@@ -1214,7 +1825,7 @@ const PartnersPage: React.FC = () => {
                 ×
               </button>
             </div>
-            {/* Scrollable Content */}
+
             <div
               className="flex-1 overflow-y-auto overflow-x-hidden"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
@@ -1223,7 +1834,6 @@ const PartnersPage: React.FC = () => {
                 {`.find-partner-scroll::-webkit-scrollbar { display: none; }`}
               </style>
               <div className="p-6 find-partner-scroll">
-                {/* Filter Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-6 bg-gradient-to-br from-emerald-50 via-teal-50/50 to-cyan-50/30 rounded-xl border border-emerald-200/50 shadow-sm">
                   <div>
                     <label className="block text-sm font-semibold text-emerald-800 mb-2">
@@ -1259,7 +1869,7 @@ const PartnersPage: React.FC = () => {
                   </div>
                 </div>
                 {/* Partners List */}
-                <div className="space-y-4">
+                {/* <div className="space-y-4">
                   {filteredPartners.length > 0 ? (
                     filteredPartners.map((partner, index) => (
                       <div
@@ -1267,7 +1877,7 @@ const PartnersPage: React.FC = () => {
                         className="bg-gradient-to-br from-white via-emerald-50/20 to-teal-50/10 border-2 border-emerald-200/50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:border-emerald-400/60 hover:bg-gradient-to-br hover:from-white hover:via-emerald-50/30 hover:to-teal-50/20"
                       >
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                          {/* Company Info */}
+                          
                           <div>
                             <h3 className="font-bold text-slate-900 text-lg mb-2">
                               {partner.company}
@@ -1289,7 +1899,7 @@ const PartnersPage: React.FC = () => {
                               </p>
                             </div>
                           </div>
-                          {/* Contact Info */}
+                          
                           <div>
                             <h4 className="font-bold text-slate-900 mb-2">
                               {partner.contact.name}
@@ -1327,7 +1937,7 @@ const PartnersPage: React.FC = () => {
                               </p>
                             </div>
                           </div>
-                          {/* Action Buttons */}
+                          
                           <div className="flex flex-col gap-2 justify-center">
                             <button
                               onClick={() => handleContactPartner(partner)}
@@ -1364,8 +1974,10 @@ const PartnersPage: React.FC = () => {
                       </p>
                     </div>
                   )}
+                </div> */}
+                <div className="justify-center items-center text-center">
+                  No List Available
                 </div>
-                {/* Pagination */}
                 <div className="flex justify-center items-center gap-2 mt-6 pt-4 border-t border-emerald-200">
                   <button className="w-8 h-8 rounded-lg border-2 border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-300 flex items-center justify-center text-sm font-medium">
                     1

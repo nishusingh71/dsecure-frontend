@@ -2,6 +2,7 @@ import React from "react";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
+import { Link } from "react-router-dom";
 
 const DigitalProtectionSolutions: React.FC = () => {
   return (
@@ -287,7 +288,7 @@ const DigitalProtectionSolutions: React.FC = () => {
                     {
                       industry: "Healthcare",
                       desc: "Protecting patient data and medical records with HIPAA-compliant solutions, ensuring confidentiality whilst enabling seamless care delivery.",
-                      img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=800&q=80",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093103/cp7t7nascrxgvlbjxj7t.jpg",
                     },
                     {
                       industry: "Financial Services",
@@ -297,12 +298,12 @@ const DigitalProtectionSolutions: React.FC = () => {
                     {
                       industry: "Education",
                       desc: "Securing student data and institutional systems whilst maintaining accessibility for learning and research activities.",
-                      img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093103/fqyls0ledhjwmgoph0bq.jpg",
                     },
                     {
                       industry: "E-Commerce",
                       desc: "Protecting customer transactions and business data, building trust and ensuring compliance with payment security standards.",
-                      img: "https://images.unsplash.com/photo-1563013541-2d0c41c8264c?auto=format&fit=crop&w=800&q=80",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093292/c3s2iz7zd1g5qmnpkw6d.jpg",
                     },
                   ].map((application, i) => (
                     <div
@@ -384,15 +385,15 @@ const DigitalProtectionSolutions: React.FC = () => {
                   solutions tailored to your needs.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                  <button className="bg-white text-slate-800 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors">
+                  {/* <button className="bg-white text-slate-800 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors">
                     Schedule Consultation
-                  </button>
-                  <button className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+                  </button> */}
+                  <Link to={'/contact'} className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
                     Request Demo
-                  </button>
-                  <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                  </Link>
+                  {/* <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                     Get Started
-                  </button>
+                  </button> */}
                 </div>
                 <div className="text-center text-slate-300">
                   <p>Email: info@d-secure.com</p>

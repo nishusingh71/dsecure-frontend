@@ -191,9 +191,6 @@ function CloudErasureContent() {
                     <Link to="/contact" className="btn-primary">
                       Get Started
                     </Link>
-                    <Link to="/pricing" className="btn-secondary">
-                      View Pricing
-                    </Link>
                   </div>
                 </Reveal>
               </div>
@@ -472,9 +469,6 @@ function CloudErasureContent() {
                 <Link to="/contact" className="bg-white text-brand px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors inline-flex items-center gap-2">
                   Get Started
                   <ArrowRightIcon className="w-4 h-4" filled={true} />
-                </Link>
-                <Link to="/pricing" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-brand transition-colors">
-                  View Pricing
                 </Link>
               </div>
             </Reveal>

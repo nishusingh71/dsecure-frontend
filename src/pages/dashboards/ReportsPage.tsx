@@ -137,7 +137,7 @@ const ReportsPage: React.FC = () => {
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-6">
               <Link 
-                to="/dashboard" 
+                to="/admin" 
                 className="p-2 rounded-lg border border-slate-200 hover:bg-white transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

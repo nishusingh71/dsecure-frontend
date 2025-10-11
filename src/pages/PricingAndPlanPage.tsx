@@ -1,6 +1,6 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import CustomLicenseModal, {
   CustomLicenseData,
 } from "../components/CustomLicenseModal";
@@ -17,6 +17,7 @@ import {
 const PricingAndPlanPage: React.FC = memo(() => {
   const { toast, showToast, hideToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("drive-eraser");
   const [selectedLicenses, setSelectedLicenses] = useState("10");
   const [selectedYears, setSelectedYears] = useState("1");
@@ -26,6 +27,42 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const [showCustomModal, setShowCustomModal] = useState(false);
   const [showSpecialPricingModal, setShowSpecialPricingModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("basic");
+
+  // Read URL parameters and set initial state
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    
+    // Read plan parameter from URL
+    const planFromUrl = searchParams.get('plan');
+    if (planFromUrl) {
+      // Map plan names from URL to plan IDs
+      const planMapping: { [key: string]: string } = {
+        'base': 'basic',
+        'standard': 'standard', 
+        'cloud': 'cloud',
+        'network': 'network',
+        'pro': 'pro',
+        'enterprise': 'enterprise'
+      };
+      
+      const mappedPlan = planMapping[planFromUrl.toLowerCase()];
+      if (mappedPlan) {
+        setSelectedPlan(mappedPlan);
+      }
+    }
+    
+    // Read product parameter from URL
+    const productFromUrl = searchParams.get('product');
+    if (productFromUrl) {
+      setSelectedCategory(productFromUrl);
+    }
+    
+    // Read section parameter to expand File Eraser section if needed
+    const sectionFromUrl = searchParams.get('section');
+    if (sectionFromUrl === 'file-eraser') {
+      setSelectedCategory('file-eraser');
+    }
+  }, [location.search]);
 
   // Custom License Form Submission Configuration
   const customLicenseFormConfig = {
@@ -431,23 +468,22 @@ const PricingAndPlanPage: React.FC = memo(() => {
     years: string,
     plan: string
   ) => {
+    const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
+    
+    if (category === "drive-eraser") {
+      // Drive Eraser is fixed $20 per license (one-time purchase)
+      return Math.round(20 * licenseCount * 100) / 100;
+    }
+    
+    // File Eraser uses plan-based pricing
     const currentPlan = planOptions.find((p) => p.id === plan);
     if (!currentPlan || plan === "custom") return 0;
 
     const basePrice = currentPlan.basePrice;
-    const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
     const yearCount = parseInt(years);
 
-    // Calculate total based on category
-    let baseTotal;
-    if (category === "file-eraser") {
-      // File Eraser is sold annually, so multiply by years
-      baseTotal = Math.round(basePrice * licenseCount * yearCount * 100) / 100;
-    } else {
-      // Drive Eraser is pay-per-use (one-time)
-      baseTotal = Math.round(basePrice * licenseCount * 100) / 100;
-    }
-
+    // File Eraser is sold annually, so multiply by years
+    const baseTotal = Math.round(basePrice * licenseCount * yearCount * 100) / 100;
     return baseTotal;
   };
 
@@ -459,21 +495,70 @@ const PricingAndPlanPage: React.FC = memo(() => {
     if (category === "drive-eraser") {
       return [
         "Complete Hard Drive & SSD Erasure",
-        "Enterprise-Grade Security Standards",
+        "Enterprise-Grade Security Standards", 
         "Multi-Platform Device Support",
         "Compliance Reporting & Certificates",
         "Real-time Progress Monitoring",
         "Batch Processing Capabilities",
       ];
     } else if (category === "file-eraser") {
-      return [
+      // Return plan-specific features based on selected plan
+      const baseFeatures = [
         "Secure File & Folder Deletion",
-        "Application Trace Cleanup",
-        "Cloud Storage Integration",
-        "Privacy Protection Suite",
-        "Scheduled Erasure Tasks",
-        "Cross-Platform Compatibility",
+        "30+ International Erasure Algorithms",
+        "Real-time Progress Monitoring",
       ];
+
+      const planSpecificFeatures = {
+        basic: [
+          "Windows Support Only",
+          "Basic File & Folder Erase",
+          "Essential Erasure Capabilities",
+        ],
+        standard: [
+          "Windows, Mac & Linux Support",
+          "Free Space Cleaning",
+          "Local PDF Reports",
+          "Enhanced Erasure Features",
+        ],
+        cloud: [
+          "All Standard Features",
+          "Cloud Report Upload/Sync",
+          "White-Label Reports",
+          "XML Report Format",
+          "Volume & Disk Erasure",
+        ],
+        network: [
+          "All Cloud Features", 
+          "Network Deployment",
+          "Web Dashboard Access",
+          "Cloud Commands (Remote Jobs)",
+          "Multi-Level User Logs",
+        ],
+        pro: [
+          "All Network Features",
+          "Custom Installer (1 included)",
+          "Private Cloud Support",
+          "Premium Add-ons Available",
+          "Priority Support",
+        ],
+        enterprise: [
+          "All Pro Features Included",
+          "5 Custom Installers",
+          "Unlimited Private Clouds",
+          "Dedicated Support Manager",
+          "Bespoke Integrations Available",
+        ],
+        custom: [
+          "Fully Customized Feature Set",
+          "Bespoke Integration & Development",
+          "Custom Compliance Requirements",
+          "White-label Solutions",
+          "Dedicated Development Team",
+        ],
+      };
+
+      return [...baseFeatures, ...(planSpecificFeatures[plan as keyof typeof planSpecificFeatures] || [])];
     }
     return [];
   };
@@ -548,11 +633,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
     if (selectedLicenses === "custom" || selectedPlan === "custom")
       return "Get Personalized Quote";
 
-    let subtitle = `${getCurrentPlan().name} - ${selectedLicenses} licenses`;
-    
-    if (selectedCategory === "file-eraser") {
-      subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? 's' : ''}`;
+    if (selectedCategory === "drive-eraser") {
+      return `Drive Eraser - ${selectedLicenses} licenses (one-time purchase)`;
     }
+
+    // File Eraser plan-based subtitle
+    let subtitle = `${getCurrentPlan().name} - ${selectedLicenses} licenses`;
+    subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? 's' : ''}`;
     
     return subtitle;
   };
@@ -561,12 +648,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
     if (selectedLicenses === "custom" || selectedPlan === "custom")
       return "Tailored to your needs";
 
+    if (selectedCategory === "drive-eraser") {
+      return "Drive Eraser @ $20.00/license (one-time purchase)";
+    }
+
+    // File Eraser plan-based pricing
     const currentPlan = getCurrentPlan();
-    const yearText = selectedCategory === "file-eraser" ? "/license/year" : "/license";
+    let note = `${currentPlan.name} @ $${currentPlan.basePrice.toFixed(2)}/license/year`;
     
-    let note = `${currentPlan.name} @ $${currentPlan.basePrice.toFixed(2)}${yearText}`;
-    
-    if (selectedCategory === "file-eraser" && parseInt(selectedYears) > 1) {
+    if (parseInt(selectedYears) > 1) {
       note += ` × ${selectedYears} years`;
     }
 
@@ -585,27 +675,58 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return;
     }
 
-    const currentPlan = getCurrentPlan();
-    const paymentData = {
-      productName: getCurrentProduct().title,
-      productImage: getCurrentProduct().image,
-      productImageCategory: getCurrentProduct().imageCategory,
-      productVersion: getCurrentProduct().version,
-      quantity: selectedLicenses,
-      duration: selectedYears,
-      unitPrice: currentPlan.basePrice,
-      totalPrice: calculatePrice(
-        selectedCategory,
-        selectedLicenses,
-        selectedYears,
-        selectedPlan
-      ),
-      deliveryMethod: deliveryMethod,
-      features: currentPlan.features,
-      planName: currentPlan.name,
-      planDescription: currentPlan.description,
-      category: selectedCategory,
-    };
+    const totalPrice = calculatePrice(
+      selectedCategory,
+      selectedLicenses,
+      selectedYears,
+      selectedPlan
+    );
+
+    let paymentData;
+
+    if (selectedCategory === "drive-eraser") {
+      // Drive Eraser fixed pricing data
+      paymentData = {
+        productName: getCurrentProduct().title,
+        productImage: getCurrentProduct().image,
+        productImageCategory: getCurrentProduct().imageCategory,
+        productVersion: getCurrentProduct().version,
+        quantity: selectedLicenses,
+        duration: "1", // Always 1 year for Drive Eraser (one-time)
+        unitPrice: 20, // Fixed $20 per license
+        totalPrice: totalPrice,
+        deliveryMethod: deliveryMethod,
+        features: [
+          "Complete Hard Drive & SSD Erasure",
+          "Enterprise-Grade Security Standards",
+          "Multi-Platform Device Support",
+          "Compliance Reporting & Certificates",
+          "Real-time Progress Monitoring",
+          "Batch Processing Capabilities",
+        ],
+        planName: undefined, // No plan for Drive Eraser
+        planDescription: undefined, // No plan description
+        category: selectedCategory,
+      };
+    } else {
+      // File Eraser plan-based pricing data
+      const currentPlan = getCurrentPlan();
+      paymentData = {
+        productName: getCurrentProduct().title,
+        productImage: getCurrentProduct().image,
+        productImageCategory: getCurrentProduct().imageCategory,
+        productVersion: getCurrentProduct().version,
+        quantity: selectedLicenses,
+        duration: selectedYears,
+        unitPrice: currentPlan.basePrice,
+        totalPrice: totalPrice,
+        deliveryMethod: deliveryMethod,
+        features: currentPlan.features,
+        planName: currentPlan.name,
+        planDescription: currentPlan.description,
+        category: selectedCategory,
+      };
+    }
 
     // Store payment data in localStorage for the payment page
     localStorage.setItem("paymentData", JSON.stringify(paymentData));
@@ -736,8 +857,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     {/* Dynamic Product Features */}
                     <div className="space-y-3 mb-6">
                       <h4 className="text-sm font-semibold text-gray-800 mb-3">
-                        {getCurrentPlan().name} - Key Features:
+                        {selectedCategory === "drive-eraser" 
+                          ? "Drive Eraser - Key Features:" 
+                          : `${getCurrentPlan().name} - Key Features:`}
                       </h4>
+                      {selectedCategory === "file-eraser" && (
+                        <p className="text-xs text-gray-600 mb-3 italic">
+                          {getCurrentPlan().description}
+                        </p>
+                      )}
                       {getProductFeatures(selectedCategory, selectedPlan).map(
                         (feature, index) => (
                           <div
@@ -768,30 +896,32 @@ const PricingAndPlanPage: React.FC = memo(() => {
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">
                         Configure Your License
                       </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                        {/* Plan Selection */}
-                        <div className="space-y-2">
-                          <label className="block text-sm font-semibold text-gray-700">
-                            Select Plan:
-                          </label>
-                          <p className="text-xs text-gray-500">
-                            Features will update based on your selection
-                          </p>
-                          <select
-                            value={selectedPlan}
-                            onChange={(e) => setSelectedPlan(e.target.value)}
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
-                          >
-                            {planOptions.map((plan) => (
-                              <option key={plan.id} value={plan.id}>
-                                {plan.name} - $
-                                {plan.basePrice > 0
-                                  ? `${plan.basePrice}/license`
-                                  : "Custom"}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
+                      <div className={`grid gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"}`}>
+                        {/* Plan Selection - Only show for File Eraser */}
+                        {selectedCategory === "file-eraser" && (
+                          <div className="space-y-2">
+                            <label className="block text-sm font-semibold text-gray-700">
+                              Select Plan:
+                            </label>
+                            <p className="text-xs text-gray-500">
+                              Features will update based on your selection
+                            </p>
+                            <select
+                              value={selectedPlan}
+                              onChange={(e) => setSelectedPlan(e.target.value)}
+                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                            >
+                              {planOptions.map((plan) => (
+                                <option key={plan.id} value={plan.id}>
+                                  {plan.name} - $
+                                  {plan.basePrice > 0
+                                    ? `${plan.basePrice}/license`
+                                    : "Custom"}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
 
                         {/* License Quantity */}
                         <div className="space-y-2">
@@ -885,6 +1015,17 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   </div>
                   <div className="text-xs text-gray-500">{getPriceNote()}</div>
                 </div>
+
+                {/* Plan Summary - Only show for File Eraser */}
+                {selectedCategory === "file-eraser" && (
+                  <div className="mb-6 p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl border border-teal-100">
+                    <h4 className="font-semibold text-gray-900 mb-2">{getCurrentPlan().name}</h4>
+                    <p className="text-xs text-gray-600 mb-2">{getCurrentPlan().description}</p>
+                    <div className="text-xs text-teal-600 font-medium">
+                      Category: {getCurrentPlan().category}
+                    </div>
+                  </div>
+                )}
 
                 {/* Action Button */}
                 <button

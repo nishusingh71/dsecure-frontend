@@ -324,7 +324,7 @@ function SolutionsPageContent() {
       company: "Asia Pacific Medical Group",
       industry: "Healthcare",
       challenge:
-        "Regional healthcare network needed HIPAA-compliant data erasure for 2,500+ medical devices across 12 countries within strict 3-month compliance deadline.",
+        "Regional healthcare network needed HIPAA-compliant data erasure for 25+ medical devices across 12 countries within strict 3-month compliance deadline.",
       solution:
         "Deployed DSecure Healthcare solution with automated PHI-specific protocols and multi-region compliance reporting for seamless rollout.",
       results:
@@ -356,7 +356,7 @@ function SolutionsPageContent() {
       company: "Global IT Recovery Solutions",
       industry: "IT Asset Disposition",
       challenge:
-        "ITAD provider processing 1,000+ enterprise devices monthly needed scalable solution to handle multiple client compliance requirements simultaneously.",
+        "ITAD provider processing 100+ enterprise devices monthly needed scalable solution to handle multiple client compliance requirements simultaneously.",
       solution:
         "Deployed DSecure ITAD platform with multi-tenant architecture, automated certification generation, and bulk processing capabilities.",
       results:
@@ -881,12 +881,12 @@ function SolutionsPageContent() {
                         Learn More About {solutions[activeIndustry].title}
                       </Link>
                     )}
-                    <a href="/contact" className="btn-secondary">
+                    <Link to="/contact" className="btn-secondary">
                       Request Demo
-                    </a>
-                    <a href="/pricing" className="btn-secondary">
+                    </Link>
+                    {/* <a href="/pricing" className="btn-secondary">
                       View Pricing
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 {/* Sidebar */}

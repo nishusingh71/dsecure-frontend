@@ -16,25 +16,25 @@ import TechnicalDocumentation from "./components/TechnicalDocumentation";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage")); // ✅ Added ProductPage
-const DeviceErasurePage = lazy(
-  () => import("./pages/services/DeviceErasurePage")
-);
-const NetworkErasurePage = lazy(
-  () => import("./pages/services/NetworkErasurePage")
-);
+// const DeviceErasurePage = lazy(
+//   () => import("./pages/services/DeviceErasurePage")
+// );
+// const NetworkErasurePage = lazy(
+//   () => import("./pages/services/NetworkErasurePage")
+// );
 const CloudErasurePage = lazy(
   () => import("./pages/services/CloudErasurePage")
 );
 const SolutionsPage = lazy(() => import("./pages/SolutionsPage"));
-const EnterpriseSolutionsPage = lazy(
-  () => import("./pages/solutions/EnterpriseSolutionsPage")
-);
-const HealthcareSolutionsPage = lazy(
-  () => import("./pages/solutions/HealthcareSolutionsPage")
-);
-const FinancialSolutionsPage = lazy(
-  () => import("./pages/solutions/FinancialSolutionsPage")
-);
+// const EnterpriseSolutionsPage = lazy(
+//   () => import("./pages/solutions/EnterpriseSolutionsPage")
+// );
+// const HealthcareSolutionsPage = lazy(
+//   () => import("./pages/solutions/HealthcareSolutionsPage")
+// );
+// const FinancialSolutionsPage = lazy(
+//   () => import("./pages/solutions/FinancialSolutionsPage")
+// );
 const CompliancePage = lazy(() => import("./pages/CompliancePage"));
 const ResourcesPage = lazy(() => import("./pages/ResourcesPage"));
 const DocumentationResourcesPage = lazy(
@@ -167,21 +167,21 @@ export default function App() {
                   <Route path="services" element={<ServicesPage />} />
                   <Route path="products" element={<ProductPage />} />
                   {/* Services */}
-                  <Route
+                  {/* <Route
                     path="services/device-erasure"
                     element={<DeviceErasurePage />}
                   />
                   <Route
                     path="services/network-erasure"
                     element={<NetworkErasurePage />}
-                  />
+                  /> */}
                   <Route
                     path="services/cloud-erasure"
                     element={<CloudErasurePage />}
                   />
                   {/* Solutions */}
                   <Route path="solutions" element={<SolutionsPage />} />
-                  <Route
+                  {/* <Route
                     path="solutions/enterprise"
                     element={<EnterpriseSolutionsPage />}
                   />
@@ -192,7 +192,7 @@ export default function App() {
                   <Route
                     path="solutions/financial"
                     element={<FinancialSolutionsPage />}
-                  />
+                  /> */}
                   <Route path="solutions/education" element={<EducationPage />} />
                   <Route path="solutions/financial-services" element={<FinancialServices />} />
                   <Route path="solutions/government" element={<GovernmentPage />} />
