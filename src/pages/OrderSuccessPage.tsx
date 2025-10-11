@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ProductImage } from '@/components/ProductImage';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 
 interface OrderData {
   orderId: string;
@@ -38,6 +40,7 @@ interface OrderData {
 export default function OrderSuccessPage() {
   const navigate = useNavigate();
   const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const seo = getSEOForPage('order-success');
 
   useEffect(() => {
     const savedOrderData = localStorage.getItem('orderData');
@@ -48,20 +51,19 @@ export default function OrderSuccessPage() {
     }
   }, [navigate]);
 
-  if (!orderData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading order details...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <>
+      <SEOHead seo={seo} />
+      {!orderData ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading order details...</p>
+          </div>
+        </div>
+      ) : (
+        <div className="min-h-screen bg-gray-50 py-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Success Header */}
         <div className="text-center mb-12">
           <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
@@ -319,7 +321,9 @@ export default function OrderSuccessPage() {
             ← Return to Products
           </Link>
         </div>
-      </div>
-    </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

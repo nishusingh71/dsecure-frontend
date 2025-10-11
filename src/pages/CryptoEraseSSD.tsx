@@ -1,10 +1,13 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
+import SEOHead from "../components/SEOHead";
+import { getSEOForPage } from "../utils/seo";
 
 const CryptoEraseSSD: React.FC = () => {
   return (
     <>
+      <SEOHead seo={getSEOForPage("ssd-cryptographic-erasure-guide")} />
       <Helmet>
         <title>CryptoEraseSSD | DSecure - Professional Data Erasure Guide</title>
         <meta name="description" content="Professional guide for secure data erasure using DSecure tools and methods." />

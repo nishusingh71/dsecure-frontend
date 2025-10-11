@@ -412,6 +412,24 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/pricing'),
   },
+
+  'order-success': {
+    title: 'Order Confirmed - D-Secure Tech Purchase Complete',
+    description: 'Review your confirmed D-Secure Tech order, access downloads, and find next steps for onboarding and support.',
+    keywords: generateKeywords([
+      'order confirmation',
+      'purchase complete',
+      'data erasure order summary',
+      'license delivery timeline',
+      'customer onboarding support',
+      'download center access',
+      'post purchase checklist',
+      'order success page',
+      'subscription confirmation',
+      'enterprise order receipt'
+    ]),
+    canonicalUrl: getCanonicalUrl('/order-success'),
+  },
   
   partners: {
     title: 'Partners - Join D-Secure Tech Partner Program',
@@ -539,6 +557,24 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'data destruction techniques'
     ]),
     canonicalUrl: getCanonicalUrl('/overwrite-guide'),
+  },
+
+  'ssd-cryptographic-erasure-guide': {
+    title: 'SSD Cryptographic Erasure Guide - CryptoEraseSSD',
+    description: 'Step-by-step cryptographic erasure guide for SSDs to meet enterprise security and compliance requirements.',
+    keywords: generateKeywords([
+      'SSD cryptographic erase',
+      'crypto erase guide',
+      'secure SSD erasure',
+      'enterprise SSD wiping',
+      'NIST SSD erasure',
+      'cryptographic sanitization',
+      'fast SSD wiping',
+      'data destruction SSD',
+      'compliant SSD erasure',
+      'secure wipe solid state drive'
+    ]),
+    canonicalUrl: getCanonicalUrl('/support/ssd-cryptographic-erasure-guide'),
   },
 
   'cloud-console-guide': {
@@ -669,6 +705,24 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl('/payment'),
   },
 
+  'checkout': {
+    title: 'Secure Checkout - Complete Your D-Secure Tech Purchase',
+    description: 'Finalize your D-Secure Tech software purchase with secure payment, order review, and customer details.',
+    keywords: generateKeywords([
+      'secure checkout',
+      'software purchase',
+      'order payment',
+      'license checkout',
+      'payment review',
+      'order confirmation step',
+      'billing information form',
+      'checkout process',
+      'online payment',
+      'software order review'
+    ]),
+    canonicalUrl: getCanonicalUrl('/checkout'),
+  },
+
   'payment-setup': {
     title: 'Payment Setup - Configure Billing for D-Secure Tech',
     description: 'Set up payment methods and billing information for D-Secure Tech software subscriptions and services.',
@@ -742,6 +796,24 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl('/diagnostics'),
   },
 
+  'api-test': {
+    title: 'API Test Dashboard - D-Secure Tech Integration Tools',
+    description: 'Monitor API availability, sample data, and integration health for D-Secure Tech services in real time.',
+    keywords: generateKeywords([
+      'API test dashboard',
+      'integration diagnostics',
+      'API status monitor',
+      'developer tools',
+      'API connectivity test',
+      'system integration check',
+      'service availability monitor',
+      'API troubleshooting',
+      'development utilities',
+      'API health status'
+    ]),
+    canonicalUrl: getCanonicalUrl('/api-test'),
+  },
+
   'compliance': {
     title: 'Compliance Center - Data Erasure Standards | D-Secure Tech',
     description: 'Comprehensive compliance information for data erasure standards including NIST, ISO, GDPR, HIPAA, and industry regulations.',
@@ -758,6 +830,24 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'regulatory requirements'
     ]),
     canonicalUrl: getCanonicalUrl('/compliance'),
+  },
+
+  'icon-showcase': {
+    title: 'Icon Showcase - D-Secure Tech Design Assets',
+    description: 'Preview the FlatIcons set used across D-Secure Tech for consistent UI and branding elements.',
+    keywords: generateKeywords([
+      'icon showcase',
+      'UI icon set',
+      'FlatIcons gallery',
+      'design assets',
+      'brand icons',
+      'interface icons',
+      'icon preview',
+      'design system icons',
+      'product iconography',
+      'UI component icons'
+    ]),
+    canonicalUrl: getCanonicalUrl('/icon-showcase'),
   }
 };
 

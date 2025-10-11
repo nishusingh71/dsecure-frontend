@@ -786,20 +786,20 @@ const PricingAndPlanPage: React.FC = memo(() => {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
-        <div className="container mx-auto px-4 py-12 max-w-7xl">
+        <div className="container mx-auto px-4 xs:px-6 sm:px-6 md:px-8 py-8 xs:py-10 sm:py-12 md:py-12 max-w-7xl">
           {/* Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6 shadow-lg">
+          <div className="text-center mb-12 xs:mb-14 sm:mb-16 md:mb-16">
+            <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-4 xs:px-6 sm:px-6 py-2 rounded-full text-xs xs:text-sm sm:text-sm font-semibold mb-4 xs:mb-6 sm:mb-6 shadow-lg">
               SECURE • COMPLIANT
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 xs:mb-6 sm:mb-6 leading-tight px-2">
               Choose Your{" "}
               <span className="bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent">
                 D-Secure
               </span>{" "}
               License
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base xs:text-lg sm:text-xl md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
               Professional data erasure solutions trusted by enterprises
               worldwide. NIST & DoD compliant with lifetime support and instant
               deployment.
@@ -807,35 +807,35 @@ const PricingAndPlanPage: React.FC = memo(() => {
           </div>
 
           {/* Category Selection */}
-          <div className="flex justify-center mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4  max-w-2xl">
+          <div className="flex justify-center mb-8 xs:mb-10 sm:mb-12 md:mb-12">
+            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-3 xs:gap-4 sm:gap-4 max-w-2xl w-full px-4 xs:px-0 sm:px-0">
               {categories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => {
                     setSelectedCategory(category.id);
                   }}
-                  className={`p-6 rounded-xl text-left transition-all duration-300 border-2 ${
+                  className={`p-4 xs:p-5 sm:p-6 rounded-xl text-left transition-all duration-300 border-2 ${
                     selectedCategory === category.id
                       ? "bg-gradient-to-br from-teal-500 to-teal-600 text-white border-teal-500 shadow-xl transform scale-105"
                       : "bg-white text-gray-700 border-gray-200 hover:border-teal-300 hover:shadow-lg hover:scale-102"
                   }`}
                 >
-                  <h3 className="font-semibold text-sm mb-1">
+                  <h3 className="font-semibold text-xs xs:text-sm sm:text-sm mb-1">
                     {category.name}
                   </h3>
-                  <p className="text-xs opacity-90">{category.subtitle}</p>
+                  <p className="text-xs xs:text-xs sm:text-xs opacity-90">{category.subtitle}</p>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Product Details Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 xs:gap-8 sm:gap-8 mb-8 xs:mb-10 sm:mb-12 md:mb-12">
             {/* Product Image and Info */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="flex items-start space-x-6">
+              <div className="bg-white rounded-lg p-4 xs:p-6 sm:p-6 shadow-sm">
+                <div className="flex flex-col xs:flex-row sm:flex-row items-start space-y-4 xs:space-y-0 xs:space-x-6 sm:space-x-6">
                   {/* Enhanced Product Image */}
                   <ProductImage
                     category={selectedCategory}
@@ -846,8 +846,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   />
 
                   {/* Product Info */}
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  <div className="flex-1 w-full xs:w-auto sm:w-auto">
+                    <h2 className="text-xl xs:text-2xl sm:text-2xl md:text-2xl font-bold text-gray-900 mb-3 xs:mb-4 sm:mb-4">
                       {getCurrentProduct().title}
                     </h2>
                     <p className="text-gray-600 mb-6">
@@ -892,15 +892,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     </div>
 
                     {/* Selection Criteria */}
-                    <div className="mb-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    <div className="mb-4 xs:mb-6 sm:mb-6">
+                      <h3 className="text-base xs:text-lg sm:text-lg font-semibold text-gray-900 mb-3 xs:mb-4 sm:mb-4">
                         Configure Your License
                       </h3>
-                      <div className={`grid gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"}`}>
+                      <div className={`grid gap-3 xs:gap-4 sm:gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"}`}>
                         {/* Plan Selection - Only show for File Eraser */}
                         {selectedCategory === "file-eraser" && (
                           <div className="space-y-2">
-                            <label className="block text-sm font-semibold text-gray-700">
+                            <label className="block text-xs xs:text-sm font-semibold text-gray-700">
                               Select Plan:
                             </label>
                             <p className="text-xs text-gray-500">
@@ -909,7 +909,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             <select
                               value={selectedPlan}
                               onChange={(e) => setSelectedPlan(e.target.value)}
-                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                              className="w-full px-3 xs:px-4 py-2 xs:py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 text-sm xs:text-base font-medium shadow-sm hover:border-gray-400"
                             >
                               {planOptions.map((plan) => (
                                 <option key={plan.id} value={plan.id}>
@@ -925,7 +925,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
                         {/* License Quantity */}
                         <div className="space-y-2">
-                          <label className="block text-sm font-semibold text-gray-700">
+                          <label className="block text-xs xs:text-sm font-semibold text-gray-700">
                             {getCurrentProduct().selectionLabel}
                           </label>
                           {getCurrentProduct().selectionNote && (
@@ -938,7 +938,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             onChange={(e) =>
                               setSelectedLicenses(e.target.value)
                             }
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                            className="w-full px-3 xs:px-4 py-2 xs:py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 text-sm xs:text-base font-medium shadow-sm hover:border-gray-400"
                           >
                             {getCurrentProduct().options.map((option) => (
                               <option key={option} value={option}>
@@ -1004,10 +1004,10 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
             {/* Enhanced Pricing Card */}
             <div className="lg:col-span-1">
-              <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-8 shadow-xl border-2 border-blue-100 sticky top-8">
+              <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-6 xs:p-8 sm:p-8 shadow-xl border-2 border-blue-100 lg:sticky lg:top-8">
                 {/* Price Display */}
-                <div className="text-center mb-8">
-                  <div className="text-5xl font-bold bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent mb-3">
+                <div className="text-center mb-6 xs:mb-8 sm:mb-8">
+                  <div className="text-3xl xs:text-4xl sm:text-5xl md:text-5xl font-bold bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent mb-2 xs:mb-3 sm:mb-3">
                     {getDisplayPrice()}
                   </div>
                   <div className="text-sm text-teal-500 font-semibold bg-teal-50 px-3 py-1 rounded-full inline-block mb-2">
@@ -1030,7 +1030,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 {/* Action Button */}
                 <button
                   onClick={handleBuyNow}
-                  className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-6 text-lg"
+                  className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg"
                 >
                   {selectedLicenses === "custom" || selectedPlan === "custom"
                     ? " Request Custom Quote"
@@ -1098,8 +1098,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
           </div>
 
           {/* FAQ Section */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
+          <div className="bg-white rounded-2xl p-4 xs:p-6 sm:p-8 shadow-lg border border-gray-200">
+            <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4 xs:mb-6 sm:mb-8">
               Frequently Asked Questions
             </h2>
             <div className="space-y-4 max-w-4xl mx-auto">
@@ -1112,7 +1112,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     onClick={() =>
                       setExpandedFaq(expandedFaq === index ? null : index)
                     }
-                    className="w-full px-6 py-4 text-left font-semibold text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center"
+                    className="w-full px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-left text-sm xs:text-base font-semibold text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center"
                   >
                     <span>{faq.question}</span>
                     <svg
@@ -1130,7 +1130,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     </svg>
                   </button>
                   {expandedFaq === index && (
-                    <div className="px-6 py-4 text-gray-700 bg-white">
+                    <div className="px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-sm xs:text-base text-gray-700 bg-white">
                       {faq.answer}
                     </div>
                   )}

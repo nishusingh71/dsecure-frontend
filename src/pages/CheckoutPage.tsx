@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { assets, getOptimizedImageUrl } from '@/utils/cloudinary';
 import { ProductImage } from '@/components/ProductImage';
 import { useToast } from '@/components/Toast';
+import SEOHead from '../components/SEOHead';
+import { getSEOForPage } from '../utils/seo';
 
 interface PaymentData {
   productName: string;
@@ -104,16 +106,21 @@ const CheckoutPage = memo(function CheckoutPage() {
 
   if (!paymentData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading checkout...</p>
+      <>
+        <SEOHead seo={getSEOForPage('checkout')} />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading checkout...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
+    <>
+      <SEOHead seo={getSEOForPage('checkout')} />
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -542,6 +549,7 @@ const CheckoutPage = memo(function CheckoutPage() {
         </div>
       </div>
     </div>
+    </>
   );
 })
 

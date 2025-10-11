@@ -16,12 +16,15 @@ import {
   ServerIcon,
   DatabaseIcon,
 } from "@/components/FlatIcons";
-import { useEffect, memo } from "react";
+import { useEffect, memo, useMemo, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
+import { usePerformanceMonitor } from "@/utils/performanceUtils";
 
 const HomePage = memo(function HomePage() {
-  useEffect(() => {
+  usePerformanceMonitor('HomePage');
+
+  const scrollToHash = useCallback(() => {
     const hash = window.location.hash;
     if (hash) {
       const element = document.getElementById(hash.replace("#", ""));
@@ -32,6 +35,10 @@ const HomePage = memo(function HomePage() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    scrollToHash();
+  }, [scrollToHash]);
 
   return (
     <>

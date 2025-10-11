@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface OptimizedImageProps {
   src: string
@@ -10,7 +10,7 @@ interface OptimizedImageProps {
   placeholder?: string
 }
 
-const OptimizedImage = memo(function OptimizedImage({
+export default function OptimizedImage({
   src,
   alt,
   className = '',
@@ -76,6 +76,4 @@ const OptimizedImage = memo(function OptimizedImage({
       />
     </picture>
   )
-})
-
-export default OptimizedImage
+}

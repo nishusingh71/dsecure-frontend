@@ -1,10 +1,16 @@
-import { memo, useState, useEffect } from 'react';
+import { memo, useState, useEffect, useCallback, useMemo } from 'react';
+import type { ComponentType } from 'react';
 
 /**
  * Higher-order component for memoizing components to prevent unnecessary re-renders
  */
-export const withMemo = <T extends object>(Component: React.ComponentType<T>) => {
-  return memo(Component);
+export const withMemo = <T extends object>(
+  Component: ComponentType<T>,
+  areEqual?: (prevProps: T, nextProps: T) => boolean
+) => {
+  const MemoizedComponent = memo(Component, areEqual);
+  MemoizedComponent.displayName = `Memo(${Component.displayName || Component.name})`;
+  return MemoizedComponent;
 };
 
 /**
@@ -83,4 +89,56 @@ export const useVirtualScroll = (
       setScrollTop(e.currentTarget.scrollTop);
     }
   };
+};
+
+/**
+ * Memoized search functionality for large datasets
+ */
+export const useOptimizedSearch = <T>(
+  items: T[],
+  searchTerm: string,
+  searchKeys: (keyof T)[],
+  delay: number = 300
+) => {
+  const debouncedSearchTerm = useDebounce(searchTerm, delay);
+
+  return useMemo(() => {
+    if (!debouncedSearchTerm.trim()) return items;
+
+    const lowerSearchTerm = debouncedSearchTerm.toLowerCase();
+    return items.filter(item =>
+      searchKeys.some(key => {
+        const value = item[key];
+        return value?.toString().toLowerCase().includes(lowerSearchTerm);
+      })
+    );
+  }, [items, debouncedSearchTerm, searchKeys]);
+};
+
+/**
+ * Optimized callback hook with stable reference
+ */
+export const useStableCallback = <T extends (...args: any[]) => any>(
+  callback: T,
+  deps: React.DependencyList
+): T => {
+  return useCallback(callback, deps);
+};
+
+/**
+ * Performance monitoring hook
+ */
+export const usePerformanceMonitor = (componentName: string) => {
+  const startTime = useMemo(() => performance.now(), []);
+
+  useEffect(() => {
+    const endTime = performance.now();
+    const renderTime = endTime - startTime;
+
+    if (process.env.NODE_ENV === 'development' && renderTime > 50) {
+      console.warn(`${componentName} render time: ${renderTime.toFixed(2)}ms`);
+    }
+  });
+
+  return { startTime };
 };

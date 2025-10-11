@@ -12,6 +12,8 @@ import {
   HoverIcon 
 } from '@/components/FlatIcons'
 import { Helmet } from 'react-helmet-async';
+import SEOHead from '../components/SEOHead'
+import { getSEOForPage } from '../utils/seo'
 type Standard = {
   title: string;
   fullName: string;
@@ -29,6 +31,7 @@ type Standards = {
 export default function CompliancePage() {
   return (
     <>
+      <SEOHead seo={getSEOForPage('compliance')} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/compliance" />
         <title>

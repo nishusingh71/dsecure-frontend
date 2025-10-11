@@ -30,7 +30,10 @@ export default defineConfig({
     minify: 'esbuild',
     // Target modern browsers
     target: 'es2020',
+    // Improved performance settings
+    cssCodeSplit: true,
     rollupOptions: {
+      treeshake: 'recommended',
       output: {
         // Use function form for better chunk splitting
         manualChunks: (id) => {

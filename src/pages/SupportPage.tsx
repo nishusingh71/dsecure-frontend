@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, memo } from "react";
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
@@ -7,6 +7,7 @@ import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
+import { useOptimizedSearch, usePerformanceMonitor } from "@/utils/performanceUtils";
 
 // Form components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{ 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { getProductIcon, getProductImageConfig } from '@/utils/productIcons';
 
 interface ProductImageProps {
@@ -10,7 +10,7 @@ interface ProductImageProps {
   showDetails?: boolean;
 }
 
-export const ProductImage: React.FC<ProductImageProps> = ({
+export const ProductImage = memo<ProductImageProps>(({
   category,
   productName,
   version,
@@ -18,16 +18,16 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   className = '',
   showDetails = true,
 }) => {
-  const config = getProductImageConfig(category);
+  const config = useMemo(() => getProductImageConfig(category), [category]);
   
-  const sizeConfig = {
+  const sizeConfig = useMemo(() => ({
     small: { container: 'w-16 h-16', icon: 'w-8 h-8', text: 'text-xs' },
     medium: { container: 'w-24 h-24', icon: 'w-12 h-12', text: 'text-sm' },
     large: { container: 'w-48 h-64', icon: 'w-16 h-16', text: 'text-lg' },
-  };
+  }), []);
   
   const currentSize = sizeConfig[size];
-  const iconSize = size === 'large' ? 128 : size === 'medium' ? 64 : 32;
+  const iconSize = useMemo(() => size === 'large' ? 128 : size === 'medium' ? 64 : 32, [size]);
   
   return (
     <div className={`${currentSize.container} bg-gradient-to-br ${config.backgroundColor} rounded-lg p-4 flex flex-col items-center justify-center text-white shadow-lg ${className}`}>
@@ -69,6 +69,8 @@ export const ProductImage: React.FC<ProductImageProps> = ({
       )}
     </div>
   );
-};
+});
+
+ProductImage.displayName = 'ProductImage';
 
 export default ProductImage;
