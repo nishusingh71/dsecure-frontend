@@ -15,26 +15,11 @@ import TechnicalDocumentation from "./components/TechnicalDocumentation";
 // Lazy pages
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
-const ProductPage = lazy(() => import("./pages/ProductPage")); // ✅ Added ProductPage
-// const DeviceErasurePage = lazy(
-//   () => import("./pages/services/DeviceErasurePage")
-// );
-// const NetworkErasurePage = lazy(
-//   () => import("./pages/services/NetworkErasurePage")
-// );
+const ProductPage = lazy(() => import("./pages/ProductPage"));
 const CloudErasurePage = lazy(
   () => import("./pages/services/CloudErasurePage")
 );
 const SolutionsPage = lazy(() => import("./pages/SolutionsPage"));
-// const EnterpriseSolutionsPage = lazy(
-//   () => import("./pages/solutions/EnterpriseSolutionsPage")
-// );
-// const HealthcareSolutionsPage = lazy(
-//   () => import("./pages/solutions/HealthcareSolutionsPage")
-// );
-// const FinancialSolutionsPage = lazy(
-//   () => import("./pages/solutions/FinancialSolutionsPage")
-// );
 const CompliancePage = lazy(() => import("./pages/CompliancePage"));
 const ResourcesPage = lazy(() => import("./pages/ResourcesPage"));
 const DocumentationResourcesPage = lazy(
@@ -78,6 +63,7 @@ import AdminSubusers from "./pages/dashboards/AdminSubusers";
 import NewErasurePage from "./pages/dashboards/NewErasurePage";
 import ReportsPage from "./pages/dashboards/ReportsPage";
 import DownloadAgentPage from "./pages/dashboards/DownloadAgentPage";
+
 // Admin pages
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminGroups from "./pages/admin/AdminGroups";
@@ -103,6 +89,38 @@ import NotFoundPage from "./pages/NotFoundPage";
 import EducationPage from "./pages/EducationPage";
 import FinancialServices from "./pages/FinancialServices";
 import GovernmentPage from "./pages/GovernmentPage";
+
+// Manual Pages
+const InstallationPage = lazy(
+  () => import("./pages/support/manual/InstallationPage")
+);
+const FirstTimeSetupPage = lazy(
+  () => import("./pages/support/manual/FirstTimeSetupPage")
+);
+const UserInterfacePage = lazy(
+  () => import("./pages/support/manual/UserInterfacePage")
+);
+const QuickStartTutorial = lazy(
+  () => import("./pages/support/manual/QuickstartPage")
+);
+const OverwritePatternsPage = lazy(
+  () => import("./pages/support/manual/OverwritePatternsPage")
+);
+const CryptographicErasurePage = lazy(
+  () => import("./pages/support/manual/CryptographicErasurePage")
+);
+const PhysicalDestructionPage = lazy(
+  () => import("./pages/support/manual/PhysicalDestructionPage")
+);
+const VerificationMethodsPage = lazy(
+  () => import("./pages/support/manual/VerificationMethodsPage")
+);
+const WindowsSystemsPage = lazy(
+  () => import("./pages/support/manual/WindowsSystemsPage")
+);
+const MacOSSystemsPage = lazy(
+  () => import("./pages/support/manual/MacOSSystemsPage")
+);
 
 // Support pages
 const FAQsPage = lazy(() => import("./pages/support/FAQsPage"));
@@ -166,36 +184,28 @@ export default function App() {
                   <Route index element={<HomePage />} />
                   <Route path="services" element={<ServicesPage />} />
                   <Route path="products" element={<ProductPage />} />
+
                   {/* Services */}
-                  {/* <Route
-                    path="services/device-erasure"
-                    element={<DeviceErasurePage />}
-                  />
-                  <Route
-                    path="services/network-erasure"
-                    element={<NetworkErasurePage />}
-                  /> */}
                   <Route
                     path="services/cloud-erasure"
                     element={<CloudErasurePage />}
                   />
+
                   {/* Solutions */}
                   <Route path="solutions" element={<SolutionsPage />} />
-                  {/* <Route
-                    path="solutions/enterprise"
-                    element={<EnterpriseSolutionsPage />}
+                  <Route
+                    path="solutions/education"
+                    element={<EducationPage />}
                   />
                   <Route
-                    path="solutions/healthcare"
-                    element={<HealthcareSolutionsPage />}
+                    path="solutions/financial-services"
+                    element={<FinancialServices />}
                   />
                   <Route
-                    path="solutions/financial"
-                    element={<FinancialSolutionsPage />}
-                  /> */}
-                  <Route path="solutions/education" element={<EducationPage />} />
-                  <Route path="solutions/financial-services" element={<FinancialServices />} />
-                  <Route path="solutions/government" element={<GovernmentPage />} />
+                    path="solutions/government"
+                    element={<GovernmentPage />}
+                  />
+
                   {/* Resources */}
                   <Route path="resources" element={<ResourcesPage />} />
                   <Route
@@ -218,6 +228,7 @@ export default function App() {
                     path="resources/whitepapers"
                     element={<WhitepapersResourcesPage />}
                   />
+
                   {/* Other Pages */}
                   <Route path="compliance" element={<CompliancePage />} />
                   <Route path="contact" element={<ContactPage />} />
@@ -305,9 +316,18 @@ export default function App() {
                     <Route path="users/edit/:userId" element={<EditUser />} />
                     <Route path="groups" element={<AdminGroups />} />
                     <Route path="groups/add" element={<AddGroup />} />
-                    <Route path="groups/edit/:groupId" element={<EditGroup />} />
-                    <Route path="reports/admin" element={<AdminReportsAdmin />} />
-                    <Route path="reports/generate" element={<GenerateReport />} />
+                    <Route
+                      path="groups/edit/:groupId"
+                      element={<EditGroup />}
+                    />
+                    <Route
+                      path="reports/admin"
+                      element={<AdminReportsAdmin />}
+                    />
+                    <Route
+                      path="reports/generate"
+                      element={<GenerateReport />}
+                    />
                     <Route path="settings" element={<AdminSettings />} />
                   </Route>
                   {/* Support Guides */}
@@ -315,12 +335,18 @@ export default function App() {
                     path="support/overwrite-guide"
                     element={<OverwriteGuide />}
                   />
-                  <Route path="support/wipe-guide" element={<OverwriteGuide />} />
+                  <Route
+                    path="support/wipe-guide"
+                    element={<OverwriteGuide />}
+                  />
                   <Route
                     path="support/sas-wipe-guide"
                     element={<WipeSASDrives />}
                   />
-                  <Route path="support/mac-wipe-guide" element={<WipeMacM1 />} />
+                  <Route
+                    path="support/mac-wipe-guide"
+                    element={<WipeMacM1 />}
+                  />
                   <Route
                     path="support/mac-eraser-guide"
                     element={<MacEraseGuide />}
@@ -385,6 +411,48 @@ export default function App() {
                     path="blog/data-sanitization-compliance"
                     element={<DataSanitizationComplianceBlog />}
                   />
+
+                  <Route
+                    path="/support/manual/installation"
+                    element={<InstallationPage />}
+                  />
+                  <Route
+                    path="/support/manual/first-time-setup"
+                    element={<FirstTimeSetupPage />}
+                  />
+                  <Route
+                    path="/support/manual/user-interface"
+                    element={<UserInterfacePage />}
+                  />
+                  <Route
+                    path="/support/manual/quickstart"
+                    element={<QuickStartTutorial />}
+                  />
+                  <Route
+                    path="/support/manual/overwrite-patterns"
+                    element={<OverwritePatternsPage />}
+                  />
+                  <Route
+                    path="/support/manual/cryptographic-erasure"
+                    element={<CryptographicErasurePage />}
+                  />
+                  <Route
+                    path="/support/manual/physical-destruction"
+                    element={<PhysicalDestructionPage />}
+                  />
+                  <Route
+                    path="/support/manual/verification-methods"
+                    element={<VerificationMethodsPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows"
+                    element={<WindowsSystemsPage />}
+                  />
+                  <Route
+                    path="/support/manual/macos"
+                    element={<MacOSSystemsPage />}
+                  />
+
                   {/* Product-specific Feature */}
                   <Route
                     path="products/mobile-erasure"
