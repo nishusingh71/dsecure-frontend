@@ -1,13 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 
-// Extend Window interface to include grecaptcha
-declare global {
-  interface Window {
-    grecaptcha?: {
-      execute: () => void;
-    };
-  }
-}
+// reCAPTCHA types are now handled in EnhancedRecaptcha component
 
 // reCAPTCHA hook for handling Google reCAPTCHA verification
 export function useRecaptcha() {
@@ -38,17 +31,9 @@ export function useRecaptcha() {
     setIsLoading(true);
     setError(null);
     
-    if (typeof window !== 'undefined' && window.grecaptcha) {
-      try {
-        window.grecaptcha.execute();
-      } catch (err) {
-        setError('Failed to execute reCAPTCHA');
-        setIsLoading(false);
-      }
-    } else {
-      setError('reCAPTCHA not loaded');
-      setIsLoading(false);
-    }
+    // reCAPTCHA execution is now handled by EnhancedRecaptcha component
+    console.warn('useRecaptcha in useUtilities is deprecated. Use EnhancedRecaptcha component instead.');
+    setIsLoading(false);
   }, []);
 
   return {

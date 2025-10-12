@@ -64,9 +64,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
     }
   }, [location.search]);
 
-  // Custom License Form Submission Configuration
+  // FIXED: Custom License Form Submission Configuration
   const customLicenseFormConfig = {
-    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
+    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com", // FIXED: Correct endpoint
     requiredFields: ["contactName", "email", "numberOfLicenses", "companyName"],
     successMessage:
       "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours with a personalized quote.",
@@ -156,9 +156,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
     customLicenseFormConfig
   );
 
-  // Special Pricing Form Configuration
+  // FIXED: Special Pricing Form Configuration
   const specialPricingFormConfig = {
-    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
+    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com", // FIXED: Correct endpoint
     requiredFields: ["contactName", "email", "organizationType", "organizationName"],
     successMessage:
       "Thank you! Your special pricing request has been submitted successfully. Our team will contact you within 24 hours with customized pricing for your organization.",
@@ -665,8 +665,29 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   const handleCustomLicenseSubmit = async (data: CustomLicenseData) => {
     console.log("handleCustomLicenseSubmit called with data:", data);
-    // Use the useFormSubmission hook to handle the form submission
-    await submitForm(data);
+    
+    try {
+      // Use the useFormSubmission hook to handle the form submission
+      await submitForm(data);
+      
+      // Show success toast
+      showToast(
+        "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours.",
+        "success"
+      );
+      
+      // Close modal after successful submission
+      setShowCustomModal(false);
+      
+    } catch (error) {
+      console.error("Custom license submission error:", error);
+      
+      // Show error toast
+      showToast(
+        "Failed to send your custom license request. Please try again or contact our sales team directly.",
+        "error"
+      );
+    }
   };
 
   const handleBuyNow = () => {

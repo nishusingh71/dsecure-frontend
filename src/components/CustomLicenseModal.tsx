@@ -133,25 +133,58 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
   const validateForm = (): boolean => {
     const newErrors: Partial<CustomLicenseData> = {};
     
-    if (!formData.companyName) newErrors.companyName = 'Company name is required';
-    if (!formData.contactName) newErrors.contactName = 'Contact name is required';
-    if (!formData.email) newErrors.email = 'Email is required';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email format';
-    if (!formData.numberOfLicenses) newErrors.numberOfLicenses = 'Number of licenses is required';
+    // Company name validation
+    if (!formData.companyName || formData.companyName.trim() === '') {
+      newErrors.companyName = 'Company name is required';
+    }
     
+    // Contact name validation
+    if (!formData.contactName || formData.contactName.trim() === '') {
+      newErrors.contactName = 'Contact name is required';
+    }
+    
+    // Email validation
+    if (!formData.email || formData.email.trim() === '') {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    
+    // Number of licenses validation
+    if (!formData.numberOfLicenses || formData.numberOfLicenses.trim() === '') {
+      newErrors.numberOfLicenses = 'Number of licenses is required';
+    } else {
+      const licenseCount = parseInt(formData.numberOfLicenses);
+      if (isNaN(licenseCount) || licenseCount < 1) {
+        newErrors.numberOfLicenses = 'Please enter a valid number of licenses (minimum 1)';
+      }
+    }
+    
+    console.log('Validation results:', { formData, newErrors });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted with data:', formData);
+    
     if (validateForm()) {
       console.log('Form validation passed, calling onSubmit');
-      onSubmit(formData);
-      // Don't close modal or reset form here - let the parent handle success/error
+      try {
+        await onSubmit(formData);
+        // Don't close modal here - let the parent handle success/error
+      } catch (error) {
+        console.error('Form submission failed:', error);
+        // Error handling is done by the parent component
+      }
     } else {
-      console.log('Form validation failed');
+      console.log('Form validation failed with errors:', errors);
+      // Scroll to first error field
+      const firstErrorField = document.querySelector('.border-red-500');
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   };
 

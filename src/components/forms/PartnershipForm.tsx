@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm, validationRules } from "@/hooks";
 import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField } from "@/components/ui";
+import { EnhancedRecaptcha, useRecaptcha } from "@/components/EnhancedRecaptcha";
 
 // Form input components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -157,18 +158,39 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
       preSelectedPartnerType || defaultPartnershipFormData.partnerType,
   });
 
+  // Enhanced reCAPTCHA hook
+  const recaptcha = useRecaptcha();
+
   // Setup form submission with our reusable system
   const { isSubmitting, submitForm } = useFormSubmission(
     customConfig || {
       ...formConfigs.partnership,
+      customValidation: (data: any) => {
+        // Enhanced reCAPTCHA validation if enabled (fallback when no customConfig)
+        if (showRecaptcha && !recaptcha.isVerified) {
+          return "Please complete the reCAPTCHA verification.";
+        }
+        return null;
+      },
       onSuccess: (data) => {
         // Call external onSubmit if provided (for backward compatibility)
         if (onSubmit) {
           onSubmit(data as PartnershipFormData);
         }
+        // Reset reCAPTCHA after success (fallback when no customConfig)
+        if (showRecaptcha && !customConfig?.recaptchaComponent) {
+          recaptcha.reset();
+        }
         // Close modal on success
         if (onClose) {
           setTimeout(() => onClose(), 2000);
+        }
+      },
+      onError: (error: any) => {
+        console.error('Partnership form submission error:', error);
+        // Reset reCAPTCHA on error to allow retry (fallback when no customConfig)
+        if (showRecaptcha && !customConfig?.recaptchaComponent) {
+          recaptcha.reset();
         }
       }
     },
@@ -384,14 +406,26 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
               )}
             </div>
 
-            {/* reCAPTCHA */}
+            {/* Enhanced reCAPTCHA */}
             {showRecaptcha && (
               <div className="flex items-center justify-center">
-                <div
-                  className="g-recaptcha"
-                  data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                  data-callback="onPartnerRecaptchaChange"
-                ></div>
+                <div className="w-full max-w-sm">
+                  {/* Use custom recaptcha component if provided, otherwise use default */}
+                  {customConfig?.recaptchaComponent || (
+                    <>
+                      <EnhancedRecaptcha
+                        onChange={recaptcha.onRecaptchaChange}
+                        onExpired={recaptcha.onRecaptchaExpired}
+                        onError={recaptcha.onRecaptchaError}
+                      />
+                      {recaptcha.error && (
+                        <p className="text-red-500 text-sm mt-2 text-center">
+                          {recaptcha.error}
+                        </p>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             )}
 

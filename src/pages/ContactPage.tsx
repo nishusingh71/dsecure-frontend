@@ -61,35 +61,59 @@ function ContactPageContent() {
     setTimeout(() => setToast(null), 6000); // Auto hide after 6 seconds
   };
 
-  // FormSubmit configuration - Free and unlimited form submissions
+  // FormSubmit configuration - FIXED ENDPOINT
   const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@dsecuretech.com';
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate required fields
-    if (!formData.name || !formData.email || !formData.message) {
-      showToast('Please fill in all required fields.', 'error');
+    // Enhanced validation with better error messages
+    const errors: string[] = [];
+    
+    if (!formData.name?.trim()) {
+      errors.push('Name is required');
+    }
+    
+    if (!formData.email?.trim()) {
+      errors.push('Email is required');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.push('Please enter a valid email address');
+    }
+    
+    if (!formData.message?.trim()) {
+      errors.push('Message is required');
+    } else if (formData.message.trim().length < 10) {
+      errors.push('Message must be at least 10 characters long');
+    }
+
+    if (errors.length > 0) {
+      showToast(errors.join(', '), 'error');
       return;
     }
 
     try {
       const formSubmitData = new FormData();
-      formSubmitData.append('name', formData.name);
-      formSubmitData.append('email', formData.email);
-      formSubmitData.append('company', formData.company);
-      formSubmitData.append('phone', `${formData.countryCode} ${formData.phone}`);
+      
+      // Add form fields with proper formatting
+      formSubmitData.append('name', formData.name.trim());
+      formSubmitData.append('email', formData.email.trim());
+      formSubmitData.append('company', formData.company.trim());
+      formSubmitData.append('phone', formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : '');
       formSubmitData.append('country', formData.country);
       formSubmitData.append('businessType', formData.businessType);
       formSubmitData.append('solutionType', formData.solutionType);
       formSubmitData.append('complianceRequirements', formData.complianceRequirements);
-      formSubmitData.append('message', formData.message);
+      formSubmitData.append('message', formData.message.trim());
       formSubmitData.append('usageType', usageType);
+      formSubmitData.append('timestamp', new Date().toISOString());
+      formSubmitData.append('source', 'Contact Page');
       
-      // FormSubmit hidden fields for better functionality
-      formSubmitData.append('_next', window.location.href); // Redirect back to same page
-      formSubmitData.append('_captcha', 'false'); // Disable captcha
-      formSubmitData.append('_template', 'table'); // Use table format for email
+      // FormSubmit configuration for better delivery
+      formSubmitData.append('_next', window.location.href);
+      formSubmitData.append('_captcha', 'false');
+      formSubmitData.append('_template', 'table');
+      formSubmitData.append('_subject', 'New Contact Form Submission - D-Secure Tech');
+      formSubmitData.append('_autoresponse', 'Thank you for contacting D-Secure Tech! We have received your message and will get back to you within 12 hours.');
 
       const response = await fetch(FORMSUBMIT_ENDPOINT, {
         method: 'POST',

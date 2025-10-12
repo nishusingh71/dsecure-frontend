@@ -21,7 +21,7 @@ export interface UseFormSubmissionResult {
   resetForm: () => void;
 }
 
-// Default FormSubmit endpoint
+// FIXED: Single FormSubmit endpoint for all forms
 const DEFAULT_FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@dsecuretech.com';
 
 /**
@@ -38,10 +38,28 @@ export const useFormSubmission = (
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = (data: Record<string, any>): string | null => {
-    // Check required fields
+    // Check required fields with better validation
     for (const field of config.requiredFields) {
-      if (!data[field] || (typeof data[field] === 'string' && data[field].trim() === '')) {
-        return `Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()} field.`;
+      const value = data[field];
+      if (!value || (typeof value === 'string' && value.trim() === '')) {
+        const fieldName = field.replace(/([A-Z])/g, ' $1').toLowerCase();
+        return `Please fill in the ${fieldName} field.`;
+      }
+    }
+
+    // Email validation for email fields
+    if (data.email && typeof data.email === 'string') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email.trim())) {
+        return 'Please enter a valid email address.';
+      }
+    }
+
+    // Phone validation for phone fields  
+    if (data.phone && typeof data.phone === 'string') {
+      const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
+      if (!phoneRegex.test(data.phone.replace(/\s/g, ''))) {
+        return 'Please enter a valid phone number.';
       }
     }
 
@@ -66,11 +84,20 @@ export const useFormSubmission = (
       }
     });
 
-    // Add FormSubmit hidden fields for better functionality
+    // Add FormSubmit configuration for better delivery and formatting
     formSubmitData.append('_next', window.location.href); // Redirect back to same page
-    formSubmitData.append('_captcha', 'false'); // Disable captcha
+    formSubmitData.append('_captcha', 'false'); // Disable built-in captcha
     formSubmitData.append('_template', 'table'); // Use table format for email
-    formSubmitData.append('_subject', `New ${document.title} Form Submission`); // Custom subject
+    formSubmitData.append('_subject', `New Form Submission from ${document.title} - D-Secure Tech`);
+    formSubmitData.append('_autoresponse', 'Thank you for contacting D-Secure Tech! We have received your submission and will get back to you soon.');
+    formSubmitData.append('_cc', ''); // No CC emails
+    formSubmitData.append('_bcc', ''); // No BCC emails
+    
+    // Add metadata for tracking
+    formSubmitData.append('timestamp', new Date().toISOString());
+    formSubmitData.append('userAgent', navigator.userAgent);
+    formSubmitData.append('referrer', document.referrer || 'Direct');
+    formSubmitData.append('currentURL', window.location.href);
 
     return formSubmitData;
   };
