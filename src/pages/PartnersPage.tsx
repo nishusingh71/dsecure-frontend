@@ -14,7 +14,7 @@ import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField, TextAreaField, SelectField } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
-import { EnhancedRecaptcha, useRecaptcha } from "@/components/EnhancedRecaptcha";
+
 import {
   GlobeIcon,
   CheckIcon,
@@ -229,9 +229,7 @@ const PartnersPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
   const [selectedPartnerType, setSelectedPartnerType] =
     useState("All Partner Types");
-  // Enhanced reCAPTCHA hooks for both forms
-  const partnerRecaptcha = useRecaptcha();
-  const licenseRecaptcha = useRecaptcha();
+
   // Mock partner data based on attachment
   // const partnersList = [
   //   {
@@ -394,13 +392,11 @@ const PartnersPage: React.FC = () => {
   const openPartnerModal = (partnerType?: string) => {
     const typeToSet = partnerType || activePartnerType;
     setActivePartnerType(typeToSet as keyof typeof partnerTypes);
-    partnerRecaptcha.reset();
     setShowPartnerModal(true);
   };
 
   // Function to open license modal
   const openLicenseModal = () => {
-    licenseRecaptcha.reset();
     setShowLicenseModal(true);
   };
   return (
@@ -1773,30 +1769,10 @@ const PartnersPage: React.FC = () => {
           customConfig={{
             ...formConfigs.partnership,
             endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
-            customValidation: (data: any) => {
-              // Add enhanced reCAPTCHA verification
-              if (!partnerRecaptcha.isVerified) {
-                return "Please complete the reCAPTCHA verification.";
-              }
-              return null;
-            },
             onSuccess: () => {
               setShowPartnerModal(false);
-              partnerRecaptcha.reset();
               showToast("Partnership application submitted successfully! We'll contact you soon.", "success");
-            },
-            recaptchaComponent: (
-              <div className="mt-4">
-                <EnhancedRecaptcha
-                  onChange={partnerRecaptcha.onRecaptchaChange}
-                  onExpired={partnerRecaptcha.onRecaptchaExpired}
-                  onError={partnerRecaptcha.onRecaptchaError}
-                />
-                {partnerRecaptcha.error && (
-                  <p className="text-red-500 text-sm mt-2">{partnerRecaptcha.error}</p>
-                )}
-              </div>
-            )
+            }
           }}
         />
       )}
@@ -1995,30 +1971,10 @@ const PartnersPage: React.FC = () => {
           customConfig={{
             ...formConfigs.license,
             endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
-            customValidation: (data: any) => {
-              // Add enhanced reCAPTCHA verification
-              if (!licenseRecaptcha.isVerified) {
-                return "Please complete the reCAPTCHA verification.";
-              }
-              return null;
-            },
             onSuccess: () => {
               setShowLicenseModal(false);
-              licenseRecaptcha.reset();
               showToast("License request submitted successfully! We'll process your request soon.", "success");
-            },
-            recaptchaComponent: (
-              <div className="mt-4">
-                <EnhancedRecaptcha
-                  onChange={licenseRecaptcha.onRecaptchaChange}
-                  onExpired={licenseRecaptcha.onRecaptchaExpired}
-                  onError={licenseRecaptcha.onRecaptchaError}
-                />
-                {licenseRecaptcha.error && (
-                  <p className="text-red-500 text-sm mt-2">{licenseRecaptcha.error}</p>
-                )}
-              </div>
-            )
+            }
           }}
         />
       )}

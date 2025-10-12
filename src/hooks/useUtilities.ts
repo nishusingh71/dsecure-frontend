@@ -1,50 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 
-// reCAPTCHA types are now handled in EnhancedRecaptcha component
 
-// reCAPTCHA hook for handling Google reCAPTCHA verification
-export function useRecaptcha() {
-  const [isVerified, setIsVerified] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Reset verification state
-  const resetVerification = useCallback(() => {
-    setIsVerified(false);
-    setError(null);
-  }, []);
-
-  // Handle reCAPTCHA verification
-  const handleVerification = useCallback((token: string | null) => {
-    if (token) {
-      setIsVerified(true);
-      setError(null);
-    } else {
-      setIsVerified(false);
-      setError('reCAPTCHA verification failed');
-    }
-    setIsLoading(false);
-  }, []);
-
-  // Execute reCAPTCHA
-  const executeRecaptcha = useCallback(() => {
-    setIsLoading(true);
-    setError(null);
-    
-    // reCAPTCHA execution is now handled by EnhancedRecaptcha component
-    console.warn('useRecaptcha in useUtilities is deprecated. Use EnhancedRecaptcha component instead.');
-    setIsLoading(false);
-  }, []);
-
-  return {
-    isVerified,
-    isLoading,
-    error,
-    resetVerification,
-    handleVerification,
-    executeRecaptcha
-  };
-}
 
 // Local storage hook for persisting data
 export function useLocalStorage<T>(key: string, initialValue: T) {

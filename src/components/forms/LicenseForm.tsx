@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { useForm, validationRules } from "@/hooks";
+import { useEnhancedForm, formConfigurations, showGlobalToast, FORMSUBMIT_ENDPOINT } from "@/utils/enhancedFormSystem";
 
 // Form input components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -118,7 +119,6 @@ export interface LicenseFormProps {
   className?: string;
   title?: string;
   showHeader?: boolean;
-  showRecaptcha?: boolean;
   showPrivacyPolicy?: boolean;
   submitButtonText?: string;
   customConfig?: any; // Allow custom form submission configuration
@@ -161,7 +161,6 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
   className = "",
   title = "Request Free License",
   showHeader = true,
-  showRecaptcha = true,
   showPrivacyPolicy = true,
   submitButtonText = "Request Free License",
   customConfig,
@@ -169,22 +168,47 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
   // Initialize form with useForm hook
   const licenseForm = useForm<LicenseFormData>(defaultLicenseFormData);
 
+  // Enhanced form submission with toast notifications
+  const { formState, submitForm } = useEnhancedForm(
+    customConfig || {
+      ...formConfigurations.license,
+      endpoint: FORMSUBMIT_ENDPOINT,
+      onSuccess: () => {
+        // Call external onSubmit if provided (for backward compatibility)
+        if (onSubmit) {
+          onSubmit(licenseForm.formData);
+        }
+        // Close modal on success
+        if (onClose) {
+          setTimeout(() => onClose(), 2000);
+        }
+        // Reset form
+        licenseForm.resetForm();
+      },
+      onError: (error: any) => {
+        console.error('License form submission error:', error);
+        showGlobalToast('Failed to submit license request. Please try again.', 'error');
+      }
+    }
+  );
+
   // Handle form submission
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate form
+    // Validate form first
     const isValid = licenseForm.validateForm(licenseValidationRules);
     if (!isValid) {
+      showGlobalToast('Please fix the form errors before submitting.', 'error');
       return;
     }
 
-    // Call onSubmit callback with form data
-    onSubmit(licenseForm.formData);
-    
-    // Reset form after successful submission
-    licenseForm.resetForm();
-  }, [onSubmit, licenseForm]);
+    // Submit using enhanced form system with toast notifications
+    const success = await submitForm(licenseForm.formData);
+    if (!success) {
+      showGlobalToast('Please check your inputs and try again.', 'error');
+    }
+  }, [licenseForm, submitForm]);
 
   // Memoized country options
   const countryOptions = useMemo(() => [
@@ -514,16 +538,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
               )}
             </div>
 
-            {/* reCAPTCHA */}
-            {showRecaptcha && (
-              <div className="flex justify-center">
-                <div
-                  className="g-recaptcha"
-                  data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                  data-callback="onLicenseRecaptchaChange"
-                ></div>
-              </div>
-            )}
+
 
             {/* Privacy Policy */}
             {showPrivacyPolicy && (
@@ -542,9 +557,10 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-4 px-6 rounded-lg transition-all duration-300 font-bold text-lg"
+                disabled={formState.isSubmitting}
+                className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 disabled:cursor-not-allowed text-white py-4 px-6 rounded-lg transition-all duration-300 font-bold text-lg"
               >
-                {submitButtonText}
+                {formState.isSubmitting ? 'Submitting...' : submitButtonText}
               </button>
               <p className="text-sm text-gray-500 mt-2 text-center">
                 *Required

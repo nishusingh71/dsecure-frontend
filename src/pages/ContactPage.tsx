@@ -1,32 +1,73 @@
 import Reveal from "@/components/Reveal";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { 
-  DollarIcon, 
-  GearIcon, 
+import {
+  DollarIcon,
+  GearIcon,
   CheckIcon,
   ClipboardIcon,
   BuildingIcon,
   ChatIcon,
   MobileIcon,
-  HoverIcon 
-} from '@/components/FlatIcons';
-import SEOHead from '@/components/SEOHead';
-import { getSEOForPage } from '@/utils/seo';
+  HoverIcon,
+} from "@/components/FlatIcons";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 
 export default function ContactPage() {
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage('contact')} />
-      
+      <SEOHead seo={getSEOForPage("contact")} />
+
       <ContactPageContent />
     </>
   );
 }
 
+// Office Data Structure Interface for type safety and easy expansion
+interface OfficeContact {
+  name: string;
+  title: string;
+  phone: string;
+  email: string;
+  directEmail?: string;
+}
+
+interface Office {
+  id: number;
+  company: {
+    name: string;
+    logo: string; // Emoji or image URL
+    logoUrl?: string; // Optional: Dedicated field for company logo image URLs
+    website: string;
+    established: string;
+  };
+  location: {
+    city: string;
+    country: string;
+    countryCode: string;
+    flag: string;
+    address: string;
+    coordinates: { lat: number; lng: number };
+    timezone: string;
+    workingHours: string;
+  };
+  contacts: {
+    primary: OfficeContact;
+    sales: { phone: string; email: string };
+    support: { phone: string; email: string };
+  };
+  services: string[];
+  languages: string[];
+  isHeadquarter: boolean;
+  isActive: boolean;
+}
+
 function ContactPageContent() {
-  const [usageType, setUsageType] = useState<'business' | 'personal'>('business');
+  const [usageType, setUsageType] = useState<"business" | "personal">(
+    "business"
+  );
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,6 +80,30 @@ function ContactPageContent() {
     complianceRequirements: "",
     message: "",
   });
+
+  // Helper function to easily add new offices
+  // Usage: Simply call addNewOffice() with office data
+  const addNewOffice = (office: Office): Office => {
+    // Validation and setup logic can be added here
+    return {
+      ...office,
+      id: office.id || Date.now(), // Auto-generate ID if not provided
+      isActive: office.isActive !== false, // Default to active
+    };
+  };
+
+  // Helper to get offices by region
+  const getOfficesByRegion = (region: string): Office[] => {
+    const regionMap: Record<string, string[]> = {
+      'americas': ['USA'],
+      'europe': ['UK'],
+      'asia': ['UAE', 'Singapore'],
+      'middle-east': ['UAE']
+    };
+    return offices.filter(office => 
+      regionMap[region]?.includes(office.location.countryCode)
+    );
+  };
 
   type FormDataType = {
     name: string;
@@ -53,76 +118,97 @@ function ContactPageContent() {
     message: string;
   };
 
-  const [toast, setToast] = useState<{message: string, type: 'success' | 'error'} | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   // Toast functionality
-  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+  const showToast = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 6000); // Auto hide after 6 seconds
   };
 
   // FormSubmit configuration - FIXED ENDPOINT
-  const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@dsecuretech.com';
+  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@dsecuretech.com";
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Enhanced validation with better error messages
     const errors: string[] = [];
-    
+
     if (!formData.name?.trim()) {
-      errors.push('Name is required');
+      errors.push("Name is required");
     }
-    
+
     if (!formData.email?.trim()) {
-      errors.push('Email is required');
+      errors.push("Email is required");
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errors.push('Please enter a valid email address');
+      errors.push("Please enter a valid email address");
     }
-    
+
     if (!formData.message?.trim()) {
-      errors.push('Message is required');
+      errors.push("Message is required");
     } else if (formData.message.trim().length < 10) {
-      errors.push('Message must be at least 10 characters long');
+      errors.push("Message must be at least 10 characters long");
     }
 
     if (errors.length > 0) {
-      showToast(errors.join(', '), 'error');
+      showToast(errors.join(", "), "error");
       return;
     }
 
     try {
       const formSubmitData = new FormData();
-      
+
       // Add form fields with proper formatting
-      formSubmitData.append('name', formData.name.trim());
-      formSubmitData.append('email', formData.email.trim());
-      formSubmitData.append('company', formData.company.trim());
-      formSubmitData.append('phone', formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : '');
-      formSubmitData.append('country', formData.country);
-      formSubmitData.append('businessType', formData.businessType);
-      formSubmitData.append('solutionType', formData.solutionType);
-      formSubmitData.append('complianceRequirements', formData.complianceRequirements);
-      formSubmitData.append('message', formData.message.trim());
-      formSubmitData.append('usageType', usageType);
-      formSubmitData.append('timestamp', new Date().toISOString());
-      formSubmitData.append('source', 'Contact Page');
-      
+      formSubmitData.append("name", formData.name.trim());
+      formSubmitData.append("email", formData.email.trim());
+      formSubmitData.append("company", formData.company.trim());
+      formSubmitData.append(
+        "phone",
+        formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : ""
+      );
+      formSubmitData.append("country", formData.country);
+      formSubmitData.append("businessType", formData.businessType);
+      formSubmitData.append("solutionType", formData.solutionType);
+      formSubmitData.append(
+        "complianceRequirements",
+        formData.complianceRequirements
+      );
+      formSubmitData.append("message", formData.message.trim());
+      formSubmitData.append("usageType", usageType);
+      formSubmitData.append("timestamp", new Date().toISOString());
+      formSubmitData.append("source", "Contact Page");
+
       // FormSubmit configuration for better delivery
-      formSubmitData.append('_next', window.location.href);
-      formSubmitData.append('_captcha', 'false');
-      formSubmitData.append('_template', 'table');
-      formSubmitData.append('_subject', 'New Contact Form Submission - D-Secure Tech');
-      formSubmitData.append('_autoresponse', 'Thank you for contacting D-Secure Tech! We have received your message and will get back to you within 12 hours.');
+      formSubmitData.append("_next", window.location.href);
+      formSubmitData.append("_captcha", "false");
+      formSubmitData.append("_template", "table");
+      formSubmitData.append(
+        "_subject",
+        "New Contact Form Submission - D-Secure Tech"
+      );
+      formSubmitData.append(
+        "_autoresponse",
+        "Thank you for contacting D-Secure Tech! We have received your message and will get back to you within 12 hours."
+      );
 
       const response = await fetch(FORMSUBMIT_ENDPOINT, {
-        method: 'POST',
-        body: formSubmitData
+        method: "POST",
+        body: formSubmitData,
       });
 
       if (response.ok) {
-        showToast('Your query has been sent successfully! Our sales and tech team will resolve your query within 12 hours.', 'success');
-        
+        showToast(
+          "Your query has been sent successfully! Our sales and tech team will resolve your query within 12 hours.",
+          "success"
+        );
+
         // Reset form after successful submission
         setFormData({
           name: "",
@@ -137,11 +223,11 @@ function ContactPageContent() {
           message: "",
         });
       } else {
-        throw new Error('Form submission failed');
+        throw new Error("Form submission failed");
       }
     } catch (error) {
-      console.error('Form submission error:', error);
-      showToast('Failed to send message. Please try again later.', 'error');
+      console.error("Form submission error:", error);
+      showToast("Failed to send message. Please try again later.", "error");
     }
   };
 
@@ -156,41 +242,185 @@ function ContactPageContent() {
     >
   ) => {
     const { name, value } = e.target;
-    
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  // Enhanced Global Offices Configuration
+  // Easy to modify and expand for future additions
+  // LOGO SETUP INSTRUCTIONS:
+  // To add a company logo image, set the 'logoUrl' field with the image URL
+  // Example: logoUrl: "https://example.com/company-logo.png"
+  // If logoUrl is provided, it will be displayed instead of the emoji in 'logo' field
+  // The 'logo' field serves as fallback emoji when no logoUrl is provided
   const offices = [
     {
-      city: "San Francisco",
-      country: "USA",
-      address: "123 Market Street, Suite 500\nSan Francisco, CA 94105",
-      phone: "+1 (555) 123-4567",
-      email: "sf@dsecure.com",
-      timezone: "PST (UTC-8)",
-      image: "🌉",
+      id: 1,
+      // Company Information
+      company: {
+        name: "InfoTree Computers LLC",
+        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
+        website: "https://infotreeit.com",
+        established: "2015"
+      },
+      // Location Details
+      location: {
+        city: "Dubai",
+        country: "UAE",
+        countryCode: "AE",
+        flag: "🇦🇪",
+        address: "Dubai, UAE",
+        coordinates: { lat: 25.2048, lng: 55.2708 },
+        timezone: "GST (UTC+4)",
+        workingHours: "9 AM - 6 PM GST"
+      },
+      // Contact Information
+      contacts: {
+        primary: {
+          name: "Varun Kumar Singh",
+          title: "Managing Director",
+          phone: "(971)564427403",
+          email: "info@infotreeit.com",
+          directEmail: "varun@infotreeit.com"
+        },
+        sales: {
+          phone: "(971)564427403",
+          email: "sales@infotreeit.com"
+        },
+        support: {
+          phone: "(971)564427403", 
+          email: "support@infotreeit.com"
+        }
+      },
+      // Additional Details
+      services: ["Data Erasure Solutions", "IT Consulting", "Hardware Services"],
+      languages: ["English", "Hindi", "Arabic"],
+      isHeadquarter: false,
+      isActive: true
     },
     {
-      city: "London",
-      country: "UK",
-      address: "45 King William Street\nLondon EC4R 9AN",
-      phone: "+44 20 7123 4567",
-      email: "london@dsecure.com",
-      timezone: "GMT (UTC+0)",
-      image: "🇬🇧",
+      id: 2,
+      company: {
+        name: "D-Secure Technologies",
+        logo: "�",
+        website: "https://dsecuretech.com",
+        established: "2020"
+      },
+      location: {
+        city: "San Francisco",
+        country: "USA", 
+        countryCode: "US",
+        flag: "🇺🇸",
+        address: "123 Market Street, Suite 500\nSan Francisco, CA 94105",
+        coordinates: { lat: 37.7749, lng: -122.4194 },
+        timezone: "PST (UTC-8)",
+        workingHours: "9 AM - 6 PM PST"
+      },
+      contacts: {
+        primary: {
+          name: "John Smith",
+          title: "Regional Director",
+          phone: "+1 (555) 123-4567",
+          email: "sf@dsecure.com",
+          directEmail: "john.smith@dsecure.com"
+        },
+        sales: {
+          phone: "+1 (555) 123-4567",
+          email: "sales.sf@dsecure.com"
+        },
+        support: {
+          phone: "+1 (555) 123-4568",
+          email: "support.sf@dsecure.com"
+        }
+      },
+      services: ["Enterprise Solutions", "Cloud Security", "Data Protection"],
+      languages: ["English", "Spanish"],
+      isHeadquarter: true,
+      isActive: true
     },
     {
-      city: "Singapore",
-      country: "Singapore",
-      address: "1 Marina Bay Financial Centre\nSingapore 018989",
-      phone: "+65 6123 4567",
-      email: "singapore@dsecure.com",
-      timezone: "SGT (UTC+8)",
-      image: "🇸🇬",
+      id: 3,
+      company: {
+        name: "D-Secure Europe Ltd",
+        logo: "�🇧",
+        website: "https://dsecure.eu",
+        established: "2021"
+      },
+      location: {
+        city: "London",
+        country: "UK",
+        countryCode: "GB", 
+        flag: "🇬🇧",
+        address: "45 King William Street\nLondon EC4R 9AN",
+        coordinates: { lat: 51.5074, lng: -0.1278 },
+        timezone: "GMT (UTC+0)",
+        workingHours: "9 AM - 6 PM GMT"
+      },
+      contacts: {
+        primary: {
+          name: "Sarah Johnson",
+          title: "European Director",
+          phone: "+44 20 7123 4567",
+          email: "london@dsecure.com",
+          directEmail: "sarah.johnson@dsecure.com"
+        },
+        sales: {
+          phone: "+44 20 7123 4567",
+          email: "sales.eu@dsecure.com"
+        },
+        support: {
+          phone: "+44 20 7123 4568",
+          email: "support.eu@dsecure.com"
+        }
+      },
+      services: ["GDPR Compliance", "European Markets", "Data Erasure"],
+      languages: ["English", "French", "German"],
+      isHeadquarter: false,
+      isActive: true
     },
+    {
+      id: 4,
+      company: {
+        name: "D-Secure Asia Pacific",
+        logo: "��🇬",
+        website: "https://dsecure.sg",
+        established: "2022"
+      },
+      location: {
+        city: "Singapore",
+        country: "Singapore",
+        countryCode: "SG",
+        flag: "🇸🇬", 
+        address: "1 Marina Bay Financial Centre\nSingapore 018989",
+        coordinates: { lat: 1.3521, lng: 103.8198 },
+        timezone: "SGT (UTC+8)",
+        workingHours: "9 AM - 6 PM SGT"
+      },
+      contacts: {
+        primary: {
+          name: "Michael Chen",
+          title: "APAC Director",
+          phone: "+65 6123 4567",
+          email: "singapore@dsecure.com",
+          directEmail: "michael.chen@dsecure.com"
+        },
+        sales: {
+          phone: "+65 6123 4567",
+          email: "sales.apac@dsecure.com"
+        },
+        support: {
+          phone: "+65 6123 4568",
+          email: "support.apac@dsecure.com"
+        }
+      },
+      services: ["Regional Distribution", "Technical Support", "Training"],
+      languages: ["English", "Mandarin", "Malay"],
+      isHeadquarter: false,
+      isActive: true
+    }
   ];
 
   const supportOptions = [
@@ -244,36 +474,68 @@ function ContactPageContent() {
     <>
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
-          toast.type === 'error' 
-            ? 'bg-red-50 border-red-200 text-red-800' 
-            : 'bg-green-50 border-green-200 text-green-800'
-        }`}>
+        <div
+          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
+            toast.type === "error"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : "bg-green-50 border-green-200 text-green-800"
+          }`}
+        >
           <div className="flex items-start gap-3">
-            {toast.type === 'error' ? (
-              <svg className="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            {toast.type === "error" ? (
+              <svg
+                className="w-5 h-5 mt-0.5 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             ) : (
-              <svg className="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-5 h-5 mt-0.5 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             )}
             <div className="flex-1">
               <span className="font-medium text-sm">{toast.message}</span>
             </div>
-            <button 
+            <button
               onClick={() => setToast(null)}
               className="text-gray-400 hover:text-gray-600 flex-shrink-0"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
         </div>
       )}
-      
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         <div className="container-responsive py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
@@ -305,18 +567,24 @@ function ContactPageContent() {
                   <h2 className="text-2xl font-bold text-slate-900 mb-6 text-center">
                     Submit Enquiry
                   </h2>
-                  
+
                   {/* Usage Type Toggle */}
                   <div className="mb-8">
                     <div className="flex items-center justify-center gap-8">
-                      <span className="text-lg font-medium text-slate-700">Usage:</span>
+                      <span className="text-lg font-medium text-slate-700">
+                        Usage:
+                      </span>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="radio"
                           name="usage"
                           value="business"
-                          checked={usageType === 'business'}
-                          onChange={(e) => setUsageType(e.target.value as 'business' | 'personal')}
+                          checked={usageType === "business"}
+                          onChange={(e) =>
+                            setUsageType(
+                              e.target.value as "business" | "personal"
+                            )
+                          }
                           className="w-5 h-5 text-red-600"
                         />
                         <span className="text-lg font-medium">Business</span>
@@ -326,8 +594,12 @@ function ContactPageContent() {
                           type="radio"
                           name="usage"
                           value="personal"
-                          checked={usageType === 'personal'}
-                          onChange={(e) => setUsageType(e.target.value as 'business' | 'personal')}
+                          checked={usageType === "personal"}
+                          onChange={(e) =>
+                            setUsageType(
+                              e.target.value as "business" | "personal"
+                            )
+                          }
                           className="w-5 h-5 text-red-600"
                         />
                         <span className="text-lg font-medium">Personal</span>
@@ -336,19 +608,23 @@ function ContactPageContent() {
                   </div>
 
                   {/* Conditional Message for Personal */}
-                  {usageType === 'personal' && (
+                  {usageType === "personal" && (
                     <div className="mb-6 text-center text-blue-600">
-                      Free License is only available for business usage. In case you have any query, fill the form below.
+                      Free License is only available for business usage. In case
+                      you have any query, fill the form below.
                     </div>
                   )}
 
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    {usageType === 'business' ? (
+                    {usageType === "business" ? (
                       // Business Form
                       <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                           <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Full Name<span className="text-red-500">*</span>
                             </label>
                             <input
@@ -363,8 +639,12 @@ function ContactPageContent() {
                             />
                           </div>
                           <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
-                              Business Email<span className="text-red-500">*</span>
+                            <label
+                              htmlFor="email"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
+                              Business Email
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="email"
@@ -381,7 +661,10 @@ function ContactPageContent() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                           <div>
-                            <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="phone"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Phone No
                             </label>
                             <div className="flex">
@@ -429,7 +712,10 @@ function ContactPageContent() {
                             </div>
                           </div>
                           <div>
-                            <label htmlFor="businessType" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="businessType"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Business Type
                             </label>
                             <select
@@ -444,10 +730,14 @@ function ContactPageContent() {
                               <option value="government">Government</option>
                               <option value="healthcare">Healthcare</option>
                               <option value="education">Education</option>
-                              <option value="financial">Financial Services</option>
+                              <option value="financial">
+                                Financial Services
+                              </option>
                               <option value="legal">Legal</option>
                               <option value="technology">Technology</option>
-                              <option value="manufacturing">Manufacturing</option>
+                              <option value="manufacturing">
+                                Manufacturing
+                              </option>
                               <option value="other">Other</option>
                             </select>
                           </div>
@@ -455,8 +745,12 @@ function ContactPageContent() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                           <div>
-                            <label htmlFor="company" className="block text-sm font-medium text-slate-700 mb-2">
-                              Company Name<span className="text-red-500">*</span>
+                            <label
+                              htmlFor="company"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
+                              Company Name
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="text"
@@ -470,7 +764,10 @@ function ContactPageContent() {
                             />
                           </div>
                           <div>
-                            <label htmlFor="country" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="country"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Country
                             </label>
                             <select
@@ -480,9 +777,13 @@ function ContactPageContent() {
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
-                              <option value="United States">United States</option>
+                              <option value="United States">
+                                United States
+                              </option>
                               <option value="Canada">Canada</option>
-                              <option value="United Kingdom">United Kingdom</option>
+                              <option value="United Kingdom">
+                                United Kingdom
+                              </option>
                               <option value="Germany">Germany</option>
                               <option value="France">France</option>
                               <option value="Italy">Italy</option>
@@ -513,8 +814,12 @@ function ContactPageContent() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                           <div>
-                            <label htmlFor="solutionType" className="block text-sm font-medium text-slate-700 mb-2">
-                              Select Solution Type <span className="text-red-500">*</span>
+                            <label
+                              htmlFor="solutionType"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
+                              Select Solution Type{" "}
+                              <span className="text-red-500">*</span>
                             </label>
                             <select
                               id="solutionType"
@@ -525,15 +830,28 @@ function ContactPageContent() {
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
                               <option value="">Select Solution Type *</option>
-                              <option value="device-erasure">Device Erasure</option>
-                              <option value="network-erasure">Network Erasure</option>
-                              <option value="cloud-erasure">Cloud Erasure</option>
-                              <option value="enterprise-suite">Enterprise Suite</option>
-                              <option value="custom-solution">Custom Solution</option>
+                              <option value="device-erasure">
+                                Device Erasure
+                              </option>
+                              <option value="network-erasure">
+                                Network Erasure
+                              </option>
+                              <option value="cloud-erasure">
+                                Cloud Erasure
+                              </option>
+                              <option value="enterprise-suite">
+                                Enterprise Suite
+                              </option>
+                              <option value="custom-solution">
+                                Custom Solution
+                              </option>
                             </select>
                           </div>
                           <div>
-                            <label htmlFor="complianceRequirements" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="complianceRequirements"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Compliance Requirements
                             </label>
                             <select
@@ -550,7 +868,9 @@ function ContactPageContent() {
                               <option value="hipaa">HIPAA</option>
                               <option value="sox">SOX</option>
                               <option value="iso-27001">ISO 27001</option>
-                              <option value="multiple">Multiple Standards</option>
+                              <option value="multiple">
+                                Multiple Standards
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -560,7 +880,10 @@ function ContactPageContent() {
                       <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                           <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Full Name<span className="text-red-500">*</span>
                             </label>
                             <input
@@ -575,7 +898,10 @@ function ContactPageContent() {
                             />
                           </div>
                           <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="email"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Email<span className="text-red-500">*</span>
                             </label>
                             <input
@@ -593,7 +919,10 @@ function ContactPageContent() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                           <div>
-                            <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="phone"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Phone Number
                             </label>
                             <div className="flex">
@@ -641,7 +970,10 @@ function ContactPageContent() {
                             </div>
                           </div>
                           <div>
-                            <label htmlFor="country" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="country"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Country
                             </label>
                             <select
@@ -651,9 +983,13 @@ function ContactPageContent() {
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
-                              <option value="United States">United States</option>
+                              <option value="United States">
+                                United States
+                              </option>
                               <option value="Canada">Canada</option>
-                              <option value="United Kingdom">United Kingdom</option>
+                              <option value="United Kingdom">
+                                United Kingdom
+                              </option>
                               <option value="Germany">Germany</option>
                               <option value="France">France</option>
                               <option value="Italy">Italy</option>
@@ -684,7 +1020,10 @@ function ContactPageContent() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                           <div>
-                            <label htmlFor="solutionType" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="solutionType"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Select Solution Type
                             </label>
                             <select
@@ -695,18 +1034,31 @@ function ContactPageContent() {
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
                               <option value="">Select Solution Type</option>
-                              <option value="device-erasure">Device Erasure</option>
-                              <option value="network-erasure">Network Erasure</option>
-                              <option value="cloud-erasure">Cloud Erasure</option>
-                              <option value="enterprise-suite">Enterprise Suite</option>
+                              <option value="device-erasure">
+                                Device Erasure
+                              </option>
+                              <option value="network-erasure">
+                                Network Erasure
+                              </option>
+                              <option value="cloud-erasure">
+                                Cloud Erasure
+                              </option>
+                              <option value="enterprise-suite">
+                                Enterprise Suite
+                              </option>
                               <option value="personal-use">Personal Use</option>
-                              <option value="data-recovery">Data Recovery</option>
+                              <option value="data-recovery">
+                                Data Recovery
+                              </option>
                               <option value="consultation">Consultation</option>
                               <option value="other">Other</option>
                             </select>
                           </div>
                           <div>
-                            <label htmlFor="complianceRequirements" className="block text-sm font-medium text-slate-700 mb-2">
+                            <label
+                              htmlFor="complianceRequirements"
+                              className="block text-sm font-medium text-slate-700 mb-2"
+                            >
                               Compliance Requirements
                             </label>
                             <select
@@ -723,8 +1075,12 @@ function ContactPageContent() {
                               <option value="hipaa">HIPAA</option>
                               <option value="sox">SOX</option>
                               <option value="iso-27001">ISO 27001</option>
-                              <option value="personal-privacy">Personal Privacy</option>
-                              <option value="no-specific">No Specific Requirements</option>
+                              <option value="personal-privacy">
+                                Personal Privacy
+                              </option>
+                              <option value="no-specific">
+                                No Specific Requirements
+                              </option>
                               <option value="other">Other</option>
                             </select>
                           </div>
@@ -733,7 +1089,10 @@ function ContactPageContent() {
                     )}
 
                     <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">
+                      <label
+                        htmlFor="message"
+                        className="block text-sm font-medium text-slate-700 mb-2"
+                      >
                         Please let us know your requirements in detail.
                       </label>
                       <textarea
@@ -769,10 +1128,13 @@ function ContactPageContent() {
                       </div>
                     </div> */}
 
-                    {usageType === 'personal' && (
+                    {usageType === "personal" && (
                       <div className="text-sm text-slate-600">
-                        I understand that the above information is protected by{' '}
-                        <a href="/privacy-policy" className="text-green-600 hover:underline">
+                        I understand that the above information is protected by{" "}
+                        <a
+                          href="/privacy-policy"
+                          className="text-green-600 hover:underline"
+                        >
                           Dsecure Privacy Policy
                         </a>
                         .
@@ -780,7 +1142,11 @@ function ContactPageContent() {
                     )}
 
                     {/* Hidden field for recipient email */}
-                    <input type="hidden" name="to_email" value="dhruv.rai@dsecuretech.com" />
+                    <input
+                      type="hidden"
+                      name="to_email"
+                      value="dhruv.rai@dsecuretech.com"
+                    />
 
                     <button
                       type="submit"
@@ -951,102 +1317,163 @@ function ContactPageContent() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {offices.map((office, i) => (
-              <Reveal key={i} delayMs={i * 100}>
-                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="text-3xl">{office.image}</div>
-                    <div>
-                      <h3 className="font-bold text-slate-900">
-                        {office.city}
-                      </h3>
-                      <p className="text-slate-600 text-sm">{office.country}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            {offices.filter(office => office.isActive).map((office, i) => (
+              <Reveal key={office.id} delayMs={i * 100}>
+                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
+                  
+                  {/* Header with Company Logo & Info */}
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="flex-shrink-0">
+                      <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center overflow-hidden">
+                        {((office.company as any).logoUrl || office.company.logo?.startsWith('http')) ? (
+                          <img 
+                            src={(office.company as any).logoUrl || office.company.logo} 
+                            alt={`${office.company.name} logo`}
+                            className="w-full h-full object-contain rounded-xl bg-white"
+                            onError={(e) => {
+                              // Fallback to company initials if image fails to load
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const fallback = target.parentElement?.querySelector('.logo-fallback') as HTMLElement;
+                              if (fallback) {
+                                fallback.style.display = 'flex';
+                              }
+                            }}
+                          />
+                        ) : (
+                          <span className="text-2xl">
+                            {office.company.logo}
+                          </span>
+                        )}
+                        {/* Fallback content for failed images */}
+                        <div 
+                          className="logo-fallback absolute inset-0 w-full h-full bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl items-center justify-center text-white font-bold text-lg"
+                          style={{ display: ((office.company as any).logoUrl || office.company.logo?.startsWith('http')) ? 'none' : 'flex' }}
+                        >
+                          {office.company.name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2)}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-bold text-slate-900 text-lg leading-tight">
+                          {office.company.name}
+                        </h3>
+                        {office.isHeadquarter && (
+                          <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-full font-medium">
+                            HQ
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-slate-600 text-sm flex items-center gap-1">
+                        <span className="text-lg">{office.location.flag}</span>
+                        {office.location.city}, {office.location.country}
+                      </p>
+                      <p className="text-slate-500 text-xs">
+                        Est. {office.company.established}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="space-y-3 text-sm text-slate-600">
+                  {/* Primary Contact Person */}
+                  <div className="bg-slate-50 rounded-lg p-4 mb-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                        {office.contacts.primary.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900 text-sm">
+                          {office.contacts.primary.name}
+                        </p>
+                        <p className="text-slate-600 text-xs">
+                          {office.contacts.primary.title}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Contact Information */}
+                  <div className="space-y-3 text-sm text-slate-600 mb-4">
+                    {/* Address */}
                     <div className="flex items-start gap-3">
-                      <svg
-                        className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
+                      <svg className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                       <span className="whitespace-pre-line">
-                        {office.address}
+                        {office.location.address}
                       </span>
                     </div>
 
+                    {/* Primary Phone */}
                     <div className="flex items-center gap-3">
-                      <svg
-                        className="w-4 h-4 text-slate-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                        />
+                      <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
-                      <span>{office.phone}</span>
+                      <a href={`tel:${office.contacts.primary.phone}`} className="hover:text-emerald-600 transition-colors">
+                        {office.contacts.primary.phone}
+                      </a>
                     </div>
 
+                    {/* Primary Email */}
                     <div className="flex items-center gap-3">
-                      <svg
-                        className="w-4 h-4 text-slate-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
+                      <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      <span>{office.email}</span>
+                      <a href={`mailto:${office.contacts.primary.email}`} className="hover:text-emerald-600 transition-colors">
+                        {office.contacts.primary.email}
+                      </a>
                     </div>
 
+                    {/* Working Hours & Timezone */}
                     <div className="flex items-center gap-3">
-                      <svg
-                        className="w-4 h-4 text-slate-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
+                      <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span>{office.timezone}</span>
+                      <span>{office.location.workingHours} • {office.location.timezone}</span>
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-slate-200">
-                    <button className="w-full btn-secondary text-sm">
-                      Schedule Visit
-                    </button>
+                  {/* Services */}
+                  <div className="mb-4">
+                    <p className="text-xs font-medium text-slate-700 mb-2">Key Services:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {office.services.slice(0, 3).map((service, idx) => (
+                        <span key={idx} className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-md">
+                          {service}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 pt-4 border-t border-slate-200">
+                    <a 
+                      href={`mailto:${office.contacts.primary.email}?subject=Meeting Request - ${office.location.city} Office`}
+                      className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      Contact Office
+                    </a>
+                    <a 
+                      href={`tel:${office.contacts.primary.phone}`}
+                      className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      Call Now
+                    </a>
+                  </div>
+
+                  {/* Quick Contact Options */}
+                  <div className="mt-3 pt-3 border-t border-slate-100">
+                    <p className="text-xs text-slate-500 mb-2">Quick Contact:</p>
+                    <div className="flex gap-4 text-xs">
+                      <a href={`mailto:${office.contacts.sales.email}`} className="text-emerald-600 hover:underline">
+                        Sales: {office.contacts.sales.email}
+                      </a>
+                      <a href={`mailto:${office.contacts.support.email}`} className="text-emerald-600 hover:underline">
+                        Support: {office.contacts.support.email}
+                      </a>
+                    </div>
                   </div>
                 </div>
               </Reveal>

@@ -4,9 +4,8 @@
  * This file contains fixes for all forms in the application:
  * 1. Validation issues
  * 2. Toast notification problems
- * 3. reCAPTCHA integration issues
- * 4. Form submission endpoints
- * 5. Error handling improvements
+ * 3. Form submission endpoints
+ * 4. Error handling improvements
  */
 
 // Updated Form Submission Hook with better error handling
@@ -80,7 +79,6 @@ export interface FormConfig {
   errorMessage?: string;
   resetAfterSubmit?: boolean;
   redirectAfterSuccess?: string;
-  requireRecaptcha?: boolean;
 }
 
 export interface FormState {
@@ -95,8 +93,6 @@ export const useEnhancedForm = (config: FormConfig) => {
     errors: {},
     isValid: false
   });
-
-  const [recaptchaVerified, setRecaptchaVerified] = useState(false);
 
   const validateField = useCallback((fieldName: string, value: any): string | null => {
     // Check required fields
@@ -132,13 +128,8 @@ export const useEnhancedForm = (config: FormConfig) => {
       }
     });
 
-    // Check reCAPTCHA if required
-    if (config.requireRecaptcha && !recaptchaVerified) {
-      errors.recaptcha = 'Please complete the reCAPTCHA verification';
-    }
-
     return errors;
-  }, [config, validateField, recaptchaVerified]);
+  }, [config, validateField]);
 
   const submitForm = useCallback(async (formData: Record<string, any>): Promise<boolean> => {
     setFormState(prev => ({ ...prev, isSubmitting: true, errors: {} }));
@@ -183,11 +174,7 @@ export const useEnhancedForm = (config: FormConfig) => {
         
         // Reset form if configured
         if (config.resetAfterSubmit !== false) {
-          setRecaptchaVerified(false);
-          // Reset reCAPTCHA if present
-          if ((window as any).grecaptcha && typeof (window as any).grecaptcha.reset === 'function') {
-            (window as any).grecaptcha.reset();
-          }
+          // Form has been reset
         }
 
         // Redirect if configured
@@ -211,11 +198,7 @@ export const useEnhancedForm = (config: FormConfig) => {
       setFormState(prev => ({ ...prev, isSubmitting: false }));
       return false;
     }
-  }, [config, validateForm, recaptchaVerified]);
-
-  const onRecaptchaChange = useCallback((token: string | null) => {
-    setRecaptchaVerified(!!token);
-  }, []);
+  }, [config, validateForm]);
 
   const clearErrors = useCallback(() => {
     setFormState(prev => ({ ...prev, errors: {} }));
@@ -233,10 +216,8 @@ export const useEnhancedForm = (config: FormConfig) => {
     submitForm,
     validateField,
     validateForm,
-    onRecaptchaChange,
     clearErrors,
-    setFieldError,
-    recaptchaVerified
+    setFieldError
   };
 };
 
@@ -252,8 +233,7 @@ export const formConfigurations = {
       email: (value: string) => validators.email(value) ? null : 'Invalid email format',
       message: (value: string) => validators.minLength(value, 10) ? null : 'Message must be at least 10 characters'
     },
-    successMessage: 'Your query has been sent successfully! Our sales and tech team will resolve your query within 12 hours.',
-    requireRecaptcha: true
+    successMessage: 'Your query has been sent successfully! Our sales and tech team will resolve your query within 12 hours.'
   },
 
   partnership: {
@@ -266,8 +246,7 @@ export const formConfigurations = {
     validationRules: {
       businessEmail: (value: string) => validators.email(value) ? null : 'Invalid email format'
     },
-    successMessage: 'Partnership application submitted successfully! We will contact you within 24 hours.',
-    requireRecaptcha: true
+    successMessage: 'Partnership application submitted successfully! We will contact you within 24 hours.'
   },
 
   license: {
@@ -280,8 +259,7 @@ export const formConfigurations = {
     validationRules: {
       email: (value: string) => validators.email(value) ? null : 'Invalid email format'
     },
-    successMessage: 'Free license request submitted successfully! We will send you the license details within 12 hours.',
-    requireRecaptcha: true
+    successMessage: 'Free license request submitted successfully! We will send you the license details within 12 hours.'
   },
 
   support: {
@@ -295,8 +273,7 @@ export const formConfigurations = {
       email: (value: string) => validators.email(value) ? null : 'Invalid email format',
       description: (value: string) => validators.minLength(value, 20) ? null : 'Description must be at least 20 characters'
     },
-    successMessage: 'Support ticket created successfully! We will respond within 24 hours.',
-    requireRecaptcha: false
+    successMessage: 'Support ticket created successfully! We will respond within 24 hours.'
   },
 
   pricing: {
@@ -309,8 +286,7 @@ export const formConfigurations = {
     validationRules: {
       email: (value: string) => validators.email(value) ? null : 'Invalid email format'
     },
-    successMessage: 'Pricing inquiry submitted successfully! Our team will contact you with detailed pricing within 4 hours.',
-    requireRecaptcha: true
+    successMessage: 'Pricing inquiry submitted successfully! Our team will contact you with detailed pricing within 4 hours.'
   },
 
   newsletter: {
@@ -321,8 +297,7 @@ export const formConfigurations = {
       email: (value: string) => validators.email(value) ? null : 'Invalid email format'
     },
     successMessage: 'Successfully subscribed to our newsletter!',
-    resetAfterSubmit: true,
-    requireRecaptcha: false
+    resetAfterSubmit: true
   }
 };
 
