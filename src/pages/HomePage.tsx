@@ -1337,7 +1337,7 @@ const HomePage = memo(function HomePage() {
                 </div>
                 <div className="mb-4">
                   <div className="text-xl font-bold text-slate-900 mb-2">
-                    Starting at $20
+                    Starting at $40
                   </div>
                   <div className="text-slate-600 text-sm">
                     Multiple plans: Base, Standard, Cloud, Network, Pro & Enterprise
