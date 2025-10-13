@@ -11,6 +11,10 @@ import { useGoogleAnalytics } from "./utils/analytics";
 import { useMicrosoftClarity } from "./utils/microsoftClarity";
 import { useSEOMonitoring } from "./utils/seoMonitor";
 import TechnicalDocumentation from "./components/TechnicalDocumentation";
+import EnterprisePage from './pages/EnterprisePage';
+import ITADSolution from "./pages/ITADSolution";
+import FinancialServices from './pages/FinancialServices';
+
 
 // Lazy pages
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -101,9 +105,9 @@ import RetainOSGuide from "./pages/RetainOSGuide";
 import MobileErasureSolutions from "./pages/MobileErasureSolutions";
 import NotFoundPage from "./pages/NotFoundPage";
 import EducationPage from "./pages/EducationPage";
-import FinancialServices from "./pages/FinancialServices";
+// import FinancialServices from "./pages/FinancialServices";
 import GovernmentPage from "./pages/GovernmentPage";
-
+import HealthcareServices from './pages/HealthcareServices';
 // Support pages
 const FAQsPage = lazy(() => import("./pages/support/FAQsPage"));
 const KnowledgeBasePage = lazy(
@@ -161,6 +165,7 @@ export default function App() {
             <ToastContainer />
             <Suspense fallback={<PageLoadingSkeleton />}>
               <Routes>
+
                 <Route element={<MainLayout />}>
                   {/* Core Routes */}
                   <Route index element={<HomePage />} />
@@ -193,6 +198,11 @@ export default function App() {
                     path="solutions/financial"
                     element={<FinancialSolutionsPage />}
                   /> */}
+                  <Route path="/solutions/itad" element={<ITADSolution />} />
+ <Route path="/solutions/healthcare" element={<HealthcareServices />} />
+                  <Route path="/solutions/enterprise" element={<EnterprisePage />} />
+                   {/* <Route path="/solutions/financial-services" element={<FinancialServices />} /> */}
+                     <Route path="/solutions/financial" element={<FinancialServices />} />
                   <Route path="solutions/education" element={<EducationPage />} />
                   <Route path="solutions/financial-services" element={<FinancialServices />} />
                   <Route path="solutions/government" element={<GovernmentPage />} />

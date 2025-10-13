@@ -28,6 +28,26 @@ export default function SolutionsPage() {
   );
 }
 
+// Yeh function add karo component ke andar, return() se pehle
+const getIndustryLink = (industry: string) => {
+  const links: { [key: string]: string } = {
+    // enterprise: "/solutions/enterprise",
+    // healthcare: "/solutions/healthcare", 
+    //   healthcare: "/solutions/healthcare"
+    
+    // financial: "/solutions/financial"
+    
+    enterprise: "/solutions/enterprise",
+    healthcare: "/solutions/healthcare",   
+    financial: "/solutions/financial",
+    government: "/solutions/government",
+    itad: "/solutions/itad",
+    serviceProviders: "/solutions/service-providers"
+  };
+  return links[industry] || "/solutions";
+};
+
+
 function SolutionsPageContent() {
   type IndustryKey = keyof typeof solutions;
   const [activeIndustry, setActiveIndustry] =
@@ -391,6 +411,10 @@ function SolutionsPageContent() {
         return "/solutions/healthcare";
       case "financial":
         return "/solutions/financial";
+      case "itad":
+      return "/solutions/itad";  
+      case "government":
+      return "/solutions/government"  
       default:
         return "/contact"; // For industries without dedicated sub-pages yet
     }
@@ -398,6 +422,12 @@ function SolutionsPageContent() {
 
   return (
     <>
+
+
+
+
+
+    
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Background Pattern */}
@@ -870,24 +900,27 @@ function SolutionsPageContent() {
                       </div>
                     </div>
                   </div>
+         
                   <div className="flex flex-col sm:flex-row gap-3">
-                    {(activeIndustry === "enterprise" ||
-                      activeIndustry === "healthcare" ||
-                      activeIndustry === "financial") && (
-                      <Link
-                        to={getIndustryLink(activeIndustry)}
-                        className="btn-primary"
-                      >
-                        Learn More About {solutions[activeIndustry].title}
-                      </Link>
-                    )}
-                    <Link to="/contact" className="btn-secondary">
-                      Request Demo
-                    </Link>
-                    {/* <a href="/pricing" className="btn-secondary">
-                      View Pricing
-                    </a> */}
-                  </div>
+  {(activeIndustry === "enterprise" ||
+    activeIndustry === "healthcare" ||
+    activeIndustry === "government" ||
+    activeIndustry === "itad" ||
+    activeIndustry === "serviceProviders" ||
+    activeIndustry === "financial") && (
+    <Link
+      to={getIndustryLink(activeIndustry)}
+      className="btn-primary"
+    >
+      Learn More About {solutions[activeIndustry].title}
+    </Link>
+  )}
+  
+  <Link to="/contact" className="btn-secondary">
+    Request Demo
+  </Link>
+</div>
+
                 </div>
                 {/* Sidebar */}
                 <div className="bg-slate-50 p-8">
@@ -1142,6 +1175,8 @@ function SolutionsPageContent() {
           </Reveal>
         </div>
       </section>
+
+
     </>
   );
 }
