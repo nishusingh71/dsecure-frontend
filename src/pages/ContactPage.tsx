@@ -95,12 +95,12 @@ function ContactPageContent() {
   // Helper to get offices by region
   const getOfficesByRegion = (region: string): Office[] => {
     const regionMap: Record<string, string[]> = {
-      'americas': ['USA'],
-      'europe': ['UK'],
-      'asia': ['UAE', 'Singapore'],
-      'middle-east': ['UAE']
+      americas: ["USA"],
+      europe: ["UK"],
+      asia: ["UAE", "Singapore"],
+      "middle-east": ["UAE"],
     };
-    return offices.filter(office => 
+    return offices.filter((office) =>
       regionMap[region]?.includes(office.location.countryCode)
     );
   };
@@ -262,9 +262,10 @@ function ContactPageContent() {
       // Company Information
       company: {
         name: "InfoTree Computers LLC",
-        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
+        logo:
+          "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
         website: "https://infotreeit.com",
-        established: "2015"
+        established: "2015",
       },
       // Location Details
       location: {
@@ -275,7 +276,7 @@ function ContactPageContent() {
         address: "Dubai, UAE",
         coordinates: { lat: 25.2048, lng: 55.2708 },
         timezone: "GST (UTC+4)",
-        workingHours: "9 AM - 6 PM GST"
+        workingHours: "9 AM - 6 PM GST",
       },
       // Contact Information
       contacts: {
@@ -284,143 +285,148 @@ function ContactPageContent() {
           title: "Managing Director",
           phone: "(971)564427403",
           email: "info@infotreeit.com",
-          directEmail: "varun@infotreeit.com"
+          directEmail: "varun@infotreeit.com",
         },
         sales: {
           phone: "(971)564427403",
-          email: "sales@infotreeit.com"
+          email: "sales@infotreeit.com",
         },
         support: {
-          phone: "(971)564427403", 
-          email: "support@infotreeit.com"
-        }
+          phone: "(971)564427403",
+          email: "support@infotreeit.com",
+        },
       },
       // Additional Details
-      services: ["Data Erasure Solutions", "IT Consulting", "Hardware Services"],
+      services: [
+        "Data Erasure Solutions",
+        "IT Consulting",
+        "Hardware Services",
+      ],
       languages: ["English", "Hindi", "Arabic"],
       isHeadquarter: false,
-      isActive: true
+      isActive: true,
     },
     {
       id: 2,
       company: {
         name: "D-Secure Technologies",
-        logo: "�",
+        logo:
+          "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
         website: "https://dsecuretech.com",
-        established: "2020"
+        established: "2025",
       },
       location: {
-        city: "San Francisco",
-        country: "USA", 
-        countryCode: "US",
-        flag: "🇺🇸",
-        address: "123 Market Street, Suite 500\nSan Francisco, CA 94105",
-        coordinates: { lat: 37.7749, lng: -122.4194 },
-        timezone: "PST (UTC-8)",
-        workingHours: "9 AM - 6 PM PST"
+        city: "Noida",
+        country: "India",
+        countryCode: "IN",
+        flag: "in",
+        address: "Sec-62,Noida, UP 201301",
+        coordinates: { lat: 28.5355, lng: 77.391 },
+        timezone: "IST (UTC+5:30)",
+        workingHours: "9 AM - 6 PM IST",
       },
       contacts: {
         primary: {
-          name: "John Smith",
-          title: "Regional Director",
-          phone: "+1 (555) 123-4567",
-          email: "sf@dsecure.com",
-          directEmail: "john.smith@dsecure.com"
+          name: "Dhruv Rai",
+          title: "CEO",
+          phone: "8527346992",
+          email: "dhruv.rai@dsecuretech.com",
+          directEmail: "dhruv.rai@dsecuretech.com",
         },
         sales: {
-          phone: "+1 (555) 123-4567",
-          email: "sales.sf@dsecure.com"
+          phone: "8527346992",
+          email: "sales@dsecuretech.com",
         },
         support: {
-          phone: "+1 (555) 123-4568",
-          email: "support.sf@dsecure.com"
-        }
+          phone: "8527346992",
+          email: "support@dsecuretech.com",
+        },
       },
-      services: ["Enterprise Solutions", "Cloud Security", "Data Protection"],
-      languages: ["English", "Spanish"],
+      services: ["Data Erasure Solutions"],
+      languages: ["English", "Hindi"],
       isHeadquarter: true,
-      isActive: true
+      isActive: true,
     },
-    {
-      id: 3,
-      company: {
-        name: "D-Secure Europe Ltd",
-        logo: "�🇧",
-        website: "https://dsecure.eu",
-        established: "2021"
-      },
-      location: {
-        city: "London",
-        country: "UK",
-        countryCode: "GB", 
-        flag: "🇬🇧",
-        address: "45 King William Street\nLondon EC4R 9AN",
-        coordinates: { lat: 51.5074, lng: -0.1278 },
-        timezone: "GMT (UTC+0)",
-        workingHours: "9 AM - 6 PM GMT"
-      },
-      contacts: {
-        primary: {
-          name: "Sarah Johnson",
-          title: "European Director",
-          phone: "+44 20 7123 4567",
-          email: "london@dsecure.com",
-          directEmail: "sarah.johnson@dsecure.com"
-        },
-        sales: {
-          phone: "+44 20 7123 4567",
-          email: "sales.eu@dsecure.com"
-        },
-        support: {
-          phone: "+44 20 7123 4568",
-          email: "support.eu@dsecure.com"
-        }
-      },
-      services: ["GDPR Compliance", "European Markets", "Data Erasure"],
-      languages: ["English", "French", "German"],
-      isHeadquarter: false,
-      isActive: true
-    },
-    {
-      id: 4,
-      company: {
-        name: "D-Secure Asia Pacific",
-        logo: "��🇬",
-        website: "https://dsecure.sg",
-        established: "2022"
-      },
-      location: {
-        city: "Singapore",
-        country: "Singapore",
-        countryCode: "SG",
-        flag: "🇸🇬", 
-        address: "1 Marina Bay Financial Centre\nSingapore 018989",
-        coordinates: { lat: 1.3521, lng: 103.8198 },
-        timezone: "SGT (UTC+8)",
-        workingHours: "9 AM - 6 PM SGT"
-      },
-      contacts: {
-        primary: {
-          name: "Michael Chen",
-          title: "APAC Director",
-          phone: "+65 6123 4567",
-          email: "singapore@dsecure.com",
-          directEmail: "michael.chen@dsecure.com"
-        },
-        sales: {
-          phone: "+65 6123 4567",
-          email: "sales.apac@dsecure.com"
-        },
-        support: {
-          phone: "+65 6123 4568",
-          email: "support.apac@dsecure.com"
-        }
-      },
-      services: ["Regional Distribution", "Technical Support", "Training"],
-      languages: ["English", "Mandarin", "Malay"],
-      isHeadquarter: false,
-      isActive: true
-    }
+    // {
+    //   id: 3,
+    //   company: {
+    //     name: "D-Secure Europe Ltd",
+    //     logo: "�🇧",
+    //     website: "https://dsecure.eu",
+    //     established: "2021"
+    //   },
+    //   location: {
+    //     city: "London",
+    //     country: "UK",
+    //     countryCode: "GB",
+    //     flag: "🇬🇧",
+    //     address: "45 King William Street\nLondon EC4R 9AN",
+    //     coordinates: { lat: 51.5074, lng: -0.1278 },
+    //     timezone: "GMT (UTC+0)",
+    //     workingHours: "9 AM - 6 PM GMT"
+    //   },
+    //   contacts: {
+    //     primary: {
+    //       name: "Sarah Johnson",
+    //       title: "European Director",
+    //       phone: "+44 20 7123 4567",
+    //       email: "london@dsecure.com",
+    //       directEmail: "sarah.johnson@dsecure.com"
+    //     },
+    //     sales: {
+    //       phone: "+44 20 7123 4567",
+    //       email: "sales.eu@dsecure.com"
+    //     },
+    //     support: {
+    //       phone: "+44 20 7123 4568",
+    //       email: "support.eu@dsecure.com"
+    //     }
+    //   },
+    //   services: ["GDPR Compliance", "European Markets", "Data Erasure"],
+    //   languages: ["English", "French", "German"],
+    //   isHeadquarter: false,
+    //   isActive: true
+    // },
+    // {
+    //   id: 4,
+    //   company: {
+    //     name: "D-Secure Asia Pacific",
+    //     logo: "��🇬",
+    //     website: "https://dsecure.sg",
+    //     established: "2022"
+    //   },
+    //   location: {
+    //     city: "Singapore",
+    //     country: "Singapore",
+    //     countryCode: "SG",
+    //     flag: "🇸🇬",
+    //     address: "1 Marina Bay Financial Centre\nSingapore 018989",
+    //     coordinates: { lat: 1.3521, lng: 103.8198 },
+    //     timezone: "SGT (UTC+8)",
+    //     workingHours: "9 AM - 6 PM SGT"
+    //   },
+    //   contacts: {
+    //     primary: {
+    //       name: "Michael Chen",
+    //       title: "APAC Director",
+    //       phone: "+65 6123 4567",
+    //       email: "singapore@dsecure.com",
+    //       directEmail: "michael.chen@dsecure.com"
+    //     },
+    //     sales: {
+    //       phone: "+65 6123 4567",
+    //       email: "sales.apac@dsecure.com"
+    //     },
+    //     support: {
+    //       phone: "+65 6123 4568",
+    //       email: "support.apac@dsecure.com"
+    //     }
+    //   },
+    //   services: ["Regional Distribution", "Technical Support", "Training"],
+    //   languages: ["English", "Mandarin", "Malay"],
+    //   isHeadquarter: false,
+    //   isActive: true
+    // }
   ];
 
   const supportOptions = [
@@ -1318,166 +1324,256 @@ function ContactPageContent() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-            {offices.filter(office => office.isActive).map((office, i) => (
-              <Reveal key={office.id} delayMs={i * 100}>
-                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
-                  
-                  {/* Header with Company Logo & Info */}
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="flex-shrink-0">
-                      <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center overflow-hidden">
-                        {((office.company as any).logoUrl || office.company.logo?.startsWith('http')) ? (
-                          <img 
-                            src={(office.company as any).logoUrl || office.company.logo} 
-                            alt={`${office.company.name} logo`}
-                            className="w-full h-full object-contain rounded-xl bg-white"
-                            onError={(e) => {
-                              // Fallback to company initials if image fails to load
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
-                              const fallback = target.parentElement?.querySelector('.logo-fallback') as HTMLElement;
-                              if (fallback) {
-                                fallback.style.display = 'flex';
+            {offices
+              .filter((office) => office.isActive)
+              .map((office, i) => (
+                <Reveal key={office.id} delayMs={i * 100}>
+                  <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
+                    {/* Header with Company Logo & Info */}
+                    <div className="flex items-start gap-4 mb-6">
+                      <div className="flex-shrink-0">
+                        <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center overflow-hidden">
+                          {(office.company as any).logoUrl ||
+                          office.company.logo?.startsWith("http") ? (
+                            <img
+                              src={
+                                (office.company as any).logoUrl ||
+                                office.company.logo
                               }
+                              alt={`${office.company.name} logo`}
+                              className="w-full h-full object-contain rounded-xl bg-white"
+                              onError={(e) => {
+                                // Fallback to company initials if image fails to load
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = "none";
+                                const fallback = target.parentElement?.querySelector(
+                                  ".logo-fallback"
+                                ) as HTMLElement;
+                                if (fallback) {
+                                  fallback.style.display = "flex";
+                                }
+                              }}
+                            />
+                          ) : (
+                            <span className="text-2xl">
+                              {office.company.logo}
+                            </span>
+                          )}
+                          {/* Fallback content for failed images */}
+                          <div
+                            className="logo-fallback absolute inset-0 w-full h-full bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl items-center justify-center text-white font-bold text-lg"
+                            style={{
+                              display:
+                                (office.company as any).logoUrl ||
+                                office.company.logo?.startsWith("http")
+                                  ? "none"
+                                  : "flex",
                             }}
-                          />
-                        ) : (
-                          <span className="text-2xl">
-                            {office.company.logo}
+                          >
+                            {office.company.name
+                              .split(" ")
+                              .map((word) => word[0])
+                              .join("")
+                              .toUpperCase()
+                              .slice(0, 2)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-bold text-slate-900 text-lg leading-tight">
+                            {office.company.name}
+                          </h3>
+                          {office.isHeadquarter && (
+                            <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-full font-medium">
+                              HQ
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-slate-600 text-sm flex items-center gap-1">
+                          <span className="text-lg">
+                            {office.location.flag}
                           </span>
-                        )}
-                        {/* Fallback content for failed images */}
-                        <div 
-                          className="logo-fallback absolute inset-0 w-full h-full bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl items-center justify-center text-white font-bold text-lg"
-                          style={{ display: ((office.company as any).logoUrl || office.company.logo?.startsWith('http')) ? 'none' : 'flex' }}
-                        >
-                          {office.company.name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2)}
+                          {office.location.city}, {office.location.country}
+                        </p>
+                        <p className="text-slate-500 text-xs">
+                          Est. {office.company.established}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Primary Contact Person */}
+                    <div className="bg-slate-50 rounded-lg p-4 mb-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                          {office.contacts.primary.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-slate-900 text-sm">
+                            {office.contacts.primary.name}
+                          </p>
+                          <p className="text-slate-600 text-xs">
+                            {office.contacts.primary.title}
+                          </p>
                         </div>
                       </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-bold text-slate-900 text-lg leading-tight">
-                          {office.company.name}
-                        </h3>
-                        {office.isHeadquarter && (
-                          <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-full font-medium">
-                            HQ
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-slate-600 text-sm flex items-center gap-1">
-                        <span className="text-lg">{office.location.flag}</span>
-                        {office.location.city}, {office.location.country}
-                      </p>
-                      <p className="text-slate-500 text-xs">
-                        Est. {office.company.established}
-                      </p>
-                    </div>
-                  </div>
 
-                  {/* Primary Contact Person */}
-                  <div className="bg-slate-50 rounded-lg p-4 mb-4">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                        {office.contacts.primary.name.split(' ').map(n => n[0]).join('')}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-slate-900 text-sm">
-                          {office.contacts.primary.name}
-                        </p>
-                        <p className="text-slate-600 text-xs">
-                          {office.contacts.primary.title}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Contact Information */}
-                  <div className="space-y-3 text-sm text-slate-600 mb-4">
-                    {/* Address */}
-                    <div className="flex items-start gap-3">
-                      <svg className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span className="whitespace-pre-line">
-                        {office.location.address}
-                      </span>
-                    </div>
-
-                    {/* Primary Phone */}
-                    <div className="flex items-center gap-3">
-                      <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      <a href={`tel:${office.contacts.primary.phone}`} className="hover:text-emerald-600 transition-colors">
-                        {office.contacts.primary.phone}
-                      </a>
-                    </div>
-
-                    {/* Primary Email */}
-                    <div className="flex items-center gap-3">
-                      <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                      <a href={`mailto:${office.contacts.primary.email}`} className="hover:text-emerald-600 transition-colors">
-                        {office.contacts.primary.email}
-                      </a>
-                    </div>
-
-                    {/* Working Hours & Timezone */}
-                    <div className="flex items-center gap-3">
-                      <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>{office.location.workingHours} • {office.location.timezone}</span>
-                    </div>
-                  </div>
-
-                  {/* Services */}
-                  <div className="mb-4">
-                    <p className="text-xs font-medium text-slate-700 mb-2">Key Services:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {office.services.slice(0, 3).map((service, idx) => (
-                        <span key={idx} className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-md">
-                          {service}
+                    {/* Contact Information */}
+                    <div className="space-y-3 text-sm text-slate-600 mb-4">
+                      {/* Address */}
+                      <div className="flex items-start gap-3">
+                        <svg
+                          className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                        <span className="whitespace-pre-line">
+                          {office.location.address}
                         </span>
-                      ))}
+                      </div>
+
+                      {/* Primary Phone */}
+                      <div className="flex items-center gap-3">
+                        <svg
+                          className="w-4 h-4 text-slate-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                          />
+                        </svg>
+                        <a
+                          href={`tel:${office.contacts.primary.phone}`}
+                          className="hover:text-emerald-600 transition-colors"
+                        >
+                          {office.contacts.primary.phone}
+                        </a>
+                      </div>
+
+                      {/* Primary Email */}
+                      <div className="flex items-center gap-3">
+                        <svg
+                          className="w-4 h-4 text-slate-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          />
+                        </svg>
+                        <a
+                          href={`mailto:${office.contacts.primary.email}`}
+                          className="hover:text-emerald-600 transition-colors"
+                        >
+                          {office.contacts.primary.email}
+                        </a>
+                      </div>
+
+                      {/* Working Hours & Timezone */}
+                      <div className="flex items-center gap-3">
+                        <svg
+                          className="w-4 h-4 text-slate-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span>
+                          {office.location.workingHours} •{" "}
+                          {office.location.timezone}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Services */}
+                    <div className="mb-4">
+                      <p className="text-xs font-medium text-slate-700 mb-2">
+                        Key Services:
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {office.services.slice(0, 3).map((service, idx) => (
+                          <span
+                            key={idx}
+                            className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-md"
+                          >
+                            {service}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 pt-4 border-t border-slate-200">
+                      <a
+                        href={`mailto:${office.contacts.primary.email}?subject=Meeting Request - ${office.location.city} Office`}
+                        className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        Contact Office
+                      </a>
+                      <a
+                        href={`tel:${office.contacts.primary.phone}`}
+                        className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        Call Now
+                      </a>
+                    </div>
+
+                    {/* Quick Contact Options */}
+                    <div className="mt-3 pt-3 border-t border-slate-100">
+                      <p className="text-xs text-slate-500 mb-2">
+                        Quick Contact:
+                      </p>
+                      <div className="flex gap-4 text-xs">
+                        <a
+                          href={`mailto:${office.contacts.sales.email}`}
+                          className="text-emerald-600 hover:underline"
+                        >
+                          Sales: {office.contacts.sales.email}
+                        </a>
+                        <a
+                          href={`mailto:${office.contacts.support.email}`}
+                          className="text-emerald-600 hover:underline"
+                        >
+                          Support: {office.contacts.support.email}
+                        </a>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2 pt-4 border-t border-slate-200">
-                    <a 
-                      href={`mailto:${office.contacts.primary.email}?subject=Meeting Request - ${office.location.city} Office`}
-                      className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                    >
-                      Contact Office
-                    </a>
-                    <a 
-                      href={`tel:${office.contacts.primary.phone}`}
-                      className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                    >
-                      Call Now
-                    </a>
-                  </div>
-
-                  {/* Quick Contact Options */}
-                  <div className="mt-3 pt-3 border-t border-slate-100">
-                    <p className="text-xs text-slate-500 mb-2">Quick Contact:</p>
-                    <div className="flex gap-4 text-xs">
-                      <a href={`mailto:${office.contacts.sales.email}`} className="text-emerald-600 hover:underline">
-                        Sales: {office.contacts.sales.email}
-                      </a>
-                      <a href={`mailto:${office.contacts.support.email}`} className="text-emerald-600 hover:underline">
-                        Support: {office.contacts.support.email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              ))}
           </div>
         </div>
       </section>

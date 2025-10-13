@@ -16,6 +16,31 @@ import {
   LightningIcon,
 } from "@/components/FlatIcons";
 
+// Product Catalog Download Functions
+const downloadCatalog = (productType: 'drive-eraser' | 'file-eraser') => {
+  const catalogInfo = {
+    'drive-eraser': {
+      filename: 'D-Secure-Drive-Eraser-Catalog.pdf',
+      url: '/downloads/dsecure-drive-eraser-catalog.pdf'
+    },
+    'file-eraser': {
+      filename: 'D-Secure-File-Eraser-Catalog.pdf', 
+      url: '/downloads/dsecure-file-eraser-catalog.pdf'
+    }
+  };
+  
+  const catalog = catalogInfo[productType];
+  
+  // Create download link
+  const link = document.createElement('a');
+  link.href = catalog.url;
+  link.download = catalog.filename;
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 const ProductPage: React.FC = () => {
   const [expandedSections, setExpandedSections] = useState<{
     [key: string]: boolean;
@@ -372,8 +397,7 @@ const ProductPage: React.FC = () => {
     variant: "default" | "compact" = "default"
   ) => {
     const iconClass = variant === "compact" ? "w-3 h-3" : "w-4 h-4";
-    const textClass =
-      variant === "compact" ? "text-[0.65rem]" : "text-xs";
+    const textClass = variant === "compact" ? "text-[0.65rem]" : "text-xs";
     const gapClass = variant === "compact" ? "space-x-1" : "space-x-1";
     switch (value) {
       case "check":
@@ -566,8 +590,8 @@ const ProductPage: React.FC = () => {
                       Secure Drive Wiping Software
                     </p>
                     <p className="text-slate-600 mb-4 xs:mb-6 leading-relaxed text-sm xs:text-base">
-                      Wipe Hard Drive, SSD, PC, Laptop, Mac® & Server. Deploy via
-                      USB & PXE Boot on Supported Devices.
+                      Wipe Hard Drive, SSD, PC, Laptop, Mac® & Server. Deploy
+                      via USB & PXE Boot on Supported Devices.
                     </p>
                   </div>
 
@@ -602,11 +626,17 @@ const ProductPage: React.FC = () => {
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">Supported Types</span>
-                          <span className="font-semibold">HDD,SSD,NVME,etc</span>
+                          <span className="text-slate-600">
+                            Supported Types
+                          </span>
+                          <span className="font-semibold">
+                            HDD,SSD,NVME,etc
+                          </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">Erasure Methods</span>
+                          <span className="text-slate-600">
+                            Erasure Methods
+                          </span>
                           <span className="font-semibold">26 Standards</span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
@@ -655,6 +685,13 @@ const ProductPage: React.FC = () => {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <button
+                      onClick={() => downloadCatalog('drive-eraser')}
+                      className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center gap-2"
+                    >
+                      <ClipboardIcon className="w-4 h-4" />
+                      Data Sheet
+                    </button>
                     <Link
                       to="/contact?request=free-license&product=drive-eraser"
                       className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
@@ -662,13 +699,13 @@ const ProductPage: React.FC = () => {
                       Request Free Demo
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
-                    <Link
-                      to="/pricing-and-plan?product=drive-eraser"
-                      className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
-                    >
-                      Buy Now
-                    </Link>
                   </div>
+                  <Link
+                    to="/pricing-and-plan?product=drive-eraser"
+                    className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center mt-2"
+                  >
+                    Buy Now
+                  </Link>
                 </div>
               </Reveal>
 
@@ -777,6 +814,14 @@ const ProductPage: React.FC = () => {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-auto">
+                    <button
+                      onClick={() => downloadCatalog('file-eraser')}
+                      className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center gap-2"
+                    >
+                      <ClipboardIcon className="w-4 h-4" />
+                      Data Sheet
+                    </button>
+
                     <Link
                       to="/contact?request=free-demo&product=file-eraser"
                       className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
@@ -784,13 +829,13 @@ const ProductPage: React.FC = () => {
                       Request Free Demo
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
-                    <Link
-                      to="/pricing-and-plan?product=file-eraser"
-                      className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
-                    >
-                      Buy Now
-                    </Link>
                   </div>
+                  <Link
+                    to="/pricing-and-plan?product=file-eraser"
+                    className="mt-2 flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
+                  >
+                    Buy Now
+                  </Link>
                 </div>
               </Reveal>
             </div>
@@ -806,7 +851,8 @@ const ProductPage: React.FC = () => {
                   File Eraser – Features & Plans
                 </h2>
                 <p className="text-lg text-slate-600 mb-6 max-w-4xl mx-auto">
-                  Compare all features and plans for D-Secure File Eraser. For Drive Eraser, see services below.
+                  Compare all features and plans for D-Secure File Eraser. For
+                  Drive Eraser, see services below.
                 </p>
               </div>
             </Reveal>
@@ -832,7 +878,10 @@ const ProductPage: React.FC = () => {
                   {comparisonSections.map((section) => {
                     const isExpanded = expandedSections[section.key];
                     return (
-                      <div key={section.key} className="border-b border-slate-200">
+                      <div
+                        key={section.key}
+                        className="border-b border-slate-200"
+                      >
                         <button
                           onClick={() => toggleSection(section.key)}
                           className="w-full p-6 text-left bg-slate-100 hover:bg-slate-200 transition-colors flex justify-between items-center"
@@ -881,7 +930,10 @@ const ProductPage: React.FC = () => {
                   {comparisonSections.map((section) => {
                     const isExpanded = expandedSections[section.key];
                     return (
-                      <div key={`mobile-${section.key}`} className="border-b border-slate-200">
+                      <div
+                        key={`mobile-${section.key}`}
+                        className="border-b border-slate-200"
+                      >
                         <button
                           onClick={() => toggleSection(section.key)}
                           className="w-full px-4 py-4 text-left bg-slate-100 hover:bg-slate-200 transition-colors flex justify-between items-center"
@@ -971,50 +1023,87 @@ const ProductPage: React.FC = () => {
             <Reveal delayMs={200}>
               <div className="mt-20 bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
                 <div className="text-center py-10">
-                  <h2 className="text-3xl font-bold text-slate-900 mb-2">Services – Available for File & Drive Eraser</h2>
+                  <h2 className="text-3xl font-bold text-slate-900 mb-2">
+                    Services – Available for File & Drive Eraser
+                  </h2>
                   <p className="text-slate-600 max-w-2xl mx-auto">
-                    The following services are available for both File Eraser and Drive Eraser products.
+                    The following services are available for both File Eraser
+                    and Drive Eraser products.
                   </p>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-slate-200">
                     <thead className="bg-emerald-600 text-white">
                       <tr>
-                        <th className="px-6 py-4 text-left font-semibold">Service</th>
-                        <th className="px-6 py-4 text-center font-semibold">File Eraser</th>
-                        <th className="px-6 py-4 text-center font-semibold">Drive Eraser</th>
+                        <th className="px-6 py-4 text-left font-semibold">
+                          Service
+                        </th>
+                        <th className="px-6 py-4 text-center font-semibold">
+                          File Eraser
+                        </th>
+                        <th className="px-6 py-4 text-center font-semibold">
+                          Drive Eraser
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-slate-100">
                       <tr>
                         <td className="px-6 py-4">Web Dashboard</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-6 py-4">Cloud Commands (Remote Jobs)</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4">
+                          Cloud Commands (Remote Jobs)
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
                       </tr>
                       <tr>
-                        <td className="px-6 py-4">Custom Installer (auto-register machine)</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4">
+                          Custom Installer (auto-register machine)
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
                       </tr>
                       <tr>
                         <td className="px-6 py-4">Private Cloud Support</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
                       </tr>
                       <tr>
                         <td className="px-6 py-4">Multi-Level User Logs</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
                       </tr>
                       <tr>
                         <td className="px-6 py-4">White-Label Dashboard</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
-                        <td className="px-6 py-4 text-center">{renderFeatureIcon("check")}</td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

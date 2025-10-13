@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-Secure File Eraser - Product Catalog</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
+        .catalog { max-width: 800px; margin: 20px auto; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #2563eb, #3b82f6); color: white; padding: 40px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { font-size: 1.2em; opacity: 0.9; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 30px; }
+        .section h2 { color: #2563eb; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-bottom: 20px; }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .feature-box { border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; background: #f9fafb; }
+        .feature-box h3 { color: #374151; margin-bottom: 10px; }
+        .feature-list { list-style: none; }
+        .feature-list li { padding: 5px 0; position: relative; padding-left: 20px; }
+        .feature-list li:before { content: "✓"; color: #3b82f6; font-weight: bold; position: absolute; left: 0; }
+        .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .spec-item { background: #f3f4f6; padding: 15px; border-radius: 6px; }
+        .spec-item strong { color: #374151; display: block; margin-bottom: 5px; }
+        .pricing { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); padding: 30px; border-radius: 12px; text-align: center; }
+        .pricing .price { font-size: 2.5em; color: #0369a1; font-weight: bold; margin: 20px 0; }
+        .contact { background: #374151; color: white; padding: 30px; text-align: center; }
+        .contact h2 { color: white; border-bottom-color: #6b7280; }
+        .platforms { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
+        .platform { background: #dbeafe; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6; }
+        @media print { body { background: white; } .catalog { box-shadow: none; margin: 0; } }
+    </style>
+</head>
+<body>
+    <div class="catalog">
+        <!-- Header -->
+        <div class="header">
+            <h1>D-SECURE FILE ERASER</h1>
+            <p>Advanced File & Folder Erasure Software</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Overview -->
+            <div class="section">
+                <h2>Product Overview</h2>
+                <p>D-Secure File Eraser provides comprehensive file and folder erasure capabilities for Windows, Mac, and Linux systems. Perfect for selective data sanitization, cloud storage cleanup, and privacy protection with military-grade security standards.</p>
+            </div>
+
+            <!-- Key Features -->
+            <div class="section">
+                <h2>Key Features</h2>
+                <div class="features">
+                    <div class="feature-box">
+                        <h3>🔒 Security Standards</h3>
+                        <ul class="feature-list">
+                            <li>26 International Erasure Standards</li>
+                            <li>DoD 5220.22-M Compliance</li>
+                            <li>NIST SP 800-88 Rev. 1</li>
+                            <li>Military-grade algorithms</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h3>💻 Cross-Platform Support</h3>
+                        <ul class="feature-list">
+                            <li>Windows 7/8/10/11</li>
+                            <li>macOS 10.12+</li>
+                            <li>Linux (Ubuntu, CentOS, RHEL)</li>
+                            <li>17+ international languages</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h3>☁️ Cloud Integration</h3>
+                        <ul class="feature-list">
+                            <li>Google Drive Erasure</li>
+                            <li>Microsoft OneDrive</li>
+                            <li>Dropbox Integration</li>
+                            <li>Box Cloud Storage</li>
+                        </ul>
+                    </div>
+                    <div class="feature-box">
+                        <h3>🌐 Network Edition</h3>
+                        <ul class="feature-list">
+                            <li>Domain-wide erasure</li>
+                            <li>Active Directory integration</li>
+                            <li>Remote file deletion</li>
+                            <li>Centralized management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform-Specific Features -->
+            <div class="section">
+                <h2>Platform-Specific Capabilities</h2>
+                <div class="platforms">
+                    <div class="platform">
+                        <h3>🪟 Windows Edition</h3>
+                        <ul class="feature-list">
+                            <li>Registry cleaning & sanitization</li>
+                            <li>System file erasure (pagefile, hibernation)</li>
+                            <li>Windows Event Log cleaning</li>
+                            <li>Recycle Bin secure emptying</li>
+                        </ul>
+                    </div>
+                    <div class="platform">
+                        <h3>🍎 macOS Edition</h3>
+                        <ul class="feature-list">
+                            <li>FileVault encrypted drive support</li>
+                            <li>Keychain secure deletion</li>
+                            <li>Time Machine backup cleaning</li>
+                            <li>Spotlight index erasure</li>
+                        </ul>
+                    </div>
+                    <div class="platform">
+                        <h3>🐧 Linux Edition</h3>
+                        <ul class="feature-list">
+                            <li>Multiple filesystem support</li>
+                            <li>Command-line interface</li>
+                            <li>Bash script integration</li>
+                            <li>System log sanitization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Specifications -->
+            <div class="section">
+                <h2>Technical Specifications</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>File Systems</strong>
+                        NTFS, FAT32, exFAT, HFS+, APFS, ext3/ext4, XFS
+                    </div>
+                    <div class="spec-item">
+                        <strong>Cloud Services</strong>
+                        Google Drive, OneDrive, Dropbox, Box
+                    </div>
+                    <div class="spec-item">
+                        <strong>Network Support</strong>
+                        Active Directory, remote erasure, domain policies
+                    </div>
+                    <div class="spec-item">
+                        <strong>Reporting</strong>
+                        PDF certificates, XML logs, database integration
+                    </div>
+                </div>
+            </div>
+
+            <!-- Use Cases -->
+            <div class="section">
+                <h2>Primary Use Cases</h2>
+                <div class="features">
+                    <div class="feature-box">
+                        <h3>Individual Privacy</h3>
+                        <p>Personal file and browsing data protection for home users and professionals.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Corporate Security</h3>
+                        <p>Sensitive document disposal and confidential data protection in business environments.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Cloud Cleanup</h3>
+                        <p>Permanent removal of files from cloud storage services with verification.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Compliance</h3>
+                        <p>Meet data retention and disposal policies for regulated industries.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="section">
+                <h2>Key Benefits</h2>
+                <ul class="feature-list">
+                    <li><strong>Privacy Protection:</strong> Prevent data recovery by unauthorized parties</li>
+                    <li><strong>Compliance Ready:</strong> Meet GDPR, HIPAA, SOX requirements</li>
+                    <li><strong>Cloud Security:</strong> Permanent cloud file deletion with verification</li>
+                    <li><strong>Performance Boost:</strong> Free space optimization and system cleanup</li>
+                    <li><strong>Flexible Licensing:</strong> Individual to enterprise options available</li>
+                    <li><strong>Professional Support:</strong> Technical assistance and implementation guidance</li>
+                </ul>
+            </div>
+
+            <!-- Pricing -->
+            <div class="section">
+                <h2>Pricing Plans</h2>
+                <div class="pricing">
+                    <div class="price">Starting at $40</div>
+                    <p>Individual & Enterprise Licenses Available</p>
+                    <div class="features" style="margin-top: 20px; text-align: left;">
+                        <div class="feature-box">
+                            <h3>Individual License</h3>
+                            <ul class="feature-list">
+                                <li>Single user, single device</li>
+                                <li>All erasure standards included</li>
+                                <li>Email support</li>
+                                <li>Lifetime license validity</li>
+                            </ul>
+                        </div>
+                        <div class="feature-box">
+                            <h3>Enterprise License</h3>
+                            <ul class="feature-list">
+                                <li>Unlimited users and devices</li>
+                                <li>Network edition capabilities</li>
+                                <li>24/7 premium support</li>
+                                <li>Custom deployment options</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integration -->
+            <div class="section">
+                <h2>Integration & APIs</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <strong>REST API</strong>
+                        Integrate with existing IT systems and workflows
+                    </div>
+                    <div class="spec-item">
+                        <strong>PowerShell Module</strong>
+                        Windows automation and scripting support
+                    </div>
+                    <div class="spec-item">
+                        <strong>Command Line</strong>
+                        Batch processing and automation capabilities
+                    </div>
+                    <div class="spec-item">
+                        <strong>SIEM Integration</strong>
+                        Security information and event management
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="contact">
+            <h2>Contact Information</h2>
+            <p><strong>D-Secure Technologies</strong></p>
+            <p>Website: <a href="https://dsecuretech.com" style="color: #60a5fa;">dsecuretech.com</a></p>
+            <p>Sales: sales@dsecuretech.com</p>
+            <p>Support: support@dsecuretech.com</p>
+            <p>Technical: tech@dsecuretech.com</p>
+            <p>Phone: +91-XXX-XXX-XXXX</p>
+        </div>
+    </div>
+</body>
+</html>
