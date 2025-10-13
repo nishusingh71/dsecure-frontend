@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useForm, validationRules } from "@/hooks";
 import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField } from "@/components/ui";
+import { showGlobalToast } from "@/utils/enhancedFormSystem";
+
 
 // Form input components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -100,7 +102,6 @@ export interface PartnershipFormProps {
   className?: string;
   title?: string;
   showHeader?: boolean;
-  showRecaptcha?: boolean;
   showPrivacyPolicy?: boolean;
   submitButtonText?: string;
   preSelectedPartnerType?: string;
@@ -144,7 +145,6 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
   className = "",
   title = "Become Our Partner Today!",
   showHeader = true,
-  showRecaptcha = true,
   showPrivacyPolicy = true,
   submitButtonText = "Submit",
   preSelectedPartnerType,
@@ -156,6 +156,8 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
     partnerType:
       preSelectedPartnerType || defaultPartnershipFormData.partnerType,
   });
+
+
 
   // Setup form submission with our reusable system
   const { isSubmitting, submitForm } = useFormSubmission(
@@ -170,6 +172,10 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
         if (onClose) {
           setTimeout(() => onClose(), 2000);
         }
+      },
+      onError: (error: any) => {
+        console.error('Partnership form submission error:', error);
+        showGlobalToast('Failed to submit partnership application. Please try again.', 'error');
       }
     },
     partnerForm.resetForm
@@ -182,14 +188,20 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
     // Validate form
     const isValid = partnerForm.validateForm(partnershipValidationRules);
     if (!isValid) {
+      showGlobalToast('Please fix the form errors before submitting.', 'error');
       return;
     }
 
-    // Submit using our reusable system
-    await submitForm(partnerForm.formData);
-    
-    // Reset form after successful submission
-    partnerForm.resetForm();
+    try {
+      // Submit using our reusable system
+      await submitForm(partnerForm.formData);
+      
+      // Reset form after successful submission
+      partnerForm.resetForm();
+    } catch (error) {
+      console.error('Partnership form submission failed:', error);
+      showGlobalToast('Submission failed. Please check your connection and try again.', 'error');
+    }
   }, [partnerForm, submitForm]);
 
   // Memoized partner type options
@@ -384,16 +396,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
               )}
             </div>
 
-            {/* reCAPTCHA */}
-            {showRecaptcha && (
-              <div className="flex items-center justify-center">
-                <div
-                  className="g-recaptcha"
-                  data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                  data-callback="onPartnerRecaptchaChange"
-                ></div>
-              </div>
-            )}
+
 
             {/* Privacy Policy */}
             {showPrivacyPolicy && (

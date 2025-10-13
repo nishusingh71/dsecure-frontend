@@ -1,65 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 
-// Extend Window interface to include grecaptcha
-declare global {
-  interface Window {
-    grecaptcha?: {
-      execute: () => void;
-    };
-  }
-}
 
-// reCAPTCHA hook for handling Google reCAPTCHA verification
-export function useRecaptcha() {
-  const [isVerified, setIsVerified] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Reset verification state
-  const resetVerification = useCallback(() => {
-    setIsVerified(false);
-    setError(null);
-  }, []);
-
-  // Handle reCAPTCHA verification
-  const handleVerification = useCallback((token: string | null) => {
-    if (token) {
-      setIsVerified(true);
-      setError(null);
-    } else {
-      setIsVerified(false);
-      setError('reCAPTCHA verification failed');
-    }
-    setIsLoading(false);
-  }, []);
-
-  // Execute reCAPTCHA
-  const executeRecaptcha = useCallback(() => {
-    setIsLoading(true);
-    setError(null);
-    
-    if (typeof window !== 'undefined' && window.grecaptcha) {
-      try {
-        window.grecaptcha.execute();
-      } catch (err) {
-        setError('Failed to execute reCAPTCHA');
-        setIsLoading(false);
-      }
-    } else {
-      setError('reCAPTCHA not loaded');
-      setIsLoading(false);
-    }
-  }, []);
-
-  return {
-    isVerified,
-    isLoading,
-    error,
-    resetVerification,
-    handleVerification,
-    executeRecaptcha
-  };
-}
 
 // Local storage hook for persisting data
 export function useLocalStorage<T>(key: string, initialValue: T) {

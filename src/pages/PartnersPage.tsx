@@ -14,6 +14,7 @@ import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField, TextAreaField, SelectField } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
+
 import {
   GlobeIcon,
   CheckIcon,
@@ -228,11 +229,7 @@ const PartnersPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
   const [selectedPartnerType, setSelectedPartnerType] =
     useState("All Partner Types");
-  // reCAPTCHA verification states
-  const [partnerRecaptchaVerified, setPartnerRecaptchaVerified] =
-    useState(false);
-  const [licenseRecaptchaVerified, setLicenseRecaptchaVerified] =
-    useState(false);
+
   // Mock partner data based on attachment
   // const partnersList = [
   //   {
@@ -391,48 +388,22 @@ const PartnersPage: React.FC = () => {
     setSelectedPartnerForDetails(partner);
     setShowDetailsModal(true);
   };
-  // reCAPTCHA callback functions
-  const onPartnerRecaptchaChange = (value: string | null) => {
-    setPartnerRecaptchaVerified(!!value);
-  };
-  const onLicenseRecaptchaChange = (value: string | null) => {
-    setLicenseRecaptchaVerified(!!value);
-  };
   // Function to open partner modal with pre-selected type
   const openPartnerModal = (partnerType?: string) => {
     const typeToSet = partnerType || activePartnerType;
     setActivePartnerType(typeToSet as keyof typeof partnerTypes);
-    setPartnerRecaptchaVerified(false);
     setShowPartnerModal(true);
   };
 
   // Function to open license modal
   const openLicenseModal = () => {
-    setLicenseRecaptchaVerified(false);
     setShowLicenseModal(true);
   };
   return (
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("partners")} />
-      {/* reCAPTCHA Scripts specific to Partners page */}
-      <Helmet>
-        <script
-          src="https://www.google.com/recaptcha/api.js"
-          async
-          defer
-        ></script>
-        <script>
-          {`
-            window.onPartnerRecaptchaChange = function(token) {
-              window.partnerRecaptchaVerified = !!token;
-            };
-            window.onLicenseRecaptchaChange = function(token) {
-              window.licenseRecaptchaVerified = !!token;
-            };
-          `}
-        </script>
-      </Helmet>
+
       <div className="min-h-screen bg-slate-50">
         {/* Hero Section */}
         {/* <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-br from-emerald-50 via-white to-teal-50 overflow-hidden">
@@ -1797,17 +1768,11 @@ const PartnersPage: React.FC = () => {
           preSelectedPartnerType={activePartnerType}
           customConfig={{
             ...formConfigs.partnership,
-            customValidation: (data: any) => {
-              // Add reCAPTCHA verification
-              if (!partnerRecaptchaVerified) {
-                return "Please complete the reCAPTCHA verification.";
-              }
-              return null;
-            },
+            endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
             onSuccess: () => {
               setShowPartnerModal(false);
-              setPartnerRecaptchaVerified(false);
-            },
+              showToast("Partnership application submitted successfully! We'll contact you soon.", "success");
+            }
           }}
         />
       )}
@@ -2005,17 +1970,11 @@ const PartnersPage: React.FC = () => {
           onClose={() => setShowLicenseModal(false)}
           customConfig={{
             ...formConfigs.license,
-            customValidation: (data: any) => {
-              // Add reCAPTCHA verification
-              if (!licenseRecaptchaVerified) {
-                return "Please complete the reCAPTCHA verification.";
-              }
-              return null;
-            },
+            endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
             onSuccess: () => {
               setShowLicenseModal(false);
-              setLicenseRecaptchaVerified(false);
-            },
+              showToast("License request submitted successfully! We'll process your request soon.", "success");
+            }
           }}
         />
       )}

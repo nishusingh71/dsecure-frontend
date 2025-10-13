@@ -587,60 +587,48 @@ const SupportPage: React.FC = () => {
     }, 1000);
   }, [showToast]);
 
-  const handleTicketSubmit = useCallback((e: React.FormEvent) => {
+  const handleTicketSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Prepare email data for EmailJS
-    const emailData = {
-      service_id: 'your_service_id',
-      template_id: 'your_support_template_id',
-      user_id: 'your_user_id',
-      template_params: {
-        to_email: 'support@dsecuretech.com',
-        from_name: ticketForm.name,
-        from_email: ticketForm.email,
-        subject: `Support Ticket: ${ticketForm.subject}`,
-        priority: ticketForm.priority,
-        category: ticketForm.category,
-        description: ticketForm.description,
-        submission_source: 'Support Page',
-        submission_date: new Date().toLocaleString()
-      }
-    };
+    try {
+      // Prepare form data for FormSubmit
+      const formData = new FormData();
+      formData.append('name', ticketForm.name);
+      formData.append('email', ticketForm.email);
+      formData.append('subject', `Support Ticket: ${ticketForm.subject}`);
+      formData.append('priority', ticketForm.priority);
+      formData.append('category', ticketForm.category);
+      formData.append('description', ticketForm.description);
+      formData.append('submission_source', 'Support Page');
+      formData.append('submission_date', new Date().toLocaleString());
+      formData.append('_template', 'table'); // FormSubmit template
+      formData.append('_captcha', 'false'); // Disable built-in captcha
+      formData.append('_next', `${window.location.origin}/support?success=true`);
 
-    // Log email data for debugging
-    console.log('Support ticket email data prepared:', emailData);
-    
-    // Example EmailJS call (uncomment when configured):
-    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
-    //   .then(() => {
-    //     showToast('Support ticket submitted successfully! We will get back to you soon.', 'success');
-    //     setActiveTicketForm(false);
-    //     setTicketForm({
-    //       name: "",
-    //       email: "",
-    //       subject: "",
-    //       priority: "medium",
-    //       category: "general",
-    //       description: "",
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error('Email sending failed:', error);
-    //     showToast('There was an error submitting your ticket. Please try again.', 'error');
-    //   });
-    
-    // Temporary success simulation
-    showToast("Support ticket submitted successfully! We will get back to you soon.", 'success');
-    setActiveTicketForm(false);
-    setTicketForm({
-      name: "",
-      email: "",
-      subject: "",
-      priority: "medium",
-      category: "general",
-      description: "",
-    });
+      // Submit to FormSubmit
+      const response = await fetch('https://formsubmit.co/dhruv.rai@dsecuretech.com', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        showToast("Support ticket submitted successfully! We will get back to you soon.", 'success');
+        setActiveTicketForm(false);
+        setTicketForm({
+          name: "",
+          email: "",
+          subject: "",
+          priority: "medium",
+          category: "general",
+          description: "",
+        });
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      console.error('Support ticket submission failed:', error);
+      showToast('There was an error submitting your ticket. Please try again.', 'error');
+    }
   }, [ticketForm, showToast]);
 
   const handleInputChange = useCallback((
