@@ -394,7 +394,16 @@ const PartnersPage: React.FC = () => {
     setActivePartnerType(typeToSet as keyof typeof partnerTypes);
     setShowPartnerModal(true);
   };
+<<<<<<< HEAD
 
+=======
+    const openPartnerModals = (partnerType?: string) => {
+    const typeToSet = partnerType || activePartnerType;
+    setActivePartnerType(typeToSet as keyof typeof partnerTypes);
+    (window as any).partnerRecaptchaVerified = false;
+    // setShowPartnerModal(true);
+  };
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
   // Function to open license modal
   const openLicenseModal = () => {
     setShowLicenseModal(true);
@@ -520,6 +529,7 @@ const PartnersPage: React.FC = () => {
           </div>
         </section> */}
 
+<<<<<<< HEAD
         <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
           {/* Background Decorative Elements */}
           <div className="absolute inset-0 opacity-10">
@@ -560,6 +570,46 @@ const PartnersPage: React.FC = () => {
                     className="group bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3"
                   >
                     {/* <svg
+=======
+
+        <section className="relative py-16 md:py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-10 w-32 h-32 bg-emerald-200 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-40 h-40 bg-teal-200 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content - Text */}
+          <div className="space-y-8">
+            {/* Main Heading */}
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
+              <span className="block text-slate-900"><span>D</span>Secure </span>
+              {/* <span className="block text-slate-900">Erasure for</span> */}
+              <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
+                Partner Program
+
+              </span>
+              {/* <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
+              Program
+              </span> */}
+            </h1>
+
+            {/* Description */}
+            <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-xl">
+ Join our Partner Program today! Become part of our global network and unlock new opportunities with best-in-class data erasure solutions for your business success.
+
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Explore Products Button */}
+              <button
+              onClick={() => openPartnerModal(activePartnerType)}
+               className="group bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3">
+                <svg
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-5 h-5"
                   fill="none"
@@ -572,6 +622,7 @@ const PartnersPage: React.FC = () => {
                     strokeWidth={2}
                     d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
+<<<<<<< HEAD
                 </svg> */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -682,6 +733,53 @@ const PartnersPage: React.FC = () => {
                 {/* <div className="relative bg-gradient-to-br from-green-600 via-green-500 to-emerald-600 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3]"> */}
                 {/*  */}
                 {/* <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 z-20">
+=======
+                </svg>
+                <span> Join Partnership</span>
+                  <svg
+                          className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M13 7l5 5-5 5M6 12h12" />
+                        </svg>
+               
+              </button>
+
+              {/* Buy Now Button */}
+              <button
+               onClick={() =>
+                          downloadPDF(
+                            "partnership-brochure.pdf",
+                            "DSecure_Partnership_Brochure.pdf"
+                          )}
+               className="group bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                <span>Download Catalog</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Right Content - Visual Card with Lock */}
+          <div className="relative">
+            
+            {/* <div className="relative bg-gradient-to-br from-green-600 via-green-500 to-emerald-600 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3]"> */}
+              {/*  */}
+              {/* <div className="absolute top-6 right-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center gap-2 z-20">
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-4 h-4"
@@ -693,8 +791,13 @@ const PartnersPage: React.FC = () => {
                 <span>256-bit Encryption</span>
               </div> */}
 
+<<<<<<< HEAD
                 {/* Circuit Board Pattern Background */}
                 {/* <div className="absolute inset-0 opacity-30">
+=======
+              {/* Circuit Board Pattern Background */}
+              {/* <div className="absolute inset-0 opacity-30">
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                 <svg className="w-full h-full" viewBox="0 0 400 300">
                   <defs>
                     <pattern
@@ -728,8 +831,13 @@ const PartnersPage: React.FC = () => {
                 </svg>
               </div> */}
 
+<<<<<<< HEAD
                 {/* Lock Image Container */}
                 {/* <div className="absolute inset-0 flex items-center justify-center p-8">
+=======
+              {/* Lock Image Container */}
+              {/* <div className="absolute inset-0 flex items-center justify-center p-8">
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                 <div className="relative w-full max-w-xs">
                   Glow Effect Behind Lock
                   <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/30 via-orange-400/20 to-red-500/30 blur-3xl rounded-full scale-150"></div>
@@ -775,8 +883,13 @@ const PartnersPage: React.FC = () => {
                 </div>
               </div> */}
 
+<<<<<<< HEAD
                 {/* Secure Erasure Active Badge - Bottom Left */}
                 {/* <div className="absolute bottom-6 left-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full flex items-center gap-2 z-20">
+=======
+              {/* Secure Erasure Active Badge - Bottom Left */}
+              {/* <div className="absolute bottom-6 left-6 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full flex items-center gap-2 z-20">
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                 <span className="relative flex h-3 w-3">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
@@ -786,6 +899,7 @@ const PartnersPage: React.FC = () => {
                 </span>
               </div> */}
 
+<<<<<<< HEAD
                 {/* Lightning Icon - Bottom Center */}
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
                   <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white/20 transition-all duration-300">
@@ -961,6 +1075,114 @@ const PartnersPage: React.FC = () => {
             </div>
           </div>
         </section>
+=======
+              {/* Lightning Icon - Bottom Center */}
+              {/* <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M13 2L3 14h8l-2 8 10-12h-8l2-8z" />
+                  </svg>
+                </div>
+              </div> */}
+            {/* </div> */}
+            
+
+{/* Right Content - Simple Network Diagram */}
+<div className="relative">
+  {/* Main Green Gradient Card - Simple */}
+  <div className="relative bg-gradient-to-br from-green-400 via-teal-400 to-cyan-500 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3] flex items-center justify-center">
+    
+    {/* Network Diagram Container */}
+    <div className="relative w-[280px] h-[280px]">
+      
+      {/* Simple Dotted Circle */}
+      <svg className="absolute inset-0" viewBox="0 0 280 280">
+        <circle
+          cx="140"
+          cy="140"
+          r="110"
+          fill="none"
+          stroke="rgba(255,255,255,0.3)"
+          strokeWidth="2"
+          strokeDasharray="5,8"
+        />
+      </svg>
+
+      {/* Connection Lines */}
+      <svg className="absolute inset-0" viewBox="0 0 280 280">
+        <line x1="140" y1="140" x2="140" y2="20" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="3,5" />
+        <line x1="140" y1="140" x2="260" y2="140" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="3,5" />
+        <line x1="140" y1="140" x2="140" y2="260" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="3,5" />
+        <line x1="140" y1="140" x2="20" y2="140" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeDasharray="3,5" />
+      </svg>
+
+      {/* Center Shield Icon - Green with White Shield */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-2xl p-6 w-24 h-24 flex items-center justify-center">
+          {/* White Shield Icon */}
+          <svg className="w-14 h-14 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Top User */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2">
+        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+          <svg className="w-7 h-7 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Right User */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2">
+        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+          <svg className="w-7 h-7 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Bottom User */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+          <svg className="w-7 h-7 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Left User */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2">
+        <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center">
+          <svg className="w-7 h-7 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+            
+
+            {/* Decorative Floating Elements */}
+            {/* <div className="absolute -top-4 -right-4 w-20 h-20 bg-emerald-300 rounded-full blur-2xl opacity-50"></div> */}
+            {/* <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-teal-300 rounded-full blur-2xl opacity-50"></div> */}
+          </div>
+        </div>
+      </div>
+    </section>
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
         {/* Partnership Types */}
         {/* <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
           <div className="container-responsive px-4 sm:px-6">
@@ -1030,6 +1252,11 @@ const PartnersPage: React.FC = () => {
           </div>
         </section> */}
 
+<<<<<<< HEAD
+=======
+        
+
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
         <section className="py-16 bg-slate-50 ">
           <div className="container-responsive px-4 sm:px-6">
             <Reveal>
@@ -1045,7 +1272,11 @@ const PartnersPage: React.FC = () => {
                   </svg>
                   Partnership Excellence
                 </div>
+<<<<<<< HEAD
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+=======
+               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                   <span className="text-brand">Grow Your Business With </span>
                   <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">
                     D-Secure
@@ -1055,17 +1286,26 @@ const PartnersPage: React.FC = () => {
                 {/* <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                   Join our global network of partners and grow your business with our cutting-edge data erasure solutions.
                 </p> */}
+<<<<<<< HEAD
                 <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
+=======
+ <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                   Choose your partnership type to unlock specialized benefits
                   and opportunities
                 </p>
                 <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
               </div>
             </Reveal>
 
             {/* Partner Type Cards - Simplified */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {Object.keys(partnerTypes).map((type, index) => (
+<<<<<<< HEAD
                 <div
                   key={type}
                   className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
@@ -1083,6 +1323,16 @@ const PartnersPage: React.FC = () => {
                       ].description.substring(0, 120)}
                       ...
                     </p>
+=======
+              <div  key={type}  className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">  <button  onClick={() => openPartnerModals(type)}>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                    {type}
+                  </h3>
+                  <p 
+                  onClick={() => openPartnerModals(type)}className="text-slate-600 mb-4">
+                    {partnerTypes[type as keyof typeof partnerTypes].description.substring(0, 120)}...
+                  </p>
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                   </button>
                   {/* <button 
                     onClick={() => openPartnerModal(type)}
@@ -1095,9 +1345,15 @@ const PartnersPage: React.FC = () => {
             </div>
 
             {/* Find Partners Section */}
+<<<<<<< HEAD
           </div>
                 
         </section>
+=======
+            
+          </div>
+        </section>
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
 
         {/* ITAD Partner Program */}
         <section className="py-12 sm:py-16 md:py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">
@@ -1208,6 +1464,7 @@ const PartnersPage: React.FC = () => {
                       </div>
                     </div> */}
 
+<<<<<<< HEAD
                     <div className="mb-8 sm:mb-12">
                       {/* Section Header */}
                       <div className="flex items-center gap-3 mb-6 sm:mb-8">
@@ -1261,6 +1518,60 @@ const PartnersPage: React.FC = () => {
 
                                 {/* Bottom Decorative Element */}
                                 {/* <div className="mt-6 pt-4 border-t border-slate-100">
+=======
+<div className="mb-8 sm:mb-12">
+  {/* Section Header */}
+  <div className="flex items-center gap-3 mb-6 sm:mb-8">
+    <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+      <svg
+        className="w-5 h-5 text-white"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <h4 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+      Key Benefits
+    </h4>
+  </div>
+
+  {/* Vertical Cards Grid - 2 columns per row */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {partnerTypes[activePartnerType].detailedBenefits?.map(
+      (benefit, index) => (
+        <div
+          key={index}
+          className="group relative bg-white rounded-2xl shadow-lg border border-slate-200/60 hover:shadow-2xl hover:border-emerald-300/50 transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
+        >
+          {/* Card Content */}
+          <div className="p-6 sm:p-8 flex flex-col h-full">
+            {/* Icon */}
+            <div className="mb-6">
+              <div className="inline-flex w-16 h-16 bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 rounded-2xl items-center justify-center shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Title */}
+            <h5 className="font-bold text-xl sm:text-2xl text-slate-900 mb-4 group-hover:text-emerald-600 transition-colors duration-300 leading-tight">
+              {benefit.title}
+            </h5>
+
+            {/* Description */}
+            <p className="text-slate-600 leading-relaxed text-base group-hover:text-slate-700 transition-colors duration-300 flex-grow">
+              {benefit.description}
+            </p>
+
+            {/* Bottom Decorative Element */}
+            {/* <div className="mt-6 pt-4 border-t border-slate-100">
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
               <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <span>Learn More</span>
                 <svg
@@ -1278,6 +1589,7 @@ const PartnersPage: React.FC = () => {
                 </svg>
               </div>
             </div> */}
+<<<<<<< HEAD
                               </div>
 
                               {/* Background Pattern - Decorative */}
@@ -1340,6 +1652,72 @@ const PartnersPage: React.FC = () => {
                       </div>
                     </div>
 
+=======
+          </div>
+
+          {/* Background Pattern - Decorative */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-50 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-0"></div>
+        </div>
+      )
+    ) ||
+      partnerTypes[activePartnerType].benefits.map(
+        (benefit, index) => (
+          <div
+            key={index}
+            className="group relative bg-white rounded-2xl shadow-lg border border-slate-200/60 hover:shadow-2xl hover:border-emerald-300/50 transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
+          >
+            {/* Card Content */}
+            <div className="p-6 sm:p-8 flex flex-col h-full">
+              {/* Icon */}
+              <div className="mb-6">
+                <div className="inline-flex w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <svg
+                    className="w-7 h-7 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Benefit Text */}
+              <p className="text-slate-700 font-semibold text-lg leading-relaxed group-hover:text-slate-900 transition-colors duration-300 flex-grow">
+                {benefit}
+              </p>
+
+              {/* Bottom Decorative Arrow */}
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Background Glow */}
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-50 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+        )
+      )}
+  </div>
+</div>
+
+
+
+                    
+>>>>>>> 41cfa0b399f490e50e1ed2ad060c759cc414d80e
                     {/* Call to Action */}
                     <div className="flex flex-col gap-3 sm:gap-4 pt-6 sm:pt-8 border-t border-slate-200/30">
                       <button
@@ -1347,7 +1725,7 @@ const PartnersPage: React.FC = () => {
                         className="w-full bg-gradient-to-r from-brand via-brand-500 to-brand-600 hover:from-brand-600 hover:via-brand-600 hover:to-brand-700 text-white font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 group"
                       >
                         <span className="text-sm sm:text-base md:text-lg">
-                          Join Partnership Program
+                          Join Partnership Program 
                         </span>
                         <svg
                           className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
