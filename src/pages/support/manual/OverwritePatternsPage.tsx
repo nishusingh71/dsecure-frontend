@@ -2,6 +2,8 @@ import React, { useState, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
+import OptimizedImage from '@/components/OptimizedImage';
+import { getFallbackImage } from '@/utils/imagePlaceholders';
 
 // CDN Image URLs
 const CDN_IMAGES = {
@@ -339,13 +341,14 @@ const OverwritePatternsPage: React.FC = memo(() => {
             <Reveal>
               <div className="relative rounded-2xl overflow-hidden shadow-xl max-w-6xl mx-auto">
                 <div className="relative h-48 sm:h-64 md:h-80 lg:h-96">
-                  <img
+                  <OptimizedImage
                     src={CDN_IMAGES.hero}
                     alt="Data Sanitization and Overwrite Patterns"
+                    fallback={getFallbackImage('security')}
                     className="w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    style={{ aspectRatio: "16/9" }}
+                    width={1600}
+                    height={900}
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
                     <div className="p-4 sm:p-6 md:p-8 text-white">

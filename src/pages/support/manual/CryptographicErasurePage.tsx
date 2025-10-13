@@ -1,54 +1,25 @@
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
-
-// CDN Image URLs
-const CDN_IMAGES = {
-  hero: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
-  process:
-    "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
-  comparison:
-    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
-  compliance:
-    "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
-  enterprise:
-    "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
-};
-
-interface ManualSection {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-  subsections: ManualSubsection[];
-}
-
-interface ManualSubsection {
-  id: number;
-  title: string;
-  description: string;
-  url: string;
-  pageCount: number;
-}
+import OptimizedImage from '@/components/OptimizedImage';
+import { getFallbackImage } from '@/utils/imagePlaceholders';
 
 const CryptographicErasurePage: React.FC = memo(() => {
   const [activeSection, setActiveSection] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const manualSections: ManualSection[] = [
+  const manualSections = [
     {
       id: 1,
       title: "Introduction & Importance",
-      description:
-        "Understanding cryptographic erasure and modern data security",
+      description: "Understanding cryptographic erasure and modern data security",
       icon: "🔐",
       subsections: [
         {
           id: 11,
           title: "Why Cryptographic Erasure Matters",
-          description:
-            "Modern data breach risks and limitations of traditional methods",
+          description: "Modern data breach risks and limitations of traditional methods",
           url: "/support/manual/crypto-importance",
           pageCount: 2,
         },
@@ -200,8 +171,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
         {
           id: 62,
           title: "Future of Secure Erasure",
-          description:
-            "AI verification, blockchain logs, and energy efficiency",
+          description: "AI verification, blockchain logs, and energy efficiency",
           url: "/support/manual/future-trends",
           pageCount: 2,
         },
@@ -241,42 +211,47 @@ const CryptographicErasurePage: React.FC = memo(() => {
     setActiveSection(activeSection === id ? null : id);
   };
 
-  const getTotalPages = (section: ManualSection) => {
-    return section.subsections.reduce((total, sub) => total + sub.pageCount, 0);
+  const getTotalPages = (section: any) => {
+    return section.subsections.reduce((total: number, sub: any) => total + sub.pageCount, 0);
   };
 
   return (
     <>
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/support/cryptographic-erasure"
-        />
-        <title>Cryptographic Erasure | Secure, Instant Data Sanitization</title>
-        <meta
-          name="description"
-          content="Cryptographic Erasure: Instant, irreversible data sanitization through key destruction. NIST 800-88 compliant, SSD-optimized secure erasure technology."
-        />
-        <meta
-          name="keywords"
-          content="cryptographic erasure, crypto erase, key destruction, secure data sanitization, SSD erasure, NIST 800-88"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage('cryptographic-erasure')} />
 
-      <div className="min-h-screen bg-slate-50">
-        {/* Header Section */}
-        <section className="bg-gradient-to-br from-indigo-50 to-purple-50 py-8 sm:py-12 md:py-16 lg:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+        {/* Hero Section */}
+        <section className="py-16 md:py-24">
+          <div className="container-responsive">
             <Reveal>
-              <div className="text-center">
-                <div className="mb-6 md:mb-8">
-                  <Link
-                    to="/support"
-                    className="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
-                  >
+              <div className="text-center max-w-4xl mx-auto">
+                <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+                  <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                    Cryptographic Erasure
+                  </span>
+                </h1>
+                <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
+                  Secure. Instant. Irreversible. Next-generation data sanitization through encryption key destruction.
+                </p>
+                
+                {/* Search Bar */}
+                <div className="max-w-xl mx-auto mb-8">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search cryptographic erasure..."
+                      className="w-full px-6 py-4 pl-12 rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-lg shadow-sm"
+                    />
                     <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
+                      className="w-6 h-6 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -285,96 +260,9 @@ const CryptographicErasurePage: React.FC = memo(() => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       />
                     </svg>
-                    Back to Support
-                  </Link>
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 md:mb-4 leading-tight">
-                    Cryptographic{" "}
-                    <span className="text-indigo-600 block sm:inline">
-                      Erasure
-                    </span>
-                  </h1>
-                  <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-6 md:mb-8 px-4">
-                    Secure. Instant. Irreversible. Next-generation data
-                    sanitization through encryption key destruction.
-                  </p>
-
-                  {/* CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                    <Link
-                      to="/services/cryptographic-erasure"
-                      className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center justify-center text-base sm:text-lg"
-                    >
-                      <span className="mr-2">🔒</span>
-                      Start Secure Erasure
-                    </Link>
-                    <Link
-                      to="/products/bitraser-drive-eraser"
-                      className="bg-white border-2 border-indigo-500 text-indigo-600 hover:bg-indigo-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center justify-center text-base sm:text-lg"
-                    >
-                      <span className="mr-2">📘</span>
-                      Learn About BitRaser Integration
-                    </Link>
-                  </div>
-
-                  {/* Search Bar */}
-                  <div className="max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-0">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search cryptographic erasure..."
-                        className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm sm:text-base"
-                      />
-                      <svg
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Hero Image Section */}
-        <section className="py-8 sm:py-12 md:py-16 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <Reveal>
-              <div className="relative rounded-2xl overflow-hidden shadow-xl max-w-6xl mx-auto">
-                <div className="relative h-48 sm:h-64 md:h-80 lg:h-96">
-                  <img
-                    src={CDN_IMAGES.hero}
-                    alt="Cryptographic Erasure - Secure Data Sanitization Technology"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    style={{ aspectRatio: "16/9" }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
-                    <div className="p-4 sm:p-6 md:p-8 text-white">
-                      <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2">
-                        Instant Data Sanitization
-                      </h2>
-                      <p className="text-xs sm:text-sm md:text-base lg:text-lg opacity-90 max-w-2xl">
-                        Render data unreadable in seconds by destroying
-                        encryption keys — ensuring compliance, privacy, and
-                        peace of mind.
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -383,36 +271,30 @@ const CryptographicErasurePage: React.FC = memo(() => {
         </section>
 
         {/* Key Benefits */}
-        <section className="py-8 sm:py-12 md:py-16 bg-white border-b border-slate-200">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="py-16 bg-white/50">
+          <div className="container-responsive">
             <Reveal>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 text-center">
-                <div className="p-4 sm:p-6">
-                  <div className="text-3xl sm:text-4xl mb-4">⚡</div>
-                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 mb-2">
-                    Instant
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
+                <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl text-white">⚡</span>
                   </div>
-                  <div className="text-slate-600 text-sm sm:text-base">
-                    Seconds vs hours for traditional methods
-                  </div>
+                  <h3 className="text-xl font-bold text-emerald-900 mb-2">Instant</h3>
+                  <p className="text-slate-600">Seconds vs hours for traditional methods</p>
                 </div>
-                <div className="p-4 sm:p-6">
-                  <div className="text-3xl sm:text-4xl mb-4">🔒</div>
-                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 mb-2">
-                    Secure
+                <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl text-white">🔒</span>
                   </div>
-                  <div className="text-slate-600 text-sm sm:text-base">
-                    NIST 800-88 Purge level compliance
-                  </div>
+                  <h3 className="text-xl font-bold text-teal-900 mb-2">Secure</h3>
+                  <p className="text-slate-600">NIST 800-88 Purge level compliance</p>
                 </div>
-                <div className="p-4 sm:p-6">
-                  <div className="text-3xl sm:text-4xl mb-4">🌱</div>
-                  <div className="text-xl sm:text-2xl font-bold text-indigo-600 mb-2">
-                    Sustainable
+                <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl text-white">🌱</span>
                   </div>
-                  <div className="text-slate-600 text-sm sm:text-base">
-                    No drive wear, enables reuse
-                  </div>
+                  <h3 className="text-xl font-bold text-cyan-900 mb-2">Sustainable</h3>
+                  <p className="text-slate-600">No drive wear, enables reuse</p>
                 </div>
               </div>
             </Reveal>
@@ -420,69 +302,52 @@ const CryptographicErasurePage: React.FC = memo(() => {
         </section>
 
         {/* Process Overview */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-slate-100">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="py-16 bg-white/50">
+          <div className="container-responsive">
             <Reveal>
-              <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                   How Cryptographic Erasure Works
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
-                  Instead of overwriting data, destroy the encryption keys —
-                  making all data permanently inaccessible
+                <p className="text-xl text-slate-700 max-w-2xl mx-auto">
+                  Instead of overwriting data, destroy the encryption keys — making all data permanently inaccessible
                 </p>
               </div>
             </Reveal>
 
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="text-center">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl mx-auto mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
                       1
                     </div>
-                    <h3 className="font-semibold text-slate-900 mb-2 text-sm sm:text-base">
-                      Encrypted Drive
-                    </h3>
-                    <p className="text-slate-600 text-xs sm:text-sm">
-                      Data is encrypted with AES-256 bit encryption
-                    </p>
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">Encrypted Drive</h3>
+                    <p className="text-slate-600">Data is encrypted with AES-256 bit encryption</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl mx-auto mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
                       2
                     </div>
-                    <h3 className="font-semibold text-slate-900 mb-2 text-sm sm:text-base">
-                      Key Destruction
-                    </h3>
-                    <p className="text-slate-600 text-xs sm:text-sm">
-                      Encryption keys are permanently deleted
-                    </p>
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">Key Destruction</h3>
+                    <p className="text-slate-600">Encryption keys are permanently deleted</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-indigo-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl mx-auto mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
                       3
                     </div>
-                    <h3 className="font-semibold text-slate-900 mb-2 text-sm sm:text-base">
-                      Data Inaccessible
-                    </h3>
-                    <p className="text-slate-600 text-xs sm:text-sm">
-                      All data becomes cryptographically unreadable
-                    </p>
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">Data Inaccessible</h3>
+                    <p className="text-slate-600">All data becomes cryptographically unreadable</p>
                   </div>
                 </div>
 
-                <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-indigo-50 rounded-lg border border-indigo-200">
+                <div className="mt-8 p-6 bg-emerald-50 rounded-xl border border-emerald-200">
                   <div className="flex items-start">
-                    <div className="text-xl sm:text-2xl mr-4">🔑</div>
+                    <div className="text-2xl mr-4">🔑</div>
                     <div>
-                      <h4 className="font-semibold text-indigo-900 mb-2 text-sm sm:text-base">
-                        Analogy
-                      </h4>
-                      <p className="text-indigo-800 text-xs sm:text-sm">
-                        Imagine locking your vault and melting the only key —
-                        the vault (drive) remains, but its contents are
-                        inaccessible forever.
+                      <h4 className="font-semibold text-emerald-900 mb-2 text-lg">Analogy</h4>
+                      <p className="text-emerald-800">
+                        Imagine locking your vault and melting the only key — the vault (drive) remains, but its contents are inaccessible forever.
                       </p>
                     </div>
                   </div>
@@ -493,26 +358,22 @@ const CryptographicErasurePage: React.FC = memo(() => {
         </section>
 
         {/* Comparison Section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="py-16 bg-white/50">
+          <div className="container-responsive">
             <Reveal>
-              <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                   Cryptographic vs Traditional Overwriting
                 </h2>
               </div>
             </Reveal>
 
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="grid grid-cols-1 sm:grid-cols-3 bg-slate-900 text-white">
-                  <div className="p-4 sm:p-6 font-semibold">Feature</div>
-                  <div className="p-4 sm:p-6 font-semibold bg-red-600/20">
-                    Traditional Overwriting
-                  </div>
-                  <div className="p-4 sm:p-6 font-semibold bg-green-600/20">
-                    Cryptographic Erasure
-                  </div>
+              <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-3 bg-slate-900 text-white">
+                  <div className="p-6 font-semibold text-lg">Feature</div>
+                  <div className="p-6 font-semibold bg-red-600/20 text-lg">Traditional Overwriting</div>
+                  <div className="p-6 font-semibold bg-emerald-600/20 text-lg">Cryptographic Erasure</div>
                 </div>
 
                 {[
@@ -544,17 +405,11 @@ const CryptographicErasurePage: React.FC = memo(() => {
                 ].map((row, index) => (
                   <div
                     key={index}
-                    className="grid grid-cols-1 sm:grid-cols-3 border-b border-slate-200 last:border-b-0"
+                    className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200 last:border-b-0"
                   >
-                    <div className="p-4 sm:p-6 font-medium bg-slate-50 text-sm sm:text-base">
-                      {row.feature}
-                    </div>
-                    <div className="p-4 sm:p-6 text-slate-600 text-sm sm:text-base">
-                      {row.traditional}
-                    </div>
-                    <div className="p-4 sm:p-6 text-green-600 font-medium text-sm sm:text-base">
-                      {row.crypto}
-                    </div>
+                    <div className="p-6 font-medium bg-slate-50 text-lg">{row.feature}</div>
+                    <div className="p-6 text-slate-600 text-lg">{row.traditional}</div>
+                    <div className="p-6 text-emerald-600 font-medium text-lg">{row.crypto}</div>
                   </div>
                 ))}
               </div>
@@ -563,138 +418,132 @@ const CryptographicErasurePage: React.FC = memo(() => {
         </section>
 
         {/* Manual Sections */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-slate-100">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-            {filteredSections.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-8 h-8 text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
+        <section className="py-16 bg-white/50">
+          <div className="container-responsive">
+            <div className="max-w-4xl mx-auto">
+              {filteredSections.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="w-8 h-8 text-slate-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">No Sections Found</h3>
+                  <p className="text-slate-600">Try adjusting your search terms.</p>
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2">
-                  No Sections Found
-                </h3>
-                <p className="text-slate-600 text-sm sm:text-base">
-                  Try adjusting your search terms.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4 sm:space-y-6">
-                {filteredSections.map((section, index) => (
-                  <Reveal key={section.id} delayMs={index * 50}>
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                      <button
-                        onClick={() => toggleSection(section.id)}
-                        className="w-full px-4 sm:px-6 py-4 sm:py-6 text-left hover:bg-slate-50 transition-colors flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-3 sm:gap-4">
-                          <div className="text-lg sm:text-2xl">
-                            {section.icon}
-                          </div>
-                          <div>
-                            <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1">
-                              {section.title}
-                            </h3>
-                            <p className="text-slate-600 text-xs sm:text-sm">
-                              {section.description}
-                            </p>
-                            <div className="flex items-center gap-2 sm:gap-4 mt-2 text-xs sm:text-sm text-slate-500">
-                              <span>{section.subsections.length} topics</span>
-                              <span>{getTotalPages(section)} pages</span>
-                            </div>
-                          </div>
-                        </div>
-                        <svg
-                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
-                            activeSection === section.id ? "rotate-180" : ""
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+              ) : (
+                <div className="space-y-6">
+                  {filteredSections.map((section, index) => (
+                    <Reveal key={section.id} delayMs={index * 50}>
+                      <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden hover:shadow-xl transition-all duration-300">
+                        <button
+                          onClick={() => toggleSection(section.id)}
+                          className="w-full px-6 py-8 text-left hover:bg-slate-50 transition-colors flex items-center justify-between"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </button>
-
-                      {activeSection === section.id && (
-                        <div className="px-4 sm:px-6 pb-4 sm:pb-6">
-                          <div className="border-t border-slate-200 pt-4">
-                            <div className="grid gap-3 sm:gap-4">
-                              {section.subsections.map((subsection) => (
-                                <Link
-                                  key={subsection.id}
-                                  to={subsection.url}
-                                  className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
-                                >
-                                  <div className="flex-1">
-                                    <h4 className="font-medium text-slate-900 group-hover:text-indigo-600 transition-colors mb-1 text-sm sm:text-base">
-                                      {subsection.title}
-                                    </h4>
-                                    <p className="text-xs sm:text-sm text-slate-600">
-                                      {subsection.description}
-                                    </p>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-500">
-                                    <span>{subsection.pageCount} pages</span>
-                                    <svg
-                                      className="w-3 h-3 sm:w-4 sm:h-4 transform group-hover:translate-x-1 transition-transform"
-                                      fill="none"
-                                      stroke="currentColor"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 5l7 7-7 7"
-                                      />
-                                    </svg>
-                                  </div>
-                                </Link>
-                              ))}
+                          <div className="flex items-center gap-4">
+                            <div className="text-2xl">{section.icon}</div>
+                            <div>
+                              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                                {section.title}
+                              </h3>
+                              <p className="text-slate-600">{section.description}</p>
+                              <div className="flex items-center gap-4 mt-3 text-sm text-slate-500">
+                                <span>{section.subsections.length} topics</span>
+                                <span>{getTotalPages(section)} pages</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            )}
+                          <svg
+                            className={`w-5 h-5 text-slate-500 transform transition-transform ${
+                              activeSection === section.id ? "rotate-180" : ""
+                            }`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+
+                        {activeSection === section.id && (
+                          <div className="px-6 pb-6">
+                            <div className="border-t border-slate-200 pt-6">
+                              <div className="grid gap-4">
+                                {section.subsections.map((subsection) => (
+                                  <a
+                                    key={subsection.id}
+                                    href={subsection.url}
+                                    className="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group"
+                                  >
+                                    <div className="flex-1">
+                                      <h4 className="font-medium text-slate-900 group-hover:text-emerald-600 transition-colors mb-1 text-lg">
+                                        {subsection.title}
+                                      </h4>
+                                      <p className="text-sm text-slate-600">
+                                        {subsection.description}
+                                      </p>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-slate-500">
+                                      <span>{subsection.pageCount} pages</span>
+                                      <svg
+                                        className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M9 5l7 7-7 7"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Reveal>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
         {/* Compliance Section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="py-16 bg-white/50">
+          <div className="container-responsive">
             <Reveal>
-              <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                   Compliance & Certifications
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
+                <p className="text-xl text-slate-700 max-w-2xl mx-auto">
                   Meets global regulatory standards for data sanitization
                 </p>
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               {[
                 {
                   standard: "NIST SP 800-88",
@@ -711,13 +560,9 @@ const CryptographicErasurePage: React.FC = memo(() => {
                 },
               ].map((item, index) => (
                 <Reveal key={item.standard} delayMs={index * 100}>
-                  <div className="bg-slate-50 rounded-lg p-4 sm:p-6 text-center border border-slate-200">
-                    <div className="text-lg sm:text-xl font-bold text-indigo-600 mb-2">
-                      {item.standard}
-                    </div>
-                    <div className="text-xs sm:text-sm text-slate-600">
-                      {item.description}
-                    </div>
+                  <div className="bg-white rounded-xl p-6 text-center border border-emerald-100 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div className="text-xl font-bold text-emerald-600 mb-2">{item.standard}</div>
+                    <div className="text-sm text-slate-600">{item.description}</div>
                   </div>
                 </Reveal>
               ))}
@@ -726,41 +571,41 @@ const CryptographicErasurePage: React.FC = memo(() => {
         </section>
 
         {/* Quick Access */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-slate-100">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="py-16 bg-white/50">
+          <div className="container-responsive">
             <Reveal>
-              <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                   Quick Access
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
+                <p className="text-xl text-slate-700 max-w-2xl mx-auto">
                   Essential cryptographic erasure resources
                 </p>
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
               {[
                 {
                   title: "Start Erasure",
                   description: "Begin secure data sanitization",
                   icon: "🔒",
                   url: "/services/cryptographic-erasure",
-                  color: "bg-indigo-500",
+                  color: "bg-emerald-500",
                 },
                 {
                   title: "Compliance Guide",
                   description: "View regulatory standards",
                   icon: "📜",
                   url: "/resources/compliance",
-                  color: "bg-green-500",
+                  color: "bg-teal-500",
                 },
                 {
                   title: "BitRaser Tools",
                   description: "Integration documentation",
                   icon: "💾",
                   url: "/products/bitraser-drive-eraser",
-                  color: "bg-blue-500",
+                  color: "bg-cyan-500",
                 },
                 {
                   title: "Enterprise Guide",
@@ -771,24 +616,20 @@ const CryptographicErasurePage: React.FC = memo(() => {
                 },
               ].map((item, index) => (
                 <Reveal key={item.title} delayMs={index * 100}>
-                  <Link
-                    to={item.url}
-                    className="bg-white rounded-xl p-4 sm:p-6 text-center hover:shadow-lg transition-all duration-300 group h-full flex flex-col"
+                  <a
+                    href={item.url}
+                    className="bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-all duration-300 group h-full flex flex-col border border-emerald-100"
                   >
                     <div
-                      className={`w-12 h-12 sm:w-14 sm:h-14 ${item.color} rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}
+                      className={`w-14 h-14 ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}
                     >
-                      <span className="text-xl sm:text-2xl text-white">
-                        {item.icon}
-                      </span>
+                      <span className="text-2xl text-white">{item.icon}</span>
                     </div>
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
                       {item.title}
                     </h3>
-                    <p className="text-slate-600 text-xs sm:text-sm flex-grow">
-                      {item.description}
-                    </p>
-                  </Link>
+                    <p className="text-slate-600 text-sm flex-grow">{item.description}</p>
+                  </a>
                 </Reveal>
               ))}
             </div>
@@ -796,33 +637,31 @@ const CryptographicErasurePage: React.FC = memo(() => {
         </section>
 
         {/* Final CTA Section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-indigo-500 to-purple-600">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="py-16 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
+          <div className="container-responsive">
             <Reveal>
               <div className="text-center text-white">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6">
                   Ready to Secure Your SSDs?
                 </h2>
-                <p className="text-base sm:text-lg md:text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
-                  Take full control of your data lifecycle. Cryptographic
-                  Erasure offers the perfect balance of speed, compliance, and
-                  sustainability.
+                <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
+                  Take full control of your data lifecycle. Cryptographic Erasure offers the perfect balance of speed, compliance, and sustainability.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/services/cryptographic-erasure"
-                    className="bg-white text-indigo-600 hover:bg-indigo-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center justify-center"
+                <div className="flex flex-col md:flex-row gap-4 justify-center">
+                  <a
+                    href="/services/cryptographic-erasure"
+                    className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-8 py-4 rounded-xl transition-colors text-lg inline-flex items-center justify-center"
                   >
                     <span className="mr-2">🔐</span>
                     Start Cryptographic Erasure
-                  </Link>
-                  <Link
-                    to="/resources/compliance"
-                    className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center justify-center"
+                  </a>
+                  <a
+                    href="/resources/compliance"
+                    className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-8 py-4 rounded-xl transition-colors text-lg inline-flex items-center justify-center"
                   >
                     <span className="mr-2">📜</span>
                     View Compliance Standards
-                  </Link>
+                  </a>
                 </div>
               </div>
             </Reveal>
@@ -830,42 +669,35 @@ const CryptographicErasurePage: React.FC = memo(() => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-8 sm:py-12 md:py-16 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <section className="py-16 bg-white/50">
+          <div className="container-responsive">
             <Reveal>
-              <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
                   Common Questions
                 </h2>
               </div>
             </Reveal>
 
-            <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
+            <div className="max-w-3xl mx-auto space-y-6">
               {[
                 {
                   question: "Can CryptoErase be undone?",
-                  answer:
-                    "No. Once encryption keys are deleted, data is unrecoverable by any means.",
+                  answer: "No. Once encryption keys are deleted, data is unrecoverable by any means.",
                 },
                 {
                   question: "Does it work on HDDs?",
-                  answer:
-                    "Yes, if the drive supports hardware encryption (SED type). Otherwise, use firmware sanitize.",
+                  answer: "Yes, if the drive supports hardware encryption (SED type). Otherwise, use firmware sanitize.",
                 },
                 {
                   question: "How long does it take?",
-                  answer:
-                    "Usually under 15 minutes including verification and report generation.",
+                  answer: "Usually under 15 minutes including verification and report generation.",
                 },
               ].map((faq, index) => (
                 <Reveal key={index} delayMs={index * 100}>
-                  <div className="bg-slate-50 rounded-lg p-4 sm:p-6 border border-slate-200">
-                    <h3 className="font-semibold text-slate-900 mb-2 text-base sm:text-lg">
-                      {faq.question}
-                    </h3>
-                    <p className="text-slate-600 text-sm sm:text-base">
-                      {faq.answer}
-                    </p>
+                  <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">{faq.question}</h3>
+                    <p className="text-slate-600">{faq.answer}</p>
                   </div>
                 </Reveal>
               ))}
