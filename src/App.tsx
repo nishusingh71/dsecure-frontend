@@ -89,6 +89,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import EducationPage from "./pages/EducationPage";
 import FinancialServices from "./pages/FinancialServices";
 import GovernmentPage from "./pages/GovernmentPage";
+const HealthcareSolutionsPage = lazy(() => import("./pages/solutions/HealthcareSolutionsPage"));
 
 // Manual Pages
 const InstallationPage = lazy(
@@ -120,6 +121,111 @@ const WindowsSystemsPage = lazy(
 );
 const MacOSSystemsPage = lazy(
   () => import("./pages/support/manual/MacOSSystemsPage")
+);
+const LinuxSystemsPage = lazy(
+  () => import("./pages/support/manual/LinuxSystemsPage")
+);
+const CommonIssuesPage = lazy(
+  () => import("./pages/support/manual/CommonIssuesPage")
+);
+const ErrorCodesPage = lazy(
+  () => import("./pages/support/manual/ErrorCodesPage")
+);
+const MobileDevicesPage = lazy(
+  () => import("./pages/support/manual/MobileDevicesPage")
+);
+const EnterpriseServersPage = lazy(
+  () => import("./pages/support/manual/EnterpriseServersPage")
+);
+const BatchOperationsPage = lazy(
+  () => import("./pages/support/manual/BatchOperationsPage")
+);
+const RemoteManagementPage = lazy(
+  () => import("./pages/support/manual/RemoteManagementPage")
+);
+const ScriptingAutomationPage = lazy(
+  () => import("./pages/support/manual/ScriptingAutomationPage")
+);
+const CustomConfigurationsPage = lazy(
+  () => import("./pages/support/manual/CustomConfigurationsPage")
+);
+const ComplianceStandardsPage = lazy(
+  () => import("./pages/support/manual/ComplianceStandardsPage")
+);
+const CertificateGenerationPage = lazy(
+  () => import("./pages/support/manual/CertificateGenerationPage")
+);
+const AuditTrailsPage = lazy(
+  () => import("./pages/support/manual/AuditTrailsPage")
+);
+const ChainCustodyPage = lazy(
+  () => import("./pages/support/manual/ChainCustodyPage")
+);
+const PerformanceOptimizationPage = lazy(
+  () => import("./pages/support/manual/PerformanceOptimizationPage")
+);
+const RecoveryProceduresPage = lazy(
+  () => import("./pages/support/manual/RecoveryProceduresPage")
+);
+const WindowsIntroductionPage = lazy(
+  () => import("./pages/support/manual/WindowsIntroductionPage")
+);
+const WindowsBuiltinToolsPage = lazy(
+  () => import("./pages/support/manual/WindowsBuiltinToolsPage")
+);
+const WindowsSSDErasurePage = lazy(
+  () => import("./pages/support/manual/WindowsSSDErasurePage")
+);
+const WindowsStoragePage = lazy(
+  () => import("./pages/support/manual/WindowsStoragePage")
+);
+const WindowsPreparationPage = lazy(
+  () => import("./pages/support/manual/WindowsPreparationPage")
+);
+const WindowsTroubleshootingPage = lazy(
+  () => import("./pages/support/manual/WindowsTroubleshootingPage")
+);
+const WindowsEnterprisePage = lazy(
+  () => import("./pages/support/manual/WindowsEnterprisePage")
+);
+const WindowsRisksPage = lazy(
+  () => import("./pages/support/manual/WindowsRisksPage")
+);
+const WindowsFilesystemsPage = lazy(
+  () => import("./pages/support/manual/WindowsFilesystemsPage")
+);
+const WindowsSystemFilesPage = lazy(
+  () => import("./pages/support/manual/WindowsSystemFilesPage")
+);
+const WindowsResidualDataPage = lazy(
+  () => import("./pages/support/manual/WindowsResidualDataPage")
+);
+const WindowsSoftwareErasurePage = lazy(
+  () => import("./pages/support/manual/WindowsSoftwareErasurePage")
+);
+const WindowsCryptoErasurePage = lazy(
+  () => import("./pages/support/manual/WindowsCryptoErasurePage")
+);
+const WindowsMethodsComparisonPage = lazy(
+  () => import("./pages/support/manual/WindowsMethodsComparisonPage")
+);
+const WindowsCommandLinePage = lazy(
+  () => import("./pages/support/manual/WindowsCommandLinePage")
+);
+const PreInstallationPage = lazy(
+  () => import("./pages/support/manual/PreInstallationPage")
+);
+const DownloadInstallerPage = lazy(
+  () => import("./pages/support/manual/DownloadInstallerPage")
+);
+const LicenseActivationPage = lazy(
+  () => import("./pages/support/manual/LicenseActivationPage")
+);
+const InstallationSettingsPage = lazy(
+  () => import("./pages/support/manual/InstallationSettingsPage")
+);
+const InstallationProgressPage = lazy(
+  () => import("./pages/support/manual/InstallationProgressPage")
 );
 
 // Support pages
@@ -204,6 +310,10 @@ export default function App() {
                   <Route
                     path="solutions/government"
                     element={<GovernmentPage />}
+                  />
+                  <Route
+                    path="solutions/healthcare"
+                    element={<HealthcareSolutionsPage />}
                   />
 
                   {/* Resources */}
@@ -441,6 +551,10 @@ export default function App() {
                     element={<PhysicalDestructionPage />}
                   />
                   <Route
+                    path="support/manual/physical-destruction"
+                    element={<PhysicalDestructionPage />}
+                  />
+                  <Route
                     path="/support/manual/verification-methods"
                     element={<VerificationMethodsPage />}
                   />
@@ -451,6 +565,146 @@ export default function App() {
                   <Route
                     path="/support/manual/macos"
                     element={<MacOSSystemsPage />}
+                  />
+                  <Route
+                    path="/support/manual/linux"
+                    element={<LinuxSystemsPage />}
+                  />
+                  <Route
+                    path="/support/manual/common-issues"
+                    element={<CommonIssuesPage />}
+                  />
+                  <Route
+                    path="/support/manual/error-codes"
+                    element={<ErrorCodesPage />}
+                  />
+                  <Route
+                    path="/support/manual/mobile"
+                    element={<MobileDevicesPage />}
+                  />
+                  <Route
+                    path="/support/manual/servers"
+                    element={<EnterpriseServersPage />}
+                  />
+                  <Route
+                    path="/support/manual/batch-operations"
+                    element={<BatchOperationsPage />}
+                  />
+                  <Route
+                    path="/support/manual/remote-management"
+                    element={<RemoteManagementPage />}
+                  />
+                  <Route
+                    path="/support/manual/scripting"
+                    element={<ScriptingAutomationPage />}
+                  />
+                  <Route
+                    path="/support/manual/custom-configs"
+                    element={<CustomConfigurationsPage />}
+                  />
+                  <Route
+                    path="/support/manual/compliance"
+                    element={<ComplianceStandardsPage />}
+                  />
+                  <Route
+                    path="/support/manual/certificates"
+                    element={<CertificateGenerationPage />}
+                  />
+                  <Route
+                    path="/support/manual/audit-trails"
+                    element={<AuditTrailsPage />}
+                  />
+                  <Route
+                    path="/support/manual/chain-custody"
+                    element={<ChainCustodyPage />}
+                  />
+                  <Route
+                    path="/support/manual/performance"
+                    element={<PerformanceOptimizationPage />}
+                  />
+                  <Route
+                    path="/support/manual/recovery"
+                    element={<RecoveryProceduresPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-introduction"
+                    element={<WindowsIntroductionPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-builtin-tools"
+                    element={<WindowsBuiltinToolsPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-ssd-erasure"
+                    element={<WindowsSSDErasurePage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-storage"
+                    element={<WindowsStoragePage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-preparation"
+                    element={<WindowsPreparationPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-troubleshooting"
+                    element={<WindowsTroubleshootingPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-enterprise"
+                    element={<WindowsEnterprisePage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-risks"
+                    element={<WindowsRisksPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-filesystems"
+                    element={<WindowsFilesystemsPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-system-files"
+                    element={<WindowsSystemFilesPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-residual-data"
+                    element={<WindowsResidualDataPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-software-erasure"
+                    element={<WindowsSoftwareErasurePage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-crypto-erasure"
+                    element={<WindowsCryptoErasurePage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-methods-comparison"
+                    element={<WindowsMethodsComparisonPage />}
+                  />
+                  <Route
+                    path="/support/manual/windows-command-line"
+                    element={<WindowsCommandLinePage />}
+                  />
+                  <Route
+                    path="/support/manual/pre-installation"
+                    element={<PreInstallationPage />}
+                  />
+                  <Route
+                    path="/support/manual/download-installer"
+                    element={<DownloadInstallerPage />}
+                  />
+                  <Route
+                    path="/support/manual/license-activation"
+                    element={<LicenseActivationPage />}
+                  />
+                  <Route
+                    path="/support/manual/installation-settings"
+                    element={<InstallationSettingsPage />}
+                  />
+                  <Route
+                    path="/support/manual/installation-progress"
+                    element={<InstallationProgressPage />}
                   />
 
                   {/* Product-specific Feature */}
