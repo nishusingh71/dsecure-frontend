@@ -2,8 +2,11 @@ import React from "react";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
+import { useNavigate } from "react-router-dom";
+import healthcareImg from "../assets/healthcare_img.png"; 
 
 const HealthcareServices: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* SEO Meta Tags */}
@@ -17,7 +20,7 @@ const HealthcareServices: React.FC = () => {
             <Reveal>
               <div className="max-w-4xl">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 mb-6">
-                  Secure. Certified.
+                  Secure Certified
                 </h1>
                 <p className="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
                   Data security and compliance for healthcare organizations. 
@@ -25,24 +28,44 @@ const HealthcareServices: React.FC = () => {
                   solutions that meet HIPAA, HITECH, and global privacy standards.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                    Request Demo
+                  <button 
+                  onClick={() => navigate('/contact')}
+                  className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    Start Free Trial
                   </button>
-                  <button className="border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 font-bold px-8 py-4 rounded-xl transition-all duration-300">
-                    Download Brochure
-                  </button>
+                  
+                 
                 </div>
               </div>
             </Reveal>
           </div>
 
           {/* Illustration */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block opacity-10">
+          {/* <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block opacity-10">
             <svg className="w-96 h-96" viewBox="0 0 200 200">
               <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
               <path d="M100 40 L100 80 M100 120 L100 160 M60 100 L80 100 M120 100 L140 100" stroke="currentColor" strokeWidth="4" className="text-teal-500" />
             </svg>
+          </div> */}
+          
+
+<div className="absolute right-20 top-1/2 -translate-y-1/2 hidden lg:block">
+        <div className="relative group">
+          <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400 via-teal-400 to-emerald-500 rounded-3xl blur-3xl opacity-40 animate-pulse"></div>
+          
+          <div className="relative">
+            <img 
+              src={healthcareImg}
+              alt="Healthcare Shield" 
+              className="w-96 h-96 object-contain rounded-[18%] opacity-85 group-hover:opacity-100 group-hover:scale-110 group-hover:shadow-[0_0_100px_rgba(16,185,129,1)] transition-all duration-700 ease-in-out sepia-[.15] hue-rotate-[80deg] saturate-150"
+            />
           </div>
+        </div>
+      </div>
+
+ 
+
+
         </section>
 
         {/* Solution Overview */}
@@ -235,10 +258,10 @@ const HealthcareServices: React.FC = () => {
                   Schedule a consultation with our healthcare data security experts
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-white text-emerald-700 hover:bg-emerald-50 font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105">
-                    Request Demo
-                  </button>
-                  <button className="border-2 border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl transition-all duration-300">
+                  
+                  <button 
+                  onClick={() => navigate('/contact')}
+                  className="border-2 border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl transition-all duration-300">
                     Contact Sales
                   </button>
                 </div>
