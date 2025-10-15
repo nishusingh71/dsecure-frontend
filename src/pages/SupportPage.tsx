@@ -7,7 +7,7 @@ import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
-import { useOptimizedSearch, usePerformanceMonitor } from "@/utils/performanceUtils";
+
 
 // Form components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{ 
@@ -447,14 +447,23 @@ const SupportPage: React.FC = () => {
   const handleSearchInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
-    setShowSearchResults(value.trim().length > 0);
-    setSelectedResultIndex(-1); // Reset selection
+    const shouldShow = value.trim().length > 0;
+    setShowSearchResults(shouldShow);
+    setSelectedResultIndex(-1);
+    
+    // Prevent page scroll when search results are shown
+    if (shouldShow) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   }, []);
 
   const clearSearch = useCallback(() => {
     setSearchQuery("");
     setShowSearchResults(false);
     setSelectedResultIndex(-1);
+    document.body.style.overflow = '';
   }, []);
 
   // Handle keyboard navigation
@@ -684,133 +693,51 @@ const SupportPage: React.FC = () => {
 
                   {/* Search Bar */}
                   <div className="max-w-2xl mx-auto relative">
-                    {/* Search Results Backdrop */}
-                    {showSearchResults && (
-                      <div 
-                        className="fixed inset-0 bg-black/20 z-[998]"
-                        onClick={clearSearch}
-                      />
-                    )}
-                    
-                    <form onSubmit={handleSearch}>
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={handleSearchInputChange}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Search documents and help Resources"
-                        className="w-full px-6 py-4 pl-12 pr-24 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-brand focus:border-brand transition-colors text-lg relative z-[1000]"
-                        autoComplete="off"
-                      />
-                      <svg
-                        className="w-6 h-6 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2 z-[1001]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                      {searchQuery && (
-                        <button
-                          type="button"
-                          onClick={clearSearch}
-                          className="absolute right-16 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-[1001]"
-                        >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      )}
-                      <button 
-                        type="submit"
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-600 text-white px-4 py-2 rounded-md transition-colors z-[1001]"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    <div className="relative">
+                      <form onSubmit={handleSearch}>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchInputChange}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Search documents and help resources..."
+                            className="w-full py-4 pl-12 pr-20 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-base shadow-sm hover:shadow-md placeholder:text-slate-400"
+                            autoComplete="off"
                           />
-                        </svg>
-                      </button>
-                    </form>
-                    
-                    {/* Search Results Dropdown */}
-                    {showSearchResults && searchResults.length > 0 && (
-                      <div className="absolute top-full mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-xl z-[999] max-h-96 overflow-y-auto h-32">
-                        <div className="p-3 border-b border-slate-100">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-slate-700">
-                              {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
-                            </span>
+                          <svg
+                            className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            />
+                          </svg>
+                          {searchQuery && (
                             <button
+                              type="button"
                               onClick={clearSearch}
-                              className="text-slate-400 hover:text-slate-600 transition-colors"
+                              className="absolute right-12 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
                             >
                               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                               </svg>
                             </button>
-                          </div>
-                        </div>
-                        {searchResults.map((result, index) => (
-                          <Link
-                            key={`${result.title}-${index}`}
-                            to={result.url}
-                            className={`block p-4 hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-b-0 ${
-                              index === selectedResultIndex ? 'bg-brand/5 border-brand/20' : ''
-                            }`}
-                            onClick={clearSearch}
-                            onMouseEnter={() => setSelectedResultIndex(index)}
+                          )}
+                          <button 
+                            type="submit"
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-md transition-colors font-medium text-sm"
                           >
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <h3 className="font-semibold text-slate-900 mb-1">
-                                  {result.title}
-                                </h3>
-                                <p className="text-sm text-slate-600 mb-2">
-                                  {result.description}
-                                </p>
-                                <span className="inline-block px-2 py-1 text-xs font-medium text-brand bg-brand/10 rounded-full">
-                                  {result.category}
-                                </span>
-                              </div>
-                              <svg className="w-4 h-4 text-slate-400 mt-1 ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* No Results Message */}
-                    {showSearchResults && searchQuery && searchResults.length === 0 && (
-                      <div className="absolute top-full mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-xl z-[999] p-6 text-center">
-                        <svg className="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <p className="text-slate-600 mb-2">No results found for "{searchQuery}"</p>
-                        <p className="text-sm text-slate-500">Try searching with different keywords or browse our support sections below.</p>
-                        <button
-                          onClick={clearSearch}
-                          className="mt-3 text-brand hover:text-brand-600 font-medium text-sm"
-                        >
-                          Clear search
-                        </button>
-                      </div>
-                    )}
+                            Go
+                          </button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -818,8 +745,88 @@ const SupportPage: React.FC = () => {
           </div>
         </section>
 
+        {/* Search Results Overlay */}
+        {showSearchResults && (
+          <>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
+              onClick={clearSearch}
+            />
+            
+            {/* Search Results Modal */}
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl mx-4 z-[10000]">
+              {searchResults.length > 0 ? (
+                <div className="bg-white rounded-xl shadow-2xl max-h-[70vh] overflow-hidden">
+                  <div className="p-4 border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-teal-50">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold text-emerald-900">
+                        {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found for "{searchQuery}"
+                      </span>
+                      <button
+                        onClick={clearSearch}
+                        className="text-emerald-600 hover:text-emerald-700 transition-colors p-1 hover:bg-emerald-100 rounded-full"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {searchResults.map((result, index) => (
+                      <Link
+                        key={`${result.title}-${index}`}
+                        to={result.url}
+                        className={`block p-4 hover:bg-emerald-50 transition-all border-b border-slate-100 last:border-b-0 ${
+                          index === selectedResultIndex ? 'bg-emerald-50 border-l-4 border-l-emerald-500' : ''
+                        }`}
+                        onClick={clearSearch}
+                        onMouseEnter={() => setSelectedResultIndex(index)}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-emerald-600">
+                              {result.title}
+                            </h3>
+                            <p className="text-sm text-slate-600 mb-2">
+                              {result.description}
+                            </p>
+                            <span className="inline-block px-2 py-1 text-xs font-medium text-emerald-700 bg-emerald-100 rounded-full">
+                              {result.category}
+                            </span>
+                          </div>
+                          <svg className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : searchQuery && (
+                <div className="bg-white rounded-xl shadow-2xl p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-slate-900 font-semibold mb-2">No results found for "{searchQuery}"</p>
+                  <p className="text-sm text-slate-600 mb-4">Try searching with different keywords or browse our support sections below.</p>
+                  <button
+                    onClick={clearSearch}
+                    className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-2 rounded-lg font-medium text-sm transition-all shadow-md"
+                  >
+                    Clear search
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
         {/* Trending Searches */}
-        <section className="py-8 bg-white border-b border-slate-200">
+        <section className={`py-8 bg-white border-b border-slate-200 ${showSearchResults ? 'hidden' : ''}`}>
           <div className="container-responsive">
             <Reveal>
               <div>

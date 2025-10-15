@@ -707,60 +707,7 @@ const InstallationPage: React.FC = memo(() => {
           </div>
         </section>
 
-        {/* Download Section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-slate-100">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <Reveal>
-              <div className="text-center">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 md:mb-4">
-                  Download PDF Guide
-                </h2>
-                <p className="text-base sm:text-lg md:text-xl text-slate-700 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
-                  Get the complete D-Secure installation guide as a downloadable
-                  PDF for offline reference
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                  <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
-                    <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    Download Installation Guide (PDF)
-                  </button>
-                  <button className="bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
-                    <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H9.5a2 2 0 00-2 2v4a2 2 0 002 2h2m3-4v6m0 0l-3-3m3 3l3-3"
-                      />
-                    </svg>
-                    Quick Setup Reference (PDF)
-                  </button>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-4">
-                  Last updated: {new Date().getFullYear()} • Version 2.1 • 10
-                  pages
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+
 
         {/* Contact Support Section */}
         <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">

@@ -132,12 +132,7 @@ export const usePerformanceMonitor = (componentName: string) => {
   const startTime = useMemo(() => performance.now(), []);
 
   useEffect(() => {
-    const endTime = performance.now();
-    const renderTime = endTime - startTime;
-
-    if (process.env.NODE_ENV === 'development' && renderTime > 50) {
-      console.warn(`${componentName} render time: ${renderTime.toFixed(2)}ms`);
-    }
+    // Performance monitoring disabled to reduce console noise
   });
 
   return { startTime };

@@ -1,13 +1,58 @@
 import { useState, useCallback, useMemo } from 'react';
 
+interface SearchOptions<T> {
+  fuzzySearch?: boolean;
+  fieldWeights?: Partial<Record<keyof T, number>>;
+  minScore?: number;
+  caseSensitive?: boolean;
+}
+
+// Fuzzy search scoring
+function fuzzyScore(query: string, text: string): number {
+  const queryLower = query.toLowerCase();
+  const textLower = text.toLowerCase();
+  
+  // Exact match
+  if (textLower === queryLower) return 100;
+  
+  // Starts with query
+  if (textLower.startsWith(queryLower)) return 90;
+  
+  // Contains query
+  if (textLower.includes(queryLower)) return 70;
+  
+  // Fuzzy match - check if all query chars appear in order
+  let queryIndex = 0;
+  let score = 50;
+  
+  for (let i = 0; i < textLower.length && queryIndex < queryLower.length; i++) {
+    if (textLower[i] === queryLower[queryIndex]) {
+      queryIndex++;
+      score += 2;
+    }
+  }
+  
+  return queryIndex === queryLower.length ? score : 0;
+}
+
 // Generic search and filter hook
 export function useSearch<T>(
   items: T[],
   searchFields: (keyof T)[],
-  filterFunctions?: Record<string, (item: T, filterValue: any) => boolean>
+  filterFunctions?: Record<string, (item: T, filterValue: any) => boolean>,
+  options: SearchOptions<T> = {}
 ) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState<Record<string, any>>({});
+  const [sortBy, setSortBy] = useState<keyof T | ''>('');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const {
+    fuzzySearch = true,
+    fieldWeights = {} as Partial<Record<keyof T, number>>,
+    minScore = 30,
+    caseSensitive = false
+  } = options;
 
   const updateFilter = useCallback((filterName: string, value: any) => {
     setFilters(prev => ({
@@ -27,26 +72,55 @@ export function useSearch<T>(
   const clearAllFilters = useCallback(() => {
     setFilters({});
     setSearchQuery('');
+    setSortBy('');
   }, []);
+
+  const toggleSort = useCallback((field: keyof T) => {
+    if (sortBy === field) {
+      setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(field);
+      setSortOrder('asc');
+    }
+  }, [sortBy]);
 
   const filteredItems = useMemo(() => {
     let result = items;
 
-    // Apply search query
+    // Apply search query with scoring
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      result = result.filter(item =>
-        searchFields.some(field => {
+      const query = caseSensitive ? searchQuery : searchQuery.toLowerCase();
+      
+      const scoredItems = result.map(item => {
+        let maxScore = 0;
+        
+        searchFields.forEach(field => {
           const value = item[field];
+          const weight = fieldWeights[field] || 1;
+          let fieldScore = 0;
+          
           if (typeof value === 'string') {
-            return value.toLowerCase().includes(query);
+            const text = caseSensitive ? value : value.toLowerCase();
+            
+            if (fuzzySearch) {
+              fieldScore = fuzzyScore(query, text) * weight;
+            } else {
+              fieldScore = text.includes(query) ? 100 * weight : 0;
+            }
+          } else if (typeof value === 'number') {
+            fieldScore = value.toString().includes(query) ? 100 * weight : 0;
           }
-          if (typeof value === 'number') {
-            return value.toString().includes(query);
-          }
-          return false;
-        })
-      );
+          
+          maxScore = Math.max(maxScore, fieldScore);
+        });
+        
+        return { item, score: maxScore };
+      });
+      
+      result = scoredItems
+        .filter(({ score }) => score >= minScore)
+        .sort((a, b) => b.score - a.score)
+        .map(({ item }) => item);
     }
 
     // Apply filters
@@ -59,8 +133,28 @@ export function useSearch<T>(
       });
     }
 
+    // Apply sorting
+    if (sortBy) {
+      result = [...result].sort((a, b) => {
+        const aVal = a[sortBy];
+        const bVal = b[sortBy];
+        
+        if (typeof aVal === 'string' && typeof bVal === 'string') {
+          return sortOrder === 'asc' 
+            ? aVal.localeCompare(bVal)
+            : bVal.localeCompare(aVal);
+        }
+        
+        if (typeof aVal === 'number' && typeof bVal === 'number') {
+          return sortOrder === 'asc' ? aVal - bVal : bVal - aVal;
+        }
+        
+        return 0;
+      });
+    }
+
     return result;
-  }, [items, searchQuery, filters, searchFields, filterFunctions]);
+  }, [items, searchQuery, filters, searchFields, filterFunctions, fuzzySearch, fieldWeights, minScore, caseSensitive, sortBy, sortOrder]);
 
   return {
     searchQuery,
@@ -70,7 +164,10 @@ export function useSearch<T>(
     clearFilter,
     clearAllFilters,
     filteredItems,
-    hasActiveFilters: Object.keys(filters).length > 0 || searchQuery.trim() !== ''
+    hasActiveFilters: Object.keys(filters).length > 0 || searchQuery.trim() !== '',
+    sortBy,
+    sortOrder,
+    toggleSort
   };
 }
 

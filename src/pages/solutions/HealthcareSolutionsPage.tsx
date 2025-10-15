@@ -12,19 +12,51 @@ export default function HealthcareSolutionsPage() {
     {
       title: "HIPAA Compliant Data Erasure",
       description: "Secure patient data destruction meeting HIPAA requirements",
-      features: ["PHI Protection", "Audit Trails", "Compliance Reports"]
+      features: ["PHI Protection", "Audit Trails", "Compliance Reports"],
+      category: "Compliance"
     },
     {
       title: "Medical Device Sanitization", 
       description: "Specialized erasure for medical equipment and devices",
-      features: ["Device Compatibility", "FDA Compliance", "Verification"]
+      features: ["Device Compatibility", "FDA Compliance", "Verification"],
+      category: "Hardware"
     },
     {
       title: "EMR System Migration",
       description: "Secure data transfer and legacy system cleanup",
-      features: ["Data Migration", "System Cleanup", "Zero Downtime"]
+      features: ["Data Migration", "System Cleanup", "Zero Downtime"],
+      category: "Software"
+    },
+    {
+      title: "Patient Data Protection",
+      description: "Comprehensive PHI security and erasure solutions",
+      features: ["HIPAA Compliance", "Encryption", "Secure Deletion"],
+      category: "Security"
+    },
+    {
+      title: "Hospital IT Asset Disposal",
+      description: "End-of-life device sanitization for healthcare facilities",
+      features: ["Asset Tracking", "Certificate Generation", "Compliance"],
+      category: "Hardware"
+    },
+    {
+      title: "Telemedicine Data Security",
+      description: "Secure erasure for telehealth platforms and devices",
+      features: ["Remote Wipe", "Cloud Security", "HIPAA Compliant"],
+      category: "Cloud"
     }
   ];
+
+  const suggestions = [
+    { text: "HIPAA compliance", category: "Compliance", type: "trending" as const },
+    { text: "Medical device sanitization", category: "Hardware", type: "suggestion" as const },
+    { text: "Patient data protection", category: "Security", type: "trending" as const },
+    { text: "EMR system migration", category: "Software", type: "suggestion" as const },
+    { text: "PHI security", category: "Security", type: "suggestion" as const },
+    { text: "Hospital IT disposal", category: "Hardware", type: "suggestion" as const },
+  ];
+
+  const categories = ["Compliance", "Hardware", "Software", "Security", "Cloud"];
 
   const filteredSolutions = solutions.filter(solution =>
     solution.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -52,11 +84,16 @@ export default function HealthcareSolutionsPage() {
                 HIPAA-compliant data erasure solutions for healthcare organizations
               </p>
             </Reveal>
-            <Reveal delayMs={20}>
+            <Reveal delayMs={200}>
               <SearchBar
                 placeholder="Search healthcare solutions..."
                 onSearch={setSearchTerm}
-                className="max-w-md mx-auto"
+                suggestions={suggestions}
+                categories={categories}
+                showRecentSearches={true}
+                showTrending={true}
+                maxSuggestions={6}
+                className="max-w-3xl mx-auto"
               />
             </Reveal>
           </div>

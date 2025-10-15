@@ -1,0 +1,50 @@
+import React, { memo } from "react";
+import { Helmet } from "react-helmet-async";
+import Reveal from "@/components/Reveal";
+import { Link } from "react-router-dom";
+
+const UserManagementPage: React.FC = memo(() => {
+  return (
+    <>
+      <Helmet>
+        <title>User Management | D-Secure</title>
+      </Helmet>
+      <div className="min-h-screen bg-slate-50">
+        <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <Reveal>
+              <Link to="/support/manual/user-interface" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Back
+              </Link>
+              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                User <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Management</span>
+              </h1>
+            </Reveal>
+          </div>
+        </section>
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <Reveal>
+              <div className="prose prose-lg max-w-none">
+                <h2 className="text-3xl font-bold text-slate-900 mb-6">User Roles</h2>
+                <div className="space-y-4">
+                  <div className="bg-emerald-50 p-4 rounded-lg">
+                    <h3 className="font-bold text-emerald-900">Administrator</h3>
+                  </div>
+                  <div className="bg-teal-50 p-4 rounded-lg">
+                    <h3 className="font-bold text-teal-900">Operator</h3>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      </div>
+    </>
+  );
+});
+
+export default UserManagementPage;

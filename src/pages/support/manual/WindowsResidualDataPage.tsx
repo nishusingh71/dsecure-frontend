@@ -1,125 +1,55 @@
-import React from "react";
+import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
-import ManualPageTemplate from "@/components/ManualPageTemplate";
+import Reveal from "@/components/Reveal";
+import { Link } from "react-router-dom";
 
-const WindowsResidualDataPage: React.FC = () => {
-  const sections = [
-    {
-      title: "Shadow Copies (VSS)",
-      content: `Volume Shadow Copy Service creates point-in-time snapshots:
-      
-      **Data Persistence Risks**
-      • Automatic snapshots of entire volumes
-      • Contains deleted files and previous versions
-      • Created during system updates and backups
-      • Accessible through Previous Versions feature
-      
-      **D-Secure VSS Management**
-      • Enumerate all shadow copies on system
-      • Delete shadow copies before erasure
-      • Disable VSS service temporarily
-      • Clear shadow storage areas
-      
-      **VSS Commands**
-      \`\`\`
-      # List all shadow copies
-      vssadmin list shadows
-      
-      # Delete all shadow copies
-      vssadmin delete shadows /all /quiet
-      
-      # Resize shadow storage to minimum
-      vssadmin resize shadowstorage /for=C: /on=C: /maxsize=1MB
-      \`\`\``
-    },
-    {
-      title: "Temporary Files",
-      content: `Various temporary file locations containing sensitive data:
-      
-      **System Temp Locations**
-      • \`%TEMP%\` and \`%TMP%\` user temporary folders
-      • \`C:\\Windows\\Temp\` system temporary folder
-      • \`C:\\Windows\\Prefetch\` application prefetch files
-      • \`C:\\Windows\\SoftwareDistribution\` update cache
-      
-      **Application Temp Data**
-      • Browser cache and download history
-      • Office temporary and recovery files
-      • Application crash dumps and logs
-      • Print spooler temporary files
-      
-      **D-Secure Temp File Cleanup**
-      \`\`\`
-      # Clear user temp files
-      del /q /f /s "%TEMP%\\*"
-      
-      # Clear system temp files
-      del /q /f /s "C:\\Windows\\Temp\\*"
-      
-      # Clear prefetch files
-      del /q /f /s "C:\\Windows\\Prefetch\\*"
-      \`\`\``
-    },
-    {
-      title: "Registry Remnants",
-      content: `Windows Registry contains sensitive configuration data:
-      
-      **Sensitive Registry Data**
-      • User passwords and authentication tokens
-      • Application configuration and license keys
-      • Network credentials and certificates
-      • Recently accessed files and folders
-      
-      **Registry Hive Locations**
-      • \`HKEY_CURRENT_USER\` (NTUSER.DAT)
-      • \`HKEY_LOCAL_MACHINE\\SAM\` (SAM database)
-      • \`HKEY_LOCAL_MACHINE\\SECURITY\` (SECURITY hive)
-      • \`HKEY_LOCAL_MACHINE\\SOFTWARE\` (SOFTWARE hive)
-      
-      **Registry Cleanup Process**
-      • Export critical registry settings
-      • Clear user-specific registry entries
-      • Remove application remnants
-      • Secure deletion of registry hive files
-      
-      **Registry Commands**
-      \`\`\`
-      # Clear recent documents
-      reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs" /f
-      
-      # Clear run history
-      reg delete "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RunMRU" /f
-      \`\`\``
-    }
-  ];
+const WindowsResidualDataPage: React.FC = memo(() => {
 
-  const quickAccess = [
-    { title: "System Files", url: "/support/manual/windows-system-files" },
-    { title: "File Systems", url: "/support/manual/windows-filesystems" },
-    { title: "Command Line", url: "/support/manual/windows-command-line" },
-    { title: "Built-in Tools", url: "/support/manual/windows-builtin-tools" }
-  ];
 
   return (
     <>
       <Helmet>
-        <title>Windows Residual Data Locations | Shadow Copies, Temp Files, Registry</title>
-        <meta name="description" content="Identifying and removing residual data from Windows shadow copies, temporary files, and registry remnants." />
+        <title>Windows Page | D-Secure Manual</title>
+        <meta name="description" content="Windows data erasure procedures and methods." />
       </Helmet>
-      
-      <ManualPageTemplate
-        title="Residual Data Locations"
-        subtitle="Shadow copies, temp files, and registry remnants"
-        sections={sections}
-        quickAccess={quickAccess}
-        backUrl="/support/manual/windows"
-        ctaTitle="Complete Residual Data Removal"
-        ctaDescription="Ensure no sensitive data remains in Windows system locations with D-Secure comprehensive erasure."
-        ctaButtonText="Get Residual Data Assessment"
-        ctaButtonUrl="/contact"
-      />
+
+      <div className="min-h-screen bg-slate-50">
+        <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <Reveal>
+              <div className="text-center">
+                <Link to="/support/manual/windows" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4 transition-colors">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Back to Windows Systems
+                </Link>
+                <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+                  Windows <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Guide</span>
+                </h1>
+                <p className="text-xl text-slate-700 max-w-3xl mx-auto">
+                  Windows data erasure procedures and methods
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <div className="space-y-12">
+              <Reveal>
+                <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-6">Windows Erasure Methods</h2>
+                  <p className="text-slate-700">Comprehensive Windows data erasure procedures.</p>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+      </div>
     </>
   );
-};
+});
 
 export default WindowsResidualDataPage;

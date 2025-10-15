@@ -1,136 +1,55 @@
-import React from "react";
+import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
-import ManualPageTemplate from "@/components/ManualPageTemplate";
+import Reveal from "@/components/Reveal";
+import { Link } from "react-router-dom";
 
-const WindowsMethodsComparisonPage: React.FC = () => {
-  const sections = [
-    {
-      title: "Software Overwrite Methods",
-      content: `Comparison of software-based erasure approaches:
-      
-      **Single-Pass Overwrite**
-      ✅ **Pros:**
-      • Fast execution time
-      • Suitable for modern drives
-      • NIST SP 800-88 compliant
-      • Low system resource usage
-      
-      ❌ **Cons:**
-      • May not meet legacy security requirements
-      • Limited effectiveness on damaged sectors
-      • Requires functional drive electronics
-      
-      **Multi-Pass DoD Methods**
-      ✅ **Pros:**
-      • High security assurance
-      • Meets DoD 5220.22-M standards
-      • Effective against advanced recovery
-      • Comprehensive verification
-      
-      ❌ **Cons:**
-      • Time-intensive process
-      • Increased wear on SSDs
-      • Higher power consumption
-      • May not be necessary for modern drives`
-    },
-    {
-      title: "Cryptographic Erasure",
-      content: `Key destruction approach for encrypted drives:
-      
-      **BitLocker Cryptographic Erasure**
-      ✅ **Pros:**
-      • Instantaneous completion
-      • No physical wear on drive
-      • Effective for all drive types
-      • Maintains drive performance
-      
-      ❌ **Cons:**
-      • Requires prior encryption
-      • Trust in encryption implementation
-      • Key recovery risks if not properly managed
-      • May not meet all compliance requirements
-      
-      **Self-Encrypting Drive (SED)**
-      ✅ **Pros:**
-      • Hardware-level security
-      • OPAL 2.0 standard compliance
-      • Instant secure erase capability
-      • No software dependencies
-      
-      ❌ **Cons:**
-      • Limited drive compatibility
-      • Requires SED-capable hardware
-      • Potential firmware vulnerabilities
-      • Higher initial cost`
-    },
-    {
-      title: "Method Selection Guidelines",
-      content: `Choosing the appropriate erasure method for Windows:
-      
-      **High Security Requirements**
-      • Use multi-pass DoD methods (3-7 passes)
-      • Combine with cryptographic erasure
-      • Physical destruction for classified data
-      • Comprehensive audit trail documentation
-      
-      **Standard Business Use**
-      • Single-pass NIST method sufficient
-      • Cryptographic erasure for encrypted drives
-      • Built-in Windows tools acceptable
-      • Cost-effective and time-efficient
-      
-      **Compliance Considerations**
-      • **GDPR**: Single-pass generally sufficient
-      • **HIPAA**: Multi-pass recommended for PHI
-      • **PCI DSS**: Cryptographic or multi-pass required
-      • **DoD**: Multi-pass mandatory for classified
-      
-      **Drive Type Recommendations**
-      \`\`\`
-      HDD (Traditional):
-      - Single-pass: NIST SP 800-88
-      - Multi-pass: DoD 5220.22-M (3-pass)
-      
-      SSD (Solid State):
-      - Cryptographic erasure preferred
-      - ATA Secure Erase command
-      - Manufacturer utilities
-      
-      Encrypted Drives:
-      - Key destruction (cryptographic)
-      - Combined with overwrite if required
-      - Verify encryption key removal
-      \`\`\``
-    }
-  ];
+const WindowsMethodsComparisonPage: React.FC = memo(() => {
 
-  const quickAccess = [
-    { title: "Software Erasure", url: "/support/manual/windows-software-erasure" },
-    { title: "Crypto Erasure", url: "/support/manual/windows-crypto-erasure" },
-    { title: "SSD Erasure", url: "/support/manual/windows-ssd-erasure" },
-    { title: "Best Practices", url: "/support/manual/windows-best-practices" }
-  ];
 
   return (
     <>
       <Helmet>
-        <title>Windows Erasure Methods Comparison | Software vs Cryptographic</title>
-        <meta name="description" content="Comprehensive comparison of Windows data erasure methods including pros, cons, and selection guidelines." />
+        <title>Windows Page | D-Secure Manual</title>
+        <meta name="description" content="Windows data erasure procedures and methods." />
       </Helmet>
-      
-      <ManualPageTemplate
-        title="Method Comparison"
-        subtitle="Pros and cons of each erasure approach"
-        sections={sections}
-        quickAccess={quickAccess}
-        backUrl="/support/manual/windows"
-        ctaTitle="Method Selection Consultation"
-        ctaDescription="Get expert guidance on selecting the optimal erasure method for your Windows environment."
-        ctaButtonText="Consult D-Secure Experts"
-        ctaButtonUrl="/contact"
-      />
+
+      <div className="min-h-screen bg-slate-50">
+        <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <Reveal>
+              <div className="text-center">
+                <Link to="/support/manual/windows" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4 transition-colors">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Back to Windows Systems
+                </Link>
+                <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+                  Windows <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Guide</span>
+                </h1>
+                <p className="text-xl text-slate-700 max-w-3xl mx-auto">
+                  Windows data erasure procedures and methods
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="py-16 lg:py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <div className="space-y-12">
+              <Reveal>
+                <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-6">Windows Erasure Methods</h2>
+                  <p className="text-slate-700">Comprehensive Windows data erasure procedures.</p>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+      </div>
     </>
   );
-};
+});
 
 export default WindowsMethodsComparisonPage;

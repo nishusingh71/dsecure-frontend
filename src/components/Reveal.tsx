@@ -79,10 +79,13 @@ export default function Reveal({
       ref={ref} 
       className={`
         ${visible ? animate : initial}
-        transform transition-all will-change-transform
+        transform transition-all
         ${className}
       `}
-      style={{ transitionDuration: `${duration}ms` }}
+      style={{ 
+        transitionDuration: `${duration}ms`,
+        willChange: visible ? 'auto' : 'transform, opacity'
+      }}
     >
       {children}
     </div>
