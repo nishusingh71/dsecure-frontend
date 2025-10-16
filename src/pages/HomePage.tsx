@@ -182,7 +182,7 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div className="w-24 h-24 bg-white rounded-lg shadow-lg overflow-hidden">
                       <img
-                        src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
                         alt="Data Protection"
                         className="w-full h-full object-cover"
                         loading="lazy"

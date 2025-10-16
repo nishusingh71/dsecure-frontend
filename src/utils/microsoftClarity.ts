@@ -23,7 +23,19 @@ class MicrosoftClarity {
 
   // Initialize Microsoft Clarity
   init(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || this.isInitialized) return;
+
+    // Skip initialization in development to avoid CORS errors
+    if (process.env.NODE_ENV === 'development') {
+      this.isInitialized = true;
+      return;
+    }
+
+    // Check if Clarity is already loaded
+    if ((window as any).clarity) {
+      this.isInitialized = true;
+      return;
+    }
 
     // Clarity initialization script
     (function(c: any, l: any, a: any, r: any, i: any, t: any, y: any) {
@@ -38,15 +50,12 @@ class MicrosoftClarity {
     })(window, document, "clarity", "script", this.projectId, null, null);
 
     this.isInitialized = true;
-
-    if (this.debug) {
-      //console.log('Microsoft Clarity initialized with Project ID:', this.projectId);
-    }
   }
 
   // Track custom events
   trackEvent(event: ClarityEvent): void {
     if (!this.isInitialized || typeof window === 'undefined') return;
+    if (process.env.NODE_ENV === 'development') return;
 
     const clarity = (window as any).clarity;
     if (clarity) {

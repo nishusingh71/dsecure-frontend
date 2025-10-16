@@ -848,6 +848,24 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'UI component icons'
     ]),
     canonicalUrl: getCanonicalUrl('/icon-showcase'),
+  },
+
+  'healthcare-solutions': {
+    title: 'Healthcare Data Security Solutions - HIPAA Compliant | D-Secure Tech',
+    description: 'HIPAA-compliant data erasure solutions for healthcare organizations. Secure patient data destruction and medical device sanitization.',
+    keywords: generateKeywords([
+      'healthcare data security',
+      'HIPAA compliant erasure',
+      'medical data destruction',
+      'patient data protection',
+      'healthcare data erasure',
+      'medical device sanitization',
+      'PHI data destruction',
+      'healthcare compliance',
+      'medical data wiping',
+      'hospital data security'
+    ]),
+    canonicalUrl: getCanonicalUrl('/solutions/healthcare'),
   }
 };
 

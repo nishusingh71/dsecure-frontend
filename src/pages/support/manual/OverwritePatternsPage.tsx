@@ -269,14 +269,14 @@ const OverwritePatternsPage: React.FC = memo(() => {
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
-        <section className="bg-gradient-to-br from-orange-50 to-red-50 py-8 sm:py-12 md:py-16 lg:py-24">
+        <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-8 sm:py-12 md:py-16 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <Reveal>
               <div className="text-center">
                 <div className="mb-6 md:mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-orange-600 hover:text-orange-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
+                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
@@ -295,7 +295,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                   </Link>
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 md:mb-4 leading-tight">
                     Overwrite Patterns{" "}
-                    <span className="text-orange-600 block sm:inline">
+                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent block sm:inline">
                       & Data Sanitization
                     </span>
                   </h1>
@@ -312,7 +312,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search overwrite patterns..."
-                        className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors text-sm sm:text-base"
+                        className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-sm sm:text-base"
                       />
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2"
@@ -374,7 +374,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 text-center">
                 <div className="p-4 sm:p-6">
                   <div className="text-3xl sm:text-4xl mb-4">🔢</div>
-                  <div className="text-xl sm:text-2xl font-bold text-orange-600 mb-2">
+                  <div className="text-xl sm:text-2xl font-bold text-emerald-600 mb-2">
                     Multi-Pass
                   </div>
                   <div className="text-slate-600 text-sm sm:text-base">
@@ -383,7 +383,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                 </div>
                 <div className="p-4 sm:p-6">
                   <div className="text-3xl sm:text-4xl mb-4">📊</div>
-                  <div className="text-xl sm:text-2xl font-bold text-orange-600 mb-2">
+                  <div className="text-xl sm:text-2xl font-bold text-teal-600 mb-2">
                     Standards
                   </div>
                   <div className="text-slate-600 text-sm sm:text-base">
@@ -392,7 +392,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                 </div>
                 <div className="p-4 sm:p-6">
                   <div className="text-3xl sm:text-4xl mb-4">⚡</div>
-                  <div className="text-xl sm:text-2xl font-bold text-orange-600 mb-2">
+                  <div className="text-xl sm:text-2xl font-bold text-cyan-600 mb-2">
                     Efficient
                   </div>
                   <div className="text-slate-600 text-sm sm:text-base">
@@ -448,7 +448,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     <p className="text-slate-600 mb-4 text-sm sm:text-base flex-grow">
                       {item.description}
                     </p>
-                    <div className="bg-orange-50 text-orange-600 font-medium px-4 py-2 rounded-lg text-sm">
+                    <div className="bg-emerald-50 text-emerald-600 font-medium px-4 py-2 rounded-lg text-sm">
                       {item.passes} Passes
                     </div>
                   </div>
@@ -539,7 +539,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                                   className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
                                 >
                                   <div className="flex-1">
-                                    <h4 className="font-medium text-slate-900 group-hover:text-orange-600 transition-colors mb-1 text-sm sm:text-base">
+                                    <h4 className="font-medium text-slate-900 group-hover:text-emerald-600 transition-colors mb-1 text-sm sm:text-base">
                                       {subsection.title}
                                     </h4>
                                     <p className="text-xs sm:text-sm text-slate-600">
@@ -890,7 +890,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                         {item.icon}
                       </span>
                     </div>
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm flex-grow">
@@ -904,7 +904,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
         </section>
 
         {/* Compliance Section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-orange-500 to-red-600">
+        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <Reveal>
               <div className="text-center text-white">
@@ -919,7 +919,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     <div className="text-base sm:text-lg md:text-xl font-semibold mb-2">
                       5220.22-M
                     </div>
-                    <p className="text-orange-100 text-sm sm:text-base">
+                    <p className="text-white/90 text-sm sm:text-base">
                       Historical standard for defense applications
                     </p>
                   </div>
@@ -930,7 +930,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     <div className="text-base sm:text-lg md:text-xl font-semibold mb-2">
                       SP 800-88
                     </div>
-                    <p className="text-orange-100 text-sm sm:text-base">
+                    <p className="text-white/90 text-sm sm:text-base">
                       Modern guideline for all storage types
                     </p>
                   </div>
@@ -941,7 +941,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     <div className="text-base sm:text-lg md:text-xl font-semibold mb-2">
                       2883
                     </div>
-                    <p className="text-orange-100 text-sm sm:text-base">
+                    <p className="text-white/90 text-sm sm:text-base">
                       Emerging standards for future needs
                     </p>
                   </div>
@@ -964,7 +964,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                   guide as a downloadable PDF
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                  <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
+                  <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
@@ -980,7 +980,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     </svg>
                     Download Overwrite Guide (PDF)
                   </button>
-                  <button className="bg-white border-2 border-orange-500 text-orange-600 hover:bg-orange-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
+                  <button className="bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
@@ -1007,7 +1007,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
         </section>
 
         {/* Contact Support Section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-orange-600 via-red-600 to-pink-600">
+        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <Reveal>
               <div className="text-center text-white">

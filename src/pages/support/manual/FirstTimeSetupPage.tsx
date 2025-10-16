@@ -284,14 +284,14 @@ const FirstTimeSetupPage: React.FC = memo(() => {
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
-        <section className="bg-gradient-to-br from-green-50 to-emerald-50 py-8 sm:py-12 md:py-16 lg:py-24">
+        <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-8 sm:py-12 md:py-16 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <Reveal>
               <div className="text-center">
                 <div className="mb-6 md:mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-green-600 hover:text-green-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
+                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
@@ -310,7 +310,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                   </Link>
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 md:mb-4 leading-tight">
                     First Time{" "}
-                    <span className="text-green-600 block sm:inline">
+                    <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent block sm:inline">
                       Setup Guide
                     </span>
                   </h1>
@@ -327,7 +327,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search setup guide..."
-                        className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm sm:text-base"
+                        className="w-full px-4 sm:px-6 py-3 sm:py-4 pl-10 sm:pl-12 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors text-sm sm:text-base"
                       />
                       <svg
                         className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2"
@@ -387,7 +387,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
             <Reveal>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center">
                 <div className="p-3 sm:p-4">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-600 mb-1 sm:mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-1 sm:mb-2">
                     10
                   </div>
                   <div className="text-xs sm:text-sm md:text-base text-slate-600">
@@ -395,7 +395,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                   </div>
                 </div>
                 <div className="p-3 sm:p-4">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-600 mb-1 sm:mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-teal-600 mb-1 sm:mb-2">
                     6
                   </div>
                   <div className="text-xs sm:text-sm md:text-base text-slate-600">
@@ -403,7 +403,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                   </div>
                 </div>
                 <div className="p-3 sm:p-4">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-600 mb-1 sm:mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-600 mb-1 sm:mb-2">
                     99.9%
                   </div>
                   <div className="text-xs sm:text-sm md:text-base text-slate-600">
@@ -411,7 +411,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                   </div>
                 </div>
                 <div className="p-3 sm:p-4">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-green-600 mb-1 sm:mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-1 sm:mb-2">
                     15%
                   </div>
                   <div className="text-xs sm:text-sm md:text-base text-slate-600">
@@ -496,7 +496,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                         />
                       </div>
                     </div>
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mx-auto mb-2 sm:mb-3">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold mx-auto mb-2 sm:mb-3">
                       {step.step}
                     </div>
                     <div className="text-xl sm:text-2xl mb-2">{step.icon}</div>
@@ -640,7 +640,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                         {item.icon}
                       </span>
                     </div>
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-green-600 transition-colors">
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm flex-grow">
@@ -654,7 +654,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
         </section>
 
         {/* Performance Metrics */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-green-500 to-emerald-600">
+        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <Reveal>
               <div className="text-center text-white">
@@ -714,7 +714,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                   for offline reference
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                  <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
+                  <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
@@ -730,7 +730,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                     </svg>
                     Download Setup Guide (PDF)
                   </button>
-                  <button className="bg-white border-2 border-green-500 text-green-600 hover:bg-green-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
+                  <button className="bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
@@ -757,7 +757,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
         </section>
 
         {/* Contact Support Section */}
-        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600">
+        <section className="py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <Reveal>
               <div className="text-center text-white">

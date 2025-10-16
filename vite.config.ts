@@ -14,64 +14,49 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
-  // Performance optimizations
+  // Enhanced performance optimizations
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    // Pre-bundle dependencies
-    force: false
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+    exclude: ['@vite/client', '@vite/env']
+  },
+  
+  // Server optimizations
+  server: {
+    hmr: {
+      overlay: false
+    }
   },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
     // Reduce chunk size warnings
-    chunkSizeWarningLimit: 1000,
-    // Minification options
+    chunkSizeWarningLimit: 500,
+    // Enhanced minification
     minify: 'esbuild',
-    // Target modern browsers
-    target: 'es2020',
-    // Improved performance settings
+    // Target modern browsers for better performance
+    target: ['es2020', 'chrome80', 'firefox78', 'safari14'],
+    // Enable compression
+    reportCompressedSize: false,
+    // Enhanced performance settings
     cssCodeSplit: true,
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // Use function form for better chunk splitting
-        manualChunks: (id) => {
-          // Vendor chunks
-          if (id.includes('node_modules')) {
-            // React ecosystem
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor'
-            }
-            // Router
-            if (id.includes('react-router')) {
-              return 'router-vendor'
-            }
-            // UI libraries
-            if (id.includes('@headlessui') || id.includes('clsx') || id.includes('tailwind')) {
-              return 'ui-vendor'
-            }
-            // Other vendor libraries
-            return 'vendor'
-          }
+        // Aggressive chunk splitting for better caching
+        manualChunks: {
+          // Core React libraries
+          'react-core': ['react', 'react-dom'],
+          'react-router': ['react-router-dom'],
           
-          // Page chunks
-          if (id.includes('/pages/')) {
-            const pageName = id.split('/pages/')[1].split('/')[0].replace('.tsx', '').replace('.ts', '')
-            return `page-${pageName}`
-          }
+          // Large vendor libraries
+          'vendor-large': ['framer-motion'],
           
-          // Component chunks
-          if (id.includes('/components/') && !id.includes('FlatIcons')) {
-            return 'components'
-          }
-          
-          // Icons as separate chunk
-          if (id.includes('FlatIcons')) {
-            return 'icons'
-          }
+          // Utility libraries
+          'utils': ['clsx', 'tailwind-merge']
         },
-        // Optimize file names
+        
+        // Optimize file names for caching
         chunkFileNames: 'js/[name]-[hash].js',
         entryFileNames: 'js/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
@@ -92,5 +77,10 @@ export default defineConfig({
   // CSS optimization
   css: {
     devSourcemap: false
+  },
+  
+  // Enable compression
+  esbuild: {
+    drop: ['console', 'debugger']
   }
 })

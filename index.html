@@ -5,45 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="DSecure - Secure data erasure and device sanitization platform for enterprises" />
     
-    <!-- Performance optimizations -->
+    <!-- Critical performance optimizations -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
-    
-    <!-- Critical resource hints -->
-    <link rel="preload" href="/dsecure-logo-black.svg" as="image" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="//res.cloudinary.com">
     
     <!-- Favicon -->
-     <link rel="icon" href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg">
-    <!-- <link rel="icon" type="image/svg+xml" href="/new-favicon.svg" /> -->
-    <!-- <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" /> -->
-    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/new-favicon.svg" /> -->
+    <link rel="icon" href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg">
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0d1117" />
-    
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-6B20XY3K81');
-    </script>
-    
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "tkbibktdah");
-    </script>
+    <meta name="theme-color" content="#059669" />
     
     <title>D-Secure - Secure Data Erasure Solutions</title>
+    
+    <!-- Defer non-critical scripts -->
     <script>
-      // Handle redirects from 404 page
+      // Inline critical redirect script
       (function() {
         var redirect = sessionStorage.redirect;
         delete sessionStorage.redirect;
@@ -51,6 +27,19 @@
           history.replaceState(null, null, redirect);
         }
       })();
+      
+      // Defer Google Analytics
+      window.addEventListener('load', function() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81';
+        document.head.appendChild(script);
+        
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6B20XY3K81');
+      });
     </script>
   </head>
   <body>
