@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Performance optimization utilities
 export const preloadCriticalResources = () => {
   // Load fonts directly instead of preloading

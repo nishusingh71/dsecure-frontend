@@ -524,7 +524,7 @@ export default function AdminDashboard() {
           <div className="card !p-0 min-w-0">
             <div className="px-4 sm:px-6 py-5 border-b border-slate-200 flex items-center justify-between">
               <h2 className="font-semibold text-slate-900">Recent Reports</h2>
-              <Link to="/dashboard/reports" className="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+              <Link to="/admin/reports" className="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
                 View All
               </Link>
             </div>
@@ -873,7 +873,7 @@ export default function AdminDashboard() {
               <h2 className="font-semibold text-slate-900">Erasure Reports</h2>
               <p className="text-sm text-slate-600 mt-1">View and manage data erasure reports</p>
             </div>
-            <Link to="/dashboard/reports" className="btn-primary text-sm">
+            <Link to="/admin/reports" className="btn-primary text-sm">
               View All Reports
             </Link>
           </div>

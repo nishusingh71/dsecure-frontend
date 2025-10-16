@@ -29,8 +29,8 @@ export default function PageLoadingSkeleton() {
     )
   }
 
-  // Dashboard pages
-  if (path === '/dashboard') {
+  // Dashboard pages (keeping for backward compatibility, but routes to /admin)
+  if (path === '/dashboard' || path === '/admin') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
         <div className="container-app py-4 sm:py-8 space-y-6 sm:space-y-8">

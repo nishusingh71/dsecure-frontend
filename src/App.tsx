@@ -22,6 +22,7 @@ const CloudErasurePage = lazy(
 const SolutionsPage = lazy(() => import("./pages/SolutionsPage"));
 const CompliancePage = lazy(() => import("./pages/CompliancePage"));
 const ResourcesPage = lazy(() => import("./pages/ResourcesPage"));
+// const Enterprise=lazy(()=>import("./pages/solutions/EnterpriseSolutionsPage"));
 const DocumentationResourcesPage = lazy(
   () => import("./pages/resources/DocumentationResourcesPage")
 );
@@ -89,8 +90,15 @@ import NotFoundPage from "./pages/NotFoundPage";
 import EducationPage from "./pages/EducationPage";
 import FinancialServices from "./pages/FinancialServices";
 import GovernmentPage from "./pages/GovernmentPage";
+import ApiTestPage from "./pages/ApiTestPage";
+import EnterprisePage from "./pages/EnterprisePage";
+import HealthcareServices from "./pages/HealthcareServices";
+import ITADSolution from "./pages/ITADSolution";
+import AdminProfileEdit from "./pages/admin/AdminProfileEdit";
+import EnhancedUserDashboard from "./pages/dashboards/EnhancedUserDashboard";
 const HealthcareSolutionsPage = lazy(() => import("./pages/solutions/HealthcareSolutionsPage"));
 const SearchDemoPage = lazy(() => import("./pages/SearchDemoPage"));
+
 
 // Manual Pages
 const InstallationPage = lazy(
@@ -510,6 +518,7 @@ export default function App() {
                     element={<CloudErasurePage />}
                   />
 
+
                   {/* Solutions */}
                   <Route path="solutions" element={<SolutionsPage />} />
                   <Route
@@ -580,6 +589,10 @@ export default function App() {
                   <Route path="status" element={<StatusPage />} />
                   <Route path="partners" element={<PartnersPage />} />
                   <Route path="support" element={<SupportPage />} />
+                  <Route path="enterprise" element={<EnterprisePage />} />
+                  <Route path="healthcare-services" element={<HealthcareServices />} />
+                  <Route path="itad-solution" element={<ITADSolution />} />
+                  <Route path="api-test" element={<ApiTestPage />} />
                   <Route path="login" element={<LoginPage />} />
                   <Route path="register" element={<RegisterPage />} />
                   {/* Protected Routes */}
@@ -623,11 +636,19 @@ export default function App() {
                       </ProtectedRoute>
                     }
                   />
+                  <Route
+                    path="dashboard/enhanced"
+                    element={
+                      <ProtectedRoute>
+                        <EnhancedUserDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
                   {/* Admin Routes - Only accessible by admin role */}
                   <Route
                     path="admin"
                     element={
-                      <ProtectedRoute roles={["admin"]}>
+                      <ProtectedRoute>
                         <AdminShell />
                       </ProtectedRoute>
                     }
@@ -656,6 +677,7 @@ export default function App() {
                       element={<GenerateReport />}
                     />
                     <Route path="settings" element={<AdminSettings />} />
+                    <Route path="profile/edit" element={<AdminProfileEdit />} />
                   </Route>
                   {/* Support Guides */}
                   <Route
@@ -1032,6 +1054,10 @@ export default function App() {
                     element={<Dod3passPage />}
                   />
                   <Route
+                    path="/support/manual/dod-7pass"
+                    element={<Dod7passPage />}
+                  />
+                  <Route
                     path="/support/manual/readback-verification"
                     element={<ReadbackVerificationPage />}
                   />
@@ -1178,8 +1204,6 @@ export default function App() {
                   <Route path="/support/manual/windows-ssd-erasure" element={<WindowsSsdErasurePage />} />
                   <Route path="/support/manual/windows-third-party" element={<WindowsThirdPartyPage />} />
                   <Route path="/support/manual/windows-verification" element={<WindowsVerificationPage />} />
-
-                  {/* Product-specific Feature */}
                   <Route
                     path="products/mobile-erasure"
                     element={<MobileErasureSolutions />}

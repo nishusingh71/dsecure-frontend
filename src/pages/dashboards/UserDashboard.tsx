@@ -54,14 +54,14 @@ export default function UserDashboard() {
   }
 
   const quickActions = [
-    { name: 'Start New Erasure', icon: 'play', type: 'primary', action: () => navigate('/dashboard/new-erasure') },
-    { name: 'Download Agent', icon: 'download', type: 'secondary', action: () => navigate('/dashboard/download-agent') },
-    { name: 'View Reports', icon: 'chart', type: 'secondary', action: () => navigate('/dashboard/reports') },
+    { name: 'Start New Erasure', icon: 'play', type: 'primary', action: () => navigate('/admin/new-erasure') },
+    { name: 'Download Agent', icon: 'download', type: 'secondary', action: () => navigate('/admin/download-agent') },
+    { name: 'View Reports', icon: 'chart', type: 'secondary', action: () => navigate('/admin/reports') },
     { name: 'Get Support', icon: 'help', type: 'secondary', action: () => navigate('/support') },
     { name: 'Bulk Operations', icon: 'stack', type: 'secondary', action: () => showInfo('Feature Coming Soon', 'Bulk Operations feature is currently in development') },
     { name: 'Schedule Erasure', icon: 'calendar', type: 'secondary', action: () => showInfo('Feature Coming Soon', 'Schedule Erasure feature is currently in development') },
     { name: 'Compliance Check', icon: 'shield', type: 'secondary', action: () => showInfo('Feature Coming Soon', 'Compliance Check feature is currently in development') },
-    { name: 'Export Data', icon: 'export', type: 'secondary', action: () => navigate('/dashboard/reports') }
+    { name: 'Export Data', icon: 'export', type: 'secondary', action: () => navigate('/admin/reports') }
   ]
 
   const displayedQuickActions = expandedSections.quickActions ? quickActions : quickActions.slice(0, 4)
@@ -73,7 +73,7 @@ export default function UserDashboard() {
 
   // Handle certificate actions
   const viewCertificateDetails = (certId: string) => {
-    navigate('/dashboard/reports')
+    navigate('/admin/reports')
   }
 
   return (
@@ -167,7 +167,7 @@ export default function UserDashboard() {
             )}
           </div>
           
-          <Link to="/dashboard/new-erasure" className="btn-primary flex items-center gap-2">
+          <Link to="/admin/new-erasure" className="btn-primary flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
