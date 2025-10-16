@@ -365,7 +365,7 @@ export default function EnhancedUserDashboard() {
       </div>
 
       {/* Developer Info Panel (Only show in development) */}
-      {process.env.NODE_ENV === 'development' && (
+      {import.meta.env.DEV && (
         <Reveal delayMs={10}>
           <div className="bg-white rounded-lg p-6 shadow-sm border border-slate-200">
             <h3 className="text-lg font-semibold mb-4 text-slate-700 flex items-center gap-2">

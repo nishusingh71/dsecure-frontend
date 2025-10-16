@@ -3,13 +3,8 @@ import { exportToCsv } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
 
-interface Machine {
-  hostname: string
-  eraseOption: string
-  license: string
-  status: string
-}
-
+import { AdminDashboardAPI, Machine } from '@/services/adminDashboardAPI'
+import { useEffect } from 'react'
 
 export default function AdminMachines() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification()
@@ -21,22 +16,33 @@ export default function AdminMachines() {
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
   const [sortBy, setSortBy] = useState<keyof Machine>('hostname')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [allRows, setAllRows] = useState<Machine[]>([])
+  const [loading, setLoading] = useState(true)
   const pageSize = 5
   
-  // Static data - no loading states needed
-  const allRows: Machine[] = useMemo(() => [
-    { hostname: 'edge-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-    { hostname: 'edge-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
-    { hostname: 'lab-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-    { hostname: 'lab-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'maintenance' },
-    { hostname: 'qa-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-    { hostname: 'qa-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
-    { hostname: 'dev-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-    { hostname: 'prod-01', eraseOption: 'Quick Erase', license: 'Premium', status: 'online' },
-    { hostname: 'prod-02', eraseOption: 'Secure Erase', license: 'Premium', status: 'maintenance' },
-    { hostname: 'test-01', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
-    { hostname: 'edge-03', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-  ], [])
+  // Load machines data on component mount
+  useEffect(() => {
+    loadMachinesData()
+  }, [])
+
+  const loadMachinesData = async () => {
+    setLoading(true)
+    try {
+      const response = await AdminDashboardAPI.getMachines()
+      if (response.success) {
+        setAllRows(response.data)
+      } else {
+        throw new Error(response.error || 'Failed to load machines')
+      }
+    } catch (error) {
+      console.error('Error loading machines:', error)
+      showError('Data Loading Error', 'Failed to load machine data. Using default values.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
   
   const uniqueEraseOptions = useMemo(() => [...new Set(allRows.map(r => r.eraseOption))], [allRows])
   const uniqueLicenses = useMemo(() => [...new Set(allRows.map(r => r.license))], [allRows])
@@ -93,34 +99,64 @@ export default function AdminMachines() {
     // Additional view logic can be added here
   }
 
-  const handleEditMachine = (machine: Machine) => {
+  const handleEditMachine = async (machine: Machine) => {
     showInfo(`Edit mode enabled for ${machine.hostname}`)
-    // Additional edit logic can be added here
+    // You can implement a modal or redirect to edit page here
   }
 
-  const handleDeleteMachine = (machine: Machine) => {
+  const handleDeleteMachine = async (machine: Machine) => {
     if (window.confirm(`Are you sure you want to delete ${machine.hostname}?`)) {
-      showSuccess(`Machine ${machine.hostname} deleted successfully`)
-      // Additional delete logic can be added here
+      try {
+        const response = await AdminDashboardAPI.deleteMachine(machine.hostname)
+        if (response.success) {
+          showSuccess(`Machine ${machine.hostname} deleted successfully`)
+          await loadMachinesData() // Refresh the list
+        } else {
+          throw new Error(response.error || 'Failed to delete machine')
+        }
+      } catch (error) {
+        console.error('Error deleting machine:', error)
+        showError('Delete Failed', 'Failed to delete machine. Please try again.')
+      }
     }
   }
 
-  const handleRestartMachine = (machine: Machine) => {
+  const handleRestartMachine = async (machine: Machine) => {
     if (machine.status === 'offline') {
       showWarning(`Cannot restart ${machine.hostname} - machine is offline`)
       return
     }
-    showSuccess(`Restart initiated for ${machine.hostname}`)
-    // Additional restart logic can be added here
+    try {
+      const response = await AdminDashboardAPI.restartMachine(machine.hostname)
+      if (response.success) {
+        showSuccess(`Restart initiated for ${machine.hostname}`)
+        await loadMachinesData() // Refresh the list to show updated status
+      } else {
+        throw new Error(response.error || 'Failed to restart machine')
+      }
+    } catch (error) {
+      console.error('Error restarting machine:', error)
+      showError('Restart Failed', 'Failed to restart machine. Please try again.')
+    }
   }
 
-  const handleRunErase = (machine: Machine) => {
+  const handleRunErase = async (machine: Machine) => {
     if (machine.status === 'offline') {
       showWarning(`Cannot run erase on ${machine.hostname} - machine is offline`)
       return
     }
-    showSuccess(`${machine.eraseOption} initiated on ${machine.hostname}`)
-    // Additional erase logic can be added here
+    try {
+      const response = await AdminDashboardAPI.runErase(machine.hostname)
+      if (response.success) {
+        showSuccess(`${machine.eraseOption} initiated on ${machine.hostname}`)
+        await loadMachinesData() // Refresh the list to show updated status
+      } else {
+        throw new Error(response.error || 'Failed to run erase')
+      }
+    } catch (error) {
+      console.error('Error running erase:', error)
+      showError('Erase Failed', 'Failed to initiate erase. Please try again.')
+    }
   }
   return (
     <>

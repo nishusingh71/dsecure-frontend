@@ -191,7 +191,7 @@ class MicrosoftClarity {
 // Initialize Clarity instance
 export const clarity = new MicrosoftClarity({
   projectId: 'tkbibktdah', // Your actual Clarity Project ID
-  debug: process.env.NODE_ENV === 'development'
+  debug: import.meta.env.DEV
 });
 
 // React hook for Clarity tracking

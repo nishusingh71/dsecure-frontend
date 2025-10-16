@@ -2,6 +2,8 @@ import { FormEvent, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { Helmet } from 'react-helmet-async';
+import axios from "axios";
+import { authService } from "@/utils/authService";
 
 export default function LoginPage() {
   const { login, demoLogin, getSmartRedirectPath } = useAuth();
@@ -24,78 +26,278 @@ export default function LoginPage() {
     setTimeout(() => setToast(null), 5000); // Auto hide after 5 seconds
   };
 
-  const onSubmit = async (e: FormEvent) => {
+  // const onSubmit = async (e: FormEvent) => {
+  //   e.preventDefault();
+  //   setError(null);
+  //   setValidationError(null);
+  //   setLoading(true);
+
+  //   try {
+  //     // Clear any previous errors
+  //     setError(null);
+  //     setValidationError(null);
+
+  //     // Use the AuthContext login method which handles the API call
+  //     await login(email, password);
+
+  //     showToast("Login successful!", "success");
+
+  //     // Use smart redirect based on user's payment/license status
+  //     const smartRedirectPath = getSmartRedirectPath();
+
+  //     // Check for explicit redirect paths first
+  //     const redirectPath =
+  //       sessionStorage.getItem("redirectAfterLogin") ||
+  //       localStorage.getItem("returnPath") ||
+  //       (location.state as any)?.from?.pathname;
+
+  //     // Clean up stored paths
+  //     sessionStorage.removeItem("redirectAfterLogin");
+  //     localStorage.removeItem("returnPath");
+
+  //     if (redirectPath && redirectPath !== "/login") {
+  //       navigate(redirectPath, { replace: true });
+  //     } else {
+  //       // Use smart redirect path (payment check included)
+  //       navigate(smartRedirectPath, { replace: true });
+  //     }
+  //   } catch (e) {
+  //     console.error("Login error:", e);
+  //     const errorMessage = e instanceof Error ? e.message : "Login failed";
+
+  //     // Check for specific error types
+  //     if (errorMessage.toLowerCase().includes("fetch")) {
+  //       setError(
+  //         "Unable to connect to server. Please check if the backend is running."
+  //       );
+  //       showToast("Server connection failed. Please try again later.", "error");
+  //     } else if (
+  //       errorMessage.toLowerCase().includes("not registered") ||
+  //       errorMessage.toLowerCase().includes("user not found")
+  //     ) {
+  //       setError("User not found. Please register first.");
+  //       showToast(
+  //         "Please register yourself first before trying to login!",
+  //         "error"
+  //       );
+  //     } else if (
+  //       errorMessage.toLowerCase().includes("invalid") ||
+  //       errorMessage.toLowerCase().includes("credentials")
+  //     ) {
+  //       setError("Invalid email or password. Please try again.");
+  //       showToast(
+  //         "Invalid credentials. Please check your email and password.",
+  //         "error"
+  //       );
+  //     } else {
+  //       setError(errorMessage);
+  //       showToast(errorMessage, "error");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  /**
+   * 🔐 Login Handler for .NET Backend with JWT Authentication
+   * 
+   * Expected Backend Response Structure:
+   * {
+   *   "jwt_token": "eyJhbGciOiJIUzI1...",
+   *   "user": {
+   *     "user_id": 1,
+   *     "user_name": "Nish Singh",
+   *     "user_email": "nish@gmail.com",
+   *     "phone_number": "9999999999",
+   *     "is_private_cloud": true,
+   *     "private_api": "https://api.example.com",
+   *     "payment_details_json": {...},
+   *     "license_details_json": {...}
+   *   }
+   * }
+   */
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
+    
+    // Reset all error states
     setError(null);
     setValidationError(null);
     setLoading(true);
 
     try {
-      // Clear any previous errors
-      setError(null);
-      setValidationError(null);
+      console.log('🚀 Starting login process...');
+      console.log('📧 Email:', email);
+      
+      // Make API call to .NET backend
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'}/api/RoleBasedAuth/login`,
+        {
+          email: email,
+          password: password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt_token') || ''}`
+          }
+        }
+      );
 
-      // Use the AuthContext login method which handles the API call
-      await login(email, password);
+      console.log('✅ API Response received:', response.data);
 
-      showToast("Login successful!", "success");
+      const data = response.data;
 
-      // Use smart redirect based on user's payment/license status
-      const smartRedirectPath = getSmartRedirectPath();
+      // ✅ Validate token presence
+      if (!data || !data.token) {
+        throw new Error("No JWT token received from server");
+      }
 
-      // Check for explicit redirect paths first
-      const redirectPath =
+      // 🔍 Debug: Check what's in the JWT token
+      console.log('🔍 JWT Token Claims:', data);
+      console.log('🔍 User role from response:', data.role);
+      console.log('🔍 User roles array from response:', data.roles);
+      // if (!authToken) {
+      //   throw new Error('No authentication token received from server');
+      // }
+
+      // if (!user) {
+      //   throw new Error('No user data received from server');
+      // }
+
+      // console.log('� JWT Token received:', authToken.substring(0, 50) + '...');
+      // console.log('� User data:', user);
+
+      // Extract user information with defaults for optional/missing fields
+      // Backend should return: { token, role, user: { id, email, name, role, ... } }
+      const userRole = data.role || data.user?.role || 'user'; // Get role from response
+      
+      const user = {
+        user_email: data.email || data.user?.email || email,
+        user_name: data.name || data.user?.name || 'User',
+        user_id: data.id || data.user?.id || 0,
+        user_type: data.userType || userRole,
+        role: userRole, // IMPORTANT: This is what authService checks
+        roles: data.roles || [userRole],
+        permissions: data.permissions || [],
+        expiresAt: data.expiresAt,
+        is_private_cloud: false,           // default
+        private_api: "",                   // default
+        payment_details_json: {},          // default
+        license_details_json: {},          // default
+      };
+
+      console.log('📝 Processed user data with defaults:', user);
+      console.log('👤 User role:', userRole);
+
+      // 💾 Save JWT token using authService (CRITICAL for AuthContext to work!)
+      // This ensures ProtectedRoute and all auth components recognize the login
+      authService.saveTokens(data.token, undefined, rememberMe);
+      
+      // 🔍 Verify what's in the saved token
+      const decodedUser = authService.getUserFromToken();
+      console.log('🔍 Decoded user from JWT:', decodedUser);
+      console.log('🔍 User role in JWT:', decodedUser?.role);
+      
+      // Also save user data for compatibility
+      localStorage.setItem('user_data', JSON.stringify(user));
+      localStorage.setItem('authUser', JSON.stringify(user));
+
+      // 🔐 Set default axios authorization header for future API requests
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+
+      console.log('✅ Token saved via authService');
+      console.log('💾 Authentication data saved to localStorage');
+      console.log('🔐 Authorization header set for future requests');
+
+      // ✅ Show success toast notification
+      showToast("Login successful! Redirecting to admin dashboard...", "success");
+
+      // 🎯 Everyone redirects to admin dashboard
+      let redirectPath = '/admin'; // All users redirect to admin dashboard
+
+      // Check for any stored redirect paths (if user was redirected to login)
+      const storedRedirectPath = 
         sessionStorage.getItem("redirectAfterLogin") ||
         localStorage.getItem("returnPath") ||
         (location.state as any)?.from?.pathname;
 
-      // Clean up stored paths
+      // Clean up stored redirect paths
       sessionStorage.removeItem("redirectAfterLogin");
       localStorage.removeItem("returnPath");
 
-      if (redirectPath && redirectPath !== "/login") {
-        navigate(redirectPath, { replace: true });
-      } else {
-        // Use smart redirect path (payment check included)
-        navigate(smartRedirectPath, { replace: true });
+      // Use stored path if it exists and is valid, otherwise use default
+      if (storedRedirectPath && storedRedirectPath !== "/login") {
+        redirectPath = storedRedirectPath;
       }
-    } catch (e) {
-      console.error("Login error:", e);
-      const errorMessage = e instanceof Error ? e.message : "Login failed";
 
-      // Check for specific error types
-      if (errorMessage.toLowerCase().includes("fetch")) {
-        setError(
-          "Unable to connect to server. Please check if the backend is running."
-        );
-        showToast("Server connection failed. Please try again later.", "error");
-      } else if (
-        errorMessage.toLowerCase().includes("not registered") ||
-        errorMessage.toLowerCase().includes("user not found")
-      ) {
-        setError("User not found. Please register first.");
-        showToast(
-          "Please register yourself first before trying to login!",
-          "error"
-        );
-      } else if (
-        errorMessage.toLowerCase().includes("invalid") ||
-        errorMessage.toLowerCase().includes("credentials")
-      ) {
-        setError("Invalid email or password. Please try again.");
-        showToast(
-          "Invalid credentials. Please check your email and password.",
-          "error"
-        );
+      console.log('🎯 Final redirect path:', redirectPath);
+
+      // 📢 Dispatch custom event to notify app components of authentication state change
+      // This triggers AuthContext and ProtectedRoute to re-check auth status
+      window.dispatchEvent(new CustomEvent('authStateChanged', { 
+        detail: { 
+          user,
+          token: data.token,
+          authenticated: true
+        } 
+      }));
+
+      console.log('📢 Auth state change event dispatched');
+
+      // 🚀 Navigate to dashboard immediately
+      // Small delay removed to ensure faster redirect
+      console.log('🚀 Navigating to:', redirectPath);
+      navigate(redirectPath, { replace: true });
+
+    } catch (err: any) {
+      console.error('❌ Login error:', err);
+      
+      let errorMessage = 'Login failed. Please try again.';
+      
+      // 🔍 Handle different types of errors
+      if (err.response) {
+        // ❌ Server responded with an error status
+        const status = err.response.status;
+        const serverMessage = err.response.data?.message || err.response.data?.error;
+        
+        console.error('📛 Server error status:', status);
+        console.error('📛 Server error message:', serverMessage);
+        
+        if (status === 401) {
+          // Unauthorized - invalid credentials
+          errorMessage = serverMessage || 'Invalid email or password. Please check your credentials.';
+        } else if (status === 404) {
+          // User not found
+          errorMessage = 'User not found. Please register first.';
+        } else if (status === 403) {
+          // Forbidden - account suspended/inactive
+          errorMessage = 'Access denied. Your account may be suspended or inactive.';
+        } else if (status >= 500) {
+          // Server error
+          errorMessage = 'Server error. Please try again later.';
+        } else {
+          // Other errors
+          errorMessage = serverMessage || `Login failed (Error ${status})`;
+        }
+      } else if (err.request) {
+        // ❌ Request was made but no response received (network error)
+        console.error('📛 No response from server');
+        errorMessage = 'Unable to connect to server. Please check your internet connection.';
       } else {
-        setError(errorMessage);
-        showToast(errorMessage, "error");
+        // ❌ Something else went wrong during request setup
+        console.error('📛 Request setup error:', err.message);
+        errorMessage = err.message || 'An unexpected error occurred.';
       }
+      
+      // Display error to user
+      setError(errorMessage);
+      showToast(errorMessage, "error");
+      
     } finally {
+      // Always stop loading state
       setLoading(false);
     }
   };
-
   return (
     <>
       <Helmet>
@@ -181,7 +383,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form onSubmit={onSubmit} className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-6">
             {/* Error Messages
           {(error || validationError) && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">

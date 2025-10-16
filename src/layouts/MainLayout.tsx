@@ -145,7 +145,7 @@ export default function MainLayout() {
                 {user ? (
                   <>
                     <NavLink
-                      to={user.role === "admin" ? "/admin" : "/dashboard"}
+                      to="/admin"
                       className={({ isActive }) =>
                         (isActive
                           ? "text-brand font-medium"
@@ -398,7 +398,7 @@ export default function MainLayout() {
                 {user ? (
                   <div className="flex flex-col gap-3 px-4 pt-6 mt-4 border-t border-slate-200/60">
                     <NavLink
-                      to={user.role === "admin" ? "/admin" : "/dashboard"}
+                      to="/admin"
                       onClick={() => setOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
                     >

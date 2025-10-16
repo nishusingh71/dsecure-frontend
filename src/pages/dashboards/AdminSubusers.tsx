@@ -3,15 +3,8 @@ import { exportToCsv, openPrintView } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
 
-interface User {
-  id: string
-  email: string
-  role: string
-  status: string
-  department: string
-  lastLogin: string
-  name: string
-}
+import { AdminDashboardAPI, User } from '@/services/adminDashboardAPI'
+import { useEffect } from 'react'
 
 export default function AdminSubusers() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification()
@@ -23,16 +16,33 @@ export default function AdminSubusers() {
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
   const [sortBy, setSortBy] = useState<keyof User>('email')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [allRows, setAllRows] = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
   const pageSize = 5
   
-  // Static data - no loading states needed
-  const allRows: User[] = useMemo(() => [
-    { id: '1', email: 'john.doe@company.com', name: 'John Doe', role: 'admin', status: 'active', department: 'IT', lastLogin: '2025-09-26' },
-    { id: '2', email: 'jane.smith@company.com', name: 'Jane Smith', role: 'user', status: 'active', department: 'HR', lastLogin: '2025-09-25' },
-    { id: '3', email: 'bob.johnson@company.com', name: 'Bob Johnson', role: 'operator', status: 'inactive', department: 'Operations', lastLogin: '2025-09-20' },
-    { id: '4', email: 'alice.brown@company.com', name: 'Alice Brown', role: 'user', status: 'active', department: 'Finance', lastLogin: '2025-09-26' },
-    { id: '5', email: 'charlie.wilson@company.com', name: 'Charlie Wilson', role: 'admin', status: 'pending', department: 'IT', lastLogin: 'Never' },
-  ], [])
+  // Load users data on component mount
+  useEffect(() => {
+    loadUsersData()
+  }, [])
+
+  const loadUsersData = async () => {
+    setLoading(true)
+    try {
+      const response = await AdminDashboardAPI.getSubusers()
+      if (response.success) {
+        setAllRows(response.data)
+      } else {
+        throw new Error(response.error || 'Failed to load users')
+      }
+    } catch (error) {
+      console.error('Error loading users:', error)
+      showError('Data Loading Error', 'Failed to load user data. Using default values.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
   
   const uniqueRoles = useMemo(() => [...new Set(allRows.map(r => r.role))], [allRows])
   const uniqueStatuses = useMemo(() => [...new Set(allRows.map(r => r.status))], [allRows])
@@ -61,9 +71,9 @@ export default function AdminSubusers() {
     
     // Sort results
     result.sort((a, b) => {
-      const aVal = a[sortBy as keyof typeof a]
-      const bVal = b[sortBy as keyof typeof b]
-      const comparison = aVal.localeCompare(bVal)
+      const aVal = a[sortBy as keyof typeof a] || ''
+      const bVal = b[sortBy as keyof typeof b] || ''
+      const comparison = aVal.toString().localeCompare(bVal.toString())
       return sortOrder === 'asc' ? comparison : -comparison
     })
     
@@ -88,36 +98,65 @@ export default function AdminSubusers() {
     // Additional view logic can be added here
   }
 
-  const handleEditUser = (user: User) => {
+  const handleEditUser = async (user: User) => {
     showInfo(`Edit mode enabled for ${user.name}`)
-    // Additional edit logic can be added here
+    // You can implement a modal or redirect to edit page here
   }
 
-  const handleDeleteUser = (user: User) => {
+  const handleDeleteUser = async (user: User) => {
     if (window.confirm(`Are you sure you want to delete user ${user.name}?`)) {
-      showSuccess(`User ${user.name} deleted successfully`)
-      // Additional delete logic can be added here
+      try {
+        const response = await AdminDashboardAPI.deleteUser(user.id)
+        if (response.success) {
+          showSuccess(`User ${user.name} deleted successfully`)
+          await loadUsersData() // Refresh the list
+        } else {
+          throw new Error(response.error || 'Failed to delete user')
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error)
+        showError('Delete Failed', 'Failed to delete user. Please try again.')
+      }
     }
   }
 
-  const handleManagePermissions = (user: User) => {
+  const handleManagePermissions = async (user: User) => {
     showInfo(`Managing permissions for ${user.name}`)
     // Additional permissions logic can be added here
   }
 
-  const handleResetPassword = (user: User) => {
+  const handleResetPassword = async (user: User) => {
     if (user.status === 'inactive') {
       showWarning(`Cannot reset password for ${user.name} - user is inactive`)
       return
     }
-    showSuccess(`Password reset email sent to ${user.email}`)
-    // Additional password reset logic can be added here
+    try {
+      const response = await AdminDashboardAPI.resetUserPassword(user.id)
+      if (response.success) {
+        showSuccess(`Password reset email sent to ${user.email}`)
+      } else {
+        throw new Error(response.error || 'Failed to reset password')
+      }
+    } catch (error) {
+      console.error('Error resetting password:', error)
+      showError('Reset Failed', 'Failed to reset password. Please try again.')
+    }
   }
 
-  const handleToggleStatus = (user: User) => {
-    const newStatus = user.status === 'active' ? 'inactive' : 'active'
-    showSuccess(`User ${user.name} status changed to ${newStatus}`)
-    // Additional status toggle logic can be added here
+  const handleToggleStatus = async (user: User) => {
+    try {
+      const response = await AdminDashboardAPI.toggleUserStatus(user.id)
+      if (response.success) {
+        const newStatus = user.status === 'active' ? 'inactive' : 'active'
+        showSuccess(`User ${user.name} status changed to ${newStatus}`)
+        await loadUsersData() // Refresh the list
+      } else {
+        throw new Error(response.error || 'Failed to toggle status')
+      }
+    } catch (error) {
+      console.error('Error toggling status:', error)
+      showError('Status Update Failed', 'Failed to update user status. Please try again.')
+    }
   }
   
   return (

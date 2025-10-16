@@ -84,7 +84,7 @@ export default function RegisterPage() {
         localStorage.removeItem('returnPath')
         navigate(returnPath, { replace: true })
       } else {
-        navigate('/dashboard', { replace: true })
+        navigate('/admin', { replace: true })
       }
     } catch (error) {
       console.error('Error creating user:', error);

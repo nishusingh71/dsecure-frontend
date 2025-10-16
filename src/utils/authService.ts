@@ -552,12 +552,8 @@ class AuthService {
       return '/payment-setup'
     }
     
-    // Redirect based on role
-    if (user.role === 'admin') {
-      return '/admin/dashboard'
-    }
-    
-    return '/dashboard'
+    // Everyone redirects to admin dashboard
+    return '/admin'  // Admin dashboard for all users
   }
 }
 

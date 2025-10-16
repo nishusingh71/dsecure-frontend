@@ -4,74 +4,41 @@ import Reveal from '@/components/Reveal'
 import { useAuth } from '@/auth/AuthContext'
 import { Link } from 'react-router-dom'
 
-interface Report {
-  id: string
-  type: string
-  status: 'completed' | 'running' | 'failed'
-  date: string
-  devices: number
-  method: string
-  duration?: string
-  size?: string
-}
+import { AdminDashboardAPI, Report } from '@/services/adminDashboardAPI'
+import { useEffect } from 'react'
+import { useNotification } from '@/contexts/NotificationContext'
 
 const ReportsPage: React.FC = () => {
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [reports, setReports] = useState<Report[]>([])
+  const [loading, setLoading] = useState(true)
+  const { showError, showSuccess } = useNotification()
 
-  const reports: Report[] = [
-    {
-      id: 'ER-2832',
-      type: 'Drive Eraser',
-      status: 'completed',
-      date: '2025-10-09',
-      devices: 5,
-      method: 'NIST 800-88 Purge',
-      duration: '2h 15m',
-      size: '2.4 TB'
-    },
-    {
-      id: 'ER-2831',
-      type: 'Mobile Diagnostics',
-      status: 'running',
-      date: '2025-10-09',
-      devices: 3,
-      method: 'Hardware Scan',
-      duration: '45m',
-      size: '1.2 TB'
-    },
-    {
-      id: 'ER-2830',
-      type: 'Network Eraser',
-      status: 'completed',
-      date: '2025-10-08',
-      devices: 12,
-      method: 'DoD 5220.22-M',
-      duration: '4h 30m',
-      size: '8.7 TB'
-    },
-    {
-      id: 'ER-2829',
-      type: 'File Eraser',
-      status: 'failed',
-      date: '2025-10-07',
-      devices: 1,
-      method: 'Secure Delete',
-      duration: '15m',
-      size: '0.5 TB'
-    },
-    {
-      id: 'ER-2828',
-      type: 'Server Eraser',
-      status: 'completed',
-      date: '2025-10-07',
-      devices: 8,
-      method: 'Gutmann Method',
-      duration: '6h 45m',
-      size: '15.3 TB'
+  // Load reports data on component mount
+  useEffect(() => {
+    loadReportsData()
+  }, [])
+
+  const loadReportsData = async () => {
+    setLoading(true)
+    try {
+      const response = await AdminDashboardAPI.getReports()
+      if (response.success) {
+        setReports(response.data)
+      } else {
+        throw new Error(response.error || 'Failed to load reports')
+      }
+    } catch (error) {
+      console.error('Error loading reports:', error)
+      showError('Data Loading Error', 'Failed to load report data. Using default values.')
+    } finally {
+      setLoading(false)
     }
-  ]
+  }
+
+
 
   const filteredReports = reports.filter(report => {
     const matchesTab = activeTab === 'all' || report.status === activeTab
@@ -115,13 +82,85 @@ const ReportsPage: React.FC = () => {
     }
   }
 
-  const downloadReport = (reportId: string) => {
-    // Simulate report download
-    alert(`Downloading report ${reportId}...`)
+  const downloadReport = async (reportId: string) => {
+    try {
+      const response = await AdminDashboardAPI.downloadReport(reportId)
+      if (response.success) {
+        showSuccess(`Report ${reportId} download initiated`)
+        // Handle actual file download here if needed
+      } else {
+        throw new Error(response.error || 'Download failed')
+      }
+    } catch (error) {
+      console.error('Error downloading report:', error)
+      showError('Download Failed', 'Failed to download report. Please try again.')
+    }
   }
 
-  const exportAllReports = () => {
-    alert('Exporting all reports as CSV...')
+  const exportAllReports = async () => {
+    try {
+      const response = await AdminDashboardAPI.exportReports('csv')
+      if (response.success) {
+        showSuccess('All reports exported successfully')
+        // Handle actual file download here if needed
+      } else {
+        throw new Error(response.error || 'Export failed')
+      }
+    } catch (error) {
+      console.error('Error exporting reports:', error)
+      showError('Export Failed', 'Failed to export reports. Please try again.')
+    }
+  }
+
+  if (loading) {
+    return (
+      <>
+        <Helmet>
+          <title>Reports | DSecure Dashboard</title>
+          <meta name="description" content="View and manage erasure reports and certificates" />
+        </Helmet>
+        
+        <div className="min-h-screen bg-slate-50">
+          <div className="container-app py-8">
+            <div className="animate-pulse">
+              <div className="mb-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="h-10 w-10 bg-slate-300 rounded-lg"></div>
+                  <div className="flex-1">
+                    <div className="h-8 bg-slate-300 rounded w-48 mb-2"></div>
+                    <div className="h-4 bg-slate-300 rounded w-80"></div>
+                  </div>
+                  <div className="h-10 w-32 bg-slate-300 rounded"></div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex-1 h-10 bg-slate-300 rounded"></div>
+                  <div className="w-64 h-10 bg-slate-300 rounded"></div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <div key={i} className="card p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="h-12 w-12 bg-slate-300 rounded-full"></div>
+                        <div>
+                          <div className="h-6 bg-slate-300 rounded w-32 mb-2"></div>
+                          <div className="h-4 bg-slate-300 rounded w-48"></div>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="h-8 w-24 bg-slate-300 rounded"></div>
+                        <div className="h-8 w-24 bg-slate-300 rounded"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    )
   }
 
   return (

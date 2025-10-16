@@ -169,7 +169,7 @@ class GoogleAnalytics {
 // Initialize GA instance
 export const ga = new GoogleAnalytics({
   trackingId: 'G-6B20XY3K81', // Your actual GA4 ID
-  debug: process.env.NODE_ENV === 'development'
+  debug: import.meta.env.DEV
 });
 
 // React hook for GA tracking

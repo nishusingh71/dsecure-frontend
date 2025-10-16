@@ -45,7 +45,7 @@ export class PerformanceWrapper extends Component<PerformanceWrapperProps, Perfo
     }
     
     // Report to error tracking service in production
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
       // Example: Sentry.captureException(error, { extra: errorInfo });
     }
   }

@@ -1,19 +1,20 @@
 // Enhanced API Client with JWT Integration
+import axios, { AxiosResponse } from 'axios'
 import { authService } from './authService.js'
 
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:44316'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'
 const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000')
 
 // Debug mode for development
 const DEBUG_MODE = import.meta.env.DEV
 
 if (DEBUG_MODE) {
-  // //console.log('API Configuration:', {
-  //   baseUrl: API_BASE_URL,
-  //   timeout: API_TIMEOUT,
-  //   environment: import.meta.env.MODE
-  // })
+  console.log('API Configuration:', {
+    baseUrl: API_BASE_URL,
+    timeout: API_TIMEOUT,
+    environment: import.meta.env.MODE
+  })
 }
 
 // API Response types
@@ -131,6 +132,33 @@ class EnhancedApiClient {
     if (!window.location.pathname.includes('/login') && 
         !window.location.pathname.includes('/register')) {
       window.location.href = '/login'
+    }
+  }
+
+  // JWT Helper Methods
+  private isValidJWT(token: string): boolean {
+    try {
+      const parts = token.split('.')
+      return parts.length === 3
+    } catch {
+      return false
+    }
+  }
+
+  private decodeJWT(token: string): any {
+    try {
+      const base64Url = token.split('.')[1]
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      )
+      return JSON.parse(jsonPayload)
+    } catch (error) {
+      console.error('JWT decode error:', error)
+      return null
     }
   }
 
@@ -310,34 +338,205 @@ class EnhancedApiClient {
 
   // Public API methods
   
+  // API Health Check
+  async testConnection(): Promise<ApiResponse<any>> {
+    try {
+      const testUrl = `${API_BASE_URL}/api/health`
+      
+      if (DEBUG_MODE) {
+        console.log('🔍 Testing API connection to:', testUrl)
+      }
+
+      const response: AxiosResponse = await axios.get(testUrl, {
+        timeout: 5000, // Short timeout for health check
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+
+      if (DEBUG_MODE) {
+        console.log('✅ API Health Check Success:', response.status)
+      }
+
+      return {
+        success: true,
+        data: response.data,
+        message: 'API connection successful'
+      }
+    } catch (error: any) {
+      if (DEBUG_MODE) {
+        console.error('❌ API Health Check Failed:', {
+          message: error.message,
+          code: error.code,
+          url: `${API_BASE_URL}/api/health`
+        })
+      }
+
+      return {
+        success: false,
+        error: `API connection failed: ${error.message}`,
+        message: 'API server is not reachable'
+      }
+    }
+  }
+  
+  
   // Authentication endpoints
   async login(credentials: LoginRequest, rememberMe: boolean = false): Promise<ApiResponse<AuthResponse>> {
-    const result = await this.request<AuthResponse>('/api/Auth/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    })
+    try {
+      const loginUrl = `${API_BASE_URL}/api/Auth/login`
+      
+      if (DEBUG_MODE) {
+        console.log('🚀 Starting login request to:', loginUrl)
+        console.log('📧 Credentials email:', credentials.email)
+        console.log('🔧 API Configuration:', { API_BASE_URL, API_TIMEOUT })
+      }
 
-    if (result.success && result.data) {
-      try {
-        // Store tokens using the auth service
-        authService.saveTokens(
-          result.data.token,
-          result.data.refreshToken,
-          rememberMe
-        )        // Store user data safely
-        if (result.data.user) {
-          authService.saveUserData(result.data.user)
+      // Make direct axios POST request to the login API
+      const response: AxiosResponse = await axios.post(
+        loginUrl,
+        {
+          email: credentials.email,
+          password: credentials.password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          timeout: API_TIMEOUT
         }
-      } catch (error) {
-        console.error('Error storing authentication data:', error)
+      )
+
+      if (DEBUG_MODE) {
+        console.log('Login API Response:', response.data)
+      }
+
+      // Check if login was successful and we have a JWT token
+      if (response.status === 200 && response.data?.token) {
+        const { token, user, refreshToken } = response.data
+
+        // Verify JWT token structure
+        if (this.isValidJWT(token)) {
+          // Decode JWT to get user role
+          const decodedToken = this.decodeJWT(token)
+          
+          if (DEBUG_MODE) {
+            console.log('Decoded JWT:', decodedToken)
+          }
+
+          // Create user object with role information
+          const userData = {
+            ...user,
+            role: decodedToken.role || user?.role || 'user',
+            id: decodedToken.sub || user?.id,
+            email: decodedToken.email || user?.email || credentials.email,
+            name: decodedToken.name || user?.name || 'User'
+          }
+
+          try {
+            // Store tokens using the auth service
+            authService.setTokens(token, refreshToken || '', rememberMe)
+            
+            // Store user data safely
+            authService.saveUserData(userData)
+
+            return {
+              success: true,
+              data: {
+                token,
+                refreshToken: refreshToken || '',
+                user: userData
+              }
+            }
+          } catch (error) {
+            console.error('Error storing authentication data:', error)
+            return {
+              success: false,
+              error: 'Failed to store authentication data'
+            }
+          }
+        } else {
+          return {
+            success: false,
+            error: 'Invalid JWT token received from server'
+          }
+        }
+      } else {
         return {
           success: false,
-          error: 'Failed to store authentication data'
+          error: response.data?.message || 'Invalid credentials'
+        }
+      }
+    } catch (error: any) {
+      console.error('🚨 Login API Error Details:', {
+        message: error.message,
+        code: error.code,
+        config: error.config ? {
+          url: error.config.url,
+          method: error.config.method,
+          timeout: error.config.timeout
+        } : null,
+        response: error.response ? {
+          status: error.response.status,
+          data: error.response.data
+        } : null,
+        request: error.request ? 'Request made but no response' : null
+      })
+      
+      if (error.response) {
+        // Server responded with error status
+        const statusCode = error.response.status
+        const message = error.response.data?.message || error.response.data?.error
+        
+        if (DEBUG_MODE) {
+          console.error(`❌ Server Error ${statusCode}:`, message)
+        }
+        
+        if (statusCode === 401) {
+          return {
+            success: false,
+            error: message || 'Invalid email or password'
+          }
+        } else if (statusCode === 404) {
+          return {
+            success: false,
+            error: 'User not found. Please register first.'
+          }
+        } else if (statusCode >= 500) {
+          return {
+            success: false,
+            error: 'Server error. Please try again later.'
+          }
+        } else {
+          return {
+            success: false,
+            error: message || `Login failed (${statusCode})`
+          }
+        }
+      } else if (error.request) {
+        // Network error - no response received
+        if (DEBUG_MODE) {
+          console.error('🌐 Network Error - No response received from:', `${API_BASE_URL}/api/Auth/login`)
+          console.error('Error details:', error.code, error.message)
+        }
+        
+        return {
+          success: false,
+          error: `Unable to connect to server (${API_BASE_URL}). Please check your internet connection and server status.`
+        }
+      } else {
+        // Other error (request setup, etc.)
+        if (DEBUG_MODE) {
+          console.error('⚠️ Request Setup Error:', error.message)
+        }
+        
+        return {
+          success: false,
+          error: error.message || 'Login failed. Please try again.'
         }
       }
     }
-
-    return result
   }
 
   async register(userData: RegisterRequest): Promise<ApiResponse<AuthResponse>> {

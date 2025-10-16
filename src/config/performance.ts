@@ -33,16 +33,16 @@ export const PERFORMANCE_THRESHOLDS = {
 // Performance monitoring configuration
 export const PERFORMANCE_CONFIG = {
   // Enable performance monitoring in development
-  ENABLE_DEV_MONITORING: process.env.NODE_ENV === 'development',
+  ENABLE_DEV_MONITORING: import.meta.env.DEV,
   
   // Enable Web Vitals tracking
   ENABLE_WEB_VITALS: true,
   
   // Enable React DevTools Profiler
-  ENABLE_PROFILER: process.env.NODE_ENV === 'development',
+  ENABLE_PROFILER: import.meta.env.DEV,
   
   // Enable performance logging
-  ENABLE_PERFORMANCE_LOGS: process.env.NODE_ENV === 'development',
+  ENABLE_PERFORMANCE_LOGS: import.meta.env.DEV,
 };
 
 // Component optimization settings
@@ -141,5 +141,5 @@ export const DEV_HELPERS = {
   SHOW_METRICS: true,
   
   // Bundle analyzer
-  ANALYZE_BUNDLE: process.env.ANALYZE === 'true',
+  ANALYZE_BUNDLE: import.meta.env.VITE_ANALYZE === 'true',
 };

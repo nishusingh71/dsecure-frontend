@@ -3,13 +3,8 @@ import { exportToCsv, openPrintView } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
 
-interface Report {
-  id: string
-  date: string
-  devices: number
-  status: string
-  department: string
-}
+import { AdminDashboardAPI, AdminReport } from '@/services/adminDashboardAPI'
+import { useEffect } from 'react'
 
 export default function AdminReports() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification()
@@ -19,18 +14,35 @@ export default function AdminReports() {
   const [dateFilter, setDateFilter] = useState('')
   const [deviceRangeFilter, setDeviceRangeFilter] = useState('')
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
-  const [sortBy, setSortBy] = useState<keyof Report>('id')
+  const [sortBy, setSortBy] = useState<keyof AdminReport>('id')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+  const [allRows, setAllRows] = useState<AdminReport[]>([])
+  const [loading, setLoading] = useState(true)
   const pageSize = 5
   
-  // Static data - no loading states needed
-  const allRows: Report[] = useMemo(() => [
-    { id: 'AR-2025-1001', date: '2025-09-01', devices: 25, status: 'completed', department: 'IT' },
-    { id: 'AR-2025-1002', date: '2025-09-02', devices: 50, status: 'pending', department: 'HR' },
-    { id: 'AR-2025-1003', date: '2025-09-03', devices: 75, status: 'completed', department: 'Finance' },
-    { id: 'AR-2025-1004', date: '2025-09-04', devices: 100, status: 'failed', department: 'IT' },
-    { id: 'AR-2025-1005', date: '2025-09-05', devices: 125, status: 'completed', department: 'Operations' },
-  ], [])
+  // Load reports data on component mount
+  useEffect(() => {
+    loadReportsData()
+  }, [])
+
+  const loadReportsData = async () => {
+    setLoading(true)
+    try {
+      const response = await AdminDashboardAPI.getAdminReports()
+      if (response.success) {
+        setAllRows(response.data)
+      } else {
+        throw new Error(response.error || 'Failed to load reports')
+      }
+    } catch (error) {
+      console.error('Error loading reports:', error)
+      showError('Data Loading Error', 'Failed to load report data. Using default values.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
   
   const uniqueStatuses = useMemo(() => [...new Set(allRows.map(r => r.status))], [allRows])
   const uniqueMonths = useMemo(() => [...new Set(allRows.map(r => r.date.substring(0, 7)))], [allRows])
@@ -127,33 +139,53 @@ export default function AdminReports() {
   }
 
   // Action functions
-  const handleViewReport = (report: Report) => {
+  const handleViewReport = async (report: AdminReport) => {
     showInfo(`Opening report ${report.id}`)
     // Additional view logic can be added here
   }
 
-  const handleDownloadReport = (report: Report) => {
+  const handleDownloadReport = async (report: AdminReport) => {
     showSuccess(`Downloading report ${report.id}`)
     // Additional download logic can be added here
   }
 
-  const handleDeleteReport = (report: Report) => {
+  const handleDeleteReport = async (report: AdminReport) => {
     if (window.confirm(`Are you sure you want to delete report ${report.id}?`)) {
-      showSuccess(`Report ${report.id} deleted successfully`)
-      // Additional delete logic can be added here
+      try {
+        const response = await AdminDashboardAPI.deleteAdminReport(report.id)
+        if (response.success) {
+          showSuccess(`Report ${report.id} deleted successfully`)
+          await loadReportsData() // Refresh the list
+        } else {
+          throw new Error(response.error || 'Failed to delete report')
+        }
+      } catch (error) {
+        console.error('Error deleting report:', error)
+        showError('Delete Failed', 'Failed to delete report. Please try again.')
+      }
     }
   }
 
-  const handleRegenerateReport = (report: Report) => {
+  const handleRegenerateReport = async (report: AdminReport) => {
     if (report.status === 'pending') {
       showWarning(`Report ${report.id} is already being generated`)
       return
     }
-    showSuccess(`Regenerating report ${report.id}`)
-    // Additional regenerate logic can be added here
+    try {
+      const response = await AdminDashboardAPI.regenerateReport(report.id)
+      if (response.success) {
+        showSuccess(`Regenerating report ${report.id}`)
+        await loadReportsData() // Refresh the list
+      } else {
+        throw new Error(response.error || 'Failed to regenerate report')
+      }
+    } catch (error) {
+      console.error('Error regenerating report:', error)
+      showError('Regenerate Failed', 'Failed to regenerate report. Please try again.')
+    }
   }
 
-  const handleShareReport = (report: Report) => {
+  const handleShareReport = async (report: AdminReport) => {
     if (report.status !== 'completed') {
       showWarning(`Cannot share ${report.id} - report is not completed`)
       return
@@ -319,7 +351,7 @@ export default function AdminReports() {
             <select 
               className="border rounded px-2 py-1 text-sm"
               value={sortBy}
-              onChange={(e)=>setSortBy(e.target.value as keyof Report)}
+              onChange={(e)=>setSortBy(e.target.value as keyof AdminReport)}
             >
               <option value="id">Report ID</option>
               <option value="date">Date</option>

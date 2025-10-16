@@ -280,10 +280,10 @@ export default function OrderSuccessPage() {
             Download Center
           </Link>
           <Link
-            to="/dashboard"
+            to="/admin"
             className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
           >
-            Account Dashboard
+            Admin Dashboard
           </Link>
         </div>
 

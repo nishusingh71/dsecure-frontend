@@ -3,16 +3,8 @@ import { Helmet } from 'react-helmet-async'
 import { exportToCsv } from '@/utils/csv'
 import { useNotification } from '@/contexts/NotificationContext'
 
-interface LogEntry {
-  id: string
-  timestamp: string
-  level: 'info' | 'warning' | 'error' | 'success' | 'debug'
-  category: string
-  message: string
-  user?: string
-  source: string
-  details?: string
-}
+import { AdminDashboardAPI, LogEntry } from '@/services/adminDashboardAPI'
+import { useEffect } from 'react'
 
 export default function AdminLogs() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification()
@@ -22,161 +14,34 @@ export default function AdminLogs() {
   const [categoryFilter, setCategoryFilter] = useState('')
   const [dateFilter, setDateFilter] = useState('')
   const [showDetails, setShowDetails] = useState<string | null>(null)
+  const [allLogs, setAllLogs] = useState<LogEntry[]>([])
+  const [loading, setLoading] = useState(true)
   const pageSize = 20
 
-  // Comprehensive log data
-  const allLogs: LogEntry[] = useMemo(() => [
-    {
-      id: 'log_001',
-      timestamp: '2025-10-09 09:01:12',
-      level: 'info',
-      category: 'System',
-      message: 'System startup completed successfully',
-      user: 'System',
-      source: 'Core Service',
-      details: 'All services initialized, memory usage: 45%, CPU: 12%'
-    },
-    {
-      id: 'log_002',
-      timestamp: '2025-10-09 09:07:51',
-      level: 'success',
-      category: 'Data Erasure',
-      message: 'Secure erase job 3421 completed successfully',
-      user: 'john.doe@company.com',
-      source: 'Erase Engine',
-      details: 'Device: Samsung SSD 970 EVO, Method: NIST 800-88, Verification: Passed'
-    },
-    {
-      id: 'log_003',
-      timestamp: '2025-10-09 09:15:23',
-      level: 'info',
-      category: 'Authentication',
-      message: 'User login successful',
-      user: 'jane.smith@company.com',
-      source: 'Auth Service',
-      details: 'IP: 192.168.1.105, Location: New York, Device: Chrome/Windows'
-    },
-    {
-      id: 'log_004',
-      timestamp: '2025-10-09 09:22:15',
-      level: 'warning',
-      category: 'License',
-      message: 'License usage approaching limit',
-      user: 'System',
-      source: 'License Manager',
-      details: 'Current usage: 85%, Limit: 100 concurrent users, Expires: 2025-12-31'
-    },
-    {
-      id: 'log_005',
-      timestamp: '2025-10-09 09:30:42',
-      level: 'error',
-      category: 'Data Erasure',
-      message: 'Erase job 3422 failed - disk read error',
-      user: 'alice.brown@company.com',
-      source: 'Erase Engine',
-      details: 'Device: WD Blue HDD 1TB, Error: Sector 1,234,567 unreadable, Retry attempts: 3'
-    },
-    {
-      id: 'log_006',
-      timestamp: '2025-10-09 09:45:18',
-      level: 'info',
-      category: 'Report',
-      message: 'Compliance report generated successfully',
-      user: 'bob.johnson@company.com',
-      source: 'Report Engine',
-      details: 'Report ID: RPT-2025-1003, Type: GDPR Compliance, Records: 1,250'
-    },
-    {
-      id: 'log_007',
-      timestamp: '2025-10-09 10:02:33',
-      level: 'debug',
-      category: 'System',
-      message: 'Background cleanup process started',
-      user: 'System',
-      source: 'Cleanup Service',
-      details: 'Cleaning temp files, log rotation, cache optimization'
-    },
-    {
-      id: 'log_008',
-      timestamp: '2025-10-09 10:14:02',
-      level: 'info',
-      category: 'Data Erasure',
-      message: 'Quick erase job 3423 started',
-      user: 'charlie.wilson@company.com',
-      source: 'Erase Engine',
-      details: 'Device: Kingston USB 32GB, Method: Single Pass Overwrite'
-    },
-    {
-      id: 'log_009',
-      timestamp: '2025-10-09 10:20:45',
-      level: 'warning',
-      category: 'Authentication',
-      message: 'Multiple failed login attempts detected',
-      user: 'unknown@external.com',
-      source: 'Auth Service',
-      details: 'IP: 203.45.67.89, Attempts: 5, Time window: 10 minutes, Status: Blocked'
-    },
-    {
-      id: 'log_010',
-      timestamp: '2025-10-09 10:28:17',
-      level: 'success',
-      category: 'User Management',
-      message: 'New user account created',
-      user: 'admin@company.com',
-      source: 'User Service',
-      details: 'User: sarah.davis@company.com, Role: Operator, Department: IT'
-    },
-    {
-      id: 'log_011',
-      timestamp: '2025-10-09 10:35:54',
-      level: 'error',
-      category: 'System',
-      message: 'Database connection timeout',
-      user: 'System',
-      source: 'Database Service',
-      details: 'Host: db-primary.local, Timeout: 30s, Retries: 3, Status: Reconnected'
-    },
-    {
-      id: 'log_012',
-      timestamp: '2025-10-09 10:42:11',
-      level: 'info',
-      category: 'Backup',
-      message: 'Daily backup completed',
-      user: 'System',
-      source: 'Backup Service',
-      details: 'Size: 2.3GB, Duration: 12 minutes, Location: Azure Blob Storage'
-    },
-    {
-      id: 'log_013',
-      timestamp: '2025-10-09 10:48:29',
-      level: 'warning',
-      category: 'Performance',
-      message: 'High memory usage detected',
-      user: 'System',
-      source: 'Monitor Service',
-      details: 'Memory: 87%, Threshold: 85%, Services affected: 3, Auto-scaling triggered'
-    },
-    {
-      id: 'log_014',
-      timestamp: '2025-10-09 10:55:16',
-      level: 'success',
-      category: 'Data Erasure',
-      message: 'Quick erase job 3423 completed successfully',
-      user: 'charlie.wilson@company.com',
-      source: 'Erase Engine',
-      details: 'Device: Kingston USB 32GB, Duration: 41 minutes, Verification: Passed'
-    },
-    {
-      id: 'log_015',
-      timestamp: '2025-10-09 11:03:42',
-      level: 'info',
-      category: 'API',
-      message: 'External API integration successful',
-      user: 'integration@partner.com',
-      source: 'API Gateway',
-      details: 'Endpoint: /api/v1/erase-status, Method: GET, Response: 200 OK'
+  // Load logs data on component mount
+  useEffect(() => {
+    loadLogsData()
+  }, [])
+
+  const loadLogsData = async () => {
+    setLoading(true)
+    try {
+      const response = await AdminDashboardAPI.getLogs()
+      if (response.success) {
+        setAllLogs(response.data)
+      } else {
+        throw new Error(response.error || 'Failed to load logs')
+      }
+    } catch (error) {
+      console.error('Error loading logs:', error)
+      showError('Data Loading Error', 'Failed to load log data. Using default values.')
+      // Fallback is handled by the API service
+    } finally {
+      setLoading(false)
     }
-  ], [])
+  }
+
+
 
   const uniqueLevels = useMemo(() => [...new Set(allLogs.map(log => log.level))], [allLogs])
   const uniqueCategories = useMemo(() => [...new Set(allLogs.map(log => log.category))], [allLogs])
@@ -224,10 +89,20 @@ export default function AdminLogs() {
     // Additional refresh logic can be added here
   }
 
-  const handleClearLogs = () => {
+  const handleClearLogs = async () => {
     if (window.confirm('Are you sure you want to clear all logs? This action cannot be undone.')) {
-      showWarning('Log clearing is not implemented in demo mode')
-      // Additional clear logic can be added here
+      try {
+        const response = await AdminDashboardAPI.clearLogs()
+        if (response.success) {
+          showSuccess('Logs cleared successfully')
+          await loadLogsData() // Refresh the logs
+        } else {
+          throw new Error(response.error || 'Failed to clear logs')
+        }
+      } catch (error) {
+        console.error('Error clearing logs:', error)
+        showError('Clear Failed', 'Failed to clear logs. Please try again.')
+      }
     }
   }
 

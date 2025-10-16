@@ -87,6 +87,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminGroups from "./pages/admin/AdminGroups";
 import AdminReportsAdmin from "./pages/admin/AdminReports";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminProfileEdit from "./pages/admin/AdminProfileEdit";
 import AddUser from "./pages/admin/AddUser";
 import AddGroup from "./pages/admin/AddGroup";
 import GenerateReport from "./pages/admin/GenerateReport";
@@ -263,7 +264,8 @@ export default function App() {
                       </ProtectedRoute>
                     }
                   />
-                  <Route
+                  {/* ❌ User Dashboard Routes - Disabled (Everyone uses Admin Dashboard) */}
+                  {/* <Route
                     path="dashboard"
                     element={
                       <ProtectedRoute>
@@ -294,12 +296,12 @@ export default function App() {
                         <DownloadAgentPage />
                       </ProtectedRoute>
                     }
-                  />
-                  {/* Admin Routes - Only accessible by admin role */}
+                  /> */}
+                  {/* Admin Routes - Accessible by all authenticated users */}
                   <Route
                     path="admin"
                     element={
-                      <ProtectedRoute roles={["admin"]}>
+                      <ProtectedRoute>
                         <AdminShell />
                       </ProtectedRoute>
                     }
@@ -319,6 +321,7 @@ export default function App() {
                     <Route path="reports/admin" element={<AdminReportsAdmin />} />
                     <Route path="reports/generate" element={<GenerateReport />} />
                     <Route path="settings" element={<AdminSettings />} />
+                    <Route path="profile/edit" element={<AdminProfileEdit />} />
                   </Route>
                   {/* Support Guides */}
                   <Route
