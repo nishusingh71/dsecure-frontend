@@ -2,8 +2,10 @@ import React from "react";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
+import { useNavigate } from "react-router-dom"; 
 
 const HealthcareServices: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* SEO Meta Tags */}
@@ -12,12 +14,12 @@ const HealthcareServices: React.FC = () => {
       <div className="min-h-screen bg-white">
         
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-16 md:py-24">
+        {/* <section className="relative bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-16 md:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Reveal>
               <div className="max-w-4xl">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 mb-6">
-                  Secure. Certified.
+                  Secure Certified
                 </h1>
                 <p className="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
                   Data security and compliance for healthcare organizations. 
@@ -25,25 +27,77 @@ const HealthcareServices: React.FC = () => {
                   solutions that meet HIPAA, HITECH, and global privacy standards.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                    Request Demo
+                  <button 
+                  onClick={() => navigate('/contact')}
+                  className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    Start Free Trial
                   </button>
-                  <button className="border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 font-bold px-8 py-4 rounded-xl transition-all duration-300">
-                    Download Brochure
-                  </button>
+                  
+                 
                 </div>
               </div>
             </Reveal>
           </div>
 
-          {/* Illustration */}
+          
           <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden lg:block opacity-10">
             <svg className="w-96 h-96" viewBox="0 0 200 200">
               <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500" />
               <path d="M100 40 L100 80 M100 120 L100 160 M60 100 L80 100 M120 100 L140 100" stroke="currentColor" strokeWidth="4" className="text-teal-500" />
             </svg>
           </div>
-        </section>
+        </section> */}
+
+             <section className="bg-green-50 min-h-[80vh] flex items-start pt-4">
+    <div className="max-w-6xl w-full mx-auto flex flex-col lg:flex-row justify-between items-center px-6 py-4 gap-8">
+      {/* Left Block */}
+      <div className="flex-1">
+        <div className="inline-flex items-center px-4 py-2 bg-white rounded-full mb-5 shadow">
+          <span className="text-green-500 mr-2">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M9 12l2-2 4 4H5l4-4z"/></svg>
+          </span>
+          <span className="text-md font-medium text-green-700">Secure Certified</span>
+        </div>
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-2">
+          Secure Certified <span className="text-green-700"></span>
+        </h1>
+        <p className="text-lg text-gray-600 mb-8">
+  Data security and compliance for healthcare organizations. Protect patient data with certified, compliant data erasure solutions that meet HIPAA, HITECH, and global privacy standards.
+        </p>
+        <button  
+        onClick={() => navigate('/contact')}
+        className="inline-flex items-center justify-center h-12 px-8 text-base font-semibold rounded-lg bg-green-600 text-white transition hover:bg-green-700 shadow">
+          Start Free Trial →
+        </button>
+      </div>
+
+      {/* Right Block */}
+      <div className="flex-1 max-w-md w-full bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center">
+        <div className="bg-blue-600 rounded-xl p-5 mb-6">
+          <svg width="48" height="48" fill="none" viewBox="0 0 24 24" className="text-white">
+            <path fill="currentColor" d="M12 2C8 2 5 5 5 8v4c0 .5.5 1 1 1h2v2a1 1 0 001 1h6a1 1 0 001-1v-2h2a1 1 0 001-1V8c0-3-3-6-7-6zm1 16a2 2 0 11-4 0h4zm-7-8v2h14V8c0-3-3-6-7-6S6 5 6 8v2z"/>
+          </svg>
+        </div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-2">Secure Certified</h2>
+        <div className="text-gray-500 mb-6">NIST 800-88 Certified Data Erasure</div>
+        <div className="flex justify-between w-full pt-4 mt-4 border-t">
+            <div className="flex flex-col items-center flex-1">
+                <span className="text-green-700 text-xl font-bold">10k+</span>
+                <span className="text-gray-500 text-sm">Devices</span>
+            </div>
+            <div className="flex flex-col items-center flex-1">
+                <span className="text-green-700 text-xl font-bold">150+</span>
+                <span className="text-gray-500 text-sm">Countries</span>
+            </div>
+            <div className="flex flex-col items-center flex-1">
+                <span className="text-green-700 text-xl font-bold">99.9%</span>
+                <span className="text-gray-500 text-sm">Success</span>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
         {/* Solution Overview */}
         <section className="py-16 md:py-20 bg-white">
@@ -235,10 +289,10 @@ const HealthcareServices: React.FC = () => {
                   Schedule a consultation with our healthcare data security experts
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-white text-emerald-700 hover:bg-emerald-50 font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105">
-                    Request Demo
-                  </button>
-                  <button className="border-2 border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl transition-all duration-300">
+                  
+                  <button 
+                  onClick={() => navigate('/contact')}
+                  className="border-2 border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-xl transition-all duration-300">
                     Contact Sales
                   </button>
                 </div>
@@ -269,7 +323,7 @@ const HealthcareServices: React.FC = () => {
             </div>
           </div>
         </section>
-
+   
       </div>
     </>
   );

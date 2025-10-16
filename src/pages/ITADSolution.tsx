@@ -912,8 +912,9 @@
 
 
 import React from 'react';
-
+import { useNavigate } from "react-router-dom";
 const ITADSolution: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] antialiased" style={{ backgroundColor: '#ffffff', color: '#1f2937' }}>
       
@@ -951,15 +952,15 @@ const ITADSolution: React.FC = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="inline-flex items-center justify-center text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" style={{ backgroundColor: '#059669' }}>
-                  Get Started
+                <button 
+                onClick={() => navigate('/contact')}
+                className="inline-flex items-center justify-center text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" style={{ backgroundColor: '#059669' }}>
+                  Start Free Trial
                   <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </button>
-                <button className="inline-flex items-center justify-center border-2 px-8 py-4 rounded-lg font-semibold transition-all" style={{ borderColor: '#059669', color: '#059669' }}>
-                  Learn More
-                </button>
+                
               </div>
             </div>
             
