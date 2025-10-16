@@ -130,7 +130,7 @@ export default function LoginPage() {
       
       // Make API call to .NET backend
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'}/api/RoleBasedAuth/login`,
+         'https://api.dsecuretech.com/api/RoleBasedAuth/login',
         {
           email: email,
           password: password
