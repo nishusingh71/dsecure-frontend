@@ -63,13 +63,47 @@ export default function AdminDashboard() {
     licenseType: 'basic'
   })
   
+  // Helper function to get user data from localStorage
+  const getUserDataFromStorage = () => {
+    const storedUser = localStorage.getItem('user_data');
+    const authUser = localStorage.getItem('authUser');
+    
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (e) {
+        console.error('Error parsing user_data:', e);
+      }
+    }
+    
+    if (authUser) {
+      try {
+        return JSON.parse(authUser);
+      } catch (e) {
+        console.error('Error parsing authUser:', e);
+      }
+    }
+    
+    return null;
+  };
+  
   // API Data States
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null)
   const [userActivity, setUserActivity] = useState<UserActivity[]>([])
   const [groups, setGroups] = useState<GroupData[]>([])
   const [licenseData, setLicenseData] = useState<LicenseData[]>([])
   const [recentReports, setRecentReports] = useState<RecentReport[]>([])
-  const [profileData, setProfileData] = useState<ProfileData | null>(null)
+  
+  // Initialize profileData with localStorage data
+  const storedUserData = getUserDataFromStorage();
+  const [profileData, setProfileData] = useState<ProfileData | null>({
+    name: storedUserData?.user_name || user?.name || 'User',
+    email: storedUserData?.user_email || user?.email || 'user@example.com',
+    timezone: storedUserData?.timezone || 'Asia/Kolkata',
+    role: storedUserData?.user_type || storedUserData?.role || user?.role || 'user',
+    phone: storedUserData?.phone_number || '',
+    department: storedUserData?.department || ''
+  })
   const [dataLoading, setDataLoading] = useState(true)
 
   // Role-based permissions
@@ -102,11 +136,37 @@ export default function AdminDashboard() {
       if (groupsRes.success) setGroups(groupsRes.data)
       if (licenseRes.success) setLicenseData(licenseRes.data)
       if (reportsRes.success) setRecentReports(reportsRes.data)
-      if (profileRes.success) setProfileData(profileRes.data)
+      
+      // If API call succeeds, use API data, otherwise fallback to localStorage/JWT data
+      if (profileRes.success) {
+        setProfileData(profileRes.data)
+      } else {
+        // Fallback to localStorage or JWT token data
+        const storedData = getUserDataFromStorage();
+        setProfileData({
+          name: storedData?.user_name || user?.name || 'User',
+          email: storedData?.user_email || user?.email || 'user@example.com',
+          timezone: storedData?.timezone || 'Asia/Kolkata',
+          role: storedData?.user_type || user?.role || 'user',
+          phone: storedData?.phone_number || '',
+          department: storedData?.department || ''
+        })
+      }
 
     } catch (error) {
       console.error('Error loading dashboard data:', error)
       showError('Data Loading Error', 'Failed to load dashboard data. Using default values.')
+      
+      // Set profile data from localStorage or JWT token on error
+      const storedData = getUserDataFromStorage();
+      setProfileData({
+        name: storedData?.user_name || user?.name || 'User',
+        email: storedData?.user_email || user?.email || 'user@example.com',
+        timezone: storedData?.timezone || 'Asia/Kolkata',
+        role: storedData?.user_type || user?.role || 'user',
+        phone: storedData?.phone_number || '',
+        department: storedData?.department || ''
+      })
     } finally {
       setDataLoading(false)
     }
@@ -350,7 +410,7 @@ export default function AdminDashboard() {
           </div>
           <p className="mt-2 text-slate-600 flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-green-400 flex-shrink-0"></span>
-            <span className="truncate">Welcome back, {user?.email}</span>
+            <span className="truncate">Welcome back, {profileData?.name || user?.name}</span>
             <span className="hidden sm:inline text-slate-400">•</span>
             <span className="hidden sm:inline text-sm text-slate-500">{roleInfo.description}</span>
           </p>
@@ -1285,22 +1345,22 @@ export default function AdminDashboard() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="font-medium text-slate-700">Name:</span>
-                  <span className="text-slate-900">{profileData?.name || user?.name || 'Loading...'}</span>
+                  <span className="text-slate-900">{profileData?.name || user?.name || 'User'}</span>
                 </div>
                 
                 <div className="flex justify-between">
                   <span className="font-medium text-slate-700">Email:</span>
-                  <span className="text-slate-900 text-right">{profileData?.email || user?.email || 'Loading...'}</span>
+                  <span className="text-slate-900 text-right">{profileData?.email || user?.email || 'user@example.com'}</span>
                 </div>
                 
                 <div className="flex justify-between">
                   <span className="font-medium text-slate-700">Time Zone:</span>
-                  <span className="text-slate-900">{profileData?.timezone || 'Loading...'}</span>
+                  <span className="text-slate-900">{profileData?.timezone || 'Asia/Kolkata'}</span>
                 </div>
                 
                 <div className="flex justify-between">
                   <span className="font-medium text-slate-700">Role:</span>
-                  <span className="text-slate-900 font-semibold">{profileData?.role || 'Loading...'}</span>
+                  <span className="text-slate-900 font-semibold">{profileData?.role || user?.role || 'user'}</span>
                 </div>
               </div>
               

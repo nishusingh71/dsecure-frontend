@@ -12,13 +12,40 @@ export default function AdminProfileEdit() {
   
   const [isLoading, setIsLoading] = useState(false)
   const [dataLoading, setDataLoading] = useState(true)
+  
+  // Initialize with user data from localStorage (login time data)
+  const getUserDataFromStorage = () => {
+    const storedUser = localStorage.getItem('user_data');
+    const authUser = localStorage.getItem('authUser');
+    
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (e) {
+        console.error('Error parsing user_data:', e);
+      }
+    }
+    
+    if (authUser) {
+      try {
+        return JSON.parse(authUser);
+      } catch (e) {
+        console.error('Error parsing authUser:', e);
+      }
+    }
+    
+    return null;
+  };
+  
+  const storedUserData = getUserDataFromStorage();
+  
   const [profileData, setProfileData] = useState<ProfileData>({
-    name: '',
-    email: '',
-    timezone: 'Asia/Kolkata',
-    role: 'Admin',
-    phone: '',
-    department: ''
+    name: storedUserData?.user_name || user?.name || '',
+    email: storedUserData?.user_email || user?.email || '',
+    timezone: storedUserData?.timezone || 'Asia/Kolkata',
+    role: storedUserData?.user_type || storedUserData?.role || user?.role || 'user',
+    phone: storedUserData?.phone_number || '',
+    department: storedUserData?.department || ''
   })
 
   // Load profile data on component mount
@@ -33,11 +60,31 @@ export default function AdminProfileEdit() {
       if (response.success) {
         setProfileData(response.data)
       } else {
-        showError('Data Loading Error', 'Failed to load profile data')
+        // If API fails, use data from localStorage or JWT token
+        const storedData = getUserDataFromStorage();
+        showInfo('Loading from session', 'Using your login information')
+        setProfileData({
+          name: storedData?.user_name || user?.name || '',
+          email: storedData?.user_email || user?.email || '',
+          timezone: storedData?.timezone || 'Asia/Kolkata',
+          role: storedData?.user_type || user?.role || 'user',
+          phone: storedData?.phone_number || '',
+          department: storedData?.department || ''
+        })
       }
     } catch (error) {
       console.error('Profile data loading error:', error)
-      showError('Data Loading Error', 'Failed to load profile data')
+      // Fallback to localStorage or JWT token data on error
+      const storedData = getUserDataFromStorage();
+      showInfo('Loading from session', 'Using your login information')
+      setProfileData({
+        name: storedData?.user_name || user?.name || '',
+        email: storedData?.user_email || user?.email || '',
+        timezone: storedData?.timezone || 'Asia/Kolkata',
+        role: storedData?.user_type || user?.role || 'user',
+        phone: storedData?.phone_number || '',
+        department: storedData?.department || ''
+      })
     } finally {
       setDataLoading(false)
     }

@@ -432,17 +432,161 @@ export class AdminDashboardAPI {
     return apiCall<RecentReport[]>('/admin/dashboard/recent-reports')
   }
 
-  // Get admin profile
+  // Get admin profile - Fetch from backend using user email
   static async getAdminProfile(): Promise<ApiResponse<ProfileData>> {
-    return apiCall<ProfileData>('/admin/profile')
+    try {
+      // Get user email from stored user data
+      const storedUser = localStorage.getItem('user_data');
+      const authUser = localStorage.getItem('authUser');
+      
+      let userEmail = '';
+      
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        userEmail = userData.user_email || userData.email || '';
+      } else if (authUser) {
+        const userData = JSON.parse(authUser);
+        userEmail = userData.user_email || userData.email || '';
+      }
+      
+      if (!userEmail) {
+        throw new Error('User email not found in stored data');
+      }
+      
+      console.log('🔍 Fetching profile for email:', userEmail);
+      
+      // Fetch user data from backend API using email
+      const response = await fetch(`https://api.dsecuretech.com/api/Users/${userEmail}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('dsecure_access_token') || ''}`
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Profile data received:', data);
+      
+      // Transform backend data to ProfileData format
+      const profileData: ProfileData = {
+        name: data.user_name || data.name || 'User',
+        email: data.user_email || data.email || userEmail,
+        timezone: data.timezone || 'Asia/Kolkata',
+        role: data.user_type || data.role || 'user',
+        phone: data.phone_number || '',
+        department: data.department || '',
+        avatar: data.avatar || '',
+        licenses: data.licenses || 0
+      };
+      
+      return {
+        success: true,
+        data: profileData,
+        message: 'Profile fetched successfully'
+      };
+      
+    } catch (error) {
+      console.error('❌ Error fetching profile:', error);
+      return {
+        success: false,
+        data: {} as ProfileData,
+        error: error instanceof Error ? error.message : 'Failed to fetch profile'
+      };
+    }
   }
 
-  // Update admin profile
+  // Update admin profile - Update backend using user email
   static async updateAdminProfile(profileData: Partial<ProfileData>): Promise<ApiResponse<ProfileData>> {
-    return apiCall<ProfileData>('/admin/profile', {
-      method: 'PUT',
-      body: JSON.stringify(profileData)
-    })
+    try {
+      // Get user email from stored user data or profileData
+      const storedUser = localStorage.getItem('user_data');
+      const authUser = localStorage.getItem('authUser');
+      
+      let userEmail = profileData.email || '';
+      
+      if (!userEmail && storedUser) {
+        const userData = JSON.parse(storedUser);
+        userEmail = userData.user_email || userData.email || '';
+      } else if (!userEmail && authUser) {
+        const userData = JSON.parse(authUser);
+        userEmail = userData.user_email || userData.email || '';
+      }
+      
+      if (!userEmail) {
+        throw new Error('User email not found');
+      }
+      
+      console.log('🔄 Updating profile for email:', userEmail);
+      
+      // Transform ProfileData to backend format
+      const backendData = {
+        user_name: profileData.name,
+        user_email: profileData.email,
+        phone_number: profileData.phone,
+        department: profileData.department,
+        timezone: profileData.timezone,
+        user_type: profileData.role
+      };
+      
+      // Update user data in backend API
+      const response = await fetch(`https://api.dsecuretech.com/api/Users/${userEmail}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('dsecure_access_token') || ''}`
+        },
+        body: JSON.stringify(backendData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('✅ Profile updated successfully:', data);
+      
+      // Transform response back to ProfileData format
+      const updatedProfile: ProfileData = {
+        name: data.user_name || data.name || profileData.name || 'User',
+        email: data.user_email || data.email || userEmail,
+        timezone: data.timezone || profileData.timezone || 'Asia/Kolkata',
+        role: data.user_type || data.role || profileData.role || 'user',
+        phone: data.phone_number || profileData.phone || '',
+        department: data.department || profileData.department || '',
+        avatar: data.avatar || '',
+        licenses: data.licenses || 0
+      };
+      
+      // Update local storage with new data
+      const storedUserData = storedUser ? JSON.parse(storedUser) : {};
+      const updatedUserData = {
+        ...storedUserData,
+        user_name: updatedProfile.name,
+        user_email: updatedProfile.email,
+        phone_number: updatedProfile.phone,
+        department: updatedProfile.department
+      };
+      localStorage.setItem('user_data', JSON.stringify(updatedUserData));
+      localStorage.setItem('authUser', JSON.stringify(updatedUserData));
+      
+      return {
+        success: true,
+        data: updatedProfile,
+        message: 'Profile updated successfully'
+      };
+      
+    } catch (error) {
+      console.error('❌ Error updating profile:', error);
+      return {
+        success: false,
+        data: {} as ProfileData,
+        error: error instanceof Error ? error.message : 'Failed to update profile'
+      };
+    }
   }
 
   // Bulk license assignment

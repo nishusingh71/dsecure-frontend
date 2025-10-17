@@ -180,10 +180,13 @@ export default function LoginPage() {
         roles: data.roles || [userRole],
         permissions: data.permissions || [],
         expiresAt: data.expiresAt,
-        is_private_cloud: false,           // default
-        private_api: "",                   // default
-        payment_details_json: {},          // default
-        license_details_json: {},          // default
+        is_private_cloud: data.is_private_cloud || false,           // from backend
+        private_api: data.private_api || "",                        // from backend
+        payment_details_json: data.payment_details_json || {},      // from backend
+        license_details_json: data.license_details_json || {},      // from backend
+        phone_number: data.phone_number || data.phoneNumber || "",  // from backend
+        department: data.department || "",                           // from backend
+        timezone: data.timezone || "Asia/Kolkata"                    // from backend
       };
 
       console.log('📝 Processed user data with defaults:', user);
@@ -197,6 +200,44 @@ export default function LoginPage() {
       const decodedUser = authService.getUserFromToken();
       console.log('🔍 Decoded user from JWT:', decodedUser);
       console.log('🔍 User role in JWT:', decodedUser?.role);
+      
+      // 📞 Fetch complete user data from backend using email
+      try {
+        console.log('📞 Fetching complete user data from backend...');
+        const userDataResponse = await axios.get(
+          `https://api.dsecuretech.com/api/Users/${user.user_email}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${data.token}`
+            }
+          }
+        );
+        
+        if (userDataResponse.data) {
+          console.log('✅ Complete user data received from backend:', userDataResponse.data);
+          
+          // Merge backend data with login response
+          const completeUserData = {
+            ...user,
+            user_name: userDataResponse.data.user_name || user.user_name,
+            phone_number: userDataResponse.data.phone_number || user.phone_number,
+            department: userDataResponse.data.department || user.department,
+            timezone: userDataResponse.data.timezone || user.timezone,
+            is_private_cloud: userDataResponse.data.is_private_cloud || user.is_private_cloud,
+            private_api: userDataResponse.data.private_api || user.private_api,
+            payment_details_json: userDataResponse.data.payment_details_json || user.payment_details_json,
+            license_details_json: userDataResponse.data.license_details_json || user.license_details_json
+          };
+          
+          // Update user object with complete data
+          Object.assign(user, completeUserData);
+          console.log('✅ User data merged with backend data:', user);
+        }
+      } catch (userFetchError) {
+        console.warn('⚠️ Could not fetch complete user data from backend, using login data:', userFetchError);
+        // Continue with login response data if backend fetch fails
+      }
       
       // Also save user data for compatibility
       localStorage.setItem('user_data', JSON.stringify(user));
