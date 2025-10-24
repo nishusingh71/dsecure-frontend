@@ -381,125 +381,125 @@ export default function AdminReports() {
   };
 
   // Action functions
-  const handleViewReport = async (report: AdminReport) => {
-    showInfo(`Opening report ${report.id}`);
-    // Additional view logic can be added here
-  };
-
-  // const handleDownloadReport = async (report: ExtendedAdminReport) => {
-  //   try {
-  //     showInfo(`Preparing PDF download for report ${report.id}...`);
-
-  //     // Get the raw report data and parsed details
-  //     const rawReport = report._raw;
-  //     const reportDetails = report._details;
-      
-  //     if (!rawReport || !rawReport.report_id) {
-  //       showError("Download Failed", "Report data not available");
-  //       return;
-  //     }
-
-  //     console.log("📄 Report details for PDF:", reportDetails);
-
-  //     // Extract all fields from report_details_json for PDF generation
-  //     const pdfPayload = {
-  //       reportData: {
-  //         // Required fields from report_details_json
-  //         report_id: reportDetails?.report_id?.toString() || rawReport.report_id || "",
-  //         datetime: reportDetails?.datetime || new Date().toISOString(),
-  //         software_name: reportDetails?.software_name || "D-SecureErase",
-  //         product_version: reportDetails?.product_version || "1.0",
-  //         digital_signature: reportDetails?.digital_signature || "",
-  //         status: reportDetails?.status || "Completed",
-  //         process_mode: reportDetails?.process_mode || "Standard",
-  //         os: reportDetails?.os || "",
-  //         os_version: reportDetails?.os_version || "",
-  //         computer_name: reportDetails?.computer_name || "Unknown",
-  //         mac_address: reportDetails?.mac_address || "",
-  //         manufacturer: reportDetails?.manufacturer || "",
-  //         Eraser_Start_Time: reportDetails?.Eraser_Start_Time || reportDetails?.eraser_start_time || "",
-  //         Eraser_End_Time: reportDetails?.Eraser_End_Time || reportDetails?.eraser_end_time || "",
-  //         eraser_method: reportDetails?.eraser_method || "Secure Erase",
-  //         validation_method: reportDetails?.validation_method || "",
-  //         Erasure_Type: reportDetails?.Erasure_Type || reportDetails?.erasure_type || "Full Disk",
-  //         total_files: reportDetails?.total_files || 0,
-  //         erased_files: reportDetails?.erased_files || 0,
-  //         failed_files: reportDetails?.failed_files || 0,
-  //         erasure_log: reportDetails?.erasure_log || []
-  //       },
-  //       // Optional branding/signature fields
-  //       reportTitle: reportDetails?.report_title || "Data Erasure Audit Report",
-  //       headerText: reportDetails?.header_text || "D-SecureTech",
-  //       headerLeftLogo: reportDetails?.header_left_logo || "",
-  //       headerRightLogo: reportDetails?.header_right_logo || "",
-  //       watermarkImage: reportDetails?.watermark_image || "",
-  //       technicianName: reportDetails?.technician_name || "",
-  //       technicianDept: reportDetails?.technician_dept || "",
-  //       validatorName: reportDetails?.validator_name || "",
-  //       validatorDept: reportDetails?.validator_dept || "",
-  //       technicianSignature: reportDetails?.technician_signature || "",
-  //       validatorSignature: reportDetails?.validator_signature || ""
-  //     };
-
-  //     console.log("📤 Sending PDF payload:", JSON.stringify(pdfPayload, null, 2));
-
-  //     // Call the PDF export API endpoint with GET method and report_id as query param
-  //     const reportId = reportDetails?.report_id?.toString() || rawReport.report_id || "";
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL ||
-  //         "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf?reportId=${encodeURIComponent(reportId)}`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${authService.getAccessToken()}`,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("📥 Response status:", response.status);
-  //     console.log("📥 Response headers:", response.headers);
-
-  //     if (!response.ok) {
-  //       // Try to get error message from response body
-  //       let errorMessage = `HTTP error! status: ${response.status}`;
-  //       try {
-  //         const errorData = await response.json();
-  //         console.error("❌ Backend error response:", errorData);
-  //         errorMessage = errorData.message || errorData.error || errorMessage;
-  //       } catch (e) {
-  //         console.error("❌ Could not parse error response");
-  //       }
-  //       throw new Error(errorMessage);
-  //     }
-
-  //     // Get the PDF blob
-  //     const blob = await response.blob();
-  //     console.log("✅ PDF blob received, size:", blob.size);
-
-  //     // Create download link
-  //     const url = window.URL.createObjectURL(blob);
-  //     const a = document.createElement("a");
-  //     a.href = url;
-  //     a.download = `audit-report-${report.id}-${report.date}.pdf`;
-  //     document.body.appendChild(a);
-  //     a.click();
-
-  //     // Cleanup
-  //     window.URL.revokeObjectURL(url);
-  //     document.body.removeChild(a);
-
-  //     showSuccess(`Report ${report.id} downloaded successfully`);
-  //   } catch (error) {
-  //     console.error("Error downloading report:", error);
-  //     showError(
-  //       "Download Failed",
-  //       `Failed to download report. ${
-  //         error instanceof Error ? error.message : "Please try again."
-  //       }`
-  //     );
-  //   }
+  // const handleViewReport = async (report: AdminReport) => {
+  //   showInfo(`Opening report ${report.id}`);
+  //   // Additional view logic can be added here
   // };
+
+  const handleDownloadReport = async (report: ExtendedAdminReport) => {
+    try {
+      showInfo(`Preparing PDF download for report ${report.id}...`);
+
+      // Get the raw report data and parsed details
+      const rawReport = report._raw;
+      const reportDetails = report._details;
+      
+      if (!rawReport || !rawReport.report_id) {
+        showError("Download Failed", "Report data not available");
+        return;
+      }
+
+      console.log("📄 Report details for PDF:", reportDetails);
+
+      // Extract all fields from report_details_json for PDF generation
+      const pdfPayload = {
+        reportData: {
+          // Required fields from report_details_json
+          report_id: reportDetails?.report_id?.toString() || rawReport.report_id || "",
+          datetime: reportDetails?.datetime || new Date().toISOString(),
+          software_name: reportDetails?.software_name || "D-SecureErase",
+          product_version: reportDetails?.product_version || "1.0",
+          digital_signature: reportDetails?.digital_signature || "",
+          status: reportDetails?.status || "Completed",
+          process_mode: reportDetails?.process_mode || "Standard",
+          os: reportDetails?.os || "",
+          os_version: reportDetails?.os_version || "",
+          computer_name: reportDetails?.computer_name || "Unknown",
+          mac_address: reportDetails?.mac_address || "",
+          manufacturer: reportDetails?.manufacturer || "",
+          Eraser_Start_Time: reportDetails?.Eraser_Start_Time || reportDetails?.eraser_start_time || "",
+          Eraser_End_Time: reportDetails?.Eraser_End_Time || reportDetails?.eraser_end_time || "",
+          eraser_method: reportDetails?.eraser_method || "Secure Erase",
+          validation_method: reportDetails?.validation_method || "",
+          Erasure_Type: reportDetails?.Erasure_Type || reportDetails?.erasure_type || "Full Disk",
+          total_files: reportDetails?.total_files || 0,
+          erased_files: reportDetails?.erased_files || 0,
+          failed_files: reportDetails?.failed_files || 0,
+          erasure_log: reportDetails?.erasure_log || []
+        },
+        // Optional branding/signature fields
+        reportTitle: reportDetails?.report_title || "Data Erasure Audit Report",
+        headerText: reportDetails?.header_text || "D-SecureTech",
+        headerLeftLogo: reportDetails?.header_left_logo || "",
+        headerRightLogo: reportDetails?.header_right_logo || "",
+        watermarkImage: reportDetails?.watermark_image || "",
+        technicianName: reportDetails?.technician_name || "",
+        technicianDept: reportDetails?.technician_dept || "",
+        validatorName: reportDetails?.validator_name || "",
+        validatorDept: reportDetails?.validator_dept || "",
+        technicianSignature: reportDetails?.technician_signature || "",
+        validatorSignature: reportDetails?.validator_signature || ""
+      };
+
+      console.log("📤 Sending PDF payload:", JSON.stringify(pdfPayload, null, 2));
+
+      // Call the PDF export API endpoint with GET method and report_id as query param
+      const reportId = reportDetails?.report_id?.toString() || rawReport.report_id || "";
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL ||
+          "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf?reportId=${encodeURIComponent(reportId)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authService.getAccessToken()}`,
+          },
+        }
+      );
+
+      console.log("📥 Response status:", response.status);
+      console.log("📥 Response headers:", response.headers);
+
+      if (!response.ok) {
+        // Try to get error message from response body
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          console.error("❌ Backend error response:", errorData);
+          errorMessage = errorData.message || errorData.error || errorMessage;
+        } catch (e) {
+          console.error("❌ Could not parse error response");
+        }
+        throw new Error(errorMessage);
+      }
+
+      // Get the PDF blob
+      const blob = await response.blob();
+      console.log("✅ PDF blob received, size:", blob.size);
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `audit-report-${report.id}-${report.date}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      showSuccess(`Report ${report.id} downloaded successfully`);
+    } catch (error) {
+      console.error("Error downloading report:", error);
+      showError(
+        "Download Failed",
+        `Failed to download report. ${
+          error instanceof Error ? error.message : "Please try again."
+        }`
+      );
+    }
+  };
 
   // const handleDeleteReport = async (report: AdminReport) => {
   //   if (
@@ -545,172 +545,172 @@ export default function AdminReports() {
   //   }
   // };
 
-  const handleShareReport = async (report: AdminReport) => {
-    if (report.status !== "completed") {
-      showWarning(`Cannot share ${report.id} - report is not completed`);
-      return;
-    }
-    showInfo(`Sharing options for report ${report.id}`);
-    // Additional sharing logic can be added here
-  };
+  // const handleShareReport = async (report: AdminReport) => {
+  //   if (report.status !== "completed") {
+  //     showWarning(`Cannot share ${report.id} - report is not completed`);
+  //     return;
+  //   }
+  //   showInfo(`Sharing options for report ${report.id}`);
+  //   // Additional sharing logic can be added here
+  // };
 
-  // Open Generate PDF Modal
-  const handleGeneratePDF = (report: ExtendedAdminReport) => {
-    setSelectedReport(report);
-    setShowGenerateModal(true);
-  };
+  // // Open Generate PDF Modal
+  // const handleGeneratePDF = (report: ExtendedAdminReport) => {
+  //   setSelectedReport(report);
+  //   setShowGenerateModal(true);
+  // };
 
-  // Close Generate PDF Modal
-  const closeGenerateModal = () => {
-    setShowGenerateModal(false);
-    setSelectedReport(null);
-    setPdfFormData({
-      reportTitle: 'Data Erasure Audit Report',
-      headerText: 'D-SecureTech',
-      technicianName: '',
-      technicianDept: '',
-      validatorName: '',
-      validatorDept: '',
-      headerLeftLogo: '',
-      headerRightLogo: '',
-      watermarkImage: '',
-      technicianSignature: '',
-      validatorSignature: ''
-    });
-  };
+  // // Close Generate PDF Modal
+  // const closeGenerateModal = () => {
+  //   setShowGenerateModal(false);
+  //   setSelectedReport(null);
+  //   setPdfFormData({
+  //     reportTitle: 'Data Erasure Audit Report',
+  //     headerText: 'D-SecureTech',
+  //     technicianName: '',
+  //     technicianDept: '',
+  //     validatorName: '',
+  //     validatorDept: '',
+  //     headerLeftLogo: '',
+  //     headerRightLogo: '',
+  //     watermarkImage: '',
+  //     technicianSignature: '',
+  //     validatorSignature: ''
+  //   });
+  // };
 
   // Submit Generate PDF with Files
-  const handleSubmitGeneratePDF = async () => {
-    if (!selectedReport) return;
+  // const handleSubmitGeneratePDF = async () => {
+  //   if (!selectedReport) return;
 
-    try {
-      showInfo(`Generating PDF with custom data for report ${selectedReport.id}...`);
+  //   try {
+  //     showInfo(`Generating PDF with custom data for report ${selectedReport.id}...`);
 
-      const rawReport = selectedReport._raw;
-      const reportDetails = selectedReport._details;
+  //     const rawReport = selectedReport._raw;
+  //     const reportDetails = selectedReport._details;
 
-      if (!rawReport || !rawReport.report_id) {
-        showError("Generate Failed", "Report data not available");
-        return;
-      }
+  //     if (!rawReport || !rawReport.report_id) {
+  //       showError("Generate Failed", "Report data not available");
+  //       return;
+  //     }
 
-      // Build complete payload with form data and report_details_json
-      const pdfPayload = {
-        reportData: {
-          // Required fields from report_details_json
-          report_id: reportDetails?.report_id?.toString() || rawReport.report_id || "",
-          datetime: reportDetails?.datetime || new Date().toISOString(),
-          software_name: reportDetails?.software_name || "D-SecureErase",
-          product_version: reportDetails?.product_version || "1.0",
-          digital_signature: reportDetails?.digital_signature || "",
-          status: reportDetails?.status || "Completed",
-          process_mode: reportDetails?.process_mode || "Standard",
-          os: reportDetails?.os || "",
-          os_version: reportDetails?.os_version || "",
-          computer_name: reportDetails?.computer_name || "Unknown",
-          mac_address: reportDetails?.mac_address || "",
-          manufacturer: reportDetails?.manufacturer || "",
-          Eraser_Start_Time: reportDetails?.Eraser_Start_Time || reportDetails?.eraser_start_time || "",
-          Eraser_End_Time: reportDetails?.Eraser_End_Time || reportDetails?.eraser_end_time || "",
-          eraser_method: reportDetails?.eraser_method || "Secure Erase",
-          validation_method: reportDetails?.validation_method || "",
-          Erasure_Type: reportDetails?.Erasure_Type || reportDetails?.erasure_type || "Full Disk",
-          total_files: reportDetails?.total_files || 0,
-          erased_files: reportDetails?.erased_files || 0,
-          failed_files: reportDetails?.failed_files || 0,
-          erasure_log: reportDetails?.erasure_log || []
-        },
-        // User-provided branding/signature fields from form
-        reportTitle: pdfFormData.reportTitle,
-        headerText: pdfFormData.headerText,
-        headerLeftLogo: pdfFormData.headerLeftLogo,
-        headerRightLogo: pdfFormData.headerRightLogo,
-        watermarkImage: pdfFormData.watermarkImage,
-        technicianName: pdfFormData.technicianName,
-        technicianDept: pdfFormData.technicianDept,
-        validatorName: pdfFormData.validatorName,
-        validatorDept: pdfFormData.validatorDept,
-        technicianSignature: pdfFormData.technicianSignature,
-        validatorSignature: pdfFormData.validatorSignature
-      };
+  //     // Build complete payload with form data and report_details_json
+  //     const pdfPayload = {
+  //       reportData: {
+  //         // Required fields from report_details_json
+  //         report_id: reportDetails?.report_id?.toString() || rawReport.report_id || "",
+  //         datetime: reportDetails?.datetime || new Date().toISOString(),
+  //         software_name: reportDetails?.software_name || "D-SecureErase",
+  //         product_version: reportDetails?.product_version || "1.0",
+  //         digital_signature: reportDetails?.digital_signature || "",
+  //         status: reportDetails?.status || "Completed",
+  //         process_mode: reportDetails?.process_mode || "Standard",
+  //         os: reportDetails?.os || "",
+  //         os_version: reportDetails?.os_version || "",
+  //         computer_name: reportDetails?.computer_name || "Unknown",
+  //         mac_address: reportDetails?.mac_address || "",
+  //         manufacturer: reportDetails?.manufacturer || "",
+  //         Eraser_Start_Time: reportDetails?.Eraser_Start_Time || reportDetails?.eraser_start_time || "",
+  //         Eraser_End_Time: reportDetails?.Eraser_End_Time || reportDetails?.eraser_end_time || "",
+  //         eraser_method: reportDetails?.eraser_method || "Secure Erase",
+  //         validation_method: reportDetails?.validation_method || "",
+  //         Erasure_Type: reportDetails?.Erasure_Type || reportDetails?.erasure_type || "Full Disk",
+  //         total_files: reportDetails?.total_files || 0,
+  //         erased_files: reportDetails?.erased_files || 0,
+  //         failed_files: reportDetails?.failed_files || 0,
+  //         erasure_log: reportDetails?.erasure_log || []
+  //       },
+  //       // User-provided branding/signature fields from form
+  //       reportTitle: pdfFormData.reportTitle,
+  //       headerText: pdfFormData.headerText,
+  //       headerLeftLogo: pdfFormData.headerLeftLogo,
+  //       headerRightLogo: pdfFormData.headerRightLogo,
+  //       watermarkImage: pdfFormData.watermarkImage,
+  //       technicianName: pdfFormData.technicianName,
+  //       technicianDept: pdfFormData.technicianDept,
+  //       validatorName: pdfFormData.validatorName,
+  //       validatorDept: pdfFormData.validatorDept,
+  //       technicianSignature: pdfFormData.technicianSignature,
+  //       validatorSignature: pdfFormData.validatorSignature
+  //     };
 
-      console.log("📤 Sending Generate PDF payload:", JSON.stringify(pdfPayload, null, 2));
+  //     console.log("📤 Sending Generate PDF payload:", JSON.stringify(pdfPayload, null, 2));
 
-      // Create FormData for multipart/form-data request
-      const formData = new FormData();
+  //     // Create FormData for multipart/form-data request
+  //     const formData = new FormData();
       
-      // Add all payload fields as JSON string or individual fields
-      formData.append('reportData', JSON.stringify(pdfPayload.reportData));
-      formData.append('reportTitle', pdfPayload.reportTitle);
-      formData.append('headerText', pdfPayload.headerText);
-      formData.append('technicianName', pdfPayload.technicianName);
-      formData.append('technicianDept', pdfPayload.technicianDept);
-      formData.append('validatorName', pdfPayload.validatorName);
-      formData.append('validatorDept', pdfPayload.validatorDept);
+  //     // Add all payload fields as JSON string or individual fields
+  //     formData.append('reportData', JSON.stringify(pdfPayload.reportData));
+  //     formData.append('reportTitle', pdfPayload.reportTitle);
+  //     formData.append('headerText', pdfPayload.headerText);
+  //     formData.append('technicianName', pdfPayload.technicianName);
+  //     formData.append('technicianDept', pdfPayload.technicianDept);
+  //     formData.append('validatorName', pdfPayload.validatorName);
+  //     formData.append('validatorDept', pdfPayload.validatorDept);
       
-      // Add image fields (URLs or base64)
-      if (pdfFormData.headerLeftLogo) formData.append('headerLeftLogo', pdfFormData.headerLeftLogo);
-      if (pdfFormData.headerRightLogo) formData.append('headerRightLogo', pdfFormData.headerRightLogo);
-      if (pdfFormData.watermarkImage) formData.append('watermarkImage', pdfFormData.watermarkImage);
-      if (pdfFormData.technicianSignature) formData.append('technicianSignature', pdfFormData.technicianSignature);
-      if (pdfFormData.validatorSignature) formData.append('validatorSignature', pdfFormData.validatorSignature);
+  //     // Add image fields (URLs or base64)
+  //     if (pdfFormData.headerLeftLogo) formData.append('headerLeftLogo', pdfFormData.headerLeftLogo);
+  //     if (pdfFormData.headerRightLogo) formData.append('headerRightLogo', pdfFormData.headerRightLogo);
+  //     if (pdfFormData.watermarkImage) formData.append('watermarkImage', pdfFormData.watermarkImage);
+  //     if (pdfFormData.technicianSignature) formData.append('technicianSignature', pdfFormData.technicianSignature);
+  //     if (pdfFormData.validatorSignature) formData.append('validatorSignature', pdfFormData.validatorSignature);
 
-      // Call the PDF export API with POST method
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL ||
-          "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf-with-files`,
-        {
-          method: "POST",
-          headers: {
-            // Don't set Content-Type for FormData - browser will set it automatically with boundary
-            Authorization: `Bearer ${authService.getAccessToken()}`,
-          },
-          body: formData,
-        }
-      );
+  //     // Call the PDF export API with POST method
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_BASE_URL ||
+  //         "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf-with-files`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           // Don't set Content-Type for FormData - browser will set it automatically with boundary
+  //           Authorization: `Bearer ${authService.getAccessToken()}`,
+  //         },
+  //         body: formData,
+  //       }
+  //     );
 
-      console.log("📥 Response status:", response.status);
+  //     console.log("📥 Response status:", response.status);
 
-      if (!response.ok) {
-        let errorMessage = `HTTP error! status: ${response.status}`;
-        try {
-          const errorData = await response.json();
-          console.error("❌ Backend error response:", errorData);
-          errorMessage = errorData.message || errorData.error || errorMessage;
-        } catch (e) {
-          console.error("❌ Could not parse error response");
-        }
-        throw new Error(errorMessage);
-      }
+  //     if (!response.ok) {
+  //       let errorMessage = `HTTP error! status: ${response.status}`;
+  //       try {
+  //         const errorData = await response.json();
+  //         console.error("❌ Backend error response:", errorData);
+  //         errorMessage = errorData.message || errorData.error || errorMessage;
+  //       } catch (e) {
+  //         console.error("❌ Could not parse error response");
+  //       }
+  //       throw new Error(errorMessage);
+  //     }
 
-      // Get the PDF blob
-      const blob = await response.blob();
-      console.log("✅ PDF blob received, size:", blob.size);
+  //     // Get the PDF blob
+  //     const blob = await response.blob();
+  //     console.log("✅ PDF blob received, size:", blob.size);
 
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `custom-audit-report-${selectedReport.id}-${selectedReport.date}.pdf`;
-      document.body.appendChild(a);
-      a.click();
+  //     // Create download link
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = `custom-audit-report-${selectedReport.id}-${selectedReport.date}.pdf`;
+  //     document.body.appendChild(a);
+  //     a.click();
 
-      // Cleanup
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+  //     // Cleanup
+  //     window.URL.revokeObjectURL(url);
+  //     document.body.removeChild(a);
 
-      showSuccess(`Custom PDF for report ${selectedReport.id} generated successfully`);
-      closeGenerateModal();
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      showError(
-        "Generate Failed",
-        `Failed to generate PDF. ${
-          error instanceof Error ? error.message : "Please try again."
-        }`
-      );
-    }
-  };
+  //     showSuccess(`Custom PDF for report ${selectedReport.id} generated successfully`);
+  //     closeGenerateModal();
+  //   } catch (error) {
+  //     console.error("Error generating PDF:", error);
+  //     showError(
+  //       "Generate Failed",
+  //       `Failed to generate PDF. ${
+  //         error instanceof Error ? error.message : "Please try again."
+  //       }`
+  //     );
+  //   }
+  // };
 
   return (
     <>
@@ -1138,7 +1138,7 @@ export default function AdminReports() {
                       </td>
                       <td className="py-2">
                         <div className="flex items-center gap-1">
-                          {/* <button
+                          <button
                             onClick={() => handleDownloadReport(row)}
                             className={`text-xs px-3 py-1.5 rounded border font-medium transition-colors ${
                               row.status === "completed"
@@ -1165,9 +1165,9 @@ export default function AdminReports() {
                                 d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                               />
                             </svg>
-                            Download
-                          </button> */}
-                          <button
+                            Save
+                          </button>
+                          {/* <button
                             onClick={() => handleGeneratePDF(row)}
                             className={`text-xs px-3 py-1.5 rounded border font-medium transition-colors ${
                               row.status === "completed"
@@ -1195,7 +1195,7 @@ export default function AdminReports() {
                               />
                             </svg>
                             Generate
-                          </button>
+                          </button> */}
                         </div>
                       </td>
                     </tr>
@@ -1238,14 +1238,14 @@ export default function AdminReports() {
               <h2 className="text-xl font-bold text-slate-900">
                 Generate Custom PDF - Report {selectedReport.id}
               </h2>
-              <button
+              {/* <button
                 onClick={closeGenerateModal}
                 className="text-slate-400 hover:text-slate-600 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
-              </button>
+              </button> */}
             </div>
 
             <div className="p-6 space-y-4">
@@ -1551,18 +1551,18 @@ export default function AdminReports() {
 
             {/* Modal Footer */}
             <div className="sticky bottom-0 bg-slate-50 border-t px-6 py-4 flex items-center justify-end gap-3">
-              <button
+              {/* <button
                 onClick={closeGenerateModal}
                 className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-100 transition-colors"
               >
                 Cancel
-              </button>
-              <button
+              </button> */}
+              {/* <button
                 onClick={handleSubmitGeneratePDF}
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
               >
                 Generate PDF
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
