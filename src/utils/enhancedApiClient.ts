@@ -300,7 +300,7 @@ class EnhancedApiClient {
           ...(options.headers || {}),
         },
         mode: 'cors',
-        credentials: 'omit',
+        credentials: 'include', // Changed from 'omit' to 'include' for better CORS handling
       }
 
       if (DEBUG_MODE) {
@@ -414,10 +414,10 @@ class EnhancedApiClient {
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
           errorMessage = 'Request timeout. Please check your connection and try again.'
-        } else if (error.message.includes('Failed to fetch')) {
-          errorMessage = 'Unable to connect to server. Please check if the backend is running and your internet connection.'
+        } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          errorMessage = 'Unable to connect to server. Please check your internet connection. If the problem persists, the backend server at ' + API_BASE_URL + ' may be down or unreachable.'
         } else if (error.message.includes('CORS')) {
-          errorMessage = 'CORS error. Please check server configuration.'
+          errorMessage = 'CORS error. The backend server needs to allow requests from ' + window.location.origin
         } else if (error.message.includes('certificate') || error.message.includes('SSL')) {
           errorMessage = 'SSL certificate error. Please check server configuration.'
         } else {
