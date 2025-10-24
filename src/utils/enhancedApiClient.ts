@@ -1,3 +1,5 @@
+// import { User } from './authService';
+// import { Subuser } from './enhancedApiClient';
 // Enhanced API Client with JWT Integration
 import axios, { AxiosResponse } from 'axios'
 import { authService } from './authService.js'
@@ -26,20 +28,53 @@ export interface ApiResponse<T> {
 }
 
 export interface User {
-  id: string
-  email: string
-  name: string
+  user_id: string
+  user_email: string
+  user_name: string
   role: 'admin' | 'user' | 'manager'
-  status: 'active' | 'inactive' | 'pending' | 'suspended'
-  department: string
+  status?: 'active' | 'inactive' | 'pending' | 'suspended' // Made optional
+  department?: string // Made optional
   lastLogin?: string
-  createdAt: string
-  updatedAt: string
+  createdAt?: string // Made optional (set by backend)
+  updatedAt?: string // Made optional (set by backend)
   payment_details_json?: string
   license_details_json?: string
   phone_number?: string
   is_private_cloud?: boolean
   private_api?: boolean
+  currentPassword?: string // For password change
+  newPassword?: string // For password change
+  user_role?:string
+  last_login?:string
+ user_group?:string 
+ licesne_allocation?:string
+}
+
+export interface Subuser {
+  id: string
+  user_email: string
+  subuser_email: string
+  subuser_name?: string
+  superuser_email: string
+  created_at?: string
+  status?: string
+  licenseUsage?: number // Calculated from machines with demo_usage_count > 0
+  subuser_role?: string
+  subuser_phone?: string
+  subuser_password?: string
+  // Fields from /api/Users/{email}
+  defaultRole?: string
+  role?: string
+  department?: string
+  last_login?: string
+  user_group?: string
+  license_allocation?: string
+}
+
+export interface EnhancedSubuser extends Subuser {
+  defaultRole?: string // Role fetched from /api/EnhancedSubuser/{email}
+  role?: string // Alias for defaultRole
+  department?: string // Department field from EnhancedSubuser API
 }
 
 export interface LoginRequest {
@@ -65,13 +100,34 @@ export interface AuthResponse {
 }
 
 export interface Machine {
-  id: string
-  hostname: string
-  eraseOption: string
-  license: string
-  status: string
+  // Database fields
+  machine_id?: string
+  fingerprint_hash?: string
+  mac_address?: string
+  physical_drive_id?: string
+  cpu_id?: string
+  bios_serial?: string
+  os_version?: string
+  user_email?: string
+  subuser_email?: string
+  license_activated?: boolean
+  license_activation_date?: string
+  license_days_valid?: number
+  license_details_json?: string
+  demo_usage_count?: number
+  created_at?: string
+  updated_at?: string
+  vm_status?: string
+  
+  // UI fields (for backward compatibility)
+  id?: string
+  hostname?: string
+  eraseOption?: string
+  license?: string
+  status?: string
   lastSeen?: string
   department?: string
+  email?: string
 }
 
 export interface Report {
@@ -82,6 +138,56 @@ export interface Report {
   department: string
   generatedBy?: string
   filePath?: string
+  report_id?:string
+  computer_name?:string
+  datetime?:string
+}
+
+export interface AuditReport {
+  id: string
+  reportId: string
+  user_email: string
+  reportDate: string
+  reportType: string
+  status: string
+  deviceCount?: number
+  generatedBy?: string
+  filePath?: string
+  // New fields from API
+  report_id?: string
+  report_name?: string
+  erasure_method?: string
+  report_datetime?: string
+}
+
+// System Logs interface
+export interface SystemLog {
+  log_id: number
+  user_email: string
+  log_level: string
+  log_message: string
+  log_details_json?: string
+  created_at: string
+}
+
+// Commands interface
+export interface Command {
+  command_id: number
+  command_text: string
+  issued_at: string
+  command_json?: string
+  command_status: string
+}
+
+// Sessions interface
+export interface Session {
+  session_id: number
+  user_email: string
+  login_time: string
+  logout_time?: string
+  ip_address: string
+  device_info?: string
+  session_status: string
 }
 
 // Request retry configuration
@@ -230,7 +336,36 @@ class EnhancedApiClient {
         }
       }
 
-      const data = await response.json()
+      // Handle empty responses (like 204 No Content)
+      let data: any = null
+      const contentLength = response.headers.get('content-length')
+      const contentType = response.headers.get('content-type')
+      
+      // Only try to parse JSON if there's content and it's JSON
+      if (response.status !== 204 && contentLength !== '0' && contentType?.includes('application/json')) {
+        try {
+          data = await response.json()
+        } catch (jsonError) {
+          // If JSON parsing fails but response is ok, treat as success with null data
+          if (response.ok) {
+            return {
+              success: true,
+              data: { message: 'Operation completed successfully' } as T
+            }
+          }
+          // If not ok, return error
+          return {
+            success: false,
+            error: 'Failed to parse response',
+          }
+        }
+      } else if (response.ok) {
+        // No content but successful - return success
+        return {
+          success: true,
+          data: { message: 'Operation completed successfully' } as T
+        }
+      }
       
       if (!response.ok) {
         // Handle different error types
@@ -617,10 +752,33 @@ class EnhancedApiClient {
     return this.request<User>(`/api/Users/${id}`)
   }
 
+  async getUserByEmail(email: string): Promise<ApiResponse<User>> {
+    return this.request<User>(`/api/Users/${encodeURIComponent(email)}`)
+  }
+
   async updateUser(id: string, userData: Partial<User>): Promise<ApiResponse<User>> {
     return this.request<User>(`/api/Users/${id}`, {
       method: 'PUT',
       body: JSON.stringify(userData),
+    })
+  }
+
+  // Profile update endpoint - uses DynamicUser/profile
+  async updateUserProfile(userData: { userName: string; phoneNumber: string }): Promise<ApiResponse<User>> {
+    console.log('🌐 Calling PUT /api/DynamicUser/profile with:', userData)
+    const response = await this.request<User>(`/api/DynamicUser/profile`, {
+      method: 'PUT',
+      body: JSON.stringify(userData),
+    })
+    console.log('🌐 Response from /api/DynamicUser/profile:', response)
+    return response
+  }
+
+  // Change password endpoint - PATCH /api/EnhancedUsers/{email}/change-password
+  async changePassword(email: string, currentPassword: string, newPassword: string): Promise<ApiResponse<{ message: string }>> {
+    return this.request<{ message: string }>(`/api/EnhancedUsers/${encodeURIComponent(email)}/change-password`, {
+      method: 'PATCH',
+      body: JSON.stringify({ currentPassword, newPassword }),
     })
   }
 
@@ -630,6 +788,37 @@ class EnhancedApiClient {
     })
   }
 
+  // Subuser endpoints
+  async getSubusers(): Promise<ApiResponse<Subuser[]>> {
+    return this.request<Subuser[]>('/api/Subuser')
+  }
+  async getSubusersBySuperuser(superuserEmail: string): Promise<ApiResponse<Subuser[]>> {
+    return this.request<Subuser[]>(`/api/Subuser/by-superuser/${encodeURIComponent(superuserEmail)}`)
+  }
+
+  async getEnhancedSubuser(email: string): Promise<ApiResponse<EnhancedSubuser>> {
+    return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeURIComponent(email)}`)
+  }
+
+  async getEnhancedSubusersByParent(parentEmail: string): Promise<ApiResponse<EnhancedSubuser[]>> {
+    return this.request<EnhancedSubuser[]>(`/api/EnhancedSubusers/by-parent/${encodeURIComponent(parentEmail)}`)
+  }
+
+async createSubuser(subuserData: {
+  subuser_username: string
+  subuser_email: string
+  role: string
+  department?: string
+  subuser_password: string
+  phone: string
+  subuser_group?: string
+  superuser_email: string
+}): Promise<ApiResponse<Subuser>> {
+  return this.request<Subuser>('/api/EnhancedSubuser', {
+    method: 'POST',
+    body: JSON.stringify(subuserData)
+  });
+}
   async getMachines(): Promise<ApiResponse<Machine[]>> {
     return this.request<Machine[]>('/api/Machines')
   }
@@ -638,12 +827,47 @@ class EnhancedApiClient {
     return this.request<Machine>(`/api/Machines/${id}`)
   }
 
+  async getMachinesByEmail(email: string): Promise<ApiResponse<Machine[]>> {
+    return this.request<Machine[]>(`/api/Machines/by-email/${encodeURIComponent(email)}`)
+  }
+
   async getReports(): Promise<ApiResponse<Report[]>> {
     return this.request<Report[]>('/api/Reports')
   }
 
   async getReportById(id: string): Promise<ApiResponse<Report>> {
     return this.request<Report>(`/api/Reports/${id}`)
+  }
+
+  async getAuditReportsByEmail(email: string): Promise<ApiResponse<AuditReport[]>> {
+    return this.request<AuditReport[]>(`/api/AuditReports/by-email/${encodeURIComponent(email)}`)
+  }
+  async getAuditReports(): Promise<ApiResponse<AuditReport[]>> {
+    return this.request<AuditReport[]>(`/api/AuditReports`)
+  }
+
+  // System Logs API methods
+  async getSystemLogsByEmail(email: string): Promise<ApiResponse<SystemLog[]>> {
+    return this.request<SystemLog[]>(`/api/Logs/by-email/${encodeURIComponent(email)}`)
+  }
+  async getSystemLogs(): Promise<ApiResponse<SystemLog[]>> {
+    return this.request<SystemLog[]>(`/api/Logs`)
+  }
+
+  // Commands API methods
+  async getCommandsByEmail(email: string): Promise<ApiResponse<Command[]>> {
+    return this.request<Command[]>(`/api/Commands/by-email/${encodeURIComponent(email)}`)
+  }
+  async getCommands(): Promise<ApiResponse<Command[]>> {
+    return this.request<Command[]>(`/api/Commands`)
+  }
+
+  // Sessions API methods
+  async getSessionsByEmail(email: string): Promise<ApiResponse<Session[]>> {
+    return this.request<Session[]>(`/api/Sessions/by-email/${encodeURIComponent(email)}`)
+  }
+  async getSessions(): Promise<ApiResponse<Session[]>> {
+    return this.request<Session[]>(`/api/Sessions`)
   }
 
   // Utility methods

@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AdminDashboardAPI, type ProfileData } from '@/services/adminDashboardAPI'
+import { getPrimaryRole } from '@/utils/roleHelper'
 
 export default function AdminProfileEdit() {
   const { user } = useAuth()
@@ -39,11 +40,14 @@ export default function AdminProfileEdit() {
   
   const storedUserData = getUserDataFromStorage();
   
+  // Get primary role using helper (supports roles array)
+  const primaryRole = getPrimaryRole(storedUserData) || user?.role || 'user';
+  
   const [profileData, setProfileData] = useState<ProfileData>({
     name: storedUserData?.user_name || user?.name || '',
     email: storedUserData?.user_email || user?.email || '',
     timezone: storedUserData?.timezone || 'Asia/Kolkata',
-    role: storedUserData?.user_type || storedUserData?.role || user?.role || 'user',
+    role: primaryRole,
     phone: storedUserData?.phone_number || '',
     department: storedUserData?.department || ''
   })
@@ -62,12 +66,13 @@ export default function AdminProfileEdit() {
       } else {
         // If API fails, use data from localStorage or JWT token
         const storedData = getUserDataFromStorage();
+        const fallbackRole = getPrimaryRole(storedData) || user?.role || 'user';
         showInfo('Loading from session', 'Using your login information')
         setProfileData({
           name: storedData?.user_name || user?.name || '',
           email: storedData?.user_email || user?.email || '',
           timezone: storedData?.timezone || 'Asia/Kolkata',
-          role: storedData?.user_type || user?.role || 'user',
+          role: fallbackRole,
           phone: storedData?.phone_number || '',
           department: storedData?.department || ''
         })
@@ -76,12 +81,13 @@ export default function AdminProfileEdit() {
       console.error('Profile data loading error:', error)
       // Fallback to localStorage or JWT token data on error
       const storedData = getUserDataFromStorage();
+      const fallbackRole = getPrimaryRole(storedData) || user?.role || 'user';
       showInfo('Loading from session', 'Using your login information')
       setProfileData({
         name: storedData?.user_name || user?.name || '',
         email: storedData?.user_email || user?.email || '',
         timezone: storedData?.timezone || 'Asia/Kolkata',
-        role: storedData?.user_type || user?.role || 'user',
+        role: fallbackRole,
         phone: storedData?.phone_number || '',
         department: storedData?.department || ''
       })

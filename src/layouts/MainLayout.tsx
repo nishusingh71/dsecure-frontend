@@ -12,6 +12,7 @@ export default function MainLayout() {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [authKey, setAuthKey] = useState(0); // Force re-render on auth state change
 
   const toggleMobileMenu = useCallback(() => {
     setOpen((v) => !v);
@@ -28,6 +29,17 @@ export default function MainLayout() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Listen for auth state changes to force header re-render
+  useEffect(() => {
+    const handleAuthStateChange = () => {
+      setAuthKey((prev) => prev + 1);
+      console.log('🔄 Header updated - Auth state changed');
+    };
+
+    window.addEventListener('authStateChanged', handleAuthStateChange);
+    return () => window.removeEventListener('authStateChanged', handleAuthStateChange);
   }, []);
 
   return (

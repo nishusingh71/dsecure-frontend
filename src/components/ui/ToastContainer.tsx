@@ -47,37 +47,35 @@ const ToastContainer: React.FC = () => {
   }
 
   return (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+    <div className="fixed bottom-4 right-4 z-50 space-y-2 max-w-xs">
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`max-w-sm w-full shadow-lg rounded-lg border animate-slide-in-right ${getToastStyles(toast.type)}`}
+          className={`w-full shadow-md rounded-lg border transition-all duration-300 ease-in-out ${getToastStyles(toast.type)}`}
         >
-          <div className="p-4">
-            <div className="flex items-start">
+          <div className="p-3">
+            <div className="flex items-center gap-3">
               <div className="flex-shrink-0">
                 {getToastIcon(toast.type)}
               </div>
-              <div className="ml-3 w-0 flex-1">
-                <p className="text-sm font-medium text-slate-900">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-900 truncate">
                   {toast.title}
                 </p>
                 {toast.message && (
-                  <p className="mt-1 text-sm text-slate-600">
+                  <p className="mt-0.5 text-xs text-slate-600 line-clamp-2">
                     {toast.message}
                   </p>
                 )}
               </div>
-              <div className="ml-4 flex-shrink-0 flex">
-                <button
-                  className="inline-flex text-slate-400 hover:text-slate-600 focus:outline-none focus:text-slate-600"
-                  onClick={() => removeToast(toast.id)}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
+              <button
+                className="flex-shrink-0 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors"
+                onClick={() => removeToast(toast.id)}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>

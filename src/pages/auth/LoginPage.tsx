@@ -125,9 +125,6 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      console.log('🚀 Starting login process...');
-      console.log('📧 Email:', email);
-      
       // Make API call to .NET backend
       const response = await axios.post(
          'https://api.dsecuretech.com/api/RoleBasedAuth/login',
@@ -143,8 +140,6 @@ export default function LoginPage() {
         }
       );
 
-      console.log('✅ API Response received:', response.data);
-
       const data = response.data;
 
       // ✅ Validate token presence
@@ -152,181 +147,95 @@ export default function LoginPage() {
         throw new Error("No JWT token received from server");
       }
 
-      // 🔍 Debug: Check what's in the JWT token
-      console.log('🔍 JWT Token Claims:', data);
-      console.log('🔍 User role from response:', data.role);
-      console.log('🔍 User roles array from response:', data.roles);
-      // if (!authToken) {
-      //   throw new Error('No authentication token received from server');
-      // }
-
-      // if (!user) {
-      //   throw new Error('No user data received from server');
-      // }
-
-      // console.log('� JWT Token received:', authToken.substring(0, 50) + '...');
-      // console.log('� User data:', user);
-
-      // Extract user information with defaults for optional/missing fields
-      // Backend should return: { token, role, user: { id, email, name, role, ... } }
-      const userRole = data.role || data.user?.role || 'user'; // Get role from response
+      // Extract user information with role handling
+      let userRole: string;
+      let userRoles: string[];
+      
+      if (data.roles && Array.isArray(data.roles) && data.roles.length > 0) {
+        userRoles = data.roles.map((r: string) => r.toLowerCase());
+        userRole = userRoles[0];
+      } else {
+        userRole = (data.role || data.user?.role || 'user').toLowerCase();
+        userRoles = [userRole];
+      }
       
       const user = {
         user_email: data.email || data.user?.email || email,
         user_name: data.name || data.user?.name || 'User',
         user_id: data.id || data.user?.id || 0,
-        user_type: data.userType || userRole,
-        role: userRole, // IMPORTANT: This is what authService checks
-        roles: data.roles || [userRole],
+        user_type: (data.userType || userRole).toLowerCase(),
+        role: userRole,
+        roles: userRoles,
         permissions: data.permissions || [],
         expiresAt: data.expiresAt,
-        is_private_cloud: data.is_private_cloud || false,           // from backend
-        private_api: data.private_api || "",                        // from backend
-        payment_details_json: data.payment_details_json || {},      // from backend
-        license_details_json: data.license_details_json || {},      // from backend
-        phone_number: data.phone_number || data.phoneNumber || "",  // from backend
-        department: data.department || "",                           // from backend
-        timezone: data.timezone || "Asia/Kolkata"                    // from backend
+        is_private_cloud: data.is_private_cloud || false,
+        private_api: data.private_api || "",
+        payment_details_json: data.payment_details_json || {},
+        license_details_json: data.license_details_json || {},
+        phone_number: data.phone_number || data.phoneNumber || "",
+        department: data.department || "",
+        timezone: data.timezone || "Asia/Kolkata"
       };
 
-      console.log('📝 Processed user data with defaults:', user);
-      console.log('👤 User role:', userRole);
-
-      // 💾 Save JWT token using authService (CRITICAL for AuthContext to work!)
-      // This ensures ProtectedRoute and all auth components recognize the login
+      // 💾 Save JWT token using authService
       authService.saveTokens(data.token, undefined, rememberMe);
       
-      // 🔍 Verify what's in the saved token
-      const decodedUser = authService.getUserFromToken();
-      console.log('🔍 Decoded user from JWT:', decodedUser);
-      console.log('🔍 User role in JWT:', decodedUser?.role);
-      
-      // 📞 Fetch complete user data from backend using email
-      try {
-        console.log('📞 Fetching complete user data from backend...');
-        const userDataResponse = await axios.get(
-          `https://api.dsecuretech.com/api/Users/${user.user_email}`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${data.token}`
-            }
-          }
-        );
-        
-        if (userDataResponse.data) {
-          console.log('✅ Complete user data received from backend:', userDataResponse.data);
-          
-          // Merge backend data with login response
-          const completeUserData = {
-            ...user,
-            user_name: userDataResponse.data.user_name || user.user_name,
-            phone_number: userDataResponse.data.phone_number || user.phone_number,
-            department: userDataResponse.data.department || user.department,
-            timezone: userDataResponse.data.timezone || user.timezone,
-            is_private_cloud: userDataResponse.data.is_private_cloud || user.is_private_cloud,
-            private_api: userDataResponse.data.private_api || user.private_api,
-            payment_details_json: userDataResponse.data.payment_details_json || user.payment_details_json,
-            license_details_json: userDataResponse.data.license_details_json || user.license_details_json
-          };
-          
-          // Update user object with complete data
-          Object.assign(user, completeUserData);
-          console.log('✅ User data merged with backend data:', user);
-        }
-      } catch (userFetchError) {
-        console.warn('⚠️ Could not fetch complete user data from backend, using login data:', userFetchError);
-        // Continue with login response data if backend fetch fails
-      }
-      
-      // Also save user data for compatibility
+      // Save user data for compatibility (use login response directly - no extra API call needed)
       localStorage.setItem('user_data', JSON.stringify(user));
       localStorage.setItem('authUser', JSON.stringify(user));
 
-      // 🔐 Set default axios authorization header for future API requests
+      // 🔐 Set default axios authorization header
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 
-      console.log('✅ Token saved via authService');
-      console.log('💾 Authentication data saved to localStorage');
-      console.log('🔐 Authorization header set for future requests');
-
-      // ✅ Show success toast notification
-      showToast("Login successful! Redirecting to admin dashboard...", "success");
+      // ✅ Show success toast
+      showToast("Login successful! Redirecting...", "success");
 
       // 🎯 Everyone redirects to admin dashboard
-      let redirectPath = '/admin'; // All users redirect to admin dashboard
+      let redirectPath = '/admin';
 
-      // Check for any stored redirect paths (if user was redirected to login)
+      // Check for any stored redirect paths
       const storedRedirectPath = 
         sessionStorage.getItem("redirectAfterLogin") ||
         localStorage.getItem("returnPath") ||
         (location.state as any)?.from?.pathname;
 
-      // Clean up stored redirect paths
-      sessionStorage.removeItem("redirectAfterLogin");
-      localStorage.removeItem("returnPath");
-
-      // Use stored path if it exists and is valid, otherwise use default
       if (storedRedirectPath && storedRedirectPath !== "/login") {
         redirectPath = storedRedirectPath;
       }
 
-      console.log('🎯 Final redirect path:', redirectPath);
+      // Clean up stored redirect paths
+      sessionStorage.removeItem("redirectAfterLogin");
+      localStorage.removeItem("returnPath");
 
-      // 📢 Dispatch custom event to notify app components of authentication state change
-      // This triggers AuthContext and ProtectedRoute to re-check auth status
+      // 📢 Dispatch auth state change event
       window.dispatchEvent(new CustomEvent('authStateChanged', { 
-        detail: { 
-          user,
-          token: data.token,
-          authenticated: true
-        } 
+        detail: { user, token: data.token, authenticated: true } 
       }));
 
-      console.log('📢 Auth state change event dispatched');
-
-      // 🚀 Navigate to dashboard immediately
-      // Small delay removed to ensure faster redirect
-      console.log('🚀 Navigating to:', redirectPath);
+      // 🚀 Navigate immediately
       navigate(redirectPath, { replace: true });
 
     } catch (err: any) {
-      console.error('❌ Login error:', err);
-      
       let errorMessage = 'Login failed. Please try again.';
       
-      // 🔍 Handle different types of errors
       if (err.response) {
-        // ❌ Server responded with an error status
         const status = err.response.status;
         const serverMessage = err.response.data?.message || err.response.data?.error;
         
-        console.error('📛 Server error status:', status);
-        console.error('📛 Server error message:', serverMessage);
-        
         if (status === 401) {
-          // Unauthorized - invalid credentials
           errorMessage = serverMessage || 'Invalid email or password. Please check your credentials.';
         } else if (status === 404) {
-          // User not found
           errorMessage = 'User not found. Please register first.';
         } else if (status === 403) {
-          // Forbidden - account suspended/inactive
           errorMessage = 'Access denied. Your account may be suspended or inactive.';
         } else if (status >= 500) {
-          // Server error
           errorMessage = 'Server error. Please try again later.';
         } else {
-          // Other errors
           errorMessage = serverMessage || `Login failed (Error ${status})`;
         }
       } else if (err.request) {
-        // ❌ Request was made but no response received (network error)
-        console.error('📛 No response from server');
         errorMessage = 'Unable to connect to server. Please check your internet connection.';
       } else {
-        // ❌ Something else went wrong during request setup
-        console.error('📛 Request setup error:', err.message);
         errorMessage = err.message || 'An unexpected error occurred.';
       }
       
@@ -335,7 +244,6 @@ export default function LoginPage() {
       showToast(errorMessage, "error");
       
     } finally {
-      // Always stop loading state
       setLoading(false);
     }
   };
@@ -420,7 +328,7 @@ export default function LoginPage() {
               Welcome Back
             </h1>
             <p className="mt-3 text-sm text-slate-600">
-              Sign in to access your secure dashboard
+              Login in to access your secure dashboard
             </p>
           </div>
 
@@ -609,7 +517,7 @@ export default function LoginPage() {
                   />
                 </svg>
               )}
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? "Logging in..." : "Login"}
             </button>
 
             <div className="relative my-8">

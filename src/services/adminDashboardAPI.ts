@@ -1,6 +1,8 @@
 // API Service for Admin Dashboard
 // This file contains all API endpoints and data fetching logic for the admin dashboard
 
+import { Subuser } from "@/utils/enhancedApiClient"
+
 interface ApiResponse<T> {
   success: boolean
   data: T
@@ -101,7 +103,7 @@ interface PerformanceMetrics {
   }
 }
 
-interface AdminReport {
+export interface AdminReport {
   id: string
   date: string
   devices: number
@@ -113,10 +115,12 @@ interface User {
   id: string
   email: string
   role: string
-  status: string
-  department: string
+  status?: string // Made optional for new user creation
+  department?: string // Made optional for new user creation
   lastLogin?: string // Making it optional for new user creation
   name: string
+  password?: string // For user creation
+  phone?: string // For user creation
 }
 
 interface Report {
@@ -660,8 +664,8 @@ export class AdminDashboardAPI {
     return apiCall<User[]>('/admin/subusers')
   }
 
-  static async createUser(userData: Omit<User, 'id'>): Promise<ApiResponse<User>> {
-    return apiCall<User>('/admin/subusers', {
+  static async createUser(userData: Omit<User, 'id'>): Promise<ApiResponse<Subuser>> {
+    return apiCall<Subuser>('/api/subuser', {
       method: 'POST',
       body: JSON.stringify(userData)
     })
@@ -749,7 +753,7 @@ export type {
   LogEntry,
   Machine,
   PerformanceMetrics,
-  AdminReport,
+  
   User,
   Report,
   ApiResponse

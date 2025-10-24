@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Reports API Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .result.success {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            color: #166534;
+        }
+        
+        .result.error {
+            background: #fef2f2;
+            border: 2px solid #fca5a5;
+            color: #991b1b;
+        }
+        
+        .result.info {
+            background: #eff6ff;
+            border: 2px solid #93c5fd;
+            color: #1e40af;
+        }
+        
+        .result h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        pre {
+            background: rgba(0,0,0,0.05);
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .instructions {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+        
+        .instructions h3 {
+            color: #92400e;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .instructions ol {
+            color: #78350f;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Admin Reports API Test</h1>
+        <p class="subtitle">Test your API connection and authentication</p>
+        
+        <div class="instructions">
+            <h3>📋 How to use:</h3>
+            <ol>
+                <li>Enter your JWT token from localStorage</li>
+                <li>Enter your email address</li>
+                <li>Click "Test API Connection"</li>
+                <li>Check the results below</li>
+            </ol>
+        </div>
+        
+        <div class="input-group">
+            <label for="token">JWT Token:</label>
+            <input type="password" id="token" placeholder="Paste your JWT token here (from localStorage)">
+        </div>
+        
+        <div class="input-group">
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" placeholder="admin@example.com">
+        </div>
+        
+        <button class="btn btn-primary" onclick="testAPI()">
+            🚀 Test API Connection
+        </button>
+        
+        <button class="btn btn-secondary" onclick="getTokenFromConsole()">
+            🔑 How to Get Token
+        </button>
+        
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Testing API connection...</p>
+        </div>
+        
+        <div id="result" class="result"></div>
+    </div>
+    
+    <script>
+        // Base API URL
+        const API_BASE = 'https://api.dsecuretech.com';
+        
+        function getTokenFromConsole() {
+            const instructions = `
+To get your JWT token:
+
+1. Open your Admin Dashboard
+2. Press F12 (or Ctrl+Shift+I) to open DevTools
+3. Go to Console tab
+4. Type this command:
+   localStorage.getItem('token')
+5. Copy the token (without quotes)
+6. Paste it in the "JWT Token" field above
+
+Note: Token looks like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+            `.trim();
+            
+            alert(instructions);
+        }
+        
+        async function testAPI() {
+            const token = document.getElementById('token').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const resultDiv = document.getElementById('result');
+            const loading = document.querySelector('.loading');
+            
+            // Validate inputs
+            if (!token) {
+                showResult('error', 'Missing Token', 'Please enter your JWT token.');
+                return;
+            }
+            
+            if (!email) {
+                showResult('error', 'Missing Email', 'Please enter your email address.');
+                return;
+            }
+            
+            // Show loading
+            resultDiv.style.display = 'none';
+            loading.classList.add('active');
+            
+            const results = {
+                health: null,
+                auditReports: null,
+                machines: null
+            };
+            
+            try {
+                // Test 1: Health Check
+                console.log('🏥 Testing API health...');
+                try {
+                    const healthRes = await fetch(`${API_BASE}/api/health`, {
+                        method: 'GET'
+                    });
+                    results.health = {
+                        status: healthRes.status,
+                        ok: healthRes.ok
+                    };
+                    console.log('✅ Health check:', results.health);
+                } catch (error) {
+                    results.health = {
+                        error: error.message
+                    };
+                    console.error('❌ Health check failed:', error);
+                }
+                
+                // Test 2: Audit Reports
+                console.log('📋 Testing Audit Reports API...');
+                try {
+                    const reportsRes = await fetch(`${API_BASE}/api/AuditReports/by-email/${encodeURIComponent(email)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    results.auditReports = {
+                        status: reportsRes.status,
+                        statusText: reportsRes.statusText,
+                        ok: reportsRes.ok
+                    };
+                    
+                    if (reportsRes.ok) {
+                        const data = await reportsRes.json();
+                        results.auditReports.data = data;
+                        results.auditReports.count = data?.data?.length || 0;
+                    } else {
+                        const errorText = await reportsRes.text();
+                        results.auditReports.error = errorText;
+                    }
+                    
+                    console.log('✅ Audit reports:', results.auditReports);
+                } catch (error) {
+                    results.auditReports = {
+                        error: error.message
+                    };
+                    console.error('❌ Audit reports failed:', error);
+                }
+                
+                // Test 3: Machines
+                console.log('🖥️ Testing Machines API...');
+                try {
+                    const machinesRes = await fetch(`${API_BASE}/api/Machines/by-email/${encodeURIComponent(email)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    results.machines = {
+                        status: machinesRes.status,
+                        statusText: machinesRes.statusText,
+                        ok: machinesRes.ok
+                    };
+                    
+                    if (machinesRes.ok) {
+                        const data = await machinesRes.json();
+                        results.machines.data = data;
+                        results.machines.count = data?.data?.length || 0;
+                    } else {
+                        const errorText = await machinesRes.text();
+                        results.machines.error = errorText;
+                    }
+                    
+                    console.log('✅ Machines:', results.machines);
+                } catch (error) {
+                    results.machines = {
+                        error: error.message
+                    };
+                    console.error('❌ Machines failed:', error);
+                }
+                
+                // Show results
+                displayResults(results);
+                
+            } catch (error) {
+                console.error('❌ Unexpected error:', error);
+                showResult('error', 'Unexpected Error', error.message);
+            } finally {
+                loading.classList.remove('active');
+            }
+        }
+        
+        function displayResults(results) {
+            const resultDiv = document.getElementById('result');
+            
+            // Determine overall status
+            const allOk = results.health?.ok && results.auditReports?.ok && results.machines?.ok;
+            const type = allOk ? 'success' : (results.health?.ok ? 'error' : 'error');
+            
+            let html = '';
+            
+            // Health Check
+            if (results.health) {
+                const healthIcon = results.health.ok ? '✅' : '❌';
+                html += `<h3>${healthIcon} API Health Check</h3>`;
+                if (results.health.ok) {
+                    html += `<p>Status: <strong>${results.health.status} OK</strong></p>`;
+                } else {
+                    html += `<p>Error: <strong>${results.health.error || 'API not responding'}</strong></p>`;
+                }
+            }
+            
+            html += '<hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">';
+            
+            // Audit Reports
+            if (results.auditReports) {
+                const reportsIcon = results.auditReports.ok ? '✅' : '❌';
+                html += `<h3>${reportsIcon} Audit Reports API</h3>`;
+                if (results.auditReports.ok) {
+                    html += `<p>Status: <strong>${results.auditReports.status} ${results.auditReports.statusText}</strong></p>`;
+                    html += `<p>Reports Found: <strong>${results.auditReports.count}</strong></p>`;
+                    if (results.auditReports.count > 0) {
+                        html += `<pre>${JSON.stringify(results.auditReports.data, null, 2)}</pre>`;
+                    } else {
+                        html += `<p style="margin-top: 10px; color: #f59e0b;">ℹ️ No reports found for this user (this is not an error)</p>`;
+                    }
+                } else {
+                    html += `<p>Status: <strong>${results.auditReports.status} ${results.auditReports.statusText}</strong></p>`;
+                    html += `<p>Error: <strong>${results.auditReports.error || 'Failed to fetch'}</strong></p>`;
+                    
+                    // Specific error guidance
+                    if (results.auditReports.status === 401) {
+                        html += `<p style="margin-top: 10px; color: #dc2626;">🔒 <strong>Authentication Failed:</strong> Your token is invalid or expired. Please login again.</p>`;
+                    } else if (results.auditReports.status === 404) {
+                        html += `<p style="margin-top: 10px; color: #dc2626;">🔍 <strong>Not Found:</strong> Email not found in database or API endpoint doesn't exist.</p>`;
+                    } else if (results.auditReports.status === 500) {
+                        html += `<p style="margin-top: 10px; color: #dc2626;">⚠️ <strong>Server Error:</strong> Backend API is experiencing issues. Contact backend team.</p>`;
+                    }
+                }
+            }
+            
+            html += '<hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">';
+            
+            // Machines
+            if (results.machines) {
+                const machinesIcon = results.machines.ok ? '✅' : '❌';
+                html += `<h3>${machinesIcon} Machines/Devices API</h3>`;
+                if (results.machines.ok) {
+                    html += `<p>Status: <strong>${results.machines.status} ${results.machines.statusText}</strong></p>`;
+                    html += `<p>Devices Found: <strong>${results.machines.count}</strong></p>`;
+                    if (results.machines.count > 0) {
+                        html += `<pre>${JSON.stringify(results.machines.data, null, 2)}</pre>`;
+                    } else {
+                        html += `<p style="margin-top: 10px; color: #f59e0b;">ℹ️ No devices found for this user</p>`;
+                    }
+                } else {
+                    html += `<p>Status: <strong>${results.machines.status} ${results.machines.statusText}</strong></p>`;
+                    html += `<p>Error: <strong>${results.machines.error || 'Failed to fetch'}</strong></p>`;
+                }
+            }
+            
+            // Overall recommendation
+            html += '<hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">';
+            if (allOk) {
+                html += `<h3>🎉 Success!</h3>`;
+                html += `<p><strong>All APIs are working correctly.</strong></p>`;
+                html += `<p>Your Admin Reports page should now display data properly.</p>`;
+            } else if (!results.health?.ok) {
+                html += `<h3>⚠️ API Server Issue</h3>`;
+                html += `<p><strong>The API server is not responding.</strong></p>`;
+                html += `<p>Possible causes:</p>`;
+                html += `<ul style="padding-left: 20px; margin-top: 10px;">`;
+                html += `<li>API server is down</li>`;
+                html += `<li>Network connectivity issue</li>`;
+                html += `<li>Firewall blocking requests</li>`;
+                html += `<li>Wrong API URL</li>`;
+                html += `</ul>`;
+            } else {
+                html += `<h3>⚠️ Authentication or Data Issue</h3>`;
+                html += `<p><strong>API is reachable but requests are failing.</strong></p>`;
+                html += `<p>Check the specific error messages above for guidance.</p>`;
+            }
+            
+            resultDiv.innerHTML = html;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+        
+        function showResult(type, title, message) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h3>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'} ${title}</h3>
+                <p>${message}</p>
+            `;
+            resultDiv.className = `result ${type}`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

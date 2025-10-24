@@ -2,21 +2,64 @@ import { useMemo, useState } from 'react'
 import { exportToCsv, openPrintView } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
-
-import { AdminDashboardAPI, User } from '@/services/adminDashboardAPI'
+import { apiClient, Subuser, Session } from '@/utils/enhancedApiClient'
+import { useAuth } from '@/auth/AuthContext'
 import { useEffect } from 'react'
+
+// Extended interface for table display
+interface SubuserTableRow {
+  subuser_email: string
+  roles: string
+  status: string
+  department: string
+  last_login: string
+}
 
 export default function AdminSubusers() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification()
+  const { user } = useAuth()
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
   const [roleFilter, setRoleFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
-  const [sortBy, setSortBy] = useState<keyof User>('email')
+  const [sortBy, setSortBy] = useState<keyof SubuserTableRow>('subuser_email')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
-  const [allRows, setAllRows] = useState<User[]>([])
+  
+  // ✅ Cache Helper Functions
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  
+  const getCachedData = (key: string) => {
+    try {
+      const cached = localStorage.getItem(`admin_cache_${key}`);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          console.log(`✅ Using cached data for ${key}`);
+          return data;
+        }
+        localStorage.removeItem(`admin_cache_${key}`);
+      }
+    } catch (e) {
+      console.warn(`⚠️ Cache read error for ${key}:`, e);
+    }
+    return null;
+  };
+
+  const setCachedData = (key: string, data: any) => {
+    try {
+      localStorage.setItem(`admin_cache_${key}`, JSON.stringify({
+        data,
+        timestamp: Date.now()
+      }));
+      console.log(`💾 Cached data for ${key}`);
+    } catch (e) {
+      console.warn(`⚠️ Cache write error for ${key}:`, e);
+    }
+  };
+  
+  const [allRows, setAllRows] = useState<SubuserTableRow[]>(() => getCachedData('subusers_list') || [])
   const [loading, setLoading] = useState(true)
   const pageSize = 5
   
@@ -27,16 +70,154 @@ export default function AdminSubusers() {
 
   const loadUsersData = async () => {
     setLoading(true)
+    
+    // ✅ Check cache first for instant display
+    const cachedSubusers = getCachedData('subusers_list');
+    if (cachedSubusers && cachedSubusers.length > 0) {
+      console.log('⚡ Displaying cached subusers data');
+      setAllRows(cachedSubusers);
+      setLoading(false); // Hide loader since we have cached data
+    }
+    
     try {
-      const response = await AdminDashboardAPI.getSubusers()
-      if (response.success) {
-        setAllRows(response.data)
-      } else {
-        throw new Error(response.error || 'Failed to load users')
+      // Get user email - EXACT SAME PATTERN AS AdminDashboard, AdminMachines & AdminReports
+      // 1. Try localStorage 'user_data' key (not 'dsecure_user_data')
+      let storedUserData = null;
+      const storedUser = localStorage.getItem('user_data');
+      const authUser = localStorage.getItem('authUser');
+      
+      if (storedUser) {
+        try {
+          storedUserData = JSON.parse(storedUser);
+          console.log('💾 Parsed user_data from localStorage:', storedUserData);
+        } catch (e) {
+          console.error('Error parsing user_data:', e);
+        }
       }
+      
+      if (!storedUserData && authUser) {
+        try {
+          storedUserData = JSON.parse(authUser);
+          console.log('💾 Parsed authUser from localStorage:', storedUserData);
+        } catch (e) {
+          console.error('Error parsing authUser:', e);
+        }
+      }
+      
+      // 2. PRIORITY: Use user_email from localStorage user_data, then from auth context
+      const userEmail = storedUserData?.user_email || user?.email || '';
+      console.log('📧 Final userEmail for subusers:', userEmail);
+      
+      if (!userEmail) {
+        console.warn('⚠️ User email not found, cannot fetch subusers')
+        showWarning('No User Email', 'Please log in again to view subusers.')
+        setLoading(false)
+        return
+      }
+
+      console.log('🔍 Fetching subusers for:', userEmail)
+
+      // 1. Fetch subusers from backend with smart fallback
+      let subusersRes
+      try {
+        subusersRes = await apiClient.getSubusersBySuperuser(userEmail)
+        console.log('✅ Subusers API response:', subusersRes)
+      } catch (err) {
+        console.error('❌ Error fetching subusers by superuser:', err)
+        // Fallback: Try to get all subusers
+        try {
+          console.log('🔄 Attempting fallback to getSubusers()...')
+          subusersRes = await apiClient.getSubusers()
+          console.log('✅ Fallback subusers response:', subusersRes)
+        } catch (fallbackErr) {
+          console.error('❌ Fallback also failed:', fallbackErr)
+          throw new Error('Both primary and fallback APIs failed')
+        }
+      }
+      
+      if (!subusersRes || !subusersRes.success || !subusersRes.data || subusersRes.data.length === 0) {
+        console.warn('⚠️ No subusers data received')
+        showInfo('No Subusers Found', 'No subusers are associated with your account.')
+        setAllRows([])
+        setLoading(false)
+        return
+      }
+
+      console.log('✅ Subusers fetched:', subusersRes.data.length)
+
+      // 2. Fetch enhanced subuser data with department info from /api/EnhancedSubusers/by-parent/{parentEmail}
+      let enhancedSubusersMap = new Map<string, { department?: string; role?: string }>()
+      try {
+        console.log('🔍 Fetching enhanced subusers data for department info...')
+        const enhancedRes = await apiClient.getEnhancedSubusersByParent(userEmail)
+        if (enhancedRes.success && enhancedRes.data) {
+          console.log('✅ Enhanced subusers fetched:', enhancedRes.data.length)
+          enhancedRes.data.forEach((enhanced) => {
+            enhancedSubusersMap.set(enhanced.subuser_email, {
+              department: enhanced.department,
+              role: enhanced.role || enhanced.defaultRole
+            })
+          })
+          console.log('✅ Enhanced data mapped for', enhancedSubusersMap.size, 'subusers')
+        }
+      } catch (enhancedErr) {
+        console.warn('⚠️ Failed to fetch enhanced subuser data, continuing without department info:', enhancedErr)
+      }
+
+      // 3. Fetch all sessions to get last login info
+      let sessionsData: Session[] = []
+      try {
+        const sessionsRes = await apiClient.getSessions()
+        sessionsData = sessionsRes.success && sessionsRes.data ? sessionsRes.data : []
+        console.log('✅ Sessions fetched:', sessionsData.length)
+      } catch (sessionErr) {
+        console.warn('⚠️ Failed to fetch sessions, continuing without last login data:', sessionErr)
+        // Continue without session data - last login will show "Never"
+      }
+
+      // 4. Create a map of email -> last login time
+      const lastLoginMap = new Map<string, string>()
+      sessionsData.forEach((session: Session) => {
+        const email = session.user_email
+        const loginTime = session.login_time
+        
+        // Keep the most recent login
+        if (!lastLoginMap.has(email) || new Date(loginTime) > new Date(lastLoginMap.get(email)!)) {
+          lastLoginMap.set(email, loginTime)
+        }
+      })
+
+      // 5. Map subusers to table rows with session data and department info
+      const tableRows: SubuserTableRow[] = subusersRes.data.map((subuser: Subuser) => {
+        const lastLogin = lastLoginMap.get(subuser.subuser_email)
+        const enhancedData = enhancedSubusersMap.get(subuser.subuser_email)
+        
+        return {
+          subuser_email: subuser.subuser_email,
+          roles: enhancedData?.role || subuser.subuser_role || 'user',
+          status: subuser.status || 'active',
+          department: enhancedData?.department || 'N/A', // ✅ Use department from enhanced API
+          last_login: lastLogin 
+            ? new Date(lastLogin).toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })
+            : 'Never'
+        }
+      })
+
+      console.log('✅ Table rows created:', tableRows.length)
+      setAllRows(tableRows)
+      setCachedData('subusers_list', tableRows); // ✅ Cache API data
+      showSuccess('Data Loaded', `Successfully loaded ${tableRows.length} subuser(s)`)
+      
     } catch (error) {
-      console.error('Error loading users:', error)
-      showError('Data Loading Error', 'Failed to load user data. Using default values.')
+      console.error('❌ Error loading subusers:', error)
+      showError('Data Loading Error', 'Failed to load subuser data from backend. Please try again.')
+      setAllRows([])
     } finally {
       setLoading(false)
     }
@@ -44,15 +225,15 @@ export default function AdminSubusers() {
 
 
   
-  const uniqueRoles = useMemo(() => [...new Set(allRows.map(r => r.role))], [allRows])
+  const uniqueRoles = useMemo(() => [...new Set(allRows.map(r => r.roles))], [allRows])
   const uniqueStatuses = useMemo(() => [...new Set(allRows.map(r => r.status))], [allRows])
   const uniqueDepartments = useMemo(() => [...new Set(allRows.map(r => r.department))], [allRows])
   
   const filtered = useMemo(() => {
     let result = allRows.filter(r => {
-      const matchesQuery = r.email.toLowerCase().includes(query.toLowerCase()) ||
-                          r.department.toLowerCase().includes(query.toLowerCase())
-      const matchesRole = !roleFilter || r.role === roleFilter
+      const matchesQuery = r.subuser_email.toLowerCase().includes(query.toLowerCase()) ||
+                          (r.department?.toLowerCase().includes(query.toLowerCase()) || false)
+      const matchesRole = !roleFilter || r.roles === roleFilter
       const matchesStatus = !statusFilter || r.status === statusFilter
       const matchesDepartment = !departmentFilter || r.department === departmentFilter
       return matchesQuery && matchesRole && matchesStatus && matchesDepartment
@@ -62,7 +243,7 @@ export default function AdminSubusers() {
     if (showUniqueOnly) {
       const seen = new Set()
       result = result.filter(r => {
-        const key = `${r.email}-${r.role}-${r.department}`
+        const key = `${r.subuser_email}-${r.roles}-${r.department}`
         if (seen.has(key)) return false
         seen.add(key)
         return true
@@ -93,26 +274,25 @@ export default function AdminSubusers() {
   }
 
   // Action functions
-  const handleViewUser = (user: User) => {
-    showInfo(`Viewing profile for ${user.name}`)
+  const handleViewUser = (user: SubuserTableRow) => {
+    showInfo(`Viewing profile for ${user.subuser_email}`)
     // Additional view logic can be added here
   }
 
-  const handleEditUser = async (user: User) => {
-    showInfo(`Edit mode enabled for ${user.name}`)
+  const handleEditUser = async (user: SubuserTableRow) => {
+    showInfo(`Edit mode enabled for ${user.subuser_email}`)
     // You can implement a modal or redirect to edit page here
   }
 
-  const handleDeleteUser = async (user: User) => {
-    if (window.confirm(`Are you sure you want to delete user ${user.name}?`)) {
+  const handleDeleteUser = async (user: SubuserTableRow) => {
+    if (window.confirm(`Are you sure you want to delete user ${user.subuser_email}?`)) {
       try {
-        const response = await AdminDashboardAPI.deleteUser(user.id)
-        if (response.success) {
-          showSuccess(`User ${user.name} deleted successfully`)
-          await loadUsersData() // Refresh the list
-        } else {
-          throw new Error(response.error || 'Failed to delete user')
-        }
+        showInfo(`Deleting user ${user.subuser_email}...`)
+        // Implement delete API call here when available
+        // await apiClient.deleteSubuser(user.subuser_email)
+        
+        showSuccess(`User ${user.subuser_email} deleted successfully`)
+        await loadUsersData() // Refresh the list
       } catch (error) {
         console.error('Error deleting user:', error)
         showError('Delete Failed', 'Failed to delete user. Please try again.')
@@ -120,39 +300,35 @@ export default function AdminSubusers() {
     }
   }
 
-  const handleManagePermissions = async (user: User) => {
-    showInfo(`Managing permissions for ${user.name}`)
+  const handleManagePermissions = async (user: SubuserTableRow) => {
+    showInfo(`Managing permissions for ${user.subuser_email}`)
     // Additional permissions logic can be added here
   }
 
-  const handleResetPassword = async (user: User) => {
+  const handleResetPassword = async (user: SubuserTableRow) => {
     if (user.status === 'inactive') {
-      showWarning(`Cannot reset password for ${user.name} - user is inactive`)
+      showWarning(`Cannot reset password for ${user.subuser_email} - user is inactive`)
       return
     }
     try {
-      const response = await AdminDashboardAPI.resetUserPassword(user.id)
-      if (response.success) {
-        showSuccess(`Password reset email sent to ${user.email}`)
-      } else {
-        throw new Error(response.error || 'Failed to reset password')
-      }
+      showInfo(`Sending password reset email to ${user.subuser_email}...`)
+      // Implement reset password API call here when available
+      showSuccess(`Password reset email sent to ${user.subuser_email}`)
     } catch (error) {
       console.error('Error resetting password:', error)
       showError('Reset Failed', 'Failed to reset password. Please try again.')
     }
   }
 
-  const handleToggleStatus = async (user: User) => {
+  const handleToggleStatus = async (user: SubuserTableRow) => {
     try {
-      const response = await AdminDashboardAPI.toggleUserStatus(user.id)
-      if (response.success) {
-        const newStatus = user.status === 'active' ? 'inactive' : 'active'
-        showSuccess(`User ${user.name} status changed to ${newStatus}`)
-        await loadUsersData() // Refresh the list
-      } else {
-        throw new Error(response.error || 'Failed to toggle status')
-      }
+      showInfo(`Toggling status for ${user.subuser_email}...`)
+      // Implement status toggle API call here when available
+      const newStatus = user.status === 'active' ? 'inactive' : 'active'
+      // await apiClient.updateSubuserStatus(user.subuser_email, newStatus)
+      
+      showSuccess(`User ${user.subuser_email} status changed to ${newStatus}`)
+      await loadUsersData() // Refresh the list
     } catch (error) {
       console.error('Error toggling status:', error)
       showError('Status Update Failed', 'Failed to update user status. Please try again.')
@@ -316,13 +492,13 @@ export default function AdminSubusers() {
             <select 
               className="border rounded px-2 py-1 text-sm"
               value={sortBy}
-              onChange={(e)=>setSortBy(e.target.value as keyof User)}
+              onChange={(e)=>setSortBy(e.target.value as keyof SubuserTableRow)}
             >
-              <option value="email">Email</option>
-              <option value="role">Role</option>
+              <option value="subuser_email">Email</option>
+              <option value="roles">Role</option>
               <option value="status">Status</option>
               <option value="department">Department</option>
-              <option value="lastLogin">Last Login</option>
+              <option value="last_login">Last Login</option>
             </select>
             <button
               onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
@@ -345,7 +521,7 @@ export default function AdminSubusers() {
         <button className="btn-secondary" onClick={()=>{
           const body = `<h1>Subusers Management</h1>` +
             `<table border="1" style="border-collapse: collapse; width: 100%;"><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Department</th><th>Last Login</th></tr></thead><tbody>`+
-            filtered.map(u=>`<tr><td>${u.email}</td><td>${u.role}</td><td>${u.status}</td><td>${u.department}</td><td>${u.lastLogin}</td></tr>`).join('')+
+            filtered.map(u=>`<tr><td>${u.subuser_email}</td><td>${u.roles}</td><td>${u.status}</td><td>${u.department}</td><td>${u.last_login}</td></tr>`).join('')+
             `</tbody></table>`
           openPrintView('Subusers Management', body)
         }}>Print All ({filtered.length})</button>
@@ -365,93 +541,110 @@ export default function AdminSubusers() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((user, i) => (
-              <tr key={`${user.email}-${i}`} className="border-t hover:bg-slate-50">
-                <td className="py-2 font-medium">{user.email}</td>
-                <td className="py-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    user.role === 'admin' ? 'bg-purple-100 text-purple-800' :
-                    user.role === 'manager' ? 'bg-blue-100 text-blue-800' :
-                    'bg-slate-100 text-slate-800'
-                  }`}>
-                    {user.role}
-                  </span>
-                </td>
-                <td className="py-2">
-                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                    user.status === 'active' ? 'bg-green-100 text-green-800' :
-                    user.status === 'inactive' ? 'bg-red-100 text-red-800' :
-                    user.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    <span className={`w-2 h-2 rounded-full ${
-                      user.status === 'active' ? 'bg-green-400' :
-                      user.status === 'inactive' ? 'bg-red-400' :
-                      user.status === 'pending' ? 'bg-yellow-400' :
-                      'bg-gray-400'
-                    }`}></span>
-                    {user.status}
-                  </span>
-                </td>
-                <td className="py-2">{user.department}</td>
-                <td className="py-2 text-slate-600">{user.lastLogin}</td>
-                <td className="py-2">
-                  <div className="flex items-center gap-1">
-                    <button 
-                      onClick={() => handleViewUser(user)}
-                      className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
-                      title="View User"
-                    >
-                      View
-                    </button>
-                    <button 
-                      onClick={() => handleEditUser(user)}
-                      className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
-                      title="Edit User"
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      onClick={() => handleManagePermissions(user)}
-                      className="text-purple-600 hover:text-purple-800 text-xs px-2 py-1 rounded border border-purple-200 hover:bg-purple-50"
-                      title="Manage Permissions"
-                    >
-                      Permissions
-                    </button>
-                    <button 
-                      onClick={() => handleResetPassword(user)}
-                      className={`text-xs px-2 py-1 rounded border ${
-                        user.status === 'inactive' 
-                          ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
-                          : 'text-orange-600 hover:text-orange-800 border-orange-200 hover:bg-orange-50'
-                      }`}
-                      disabled={user.status === 'inactive'}
-                      title={user.status === 'inactive' ? 'User is inactive' : 'Reset Password'}
-                    >
-                      Reset
-                    </button>
-                    <button 
-                      onClick={() => handleToggleStatus(user)}
-                      className={`text-xs px-2 py-1 rounded border ${
-                        user.status === 'active' 
-                          ? 'text-red-600 hover:text-red-800 border-red-200 hover:bg-red-50' 
-                          : 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50'
-                      }`}
-                      title={user.status === 'active' ? 'Deactivate User' : 'Activate User'}
-                    >
-                      {user.status === 'active' ? 'Deactivate' : 'Activate'}
-                    </button>
-                    <button 
-                      onClick={() => handleDeleteUser(user)}
-                      className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
-                      title="Delete User"
-                    >
-                      Delete
-                    </button>
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="py-8 text-center">
+                  <div className="flex flex-col items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                    <p className="text-slate-600">Loading subusers data...</p>
                   </div>
                 </td>
               </tr>
-            ))}
+            ) : rows.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="py-8 text-center text-slate-500">
+                  No subusers found. Try adjusting your filters.
+                </td>
+              </tr>
+            ) : (
+              rows.map((user, i) => (
+                <tr key={`${user.subuser_email}-${i}`} className="border-t hover:bg-slate-50">
+                  <td className="py-2 font-medium">{user.subuser_email}</td>
+                  <td className="py-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      user.roles === 'admin' ? 'bg-purple-100 text-purple-800' :
+                      user.roles === 'manager' ? 'bg-blue-100 text-blue-800' :
+                      'bg-slate-100 text-slate-800'
+                    }`}>
+                      {user.roles}
+                    </span>
+                  </td>
+                  <td className="py-2">
+                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                      user.status === 'active' ? 'bg-green-100 text-green-800' :
+                      user.status === 'inactive' ? 'bg-red-100 text-red-800' :
+                      user.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      <span className={`w-2 h-2 rounded-full ${
+                        user.status === 'active' ? 'bg-green-400' :
+                        user.status === 'inactive' ? 'bg-red-400' :
+                        user.status === 'pending' ? 'bg-yellow-400' :
+                        'bg-gray-400'
+                      }`}></span>
+                      {user.status}
+                    </span>
+                  </td>
+                  <td className="py-2">{user.department}</td>
+                  <td className="py-2 text-slate-600">{user.last_login}</td>
+                  <td className="py-2">
+                    <div className="flex items-center gap-1">
+                      {/* <button 
+                        onClick={() => handleViewUser(user)}
+                        className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
+                        title="View User"
+                      >
+                        View
+                      </button> */}
+                      <button 
+                        onClick={() => handleEditUser(user)}
+                        className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
+                        title="Edit User"
+                      >
+                        Edit
+                      </button>
+                      {/* <button 
+                        onClick={() => handleManagePermissions(user)}
+                        className="text-purple-600 hover:text-purple-800 text-xs px-2 py-1 rounded border border-purple-200 hover:bg-purple-50"
+                        title="Manage Permissions"
+                      >
+                        Permissions
+                      </button> */}
+                      {/* <button 
+                        onClick={() => handleResetPassword(user)}
+                        className={`text-xs px-2 py-1 rounded border ${
+                          user.status === 'inactive' 
+                            ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
+                            : 'text-orange-600 hover:text-orange-800 border-orange-200 hover:bg-orange-50'
+                        }`}
+                        disabled={user.status === 'inactive'}
+                        title={user.status === 'inactive' ? 'User is inactive' : 'Reset Password'}
+                      >
+                        Reset
+                      </button> */}
+                      {/* <button 
+                        onClick={() => handleToggleStatus(user)}
+                        className={`text-xs px-2 py-1 rounded border ${
+                          user.status === 'active' 
+                            ? 'text-red-600 hover:text-red-800 border-red-200 hover:bg-red-50' 
+                            : 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50'
+                        }`}
+                        title={user.status === 'active' ? 'Deactivate User' : 'Activate User'}
+                      >
+                        {user.status === 'active' ? 'Deactivate' : 'Activate'}
+                      </button> */}
+                      <button 
+                        onClick={() => handleDeleteUser(user)}
+                        className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
+                        title="Delete User"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
         

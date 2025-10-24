@@ -1,6 +1,6 @@
 // Role-Based Access Control (RBAC) System for Admin Dashboard
 
-export type UserRole = 'superadmin' | 'admin' | 'manager' | 'user';
+export type UserRole = 'superadmin' | 'administrator' | 'admin' | 'manager' | 'user';
 
 export interface RolePermissions {
   // Dashboard Access
@@ -54,7 +54,8 @@ export interface RolePermissions {
 
 // Role hierarchy for filtering users/data
 export const ROLE_HIERARCHY: Record<UserRole, number> = {
-  superadmin: 4,
+  superadmin: 5,
+  administrator: 4,
   admin: 3,
   manager: 2,
   user: 1
@@ -96,8 +97,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canEditOthersProfile: true
   },
 
-  // Admin - Can manage everything except SuperAdmin users
-  admin: {
+  // Administrator - Full access to all functionality (same as admin)
+  administrator: {
     canViewDashboard: true,
     canViewAllStats: true,
     canCreateUser: true,
@@ -105,8 +106,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canDeleteUser: true,
     canViewAllUsers: true,
     canViewSubordinateUsers: true,
-    canManageSuperAdmin: false, // ❌ Cannot manage SuperAdmin
-    canManageAdmin: false, // ❌ Cannot manage other Admins
+    canManageSuperAdmin: true,
+    canManageAdmin: true,
     canCreateGroup: true,
     canEditGroup: true,
     canDeleteGroup: true,
@@ -120,10 +121,44 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canDeleteReports: true,
     canGenerateReports: true,
     canViewSettings: true,
-    canEditSettings: false, // ❌ Cannot edit system settings
-    canViewSecuritySettings: false, // ❌ Cannot view security settings
+    canEditSettings: true,
+    canViewSecuritySettings: true,
     canViewLogs: true,
-    canClearLogs: false,
+    canClearLogs: true,
+    canViewMachines: true,
+    canManageMachines: true,
+    canEditOwnProfile: true,
+    canEditOthersProfile: true
+  },
+
+  // Admin - Full access to all functionality (Administrator level)
+  admin: {
+    canViewDashboard: true,
+    canViewAllStats: true,
+    canCreateUser: true,
+    canEditUser: true,
+    canDeleteUser: true,
+    canViewAllUsers: true,
+    canViewSubordinateUsers: true,
+    canManageSuperAdmin: true, // ✅ Can manage SuperAdmin
+    canManageAdmin: true, // ✅ Can manage other Admins
+    canCreateGroup: true,
+    canEditGroup: true,
+    canDeleteGroup: true,
+    canViewGroups: true,
+    canAssignLicenses: true,
+    canBulkAssignLicenses: true,
+    canViewLicenses: true,
+    canRevokeLicenses: true,
+    canViewReports: true,
+    canDownloadReports: true,
+    canDeleteReports: true,
+    canGenerateReports: true,
+    canViewSettings: true,
+    canEditSettings: true, // ✅ Can edit system settings
+    canViewSecuritySettings: true, // ✅ Can view security settings
+    canViewLogs: true,
+    canClearLogs: true, // ✅ Can clear logs
     canViewMachines: true,
     canManageMachines: true,
     canEditOwnProfile: true,
@@ -204,7 +239,20 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
  */
 export function getRolePermissions(role: string): RolePermissions {
   const normalizedRole = role.toLowerCase() as UserRole;
-  return ROLE_PERMISSIONS[normalizedRole] || ROLE_PERMISSIONS.user;
+  const permissions = ROLE_PERMISSIONS[normalizedRole] || ROLE_PERMISSIONS.user;
+  
+  // Debug logging
+  console.log('📋 getRolePermissions:', {
+    originalRole: role,
+    normalizedRole,
+    hasPermissions: !!ROLE_PERMISSIONS[normalizedRole],
+    usingFallback: !ROLE_PERMISSIONS[normalizedRole],
+    canViewAllUsers: permissions.canViewAllUsers,
+    canViewGroups: permissions.canViewGroups,
+    canViewSettings: permissions.canViewSettings
+  });
+  
+  return permissions;
 }
 
 /**
@@ -253,9 +301,17 @@ export function filterUsersByRole(users: any[], currentUserRole: string): any[] 
     return users;
   }
   
-  // Admin sees everyone except SuperAdmin
-  if (currentUserRole.toLowerCase() === 'admin') {
+  // Administrator sees everyone except SuperAdmin
+  if (currentUserRole.toLowerCase() === 'administrator') {
     return users.filter(user => user.role.toLowerCase() !== 'superadmin');
+  }
+  
+  // Admin sees everyone except SuperAdmin and Administrator
+  if (currentUserRole.toLowerCase() === 'admin') {
+    return users.filter(user => 
+      user.role.toLowerCase() !== 'superadmin' && 
+      user.role.toLowerCase() !== 'administrator'
+    );
   }
   
   // Manager sees only Users
@@ -284,6 +340,12 @@ export function getRoleDisplayInfo(role: string): {
       color: 'text-purple-700',
       bgColor: 'bg-purple-100',
       description: 'Full system access'
+    },
+    administrator: {
+      label: 'Administrator',
+      color: 'text-red-600',
+      bgColor: 'bg-red-50',
+      description: 'Full administrative access'
     },
     admin: {
       label: 'Admin',
@@ -319,7 +381,8 @@ export function getAssignableRoles(currentUserRole: string): Array<{
   const allRoles = [
     { value: 'user' as UserRole, label: 'User', description: 'Basic access for regular users' },
     { value: 'manager' as UserRole, label: 'Manager', description: 'Can manage users and generate reports' },
-    { value: 'admin' as UserRole, label: 'Admin', description: 'Full admin access (except SuperAdmin)' },
+    { value: 'admin' as UserRole, label: 'Admin', description: 'Full admin access' },
+    { value: 'administrator' as UserRole, label: 'Administrator', description: 'Full administrative access' },
     { value: 'superadmin' as UserRole, label: 'Super Admin', description: 'Complete system control' }
   ];
   

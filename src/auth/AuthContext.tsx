@@ -3,7 +3,7 @@ import { authService } from '../utils/authService'
 import { apiClient } from '../utils/enhancedApiClient'
 import type { User } from '../utils/enhancedApiClient'
 
-export type Role = 'user' | 'admin' | 'manager'
+export type Role = 'user' | 'admin' | 'manager' | 'administrator' | 'superadmin'
 
 export interface AuthUser {
   id: string
@@ -51,11 +51,20 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   // Safely extract user data with fallbacks
+  // Support roles array: use first role if available, otherwise fallback to single role
+  let primaryRole: Role = 'user';
+  
+  if (jwtUser?.roles && Array.isArray(jwtUser.roles) && jwtUser.roles.length > 0) {
+    primaryRole = jwtUser.roles[0] as Role;
+  } else if (jwtUser?.role) {
+    primaryRole = jwtUser.role as Role;
+  }
+  
   return {
     id: jwtUser?.sub || jwtUser?.id || 'unknown',
     email: jwtUser?.email || '',
     name: jwtUser?.name || jwtUser?.user_name || 'Unknown User',
-    role: (jwtUser?.role as Role) || 'user',
+    role: primaryRole,
     token,
     department: jwtUser?.department || '',
     payment_details_json: jwtUser?.payment_details_json || '{}',
@@ -140,12 +149,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
     }
 
+    // ✅ NEW: Handle authStateChanged event from LoginPage
+    const handleAuthStateChange = (event: Event) => {
+      try {
+        const customEvent = event as CustomEvent
+        console.log('🔔 AuthContext received authStateChanged event:', customEvent.detail);
+        
+        if (customEvent.detail?.authenticated && customEvent.detail?.token) {
+          // User just logged in - update AuthContext
+          const jwtUser = authService.getUserFromToken(customEvent.detail.token)
+          if (jwtUser) {
+            const authUser = convertJWTUserToAuthUser(jwtUser, customEvent.detail.token)
+            setUser(authUser)
+            console.log('✅ AuthContext user updated after login:', authUser);
+          }
+        } else if (customEvent.detail === null) {
+          // User just logged out
+          setUser(null)
+          console.log('✅ AuthContext user cleared after logout');
+        }
+      } catch (error) {
+        console.error('Auth state change handling failed:', error)
+      }
+    }
+
     window.addEventListener('tokenRefreshed', handleTokenRefresh)
     window.addEventListener('authenticationFailed', handleAuthFailure)
+    window.addEventListener('authStateChanged', handleAuthStateChange) // ✅ NEW!
 
     return () => {
       window.removeEventListener('tokenRefreshed', handleTokenRefresh)
       window.removeEventListener('authenticationFailed', handleAuthFailure)
+      window.removeEventListener('authStateChanged', handleAuthStateChange) // ✅ NEW!
     }
   }, [])
 
@@ -356,15 +391,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Call API logout for real users
         await apiClient.logout()
       }
+      
+      // Clear user_data from localStorage
+      localStorage.removeItem('user_data')
+      localStorage.removeItem('authUser')
+      
+      console.log('✅ Logout successful - All user data cleared')
     } catch (err) {
       console.error('Logout error:', err)
+      // Even if API fails, clear local data
+      localStorage.removeItem('user_data')
+      localStorage.removeItem('authUser')
     } finally {
       setUser(null)
       setError(null)
       setLoading(false)
       
-      // Dispatch auth state change event
+      // Dispatch auth state change event to update header immediately
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
+      
+      console.log('🔄 Auth state changed - Header should update now')
     }
   }, [])
 

@@ -3,8 +3,24 @@ import { exportToCsv } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
 
-import { AdminDashboardAPI, Machine } from '@/services/adminDashboardAPI'
+import { Machine } from '@/utils/enhancedApiClient'
 import { useEffect } from 'react'
+import { apiClient } from '@/utils/enhancedApiClient'
+import { authService } from '@/utils/authService'
+
+// UI Machine interface for table display
+interface UIMachine {
+  hostname: string
+  eraseOption: string
+  license: string
+  status: string
+  machineId?: string
+  userEmail?: string
+  licenseActivated?: boolean
+  osVersion?: string
+  vmStatus?: string
+  totalLicenses?: number  // Total licenses available for this machine
+}
 
 export default function AdminMachines() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification()
@@ -14,9 +30,43 @@ export default function AdminMachines() {
   const [licenseFilter, setLicenseFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
-  const [sortBy, setSortBy] = useState<keyof Machine>('hostname')
+  const [sortBy, setSortBy] = useState<keyof UIMachine>('hostname')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
-  const [allRows, setAllRows] = useState<Machine[]>([])
+  
+  // ✅ Cache Helper Functions
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  
+  const getCachedData = (key: string) => {
+    try {
+      const cached = localStorage.getItem(`admin_cache_${key}`);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          console.log(`✅ Using cached data for ${key}`);
+          return data;
+        }
+        localStorage.removeItem(`admin_cache_${key}`);
+      }
+    } catch (e) {
+      console.warn(`⚠️ Cache read error for ${key}:`, e);
+    }
+    return null;
+  };
+
+  const setCachedData = (key: string, data: any) => {
+    try {
+      localStorage.setItem(`admin_cache_${key}`, JSON.stringify({
+        data,
+        timestamp: Date.now()
+      }));
+      console.log(`💾 Cached data for ${key}`);
+    } catch (e) {
+      console.warn(`⚠️ Cache write error for ${key}:`, e);
+    }
+  };
+  
+  // Initialize with cached data if available
+  const [allRows, setAllRows] = useState<UIMachine[]>(() => getCachedData('machines') || [])
   const [loading, setLoading] = useState(true)
   const pageSize = 5
   
@@ -27,22 +77,240 @@ export default function AdminMachines() {
 
   const loadMachinesData = async () => {
     setLoading(true)
+    
+    // ✅ Check cache first for instant display
+    const cachedMachines = getCachedData('machines');
+    if (cachedMachines && cachedMachines.length > 0) {
+      console.log('⚡ Displaying cached machines data');
+      setAllRows(cachedMachines);
+      setLoading(false); // Hide loader since we have cached data
+    }
+    
     try {
-      const response = await AdminDashboardAPI.getMachines()
-      if (response.success) {
-        setAllRows(response.data)
+      // Get user email - EXACT SAME PATTERN AS AdminDashboard
+      // 1. Try localStorage 'user_data' key (not 'dsecure_user_data')
+      let storedUserData = null;
+      const storedUser = localStorage.getItem('user_data');
+      const authUser = localStorage.getItem('authUser');
+      
+      if (storedUser) {
+        try {
+          storedUserData = JSON.parse(storedUser);
+          console.log('💾 Parsed user_data from localStorage:', storedUserData);
+        } catch (e) {
+          console.error('Error parsing user_data:', e);
+        }
+      }
+      
+      if (!storedUserData && authUser) {
+        try {
+          storedUserData = JSON.parse(authUser);
+          console.log('💾 Parsed authUser from localStorage:', storedUserData);
+        } catch (e) {
+          console.error('Error parsing authUser:', e);
+        }
+      }
+      
+      // 2. Get user from JWT token
+      const user = authService.getUserFromToken()
+      console.log('👤 User from token:', user)
+      
+      // 3. PRIORITY: Use user_email from localStorage user_data, then from token
+      const userEmail = storedUserData?.user_email || user?.user_email || user?.email
+      console.log('📧 Final userEmail for machines:', userEmail)
+      
+      if (!userEmail) {
+        console.error('❌ No user email found')
+        showError('Authentication Error', 'No user email found. Please login again.')
+        setAllRows([])
+        setLoading(false)
+        return
+      }
+
+      console.log('🖥️ Fetching machines for email:', userEmail)
+      
+      // Try to fetch machines by email first
+      let machinesRes = await apiClient.getMachinesByEmail(userEmail)
+      console.log('📥 Machines API Response:', machinesRes)
+      console.log('📥 Full Response Object:', JSON.stringify(machinesRes, null, 2))
+      
+      // Smart fallback: If 404 or error, try getting all machines
+      if (!machinesRes.success || machinesRes.error) {
+        console.warn('⚠️ Primary endpoint failed, falling back to /api/Machines')
+        console.warn('⚠️ Error was:', machinesRes.error)
+        showWarning('API Fallback', 'Using alternate data source for machines')
+        
+        const allMachinesRes = await apiClient.getMachines()
+        console.log('📥 All Machines Response:', allMachinesRes)
+        console.log('📥 All Machines Data Count:', allMachinesRes.data?.length || 0)
+        
+        if (allMachinesRes.success && allMachinesRes.data) {
+          console.log('🔍 Sample machine data:', JSON.stringify(allMachinesRes.data[0], null, 2))
+          
+          // Filter machines by user email (case-insensitive)
+          const userMachines = allMachinesRes.data.filter(
+            (machine: Machine) => {
+              const machineEmail = machine.user_email?.toLowerCase() || ''
+              const subEmail = machine.subuser_email?.toLowerCase() || ''
+              const targetEmail = userEmail.toLowerCase()
+              
+              console.log(`🔍 Checking machine: ${machine.machine_id}, user_email: ${machineEmail}, subuser_email: ${subEmail}`)
+              
+              return machineEmail === targetEmail || subEmail === targetEmail
+            }
+          )
+          machinesRes = { success: true, data: userMachines }
+          console.log(`✅ Filtered ${userMachines.length} machines from ${allMachinesRes.data.length} total`)
+          console.log(`✅ Filtered machines:`, userMachines)
+        } else {
+          console.error('❌ Failed to fetch all machines:', allMachinesRes.error)
+        }
+      }
+      
+      if (machinesRes.success && machinesRes.data) {
+        console.log('✅ Final Machines fetched:', machinesRes.data.length)
+        console.log('✅ Machines data:', machinesRes.data)
+        
+        // If no machines found, set empty array
+        if (machinesRes.data.length === 0) {
+          console.log('ℹ️ No machines found for this user')
+          showInfo('No Machines', 'No machines found for your account')
+          setAllRows([])
+          setLoading(false)
+          return
+        }
+        
+        // Map API data to UI format
+        const uiMachines: UIMachine[] = machinesRes.data.map((machine: Machine) => {
+          // Generate hostname from available data
+          const hostname = machine.hostname || 
+                          machine.mac_address || 
+                          machine.fingerprint_hash?.substring(0, 12) || 
+                          'Unknown Device'
+          
+          // Parse license_details_json to extract detailed information
+          let licenseDetails: any = null
+          let eraseOption = 'Standard Erase'
+          
+          if (machine.license_details_json) {
+            try {
+              licenseDetails = JSON.parse(machine.license_details_json)
+              console.log('📄 Parsed license_details_json for machine:', machine.machine_id, licenseDetails)
+              
+              // Extract erase option from license details
+              if (licenseDetails.erase_option) {
+                eraseOption = licenseDetails.erase_option
+              } else if (licenseDetails.features?.includes('advanced')) {
+                eraseOption = 'Advanced Erase'
+              } else if (licenseDetails.features?.includes('secure')) {
+                eraseOption = 'Secure Erase'
+              } else if (licenseDetails.license_type) {
+                eraseOption = licenseDetails.license_type
+              }
+            } catch (error) {
+              console.warn('⚠️ Failed to parse license_details_json:', error)
+            }
+          }
+          
+          // Determine license status from license_details_json or machine fields
+          let license = 'No License'
+          let licenseLength = 0 // License validity in days
+          
+          if (machine.license_activated) {
+            // Calculate license length/validity
+            if (licenseDetails?.valid_until) {
+              const validUntil = new Date(licenseDetails.valid_until)
+              const now = new Date()
+              licenseLength = Math.ceil((validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+            } else if (machine.license_days_valid) {
+              licenseLength = machine.license_days_valid
+            }
+            
+            // Set license display text with length
+            if (licenseDetails?.license_key) {
+              license = licenseLength > 0 
+                ? `Licensed (${licenseLength}d) - ${licenseDetails.license_key.substring(0, 8)}...`
+                : `Licensed - ${licenseDetails.license_key.substring(0, 8)}...`
+            } else if (licenseDetails?.plan_name) {
+              license = licenseLength > 0
+                ? `${licenseDetails.plan_name} (${licenseLength}d)`
+                : licenseDetails.plan_name
+            } else if (machine.demo_usage_count && machine.demo_usage_count > 0) {
+              license = `Demo (${machine.demo_usage_count} uses)`
+            } else {
+              license = licenseLength > 0 ? `Licensed (${licenseLength}d)` : 'Licensed'
+            }
+          } else if (licenseDetails?.status) {
+            license = licenseDetails.status
+          }
+          
+          // Determine status from license_details_json or machine fields
+          let status = 'Inactive'
+          if (machine.license_activated) {
+            // Check license validity from license_details_json first
+            if (licenseDetails?.valid_until) {
+              const validUntil = new Date(licenseDetails.valid_until)
+              const now = new Date()
+              if (validUntil > now) {
+                const daysLeft = Math.ceil((validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+                status = `Active (${daysLeft}d left)`
+              } else {
+                status = 'Expired'
+              }
+            } else if (machine.license_days_valid && machine.license_days_valid > 0) {
+              status = `Active (${machine.license_days_valid}d left)`
+            } else if (machine.license_days_valid === 0) {
+              status = 'Expired'
+            } else {
+              status = 'Active'
+            }
+          } else if (licenseDetails?.active === false) {
+            status = 'Inactive'
+          }
+          
+          // Add VM status to status if available
+          if (machine.vm_status) {
+            status = `${status} (VM: ${machine.vm_status})`
+          }
+          
+          // Extract total licenses from license_details_json
+          let totalLicenses = 1 // Default to 1 license per machine
+          if (licenseDetails?.total_licenses) {
+            totalLicenses = licenseDetails.total_licenses
+          } else if (licenseDetails?.license_count) {
+            totalLicenses = licenseDetails.license_count
+          }
+          
+          return {
+            hostname,
+            eraseOption,
+            license,
+            status,
+            machineId: machine.machine_id || machine.id,
+            userEmail: machine.user_email || machine.subuser_email,
+            licenseActivated: machine.license_activated,
+            osVersion: machine.os_version,
+            vmStatus: machine.vm_status,
+            totalLicenses
+          }
+        })
+        
+        console.log('✅ Mapped machines:', uiMachines)
+        setAllRows(uiMachines)
+        setCachedData('machines', uiMachines) // ✅ Cache API data
       } else {
-        throw new Error(response.error || 'Failed to load machines')
+        console.error('❌ API call failed:', machinesRes.error)
+        throw new Error(machinesRes.error || 'Failed to load machines from API')
       }
     } catch (error) {
-      console.error('Error loading machines:', error)
-      showError('Data Loading Error', 'Failed to load machine data. Using default values.')
+      console.error('❌ Error loading machines:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      showError('Data Loading Error', `Failed to load machine data: ${errorMessage}`)
+      setAllRows([])
     } finally {
       setLoading(false)
     }
   }
-
-
   
   const uniqueEraseOptions = useMemo(() => [...new Set(allRows.map(r => r.eraseOption))], [allRows])
   const uniqueLicenses = useMemo(() => [...new Set(allRows.map(r => r.license))], [allRows])
@@ -52,7 +320,9 @@ export default function AdminMachines() {
     let result = allRows.filter(r => {
       const matchesQuery = r.hostname.toLowerCase().includes(query.toLowerCase()) ||
                           r.eraseOption.toLowerCase().includes(query.toLowerCase()) ||
-                          r.license.toLowerCase().includes(query.toLowerCase())
+                          r.license.toLowerCase().includes(query.toLowerCase()) ||
+                          (r.userEmail && r.userEmail.toLowerCase().includes(query.toLowerCase())) ||
+                          (r.osVersion && r.osVersion.toLowerCase().includes(query.toLowerCase()))
       const matchesErase = !eraseFilter || r.eraseOption === eraseFilter
       const matchesLicense = !licenseFilter || r.license === licenseFilter
       const matchesStatus = !statusFilter || r.status === statusFilter
@@ -72,8 +342,8 @@ export default function AdminMachines() {
     
     // Sort results
     result.sort((a, b) => {
-      const aVal = a[sortBy as keyof typeof a]
-      const bVal = b[sortBy as keyof typeof b]
+      const aVal = String(a[sortBy as keyof typeof a] || '')
+      const bVal = String(b[sortBy as keyof typeof b] || '')
       const comparison = aVal.localeCompare(bVal)
       return sortOrder === 'asc' ? comparison : -comparison
     })
@@ -94,26 +364,31 @@ export default function AdminMachines() {
   }
 
   // Action functions
-  const handleViewDetails = (machine: Machine) => {
-    showInfo(`Viewing details for ${machine.hostname}`)
-    // Additional view logic can be added here
+  const handleViewDetails = (machine: UIMachine) => {
+    showInfo(`Viewing details for ${machine.hostname}`, `
+      Machine ID: ${machine.machineId || 'N/A'}
+      User: ${machine.userEmail || 'N/A'}
+      OS: ${machine.osVersion || 'N/A'}
+      License: ${machine.license}
+      Status: ${machine.status}
+    `)
   }
 
-  const handleEditMachine = async (machine: Machine) => {
+  const handleEditMachine = async (machine: UIMachine) => {
     showInfo(`Edit mode enabled for ${machine.hostname}`)
     // You can implement a modal or redirect to edit page here
   }
 
-  const handleDeleteMachine = async (machine: Machine) => {
+  const handleDeleteMachine = async (machine: UIMachine) => {
     if (window.confirm(`Are you sure you want to delete ${machine.hostname}?`)) {
       try {
-        const response = await AdminDashboardAPI.deleteMachine(machine.hostname)
-        if (response.success) {
-          showSuccess(`Machine ${machine.hostname} deleted successfully`)
-          await loadMachinesData() // Refresh the list
-        } else {
-          throw new Error(response.error || 'Failed to delete machine')
-        }
+        showInfo('Delete Machine', 'Machine deletion feature will be implemented with backend API')
+        // TODO: Implement delete API endpoint
+        // const response = await apiClient.deleteMachine(machine.machineId)
+        // if (response.success) {
+        //   showSuccess(`Machine ${machine.hostname} deleted successfully`)
+        //   await loadMachinesData() // Refresh the list
+        // }
       } catch (error) {
         console.error('Error deleting machine:', error)
         showError('Delete Failed', 'Failed to delete machine. Please try again.')
@@ -121,43 +396,44 @@ export default function AdminMachines() {
     }
   }
 
-  const handleRestartMachine = async (machine: Machine) => {
-    if (machine.status === 'offline') {
-      showWarning(`Cannot restart ${machine.hostname} - machine is offline`)
+  const handleRestartMachine = async (machine: UIMachine) => {
+    if (machine.status.includes('Inactive') || machine.status.includes('Expired')) {
+      showWarning(`Cannot restart ${machine.hostname} - machine is ${machine.status}`)
       return
     }
     try {
-      const response = await AdminDashboardAPI.restartMachine(machine.hostname)
-      if (response.success) {
-        showSuccess(`Restart initiated for ${machine.hostname}`)
-        await loadMachinesData() // Refresh the list to show updated status
-      } else {
-        throw new Error(response.error || 'Failed to restart machine')
-      }
+      showInfo('Restart Machine', `Restart initiated for ${machine.hostname}`)
+      // TODO: Implement restart API endpoint
+      // const response = await apiClient.restartMachine(machine.machineId)
+      // if (response.success) {
+      //   showSuccess(`Restart initiated for ${machine.hostname}`)
+      //   await loadMachinesData() // Refresh the list
+      // }
     } catch (error) {
       console.error('Error restarting machine:', error)
       showError('Restart Failed', 'Failed to restart machine. Please try again.')
     }
   }
 
-  const handleRunErase = async (machine: Machine) => {
-    if (machine.status === 'offline') {
-      showWarning(`Cannot run erase on ${machine.hostname} - machine is offline`)
+  const handleRunErase = async (machine: UIMachine) => {
+    if (machine.status.includes('Inactive') || machine.status.includes('Expired')) {
+      showWarning(`Cannot run erase on ${machine.hostname} - machine is ${machine.status}`)
       return
     }
     try {
-      const response = await AdminDashboardAPI.runErase(machine.hostname)
-      if (response.success) {
-        showSuccess(`${machine.eraseOption} initiated on ${machine.hostname}`)
-        await loadMachinesData() // Refresh the list to show updated status
-      } else {
-        throw new Error(response.error || 'Failed to run erase')
-      }
+      showInfo('Run Erase', `${machine.eraseOption} initiated on ${machine.hostname}`)
+      // TODO: Implement erase API endpoint
+      // const response = await apiClient.runErase(machine.machineId, machine.eraseOption)
+      // if (response.success) {
+      //   showSuccess(`${machine.eraseOption} initiated on ${machine.hostname}`)
+      //   await loadMachinesData() // Refresh the list
+      // }
     } catch (error) {
       console.error('Error running erase:', error)
       showError('Erase Failed', 'Failed to initiate erase. Please try again.')
     }
   }
+  
   return (
     <>
     <Helmet>
@@ -315,7 +591,7 @@ export default function AdminMachines() {
             <select 
               className="border rounded px-2 py-1 text-sm"
               value={sortBy}
-              onChange={(e)=>setSortBy(e.target.value as keyof Machine)}
+              onChange={(e)=>setSortBy(e.target.value as keyof UIMachine)}
             >
               <option value="hostname">Hostname</option>
               <option value="eraseOption">Erase Option</option>

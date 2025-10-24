@@ -27,6 +27,7 @@ export interface JWTPayload {
 export interface User {
   id: string
   email: string
+  user_email?: string  // JWT token field (alias for email)
   username?: string
   name?: string
   role?: string
@@ -123,6 +124,10 @@ class AuthService {
     localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.USER_DATA)
     localStorage.removeItem(STORAGE_KEYS.REMEMBER_ME)
+    
+    // Also clear the actual user_data key that's being used
+    localStorage.removeItem('user_data')
+    localStorage.removeItem('authUser')
 
     // Clear the refresh timeout
     if (this.refreshTimeoutId) {
@@ -130,7 +135,7 @@ class AuthService {
       this.refreshTimeoutId = null
     }
 
-    // //console.log('All authentication data cleared')
+    console.log('✅ All authentication data cleared from storage')
   }
 
   isAuthenticated(): boolean {
@@ -177,6 +182,10 @@ class AuthService {
 
   getUserFromToken(token?: string): User | null {
     try {
+      // First, try to get user_email from stored user_data in localStorage
+      const storedUserData = this.getStoredUserData()
+      console.log('💾 Stored user_data from localStorage:', storedUserData)
+      
       const accessToken = token || this.getAccessToken()
       if (!accessToken) return null
 
@@ -188,12 +197,16 @@ class AuthService {
       // Extract username safely with fallbacks  
       const username = payload.user_name || payload.username || payload.name || 'Unknown User'
       
-      // Extract email safely with fallbacks
-      const email = payload.email || payload.user_email || 'unknown@example.com'
+      // PRIORITY: Use user_email from stored user_data, then JWT, then fallback
+      const email = storedUserData?.user_email || payload.user_email || payload.email || 'unknown@example.com'
+      
+      console.log('🔍 JWT Payload:', { user_email: payload.user_email, email: payload.email })
+      console.log('✅ Final extracted email:', email)
       
       return {
         id: String(userId),
         email: String(email),
+        user_email: String(email), // Set both email and user_email to same value
         username: String(username),
         role: payload.role || 'user',
         permissions: Array.isArray(payload.permissions) ? payload.permissions : []
