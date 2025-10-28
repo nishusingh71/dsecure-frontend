@@ -8,6 +8,7 @@ interface ReportData {
   sNo: number
   reportId: string
   reportType: string
+  department: string
   totalFiles: number
   erasedFiles: number
   failedFiles: number
@@ -23,6 +24,9 @@ export default function AdminReports() {
   const [dateTo, setDateTo] = useState('07-10-2025')
   const [reportTypeFilter, setReportTypeFilter] = useState('All')
 
+  // Get user's department from auth context (login response)
+  const userDepartment = user?.department || 'IT Administration'
+
   // Mock data similar to D-SecureErase
   const mockReports: ReportData[] = [
     {
@@ -30,6 +34,7 @@ export default function AdminReports() {
       sNo: 91,
       reportId: 'File&Folder-20250...', 
       reportType: 'File & Folder Erasure',
+      department: userDepartment,
       totalFiles: 1,
       erasedFiles: 0,
       failedFiles: 1,
@@ -40,7 +45,8 @@ export default function AdminReports() {
       id: '2',
       sNo: 92,
       reportId: 'File&Folder-20250...',
-      reportType: 'File & Folder Erasure', 
+      reportType: 'File & Folder Erasure',
+      department: userDepartment, 
       totalFiles: 1,
       erasedFiles: 0,
       failedFiles: 1,
@@ -52,6 +58,7 @@ export default function AdminReports() {
       sNo: 93,
       reportId: 'File&Folder-20250...',
       reportType: 'File & Folder Erasure',
+      department: userDepartment,
       totalFiles: 1,
       erasedFiles: 1,
       failedFiles: 0,
@@ -63,6 +70,7 @@ export default function AdminReports() {
       sNo: 94,
       reportId: 'File&Folder-20250...',
       reportType: 'File & Folder Erasure',
+      department: userDepartment,
       totalFiles: 1,
       erasedFiles: 1,
       failedFiles: 0,
@@ -74,6 +82,7 @@ export default function AdminReports() {
       sNo: 95,
       reportId: 'File&Folder-20250...',
       reportType: 'File & Folder Erasure',
+      department: userDepartment,
       totalFiles: 1,
       erasedFiles: 1,
       failedFiles: 0,
@@ -85,6 +94,7 @@ export default function AdminReports() {
       sNo: 96,
       reportId: 'File&Folder-20250...',
       reportType: 'File & Folder Erasure',
+      department: userDepartment,
       totalFiles: 46,
       erasedFiles: 46,
       failedFiles: 0,
@@ -96,6 +106,7 @@ export default function AdminReports() {
       sNo: 97,
       reportId: 'File&Folder-20250...',
       reportType: 'File & Folder Erasure',
+      department: userDepartment,
       totalFiles: 46,
       erasedFiles: 46,
       failedFiles: 0,
@@ -107,6 +118,7 @@ export default function AdminReports() {
       sNo: 98,
       reportId: 'File&Folder-20250...',
       reportType: 'File & Folder Erasure',
+      department: userDepartment,
       totalFiles: 1,
       erasedFiles: 0,
       failedFiles: 1,
@@ -247,6 +259,7 @@ export default function AdminReports() {
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">S No</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Report ID</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Report Type</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Department</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Total Files</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Erased Files</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Failed Files</th>
@@ -263,6 +276,11 @@ export default function AdminReports() {
                       {report.reportId}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-900">{report.reportType}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-700">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 text-xs font-medium">
+                        {report.department}
+                      </span>
+                    </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-900">{report.totalFiles}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-green-600">{report.erasedFiles}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-red-600">{report.failedFiles}</td>

@@ -51,25 +51,57 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   // Safely extract user data with fallbacks
-  // Support roles array: use first role if available, otherwise fallback to single role
+  // Priority: userRole (camelCase) > user_role (snake_case) > role > roles[0] > 'user'
   let primaryRole: Role = 'user';
   
-  if (jwtUser?.roles && Array.isArray(jwtUser.roles) && jwtUser.roles.length > 0) {
-    primaryRole = jwtUser.roles[0] as Role;
-  } else if (jwtUser?.role) {
-    primaryRole = jwtUser.role as Role;
+  // 1️⃣ FIRST PRIORITY: userRole field (camelCase from API response)
+  if (jwtUser?.userRole && typeof jwtUser.userRole === 'string') {
+    primaryRole = jwtUser.userRole.toLowerCase() as Role;
+    console.log('✅ Using userRole (camelCase) from API:', primaryRole);
+  } 
+  // 2️⃣ SECOND PRIORITY: user_role field (snake_case)
+  else if (jwtUser?.user_role && typeof jwtUser.user_role === 'string') {
+    primaryRole = jwtUser.user_role.toLowerCase() as Role;
+    console.log('✅ Using user_role (snake_case) from API:', primaryRole);
+  } 
+  // 3️⃣ THIRD PRIORITY: role field
+  else if (jwtUser?.role && typeof jwtUser.role === 'string') {
+    primaryRole = jwtUser.role.toLowerCase() as Role;
+    console.log('✅ Using role field:', primaryRole);
+  }
+  // 4️⃣ FOURTH PRIORITY: roles array (only if not empty)
+  else if (jwtUser?.roles && Array.isArray(jwtUser.roles) && jwtUser.roles.length > 0) {
+    primaryRole = jwtUser.roles[0].toLowerCase() as Role;
+    console.log('✅ Using roles[0]:', primaryRole);
+  }
+  // 5️⃣ FIFTH PRIORITY: userType field (from JWT token)
+  else if (jwtUser?.userType && typeof jwtUser.userType === 'string') {
+    primaryRole = jwtUser.userType.toLowerCase() as Role;
+    console.log('✅ Using userType from token:', primaryRole);
+  }
+  // 6️⃣ SIXTH PRIORITY: user_type field
+  else if (jwtUser?.user_type && typeof jwtUser.user_type === 'string') {
+    primaryRole = jwtUser.user_type.toLowerCase() as Role;
+    console.log('✅ Using user_type field:', primaryRole);
+  }
+  // 7️⃣ Default fallback
+  else {
+    console.log('⚠️ No role found, using default: user');
   }
   
+  console.log('🎯 Final role extracted:', primaryRole);
+  console.log('📦 Full API response data:', jwtUser);
+  
   return {
-    id: jwtUser?.sub || jwtUser?.id || 'unknown',
+    id: jwtUser?.userId || jwtUser?.user_id || jwtUser?.sub || jwtUser?.id || 'unknown',
     email: jwtUser?.email || '',
-    name: jwtUser?.name || jwtUser?.user_name || 'Unknown User',
+    name: jwtUser?.userName || jwtUser?.user_name || jwtUser?.name || 'Unknown User',
     role: primaryRole,
     token,
     department: jwtUser?.department || '',
     payment_details_json: jwtUser?.payment_details_json || '{}',
     license_details_json: jwtUser?.license_details_json || '{}',
-    phone_number: jwtUser?.phone_number || '',
+    phone_number: jwtUser?.phone || jwtUser?.phone_number || '',
     is_private_cloud: jwtUser?.is_private_cloud || false,
     private_api: jwtUser?.private_api || false,
   }
@@ -392,16 +424,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await apiClient.logout()
       }
       
-      // Clear user_data from localStorage
+      // ✅ Clear all user-related data from localStorage
       localStorage.removeItem('user_data')
       localStorage.removeItem('authUser')
+      localStorage.removeItem('userData')
       
-      console.log('✅ Logout successful - All user data cleared')
+      // ✅ Clear all dashboard caches to prevent showing previous user's data
+      const keysToRemove: string[] = []
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key && (key.startsWith('dashboard_cache_') || key.startsWith('admin_cache_'))) {
+          keysToRemove.push(key)
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key))
+      
+      console.log('✅ Logout successful - All user data and caches cleared')
     } catch (err) {
       console.error('Logout error:', err)
-      // Even if API fails, clear local data
+      // Even if API fails, clear all local data
       localStorage.removeItem('user_data')
       localStorage.removeItem('authUser')
+      localStorage.removeItem('userData')
+      
+      // Clear caches even on error
+      const keysToRemove: string[] = []
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key && (key.startsWith('dashboard_cache_') || key.startsWith('admin_cache_'))) {
+          keysToRemove.push(key)
+        }
+      }
+      keysToRemove.forEach(key => localStorage.removeItem(key))
     } finally {
       setUser(null)
       setError(null)
@@ -410,7 +464,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Dispatch auth state change event to update header immediately
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
       
-      console.log('🔄 Auth state changed - Header should update now')
+      console.log('🔄 Auth state changed - All caches cleared, ready for new user login')
     }
   }, [])
 

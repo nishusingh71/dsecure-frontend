@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/react-query";
 import { AuthProvider } from "./auth/AuthContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import ToastContainer from "./components/ui/ToastContainer";
@@ -61,6 +63,7 @@ import AdminReports from "./pages/dashboards/AdminReports";
 import AdminMachines from "./pages/dashboards/AdminMachines";
 import AdminLogs from "./pages/dashboards/AdminLogs";
 import AdminSubusers from "./pages/dashboards/AdminSubusers";
+import EditSubuser from "./pages/dashboards/EditSubuser";
 import NewErasurePage from "./pages/dashboards/NewErasurePage";
 import ReportsPage from "./pages/dashboards/ReportsPage";
 import DownloadAgentPage from "./pages/dashboards/DownloadAgentPage";
@@ -97,6 +100,9 @@ import ITADSolution from "./pages/ITADSolution";
 import AdminProfileEdit from "./pages/admin/AdminProfileEdit";
 import EnhancedUserDashboard from "./pages/dashboards/EnhancedUserDashboard";
 const HealthcareSolutionsPage = lazy(() => import("./pages/solutions/HealthcareSolutionsPage"));
+const EnterpriseSolutionsPage = lazy(() => import("./pages/solutions/EnterpriseSolutionsPage"));
+const FinancialSolutionsPage = lazy(() => import("./pages/solutions/FinancialSolutionsPage"));
+const ServiceProvidersSolutionsPage = lazy(() => import("./pages/solutions/ServiceProvidersSolutionsPage"));
 const SearchDemoPage = lazy(() => import("./pages/SearchDemoPage"));
 
 
@@ -498,15 +504,16 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <ToastProvider>
-      <AuthProvider>
-        <NotificationProvider>
-          <AnalyticsWrapper>
-            <ScrollToTop />
-            <ToastContainer />
-            <Suspense fallback={<PageLoadingSkeleton />}>
-              <Routes>
-                <Route element={<MainLayout />}>
+    <QueryClientProvider client={queryClient}>
+      <ToastProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            <AnalyticsWrapper>
+              <ScrollToTop />
+              <ToastContainer />
+              <Suspense fallback={<PageLoadingSkeleton />}>
+                <Routes>
+                  <Route element={<MainLayout />}>
                   {/* Core Routes */}
                   <Route index element={<HomePage />} />
                   <Route path="services" element={<ServicesPage />} />
@@ -522,8 +529,20 @@ export default function App() {
                   {/* Solutions */}
                   <Route path="solutions" element={<SolutionsPage />} />
                   <Route
+                    path="solutions/enterprise"
+                    element={<EnterpriseSolutionsPage />}
+                  />
+                  <Route
+                    path="solutions/itad"
+                    element={<ITADSolution />}
+                  />
+                  <Route
                     path="solutions/education"
                     element={<EducationPage />}
+                  />
+                  <Route
+                    path="solutions/financial"
+                    element={<FinancialSolutionsPage />}
                   />
                   <Route
                     path="solutions/financial-services"
@@ -536,6 +555,10 @@ export default function App() {
                   <Route
                     path="solutions/healthcare"
                     element={<HealthcareSolutionsPage />}
+                  />
+                  <Route
+                    path="solutions/service-providers"
+                    element={<ServiceProvidersSolutionsPage />}
                   />
                   <Route
                     path="search-demo"
@@ -659,6 +682,7 @@ export default function App() {
                     <Route path="machines" element={<AdminMachines />} />
                     <Route path="logs" element={<AdminLogs />} />
                     <Route path="subusers" element={<AdminSubusers />} />
+                    <Route path="edit-subuser" element={<EditSubuser />} />
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="users/add" element={<AddUser />} />
                     <Route path="users/edit/:userId" element={<EditUser />} />
@@ -1217,5 +1241,6 @@ export default function App() {
         </NotificationProvider>
       </AuthProvider>
     </ToastProvider>
+    </QueryClientProvider>
   );
 }

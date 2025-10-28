@@ -25,6 +25,11 @@ import {
 } from '@/utils/rolePermissions'
 import { getPrimaryRole } from '@/utils/roleHelper'
 import { apiClient, type Machine, type AuditReport, type Subuser, type Session } from '@/utils/enhancedApiClient'
+import { useSubusers, useCreateSubuser, useUpdateSubuser, useDeleteSubuser } from '@/hooks/useSubusers'
+import { useDashboardData } from '@/hooks/useDashboardData'
+import { useUserMachines, useActiveLicensesCount } from '@/hooks/useUserMachines'
+import { useAuditReports, useEnhancedAuditReports } from '@/hooks/useAuditReports'
+import { usePerformanceData } from '@/hooks/usePerformanceData'
 import { group } from 'node:console'
 
 // Interface for merged user data displayed in Users tab
@@ -51,7 +56,8 @@ export default function AdminDashboard() {
   const [isEditingProfile, setIsEditingProfile] = useState(false)
   const [profileEditForm, setProfileEditForm] = useState({
     user_name: '',
-    phone_number: ''
+    phone_number: '',
+    timezone: ''
   })
   const [profileUpdateLoading, setProfileUpdateLoading] = useState(false)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
@@ -122,87 +128,84 @@ export default function AdminDashboard() {
   };
 
   // ✅ Cache Helper Functions - Store data with timestamp
-  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+  // API Data States - React Query will populate these via useEffect
+  const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null)
+  const [userActivity, setUserActivity] = useState<UserActivity[]>([])
+  const [groups, setGroups] = useState<GroupData[]>([])
+  const [licenseData, setLicenseData] = useState<LicenseData[]>([])
+  const [recentReports, setRecentReports] = useState<RecentReport[]>([])
+  const [activeLicensesCount, setActiveLicensesCount] = useState<number>(0)
+  const [auditReportsCount, setAuditReportsCount] = useState<number>(0)
+  const [auditReports, setAuditReports] = useState<AuditReport[]>([])
+  const [userLicenseDetails, setUserLicenseDetails] = useState<LicenseData[]>([])
+  const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>([])
   
-  const getCachedData = (key: string) => {
-    try {
-      const cached = localStorage.getItem(`dashboard_cache_${key}`);
-      if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
-        const now = Date.now();
-        // Check if cache is still valid (within 5 minutes)
-        if (now - timestamp < CACHE_DURATION) {
-          console.log(`✅ Using cached data for ${key}`);
-          return data;
-        } else {
-          console.log(`⏰ Cache expired for ${key}`);
-          localStorage.removeItem(`dashboard_cache_${key}`);
-        }
-      }
-    } catch (e) {
-      console.warn(`⚠️ Failed to read cache for ${key}:`, e);
-    }
-    return null;
-  };
-
-  const setCachedData = (key: string, data: any) => {
-    try {
-      const cacheObject = {
-        data,
-        timestamp: Date.now()
-      };
-      localStorage.setItem(`dashboard_cache_${key}`, JSON.stringify(cacheObject));
-      console.log(`💾 Cached data for ${key}`);
-    } catch (e) {
-      console.warn(`⚠️ Failed to cache data for ${key}:`, e);
-    }
-  };
-  
-  // API Data States - Initialize with cached data if available
-  const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(() => getCachedData('stats'))
-  const [userActivity, setUserActivity] = useState<UserActivity[]>(() => getCachedData('activity') || [])
-  const [groups, setGroups] = useState<GroupData[]>(() => getCachedData('groups') || [])
-  const [licenseData, setLicenseData] = useState<LicenseData[]>(() => getCachedData('licenses') || [])
-  const [recentReports, setRecentReports] = useState<RecentReport[]>(() => getCachedData('reports') || [])
-  const [activeLicensesCount, setActiveLicensesCount] = useState<number>(() => getCachedData('activeLicenses') || 0)
-  const [auditReportsCount, setAuditReportsCount] = useState<number>(() => getCachedData('auditReportsCount') || 0)
-  const [auditReports, setAuditReports] = useState<AuditReport[]>(() => getCachedData('auditReports') || [])
-  const [userLicenseDetails, setUserLicenseDetails] = useState<LicenseData[]>(() => getCachedData('userLicenses') || [])
-  const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>(() => getCachedData('systemLogs') || [])
-  
-  // Performance data state - Initialize with cached data
+  // Performance data state
   const [performanceData, setPerformanceData] = useState<{
     monthlyErasures: { month: string; count: number }[]
     avgDuration: { month: string; duration: number }[]
     throughput: { month: string; count: number }[]
-  }>(() => getCachedData('performance') || {
+  }>({
     monthlyErasures: [],
     avgDuration: [],
     throughput: []
   })
   
-  // Separate states for Users and Subusers (not merged) - Initialize with cached data
-  const [superuserData, setSuperuserData] = useState<MergedUserData | null>(() => getCachedData('superuser'))
-  const [subusersData, setSubusersData] = useState<Subuser[]>(() => getCachedData('subusers') || [])
-  const [usersDataLoading, setUsersDataLoading] = useState<boolean>(false) // Loading state for users data
+  // Separate states for Users and Subusers (not merged)
+  const [superuserData, setSuperuserData] = useState<MergedUserData | null>(null)
   
   // Initialize profileData with localStorage data
   const storedUserData = getUserDataFromStorage();
-  const primaryRole = getPrimaryRole(storedUserData) || user?.role || 'user';
+  // Priority: userRole > user_role > role > user_type
+  const primaryRole = storedUserData?.userRole || storedUserData?.user_role || getPrimaryRole(storedUserData) || user?.role || 'user';
   
   const [profileData, setProfileData] = useState<ProfileData | null>({
     name: storedUserData?.user_name || user?.name || 'User',
     email: storedUserData?.user_email || user?.email || 'user@example.com',
     timezone: storedUserData?.timezone || 'Asia/Kolkata',
     role: primaryRole,
+    userRole: storedUserData?.userRole || storedUserData?.user_role,
+    user_role: storedUserData?.user_role || storedUserData?.userRole,
     phone: storedUserData?.phone_number || '',
     department: storedUserData?.department || '',
     licenses: 0 // Will be updated from API
   })
+  
+  // ✅ React Query: Fetch dashboard data with automatic caching
+  const dashboardDataEnabled = activeTab === 'overview'
+  const dashboardQuery = useDashboardData(dashboardDataEnabled)
+  
+  // ✅ React Query: Fetch subusers data with automatic caching and refetching
+  const userEmail = profileData?.email || user?.email || ''
+  const { 
+    data: subusersData = [], 
+    isLoading: usersDataLoading,
+    error: subusersError,
+    refetch: refetchSubusers,
+    isRefetching 
+  } = useSubusers(userEmail, activeTab === 'users')
+  
+  // ✅ React Query: Fetch machines and audit reports for user
+  const machinesQuery = useUserMachines(userEmail, !!userEmail)
+  const auditReportsQuery = useAuditReports(userEmail, !!userEmail)
+  const enhancedAuditReportsQuery = useEnhancedAuditReports(userEmail, !!userEmail && activeTab === 'overview')
+  
+  // ✅ React Query: Get active licenses count directly from cache
+  const activeLicensesFromCache = useActiveLicensesCount(userEmail)
+  
+  // ✅ React Query: Fetch performance data automatically from cached audit reports and machines
+  const performanceQuery = usePerformanceData(userEmail, !!userEmail && activeTab === 'overview')
+  
+  // React Query mutations for CRUD operations
+  const createSubuserMutation = useCreateSubuser()
+  const updateSubuserMutation = useUpdateSubuser()
+  const deleteSubuserMutation = useDeleteSubuser()
+  
   const [dataLoading, setDataLoading] = useState(true)
 
   // Role-based permissions (using primary role from roles array if available)
-  const currentUserRole = getPrimaryRole(storedUserData) || user?.role || 'user';
+  // Priority: userRole (camelCase) > user_role (snake_case) > getPrimaryRole() > user.role
+  const currentUserRole = storedUserData?.userRole || storedUserData?.user_role || getPrimaryRole(storedUserData) || user?.role || 'user';
   const permissions = getRolePermissions(currentUserRole)
   const roleInfo = getRoleDisplayInfo(currentUserRole)
 
@@ -210,6 +213,8 @@ export default function AdminDashboard() {
   console.log('🔍 AdminDashboard Role Debug:', {
     currentUserRole,
     userRole: user?.role,
+    storedUserRole: storedUserData?.userRole,
+    storedUser_role: storedUserData?.user_role,
     storedRole: storedUserData?.role || storedUserData?.user_type,
     permissions,
     canViewAllUsers: permissions.canViewAllUsers,
@@ -221,29 +226,126 @@ export default function AdminDashboard() {
   // Note: All users can access admin dashboard, but with limited permissions
   // UI elements will be hidden based on role permissions
 
+  // ✅ Listen for auth state changes (logout/login) to reset dashboard
+  useEffect(() => {
+    const handleAuthStateChange = (event: Event) => {
+      const customEvent = event as CustomEvent
+      if (customEvent.detail === null) {
+        // User logged out - reset all dashboard state
+        console.log('🚪 User logged out - clearing AdminDashboard state')
+        setDashboardStats(null)
+        setUserActivity([])
+        setGroups([])
+        setLicenseData([])
+        setRecentReports([])
+        setActiveLicensesCount(0)
+        setAuditReportsCount(0)
+        setAuditReports([])
+        setUserLicenseDetails([])
+        setRecentSystemLogs([])
+        setPerformanceData({
+          monthlyErasures: [],
+          avgDuration: [],
+          throughput: []
+        })
+        setSuperuserData(null)
+        // ✅ React Query handles cache invalidation automatically
+        // setSubusersData([]) // No longer needed - React Query manages this
+        setProfileData(null)
+      }
+    }
+
+    window.addEventListener('authStateChanged', handleAuthStateChange)
+    return () => window.removeEventListener('authStateChanged', handleAuthStateChange)
+  }, [])
+
+  // ✅ React Query: Update data from queries when they load
+  useEffect(() => {
+    // Update dashboard stats from React Query
+    if (dashboardQuery.stats) {
+      setDashboardStats(dashboardQuery.stats)
+    }
+    if (dashboardQuery.activity) {
+      setUserActivity(dashboardQuery.activity)
+    }
+    if (dashboardQuery.groups) {
+      setGroups(dashboardQuery.groups)
+    }
+    if (dashboardQuery.licenses) {
+      setLicenseData(dashboardQuery.licenses)
+    }
+    if (dashboardQuery.reports) {
+      setRecentReports(dashboardQuery.reports)
+    }
+    if (dashboardQuery.profile) {
+      setProfileData(dashboardQuery.profile)
+    }
+    
+    // Update loading state
+    if (!dashboardQuery.isLoading && dashboardDataEnabled) {
+      setDataLoading(false)
+    }
+  }, [])
+
+  // ✅ React Query: Update machines data (keep for backward compatibility)
+  useEffect(() => {
+    if (machinesQuery.data) {
+      const activeLicenses = machinesQuery.data.filter((machine: Machine) => machine.license_activated === true).length
+      setActiveLicensesCount(activeLicenses)
+      
+      // Note: We now use activeLicensesFromCache directly instead of profileData.licenses
+      // This provides more reliable data that doesn't disappear on re-renders
+    }
+  }, [machinesQuery.data])
+
+  useEffect(() => {
+    if (auditReportsQuery.data) {
+      setAuditReportsCount(auditReportsQuery.data.length)
+    }
+  }, [auditReportsQuery.data])
+
+  useEffect(() => {
+    if (enhancedAuditReportsQuery.data) {
+      setAuditReports(enhancedAuditReportsQuery.data)
+    }
+  }, [enhancedAuditReportsQuery.data])
+
+  // ✅ React Query: Update performance data from cache
+  useEffect(() => {
+    if (performanceQuery.data) {
+      setPerformanceData(performanceQuery.data)
+      console.log('✅ Performance data updated from React Query cache:', performanceQuery.data)
+    }
+  }, [performanceQuery.data])
+
   // Load all dashboard data on component mount
   useEffect(() => {
     loadDashboardData()
   }, [])
 
-  // Load users data when Users tab is opened
+  // ✅ React Query now handles data fetching automatically when activeTab === 'users'
+  // No need for manual useEffect - React Query hook useSubusers is enabled only when activeTab === 'users'
+  // Old code commented out:
+  /*
   useEffect(() => {
     if (activeTab === 'users') {
       console.log('🔄 Users tab opened, fetching users data...')
       fetchAndMergeUsersData()
     }
   }, [activeTab])
+  */
 
   const loadDashboardData = async () => {
     setDataLoading(true)
     try {
-      // ✅ Show cached data immediately if available
-      const hasCache = getCachedData('stats') !== null;
-      if (hasCache) {
-        console.log('⚡ Displaying cached data for instant load');
-        setDataLoading(false); // Hide loader since we have cached data
-      }
-
+      // ✅ React Query now handles caching automatically
+      // No need for manual cache checking - React Query provides instant cached data
+      
+      // ✅ NOTE: Dashboard data now fetched by React Query hooks (dashboardQuery)
+      // This manual fetch kept for backward compatibility during migration
+      // Can be removed after testing confirms React Query works correctly
+      
+      /* MIGRATED TO REACT QUERY - Keeping for reference during migration
       const [statsRes, activityRes, groupsRes, licenseRes, reportsRes, profileRes] = await Promise.all([
         AdminDashboardAPI.getDashboardStats(),
         AdminDashboardAPI.getUserActivity(),
@@ -273,57 +375,58 @@ export default function AdminDashboard() {
         setRecentReports(reportsRes.data)
         setCachedData('reports', reportsRes.data)
       }
+      */
       
-      // If API call succeeds, use API data, otherwise fallback to localStorage/JWT data
-      if (profileRes.success) {
-        setProfileData(profileRes.data)
-      } else {
-        // Fallback to localStorage or JWT token data
+      // Profile fallback to localStorage or JWT token data if API fails
+      if (!dashboardQuery.profile) {
         const storedData = getUserDataFromStorage();
-        const fallbackRole = getPrimaryRole(storedData) || user?.role || 'user';
+        const fallbackRole = storedData?.userRole || storedData?.user_role || getPrimaryRole(storedData) || user?.role || 'user';
         setProfileData({
           name: storedData?.user_name || user?.name || 'User',
           email: storedData?.user_email || user?.email || 'user@example.com',
           timezone: storedData?.timezone || 'Asia/Kolkata',
           role: fallbackRole,
+          userRole: storedData?.userRole || storedData?.user_role,
+          user_role: storedData?.user_role || storedData?.userRole,
           phone: storedData?.phone_number || '',
           department: storedData?.department || ''
         })
       }
 
+      // ✅ NOTE: Machines and Audit Reports now fetched by React Query hooks
+      // machinesQuery, auditReportsQuery, enhancedAuditReportsQuery handle this automatically
+      // Keeping this section commented for reference during migration
+      
+      /* MIGRATED TO REACT QUERY
       // Fetch active licenses count from Machines API by user email
+      // ✅ ROLE-BASED DATA FILTERING:
+      // - User/Superuser: Gets data filtered by their email (their machines, reports, logs, etc.)
+      // - Subuser: Gets data filtered by their email (only their own machines, reports, logs, etc.)
+      // This ensures subusers can only see their own data, not the parent user's data
       const userEmail = storedUserData?.user_email || user?.email || profileRes.data?.email;
       if (userEmail) {
-        console.log('📧 Fetching all data in parallel for email:', userEmail);
+        console.log('📧 Fetching essential data for email:', userEmail);
+        console.log('👤 User Type:', storedUserData?.user_type || 'user');
         
-        // ✅ OPTIMIZED: Fetch all data in parallel to reduce loading time
+        // ✅ OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
         const [
           machinesRes,
           auditReportsRes,
           userRes,
           subusersRes,
           sessionsRes,
-          systemLogsRes,
-          // ✅ NEW: Fetch ALL data for Performance tab (not filtered by email)
-          allMachinesRes,
-          allAuditReportsRes,
-          allSessionsRes,
-          allSystemLogsRes
+          systemLogsRes
         ] = await Promise.all([
+          // ✅ These APIs filter by email - both user and subuser get their own data
           apiClient.getMachinesByEmail(userEmail),
           apiClient.getAuditReportsByEmail(userEmail),
           apiClient.getUserByEmail(userEmail),
           apiClient.getSubusersBySuperuser(userEmail).catch(() => ({ success: false, data: null })),
           apiClient.getSessions().catch(() => ({ success: false, data: null })),
-          apiClient.getSystemLogsByEmail(userEmail).catch(() => ({ success: false, data: null })),
-          // Performance tab needs ALL data
-          apiClient.getMachines().catch(() => ({ success: false, data: null })),
-          apiClient.getAuditReports().catch(() => ({ success: false, data: null })),
-          apiClient.getSessions().catch(() => ({ success: false, data: null })),
-          apiClient.getSystemLogs().catch(() => ({ success: false, data: null }))
+          apiClient.getSystemLogsByEmail(userEmail).catch(() => ({ success: false, data: null }))
         ]);
 
-        // Process machines data (active licenses)
+        // Process machines data (active licenses) - NOW HANDLED BY machinesQuery
         if (machinesRes.success && machinesRes.data) {
           const activeLicenses = machinesRes.data.filter((machine: Machine) => machine.license_activated === true).length;
           console.log('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
@@ -338,7 +441,68 @@ export default function AdminDashboard() {
           console.warn('⚠️ Failed to fetch machines:', machinesRes.error);
         }
 
-        // Process audit reports data
+        // Process audit reports data - NOW HANDLED BY enhancedAuditReportsQuery
+        */
+      
+      // Fetch remaining data (sessions, system logs) - not migrated yet
+      const userEmailForLogs = storedUserData?.user_email || user?.email || dashboardQuery.profile?.email;
+      if (userEmailForLogs) {
+        console.log('📧 Fetching sessions and system logs for email:', userEmailForLogs);
+        console.log('👤 User Type:', storedUserData?.user_type || 'user');
+        
+        const [
+          userRes,
+          subusersRes,
+          sessionsRes,
+          systemLogsRes
+        ] = await Promise.all([
+          apiClient.getUserByEmail(userEmailForLogs),
+          apiClient.getSubusersBySuperuser(userEmailForLogs).catch(() => ({ success: false, data: null })),
+          apiClient.getSessions().catch(() => ({ success: false, data: null })),
+          apiClient.getSystemLogsByEmail(userEmailForLogs).catch(() => ({ success: false, data: null }))
+        ]);
+
+        /* REMOVED - Duplicate code already commented out above
+        // ✅ OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
+        const [
+          machinesRes,
+          auditReportsRes,
+          userRes,
+          subusersRes,
+          sessionsRes,
+          systemLogsRes
+        ] = await Promise.all([
+          // ✅ These APIs filter by email - both user and subuser get their own data
+          apiClient.getMachinesByEmail(userEmail),
+          apiClient.getAuditReportsByEmail(userEmail),
+          apiClient.getUserByEmail(userEmail),
+          apiClient.getSubusersBySuperuser(userEmail).catch(() => ({ success: false, data: null })),
+          apiClient.getSessions().catch(() => ({ success: false, data: null })),
+          apiClient.getSystemLogsByEmail(userEmail).catch(() => ({ success: false, data: null }))
+        ]);
+        */
+
+        // ✅ Machines and audit reports now handled by React Query (machinesQuery, auditReportsQuery)
+        // Process machines data (active licenses) - MIGRATED TO useEffect above
+        /* MIGRATED TO REACT QUERY
+        if (machinesRes.success && machinesRes.data) {
+          const activeLicenses = machinesRes.data.filter((machine: Machine) => machine.license_activated === true).length;
+          console.log('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
+          setActiveLicensesCount(activeLicenses);
+          setCachedData('activeLicenses', activeLicenses);
+          
+          setProfileData(prev => ({
+            ...prev!,
+            licenses: activeLicenses
+          }));
+        } else {
+          console.warn('⚠️ Failed to fetch machines:', machinesRes.error);
+        }
+        */
+
+        // ✅ Audit reports now handled by enhancedAuditReportsQuery
+        // Process audit reports data - MIGRATED TO useEffect above
+        /* MIGRATED TO REACT QUERY
         if (auditReportsRes.success && auditReportsRes.data) {
           const reportsCount = auditReportsRes.data.length;
           console.log('✅ Audit reports count:', reportsCount);
@@ -363,12 +527,14 @@ export default function AdminDashboard() {
           
           setAuditReports(reportsWithDevices);
           setCachedData('auditReports', reportsWithDevices);
+        */
           
-          // ✅ Extract unique software names from report_details_json for license products
+          // ✅ Extract unique software names from audit reports for license products
           const softwareNames = new Set<string>();
-          auditReportsRes.data.forEach((report: any) => {
-            if (report.report_details_json) {
-              try {
+          if (auditReportsQuery.data) {
+            auditReportsQuery.data.forEach((report: any) => {
+              if (report.report_details_json) {
+                try {
                 const reportDetails = JSON.parse(report.report_details_json);
                 if (reportDetails.software_name) {
                   softwareNames.add(reportDetails.software_name);
@@ -380,21 +546,14 @@ export default function AdminDashboard() {
           });
           console.log('✅ Unique software names extracted from reports:', Array.from(softwareNames));
           
-          // ✅ Calculate Performance Metrics from ALL APIs (using allAuditReportsRes, allMachinesRes, etc.)
-          console.log('📊 Calculating comprehensive performance metrics from ALL APIs...');
+          // ✅ Calculate Performance Metrics from React Query data
+          console.log('📊 Calculating performance metrics from user-filtered data...');
           
-          // Use ALL data for performance calculations (not filtered by email)
-          const performanceAuditReports = allAuditReportsRes?.success && allAuditReportsRes.data ? allAuditReportsRes.data : [];
-          const performanceMachines = allMachinesRes?.success && allMachinesRes.data ? allMachinesRes.data : [];
-          const performanceSessions = allSessionsRes?.success && allSessionsRes.data ? allSessionsRes.data : [];
-          const performanceSystemLogs = allSystemLogsRes?.success && allSystemLogsRes.data ? allSystemLogsRes.data : [];
-          
-          console.log('📊 Performance data sources:', {
-            auditReports: performanceAuditReports.length,
-            machines: performanceMachines.length,
-            sessions: performanceSessions.length,
-            systemLogs: performanceSystemLogs.length
-          });
+          // Use React Query data for performance calculations
+          const performanceAuditReports = auditReportsQuery.data || [];
+          const performanceMachines = machinesQuery.data || [];
+          const performanceSessions = sessionsRes?.success && sessionsRes.data ? sessionsRes.data : [];
+          const performanceSystemLogs = systemLogsRes?.success && systemLogsRes.data ? systemLogsRes.data : [];
           
           console.log('📊 Performance data sources:', {
             auditReports: performanceAuditReports.length,
@@ -508,11 +667,6 @@ export default function AdminDashboard() {
             avgDuration,
             throughput
           });
-          setCachedData('performance', {
-            monthlyErasures,
-            avgDuration,
-            throughput
-          });
           
           console.log('✅ Performance metrics calculated from all APIs:', { 
             monthlyErasures, 
@@ -523,7 +677,7 @@ export default function AdminDashboard() {
             totalLogs: Object.values(monthsData).reduce((sum, m) => sum + m.logs, 0)
           });
         } else {
-          console.warn('⚠️ Failed to fetch audit reports:', auditReportsRes.error);
+          console.warn('⚠️ Failed to fetch audit reports - using React Query data instead');
         }
 
         // Process user license details
@@ -558,10 +712,10 @@ export default function AdminDashboard() {
               if (licenseDetails.plans && Array.isArray(licenseDetails.plans)) {
                 console.log('📦 Using new license format with plans array');
                 
-                // Get software names from audit reports
+                // Get software names from audit reports (using React Query data)
                 const softwareNamesMap = new Map<string, string>();
-                if (auditReportsRes.success && auditReportsRes.data) {
-                  auditReportsRes.data.forEach((report: any) => {
+                if (auditReportsQuery.data) {
+                  auditReportsQuery.data.forEach((report: any) => {
                     if (report.report_details_json) {
                       try {
                         const reportDetails = JSON.parse(report.report_details_json);
@@ -714,7 +868,6 @@ export default function AdminDashboard() {
           
           console.log('✅ Recent system logs fetched:', sortedLogs.length);
           setRecentSystemLogs(sortedLogs);
-          setCachedData('systemLogs', sortedLogs);
         } else {
           console.warn('⚠️ Failed to fetch system logs');
           setRecentSystemLogs([]);
@@ -731,12 +884,14 @@ export default function AdminDashboard() {
       
       // Set profile data from localStorage or JWT token on error
       const storedData = getUserDataFromStorage();
-      const fallbackRole = getPrimaryRole(storedData) || user?.role || 'user';
+      const fallbackRole = storedData?.userRole || storedData?.user_role || getPrimaryRole(storedData) || user?.role || 'user';
       setProfileData({
         name: storedData?.user_name || user?.name || 'User',
         email: storedData?.user_email || user?.email || 'user@example.com',
         timezone: storedData?.timezone || 'Asia/Kolkata',
         role: fallbackRole,
+        userRole: storedData?.userRole || storedData?.user_role,
+        user_role: storedData?.user_role || storedData?.userRole,
         phone: storedData?.phone_number || '',
         department: storedData?.department || '',
         licenses: 0
@@ -754,7 +909,16 @@ export default function AdminDashboard() {
    * 2. For each subuser, fetches their machines from /api/Machines/by-email/{subuser_email}
    * 3. Calculates license usage from demo_usage_count field in machines
    * 4. Stores enhanced subuser data with license counts
+   * 
+   * ✅ NOW HANDLED BY REACT QUERY - See useSubusers hook
+   * This function is commented out because React Query automatically handles:
+   * - Data fetching when activeTab === 'users'
+   * - Caching (5 minutes fresh, 10 minutes total)
+   * - Automatic refetching
+   * - Loading states
+   * - Error handling
    */
+  /* COMMENTED OUT - React Query handles this now
   const fetchAndMergeUsersData = async () => {
     setUsersDataLoading(true)
     console.log('🚀 Starting fetchAndMergeUsersData...')
@@ -762,22 +926,16 @@ export default function AdminDashboard() {
     try {
       const userEmail = profileData?.email || user?.email || ''
       
-      if (!userEmail) {
-        console.warn('⚠️ No user email available for fetching users data')
-        console.log('📊 ProfileData:', profileData)
-        console.log('📊 User from context:', user)
-        setUsersDataLoading(false)
-        return
-      }
-
-      console.log('👥 Fetching users data for email:', userEmail)
+      console.log('👥 Current user email:', userEmail)
+      console.log('📊 ProfileData:', profileData)
+      console.log('📊 User from context:', user)
       
       // ✅ Check cache first for instant display
       const cachedSubusers = getCachedData('subusers');
       const cachedSuperuser = getCachedData('superuser');
       
-      if (cachedSubusers) {
-        console.log('⚡ Displaying cached subusers data');
+      if (cachedSubusers && cachedSubusers.length > 0) {
+        console.log('⚡ Displaying cached subusers data:', cachedSubusers.length, 'users');
         setSubusersData(cachedSubusers);
         setUsersDataLoading(false); // Hide loader since we have cached data
       }
@@ -787,10 +945,17 @@ export default function AdminDashboard() {
         setSuperuserData(cachedSuperuser);
       }
       
-      // 1️⃣ Fetch Subusers
-      console.log('🔍 Calling getSubusersBySuperuser API...')
-      const subusersRes = await apiClient.getSubusersBySuperuser(userEmail)
-      console.log('📥 Subusers API Response:', subusersRes)
+      // 1️⃣ Fetch All Subusers using fallback strategy across all available endpoints
+      console.log('🔍 Calling getAllSubusersWithFallback API with fallback across multiple endpoints...')
+      const subusersRes = await apiClient.getAllSubusersWithFallback(userEmail)
+      console.log('📥 Final Subusers API Response:', subusersRes)
+      console.log('📥 Response success:', subusersRes.success)
+      console.log('📥 Response data:', subusersRes.data)
+      console.log('📥 Data type:', typeof subusersRes.data)
+      console.log('📥 Is Array:', Array.isArray(subusersRes.data))
+      if (subusersRes.data) {
+        console.log('📥 Data length:', subusersRes.data.length)
+      }
       
       // 2️⃣ Process Subusers data with machine-based license counting and complete user details
       if (subusersRes.success && subusersRes.data && subusersRes.data.length > 0) {
@@ -889,6 +1054,7 @@ export default function AdminDashboard() {
       setUsersDataLoading(false)
     }
   }
+  */ // End of commented out fetchAndMergeUsersData function
 
   // Generate stats array from API data or use defaults
   const stats = useMemo(() => {
@@ -1134,8 +1300,8 @@ export default function AdminDashboard() {
         // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 1000))
         
-        // Refresh users data after deletion
-        await fetchAndMergeUsersData()
+        // ✅ React Query: Refetch users data after deletion
+        await refetchSubusers()
         showSuccess('Subuser Deleted', `${subuser.subuser_email} has been deleted successfully`)
       } catch (error) {
         console.error('Error deleting subuser:', error)
@@ -1202,7 +1368,7 @@ export default function AdminDashboard() {
         </Helmet>
     <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
@@ -1233,54 +1399,122 @@ export default function AdminDashboard() {
           <button 
             onClick={() => {
               setShowSettingsModal(true)
-              // Load billing details from license_details_json
+              // Load billing details from BOTH license_details_json AND payment_details_json
+              // Priority: user object from AuthContext > localStorage
               const storedData = getUserDataFromStorage()
-              if (storedData?.license_details_json) {
+              
+              console.log('🔍 DEBUG: Settings button clicked')
+              console.log('🔍 DEBUG: user object:', user)
+              console.log('🔍 DEBUG: storedData:', storedData)
+              console.log('🔍 DEBUG: user.license_details_json:', user?.license_details_json)
+              console.log('🔍 DEBUG: user.payment_details_json:', user?.payment_details_json)
+              
+              let combinedBillingInfo: any = {}
+              
+              // 1️⃣ Load license details (plan info, licenses, etc.)
+              // Try user object first, then fallback to localStorage
+              const licenseDetailsJson = user?.license_details_json || storedData?.license_details_json
+              
+              console.log('🔍 DEBUG: licenseDetailsJson:', licenseDetailsJson)
+              console.log('🔍 DEBUG: licenseDetailsJson type:', typeof licenseDetailsJson)
+              console.log('🔍 DEBUG: licenseDetailsJson !== "{}":', licenseDetailsJson !== '{}')
+              
+              if (licenseDetailsJson && licenseDetailsJson !== '{}') {
                 try {
-                  const parsed = JSON.parse(storedData.license_details_json)
+                  const parsed = JSON.parse(licenseDetailsJson)
                   console.log('✅ License details loaded for billing:', parsed)
+                  console.log('🔍 DEBUG: parsed.plans:', parsed.plans)
+                  console.log('🔍 DEBUG: parsed.summary:', parsed.summary)
+                  console.log('✅ License details loaded for billing:', parsed)
+                  console.log('🔍 DEBUG: parsed.plans:', parsed.plans)
+                  console.log('🔍 DEBUG: parsed.summary:', parsed.summary)
                   
                   // Extract relevant billing information
                   if (parsed.plans && parsed.summary) {
-                    const billingInfo: any = {
+                    console.log('🔍 DEBUG: Entering plans && summary condition')
+                    combinedBillingInfo = {
                       activePlanTypes: parsed.summary.activePlanTypes?.join(', ') || 'N/A',
                       activePlanIds: parsed.summary.activePlanIds?.join(', ') || 'N/A',
                       totalPurchases: parsed.summary.totalPurchases || 0,
                       totalLicenses: parsed.summary.totalLicensesAcrossAllPlans || 0,
                       availableLicenses: parsed.summary.totalAvailableLicenses || 0,
                       consumedLicenses: parsed.summary.totalConsumedLicenses || 0,
-                      userEmail: parsed.useremail || storedData.user_email || 'N/A'
+                      userEmail: parsed.useremail || user?.email || storedData?.user_email || 'N/A'
                     }
+                    
+                    console.log('🔍 DEBUG: combinedBillingInfo after summary:', combinedBillingInfo)
                     
                     // Add plan-specific details
                     if (parsed.plans.length > 0) {
+                      console.log('🔍 DEBUG: parsed.plans[0]:', parsed.plans[0])
                       const firstPlan = parsed.plans[0]
-                      billingInfo.purchaseDate = firstPlan.purchaseDate 
+                      combinedBillingInfo.purchaseDate = firstPlan.purchaseDate 
                         ? new Date(firstPlan.purchaseDate).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
                           })
                         : 'N/A'
-                      billingInfo.validityYears = firstPlan.validityYears || 'N/A'
-                      billingInfo.expiryDate = firstPlan.expiryDate
+                      combinedBillingInfo.validityYears = firstPlan.validityYears || 'N/A'
+                      combinedBillingInfo.expiryDate = firstPlan.expiryDate
                         ? new Date(firstPlan.expiryDate).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
                           })
                         : 'N/A'
+                      
+                      console.log('🔍 DEBUG: combinedBillingInfo after plan details:', combinedBillingInfo)
                     }
                     
-                    setBillingDetails(billingInfo)
-                    console.log('✅ Billing info formatted:', billingInfo)
+                    console.log('✅ License info extracted:', combinedBillingInfo)
                   } else {
-                    setBillingDetails(parsed)
+                    console.log('⚠️ DEBUG: No plans/summary, using raw parsed data')
+                    combinedBillingInfo = parsed
+                    console.log('🔍 DEBUG: combinedBillingInfo = parsed:', combinedBillingInfo)
                   }
                 } catch (e) {
-                  console.error('Failed to parse license details:', e)
+                  console.error('❌ Failed to parse license details:', e)
+                  console.error('🔍 DEBUG: licenseDetailsJson that failed to parse:', licenseDetailsJson)
                 }
+              } else {
+                console.log('⚠️ DEBUG: No license details found or empty JSON')
+                console.log('🔍 DEBUG: licenseDetailsJson value:', licenseDetailsJson)
               }
+              
+              // 2️⃣ Load payment details (card info, billing address, etc.)
+              // Try user object first, then fallback to localStorage
+              const paymentDetailsJson = user?.payment_details_json || storedData?.payment_details_json
+              
+              console.log('🔍 DEBUG: paymentDetailsJson:', paymentDetailsJson)
+              console.log('🔍 DEBUG: paymentDetailsJson type:', typeof paymentDetailsJson)
+              
+              if (paymentDetailsJson && paymentDetailsJson !== '{}') {
+                try {
+                  const paymentParsed = JSON.parse(paymentDetailsJson)
+                  console.log('✅ Payment details loaded from API response:', paymentParsed)
+                  
+                  // Merge payment details with license details
+                  combinedBillingInfo = {
+                    ...combinedBillingInfo,
+                    ...paymentParsed
+                  }
+                  
+                  console.log('✅ Combined billing info with payment details:', combinedBillingInfo)
+                } catch (e) {
+                  console.error('❌ Failed to parse payment details:', e)
+                  console.error('🔍 DEBUG: paymentDetailsJson that failed to parse:', paymentDetailsJson)
+                }
+              } else {
+                console.log('ℹ️ No payment details found in user object or localStorage')
+              }
+              
+              // Set the combined billing details
+              console.log('🔍 DEBUG: About to set billingDetails state with:', combinedBillingInfo)
+              console.log('🔍 DEBUG: Object.keys(combinedBillingInfo):', Object.keys(combinedBillingInfo))
+              console.log('🔍 DEBUG: Object.entries(combinedBillingInfo):', Object.entries(combinedBillingInfo))
+              setBillingDetails(combinedBillingInfo)
+              console.log('✅ Final billing details set:', combinedBillingInfo)
             }}
             className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
             title="Settings - Billing & Password"
@@ -1448,7 +1682,7 @@ export default function AdminDashboard() {
               <div className="w-3 h-3 rounded-full bg-blue-400 flex-shrink-0"></div>
               <p className="text-sm font-medium text-slate-600">My Licenses</p>
             </div>
-            <p className="text-2xl lg:text-3xl font-bold text-slate-900">{profileData?.licenses || 0}</p>
+            <p className="text-2xl lg:text-3xl font-bold text-slate-900">{activeLicensesFromCache || 0}</p>
             <p className="text-sm text-slate-500 mt-2">Active licenses</p>
           </div>
           <div className="card !p-4 lg:!p-6">
@@ -2041,15 +2275,52 @@ export default function AdminDashboard() {
                           {report.report_name || report.reportType || 'N/A'}
                         </td>
                         <td className="py-4 text-slate-600">
-                          {report.deviceCount || 0}
+                          {(() => {
+                            // Priority: API deviceCount > calculated from machines
+                            if (report.deviceCount && report.deviceCount > 0) {
+                              return report.deviceCount;
+                            }
+                            
+                            // Calculate from actual machines data
+                            if (machinesQuery.data && machinesQuery.data.length > 0) {
+                              // If report has user_email, filter machines by that email
+                              if (report.user_email) {
+                                const userMachines = machinesQuery.data.filter(
+                                  (machine: Machine) => machine.user_email === report.user_email
+                                );
+                                return userMachines.length || 0;
+                              }
+                              // Otherwise return total machines count
+                              return machinesQuery.data.length;
+                            }
+                            
+                            // Fallback if no data available
+                            return 0;
+                          })()}
                         </td>
                         <td className="py-4">
-                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            report.status === 'completed' || report.status === 'Completed' ? 'bg-green-100 text-green-800' :
-                            report.status === 'running' || report.status === 'Running' ? 'bg-blue-100 text-blue-800' :
-                            report.status === 'failed' || report.status === 'Failed' ? 'bg-red-100 text-red-800' :
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                            (report.status === 'completed' || report.status === 'Completed') 
+                              ? 'bg-green-100 text-green-800' :
+                            (report.status === 'running' || report.status === 'Running' || report.status === 'pending' || report.status === 'Pending') 
+                              ? 'bg-blue-100 text-blue-800' :
+                            (report.status === 'warning' || report.status === 'Warning') 
+                              ? 'bg-yellow-100 text-yellow-800' :
+                            (report.status === 'failed' || report.status === 'Failed') 
+                              ? 'bg-red-100 text-red-800' :
                             'bg-slate-100 text-slate-800'
                           }`}>
+                            <span className={`w-2 h-2 rounded-full ${
+                              (report.status === 'completed' || report.status === 'Completed') 
+                                ? 'bg-green-500' :
+                              (report.status === 'running' || report.status === 'Running' || report.status === 'pending' || report.status === 'Pending') 
+                                ? 'bg-blue-500' :
+                              (report.status === 'warning' || report.status === 'Warning') 
+                                ? 'bg-yellow-500' :
+                              (report.status === 'failed' || report.status === 'Failed') 
+                                ? 'bg-red-500' :
+                              'bg-slate-500'
+                            }`}></span>
                             {report.status || 'Completed'}
                           </span>
                         </td>
@@ -2661,27 +2932,68 @@ export default function AdminDashboard() {
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="font-medium text-slate-700">Name:</span>
-                      <span className="text-slate-900">{profileData?.name || user?.name || 'User'}</span>
+                      <span className="text-slate-900">{profileData?.name || storedUserData?.user_name || user?.name || 'User'}</span>
                     </div>
                     
                     <div className="flex justify-between">
                       <span className="font-medium text-slate-700">Email:</span>
-                      <span className="text-slate-900 text-right">{profileData?.email || user?.email || 'user@example.com'}</span>
+                      <span className="text-slate-900 text-right">{profileData?.email || storedUserData?.user_email || user?.email || 'user@example.com'}</span>
                     </div>
                     
                     <div className="flex justify-between">
                       <span className="font-medium text-slate-700">Phone:</span>
-                      <span className="text-slate-900">{profileData?.phone || 'Not provided'}</span>
-                    </div>
-                    
-                    <div className="flex justify-between">
-                      <span className="font-medium text-slate-700">Time Zone:</span>
-                      <span className="text-slate-900">{profileData?.timezone || 'Asia/Kolkata'}</span>
+                      <span className="text-slate-900">{profileData?.phone || storedUserData?.phone_number || 'Not provided'}</span>
                     </div>
                     
                     <div className="flex justify-between">
                       <span className="font-medium text-slate-700">Role:</span>
-                      <span className="text-slate-900 font-semibold capitalize">{profileData?.role || user?.role || 'user'}</span>
+                      <span className="text-slate-900 font-semibold capitalize">
+                        {profileData?.userRole || profileData?.user_role || profileData?.role || 
+                         storedUserData?.userRole || storedUserData?.user_role || storedUserData?.role || 
+                         user?.role || 'user'}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="font-medium text-slate-700">Department:</span>
+                      <span className="text-slate-900">{profileData?.department || storedUserData?.department || 'N/A'}</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="font-medium text-slate-700">User Group:</span>
+                      <span className="text-slate-900">{storedUserData?.user_group || storedUserData?.department || 'N/A'}</span>
+                    </div>
+
+                    {/* Conditional field for Subuser - Parent User Email */}
+                    {storedUserData?.user_type === 'subuser' && storedUserData?.parent_user_email && (
+                      <div className="flex justify-between bg-purple-50 -mx-2 px-2 py-2 rounded-md border border-purple-200">
+                        <span className="font-medium text-purple-700">Parent User Email:</span>
+                        <span className="text-purple-900 font-semibold text-right break-all">{storedUserData.parent_user_email}</span>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-between">
+                      <span className="font-medium text-slate-700">Time Zone:</span>
+                      <span className="text-slate-900">{profileData?.timezone || storedUserData?.timezone || 'Asia/Kolkata'}</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="font-medium text-slate-700">Login Time:</span>
+                      <span className="text-slate-900 text-right text-xs">
+                        {(() => {
+                          const userTimezone = profileData?.timezone || storedUserData?.timezone || 'Asia/Kolkata'
+                          const loginTime = new Date()
+                          return loginTime.toLocaleString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric', 
+                            hour: '2-digit', 
+                            minute: '2-digit',
+                            timeZone: userTimezone,
+                            timeZoneName: 'short'
+                          })
+                        })()}
+                      </span>
                     </div>
                   </div>
                   
@@ -2692,7 +3004,8 @@ export default function AdminDashboard() {
                         setIsEditingProfile(true)
                         setProfileEditForm({
                           user_name: profileData?.name || user?.name || '',
-                          phone_number: profileData?.phone || ''
+                          phone_number: profileData?.phone || '',
+                          timezone: profileData?.timezone || storedUserData?.timezone || 'Asia/Kolkata'
                         })
                       }}
                       className="bg-brand hover:bg-brand-700 text-white px-6 py-2 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-2 mx-auto"
@@ -2721,41 +3034,51 @@ export default function AdminDashboard() {
                       console.log('🔄 Updating profile for:', userEmail)
                       console.log('📝 Update data:', profileEditForm)
 
-                      // Call API to update user profile
-                      // Backend API: PUT /api/DynamicUser/profile
-                      const response = await apiClient.updateUserProfile({
+                      // Call APIs to update user profile
+                      // 1. Update name and phone via DynamicUser/profile
+                      const profileResponse = await apiClient.updateUserProfile({
                         userName: profileEditForm.user_name,
-                        phoneNumber: profileEditForm.phone_number
+                        phoneNumber: profileEditForm.phone_number,
+                        timezone: profileEditForm.timezone
                       })
 
-                      console.log('📡 API Response:', response)
+                      console.log('📡 Profile API Response:', profileResponse)
 
-                      if (response.success && response.data) {
-                        console.log('✅ Profile updated successfully in database')
-                        console.log('📦 Updated user data:', response.data)
+                      // 2. Update timezone via RoleBasedAuth/update-timezone
+                      const timezoneResponse = await apiClient.updateTimezone(
+                        userEmail,
+                        profileEditForm.timezone
+                      )
+
+                      console.log('📡 Timezone API Response:', timezoneResponse)
+
+                      if (profileResponse.success && timezoneResponse.success) {
+                        console.log('✅ Profile and timezone updated successfully in database')
                         
                         // Update local state with response data from server
                         setProfileData(prev => ({
                           ...prev!,
-                          name: response.data!.user_name || profileEditForm.user_name,
-                          phone: response.data!.phone_number || profileEditForm.phone_number
+                          name: profileResponse.data?.user_name || profileEditForm.user_name,
+                          phone: profileResponse.data?.phone_number || profileEditForm.phone_number,
+                          timezone: timezoneResponse.data?.timezone || profileEditForm.timezone
                         }))
                         
                         // Update localStorage with server response
                         const storedData = getUserDataFromStorage()
                         if (storedData) {
-                          // Update with actual server response
-                          storedData.user_name = response.data!.user_name || profileEditForm.user_name
-                          storedData.phone_number = response.data!.phone_number || profileEditForm.phone_number
+                          storedData.user_name = profileResponse.data?.user_name || profileEditForm.user_name
+                          storedData.phone_number = profileResponse.data?.phone_number || profileEditForm.phone_number
+                          storedData.timezone = timezoneResponse.data?.timezone || profileEditForm.timezone
                           localStorage.setItem('userData', JSON.stringify(storedData))
                           console.log('💾 LocalStorage updated with server data')
                         }
                         
-                        showSuccess('Profile Updated', 'Your profile has been updated in database successfully')
+                        showSuccess('Profile Updated', 'Your profile and timezone have been updated successfully')
                         setIsEditingProfile(false)
                       } else {
-                        console.error('❌ API Error:', response.error)
-                        showError('Update Failed', response.error || 'Failed to update profile in database')
+                        const errorMsg = profileResponse.error || timezoneResponse.error || 'Failed to update profile'
+                        console.error('❌ API Error:', errorMsg)
+                        showError('Update Failed', errorMsg)
                       }
                     } catch (error) {
                       console.error('❌ Profile update error:', error)
@@ -2791,6 +3114,59 @@ export default function AdminDashboard() {
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                         placeholder="Enter phone number"
                       />
+                    </div>
+
+                    {/* Editable: Timezone */}
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-medium text-slate-700">
+                          Time Zone
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // Auto-detect timezone from browser
+                            const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+                            setProfileEditForm(prev => ({ ...prev, timezone: detectedTimezone }))
+                            showInfo('Timezone Detected', `Automatically detected: ${detectedTimezone}`)
+                          }}
+                          className="text-xs text-brand hover:text-brand-700 font-medium flex items-center gap-1"
+                        >
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          Auto-Detect
+                        </button>
+                      </div>
+                      <select
+                        value={profileEditForm.timezone}
+                        onChange={(e) => setProfileEditForm(prev => ({ ...prev, timezone: e.target.value }))}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
+                      >
+                        <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                        <option value="America/New_York">America/New York (EST)</option>
+                        <option value="America/Los_Angeles">America/Los Angeles (PST)</option>
+                        <option value="America/Chicago">America/Chicago (CST)</option>
+                        <option value="Europe/London">Europe/London (GMT)</option>
+                        <option value="Europe/Paris">Europe/Paris (CET)</option>
+                        <option value="Europe/Berlin">Europe/Berlin (CET)</option>
+                        <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                        <option value="Asia/Shanghai">Asia/Shanghai (CST)</option>
+                        <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+                        <option value="Asia/Singapore">Asia/Singapore (SGT)</option>
+                        <option value="Australia/Sydney">Australia/Sydney (AEDT)</option>
+                        <option value="Pacific/Auckland">Pacific/Auckland (NZDT)</option>
+                        <option value="UTC">UTC</option>
+                      </select>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Current time: {new Date().toLocaleString('en-US', { 
+                          timeZone: profileEditForm.timezone,
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          timeZoneName: 'short'
+                        })}
+                      </p>
                     </div>
 
                     {/* Read-Only: Email */}
@@ -2936,7 +3312,15 @@ export default function AdminDashboard() {
                     </button>
                   </div>
                   
-                  {billingDetails ? (
+                  {(() => {
+                    console.log('🔍 DEBUG RENDER: billingDetails:', billingDetails)
+                    console.log('🔍 DEBUG RENDER: billingDetails is truthy?', !!billingDetails)
+                    console.log('🔍 DEBUG RENDER: billingDetails type:', typeof billingDetails)
+                    console.log('🔍 DEBUG RENDER: Object.keys(billingDetails):', billingDetails ? Object.keys(billingDetails) : 'null')
+                    return null
+                  })()}
+                  
+                  {billingDetails && Object.keys(billingDetails).length > 0 ? (
                     <div className="space-y-4">
                       {/* Accordion 1: Active License Plan */}
                       <div className="bg-gradient-to-br from-brand/5 to-brand/10 rounded-lg border border-brand/20 overflow-hidden">
@@ -2967,6 +3351,11 @@ export default function AdminDashboard() {
                         
                         <div className={`transition-all duration-300 ease-in-out ${billingAccordion.activePlan ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
                           <div className="px-6 pb-6">
+                            {(() => {
+                              console.log('🔍 DEBUG ACCORDION 1: billingDetails.activePlanTypes:', billingDetails.activePlanTypes)
+                              console.log('🔍 DEBUG ACCORDION 1: billingDetails.totalPurchases:', billingDetails.totalPurchases)
+                              return null
+                            })()}
                             <div className="grid grid-cols-2 gap-4">
                               <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
                                 <p className="text-xs text-slate-600 mb-1">Plan Type</p>

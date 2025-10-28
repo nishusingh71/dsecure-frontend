@@ -5,6 +5,7 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { apiClient, Subuser, Session } from '@/utils/enhancedApiClient'
 import { useAuth } from '@/auth/AuthContext'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 // Extended interface for table display
 interface SubuserTableRow {
@@ -26,6 +27,38 @@ export default function AdminSubusers() {
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
   const [sortBy, setSortBy] = useState<keyof SubuserTableRow>('subuser_email')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const navigate = useNavigate()
+  
+  // ✅ Check if current user has admin/superadmin role
+  const getUserRole = (): string => {
+    // Try to get role from localStorage first
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    
+    let storedUserData = null
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser)
+      } catch (e) {
+        console.error('Error parsing user_data:', e)
+      }
+    }
+    
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser)
+      } catch (e) {
+        console.error('Error parsing authUser:', e)
+      }
+    }
+    
+    return storedUserData?.role || storedUserData?.user_type || user?.role || 'user'
+  }
+  
+  const currentUserRole = getUserRole()
+  const canEditOrDelete = currentUserRole === 'admin' || currentUserRole === 'superadmin'
+  
+  console.log('👤 Current User Role:', currentUserRole, '| Can Edit/Delete:', canEditOrDelete)
   
   // ✅ Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -62,6 +95,12 @@ export default function AdminSubusers() {
   const [allRows, setAllRows] = useState<SubuserTableRow[]>(() => getCachedData('subusers_list') || [])
   const [loading, setLoading] = useState(true)
   const pageSize = 5
+  
+  // Delete modal state
+  const [deleteModal, setDeleteModal] = useState<{ show: boolean; user: SubuserTableRow | null }>({
+    show: false,
+    user: null
+  })
   
   // Load users data on component mount
   useEffect(() => {
@@ -280,24 +319,69 @@ export default function AdminSubusers() {
   }
 
   const handleEditUser = async (user: SubuserTableRow) => {
-    showInfo(`Edit mode enabled for ${user.subuser_email}`)
-    // You can implement a modal or redirect to edit page here
+    // Fetch full enhanced subuser details from the API before navigating.
+    // This avoids relying on trimmed table row fields and prevents TypeScript errors.
+    try {
+      showInfo(`Fetching details for ${user.subuser_email}...`)
+      const res = await apiClient.getEnhancedSubuser(user.subuser_email)
+
+      if (!res || !res.success || !res.data) {
+        showError('Fetch Failed', res?.error || 'Could not retrieve user details')
+        return
+      }
+
+      const enhanced = res.data
+
+      navigate('/admin/edit-subuser', {
+        state: {
+          user: {
+            subuser_email: enhanced.subuser_email,
+            subuser_name: enhanced.subuser_name || enhanced.user_email || '',
+            // prefer explicit role fields, fall back to table's roles
+            role: enhanced.role || enhanced.subuser_role || enhanced.defaultRole || user.roles,
+            department: enhanced.department || user.department,
+            status: enhanced.status || 'active',
+            phone: enhanced.subuser_phone || '',
+            licenseUsage: enhanced.licenseUsage || Number(enhanced.license_allocation) || 0,
+            created_at: enhanced.created_at || ''
+          }
+        }
+      })
+    } catch (err) {
+      console.error('Error fetching subuser details:', err)
+      showError('Error', err instanceof Error ? err.message : 'Failed to fetch user details')
+    }
   }
 
   const handleDeleteUser = async (user: SubuserTableRow) => {
-    if (window.confirm(`Are you sure you want to delete user ${user.subuser_email}?`)) {
-      try {
-        showInfo(`Deleting user ${user.subuser_email}...`)
-        // Implement delete API call here when available
-        // await apiClient.deleteSubuser(user.subuser_email)
-        
+    setDeleteModal({ show: true, user })
+  }
+
+  const confirmDelete = async () => {
+    const user = deleteModal.user
+    if (!user) return
+
+    try {
+      showInfo(`Deleting user ${user.subuser_email}...`)
+      
+      // Call delete API
+      const response = await apiClient.deleteSubuser(user.subuser_email)
+      
+      if (response.success) {
         showSuccess(`User ${user.subuser_email} deleted successfully`)
+        setDeleteModal({ show: false, user: null })
         await loadUsersData() // Refresh the list
-      } catch (error) {
-        console.error('Error deleting user:', error)
-        showError('Delete Failed', 'Failed to delete user. Please try again.')
+      } else {
+        throw new Error(response.error || 'Failed to delete user')
       }
+    } catch (error) {
+      console.error('Error deleting user:', error)
+      showError('Delete Failed', error instanceof Error ? error.message : 'Failed to delete user. Please try again.')
     }
+  }
+
+  const cancelDelete = () => {
+    setDeleteModal({ show: false, user: null })
   }
 
   const handleManagePermissions = async (user: SubuserTableRow) => {
@@ -596,13 +680,21 @@ export default function AdminSubusers() {
                       >
                         View
                       </button> */}
+                      
+                      {/* ✅ Edit Button - Disabled for simple users */}
                       <button 
-                        onClick={() => handleEditUser(user)}
-                        className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
-                        title="Edit User"
+                        onClick={() => canEditOrDelete && handleEditUser(user)}
+                        disabled={!canEditOrDelete}
+                        className={`text-xs px-2 py-1 rounded border ${
+                          canEditOrDelete
+                            ? 'text-slate-600 hover:text-slate-800 border-slate-200 hover:bg-slate-50 cursor-pointer'
+                            : 'text-slate-400 border-slate-200 cursor-not-allowed opacity-50'
+                        }`}
+                        title={canEditOrDelete ? 'Edit User' : 'Only admin and superadmin can edit users'}
                       >
                         Edit
                       </button>
+                      
                       {/* <button 
                         onClick={() => handleManagePermissions(user)}
                         className="text-purple-600 hover:text-purple-800 text-xs px-2 py-1 rounded border border-purple-200 hover:bg-purple-50"
@@ -633,10 +725,17 @@ export default function AdminSubusers() {
                       >
                         {user.status === 'active' ? 'Deactivate' : 'Activate'}
                       </button> */}
+                      
+                      {/* ✅ Delete Button - Disabled for simple users */}
                       <button 
-                        onClick={() => handleDeleteUser(user)}
-                        className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
-                        title="Delete User"
+                        onClick={() => canEditOrDelete && handleDeleteUser(user)}
+                        disabled={!canEditOrDelete}
+                        className={`text-xs px-2 py-1 rounded border ${
+                          canEditOrDelete
+                            ? 'text-red-600 hover:text-red-800 border-red-200 hover:bg-red-50 cursor-pointer'
+                            : 'text-slate-400 border-slate-200 cursor-not-allowed opacity-50'
+                        }`}
+                        title={canEditOrDelete ? 'Delete User' : 'Only admin and superadmin can delete users'}
                       >
                         Delete
                       </button>
@@ -671,6 +770,98 @@ export default function AdminSubusers() {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.show && deleteModal.user && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full animate-scale-in">
+            {/* Modal Header */}
+            <div className="flex items-center gap-3 p-6 border-b border-slate-200">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-slate-900">Delete User</h3>
+                <p className="text-sm text-slate-500">This action cannot be undone</p>
+              </div>
+              <button
+                onClick={cancelDelete}
+                className="text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6">
+              <p className="text-slate-700 mb-4">
+                Are you sure you want to delete the following user?
+              </p>
+              
+              <div className="bg-slate-50 rounded-lg p-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span className="font-medium text-slate-900">{deleteModal.user.subuser_email}</span>
+                </div>
+                
+                <div className="flex items-center gap-2 text-sm">
+                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <span className="text-slate-600">{deleteModal.user.department}</span>
+                  <span className="mx-2 text-slate-300">•</span>
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                    deleteModal.user.roles === 'admin' ? 'bg-purple-100 text-purple-800' :
+                    deleteModal.user.roles === 'manager' ? 'bg-blue-100 text-blue-800' :
+                    'bg-slate-100 text-slate-800'
+                  }`}>
+                    {deleteModal.user.roles}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-red-900">Warning</p>
+                    <p className="text-sm text-red-700 mt-1">
+                      This will permanently delete the user account, all associated data, and cannot be recovered.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-end gap-3 p-6 border-t border-slate-200 bg-slate-50">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-white transition-colors font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors font-medium flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Delete User
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
     </>
   )

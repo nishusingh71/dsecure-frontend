@@ -3,6 +3,7 @@ import BarChart from '@/components/BarChart'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
+import { useAuth } from '@/auth/AuthContext'
 import {apiClient} from '@/utils/enhancedApiClient'
 
 interface PerformanceData {
@@ -49,6 +50,7 @@ const setCachedData = (key: string, data: any) => {
 
 export default function AdminPerformance() {
   const { showError } = useNotification()
+  const { user } = useAuth()
   const [performanceData, setPerformanceData] = useState<PerformanceData>(() => {
     const cached = getCachedData('performance');
     return cached || {
@@ -58,10 +60,78 @@ export default function AdminPerformance() {
     };
   })
   const [loading, setLoading] = useState(true)
+  const [currentUserEmail, setCurrentUserEmail] = useState<string>('')
+
+  // ✅ Listen for auth state changes (logout/login)
+  useEffect(() => {
+    const handleAuthStateChange = (event: Event) => {
+      const customEvent = event as CustomEvent
+      if (customEvent.detail === null) {
+        // User logged out - reset state and clear current user email
+        console.log('🚪 User logged out - clearing AdminPerformance state')
+        setCurrentUserEmail('')
+        setPerformanceData({
+          monthlyErasures: [],
+          avgDuration: [],
+          throughput: []
+        })
+      }
+    }
+
+    window.addEventListener('authStateChanged', handleAuthStateChange)
+    return () => window.removeEventListener('authStateChanged', handleAuthStateChange)
+  }, [])
+
+  // Track user changes and clear cache when user changes
+  useEffect(() => {
+    // Get user email from localStorage or auth context
+    let storedUserData = null
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser)
+      } catch (e) {
+        console.error('Error parsing user_data:', e)
+      }
+    }
+    
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser)
+      } catch (e) {
+        console.error('Error parsing authUser:', e)
+      }
+    }
+    
+    const userEmail = storedUserData?.user_email || user?.email || ''
+    
+    // If user email changed, clear cache and reload data
+    if (userEmail && userEmail !== currentUserEmail) {
+      console.log('👤 User changed from', currentUserEmail, 'to', userEmail, '- clearing cache')
+      
+      // Clear ALL admin caches when user changes
+      const cacheKeys = ['performance', 'stats', 'activity', 'groups', 'licenses', 'reports', 
+                         'subusers', 'superuser', 'activeLicenses', 'auditReportsCount', 'auditReports']
+      cacheKeys.forEach(key => {
+        localStorage.removeItem(`admin_cache_${key}`)
+      })
+      
+      setCurrentUserEmail(userEmail)
+      loadPerformanceData()
+    } else if (userEmail && !currentUserEmail) {
+      // First load
+      setCurrentUserEmail(userEmail)
+      loadPerformanceData()
+    }
+  }, [user, currentUserEmail])
 
   // Load performance data on component mount - Same as AdminDashboard
   useEffect(() => {
-    loadPerformanceData()
+    if (!currentUserEmail) {
+      loadPerformanceData()
+    }
   }, [])
 
   const loadPerformanceData = async () => {
@@ -280,8 +350,9 @@ export default function AdminPerformance() {
   // Calculate totals and averages
   const totalErasures = performanceData.monthlyErasures.reduce((sum, item) => sum + item.count, 0)
   const totalDuration = performanceData.avgDuration.reduce((sum, item) => sum + item.duration, 0)
-  const avgSeconds = performanceData.avgDuration.length > 0 
-    ? totalDuration / performanceData.avgDuration.filter(i => i.duration > 0).length 
+  const validDurationCount = performanceData.avgDuration.filter(i => i.duration > 0).length
+  const avgSeconds = validDurationCount > 0 
+    ? totalDuration / validDurationCount 
     : 0
   const minutes = Math.floor(avgSeconds / 60)
   const seconds = Math.floor(avgSeconds % 60)
@@ -289,7 +360,7 @@ export default function AdminPerformance() {
 
   // Calculate success rate based on erasures vs total operations
   const totalOperations = performanceData.monthlyErasures.reduce((sum, item) => sum + item.count, 0)
-  const successRate = totalOperations > 0 ? '99.2%' : '100%' // Assuming high success rate
+  const successRate = totalOperations > 0 ? '99.2%' : '0%'
 
   return (
     <>

@@ -40,6 +40,7 @@ export interface User {
   payment_details_json?: string
   license_details_json?: string
   phone_number?: string
+  timezone?: string // Timezone field
   is_private_cloud?: boolean
   private_api?: boolean
   currentPassword?: string // For password change
@@ -67,8 +68,9 @@ export interface Subuser {
   role?: string
   department?: string
   last_login?: string
-  user_group?: string
+  subuser_group?: string
   license_allocation?: string
+  name?:string
 }
 
 export interface EnhancedSubuser extends Subuser {
@@ -561,12 +563,21 @@ class EnhancedApiClient {
           }
 
           // Create user object with role information
+          // Preserve all fields from API response, including userRole/user_role
           const userData = {
-            ...user,
-            role: decodedToken.role || user?.role || 'user',
-            id: decodedToken.sub || user?.id,
-            email: decodedToken.email || user?.email || credentials.email,
-            name: decodedToken.name || user?.name || 'User'
+            ...user, // Keep all original fields from API response
+            ...response.data, // Include all top-level response fields
+            role: user?.userRole || user?.user_role || decodedToken.role || user?.role || response.data?.userRole || response.data?.user_role || 'user',
+            userRole: user?.userRole || response.data?.userRole || user?.user_role || response.data?.user_role, // Preserve camelCase
+            user_role: user?.user_role || response.data?.user_role || user?.userRole || response.data?.userRole, // Preserve snake_case
+            id: decodedToken.sub || user?.userId || user?.user_id || user?.id || response.data?.userId,
+            email: decodedToken.email || user?.email || response.data?.email || credentials.email,
+            name: decodedToken.name || user?.userName || user?.user_name || user?.name || response.data?.userName || 'User',
+            department: user?.department || response.data?.department,
+            user_group: user?.user_group || user?.userGroup || response.data?.userGroup || response.data?.user_group,
+            timezone: user?.timezone || response.data?.timezone,
+            phone: user?.phone || response.data?.phone,
+            token: token // Add token to userData for easy access
           }
 
           try {
@@ -764,13 +775,24 @@ class EnhancedApiClient {
   }
 
   // Profile update endpoint - uses DynamicUser/profile
-  async updateUserProfile(userData: { userName: string; phoneNumber: string }): Promise<ApiResponse<User>> {
+  async updateUserProfile(userData: { userName: string; phoneNumber: string; timezone?: string }): Promise<ApiResponse<User>> {
     console.log('🌐 Calling PUT /api/DynamicUser/profile with:', userData)
     const response = await this.request<User>(`/api/DynamicUser/profile`, {
       method: 'PUT',
       body: JSON.stringify(userData),
     })
     console.log('🌐 Response from /api/DynamicUser/profile:', response)
+    return response
+  }
+
+  // Update timezone endpoint - PATCH /api/RoleBasedAuth/update-timezone
+  async updateTimezone(email: string, timezone: string): Promise<ApiResponse<{ message: string; timezone: string }>> {
+    console.log('🌐 Calling PATCH /api/RoleBasedAuth/update-timezone with:', { email, timezone })
+    const response = await this.request<{ message: string; timezone: string }>(`/api/RoleBasedAuth/update-timezone`, {
+      method: 'PATCH',
+      body: JSON.stringify({ email, timezone }),
+    })
+    console.log('🌐 Response from /api/RoleBasedAuth/update-timezone:', response)
     return response
   }
 
@@ -804,6 +826,82 @@ class EnhancedApiClient {
     return this.request<EnhancedSubuser[]>(`/api/EnhancedSubusers/by-parent/${encodeURIComponent(parentEmail)}`)
   }
 
+  async getDynamicUserSubusers(): Promise<ApiResponse<Subuser[]>> {
+    return this.request<Subuser[]>('/api/DynamicUser/subusers')
+  }
+
+  async getSubuserManagement(): Promise<ApiResponse<Subuser[]>> {
+    return this.request<Subuser[]>('/api/SubuserManagement')
+  }
+
+  // 🔄 Master method to fetch subusers with fallback across all available endpoints
+  async getAllSubusersWithFallback(userEmail?: string): Promise<ApiResponse<Subuser[]>> {
+    console.log('🔄 Starting getAllSubusersWithFallback...')
+    console.log('📧 User email provided:', userEmail || 'None')
+
+    // Define all possible endpoints to try
+    const endpointStrategies = [
+      // Strategy 1: DynamicUser endpoint (try first)
+      {
+        name: 'DynamicUser/subusers',
+        execute: () => this.getDynamicUserSubusers(),
+      },
+      // Strategy 2: SubuserManagement endpoint
+      {
+        name: 'SubuserManagement',
+        execute: () => this.getSubuserManagement(),
+      },
+      // Strategy 3: Base Subuser endpoint
+      {
+        name: 'Subuser',
+        execute: () => this.getSubusers(),
+      },
+      // Strategy 4: EnhancedSubusers by parent (if email provided)
+      ...(userEmail ? [{
+        name: 'EnhancedSubusers/by-parent',
+        execute: () => this.getEnhancedSubusersByParent(userEmail),
+      }] : []),
+      // Strategy 5: Subuser by superuser (if email provided)
+      ...(userEmail ? [{
+        name: 'Subuser/by-superuser',
+        execute: () => this.getSubusersBySuperuser(userEmail),
+      }] : []),
+    ]
+
+    // Try each endpoint until we get data
+    for (const strategy of endpointStrategies) {
+      try {
+        console.log(`🔍 Trying endpoint: ${strategy.name}...`)
+        const response = await strategy.execute()
+        
+        console.log(`📥 Response from ${strategy.name}:`, {
+          success: response.success,
+          dataLength: response.data?.length || 0,
+          hasData: Array.isArray(response.data) && response.data.length > 0
+        })
+
+        // Check if we got valid data
+        if (response.success && Array.isArray(response.data) && response.data.length > 0) {
+          console.log(`✅ SUCCESS! Got ${response.data.length} subusers from ${strategy.name}`)
+          return response
+        } else {
+          console.log(`⚠️ ${strategy.name} returned empty or invalid data, trying next endpoint...`)
+        }
+      } catch (error) {
+        console.warn(`❌ Error from ${strategy.name}:`, error)
+        // Continue to next endpoint
+      }
+    }
+
+    // If all endpoints failed or returned empty data
+    console.warn('⚠️ All subuser endpoints failed or returned no data')
+    return {
+      success: false,
+      data: [],
+      message: 'No subusers found from any available endpoint'
+    }
+  }
+
 async createSubuser(subuserData: {
   subuser_username: string
   subuser_email: string
@@ -819,6 +917,27 @@ async createSubuser(subuserData: {
     body: JSON.stringify(subuserData)
   });
 }
+
+  async deleteSubuser(email: string): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/EnhancedSubuser/${encodeURIComponent(email)}`, {
+      method: 'DELETE'
+    });
+  }
+
+  async updateEnhancedSubuser(email: string, userData: {
+    name?: string
+    role?: string
+    department?: string
+    phone?: string
+    status?: string
+  }): Promise<ApiResponse<EnhancedSubuser>> {
+    return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeURIComponent(email)}`, {
+      method: 'PUT',
+      body: JSON.stringify(userData)
+    });
+  }
+
+
   async getMachines(): Promise<ApiResponse<Machine[]>> {
     return this.request<Machine[]>('/api/Machines')
   }
@@ -842,8 +961,101 @@ async createSubuser(subuserData: {
   async getAuditReportsByEmail(email: string): Promise<ApiResponse<AuditReport[]>> {
     return this.request<AuditReport[]>(`/api/AuditReports/by-email/${encodeURIComponent(email)}`)
   }
+  
   async getAuditReports(): Promise<ApiResponse<AuditReport[]>> {
     return this.request<AuditReport[]>(`/api/AuditReports`)
+  }
+
+  // Get audit report by single report_id
+  async getAuditReportById(reportId: string): Promise<ApiResponse<AuditReport>> {
+    return this.request<AuditReport>(`/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf`)
+  }
+
+  // Get audit reports by multiple report_ids
+  async getAuditReportsByIds(reportIds: string[]): Promise<ApiResponse<AuditReport[]>> {
+    if (!reportIds || reportIds.length === 0) {
+      return {
+        success: false,
+        error: 'No report IDs provided'
+      }
+    }
+
+    // If single report_id, use single endpoint for better performance
+    if (reportIds.length === 1) {
+      const singleResult = await this.getAuditReportById(reportIds[0])
+      if (singleResult.success && singleResult.data) {
+        return {
+          success: true,
+          data: [singleResult.data]
+        }
+      }
+      return {
+        success: false,
+        error: singleResult.error || 'Failed to fetch report'
+      }
+    }
+
+    // For multiple report_ids, fetch them in parallel
+    try {
+      const promises = reportIds.map(id => this.getAuditReportById(id))
+      const results = await Promise.all(promises)
+      
+      const successfulReports = results
+        .filter(result => result.success && result.data)
+        .map(result => result.data!)
+      
+      if (successfulReports.length === 0) {
+        return {
+          success: false,
+          error: 'No reports found for the provided IDs'
+        }
+      }
+
+      return {
+        success: true,
+        data: successfulReports
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch reports'
+      }
+    }
+  }
+
+  // Flexible method: Get audit reports by email OR report_id(s)
+  async getAuditReportsFlexible(params: {
+    email?: string
+    reportId?: string
+    reportIds?: string[]
+  }): Promise<ApiResponse<AuditReport[]>> {
+    const { email, reportId, reportIds } = params
+
+    // Priority: reportId(s) > email > all reports
+    if (reportId) {
+      const result = await this.getAuditReportById(reportId)
+      if (result.success && result.data) {
+        return {
+          success: true,
+          data: [result.data]
+        }
+      }
+      return {
+        success: false,
+        error: result.error || 'Failed to fetch report'
+      }
+    }
+
+    if (reportIds && reportIds.length > 0) {
+      return this.getAuditReportsByIds(reportIds)
+    }
+
+    if (email) {
+      return this.getAuditReportsByEmail(email)
+    }
+
+    // Fallback: get all reports
+    return this.getAuditReports()
   }
 
   // System Logs API methods

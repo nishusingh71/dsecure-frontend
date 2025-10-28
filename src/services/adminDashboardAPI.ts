@@ -59,6 +59,8 @@ interface ProfileData {
   email: string
   timezone: string
   role: string
+  userRole?: string // camelCase from API response
+  user_role?: string // snake_case from API response
   phone?: string
   department?: string
   avatar?: string
@@ -476,12 +478,17 @@ export class AdminDashboardAPI {
       console.log('✅ Profile data received:', data);
       
       // Transform backend data to ProfileData format
+      // Priority: userRole (camelCase) > user_role > user_type > role
+      const roleValue = data.userRole || data.user_role || data.user_type || data.role || 'user';
+      
       const profileData: ProfileData = {
-        name: data.user_name || data.name || 'User',
+        name: data.user_name || data.userName || data.name || 'User',
         email: data.user_email || data.email || userEmail,
         timezone: data.timezone || 'Asia/Kolkata',
-        role: data.user_type || data.role || 'user',
-        phone: data.phone_number || '',
+        role: roleValue,
+        userRole: data.userRole || data.user_role, // Keep original field
+        user_role: data.user_role || data.userRole, // Keep original field
+        phone: data.phone_number || data.phone || '',
         department: data.department || '',
         avatar: data.avatar || '',
         licenses: data.licenses || 0
@@ -554,12 +561,17 @@ export class AdminDashboardAPI {
       console.log('✅ Profile updated successfully:', data);
       
       // Transform response back to ProfileData format
+      // Priority: userRole (camelCase) > user_role > user_type > role
+      const updatedRoleValue = data.userRole || data.user_role || data.user_type || data.role || profileData.role || 'user';
+      
       const updatedProfile: ProfileData = {
-        name: data.user_name || data.name || profileData.name || 'User',
+        name: data.user_name || data.userName || data.name || profileData.name || 'User',
         email: data.user_email || data.email || userEmail,
         timezone: data.timezone || profileData.timezone || 'Asia/Kolkata',
-        role: data.user_type || data.role || profileData.role || 'user',
-        phone: data.phone_number || profileData.phone || '',
+        role: updatedRoleValue,
+        userRole: data.userRole || data.user_role, // Keep original field
+        user_role: data.user_role || data.userRole, // Keep original field
+        phone: data.phone_number || data.phone || profileData.phone || '',
         department: data.department || profileData.department || '',
         avatar: data.avatar || '',
         licenses: data.licenses || 0

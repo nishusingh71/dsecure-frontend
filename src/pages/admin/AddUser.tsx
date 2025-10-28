@@ -1,7 +1,8 @@
 import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { apiClient } from '@/utils/enhancedApiClient'
 
 interface UserFormData {
   name: string
@@ -14,10 +15,21 @@ interface UserFormData {
   status: 'active' | 'inactive'
 }
 
+// Interface for displaying logged-in user details
+interface LoggedInUserData {
+  user_name: string
+  user_email: string
+  department: string
+  role: string
+  user_group: string
+}
+
 export default function AddUser() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
+  const [userDetailsLoading, setUserDetailsLoading] = useState(true)
+  const [loggedInUserData, setLoggedInUserData] = useState<LoggedInUserData | null>(null)
   const [formData, setFormData] = useState<UserFormData>({
     name: '',
     email: '',
@@ -35,6 +47,73 @@ export default function AddUser() {
     'Security Team',
     'Pool Group'
   ]
+
+  // Fetch logged-in user details on component mount
+  useEffect(() => {
+    fetchLoggedInUserDetails()
+  }, [])
+
+  const fetchLoggedInUserDetails = async () => {
+    setUserDetailsLoading(true)
+    try {
+      // Get user email from localStorage or auth context
+      let storedUserData = null
+      const storedUser = localStorage.getItem('user_data')
+      const authUser = localStorage.getItem('authUser')
+      
+      if (storedUser) {
+        try {
+          storedUserData = JSON.parse(storedUser)
+        } catch (e) {
+          console.error('Error parsing user_data:', e)
+        }
+      }
+      
+      if (!storedUserData && authUser) {
+        try {
+          storedUserData = JSON.parse(authUser)
+        } catch (e) {
+          console.error('Error parsing authUser:', e)
+        }
+      }
+      
+      const userEmail = storedUserData?.user_email || user?.email || ''
+      
+      if (!userEmail) {
+        console.warn('⚠️ No user email found')
+        setUserDetailsLoading(false)
+        return
+      }
+
+      console.log('📧 Fetching user details for:', userEmail)
+      
+      // Fetch user details from /api/Users/{email}
+      const userRes = await apiClient.getUserByEmail(userEmail)
+      
+      if (userRes.success && userRes.data) {
+        const userData = userRes.data
+        
+        // Prepare display data with fallback for user_group
+        const displayData: LoggedInUserData = {
+          user_name: userData.user_name || 'N/A',
+          user_email: userData.user_email || userEmail,
+          department: userData.department || 'N/A',
+          role: userData.user_role || userData.role || 'user',
+          // If user_group is not present or empty, use department
+          user_group: userData.user_group || userData.department || 'N/A'
+        }
+        
+        setLoggedInUserData(displayData)
+        console.log('✅ Logged-in user data loaded:', displayData)
+      } else {
+        console.warn('⚠️ Failed to fetch user details:', userRes.error)
+      }
+    } catch (error) {
+      console.error('❌ Error fetching logged-in user details:', error)
+    } finally {
+      setUserDetailsLoading(false)
+    }
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -124,6 +203,60 @@ export default function AddUser() {
         </div>
 
         <div className="max-w-2xl mx-auto">
+          {/* Logged-in User Details Card */}
+          {userDetailsLoading ? (
+            <div className="card mb-6">
+              <div className="p-6">
+                <div className="flex items-center gap-3">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500"></div>
+                  <p className="text-slate-600">Loading your details...</p>
+                </div>
+              </div>
+            </div>
+          ) : loggedInUserData ? (
+            <div className="card mb-6 bg-gradient-to-br from-emerald-50 to-teal-50">
+              <div className="px-6 py-4 border-b border-emerald-200">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <h3 className="font-semibold text-slate-900">Your Account Details</h3>
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Name</p>
+                    <p className="text-sm font-medium text-slate-900">{loggedInUserData.user_name}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Email</p>
+                    <p className="text-sm font-medium text-slate-900">{loggedInUserData.user_email}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Department</p>
+                    <p className="text-sm font-medium text-slate-900">{loggedInUserData.department}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Role</p>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      loggedInUserData.role === 'admin' ? 'bg-purple-100 text-purple-800' :
+                      loggedInUserData.role === 'manager' ? 'bg-blue-100 text-blue-800' :
+                      'bg-slate-100 text-slate-800'
+                    }`}>
+                      {loggedInUserData.role}
+                    </span>
+                  </div>
+                  <div className="space-y-1 sm:col-span-2">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">User Group</p>
+                    <p className="text-sm font-medium text-slate-900">{loggedInUserData.user_group}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {/* Add User Form */}
           <form onSubmit={handleSubmit} className="card">
             <div className="px-6 py-5 border-b border-slate-200">
               <h2 className="font-semibold text-slate-900">User Information</h2>

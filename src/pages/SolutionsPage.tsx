@@ -28,30 +28,11 @@ export default function SolutionsPage() {
   );
 }
 
-// Yeh function add karo component ke andar, return() se pehle
-const getIndustryLink = (industry: string) => {
-  const links: { [key: string]: string } = {
-    // enterprise: "/solutions/enterprise",
-    // healthcare: "/solutions/healthcare", 
-    //   healthcare: "/solutions/healthcare"
-    
-    // financial: "/solutions/financial"
-    
-    enterprise: "/solutions/enterprise",
-    healthcare: "/solutions/healthcare",   
-    financial: "/solutions/financial",
-    government: "/solutions/government",
-    itad: "/solutions/itad",
-    serviceProviders: "/solutions/service-providers"
-  };
-  return links[industry] || "/solutions";
-};
-
-
 function SolutionsPageContent() {
   type IndustryKey = keyof typeof solutions;
-  const [activeIndustry, setActiveIndustry] =
-    useState<IndustryKey>("enterprise");
+  const [activeIndustry, setActiveIndustry] = useState<IndustryKey>(
+    "enterprise"
+  );
   const [searchParams] = useSearchParams();
 
   // Handle URL parameters to auto-select solutions
@@ -99,7 +80,7 @@ function SolutionsPageContent() {
       benefits: [
         "Software-based data sanitization for safe and sustainable reuse",
         "Tamper-proof audit trail with digitally signed reports",
-        "Integration with ServiceNow and common IT asset management platforms",
+        "Compatible with ServiceNow and common IT asset management platforms",
         "Supports cloud migration, data center, and endpoint device erasure",
         "Active environment erasure for enterprise data management policies",
         "Reduced e-waste and increased technology investment returns",
@@ -148,7 +129,7 @@ function SolutionsPageContent() {
       benefits: [
         "Intelligent Business Routing (IBR) for streamlined workflows",
         "High-volume mobile device processing for resale and recycling",
-        "Extended Asset Management Integration with AMS/ERP systems",
+        "Extended Asset Management compatible with AMS/ERP systems",
         "Tamper-proof, audit-worthy reports for customer compliance",
         "Two-way communication reducing human error and increasing speed",
         "Support for Android, iOS and broad variety of IT assets",
@@ -182,7 +163,7 @@ function SolutionsPageContent() {
         {
           title: "Multi-Client Workflows",
           description:
-            "Seamless integration supporting multiple client requirements simultaneously",
+            "Seamless platform supporting multiple client requirements simultaneously",
         },
       ],
     },
@@ -412,22 +393,16 @@ function SolutionsPageContent() {
       case "financial":
         return "/solutions/financial";
       case "itad":
-      return "/solutions/itad";  
+        return "/solutions/itad";
       case "government":
-      return "/solutions/government"  
+        return "/solutions/government";
       default:
-        return "/contact"; // For industries without dedicated sub-pages yet
+        return "/solutions/service-providers"; // For industries without dedicated sub-pages yet
     }
   };
 
   return (
     <>
-
-
-
-
-
-    
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Background Pattern */}
@@ -900,27 +875,26 @@ function SolutionsPageContent() {
                       </div>
                     </div>
                   </div>
-         
-                  <div className="flex flex-col sm:flex-row gap-3">
-  {(activeIndustry === "enterprise" ||
-    activeIndustry === "healthcare" ||
-    activeIndustry === "government" ||
-    activeIndustry === "itad" ||
-    activeIndustry === "serviceProviders" ||
-    activeIndustry === "financial") && (
-    <Link
-      to={getIndustryLink(activeIndustry)}
-      className="btn-primary"
-    >
-      Learn More About {solutions[activeIndustry].title}
-    </Link>
-  )}
-  
-  <Link to="/contact" className="btn-secondary">
-    Request Demo
-  </Link>
-</div>
 
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    {(activeIndustry === "enterprise" ||
+                      activeIndustry === "healthcare" ||
+                      activeIndustry === "government" ||
+                      activeIndustry === "itad" ||
+                      activeIndustry === "serviceProviders" ||
+                      activeIndustry === "financial") && (
+                      <Link
+                        to={getIndustryLink(activeIndustry)}
+                        className="btn-primary"
+                      >
+                        Learn More About {solutions[activeIndustry].title}
+                      </Link>
+                    )}
+
+                    <Link to="/contact" className="btn-secondary">
+                      Request Demo
+                    </Link>
+                  </div>
                 </div>
                 {/* Sidebar */}
                 <div className="bg-slate-50 p-8">
@@ -1175,8 +1149,6 @@ function SolutionsPageContent() {
           </Reveal>
         </div>
       </section>
-
-
     </>
   );
 }

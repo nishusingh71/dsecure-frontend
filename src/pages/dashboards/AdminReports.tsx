@@ -59,6 +59,7 @@ export default function AdminReports() {
   
   const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(() => getCachedData('reports') || []);
   const [loading, setLoading] = useState(true);
+  const [selectedReportIds, setSelectedReportIds] = useState<Set<string>>(new Set());
   const pageSize = 5;
 
   // Generate PDF Modal State
@@ -282,8 +283,8 @@ export default function AdminReports() {
   const filtered = useMemo(() => {
     let result = allRows.filter((r) => {
       const matchesQuery =
-        r.id.toLowerCase().includes(query.toLowerCase()) ||
-        r.department.toLowerCase().includes(query.toLowerCase());
+        String(r.id || '').toLowerCase().includes(query.toLowerCase()) ||
+        String(r.department || '').toLowerCase().includes(query.toLowerCase());
       const matchesStatus = !statusFilter || r.status === statusFilter;
       const matchesDate = !dateFilter || r.date.startsWith(dateFilter);
 
@@ -320,31 +321,31 @@ export default function AdminReports() {
 
       switch (sortBy) {
         case "id":
-          aVal = a.id;
-          bVal = b.id;
+          aVal = String(a.id || '');
+          bVal = String(b.id || '');
           break;
         case "date":
           aVal = new Date(a.date);
           bVal = new Date(b.date);
           break;
         case "devices":
-          aVal = a.devices;
-          bVal = b.devices;
+          aVal = a.devices || 0;
+          bVal = b.devices || 0;
           break;
         case "status":
-          aVal = a.status;
-          bVal = b.status;
+          aVal = String(a.status || '');
+          bVal = String(b.status || '');
           break;
         case "department":
-          aVal = a.department;
-          bVal = b.department;
+          aVal = String(a.department || '');
+          bVal = String(b.department || '');
           break;
         default:
-          aVal = a.id;
-          bVal = b.id;
+          aVal = String(a.id || '');
+          bVal = String(b.id || '');
       }
 
-      if (typeof aVal === "string") {
+      if (typeof aVal === "string" && typeof bVal === "string") {
         aVal = aVal.toLowerCase();
         bVal = bVal.toLowerCase();
       }
@@ -499,6 +500,133 @@ export default function AdminReports() {
         }`
       );
     }
+  };
+
+  // ✅ Bulk Download Multiple Reports as ZIP
+  const handleBulkDownload = async () => {
+    if (selectedReportIds.size === 0) {
+      showWarning('No Reports Selected', 'Please select at least one report to download');
+      return;
+    }
+
+    try {
+      showInfo(`Preparing ${selectedReportIds.size} reports for download...`);
+
+      // Import JSZip dynamically
+      const JSZip = (await import('jszip')).default;
+      const zip = new JSZip();
+
+      // Get selected reports
+      const selectedReports = allRows.filter(report => 
+        selectedReportIds.has(String(report.id || ''))
+      );
+
+      let successCount = 0;
+      let failedCount = 0;
+
+      // Download each report and add to ZIP
+      for (const report of selectedReports) {
+        try {
+          const rawReport = report._raw;
+          const reportDetails = report._details;
+          
+          if (!rawReport || !rawReport.report_id) {
+            console.warn(`Skipping report ${report.id} - no data available`);
+            failedCount++;
+            continue;
+          }
+
+          const reportId = reportDetails?.report_id?.toString() || rawReport.report_id || "";
+          const response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf?reportId=${encodeURIComponent(reportId)}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authService.getAccessToken()}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            const blob = await response.blob();
+            const fileName = `audit-report-${report.id}-${report.date}.pdf`;
+            zip.file(fileName, blob);
+            successCount++;
+          } else {
+            console.warn(`Failed to download report ${report.id}`);
+            failedCount++;
+          }
+        } catch (error) {
+          console.error(`Error downloading report ${report.id}:`, error);
+          failedCount++;
+        }
+      }
+
+      if (successCount === 0) {
+        showError('Download Failed', 'No reports could be downloaded');
+        return;
+      }
+
+      // Generate ZIP file
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      
+      // Create download link
+      const url = window.URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit-reports-${new Date().toISOString().split('T')[0]}.zip`;
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      // Clear selection
+      setSelectedReportIds(new Set());
+
+      if (failedCount > 0) {
+        showWarning(
+          'Partial Success',
+          `Downloaded ${successCount} reports. ${failedCount} failed.`
+        );
+      } else {
+        showSuccess(`Successfully downloaded ${successCount} reports as ZIP`);
+      }
+    } catch (error) {
+      console.error('Error creating ZIP:', error);
+      showError('Download Failed', 'Failed to create ZIP file. Please try again.');
+    }
+  };
+
+  // ✅ Toggle individual report selection
+  const toggleReportSelection = (reportId: string) => {
+    const newSelection = new Set(selectedReportIds);
+    if (newSelection.has(reportId)) {
+      newSelection.delete(reportId);
+    } else {
+      newSelection.add(reportId);
+    }
+    console.log('🔄 Selection updated:', newSelection.size, 'reports selected');
+    setSelectedReportIds(newSelection);
+  };
+
+  // ✅ Toggle all reports on current page
+  const toggleSelectAll = (currentPageReports: ExtendedAdminReport[]) => {
+    const currentPageIds = currentPageReports.map(r => String(r.id || ''));
+    const allSelected = currentPageIds.every(id => selectedReportIds.has(id));
+    
+    const newSelection = new Set(selectedReportIds);
+    if (allSelected) {
+      // Deselect all on current page
+      currentPageIds.forEach(id => newSelection.delete(id));
+    } else {
+      // Select all on current page
+      currentPageIds.forEach(id => newSelection.add(id));
+    }
+    console.log('🔄 Select All updated:', newSelection.size, 'reports selected');
+    setSelectedReportIds(newSelection);
   };
 
   // const handleDeleteReport = async (report: AdminReport) => {
@@ -731,9 +859,30 @@ export default function AdminReports() {
       </Helmet>
       <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
         <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
-          <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">
-            Audit Reports
-          </h1>
+          <div>
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">
+              Audit Reports
+            </h1>
+            {selectedReportIds.size > 0 && (
+              <p className="text-sm text-slate-600 mt-1">
+                {selectedReportIds.size} report{selectedReportIds.size > 1 ? 's' : ''} selected
+              </p>
+            )}
+          </div>
+          
+          {/* Bulk Download Button */}
+          {selectedReportIds.size > 0 && (
+            <button
+              onClick={handleBulkDownload}
+              className="btn-primary flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Download {selectedReportIds.size} as ZIP
+            </button>
+          )}
+          
           {/* <div className="flex items-center space-x-4">
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${
             loading ? 'bg-yellow-100 text-yellow-800' :
@@ -1062,6 +1211,15 @@ export default function AdminReports() {
               <table className="w-full text-nowrap min-w-[800px]">
                 <thead>
                   <tr className="text-left text-slate-500">
+                    <th className="py-3 px-2 w-10">
+                      <input
+                        type="checkbox"
+                        checked={rows.length > 0 && rows.every(r => selectedReportIds.has(String(r.id || '')))}
+                        onChange={() => toggleSelectAll(rows)}
+                        className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                        title="Select all on this page"
+                      />
+                    </th>
                     <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                       Report ID
                     </th>
@@ -1088,6 +1246,14 @@ export default function AdminReports() {
                       key={`${row.id}-${i}`}
                       className="border-t hover:bg-slate-50"
                     >
+                      <td className="py-3 px-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedReportIds.has(String(row.id || ''))}
+                          onChange={() => toggleReportSelection(String(row.id || ''))}
+                          className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                        />
+                      </td>
                       <td className="py-3 px-2 font-medium font-mono text-xs xs:text-sm sm:text-sm">
                         {row.id}
                       </td>
@@ -1140,17 +1306,8 @@ export default function AdminReports() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => handleDownloadReport(row)}
-                            className={`text-xs px-3 py-1.5 rounded border font-medium transition-colors ${
-                              row.status === "completed"
-                                ? "text-green-600 hover:text-white hover:bg-green-600 border-green-600"
-                                : "text-slate-400 border-slate-200 cursor-not-allowed"
-                            }`}
-                            disabled={row.status !== "completed"}
-                            title={
-                              row.status !== "completed"
-                                ? "Report not ready for download"
-                                : "Download PDF Report"
-                            }
+                            className="text-xs px-3 py-1.5 rounded border font-medium transition-colors text-green-600 hover:text-white hover:bg-green-600 border-green-600"
+                            title="Download PDF Report"
                           >
                             <svg
                               className="w-4 h-4 inline-block mr-1"

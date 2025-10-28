@@ -4,10 +4,12 @@ import { exportToCsv } from '@/utils/csv'
 import { useNotification } from '@/contexts/NotificationContext'
 import { apiClient, SystemLog, Command, Session } from '@/utils/enhancedApiClient'
 import { authService } from '@/utils/authService'
+import { useAuth } from '@/auth/AuthContext'
 
 type TabType = 'logs' | 'commands' | 'sessions'
 
 export default function AdminLogs() {
+  const { user } = useAuth()
   const { showSuccess, showError, showWarning, showInfo } = useNotification()
   const [activeTab, setActiveTab] = useState<TabType>('logs')
   const [query, setQuery] = useState('')
@@ -15,8 +17,36 @@ export default function AdminLogs() {
   const [levelFilter, setLevelFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [dateFilter, setDateFilter] = useState('')
-  const [emailFilter, setEmailFilter] = useState<'all' | 'by-email'>('by-email')
+  const [emailFilter, setEmailFilter] = useState<'all' | 'by-email'>('by-email') // ✅ Default to current user's logs
   const [showDetails, setShowDetails] = useState<number | null>(null)
+  
+  // ✅ Get user role - Only admin and superadmin can see "All Logs" filter
+  const getUserRole = (): string => {
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    
+    let storedUserData = null
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser)
+      } catch (e) {
+        console.error('Error parsing user_data:', e)
+      }
+    }
+    
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser)
+      } catch (e) {
+        console.error('Error parsing authUser:', e)
+      }
+    }
+    
+    return storedUserData?.role || storedUserData?.user_type || user?.role || 'user'
+  }
+  
+  const currentUserRole = getUserRole()
+  const canViewAllLogs = currentUserRole === 'admin' || currentUserRole === 'superadmin'
   
   // ✅ Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -372,17 +402,20 @@ export default function AdminLogs() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Filter By Email</label>
-              <select
-                value={emailFilter}
-                onChange={(e) => setEmailFilter(e.target.value as 'all' | 'by-email')}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-              >
-                <option value="by-email">My Logs (Including Subusers)</option>
-                <option value="all" selected>All Logs</option>
-              </select>
-            </div>
+            {/* ✅ Only show filter for admin/superadmin */}
+            {canViewAllLogs && (
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Filter By Email</label>
+                <select
+                  value={emailFilter}
+                  onChange={(e) => setEmailFilter(e.target.value as 'all' | 'by-email')}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                >
+                  <option value="by-email">My Logs (Including Subusers)</option>
+                  <option value="all">All Logs</option>
+                </select>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Search</label>
@@ -403,7 +436,7 @@ export default function AdminLogs() {
                   onChange={(e) => setLevelFilter(e.target.value)}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="" selected>All Levels</option>
+                  <option value="">All Levels</option>
                   {uniqueLevels.map(level => (
                     <option key={level} value={level}>{level}</option>
                   ))}
@@ -420,7 +453,7 @@ export default function AdminLogs() {
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   
                 >
-                  <option value="" selected>All Statuses</option>
+                  <option value="">All Statuses</option>
                   {uniqueStatuses.map(status => (
                     <option key={status} value={status}>{status}</option>
                   ))}

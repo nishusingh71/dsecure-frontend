@@ -520,16 +520,16 @@ export default function LoginPage() {
               {loading ? "Logging in..." : "Login"}
             </button>
 
-            <div className="relative my-8">
+            {/* <div className="relative my-8">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-slate-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-4 bg-white text-slate-500">or</span>
               </div>
-            </div>
+            </div> */}
 
-            <button
+            {/* <button
               type="button"
               className="btn-secondary w-full flex items-center justify-center gap-2"
               onClick={async () => {
@@ -561,7 +561,7 @@ export default function LoginPage() {
                 <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm0-8a1 1 0 011 1v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H7a1 1 0 110-2h2V9a1 1 0 011-1z" />
               </svg>
               Try Demo Account
-            </button>
+            </button> */}
           </form>
 
           {/* <p className="mt-8 text-center text-sm text-slate-500">
