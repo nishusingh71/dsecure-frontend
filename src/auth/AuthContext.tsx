@@ -12,6 +12,8 @@ export interface AuthUser {
   role: Role
   token: string
   department?: string
+  user_group?: string
+  timezone?: string
   payment_details_json?: string
   license_details_json?: string
   phone_number?: string
@@ -261,6 +263,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   // Demo login function that bypasses all backend authentication
+  // ✅ Demo user is SUPERADMIN with STATIC/DUMMY data only
   const demoLogin = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -268,14 +271,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       // //console.log('Starting demo login...')
       
-      // Create a dummy JWT token with proper structure for demo admin
+      // Create a dummy JWT token with SUPERADMIN role for demo account
       const dummyJWTPayload = {
-        sub: 'demo-admin-001',
-        id: 'demo-admin-001', 
-        email: 'demo@admin.com',
-        user_name: 'Demo Administrator',
-        role: 'admin',
-        permissions: ['admin_dashboard', 'user_management', 'reports', 'audit_logs'],
+        sub: 'demo-superadmin-001',
+        id: 'demo-superadmin-001', 
+        email: 'demo@dsecuretech.com',
+        user_name: 'Demo Super Administrator',
+        role: 'superadmin',  // ✅ SUPERADMIN role
+        userRole: 'superadmin',
+        user_role: 'superadmin',
+        permissions: ['superadmin', 'admin_dashboard', 'user_management', 'reports', 'audit_logs', 'system_settings', 'all_access'],
         exp: Math.floor(Date.now() / 1000) + (365 * 24 * 60 * 60), // 1 year from now
         iat: Math.floor(Date.now() / 1000),
         iss: 'dsecure-demo'
@@ -292,14 +297,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Use authService to store the demo token properly
       authService.setTokens(dummyToken, 'demo-refresh-token', false)
       
-      // Create AuthUser object
+      // Create AuthUser object with SUPERADMIN role
       const dummyAdminUser: AuthUser = {
-        id: 'demo-admin-001',
-        email: 'demo@admin.com',
-        name: 'Demo Administrator',
-        role: 'admin',
+        id: 'demo-superadmin-001',
+        email: 'demo@dsecuretech.com',
+        name: 'Demo Super Administrator',
+        role: 'superadmin',  // ✅ SUPERADMIN role
         token: dummyToken,
         department: 'IT Administration',
+        user_group: 'Enterprise Admins',  // ✅ Added user_group
+        timezone: 'Asia/Kolkata',  // ✅ Added timezone
         payment_details_json: JSON.stringify({
           planType: 'enterprise',
           status: 'active',
@@ -312,9 +319,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           maxUsers: 1000,
           maxDevices: 10000,
           expiryDate: '2030-12-31',
-          features: ['admin_dashboard', 'user_management', 'reports', 'audit_logs']
+          features: ['superadmin', 'admin_dashboard', 'user_management', 'reports', 'audit_logs', 'system_settings']
         }),
-        phone_number: '+1-555-0123',
+        phone_number: '+91-9876543210',
         is_private_cloud: true,
         private_api: true
       }
@@ -322,10 +329,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Save user data to authService
       authService.saveUserData(dummyAdminUser)
       
+      // ✅ Also save to localStorage directly for demo mode (getUserDataFromStorage reads from localStorage)
+      localStorage.setItem('user_data', JSON.stringify(dummyAdminUser))
+      
       // Set the user in AuthContext
       setUser(dummyAdminUser)
       
-      // Mark as demo mode
+      // ✅ Mark as demo mode - this flag will be used to show static/dummy data
       localStorage.setItem('demo_mode', 'true')
       
       // //console.log('Demo login completed successfully')

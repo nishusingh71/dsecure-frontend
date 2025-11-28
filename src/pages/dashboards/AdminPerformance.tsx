@@ -8,6 +8,7 @@ import {apiClient} from '@/utils/enhancedApiClient'
 import { usePerformanceData } from '@/hooks/usePerformanceData'
 import { useAuditReports } from '@/hooks/useAuditReports'
 import { useUserMachines } from '@/hooks/useUserMachines'
+import { isDemoMode, DEMO_PERFORMANCE_DATA } from '@/data/demoData'
 
 interface PerformanceData {
   monthlyErasures: { month: string; count: number }[]
@@ -20,6 +21,9 @@ interface PerformanceData {
 export default function AdminPerformance() {
   const { showError } = useNotification()
   const { user } = useAuth()
+  
+  // ✅ Check demo mode
+  const isDemo = isDemoMode()
   
   // ✅ Get user email for React Query hooks
   const getUserEmail = (): string => {
@@ -48,10 +52,10 @@ export default function AdminPerformance() {
 
   const userEmail = getUserEmail()
   
-  // ✅ Use React Query hooks (same as AdminDashboard)
-  const auditReportsQuery = useAuditReports(userEmail, !!userEmail)
-  const machinesQuery = useUserMachines(userEmail, !!userEmail)
-  const performanceQuery = usePerformanceData(userEmail, !!userEmail)
+  // ✅ Use React Query hooks (disabled in demo mode)
+  const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo)
+  const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo)
+  const performanceQuery = usePerformanceData(userEmail, !!userEmail && !isDemo)
   
   const [performanceData, setPerformanceData] = useState<PerformanceData>({
     monthlyErasures: [],
@@ -59,14 +63,21 @@ export default function AdminPerformance() {
     throughput: []
   })
   
-  // ✅ Use React Query loading state
-  const loading = performanceQuery.isLoading
+  // ✅ Use React Query loading state (demo mode is never loading)
+  const loading = isDemo ? false : performanceQuery.isLoading
 
-  // ✅ React Query automatically handles user changes, caching, and refetching
-  // No manual state management needed
-
-  // ✅ Update performance data from React Query (same as AdminDashboard)
+  // ✅ DEMO MODE: Load static data
   useEffect(() => {
+    if (isDemo) {
+      console.log('🎭 DEMO MODE - Loading static performance data');
+      setPerformanceData(DEMO_PERFORMANCE_DATA);
+    }
+  }, [isDemo])
+
+  // ✅ Update performance data from React Query (same as AdminDashboard) - skip in demo mode
+  useEffect(() => {
+    if (isDemo) return;
+    
     if (performanceQuery.data) {
       console.log('✅ Performance data loaded from React Query:', performanceQuery.data)
       setPerformanceData(performanceQuery.data)
@@ -74,7 +85,7 @@ export default function AdminPerformance() {
       console.error('❌ Error loading performance data:', performanceQuery.error)
       showError('Data Loading Error', 'Failed to load performance data.')
     }
-  }, [performanceQuery.data, performanceQuery.isError])
+  }, [performanceQuery.data, performanceQuery.isError, isDemo])
 
   // ✅ Performance data is now automatically loaded via React Query hooks
   // No manual API calls needed - React Query handles caching, refetching, and filtering

@@ -5,6 +5,7 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { apiClient, SystemLog, Command, Session } from '@/utils/enhancedApiClient'
 import { authService } from '@/utils/authService'
 import { useAuth } from '@/auth/AuthContext'
+import { isDemoMode, DEMO_SYSTEM_LOGS, DEMO_COMMANDS, DEMO_SESSIONS, DEMO_SUBUSERS } from '@/data/demoData'
 
 type TabType = 'logs' | 'commands' | 'sessions'
 
@@ -96,6 +97,16 @@ export default function AdminLogs() {
   const loadAllData = async () => {
     setLoading(true)
     const startTime = performance.now()
+    
+    // ✅ DEMO MODE: Return static data instead of API calls
+    if (isDemoMode()) {
+      console.log('🎭 DEMO MODE - Loading static demo data for AdminLogs');
+      setSystemLogs(DEMO_SYSTEM_LOGS as any);
+      setCommands(DEMO_COMMANDS as any);
+      setSessions(DEMO_SESSIONS as any);
+      setLoading(false);
+      return;
+    }
     
     // ✅ Use dynamic cache keys based on emailFilter
     const cacheKeySuffix = emailFilter;

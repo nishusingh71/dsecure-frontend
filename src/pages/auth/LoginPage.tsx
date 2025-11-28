@@ -1165,48 +1165,53 @@ export default function LoginPage() {
                 {loading ? "Logging in..." : "Login"}
               </button>
 
-              {/* <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200"></div>
+              <div className="relative my-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-slate-500">or</span>
+                </div>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-slate-500">or</span>
-              </div>
-            </div> */}
+              <button
+                type="button"
+                className="btn-secondary w-full flex items-center justify-center gap-2"
+                onClick={async () => {
+                  // //console.log('Demo button clicked!')
+                  // //console.log('demoLogin function:', demoLogin)
+                  setError(null);
+                  setLoading(true);
+                  try {
+                    // //console.log('Calling demoLogin...')
+                    // Use demo login function that bypasses all backend authentication
+                    await demoLogin();
+                    // //console.log('Demo login successful, navigating to admin...')
 
-              {/* <button
-              type="button"
-              className="btn-secondary w-full flex items-center justify-center gap-2"
-              onClick={async () => {
-                // //console.log('Demo button clicked!')
-                // //console.log('demoLogin function:', demoLogin)
-                setError(null);
-                setLoading(true);
-                try {
-                  // //console.log('Calling demoLogin...')
-                  // Use demo login function that bypasses all backend authentication
-                  await demoLogin();
-                  // //console.log('Demo login successful, navigating to admin...')
-
-                  // Demo account always goes to admin dashboard
-                  navigate("/admin", { replace: true });
-                } catch (error) {
-                  // console.error('Demo login error:', error)
-                  setError(
-                    "Demo mode failed to initialize: " +
-                      (error instanceof Error ? error.message : "Unknown error")
-                  );
-                  showToast("Demo login failed. Please try again.", "error");
-                } finally {
-                  setLoading(false);
-                }
-              }}
-            >
-              <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm0-8a1 1 0 011 1v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H7a1 1 0 110-2h2V9a1 1 0 011-1z" />
-              </svg>
-              Try Demo Account
-            </button> */}
+                    // Demo account always goes to admin dashboard
+                    navigate("/admin", { replace: true });
+                  } catch (error) {
+                    // console.error('Demo login error:', error)
+                    setError(
+                      "Demo mode failed to initialize: " +
+                        (error instanceof Error
+                          ? error.message
+                          : "Unknown error")
+                    );
+                    showToast("Demo login failed. Please try again.", "error");
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+              >
+                <svg
+                  className="w-5 h-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm0-8a1 1 0 011 1v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H7a1 1 0 110-2h2V9a1 1 0 011-1z" />
+                </svg>
+                Try Demo Account
+              </button>
             </form>
           )}
 

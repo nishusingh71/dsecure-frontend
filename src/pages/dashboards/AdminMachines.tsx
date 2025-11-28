@@ -7,6 +7,7 @@ import { Machine } from '@/utils/enhancedApiClient'
 import { useEffect } from 'react'
 import { apiClient } from '@/utils/enhancedApiClient'
 import { authService } from '@/utils/authService'
+import { isDemoMode, DEMO_MACHINES } from '@/data/demoData'
 
 // UI Machine interface for table display
 interface UIMachine {
@@ -83,6 +84,14 @@ export default function AdminMachines() {
 
   const loadMachinesData = async () => {
     setLoading(true)
+    
+    // 🎮 Demo Mode Check - Show static data only
+    if (isDemoMode()) {
+      console.log('🎮 Demo Mode Active - Using static machines data')
+      setAllRows(DEMO_MACHINES)
+      setLoading(false)
+      return
+    }
     
     // ✅ Check cache first for instant display
     const cachedMachines = getCachedData('machines');

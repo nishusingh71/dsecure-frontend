@@ -139,6 +139,13 @@ class AuthService {
   }
 
   isAuthenticated(): boolean {
+    // ✅ Check for demo mode first - demo users are always authenticated
+    const isDemoMode = localStorage.getItem('demo_mode') === 'true'
+    if (isDemoMode) {
+      console.log('🎭 Demo mode detected - user is authenticated')
+      return true
+    }
+    
     const token = this.getAccessToken()
     if (!token) return false
 

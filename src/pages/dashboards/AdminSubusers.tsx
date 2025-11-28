@@ -7,6 +7,7 @@ import { useAuth } from '@/auth/AuthContext'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSubusers } from '@/hooks/useSubusers'
+import { isDemoMode, DEMO_SUBUSERS } from '@/data/demoData'
 
 // Extended interface for table display
 interface SubuserTableRow {
@@ -29,6 +30,9 @@ export default function AdminSubusers() {
   const [sortBy, setSortBy] = useState<keyof SubuserTableRow>('subuser_email')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const navigate = useNavigate()
+  
+  // 🎭 Demo mode check
+  const isDemo = isDemoMode()
   
   // Helper function to format datetime for Last Login display
   const formatLastLogin = (lastLogin: string | null | undefined): string => {
@@ -152,7 +156,12 @@ export default function AdminSubusers() {
   
   // ✅ Fetch subusers filtered by current user's email (works for both regular users and subusers)
   // If subuser has sub-subusers, they will be shown; if not, empty state will appear
-  const { data: subusersData = [], isLoading: loading, refetch } = useSubusers(userEmail, true)
+  // 🎭 In demo mode, disable React Query and use static data
+  const { data: apiSubusersData = [], isLoading: apiLoading, refetch } = useSubusers(userEmail, !isDemo)
+  
+  // 🎭 Use DEMO_SUBUSERS in demo mode, otherwise use API data
+  const subusersData = isDemo ? DEMO_SUBUSERS : apiSubusersData
+  const loading = isDemo ? false : apiLoading
   
   const pageSize = 5
   
@@ -227,6 +236,31 @@ export default function AdminSubusers() {
   }
 
   const handleEditUser = async (user: SubuserTableRow) => {
+    // 🎭 DEMO MODE: Navigate directly with demo data, skip API call
+    if (isDemo) {
+      console.log('🎭 Demo Mode: Navigating to edit page with demo data');
+      
+      // Find full user data from DEMO_SUBUSERS
+      const demoUser = DEMO_SUBUSERS.find(u => u.subuser_email === user.subuser_email);
+      
+      navigate('/admin/edit-subuser', {
+        state: {
+          user: {
+            subuser_email: user.subuser_email,
+            name: demoUser?.subuser_name || user.subuser_email.split('@')[0],
+            role: demoUser?.role || user.roles || 'user',
+            department: demoUser?.department || user.department || 'IT Department',
+            status: demoUser?.status || user.status || 'active',
+            phone: demoUser?.subuser_phone || '+91-9876543210',
+            licenseUsage: demoUser?.licenseUsage || 0,
+            created_at: demoUser?.created_at || new Date().toISOString()
+          },
+          isDemo: true  // Pass demo flag to edit page
+        }
+      });
+      return;
+    }
+    
     // Fetch full enhanced subuser details from the API before navigating.
     // This avoids relying on trimmed table row fields and prevents TypeScript errors.
     try {

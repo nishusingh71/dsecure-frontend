@@ -49,6 +49,24 @@ import {
 import { usePerformanceData } from "@/hooks/usePerformanceData";
 import { group } from "node:console";
 
+// ✅ Import Demo Data for "Try Demo Account" mode
+import {
+  isDemoMode,
+  DEMO_DASHBOARD_STATS,
+  DEMO_PROFILE,
+  DEMO_USERS,
+  DEMO_USER_ACTIVITY,
+  DEMO_REPORTS,
+  DEMO_SYSTEM_LOGS,
+  DEMO_LICENSE_DETAILS,
+  DEMO_GROUPS,
+  DEMO_MACHINES,
+  DEMO_PERFORMANCE_DATA,
+  DEMO_AUDIT_REPORTS,
+  DEMO_SUBUSERS,
+  DEMO_BILLING_DETAILS,
+} from "@/data/demoData";
+
 // Interface for merged user data displayed in Users tab
 interface MergedUserData {
   user_name: string;
@@ -281,29 +299,36 @@ export default function AdminDashboard() {
   // Fetch subusers filtered by current user's email (works for both regular users and subusers)
   // Always fetch to show Active Users count on overview tab
   const userEmail = profileData?.email || user?.email || "";
+  
+  // ✅ In Demo Mode, disable all React Query API calls
+  const isDemo = isDemoMode();
+  
   const {
-    data: subusersData = [],
-    isLoading: usersDataLoading,
+    data: subusersData = isDemo ? DEMO_SUBUSERS : [],
+    isLoading: _usersDataLoading,
     error: subusersError,
     refetch: refetchSubusers,
     isRefetching,
-  } = useSubusers(userEmail, !!userEmail);
+  } = useSubusers(userEmail, !!userEmail && !isDemo);
+  
+  // 🎭 In Demo Mode, never show loading state
+  const usersDataLoading = isDemo ? false : _usersDataLoading;
 
-  // ✅ React Query: Fetch machines and audit reports for user
-  const machinesQuery = useUserMachines(userEmail, !!userEmail);
-  const auditReportsQuery = useAuditReports(userEmail, !!userEmail);
+  // ✅ React Query: Fetch machines and audit reports for user (disabled in demo mode)
+  const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo);
+  const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo);
   const enhancedAuditReportsQuery = useEnhancedAuditReports(
     userEmail,
-    !!userEmail && activeTab === "overview"
+    !!userEmail && activeTab === "overview" && !isDemo
   );
 
-  // ✅ React Query: Get active licenses count directly from cache
-  const activeLicensesFromCache = useActiveLicensesCount(userEmail);
+  // ✅ React Query: Get active licenses count directly from cache (disabled in demo mode)
+  const activeLicensesFromCache = useActiveLicensesCount(isDemo ? '' : userEmail);
 
-  // ✅ React Query: Fetch performance data automatically from cached audit reports and machines
+  // ✅ React Query: Fetch performance data automatically from cached audit reports and machines (disabled in demo mode)
   const performanceQuery = usePerformanceData(
-    userEmail,
-    !!userEmail && activeTab === "overview"
+    isDemo ? '' : userEmail,
+    !!userEmail && activeTab === "overview" && !isDemo
   );
 
   // React Query mutations for CRUD operations
@@ -314,13 +339,15 @@ export default function AdminDashboard() {
   const [dataLoading, setDataLoading] = useState(true);
 
   // Role-based permissions (using primary role from roles array if available)
-  // Priority: userRole (camelCase) > user_role (snake_case) > getPrimaryRole() > user.role
-  const currentUserRole =
-    storedUserData?.userRole ||
-    storedUserData?.user_role ||
-    getPrimaryRole(storedUserData) ||
-    user?.role ||
-    "user";
+  // Priority: Demo mode > userRole (camelCase) > user_role (snake_case) > getPrimaryRole() > user.role
+  // 🎭 In Demo Mode, always show superadmin role
+  const currentUserRole = isDemo 
+    ? 'superadmin'
+    : (storedUserData?.userRole ||
+       storedUserData?.user_role ||
+       getPrimaryRole(storedUserData) ||
+       user?.role ||
+       "user");
   const permissions = getRolePermissions(currentUserRole);
   const roleInfo = getRoleDisplayInfo(currentUserRole);
 
@@ -484,8 +511,65 @@ export default function AdminDashboard() {
     }
   }, [performanceQuery.data]);
 
+  // ✅ DEMO MODE: Set static/dummy data when user logs in via "Try Demo Account"
+  useEffect(() => {
+    if (isDemoMode()) {
+      console.log("🎭 DEMO MODE ACTIVE - Loading static demo data");
+      
+      // Set demo dashboard stats
+      setDashboardStats(DEMO_DASHBOARD_STATS);
+      
+      // Set demo profile
+      setProfileData(DEMO_PROFILE);
+      
+      // Set demo user activity
+      setUserActivity(DEMO_USER_ACTIVITY);
+      
+      // Set demo groups
+      setGroups(DEMO_GROUPS);
+      
+      // Set demo license data
+      setLicenseData(DEMO_LICENSE_DETAILS);
+      setUserLicenseDetails(DEMO_LICENSE_DETAILS);
+      
+      // Set demo reports
+      setRecentReports(DEMO_REPORTS.map(r => ({
+        id: r.id,
+        type: r.type,
+        devices: r.devices,
+        status: r.status,
+        date: r.date,
+        method: r.method
+      })));
+      
+      // Set demo system logs
+      setRecentSystemLogs(DEMO_SYSTEM_LOGS);
+      
+      // Set demo performance data
+      setPerformanceData(DEMO_PERFORMANCE_DATA);
+      
+      // Set demo audit reports
+      setAuditReports(DEMO_AUDIT_REPORTS as any);
+      setAuditReportsCount(DEMO_AUDIT_REPORTS.length);
+      
+      // Set demo active licenses count
+      setActiveLicensesCount(DEMO_MACHINES.filter(m => m.status === 'Active' || m.status === 'Running').length);
+      
+      // Set demo billing details (for Settings modal)
+      setBillingDetails(DEMO_BILLING_DETAILS);
+      
+      // Mark loading as done
+      setDataLoading(false);
+    }
+  }, []);
+
   // Load all dashboard data on component mount
   useEffect(() => {
+    // Skip API calls in demo mode
+    if (isDemoMode()) {
+      console.log("🎭 DEMO MODE - Skipping API calls");
+      return;
+    }
     loadDashboardData();
   }, []);
 
@@ -2038,6 +2122,14 @@ export default function AdminDashboard() {
             <button
               onClick={() => {
                 setShowSettingsModal(true);
+                
+                // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
+                if (isDemo) {
+                  console.log('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
+                  setBillingDetails(DEMO_BILLING_DETAILS);
+                  return;
+                }
+                
                 // Load billing details from BOTH license_details_json AND payment_details_json
                 // Priority: user object from AuthContext > localStorage
                 const storedData = getUserDataFromStorage();
@@ -2291,28 +2383,30 @@ export default function AdminDashboard() {
             <span className="hidden sm:inline">Renew License</span>
           </button> */}
 
-            {/* Add User Button - Role-based visibility */}
-            <RoleBased permission="canCreateUser">
-              <button
-                onClick={handleAddUser}
-                className="btn-secondary flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium"
-              >
-                <svg
-                  className="w-4 h-4 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            {/* Add User Button - Role-based visibility, Hidden in Demo Mode */}
+            {!isDemo && (
+              <RoleBased permission="canCreateUser">
+                <button
+                  onClick={handleAddUser}
+                  className="btn-secondary flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                <span>Add User</span>
-              </button>
-            </RoleBased>
+                  <svg
+                    className="w-4 h-4 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  <span>Add User</span>
+                </button>
+              </RoleBased>
+            )}
           </div>
         </div>
 
@@ -3151,12 +3245,16 @@ export default function AdminDashboard() {
                     Manage all users
                   </p>
                 </div>
+                {/* Add User button */}
                 <div className="flex flex-col sm:flex-row gap-2">
                   <button
                     onClick={handleAddUser}
-                    className="btn-primary text-sm px-4 py-2"
+                    className="btn-primary text-sm px-4 py-2 flex items-center gap-2"
                   >
-                    + New User
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add User
                   </button>
                 </div>
               </div>
@@ -3539,7 +3637,7 @@ export default function AdminDashboard() {
                             #{report.report_id || report.reportId || report.id}
                           </td>
                           <td className="py-4 text-slate-600">
-                            {report.report_name || report.reportType || "N/A"}
+                            {report.report_name || report.reportType || report.erasure_method || "Erasure Report"}
                           </td>
                           {/* <td className="py-4 text-slate-600">
                           {(() => {
@@ -3625,9 +3723,9 @@ export default function AdminDashboard() {
                             })()}
                           </td>
                           <td className="py-4 text-slate-600">
-                            {report.report_datetime
+                            {(report.report_datetime || (report as any).report_date)
                               ? new Date(
-                                  report.report_datetime
+                                  report.report_datetime || (report as any).report_date
                                 ).toLocaleDateString("en-IN", {
                                   year: "numeric",
                                   month: "short",

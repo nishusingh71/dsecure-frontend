@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { useNavigate } from "react-router-dom";
+import { isDemoMode, DEMO_AUDIT_REPORTS } from "@/data/demoData";
 
 // Extended AdminReport interface to include raw data
 interface ExtendedAdminReport extends AdminReport {
@@ -513,6 +514,32 @@ export default function AdminReports() {
 
   const loadReportsData = async () => {
     setLoading(true);
+
+    // 🎮 Demo Mode Check - Show static data only
+    if (isDemoMode()) {
+      console.log('🎮 Demo Mode Active - Using static audit reports data')
+      // Map DEMO_AUDIT_REPORTS to AdminReport format
+      const demoReports = DEMO_AUDIT_REPORTS.map(report => ({
+        id: report.report_id,
+        report_id: report.report_id,
+        date: report.report_date,
+        report_date: report.report_date,
+        serial_number: report.serial_number,
+        make: report.make,
+        model: report.model,
+        erasure_method: report.erasure_method,
+        verification_status: report.verification_status,
+        certificate_url: '',
+        user_email: report.user_email,
+        status: report.verification_status === 'Verified' ? 'completed' : 'pending',
+        method: report.erasure_method,
+        _raw: report,
+        _details: report
+      }))
+      setAllRows(demoReports as any)
+      setLoading(false)
+      return
+    }
 
     // ✅ Check cache first for instant display
     const cachedReports = getCachedData("reports");

@@ -30,8 +30,8 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    // Increase chunk size limit to 1000 KB to reduce warnings
-    chunkSizeWarningLimit: 1000,
+    // Increase chunk size limit to suppress warnings
+    chunkSizeWarningLimit: 1500,
     // Enhanced minification
     minify: 'esbuild',
     // Target modern browsers for better performance
@@ -43,24 +43,53 @@ export default defineConfig({
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // Simplified chunk splitting - keep React packages together
-        manualChunks: {
-          // Keep ALL React-related packages together to avoid context issues
-          'react-vendor': [
-            'react', 
-            'react-dom', 
-            'react-router-dom',
-            'react-helmet-async',
-            'scheduler'
-          ],
+        // Enhanced chunk splitting for better code-splitting
+        manualChunks: (id) => {
+          // React core - keep together for context
+          if (id.includes('node_modules/react/') || 
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/scheduler/')) {
+            return 'react-vendor'
+          }
+          // React Router
+          if (id.includes('node_modules/react-router') || 
+              id.includes('node_modules/@remix-run/')) {
+            return 'react-router'
+          }
+          // React Helmet
+          if (id.includes('react-helmet')) {
+            return 'react-helmet'
+          }
+          // TanStack Query
+          if (id.includes('@tanstack/react-query')) {
+            return 'query'
+          }
           // Animation library
-          'framer': ['framer-motion'],
-          // Data fetching
-          'query': ['@tanstack/react-query'],
-          // Utilities
-          'utils': ['axios', 'date-fns', 'clsx', 'tailwind-merge'],
+          if (id.includes('framer-motion')) {
+            return 'framer'
+          }
           // JSZip
-          'jszip': ['jszip'],
+          if (id.includes('jszip')) {
+            return 'jszip'
+          }
+          // Utilities
+          if (id.includes('node_modules/axios') || 
+              id.includes('node_modules/date-fns') ||
+              id.includes('node_modules/clsx') ||
+              id.includes('node_modules/tailwind-merge')) {
+            return 'utils'
+          }
+          // Lucide icons
+          if (id.includes('lucide-react')) {
+            return 'icons'
+          }
+          // Split large dashboard pages
+          if (id.includes('AdminDashboard')) {
+            return 'admin-dashboard'
+          }
+          if (id.includes('AdminLogs') || id.includes('AdminSubusers') || id.includes('AdminReports')) {
+            return 'admin-pages'
+          }
         },
         
         // Optimize file names for caching
