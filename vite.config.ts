@@ -43,53 +43,24 @@ export default defineConfig({
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // Aggressive chunk splitting for better caching and smaller files
-        manualChunks(id) {
-          // Split node_modules into separate chunks
-          if (id.includes('node_modules')) {
-            // Core React libraries
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-core'
-            }
-            // React Router
-            if (id.includes('react-router')) {
-              return 'react-router'
-            }
-            // Framer Motion (animation library)
-            if (id.includes('framer-motion')) {
-              return 'vendor-large'
-            }
-            // JSZip library
-            if (id.includes('jszip')) {
-              return 'jszip.min'
-            }
-            // Helmet for SEO
-            if (id.includes('react-helmet')) {
-              return 'vendor-helmet'
-            }
-            // Other vendor libraries
-            return 'vendor-other'
-          }
-          
-          // Split dashboard pages into separate chunk
-          if (id.includes('src/pages/dashboards/')) {
-            return 'dashboards'
-          }
-          
-          // Split solution pages
-          if (id.includes('src/pages/solutions/')) {
-            return 'solutions'
-          }
-          
-          // Split manual/documentation pages
-          if (id.includes('src/pages/manual/') || id.includes('src/pages/help/')) {
-            return 'documentation'
-          }
-          
-          // Split blog pages
-          if (id.includes('src/pages/blog/')) {
-            return 'blog'
-          }
+        // Simplified chunk splitting - keep React packages together
+        manualChunks: {
+          // Keep ALL React-related packages together to avoid context issues
+          'react-vendor': [
+            'react', 
+            'react-dom', 
+            'react-router-dom',
+            'react-helmet-async',
+            'scheduler'
+          ],
+          // Animation library
+          'framer': ['framer-motion'],
+          // Data fetching
+          'query': ['@tanstack/react-query'],
+          // Utilities
+          'utils': ['axios', 'date-fns', 'clsx', 'tailwind-merge'],
+          // JSZip
+          'jszip': ['jszip'],
         },
         
         // Optimize file names for caching
