@@ -290,71 +290,48 @@ export default function AdminPerformance() {
 
         {/* Throughput Chart */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">Throughput</h2>
-          <div className="h-80">
-            <svg viewBox="0 0 800 300" className="w-full h-full">
-              <defs>
-                <linearGradient id="barGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.4" />
-                </linearGradient>
-              </defs>
-              
-              {/* Grid lines */}
-              {[0, 1, 2, 3, 4, 5].map((i) => (
-                <line
-                  key={i}
-                  x1="50"
-                  y1={250 - i * 50}
-                  x2="750"
-                  y2={250 - i * 50}
-                  stroke="#E2E8F0"
-                  strokeWidth="1"
-                  strokeDasharray="5,5"
-                />
-              ))}
-              
-              {/* Bars */}
-              {performanceData.throughput.map((item, index) => {
-                const barWidth = 50
-                const spacing = 60
-                const x = 60 + index * spacing
-                const maxCount = Math.max(...performanceData.throughput.map(i => i.count), 1)
-                const barHeight = (item.count / maxCount) * 200
-                const y = 250 - barHeight
-                
-                return (
-                  <g key={index}>
-                    <rect
-                      x={x}
-                      y={y}
-                      width={barWidth}
-                      height={barHeight}
-                      fill="url(#barGradient)"
-                      rx="4"
-                    />
-                    <text
-                      x={x + barWidth / 2}
-                      y={270}
-                      textAnchor="middle"
-                      fontSize="12"
-                      fill="#64748B"
-                    >
-                      {item.month}
-                    </text>
-                    <text
-                      x={x + barWidth / 2}
-                      y={y - 5}
-                      textAnchor="middle"
-                      fontSize="11"
-                      fill="#1E293B"
-                      fontWeight="600"
-                    >
-                      {item.count}
-                    </text>
-                  </g>
-                )
-              })}
+          <h3 className="text-lg font-semibold text-slate-900 mb-6">
+            Throughput
+          </h3>
+          <div className="h-64">
+            <svg viewBox="0 0 800 200" className="w-full h-full">
+              {performanceData.throughput.length > 0 &&
+                performanceData.throughput.map((item, index) => {
+                  const maxCount = Math.max(
+                    ...performanceData.throughput.map((i) => i.count),
+                    1
+                  );
+                  const barWidth =
+                    800 / performanceData.throughput.length - 10;
+                  const x =
+                    (index * 800) / performanceData.throughput.length + 5;
+                  const barHeight = (item.count / maxCount) * 160;
+                  const y = 160 - barHeight;
+
+                  return (
+                    <g key={index}>
+                      {/* Bar */}
+                      <rect
+                        x={x}
+                        y={y}
+                        width={barWidth}
+                        height={barHeight}
+                        fill="#3B82F6"
+                        rx="4"
+                      />
+                      {/* Month label */}
+                      <text
+                        x={x + barWidth / 2}
+                        y="185"
+                        textAnchor="middle"
+                        fill="#64748B"
+                        fontSize="12"
+                      >
+                        {item.month}
+                      </text>
+                    </g>
+                  );
+                })}
             </svg>
           </div>
         </div>
