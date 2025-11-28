@@ -95,13 +95,13 @@ function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   return {
     id: jwtUser?.userId || jwtUser?.user_id || jwtUser?.sub || jwtUser?.id || 'unknown',
     email: jwtUser?.email || '',
-    name: jwtUser?.userName || jwtUser?.user_name || jwtUser?.name || 'Unknown User',
+    name: jwtUser?.userName || jwtUser?.user_name || jwtUser?.subuser_name || jwtUser?.name || 'Unknown User',
     role: primaryRole,
     token,
     department: jwtUser?.department || '',
     payment_details_json: jwtUser?.payment_details_json || '{}',
     license_details_json: jwtUser?.license_details_json || '{}',
-    phone_number: jwtUser?.phone || jwtUser?.phone_number || '',
+    phone_number: jwtUser?.phone || jwtUser?.phone_number || jwtUser?.subuser_phone || '',
     is_private_cloud: jwtUser?.is_private_cloud || false,
     private_api: jwtUser?.private_api || false,
   }

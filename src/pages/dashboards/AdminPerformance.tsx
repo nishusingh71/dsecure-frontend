@@ -5,6 +5,9 @@ import { useState, useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useAuth } from '@/auth/AuthContext'
 import {apiClient} from '@/utils/enhancedApiClient'
+import { usePerformanceData } from '@/hooks/usePerformanceData'
+import { useAuditReports } from '@/hooks/useAuditReports'
+import { useUserMachines } from '@/hooks/useUserMachines'
 
 interface PerformanceData {
   monthlyErasures: { month: string; count: number }[]
@@ -12,83 +15,18 @@ interface PerformanceData {
   throughput: { month: string; count: number }[]
 }
 
-// ⚡ Cache Helper Functions (5-minute cache)
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
-const getCachedData = (key: string) => {
-  try {
-    const cached = localStorage.getItem(`admin_cache_${key}`);
-    if (cached) {
-      const { data, timestamp } = JSON.parse(cached);
-      const isValid = Date.now() - timestamp < CACHE_DURATION;
-      
-      if (isValid) {
-        console.log(`⚡ Cache HIT for ${key} (age: ${Math.floor((Date.now() - timestamp) / 1000)}s)`);
-        return data;
-      } else {
-        console.log(`⏰ Cache EXPIRED for ${key}`);
-        localStorage.removeItem(`admin_cache_${key}`);
-      }
-    }
-  } catch (error) {
-    console.error(`❌ Cache read error for ${key}:`, error);
-  }
-  return null;
-};
-
-const setCachedData = (key: string, data: any) => {
-  try {
-    localStorage.setItem(`admin_cache_${key}`, JSON.stringify({
-      data,
-      timestamp: Date.now()
-    }));
-    console.log(`💾 Cached ${key} (expires in 5min)`);
-  } catch (error) {
-    console.error(`❌ Cache write error for ${key}:`, error);
-  }
-};
+// ✅ React Query handles all caching automatically - no manual cache functions needed
 
 export default function AdminPerformance() {
   const { showError } = useNotification()
   const { user } = useAuth()
-  const [performanceData, setPerformanceData] = useState<PerformanceData>(() => {
-    const cached = getCachedData('performance');
-    return cached || {
-      monthlyErasures: [],
-      avgDuration: [],
-      throughput: []
-    };
-  })
-  const [loading, setLoading] = useState(true)
-  const [currentUserEmail, setCurrentUserEmail] = useState<string>('')
-
-  // ✅ Listen for auth state changes (logout/login)
-  useEffect(() => {
-    const handleAuthStateChange = (event: Event) => {
-      const customEvent = event as CustomEvent
-      if (customEvent.detail === null) {
-        // User logged out - reset state and clear current user email
-        console.log('🚪 User logged out - clearing AdminPerformance state')
-        setCurrentUserEmail('')
-        setPerformanceData({
-          monthlyErasures: [],
-          avgDuration: [],
-          throughput: []
-        })
-      }
-    }
-
-    window.addEventListener('authStateChanged', handleAuthStateChange)
-    return () => window.removeEventListener('authStateChanged', handleAuthStateChange)
-  }, [])
-
-  // Track user changes and clear cache when user changes
-  useEffect(() => {
-    // Get user email from localStorage or auth context
-    let storedUserData = null
+  
+  // ✅ Get user email for React Query hooks
+  const getUserEmail = (): string => {
     const storedUser = localStorage.getItem('user_data')
     const authUser = localStorage.getItem('authUser')
     
+    let storedUserData = null
     if (storedUser) {
       try {
         storedUserData = JSON.parse(storedUser)
@@ -105,196 +43,41 @@ export default function AdminPerformance() {
       }
     }
     
-    const userEmail = storedUserData?.user_email || user?.email || ''
-    
-    // If user email changed, clear cache and reload data
-    if (userEmail && userEmail !== currentUserEmail) {
-      console.log('👤 User changed from', currentUserEmail, 'to', userEmail, '- clearing cache')
-      
-      // Clear ALL admin caches when user changes
-      const cacheKeys = ['performance', 'stats', 'activity', 'groups', 'licenses', 'reports', 
-                         'subusers', 'superuser', 'activeLicenses', 'auditReportsCount', 'auditReports']
-      cacheKeys.forEach(key => {
-        localStorage.removeItem(`admin_cache_${key}`)
-      })
-      
-      setCurrentUserEmail(userEmail)
-      loadPerformanceData()
-    } else if (userEmail && !currentUserEmail) {
-      // First load
-      setCurrentUserEmail(userEmail)
-      loadPerformanceData()
-    }
-  }, [user, currentUserEmail])
-
-  // Load performance data on component mount - Same as AdminDashboard
-  useEffect(() => {
-    if (!currentUserEmail) {
-      loadPerformanceData()
-    }
-  }, [])
-
-  const loadPerformanceData = async () => {
-    setLoading(true)
-    try {
-      // ⚡ Check cache first for instant display
-      const cachedPerformance = getCachedData('performance');
-      if (cachedPerformance && cachedPerformance.monthlyErasures?.length > 0) {
-        console.log('⚡ Displaying cached performance data');
-        setPerformanceData(cachedPerformance);
-        setLoading(false);
-      }
-
-      console.log('📊 Loading performance data from APIs...')
-      
-      // Fetch all required data from APIs (same as AdminDashboard)
-      const [auditReportsRes, machinesRes, sessionsRes, systemLogsRes] = await Promise.all([
-        apiClient.getAuditReports(),
-        apiClient.getMachines(),
-        apiClient.getSessions(),
-        apiClient.getSystemLogs()
-      ])
-
-      console.log('✅ API Responses:', {
-        auditReports: auditReportsRes.success ? auditReportsRes.data?.length : 'Failed',
-        machines: machinesRes.success ? machinesRes.data?.length : 'Failed',
-        sessions: sessionsRes.success ? sessionsRes.data?.length : 'Failed',
-        systemLogs: systemLogsRes.success ? systemLogsRes.data?.length : 'Failed'
-      })
-
-      // Calculate Performance Metrics from ALL APIs (same logic as AdminDashboard)
-      const currentDate = new Date()
-      const monthsData: { [key: string]: { 
-        erasures: number
-        totalDuration: number
-        sessions: number
-        activeMachines: Set<string>
-        commands: number
-        logs: number
-      } } = {}
-      
-      // Initialize last 12 months
-      for (let i = 11; i >= 0; i--) {
-        const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1)
-        const monthKey = date.toLocaleDateString('en-US', { month: 'short' })
-        monthsData[monthKey] = { 
-          erasures: 0, 
-          totalDuration: 0,
-          sessions: 0,
-          activeMachines: new Set(),
-          commands: 0,
-          logs: 0
-        }
-      }
-      
-      // Process Audit Reports (Erasure operations)
-      if (auditReportsRes.success && auditReportsRes.data) {
-        auditReportsRes.data.forEach((report: any) => {
-          const reportDate = new Date(report.report_datetime || report.created_at)
-          const monthKey = reportDate.toLocaleDateString('en-US', { month: 'short' })
-          
-          if (monthsData[monthKey]) {
-            monthsData[monthKey].erasures++
-            
-            // Calculate duration based on erasure method
-            let duration = 300 // Default 5 minutes
-            
-            if (report.erasure_method) {
-              const method = report.erasure_method.toLowerCase()
-              if (method.includes('dod') || method.includes('7-pass')) {
-                duration = 480 // 8 minutes for DOD
-              } else if (method.includes('gutmann') || method.includes('35-pass')) {
-                duration = 720 // 12 minutes for Gutmann
-              } else if (method.includes('quick') || method.includes('1-pass')) {
-                duration = 180 // 3 minutes for quick
-              } else if (method.includes('nist') || method.includes('3-pass')) {
-                duration = 360 // 6 minutes for NIST
-              }
-            }
-            
-            monthsData[monthKey].totalDuration += duration
-          }
-        })
-      }
-      
-      // Process Machines (Active devices per month)
-      if (machinesRes.success && machinesRes.data) {
-        machinesRes.data.forEach((machine: any) => {
-          const activationDate = new Date(machine.license_activation_date || machine.created_at)
-          const monthKey = activationDate.toLocaleDateString('en-US', { month: 'short' })
-          
-          if (monthsData[monthKey] && machine.machine_id) {
-            monthsData[monthKey].activeMachines.add(machine.machine_id)
-          }
-        })
-      }
-      
-      // Process Sessions (User activity)
-      if (sessionsRes.success && sessionsRes.data) {
-        sessionsRes.data.forEach((session: any) => {
-          const sessionDate = new Date(session.login_time)
-          const monthKey = sessionDate.toLocaleDateString('en-US', { month: 'short' })
-          
-          if (monthsData[monthKey]) {
-            monthsData[monthKey].sessions++
-          }
-        })
-      }
-      
-      // Process System Logs (Operations tracking)
-      if (systemLogsRes.success && systemLogsRes.data) {
-        systemLogsRes.data.forEach((log: any) => {
-          const logDate = new Date(log.created_at)
-          const monthKey = logDate.toLocaleDateString('en-US', { month: 'short' })
-          
-          if (monthsData[monthKey]) {
-            monthsData[monthKey].logs++
-          }
-        })
-      }
-      
-      // Convert to arrays for charts
-      const monthlyErasures = Object.entries(monthsData).map(([month, data]) => ({
-        month,
-        count: data.erasures
-      }))
-      
-      const avgDuration = Object.entries(monthsData).map(([month, data]) => ({
-        month,
-        duration: data.erasures > 0 ? Math.floor(data.totalDuration / data.erasures) : 0
-      }))
-      
-      // Throughput = erasures + active machines count (combined metric)
-      const throughput = Object.entries(monthsData).map(([month, data]) => ({
-        month,
-        count: data.erasures + data.activeMachines.size
-      }))
-      
-      const newPerformanceData = {
-        monthlyErasures,
-        avgDuration,
-        throughput
-      };
-
-      setPerformanceData(newPerformanceData);
-
-      // 💾 Cache the performance data
-      setCachedData('performance', newPerformanceData);
-      
-      console.log('✅ Performance metrics calculated:', { 
-        monthlyErasures, 
-        avgDuration, 
-        throughput,
-        totalErasures: monthlyErasures.reduce((sum, m) => sum + m.count, 0)
-      })
-      
-    } catch (error) {
-      console.error('❌ Error loading performance data:', error)
-      showError('Data Loading Error', 'Failed to load performance data from server.')
-    } finally {
-      setLoading(false)
-    }
+    return storedUserData?.user_email || user?.email || ''
   }
+
+  const userEmail = getUserEmail()
+  
+  // ✅ Use React Query hooks (same as AdminDashboard)
+  const auditReportsQuery = useAuditReports(userEmail, !!userEmail)
+  const machinesQuery = useUserMachines(userEmail, !!userEmail)
+  const performanceQuery = usePerformanceData(userEmail, !!userEmail)
+  
+  const [performanceData, setPerformanceData] = useState<PerformanceData>({
+    monthlyErasures: [],
+    avgDuration: [],
+    throughput: []
+  })
+  
+  // ✅ Use React Query loading state
+  const loading = performanceQuery.isLoading
+
+  // ✅ React Query automatically handles user changes, caching, and refetching
+  // No manual state management needed
+
+  // ✅ Update performance data from React Query (same as AdminDashboard)
+  useEffect(() => {
+    if (performanceQuery.data) {
+      console.log('✅ Performance data loaded from React Query:', performanceQuery.data)
+      setPerformanceData(performanceQuery.data)
+    } else if (performanceQuery.isError) {
+      console.error('❌ Error loading performance data:', performanceQuery.error)
+      showError('Data Loading Error', 'Failed to load performance data.')
+    }
+  }, [performanceQuery.data, performanceQuery.isError])
+
+  // ✅ Performance data is now automatically loaded via React Query hooks
+  // No manual API calls needed - React Query handles caching, refetching, and filtering
 
   if (loading) {
     return (

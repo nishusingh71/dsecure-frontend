@@ -970,7 +970,7 @@ const SupportPage: React.FC = () => {
                     Help Manual
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Consult The Guide To Learn More About DSecure Products.
+                    Complete Visual Guide To Learn More About DSecure Products, Installation, FAQs, Report Management & Advanced Settings Configuration.
                   </p>
                   <Link to="/support/help-manual" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     View Help Manual →

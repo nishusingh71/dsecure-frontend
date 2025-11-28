@@ -6,6 +6,7 @@ import { apiClient, Subuser, Session } from '@/utils/enhancedApiClient'
 import { useAuth } from '@/auth/AuthContext'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSubusers } from '@/hooks/useSubusers'
 
 // Extended interface for table display
 interface SubuserTableRow {
@@ -29,9 +30,77 @@ export default function AdminSubusers() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const navigate = useNavigate()
   
+  // Helper function to format datetime for Last Login display
+  const formatLastLogin = (lastLogin: string | null | undefined): string => {
+    if (!lastLogin || lastLogin === 'Never' || lastLogin === '-') {
+      return 'Never'
+    }
+    
+    try {
+      const date = new Date(lastLogin)
+      const now = new Date()
+      const diffMs = now.getTime() - date.getTime()
+      const diffMins = Math.floor(diffMs / 60000)
+      const diffHours = Math.floor(diffMs / 3600000)
+      const diffDays = Math.floor(diffMs / 86400000)
+      
+      // Less than 1 minute ago
+      if (diffMins < 1) {
+        return 'Just now'
+      }
+      // Less than 1 hour ago
+      else if (diffMins < 60) {
+        return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`
+      }
+      // Less than 24 hours ago
+      else if (diffHours < 24) {
+        return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`
+      }
+      // Less than 7 days ago
+      else if (diffDays < 7) {
+        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`
+      }
+      // More than 7 days - show formatted date
+      else {
+        return date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+        })
+      }
+    } catch (error) {
+      console.error('Error formatting last login date:', error)
+      return lastLogin
+    }
+  }
+  
+  // ✅ Get user email for fetching subusers
+  const getUserEmail = (): string => {
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    
+    let storedUserData = null
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser)
+      } catch (e) {
+        console.error('Error parsing user_data:', e)
+      }
+    }
+    
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser)
+      } catch (e) {
+        console.error('Error parsing authUser:', e)
+      }
+    }
+    
+    return storedUserData?.user_email || user?.email || ''
+  }
+  
   // ✅ Check if current user has admin/superadmin role
   const getUserRole = (): string => {
-    // Try to get role from localStorage first
     const storedUser = localStorage.getItem('user_data')
     const authUser = localStorage.getItem('authUser')
     
@@ -55,45 +124,36 @@ export default function AdminSubusers() {
     return storedUserData?.role || storedUserData?.user_type || user?.role || 'user'
   }
   
+  const userEmail = getUserEmail()
   const currentUserRole = getUserRole()
   const canEditOrDelete = currentUserRole === 'admin' || currentUserRole === 'superadmin'
   
-  console.log('👤 Current User Role:', currentUserRole, '| Can Edit/Delete:', canEditOrDelete)
+  console.log('🔍 Current User Role:', currentUserRole, '| Can Edit/Delete:', canEditOrDelete)
   
-  // ✅ Cache Helper Functions
-  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-  
-  const getCachedData = (key: string) => {
-    try {
-      const cached = localStorage.getItem(`admin_cache_${key}`);
-      if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
-        if (Date.now() - timestamp < CACHE_DURATION) {
-          console.log(`✅ Using cached data for ${key}`);
-          return data;
-        }
-        localStorage.removeItem(`admin_cache_${key}`);
+  // ✅ Check if current user is a subuser
+  const getUserType = (): string => {
+    const storedUser = localStorage.getItem('user_data')
+    let storedUserData = null
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser)
+      } catch (e) {
+        console.error('Error parsing user_data:', e)
       }
-    } catch (e) {
-      console.warn(`⚠️ Cache read error for ${key}:`, e);
     }
-    return null;
-  };
-
-  const setCachedData = (key: string, data: any) => {
-    try {
-      localStorage.setItem(`admin_cache_${key}`, JSON.stringify({
-        data,
-        timestamp: Date.now()
-      }));
-      console.log(`💾 Cached data for ${key}`);
-    } catch (e) {
-      console.warn(`⚠️ Cache write error for ${key}:`, e);
-    }
-  };
+    return storedUserData?.user_type || storedUserData?.userType || ''
+  }
   
-  const [allRows, setAllRows] = useState<SubuserTableRow[]>(() => getCachedData('subusers_list') || [])
-  const [loading, setLoading] = useState(true)
+  const currentUserType = getUserType()
+  const isSubuser = currentUserType === 'subuser'
+  
+  console.log('👤 User Type:', currentUserType, '| Is Subuser:', isSubuser)
+  console.log('📧 Current User Email:', userEmail)
+  
+  // ✅ Fetch subusers filtered by current user's email (works for both regular users and subusers)
+  // If subuser has sub-subusers, they will be shown; if not, empty state will appear
+  const { data: subusersData = [], isLoading: loading, refetch } = useSubusers(userEmail, true)
+  
   const pageSize = 5
   
   // Delete modal state
@@ -102,168 +162,16 @@ export default function AdminSubusers() {
     user: null
   })
   
-  // Load users data on component mount
-  useEffect(() => {
-    loadUsersData()
-  }, [])
-
-  const loadUsersData = async () => {
-    setLoading(true)
-    
-    // ✅ Check cache first for instant display
-    const cachedSubusers = getCachedData('subusers_list');
-    if (cachedSubusers && cachedSubusers.length > 0) {
-      console.log('⚡ Displaying cached subusers data');
-      setAllRows(cachedSubusers);
-      setLoading(false); // Hide loader since we have cached data
-    }
-    
-    try {
-      // Get user email - EXACT SAME PATTERN AS AdminDashboard, AdminMachines & AdminReports
-      // 1. Try localStorage 'user_data' key (not 'dsecure_user_data')
-      let storedUserData = null;
-      const storedUser = localStorage.getItem('user_data');
-      const authUser = localStorage.getItem('authUser');
-      
-      if (storedUser) {
-        try {
-          storedUserData = JSON.parse(storedUser);
-          console.log('💾 Parsed user_data from localStorage:', storedUserData);
-        } catch (e) {
-          console.error('Error parsing user_data:', e);
-        }
-      }
-      
-      if (!storedUserData && authUser) {
-        try {
-          storedUserData = JSON.parse(authUser);
-          console.log('💾 Parsed authUser from localStorage:', storedUserData);
-        } catch (e) {
-          console.error('Error parsing authUser:', e);
-        }
-      }
-      
-      // 2. PRIORITY: Use user_email from localStorage user_data, then from auth context
-      const userEmail = storedUserData?.user_email || user?.email || '';
-      console.log('📧 Final userEmail for subusers:', userEmail);
-      
-      if (!userEmail) {
-        console.warn('⚠️ User email not found, cannot fetch subusers')
-        showWarning('No User Email', 'Please log in again to view subusers.')
-        setLoading(false)
-        return
-      }
-
-      console.log('🔍 Fetching subusers for:', userEmail)
-
-      // 1. Fetch subusers from backend with smart fallback
-      let subusersRes
-      try {
-        subusersRes = await apiClient.getSubusersBySuperuser(userEmail)
-        console.log('✅ Subusers API response:', subusersRes)
-      } catch (err) {
-        console.error('❌ Error fetching subusers by superuser:', err)
-        // Fallback: Try to get all subusers
-        try {
-          console.log('🔄 Attempting fallback to getSubusers()...')
-          subusersRes = await apiClient.getSubusers()
-          console.log('✅ Fallback subusers response:', subusersRes)
-        } catch (fallbackErr) {
-          console.error('❌ Fallback also failed:', fallbackErr)
-          throw new Error('Both primary and fallback APIs failed')
-        }
-      }
-      
-      if (!subusersRes || !subusersRes.success || !subusersRes.data || subusersRes.data.length === 0) {
-        console.warn('⚠️ No subusers data received')
-        showInfo('No Subusers Found', 'No subusers are associated with your account.')
-        setAllRows([])
-        setLoading(false)
-        return
-      }
-
-      console.log('✅ Subusers fetched:', subusersRes.data.length)
-
-      // 2. Fetch enhanced subuser data with department info from /api/EnhancedSubusers/by-parent/{parentEmail}
-      let enhancedSubusersMap = new Map<string, { department?: string; role?: string }>()
-      try {
-        console.log('🔍 Fetching enhanced subusers data for department info...')
-        const enhancedRes = await apiClient.getEnhancedSubusersByParent(userEmail)
-        if (enhancedRes.success && enhancedRes.data) {
-          console.log('✅ Enhanced subusers fetched:', enhancedRes.data.length)
-          enhancedRes.data.forEach((enhanced) => {
-            enhancedSubusersMap.set(enhanced.subuser_email, {
-              department: enhanced.department,
-              role: enhanced.role || enhanced.defaultRole
-            })
-          })
-          console.log('✅ Enhanced data mapped for', enhancedSubusersMap.size, 'subusers')
-        }
-      } catch (enhancedErr) {
-        console.warn('⚠️ Failed to fetch enhanced subuser data, continuing without department info:', enhancedErr)
-      }
-
-      // 3. Fetch all sessions to get last login info
-      let sessionsData: Session[] = []
-      try {
-        const sessionsRes = await apiClient.getSessions()
-        sessionsData = sessionsRes.success && sessionsRes.data ? sessionsRes.data : []
-        console.log('✅ Sessions fetched:', sessionsData.length)
-      } catch (sessionErr) {
-        console.warn('⚠️ Failed to fetch sessions, continuing without last login data:', sessionErr)
-        // Continue without session data - last login will show "Never"
-      }
-
-      // 4. Create a map of email -> last login time
-      const lastLoginMap = new Map<string, string>()
-      sessionsData.forEach((session: Session) => {
-        const email = session.user_email
-        const loginTime = session.login_time
-        
-        // Keep the most recent login
-        if (!lastLoginMap.has(email) || new Date(loginTime) > new Date(lastLoginMap.get(email)!)) {
-          lastLoginMap.set(email, loginTime)
-        }
-      })
-
-      // 5. Map subusers to table rows with session data and department info
-      const tableRows: SubuserTableRow[] = subusersRes.data.map((subuser: Subuser) => {
-        const lastLogin = lastLoginMap.get(subuser.subuser_email)
-        const enhancedData = enhancedSubusersMap.get(subuser.subuser_email)
-        
-        return {
-          subuser_email: subuser.subuser_email,
-          roles: enhancedData?.role || subuser.subuser_role || 'user',
-          status: subuser.status || 'active',
-          department: enhancedData?.department || 'N/A', // ✅ Use department from enhanced API
-          last_login: lastLogin 
-            ? new Date(lastLogin).toLocaleString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric', 
-                hour: '2-digit', 
-                minute: '2-digit' 
-              })
-            : 'Never'
-        }
-      })
-
-      console.log('✅ Table rows created:', tableRows.length)
-      setAllRows(tableRows)
-      setCachedData('subusers_list', tableRows); // ✅ Cache API data
-      showSuccess('Data Loaded', `Successfully loaded ${tableRows.length} subuser(s)`)
-      
-    } catch (error) {
-      console.error('❌ Error loading subusers:', error)
-      showError('Data Loading Error', 'Failed to load subuser data from backend. Please try again.')
-      setAllRows([])
-    } finally {
-      setLoading(false)
-    }
-  }
-
-
-  
+  // ✅ Transform hook data to table rows format
+  const allRows = useMemo<SubuserTableRow[]>(() => {
+    return subusersData.map((subuser: any) => ({
+      subuser_email: subuser.subuser_email,
+      roles: subuser.role || subuser.defaultRole || 'user',
+      status: subuser.status || 'active',
+      department: subuser.department || 'N/A',
+      last_login: subuser.last_login || 'Never'
+    }))
+  }, [subusersData])  
   const uniqueRoles = useMemo(() => [...new Set(allRows.map(r => r.roles))], [allRows])
   const uniqueStatuses = useMemo(() => [...new Set(allRows.map(r => r.status))], [allRows])
   const uniqueDepartments = useMemo(() => [...new Set(allRows.map(r => r.department))], [allRows])
@@ -331,17 +239,32 @@ export default function AdminSubusers() {
       }
 
       const enhanced = res.data
+      
+      console.log('🔍 Enhanced subuser data from API:', enhanced)
+      
+      // Extract name with proper fallbacks
+      const userName = enhanced.subuser_name || enhanced.name || ''
+      
+      // Extract phone with proper fallbacks  
+      const userPhone = enhanced.subuser_phone || enhanced.phone || ''
+      
+      // Extract role with proper fallbacks
+      const userRole = enhanced.role || enhanced.subuser_role || enhanced.defaultRole || user.roles || 'user'
+      
+      console.log('📋 Extracted values:')
+      console.log('  - Name:', userName)
+      console.log('  - Phone:', userPhone)
+      console.log('  - Role:', userRole)
 
       navigate('/admin/edit-subuser', {
         state: {
           user: {
             subuser_email: enhanced.subuser_email,
-            subuser_name: enhanced.subuser_name || enhanced.user_email || '',
-            // prefer explicit role fields, fall back to table's roles
-            role: enhanced.role || enhanced.subuser_role || enhanced.defaultRole || user.roles,
-            department: enhanced.department || user.department,
+            name: userName,
+            role: userRole,
+            department: enhanced.department || user.department || '',
             status: enhanced.status || 'active',
-            phone: enhanced.subuser_phone || '',
+            phone: userPhone,
             licenseUsage: enhanced.licenseUsage || Number(enhanced.license_allocation) || 0,
             created_at: enhanced.created_at || ''
           }
@@ -370,7 +293,7 @@ export default function AdminSubusers() {
       if (response.success) {
         showSuccess(`User ${user.subuser_email} deleted successfully`)
         setDeleteModal({ show: false, user: null })
-        await loadUsersData() // Refresh the list
+        await refetch() // ✅ Use refetch from hook instead of loadUsersData
       } else {
         throw new Error(response.error || 'Failed to delete user')
       }
@@ -412,7 +335,7 @@ export default function AdminSubusers() {
       // await apiClient.updateSubuserStatus(user.subuser_email, newStatus)
       
       showSuccess(`User ${user.subuser_email} status changed to ${newStatus}`)
-      await loadUsersData() // Refresh the list
+      await refetch() // ✅ Use refetch from hook instead of loadUsersData
     } catch (error) {
       console.error('Error toggling status:', error)
       showError('Status Update Failed', 'Failed to update user status. Please try again.')
@@ -636,8 +559,20 @@ export default function AdminSubusers() {
               </tr>
             ) : rows.length === 0 ? (
               <tr>
-                <td colSpan={6} className="py-8 text-center text-slate-500">
-                  No subusers found. Try adjusting your filters.
+                <td colSpan={6} className="py-12 text-center">
+                  <div className="flex flex-col items-center">
+                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                      <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-2">No Subusers Found</h3>
+                    <p className="text-slate-600">
+                      {isSubuser 
+                        ? "You don't have any subusers associated with your account."
+                        : "No subusers found. Try adjusting your filters or create a new subuser."}
+                    </p>
+                  </div>
                 </td>
               </tr>
             ) : (
@@ -670,7 +605,23 @@ export default function AdminSubusers() {
                     </span>
                   </td>
                   <td className="py-2">{user.department}</td>
-                  <td className="py-2 text-slate-600">{user.last_login}</td>
+                  <td className="py-2 text-slate-600">
+                    <div className="flex flex-col">
+                      <span className="font-medium">
+                        {formatLastLogin(user.last_login)}
+                      </span>
+                      {user.last_login && user.last_login !== 'Never' && user.last_login !== '-' && (
+                        <span className="text-xs text-slate-400 mt-0.5" title={new Date(user.last_login).toLocaleString()}>
+                          {new Date(user.last_login).toLocaleString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      )}
+                    </div>
+                  </td>
                   <td className="py-2">
                     <div className="flex items-center gap-1">
                       {/* <button 

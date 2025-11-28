@@ -67,6 +67,7 @@ import EditSubuser from "./pages/dashboards/EditSubuser";
 import NewErasurePage from "./pages/dashboards/NewErasurePage";
 import ReportsPage from "./pages/dashboards/ReportsPage";
 import DownloadAgentPage from "./pages/dashboards/DownloadAgentPage";
+import PrivateCloudSetup from "./pages/dashboards/PrivateCloudSetup";
 
 // Admin pages
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -99,6 +100,7 @@ import HealthcareServices from "./pages/HealthcareServices";
 import ITADSolution from "./pages/ITADSolution";
 import AdminProfileEdit from "./pages/admin/AdminProfileEdit";
 import EnhancedUserDashboard from "./pages/dashboards/EnhancedUserDashboard";
+import CompleteDSecureNetworkFile from "./pages/manual/CompleteDSecureNetworkFile";
 const HealthcareSolutionsPage = lazy(() => import("./pages/solutions/HealthcareSolutionsPage"));
 const EnterpriseSolutionsPage = lazy(() => import("./pages/solutions/EnterpriseSolutionsPage"));
 const FinancialSolutionsPage = lazy(() => import("./pages/solutions/FinancialSolutionsPage"));
@@ -109,6 +111,30 @@ const SearchDemoPage = lazy(() => import("./pages/SearchDemoPage"));
 // Manual Pages
 const InstallationPage = lazy(
   () => import("./pages/support/manual/InstallationPage")
+);
+const InstallationGuideDetailed = lazy(
+  () => import("./pages/manual/InstallationGuideDetailed")
+);
+const SystemSetupPage = lazy(
+  () => import("./pages/manual/SystemSetupPage")
+);
+const WorkingWithDSecurePage = lazy(
+  () => import("./pages/manual/WorkingWithDSecurePage")
+);
+const DSecureFAQPage = lazy(
+  () => import("./pages/manual/DSecureFAQPage")
+);
+const ReportManagementPage = lazy(
+  () => import("./pages/manual/ReportManagementPage")
+);
+const ScheduleSettingsPage = lazy(
+  () => import("./pages/manual/ScheduleSettingsPage")
+);
+const HelpManualIndexPage = lazy(
+  () => import("./pages/manual/HelpManualIndexPage")
+);
+const CompleteDSecureManual = lazy(
+  () => import("./pages/manual/CompleteDSecureManual")
 );
 const FirstTimeSetupPage = lazy(
   () => import("./pages/support/manual/FirstTimeSetupPage")
@@ -683,6 +709,7 @@ export default function App() {
                     <Route path="logs" element={<AdminLogs />} />
                     <Route path="subusers" element={<AdminSubusers />} />
                     <Route path="edit-subuser" element={<EditSubuser />} />
+                    <Route path="private-cloud-setup" element={<PrivateCloudSetup />} />
                     <Route path="users" element={<AdminUsers />} />
                     <Route path="users/add" element={<AddUser />} />
                     <Route path="users/edit/:userId" element={<EditUser />} />
@@ -698,6 +725,10 @@ export default function App() {
                     />
                     <Route
                       path="reports/generate"
+                      element={<GenerateReport />}
+                    />
+                    <Route
+                      path="reports/generate/:reportId"
                       element={<GenerateReport />}
                     />
                     <Route path="settings" element={<AdminSettings />} />
@@ -788,6 +819,50 @@ export default function App() {
                   <Route
                     path="/support/manual/installation"
                     element={<InstallationPage />}
+                  />
+                  <Route
+                    path="/support/manual/installation-guide"
+                    element={<InstallationGuideDetailed />}
+                  />
+                  <Route
+                    path="/support/manual/system-setup"
+                    element={<SystemSetupPage />}
+                  />
+                  <Route
+                    path="/support/manual/working-with-dsecure"
+                    element={<WorkingWithDSecurePage />}
+                  />
+                  <Route
+                    path="/support/help-manual/working-guide"
+                    element={<WorkingWithDSecurePage />}
+                  />
+                  <Route
+                    path="/support/help-manual/faqs"
+                    element={<DSecureFAQPage />}
+                  />
+                  <Route
+                    path="/support/help-manual/report-management"
+                    element={<ReportManagementPage />}
+                  />
+                  <Route
+                    path="/support/help-manual/schedule-settings"
+                    element={<ScheduleSettingsPage />}
+                  />
+                  <Route
+                    path="/support/help-manual/complete-manual"
+                    element={<CompleteDSecureManual />}
+                  />
+                  <Route
+                    path="/support/help-manual/complete-network-manual"
+                    element={<CompleteDSecureNetworkFile />}
+                  />
+                  <Route
+                    path="/support/help-manual"
+                    element={<HelpManualIndexPage />}
+                  />
+                  <Route
+                    path="/support/help-manual"
+                    element={<HelpManualIndexPage />}
                   />
                   <Route
                     path="/support/manual/first-time-setup"

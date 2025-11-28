@@ -1,33 +1,43 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
+import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
+import { useAuth } from "@/auth/AuthContext";
 
 import { AdminDashboardAPI, AdminReport } from "@/services/adminDashboardAPI";
 import { useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
+import { useNavigate } from "react-router-dom";
 
 // Extended AdminReport interface to include raw data
 interface ExtendedAdminReport extends AdminReport {
+  method?: string;
   _raw?: any;
   _details?: any;
 }
 
 export default function AdminReports() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification();
+  const { user } = useAuth();
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [dateValidationError, setDateValidationError] = useState("");
   const [deviceRangeFilter, setDeviceRangeFilter] = useState("");
   const [showUniqueOnly, setShowUniqueOnly] = useState(false);
   const [sortBy, setSortBy] = useState<keyof AdminReport>("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  
+  const [eraserMethodFilter, setEraserMethodFilter] = useState("");
+
+  const navigate = useNavigate();
+
   // ✅ Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-  
+
   const getCachedData = (key: string) => {
     try {
       const cached = localStorage.getItem(`admin_cache_${key}`);
@@ -47,52 +57,182 @@ export default function AdminReports() {
 
   const setCachedData = (key: string, data: any) => {
     try {
-      localStorage.setItem(`admin_cache_${key}`, JSON.stringify({
-        data,
-        timestamp: Date.now()
-      }));
+      localStorage.setItem(
+        `admin_cache_${key}`,
+        JSON.stringify({
+          data,
+          timestamp: Date.now(),
+        })
+      );
       console.log(`💾 Cached data for ${key}`);
     } catch (e) {
       console.warn(`⚠️ Cache write error for ${key}:`, e);
     }
   };
-  
-  const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(() => getCachedData('reports') || []);
+
+  // ✅ Date Helper Functions
+  const formatDateToYYYYMMDD = (date: Date): string => {
+    return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+  };
+
+  const isValidDateFormat = (dateString: string): boolean => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(dateString)) return false;
+    const date = new Date(dateString);
+    return !isNaN(date.getTime()) && dateString === formatDateToYYYYMMDD(date);
+  };
+
+  // ✅ Custom DateInput Component with YYYY-MM-DD format
+  const CustomDateInput = ({ 
+    label, 
+    value, 
+    onChange, 
+    placeholder = "YYYY-MM-DD" 
+  }: {
+    label: string;
+    value: string;
+    onChange: (value: string) => void;
+    placeholder?: string;
+  }) => {
+    const [displayValue, setDisplayValue] = useState(value);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const formatInputValue = (val: string) => {
+      // Remove non-digits
+      const digitsOnly = val.replace(/\D/g, '');
+      
+      // Format as YYYY-MM-DD
+      if (digitsOnly.length >= 8) {
+        return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4, 6)}-${digitsOnly.slice(6, 8)}`;
+      } else if (digitsOnly.length >= 6) {
+        return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4, 6)}-${digitsOnly.slice(6)}`;
+      } else if (digitsOnly.length >= 4) {
+        return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4)}`;
+      }
+      return digitsOnly;
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const rawValue = e.target.value;
+      const formatted = formatInputValue(rawValue);
+      
+      setDisplayValue(formatted);
+      
+      // Only call onChange if we have a complete date or empty
+      if (formatted === '' || formatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        onChange(formatted);
+      }
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      // Allow backspace, delete, tab, escape, enter
+      if ([8, 9, 27, 13, 46].includes(e.keyCode) ||
+          // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+          (e.keyCode === 65 && e.ctrlKey) ||
+          (e.keyCode === 67 && e.ctrlKey) ||
+          (e.keyCode === 86 && e.ctrlKey) ||
+          (e.keyCode === 88 && e.ctrlKey) ||
+          // Allow numbers and dash
+          (e.keyCode >= 48 && e.keyCode <= 57) || // 0-9
+          (e.keyCode >= 96 && e.keyCode <= 105) || // numpad 0-9
+          e.keyCode === 189 || e.keyCode === 109 // dash
+      ) {
+        return;
+      }
+      e.preventDefault();
+    };
+
+    React.useEffect(() => {
+      setDisplayValue(value);
+    }, [value]);
+
+    return (
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          {label} <span className="text-slate-500 text-xs">(YYYY-MM-DD)</span>
+        </label>
+        <input
+          ref={inputRef}
+          type="text"
+          className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-brand focus:border-transparent font-mono"
+          placeholder={placeholder}
+          value={displayValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          maxLength={10}
+        />
+      </div>
+    );
+  };
+
+  const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(
+    () => getCachedData("reports") || []
+  );
   const [loading, setLoading] = useState(true);
-  const [selectedReportIds, setSelectedReportIds] = useState<Set<string>>(new Set());
+  const [selectedReportIds, setSelectedReportIds] = useState<Set<string>>(
+    new Set()
+  );
   const pageSize = 5;
 
   // Generate PDF Modal State
   const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const [selectedReport, setSelectedReport] = useState<ExtendedAdminReport | null>(null);
+  const [
+    selectedReport,
+    setSelectedReport,
+  ] = useState<ExtendedAdminReport | null>(null);
+
+  // Bulk modal removed - now redirects to /admin/reports/generate
+
+  // Scheduler Modal State
+  const [showSchedulerModal, setShowSchedulerModal] = useState(false);
+  const [showScheduledReportsModal, setShowScheduledReportsModal] = useState(
+    false
+  );
+  const [scheduledReports, setScheduledReports] = useState<any[]>([]);
+  const [loadingScheduledReports, setLoadingScheduledReports] = useState(false);
+  const [schedulerData, setSchedulerData] = useState({
+    reportName: "",
+    scheduleType: "once", // 'once', 'daily', 'weekly', 'monthly'
+    scheduleDate: "",
+    scheduleTime: "",
+    reportIds: [] as string[],
+    emailRecipients: "",
+    includeFilters: false,
+    filterStatus: "",
+    filterDepartment: "",
+  });
+
   const [pdfFormData, setPdfFormData] = useState({
-    reportTitle: 'Data Erasure Audit Report',
-    headerText: 'D-SecureTech',
-    technicianName: '',
-    technicianDept: '',
-    validatorName: '',
-    validatorDept: '',
-    headerLeftLogo: '',
-    headerRightLogo: '',
-    watermarkImage: '',
-    technicianSignature: '',
-    validatorSignature: ''
+    reportTitle: "Data Erasure Audit Report",
+    headerText: "D-SecureTech",
+    technicianName: "",
+    technicianDept: "",
+    validatorName: "",
+    validatorDept: "",
+    headerLeftLogo: "",
+    headerRightLogo: "",
+    watermarkImage: "",
+    technicianSignature: "",
+    validatorSignature: "",
   });
 
   // Handle image file upload and convert to base64
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
+  const handleImageUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    fieldName: string
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      showError('Invalid File', 'Please upload an image file');
+    if (!file.type.startsWith("image/")) {
+      showError("Invalid File", "Please upload an image file");
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      showError('File Too Large', 'Image size should be less than 5MB');
+      showError("File Too Large", "Image size should be less than 5MB");
       return;
     }
 
@@ -105,14 +245,266 @@ export default function AdminReports() {
         showSuccess(`${fieldName} uploaded successfully`);
       };
       reader.onerror = () => {
-        showError('Upload Failed', 'Failed to read image file');
+        showError("Upload Failed", "Failed to read image file");
       };
       reader.readAsDataURL(file);
     } catch (error) {
-      console.error('Error uploading image:', error);
-      showError('Upload Failed', 'Failed to upload image');
+      console.error("Error uploading image:", error);
+      showError("Upload Failed", "Failed to upload image");
     }
   };
+
+  // Bulk functions removed - now redirects to /admin/reports/generate
+
+  // Scheduler handler functions
+  // const handleSchedulerInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  //   const { name, value } = e.target;
+  //   setSchedulerData(prev => ({
+  //     ...prev,
+  //     [name]: value
+  //   }));
+  // };
+
+  // Load scheduled reports
+  // const loadScheduledReports = async () => {
+  //   setLoadingScheduledReports(true);
+  //   try {
+  //     const userEmail = user?.email || 'unknown';
+
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/list/${encodeURIComponent(userEmail)}`,
+  //       {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${authService.getAccessToken()}`
+  //         }
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setScheduledReports(data.data || []);
+  //       console.log('✅ Loaded scheduled reports:', data.data?.length || 0);
+  //     } else {
+  //       console.warn('⚠️ Failed to load scheduled reports:', response.status);
+  //       setScheduledReports([]);
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Error loading scheduled reports:', error);
+  //     setScheduledReports([]);
+  //   } finally {
+  //     setLoadingScheduledReports(false);
+  //   }
+  // };
+
+  // Delete scheduled report
+  // const handleDeleteScheduledReport = async (scheduleId: string) => {
+  //   if (!window.confirm('Are you sure you want to delete this scheduled report?')) {
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/${scheduleId}`,
+  //       {
+  //         method: 'DELETE',
+  //         headers: {
+  //           'Authorization': `Bearer ${authService.getAccessToken()}`
+  //         }
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       showSuccess('Schedule Deleted', 'Scheduled report has been deleted successfully');
+  //       loadScheduledReports(); // Refresh the list
+  //     } else {
+  //       showError('Delete Failed', 'Failed to delete scheduled report');
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Error deleting scheduled report:', error);
+  //     showError('Delete Failed', 'Failed to delete scheduled report');
+  //   }
+  // };
+
+  // Toggle schedule active status
+  // const handleToggleSchedule = async (scheduleId: string, currentStatus: boolean) => {
+  //   try {
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/${scheduleId}/toggle`,
+  //       {
+  //         method: 'PATCH',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${authService.getAccessToken()}`
+  //         },
+  //         body: JSON.stringify({ isActive: !currentStatus })
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       const statusText = !currentStatus ? 'activated' : 'deactivated';
+  //       showSuccess('Schedule Updated', `Scheduled report has been ${statusText}`);
+  //       loadScheduledReports(); // Refresh the list
+  //     } else {
+  //       showError('Update Failed', 'Failed to update schedule status');
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Error toggling schedule:', error);
+  //     showError('Update Failed', 'Failed to update schedule status');
+  //   }
+  // };
+
+  // Open scheduled reports modal
+  // const handleViewScheduledReports = () => {
+  //   setShowScheduledReportsModal(true);
+  //   loadScheduledReports();
+  // };
+
+  // const handleScheduleReport = async () => {
+  //   // Validation
+  //   if (!schedulerData.reportName.trim()) {
+  //     showError('Validation Error', 'Please enter a report name');
+  //     return;
+  //   }
+
+  //   // Skip date/time validation for immediate execution
+  //   if (schedulerData.scheduleType !== 'immediate') {
+  //     if (!schedulerData.scheduleDate || !schedulerData.scheduleTime) {
+  //       showError('Validation Error', 'Please select date and time');
+  //       return;
+  //     }
+
+  //     const scheduleDateTime = new Date(`${schedulerData.scheduleDate}T${schedulerData.scheduleTime}`);
+  //     const now = new Date();
+
+  //     if (scheduleDateTime <= now) {
+  //       showError('Invalid Date/Time', 'Scheduled time must be in the future');
+  //       return;
+  //     }
+  //   }
+
+  //   try {
+  //     // For immediate execution, use current time + 1 minute
+  //     const scheduleDateTime = schedulerData.scheduleType === 'immediate'
+  //       ? new Date(Date.now() + 60000) // Add 1 minute to current time
+  //       : new Date(`${schedulerData.scheduleDate}T${schedulerData.scheduleTime}`);
+
+  //     showInfo('Creating Schedule...', 'Processing your scheduled report request');
+
+  //     // Get user email for created by field
+  //     const userEmail = user?.email || 'unknown';
+
+  //     // Prepare scheduler payload for API
+  //     const schedulerPayload = {
+  //       scheduleName: schedulerData.reportName,
+  //       scheduleType: schedulerData.scheduleType, // 'once', 'daily', 'weekly', 'monthly'
+  //       scheduledDateTime: scheduleDateTime.toISOString(),
+  //       isActive: true,
+  //       reportConfiguration: {
+  //         // Include selected report IDs if any are selected
+  //         reportIds: selectedReportIds.size > 0 ? Array.from(selectedReportIds) : [],
+  //         // Include current filters if enabled
+  //         filters: schedulerData.includeFilters ? {
+  //           status: schedulerData.filterStatus || null,
+  //           department: schedulerData.filterDepartment || null,
+  //           dateRange: dateFilter || null,
+  //           eraserMethod: eraserMethodFilter || null,
+  //           deviceRange: deviceRangeFilter || null,
+  //           searchQuery: query || null
+  //         } : null,
+  //         // Email configuration
+  //         emailSettings: {
+  //           recipients: schedulerData.emailRecipients
+  //             ? schedulerData.emailRecipients.split(',').map(email => email.trim()).filter(email => email)
+  //             : [userEmail], // Default to user's email if no recipients specified
+  //           includeZipDownload: true,
+  //           includeIndividualPdfs: selectedReportIds.size > 0,
+  //           emailSubject: `Scheduled Report: ${schedulerData.reportName}`,
+  //           emailTemplate: 'default'
+  //         }
+  //       },
+  //       metadata: {
+  //         createdBy: userEmail,
+  //         createdAt: new Date().toISOString(),
+  //         reportCount: selectedReportIds.size > 0 ? selectedReportIds.size : filtered.length,
+  //         scheduleSource: 'admin-reports-dashboard'
+  //       }
+  //     };
+
+  //     console.log('📅 Scheduling report with payload:', JSON.stringify(schedulerPayload, null, 2));
+
+  //     // Call Report Scheduler API
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/create`,
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${authService.getAccessToken()}`
+  //         },
+  //         body: JSON.stringify(schedulerPayload)
+  //       }
+  //     );
+
+  //     console.log('📥 Scheduler API Response status:', response.status);
+
+  //     if (!response.ok) {
+  //       let errorMessage = `HTTP error! status: ${response.status}`;
+  //       try {
+  //         const errorData = await response.json();
+  //         console.error('❌ Scheduler API error response:', errorData);
+  //         errorMessage = errorData.message || errorData.error || errorMessage;
+  //       } catch (e) {
+  //         console.error('❌ Could not parse scheduler error response');
+  //       }
+  //       throw new Error(errorMessage);
+  //     }
+
+  //     const responseData = await response.json();
+  //     console.log('✅ Scheduler created successfully:', responseData);
+
+  //     // Show success message with schedule details
+  //     const recipientCount = schedulerData.emailRecipients
+  //       ? schedulerData.emailRecipients.split(',').length
+  //       : 1;
+
+  //     if (schedulerData.scheduleType === 'immediate') {
+  //       showSuccess(
+  //         'Report Execution Started',
+  //         `"${schedulerData.reportName}" is being processed now. Email notifications will be sent to ${recipientCount} recipient(s) when complete.`
+  //       );
+  //     } else {
+  //       const scheduleTypeText = schedulerData.scheduleType === 'once' ? 'one time' : schedulerData.scheduleType;
+  //       showSuccess(
+  //         'Report Scheduled Successfully',
+  //         `"${schedulerData.reportName}" scheduled for ${scheduleDateTime.toLocaleString()} (${scheduleTypeText}). Email notifications will be sent to ${recipientCount} recipient(s).`
+  //       );
+  //     }
+
+  //     // Reset form and close modal
+  //     setSchedulerData({
+  //       reportName: '',
+  //       scheduleType: 'once',
+  //       scheduleDate: '',
+  //       scheduleTime: '',
+  //       reportIds: [],
+  //       emailRecipients: '',
+  //       includeFilters: false,
+  //       filterStatus: '',
+  //       filterDepartment: '',
+  //     });
+  //     setSelectedReportIds(new Set()); // Clear selected reports
+  //     setShowSchedulerModal(false);
+
+  //   } catch (error) {
+  //     console.error('❌ Error scheduling report:', error);
+  //     showError(
+  //       'Scheduling Failed',
+  //       `Failed to schedule report. ${error instanceof Error ? error.message : "Please try again."}`
+  //     );
+  //   }
+  // };
 
   // Load reports data on component mount
   useEffect(() => {
@@ -121,15 +513,15 @@ export default function AdminReports() {
 
   const loadReportsData = async () => {
     setLoading(true);
-    
+
     // ✅ Check cache first for instant display
-    const cachedReports = getCachedData('reports');
+    const cachedReports = getCachedData("reports");
     if (cachedReports && cachedReports.length > 0) {
-      console.log('⚡ Displaying cached reports data');
+      console.log("⚡ Displaying cached reports data");
       setAllRows(cachedReports);
       setLoading(false); // Hide loader since we have cached data
     }
-    
+
     try {
       // Get user email - EXACT SAME PATTERN AS AdminDashboard & AdminMachines
       // 1. Try localStorage 'user_data' key (not 'dsecure_user_data')
@@ -237,7 +629,17 @@ export default function AdminReports() {
 
             status: reportDetails?.status?.toLowerCase() || "completed",
 
-            department: "Operations",
+            department:
+              reportDetails?.department ||
+              reportDetails?.technician_dept ||
+              report.department ||
+              "IT",
+
+            method:
+              reportDetails?.eraser_method ||
+              reportDetails?.erasure_method ||
+              report.erasure_method ||
+              "N/A",
 
             _raw: report,
             _details: reportDetails,
@@ -248,7 +650,7 @@ export default function AdminReports() {
         });
 
         setAllRows(processedReports);
-        setCachedData('reports', processedReports); // ✅ Cache API data
+        setCachedData("reports", processedReports); // ✅ Cache API data
       } else {
         console.warn("⚠️ API failed:", auditReportsRes);
 
@@ -275,18 +677,53 @@ export default function AdminReports() {
     () => [...new Set(allRows.map((r) => r.status))],
     [allRows]
   );
-  const uniqueMonths = useMemo(
-    () => [...new Set(allRows.map((r) => r.date.substring(0, 7)))],
+  const uniqueEraserMethods = useMemo(
+    () => [...new Set(allRows.map((r) => r.method).filter(Boolean))],
     [allRows]
   );
 
   const filtered = useMemo(() => {
     let result = allRows.filter((r) => {
       const matchesQuery =
-        String(r.id || '').toLowerCase().includes(query.toLowerCase()) ||
-        String(r.department || '').toLowerCase().includes(query.toLowerCase());
+        String(r.id || "")
+          .toLowerCase()
+          .includes(query.toLowerCase()) ||
+        String(r.department || "")
+          .toLowerCase()
+          .includes(query.toLowerCase());
       const matchesStatus = !statusFilter || r.status === statusFilter;
-      const matchesDate = !dateFilter || r.date.startsWith(dateFilter);
+      
+      // Date range filtering with format validation
+      let matchesDateRange = true;
+      if (fromDate || toDate) {
+        const reportDate = new Date(r.date);
+        
+        if (fromDate && toDate) {
+          // Validate both dates
+          if (isValidDateFormat(fromDate) && isValidDateFormat(toDate)) {
+            const fromDateTime = new Date(fromDate);
+            const toDateTime = new Date(toDate);
+            toDateTime.setHours(23, 59, 59, 999); // Include the entire end date
+            matchesDateRange = reportDate >= fromDateTime && reportDate <= toDateTime;
+          }
+        } else if (fromDate) {
+          // Validate from date
+          if (isValidDateFormat(fromDate)) {
+            const fromDateTime = new Date(fromDate);
+            matchesDateRange = reportDate >= fromDateTime;
+          }
+        } else if (toDate) {
+          // Validate to date
+          if (isValidDateFormat(toDate)) {
+            const toDateTime = new Date(toDate);
+            toDateTime.setHours(23, 59, 59, 999); // Include the entire end date
+            matchesDateRange = reportDate <= toDateTime;
+          }
+        }
+      }
+      
+      const matchesEraserMethod =
+        !eraserMethodFilter || r.method === eraserMethodFilter;
 
       let matchesDeviceRange = true;
       if (deviceRangeFilter) {
@@ -301,7 +738,13 @@ export default function AdminReports() {
         }
       }
 
-      return matchesQuery && matchesStatus && matchesDate && matchesDeviceRange;
+      return (
+        matchesQuery &&
+        matchesStatus &&
+        matchesDateRange &&
+        matchesEraserMethod &&
+        matchesDeviceRange
+      );
     });
 
     // Remove duplicates if requested
@@ -321,8 +764,8 @@ export default function AdminReports() {
 
       switch (sortBy) {
         case "id":
-          aVal = String(a.id || '');
-          bVal = String(b.id || '');
+          aVal = String(a.id || "");
+          bVal = String(b.id || "");
           break;
         case "date":
           aVal = new Date(a.date);
@@ -333,16 +776,16 @@ export default function AdminReports() {
           bVal = b.devices || 0;
           break;
         case "status":
-          aVal = String(a.status || '');
-          bVal = String(b.status || '');
+          aVal = String(a.status || "");
+          bVal = String(b.status || "");
           break;
         case "department":
-          aVal = String(a.department || '');
-          bVal = String(b.department || '');
+          aVal = String(a.department || "");
+          bVal = String(b.department || "");
           break;
         default:
-          aVal = String(a.id || '');
-          bVal = String(b.id || '');
+          aVal = String(a.id || "");
+          bVal = String(b.id || "");
       }
 
       if (typeof aVal === "string" && typeof bVal === "string") {
@@ -362,7 +805,9 @@ export default function AdminReports() {
     allRows,
     query,
     statusFilter,
-    dateFilter,
+    fromDate,
+    toDate,
+    eraserMethodFilter,
     deviceRangeFilter,
     showUniqueOnly,
     sortBy,
@@ -375,9 +820,12 @@ export default function AdminReports() {
   const clearAllFilters = () => {
     setQuery("");
     setStatusFilter("");
-    setDateFilter("");
+    setFromDate("");
+    setToDate("");
+    setEraserMethodFilter("");
     setDeviceRangeFilter("");
     setShowUniqueOnly(false);
+    setDateValidationError("");
     setPage(1);
   };
 
@@ -394,7 +842,7 @@ export default function AdminReports() {
       // Get the raw report data and parsed details
       const rawReport = report._raw;
       const reportDetails = report._details;
-      
+
       if (!rawReport || !rawReport.report_id) {
         showError("Download Failed", "Report data not available");
         return;
@@ -406,7 +854,8 @@ export default function AdminReports() {
       const pdfPayload = {
         reportData: {
           // Required fields from report_details_json
-          report_id: reportDetails?.report_id?.toString() || rawReport.report_id || "",
+          report_id:
+            reportDetails?.report_id?.toString() || rawReport.report_id || "",
           datetime: reportDetails?.datetime || new Date().toISOString(),
           software_name: reportDetails?.software_name || "D-SecureErase",
           product_version: reportDetails?.product_version || "1.0",
@@ -418,15 +867,24 @@ export default function AdminReports() {
           computer_name: reportDetails?.computer_name || "Unknown",
           mac_address: reportDetails?.mac_address || "",
           manufacturer: reportDetails?.manufacturer || "",
-          Eraser_Start_Time: reportDetails?.Eraser_Start_Time || reportDetails?.eraser_start_time || "",
-          Eraser_End_Time: reportDetails?.Eraser_End_Time || reportDetails?.eraser_end_time || "",
+          Eraser_Start_Time:
+            reportDetails?.Eraser_Start_Time ||
+            reportDetails?.eraser_start_time ||
+            "",
+          Eraser_End_Time:
+            reportDetails?.Eraser_End_Time ||
+            reportDetails?.eraser_end_time ||
+            "",
           eraser_method: reportDetails?.eraser_method || "Secure Erase",
           validation_method: reportDetails?.validation_method || "",
-          Erasure_Type: reportDetails?.Erasure_Type || reportDetails?.erasure_type || "Full Disk",
+          Erasure_Type:
+            reportDetails?.Erasure_Type ||
+            reportDetails?.erasure_type ||
+            "Full Disk",
           total_files: reportDetails?.total_files || 0,
           erased_files: reportDetails?.erased_files || 0,
           failed_files: reportDetails?.failed_files || 0,
-          erasure_log: reportDetails?.erasure_log || []
+          erasure_log: reportDetails?.erasure_log || [],
         },
         // Optional branding/signature fields
         reportTitle: reportDetails?.report_title || "Data Erasure Audit Report",
@@ -439,16 +897,22 @@ export default function AdminReports() {
         validatorName: reportDetails?.validator_name || "",
         validatorDept: reportDetails?.validator_dept || "",
         technicianSignature: reportDetails?.technician_signature || "",
-        validatorSignature: reportDetails?.validator_signature || ""
+        validatorSignature: reportDetails?.validator_signature || "",
       };
 
-      console.log("📤 Sending PDF payload:", JSON.stringify(pdfPayload, null, 2));
+      console.log(
+        "📤 Sending PDF payload:",
+        JSON.stringify(pdfPayload, null, 2)
+      );
 
       // Call the PDF export API endpoint with GET method and report_id as query param
-      const reportId = reportDetails?.report_id?.toString() || rawReport.report_id || "";
+      const reportId =
+        reportDetails?.report_id?.toString() || rawReport.report_id || "";
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL ||
-          "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf?reportId=${encodeURIComponent(reportId)}`,
+          "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
+          reportId
+        )}/export-pdf`,
         {
           method: "GET",
           headers: {
@@ -505,7 +969,10 @@ export default function AdminReports() {
   // ✅ Bulk Download Multiple Reports as ZIP
   const handleBulkDownload = async () => {
     if (selectedReportIds.size === 0) {
-      showWarning('No Reports Selected', 'Please select at least one report to download');
+      showWarning(
+        "No Reports Selected",
+        "Please select at least one report to download"
+      );
       return;
     }
 
@@ -513,12 +980,12 @@ export default function AdminReports() {
       showInfo(`Preparing ${selectedReportIds.size} reports for download...`);
 
       // Import JSZip dynamically
-      const JSZip = (await import('jszip')).default;
+      const JSZip = (await import("jszip")).default;
       const zip = new JSZip();
 
       // Get selected reports
-      const selectedReports = allRows.filter(report => 
-        selectedReportIds.has(String(report.id || ''))
+      const selectedReports = allRows.filter((report) =>
+        selectedReportIds.has(String(report.id || ""))
       );
 
       let successCount = 0;
@@ -529,16 +996,20 @@ export default function AdminReports() {
         try {
           const rawReport = report._raw;
           const reportDetails = report._details;
-          
+
           if (!rawReport || !rawReport.report_id) {
             console.warn(`Skipping report ${report.id} - no data available`);
             failedCount++;
             continue;
           }
 
-          const reportId = reportDetails?.report_id?.toString() || rawReport.report_id || "";
+          const reportId =
+            reportDetails?.report_id?.toString() || rawReport.report_id || "";
           const response = await fetch(
-            `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf?reportId=${encodeURIComponent(reportId)}`,
+            `${import.meta.env.VITE_API_BASE_URL ||
+              "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
+              reportId
+            )}/export-pdf`,
             {
               method: "GET",
               headers: {
@@ -564,18 +1035,20 @@ export default function AdminReports() {
       }
 
       if (successCount === 0) {
-        showError('Download Failed', 'No reports could be downloaded');
+        showError("Download Failed", "No reports could be downloaded");
         return;
       }
 
       // Generate ZIP file
-      const zipBlob = await zip.generateAsync({ type: 'blob' });
-      
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+
       // Create download link
       const url = window.URL.createObjectURL(zipBlob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = `audit-reports-${new Date().toISOString().split('T')[0]}.zip`;
+      a.download = `audit-reports-${
+        new Date().toISOString().split("T")[0]
+      }.zip`;
       document.body.appendChild(a);
       a.click();
 
@@ -588,17 +1061,23 @@ export default function AdminReports() {
 
       if (failedCount > 0) {
         showWarning(
-          'Partial Success',
+          "Partial Success",
           `Downloaded ${successCount} reports. ${failedCount} failed.`
         );
       } else {
         showSuccess(`Successfully downloaded ${successCount} reports as ZIP`);
       }
     } catch (error) {
-      console.error('Error creating ZIP:', error);
-      showError('Download Failed', 'Failed to create ZIP file. Please try again.');
+      console.error("Error creating ZIP:", error);
+      showError(
+        "Download Failed",
+        "Failed to create ZIP file. Please try again."
+      );
     }
   };
+
+  // Bulk customization function
+  // handleBulkCustomization removed - now redirects to /admin/reports/generate
 
   // ✅ Toggle individual report selection
   const toggleReportSelection = (reportId: string) => {
@@ -608,24 +1087,28 @@ export default function AdminReports() {
     } else {
       newSelection.add(reportId);
     }
-    console.log('🔄 Selection updated:', newSelection.size, 'reports selected');
+    console.log("🔄 Selection updated:", newSelection.size, "reports selected");
     setSelectedReportIds(newSelection);
   };
 
   // ✅ Toggle all reports on current page
   const toggleSelectAll = (currentPageReports: ExtendedAdminReport[]) => {
-    const currentPageIds = currentPageReports.map(r => String(r.id || ''));
-    const allSelected = currentPageIds.every(id => selectedReportIds.has(id));
-    
+    const currentPageIds = currentPageReports.map((r) => String(r.id || ""));
+    const allSelected = currentPageIds.every((id) => selectedReportIds.has(id));
+
     const newSelection = new Set(selectedReportIds);
     if (allSelected) {
       // Deselect all on current page
-      currentPageIds.forEach(id => newSelection.delete(id));
+      currentPageIds.forEach((id) => newSelection.delete(id));
     } else {
       // Select all on current page
-      currentPageIds.forEach(id => newSelection.add(id));
+      currentPageIds.forEach((id) => newSelection.add(id));
     }
-    console.log('🔄 Select All updated:', newSelection.size, 'reports selected');
+    console.log(
+      "🔄 Select All updated:",
+      newSelection.size,
+      "reports selected"
+    );
     setSelectedReportIds(newSelection);
   };
 
@@ -766,7 +1249,7 @@ export default function AdminReports() {
 
   //     // Create FormData for multipart/form-data request
   //     const formData = new FormData();
-      
+
   //     // Add all payload fields as JSON string or individual fields
   //     formData.append('reportData', JSON.stringify(pdfPayload.reportData));
   //     formData.append('reportTitle', pdfPayload.reportTitle);
@@ -775,7 +1258,7 @@ export default function AdminReports() {
   //     formData.append('technicianDept', pdfPayload.technicianDept);
   //     formData.append('validatorName', pdfPayload.validatorName);
   //     formData.append('validatorDept', pdfPayload.validatorDept);
-      
+
   //     // Add image fields (URLs or base64)
   //     if (pdfFormData.headerLeftLogo) formData.append('headerLeftLogo', pdfFormData.headerLeftLogo);
   //     if (pdfFormData.headerRightLogo) formData.append('headerRightLogo', pdfFormData.headerRightLogo);
@@ -865,24 +1348,37 @@ export default function AdminReports() {
             </h1>
             {selectedReportIds.size > 0 && (
               <p className="text-sm text-slate-600 mt-1">
-                {selectedReportIds.size} report{selectedReportIds.size > 1 ? 's' : ''} selected
+                {selectedReportIds.size} report
+                {selectedReportIds.size > 1 ? "s" : ""} selected
               </p>
             )}
           </div>
-          
-          {/* Bulk Download Button */}
+
+          {/* Bulk Actions */}
           {selectedReportIds.size > 0 && (
-            <button
-              onClick={handleBulkDownload}
-              className="btn-primary flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download {selectedReportIds.size} as ZIP
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleBulkDownload}
+                className="btn-primary flex items-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                Download {selectedReportIds.size} as ZIP
+              </button>
+            </div>
           )}
-          
+
           {/* <div className="flex items-center space-x-4">
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${
             loading ? 'bg-yellow-100 text-yellow-800' :
@@ -944,7 +1440,7 @@ export default function AdminReports() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 xs:gap-4 sm:gap-4">
+          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 xs:gap-4 sm:gap-4">
             {/* Search */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -983,46 +1479,70 @@ export default function AdminReports() {
               </select>
             </div>
 
-            {/* Date Filter */}
+            {/* Date Range Filter */}
+            <CustomDateInput
+              label="From Date"
+              value={fromDate}
+              onChange={(value) => {
+                setFromDate(value);
+                setPage(1);
+                
+                // Validate date format and range
+                if (value && !isValidDateFormat(value)) {
+                  setDateValidationError("Invalid date format. Please use YYYY-MM-DD.");
+                } else if (value && toDate && new Date(value) > new Date(toDate)) {
+                  setDateValidationError("From date cannot be later than To date.");
+                } else {
+                  setDateValidationError("");
+                }
+              }}
+            />
+
+            {/* To Date Filter */}
+            <CustomDateInput
+              label="To Date"
+              value={toDate}
+              onChange={(value) => {
+                setToDate(value);
+                setPage(1);
+                
+                // Validate date format and range
+                if (value && !isValidDateFormat(value)) {
+                  setDateValidationError("Invalid date format. Please use YYYY-MM-DD.");
+                } else if (value && fromDate && new Date(fromDate) > new Date(value)) {
+                  setDateValidationError("To date cannot be earlier than From date.");
+                } else {
+                  setDateValidationError("");
+                }
+              }}
+            />
+
+            {/* Date Validation Error */}
+            {dateValidationError && (
+              <div className="col-span-5 text-red-500 text-sm bg-red-50 border border-red-200 rounded px-3 py-2">
+                ⚠️ {dateValidationError}
+              </div>
+            )}
+
+            {/* Eraser Method Filter */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Month
+                Eraser Method
               </label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
-                value={dateFilter}
+                value={eraserMethodFilter}
                 onChange={(e) => {
-                  setDateFilter(e.target.value);
+                  setEraserMethodFilter(e.target.value);
                   setPage(1);
                 }}
               >
-                <option value="">All Months</option>
-                {uniqueMonths.map((month) => (
-                  <option key={month} value={month}>
-                    {month}
+                <option value="">All Methods</option>
+                {uniqueEraserMethods.map((method) => (
+                  <option key={method} value={method}>
+                    {method}
                   </option>
                 ))}
-              </select>
-            </div>
-
-            {/* Device Range Filter */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Device Range
-              </label>
-              <select
-                className="w-full border rounded px-3 py-2 text-sm"
-                value={deviceRangeFilter}
-                onChange={(e) => {
-                  setDeviceRangeFilter(e.target.value);
-                  setPage(1);
-                }}
-              >
-                <option value="">All Ranges</option>
-                <option value="1-50">1-50 devices</option>
-                <option value="51-100">51-100 devices</option>
-                <option value="101-200">101-200 devices</option>
-                <option value="201-999">201+ devices</option>
               </select>
             </div>
           </div>
@@ -1059,9 +1579,9 @@ export default function AdminReports() {
               >
                 <option value="id">Report ID</option>
                 <option value="date">Date</option>
-                <option value="devices">Devices</option>
+                {/* <option value="devices">Devices</option> */}
                 <option value="status">Status</option>
-                <option value="department">Department</option>
+                <option value="department">Method</option>
               </select>
               <button
                 onClick={() =>
@@ -1080,47 +1600,70 @@ export default function AdminReports() {
         </div>
 
         {/* Export Actions */}
-        <div className="flex justify-end gap-2">
-          <button
-            className="btn-secondary"
-            onClick={() =>
-              exportToCsv(
-                "reports.csv",
-                filtered.map((r) => ({ ...r }))
-              )
-            }
-          >
-            Export All ({filtered.length})
-          </button>
-          <button
-            className="btn-secondary"
-            onClick={() =>
-              exportToCsv(
-                "reports-page.csv",
-                rows.map((r) => ({ ...r }))
-              )
-            }
-          >
-            Export Page ({rows.length})
-          </button>
-          <button
-            className="btn-secondary"
-            onClick={() => {
-              const body =
-                `<h1>Audit Reports</h1>` +
-                `<table border="1" style="border-collapse: collapse; width: 100%;"><thead><tr><th>Report ID</th><th>Date</th><th>Devices</th><th>Status</th><th>Department</th></tr></thead><tbody>` +
-                filtered
-                  .map(
-                    (r) =>
-                      `<tr><td>${r.id}</td><td>${r.date}</td><td>${r.devices}</td><td>${r.status}</td><td>${r.department}</td></tr>`
-                  )
-                  .join("") +
-                `</tbody></table>`;
-              openPrintView("Audit Reports", body);
-            }}
-          >
-            Print All ({filtered.length})
-          </button>
+        <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
+          <div>
+            {/* <button className="btn-secondary" onClick={() => {navigate("/admin/reports/generate")}}>Setting</button> */}
+          </div>
+          <div className="flex justify-end gap-2 flex-wrap">
+            {/* <button
+              className="btn-primary flex items-center gap-2"
+              onClick={() => setShowSchedulerModal(true)}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Schedule Reports
+            </button> */}
+            {/* <button
+              className="btn-secondary flex items-center gap-2"
+              onClick={handleViewScheduledReports}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+              </svg>
+              View Scheduled
+            </button> */}
+            <button
+              className="btn-secondary"
+              onClick={() =>
+                exportToCsv(
+                  "reports.csv",
+                  filtered.map((r) => ({ ...r }))
+                )
+              }
+            >
+              Export All ({filtered.length})
+            </button>
+            <button
+              className="btn-secondary"
+              onClick={() =>
+                exportToCsv(
+                  "reports-page.csv",
+                  rows.map((r) => ({ ...r }))
+                )
+              }
+            >
+              Export Page ({rows.length})
+            </button>
+            <button
+              className="btn-secondary"
+              onClick={() => {
+                const body =
+                  `<h1>Audit Reports</h1>` +
+                  `<table border="1" style="border-collapse: collapse; width: 100%;"><thead><tr><th>Report ID</th><th>Date</th><th>Devices</th><th>Status</th><th>Department</th></tr></thead><tbody>` +
+                  filtered
+                    .map(
+                      (r) =>
+                        `<tr><td>${r.id}</td><td>${r.date}</td><td>${r.devices}</td><td>${r.status}</td><td>${r.department}</td></tr>`
+                    )
+                    .join("") +
+                  `</tbody></table>`;
+                openPrintView("Audit Reports", body);
+              }}
+            >
+              Print All ({filtered.length})
+            </button>
+          </div>
         </div>
 
         {/* Table */}
@@ -1214,7 +1757,12 @@ export default function AdminReports() {
                     <th className="py-3 px-2 w-10">
                       <input
                         type="checkbox"
-                        checked={rows.length > 0 && rows.every(r => selectedReportIds.has(String(r.id || '')))}
+                        checked={
+                          rows.length > 0 &&
+                          rows.every((r) =>
+                            selectedReportIds.has(String(r.id || ""))
+                          )
+                        }
                         onChange={() => toggleSelectAll(rows)}
                         className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
                         title="Select all on this page"
@@ -1226,14 +1774,14 @@ export default function AdminReports() {
                     <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                       Date
                     </th>
-                    <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                    {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                       Devices
-                    </th>
+                    </th> */}
                     <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                       Status
                     </th>
                     <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Department
+                      Method
                     </th>
                     <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                       Actions
@@ -1249,8 +1797,10 @@ export default function AdminReports() {
                       <td className="py-3 px-2">
                         <input
                           type="checkbox"
-                          checked={selectedReportIds.has(String(row.id || ''))}
-                          onChange={() => toggleReportSelection(String(row.id || ''))}
+                          checked={selectedReportIds.has(String(row.id || ""))}
+                          onChange={() =>
+                            toggleReportSelection(String(row.id || ""))
+                          }
                           className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
                         />
                       </td>
@@ -1260,7 +1810,7 @@ export default function AdminReports() {
                       <td className="py-3 px-2 text-xs xs:text-sm sm:text-sm">
                         {row.date}
                       </td>
-                      <td className="py-2">
+                      {/* <td className="py-2">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             row.devices >= 200
@@ -1272,7 +1822,7 @@ export default function AdminReports() {
                         >
                           {row.devices}
                         </span>
-                      </td>
+                      </td> */}
                       <td className="py-2">
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
@@ -1300,7 +1850,7 @@ export default function AdminReports() {
                         </span>
                       </td>
                       <td className="py-2 text-xs xs:text-sm sm:text-sm">
-                        {row.department}
+                        {row.method}
                       </td>
                       <td className="py-2">
                         <div className="flex items-center gap-1">
@@ -1324,18 +1874,25 @@ export default function AdminReports() {
                             </svg>
                             Save
                           </button>
-                          {/* <button
-                            onClick={() => handleGeneratePDF(row)}
-                            className={`text-xs px-3 py-1.5 rounded border font-medium transition-colors ${
-                              row.status === "completed"
-                                ? "text-blue-600 hover:text-white hover:bg-blue-600 border-blue-600"
-                                : "text-slate-400 border-slate-200 cursor-not-allowed"
-                            }`}
-                            disabled={row.status !== "completed"}
+                          <button
+                            onClick={() => {
+                              if (selectedReportIds.size > 0) {
+                                // Bulk settings - redirect to generate page with selected report IDs
+                                const selectedIds = Array.from(
+                                  selectedReportIds
+                                ).join(",");
+                                navigate(
+                                  `/admin/reports/generate?bulk=${selectedIds}`
+                                );
+                              } else {
+                                navigate(`/admin/reports/generate/${row.id}`);
+                              }
+                            }}
+                            className="text-xs px-3 py-1.5 rounded border font-medium transition-colors text-blue-600 hover:text-white hover:bg-blue-600 border-blue-600"
                             title={
-                              row.status !== "completed"
-                                ? "Report not ready"
-                                : "Generate Custom PDF"
+                              selectedReportIds.size > 0
+                                ? `Customize ${selectedReportIds.size} Selected Reports`
+                                : "Generate Custom Report"
                             }
                           >
                             <svg
@@ -1348,11 +1905,17 @@ export default function AdminReports() {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth={2}
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                               />
                             </svg>
-                            Generate
-                          </button> */}
+                            Settings
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -1414,7 +1977,12 @@ export default function AdminReports() {
                 <input
                   type="text"
                   value={pdfFormData.reportTitle}
-                  onChange={(e) => setPdfFormData({ ...pdfFormData, reportTitle: e.target.value })}
+                  onChange={(e) =>
+                    setPdfFormData({
+                      ...pdfFormData,
+                      reportTitle: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Data Erasure Audit Report"
                 />
@@ -1428,7 +1996,12 @@ export default function AdminReports() {
                 <input
                   type="text"
                   value={pdfFormData.headerText}
-                  onChange={(e) => setPdfFormData({ ...pdfFormData, headerText: e.target.value })}
+                  onChange={(e) =>
+                    setPdfFormData({
+                      ...pdfFormData,
+                      headerText: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="D-SecureTech"
                 />
@@ -1443,7 +2016,12 @@ export default function AdminReports() {
                   <input
                     type="text"
                     value={pdfFormData.technicianName}
-                    onChange={(e) => setPdfFormData({ ...pdfFormData, technicianName: e.target.value })}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        technicianName: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="John Doe"
                   />
@@ -1455,7 +2033,12 @@ export default function AdminReports() {
                   <input
                     type="text"
                     value={pdfFormData.technicianDept}
-                    onChange={(e) => setPdfFormData({ ...pdfFormData, technicianDept: e.target.value })}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        technicianDept: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="IT Operations"
                   />
@@ -1471,7 +2054,12 @@ export default function AdminReports() {
                   <input
                     type="text"
                     value={pdfFormData.validatorName}
-                    onChange={(e) => setPdfFormData({ ...pdfFormData, validatorName: e.target.value })}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        validatorName: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Jane Smith"
                   />
@@ -1483,7 +2071,12 @@ export default function AdminReports() {
                   <input
                     type="text"
                     value={pdfFormData.validatorDept}
-                    onChange={(e) => setPdfFormData({ ...pdfFormData, validatorDept: e.target.value })}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        validatorDept: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Quality Assurance"
                   />
@@ -1500,33 +2093,67 @@ export default function AdminReports() {
                     <input
                       type="text"
                       value={pdfFormData.headerLeftLogo}
-                      onChange={(e) => setPdfFormData({ ...pdfFormData, headerLeftLogo: e.target.value })}
+                      onChange={(e) =>
+                        setPdfFormData({
+                          ...pdfFormData,
+                          headerLeftLogo: e.target.value,
+                        })
+                      }
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="https://example.com/logo-left.png or upload file"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
                         <div className="flex items-center justify-center gap-2 px-3 py-2 border border-slate-300 rounded-md bg-slate-50 hover:bg-slate-100 transition-colors">
-                          <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          <svg
+                            className="w-4 h-4 text-slate-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
                           </svg>
-                          <span className="text-sm text-slate-600">Upload Image</span>
+                          <span className="text-sm text-slate-600">
+                            Upload Image
+                          </span>
                         </div>
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleImageUpload(e, 'headerLeftLogo')}
+                          onChange={(e) =>
+                            handleImageUpload(e, "headerLeftLogo")
+                          }
                           className="hidden"
                         />
                       </label>
                       {pdfFormData.headerLeftLogo && (
                         <button
-                          onClick={() => setPdfFormData({ ...pdfFormData, headerLeftLogo: '' })}
+                          onClick={() =>
+                            setPdfFormData({
+                              ...pdfFormData,
+                              headerLeftLogo: "",
+                            })
+                          }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                           title="Clear image"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       )}
@@ -1541,33 +2168,67 @@ export default function AdminReports() {
                     <input
                       type="text"
                       value={pdfFormData.headerRightLogo}
-                      onChange={(e) => setPdfFormData({ ...pdfFormData, headerRightLogo: e.target.value })}
+                      onChange={(e) =>
+                        setPdfFormData({
+                          ...pdfFormData,
+                          headerRightLogo: e.target.value,
+                        })
+                      }
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="https://example.com/logo-right.png or upload file"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
                         <div className="flex items-center justify-center gap-2 px-3 py-2 border border-slate-300 rounded-md bg-slate-50 hover:bg-slate-100 transition-colors">
-                          <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          <svg
+                            className="w-4 h-4 text-slate-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
                           </svg>
-                          <span className="text-sm text-slate-600">Upload Image</span>
+                          <span className="text-sm text-slate-600">
+                            Upload Image
+                          </span>
                         </div>
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleImageUpload(e, 'headerRightLogo')}
+                          onChange={(e) =>
+                            handleImageUpload(e, "headerRightLogo")
+                          }
                           className="hidden"
                         />
                       </label>
                       {pdfFormData.headerRightLogo && (
                         <button
-                          onClick={() => setPdfFormData({ ...pdfFormData, headerRightLogo: '' })}
+                          onClick={() =>
+                            setPdfFormData({
+                              ...pdfFormData,
+                              headerRightLogo: "",
+                            })
+                          }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                           title="Clear image"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       )}
@@ -1585,33 +2246,62 @@ export default function AdminReports() {
                   <input
                     type="text"
                     value={pdfFormData.watermarkImage}
-                    onChange={(e) => setPdfFormData({ ...pdfFormData, watermarkImage: e.target.value })}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        watermarkImage: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="https://example.com/watermark.png or upload file"
                   />
                   <div className="flex items-center gap-2">
                     <label className="flex-1 cursor-pointer">
                       <div className="flex items-center justify-center gap-2 px-3 py-2 border border-slate-300 rounded-md bg-slate-50 hover:bg-slate-100 transition-colors">
-                        <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <svg
+                          className="w-4 h-4 text-slate-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
                         </svg>
-                        <span className="text-sm text-slate-600">Upload Image</span>
+                        <span className="text-sm text-slate-600">
+                          Upload Image
+                        </span>
                       </div>
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => handleImageUpload(e, 'watermarkImage')}
+                        onChange={(e) => handleImageUpload(e, "watermarkImage")}
                         className="hidden"
                       />
                     </label>
                     {pdfFormData.watermarkImage && (
                       <button
-                        onClick={() => setPdfFormData({ ...pdfFormData, watermarkImage: '' })}
+                        onClick={() =>
+                          setPdfFormData({ ...pdfFormData, watermarkImage: "" })
+                        }
                         className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         title="Clear image"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
                         </svg>
                       </button>
                     )}
@@ -1629,33 +2319,67 @@ export default function AdminReports() {
                     <input
                       type="text"
                       value={pdfFormData.technicianSignature}
-                      onChange={(e) => setPdfFormData({ ...pdfFormData, technicianSignature: e.target.value })}
+                      onChange={(e) =>
+                        setPdfFormData({
+                          ...pdfFormData,
+                          technicianSignature: e.target.value,
+                        })
+                      }
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="https://example.com/tech-signature.png or upload"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
                         <div className="flex items-center justify-center gap-2 px-3 py-2 border border-slate-300 rounded-md bg-slate-50 hover:bg-slate-100 transition-colors">
-                          <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          <svg
+                            className="w-4 h-4 text-slate-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
                           </svg>
-                          <span className="text-sm text-slate-600">Upload Image</span>
+                          <span className="text-sm text-slate-600">
+                            Upload Image
+                          </span>
                         </div>
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleImageUpload(e, 'technicianSignature')}
+                          onChange={(e) =>
+                            handleImageUpload(e, "technicianSignature")
+                          }
                           className="hidden"
                         />
                       </label>
                       {pdfFormData.technicianSignature && (
                         <button
-                          onClick={() => setPdfFormData({ ...pdfFormData, technicianSignature: '' })}
+                          onClick={() =>
+                            setPdfFormData({
+                              ...pdfFormData,
+                              technicianSignature: "",
+                            })
+                          }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                           title="Clear image"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       )}
@@ -1670,33 +2394,67 @@ export default function AdminReports() {
                     <input
                       type="text"
                       value={pdfFormData.validatorSignature}
-                      onChange={(e) => setPdfFormData({ ...pdfFormData, validatorSignature: e.target.value })}
+                      onChange={(e) =>
+                        setPdfFormData({
+                          ...pdfFormData,
+                          validatorSignature: e.target.value,
+                        })
+                      }
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="https://example.com/validator-signature.png or upload"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
                         <div className="flex items-center justify-center gap-2 px-3 py-2 border border-slate-300 rounded-md bg-slate-50 hover:bg-slate-100 transition-colors">
-                          <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          <svg
+                            className="w-4 h-4 text-slate-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
                           </svg>
-                          <span className="text-sm text-slate-600">Upload Image</span>
+                          <span className="text-sm text-slate-600">
+                            Upload Image
+                          </span>
                         </div>
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleImageUpload(e, 'validatorSignature')}
+                          onChange={(e) =>
+                            handleImageUpload(e, "validatorSignature")
+                          }
                           className="hidden"
                         />
                       </label>
                       {pdfFormData.validatorSignature && (
                         <button
-                          onClick={() => setPdfFormData({ ...pdfFormData, validatorSignature: '' })}
+                          onClick={() =>
+                            setPdfFormData({
+                              ...pdfFormData,
+                              validatorSignature: "",
+                            })
+                          }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                           title="Clear image"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       )}
@@ -1724,6 +2482,390 @@ export default function AdminReports() {
           </div>
         </div>
       )}
+
+      {/* Bulk modal removed - now redirects to /admin/reports/generate */}
+
+      {/* Report Scheduler Modal */}
+      {showSchedulerModal && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-slate-900">
+                Schedule Report Generation
+              </h2>
+              <button
+                onClick={() => setShowSchedulerModal(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* <div className="p-6 space-y-6">
+           
+              <div>
+                <label htmlFor="reportName" className="block text-sm font-medium text-slate-700 mb-2">
+                  Report Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="reportName"
+                  name="reportName"
+                  value={schedulerData.reportName}
+                  onChange={handleSchedulerInputChange}
+                  required
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Enter scheduled report name"
+                />
+              </div> */}
+            {/* <div>
+                <label htmlFor="scheduleType" className="block text-sm font-medium text-slate-700 mb-2">
+                  Schedule Type
+                </label>
+                <select
+                  id="scheduleType"
+                  name="scheduleType"
+                  value={schedulerData.scheduleType}
+                  onChange={handleSchedulerInputChange}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+                  <option value="immediate">Execute Now</option>
+                  <option value="once">One Time</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </div> */}
+
+            {/* {schedulerData.scheduleType !== 'immediate' && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="scheduleDate" className="block text-sm font-medium text-slate-700 mb-2">
+                      Date <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="scheduleDate"
+                      name="scheduleDate"
+                      value={schedulerData.scheduleDate}
+                      onChange={handleSchedulerInputChange}
+                      required
+                      min={new Date().toISOString().split('T')[0]}
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="scheduleTime" className="block text-sm font-medium text-slate-700 mb-2">
+                      Time <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="time"
+                      id="scheduleTime"
+                      name="scheduleTime"
+                      value={schedulerData.scheduleTime}
+                      onChange={handleSchedulerInputChange}
+                      required
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    />
+                  </div>
+                </div>
+              )} */}
+            {/* {schedulerData.scheduleType === 'immediate' && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-yellow-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <h3 className="text-sm font-medium text-yellow-800">Execute Immediately</h3>
+                      <p className="text-sm text-yellow-700 mt-1">
+                        Reports will be processed and emailed immediately when you click "Execute Now".
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )} */}
+            {/* {selectedReportIds.size > 0 && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="text-sm font-medium text-blue-800 mb-2">Selected Reports</h3>
+                  <p className="text-sm text-blue-700">
+                     {selectedReportIds.size} reports selected: {Array.from(selectedReportIds).join(', ')}
+                  </p>
+                </div>
+              )} */}
+            {/* <div>
+                <label htmlFor="emailRecipients" className="block text-sm font-medium text-slate-700 mb-2">
+                  Email Recipients
+                </label>
+                <textarea
+                  id="emailRecipients"
+                  name="emailRecipients"
+                  value={schedulerData.emailRecipients}
+                  onChange={handleSchedulerInputChange}
+                  rows={1}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Enter email addresses separated by commas (e.g., user1@example.com, user2@example.com)"
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Leave empty to send to your email only. Separate multiple emails with commas.
+                </p>
+              </div> */}
+
+            {/* <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="includeFilters"
+                    name="includeFilters"
+                    checked={schedulerData.includeFilters}
+                    onChange={(e) => setSchedulerData(prev => ({ ...prev, includeFilters: e.target.checked }))}
+                    className="rounded border-slate-300"
+                  />
+                  <label htmlFor="includeFilters" className="text-sm font-medium text-slate-700">
+                    Apply current filters to scheduled report
+                  </label>
+                </div>
+
+                {schedulerData.includeFilters && (
+                  <div className="grid grid-cols-2 gap-4 ml-6">
+                    <div>
+                      <label htmlFor="filterStatus" className="block text-sm font-medium text-slate-700 mb-1">
+                        Status Filter
+                      </label>
+                      <select
+                        id="filterStatus"
+                        name="filterStatus"
+                        value={schedulerData.filterStatus}
+                        onChange={handleSchedulerInputChange}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      >
+                        <option value="">All Statuses</option>
+                        <option value="completed">Completed</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="filterDepartment" className="block text-sm font-medium text-slate-700 mb-1">
+                        Department Filter
+                      </label>
+                      <input
+                        type="text"
+                        id="filterDepartment"
+                        name="filterDepartment"
+                        value={schedulerData.filterDepartment}
+                        onChange={handleSchedulerInputChange}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        placeholder="Enter department name"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div> */}
+
+            {/* Schedule Info */}
+            {/* <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                <h3 className="text-sm font-medium text-slate-800 mb-2">
+                  {schedulerData.scheduleType === 'immediate' ? 'Execution Summary' : 'Schedule Summary'}
+                </h3>
+                <div className="text-sm text-slate-600 space-y-1">
+                  <p><strong>Report:</strong> {schedulerData.reportName || 'Untitled Report'}</p>
+                  <p><strong>Type:</strong> {
+                    schedulerData.scheduleType === 'immediate' ? 'Execute Immediately' :
+                    schedulerData.scheduleType === 'once' ? 'One Time' : 
+                    schedulerData.scheduleType.charAt(0).toUpperCase() + schedulerData.scheduleType.slice(1)
+                  }</p>
+                  {schedulerData.scheduleType === 'immediate' ? (
+                    <p><strong>Execution:</strong> Immediately upon confirmation</p>
+                  ) : (
+                    schedulerData.scheduleDate && schedulerData.scheduleTime && (
+                      <p><strong>Next Run:</strong> {new Date(`${schedulerData.scheduleDate}T${schedulerData.scheduleTime}`).toLocaleString()}</p>
+                    )
+                  )}
+                  <p><strong>Reports:</strong> {selectedReportIds.size > 0 ? `${selectedReportIds.size} selected` : 'All filtered reports'}</p>
+                  <p><strong>Recipients:</strong> {
+                    schedulerData.emailRecipients 
+                      ? schedulerData.emailRecipients.split(',').length + ' specified'
+                      : 'Your email only'
+                  }</p>
+                </div>
+              </div> */}
+          </div>
+
+          {/* Modal Footer */}
+          {/* <div className="sticky bottom-0 bg-slate-50 border-t px-6 py-4 flex items-center justify-end gap-3">
+              <button
+                onClick={() => setShowSchedulerModal(false)}
+                className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-100 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleScheduleReport}
+                className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors font-medium flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={
+                    schedulerData.scheduleType === 'immediate' 
+                      ? "M5 3l14 9-14 9V3z" 
+                      : "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  } />
+                </svg>
+                {schedulerData.scheduleType === 'immediate' ? 'Execute Now' : 'Schedule Report'}
+              </button>
+            </div> */}
+          {/* </div> */}
+        </div>
+      )}
+      {/* {showScheduledReportsModal && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+         
+            <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-slate-900">Scheduled Reports</h2>
+              <button
+                onClick={() => setShowScheduledReportsModal(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-6">
+              {loadingScheduledReports ? (
+                <div className="text-center py-8">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-100 rounded-full mb-4">
+                    <svg className="animate-spin h-6 w-6 text-slate-400" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  </div>
+                  <p className="text-slate-600">Loading scheduled reports...</p>
+                </div>
+              ) : scheduledReports.length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-slate-100 rounded-full mb-4">
+                    <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-slate-600 mb-4">No scheduled reports found</p>
+                  <button
+                    onClick={() => {
+                      setShowScheduledReportsModal(false);
+                      setShowSchedulerModal(true);
+                    }}
+                    className="btn-primary"
+                  >
+                    Create First Schedule
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {scheduledReports.map((schedule) => (
+                    <div key={schedule.id} className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-semibold text-slate-900">{schedule.scheduleName}</h3>
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              schedule.isActive 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                            }`}>
+                              {schedule.isActive ? 'Active' : 'Inactive'}
+                            </span>
+                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                              {schedule.scheduleType === 'once' ? 'One Time' : schedule.scheduleType.charAt(0).toUpperCase() + schedule.scheduleType.slice(1)}
+                            </span>
+                          </div>
+                          
+                          <div className="text-sm text-slate-600 space-y-1">
+                            <p><strong>Next Run:</strong> {new Date(schedule.scheduledDateTime).toLocaleString()}</p>
+                            <p><strong>Reports:</strong> {schedule.reportConfiguration?.reportIds?.length || 0} selected reports</p>
+                            <p><strong>Recipients:</strong> {schedule.reportConfiguration?.emailSettings?.recipients?.join(', ') || 'None'}</p>
+                            {schedule.reportConfiguration?.filters && (
+                              <p><strong>Filters Applied:</strong> Yes</p>
+                            )}
+                            <p><strong>Created:</strong> {new Date(schedule.metadata?.createdAt).toLocaleDateString()} by {schedule.metadata?.createdBy}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2 ml-4">
+                          <button
+                            onClick={() => handleToggleSchedule(schedule.id, schedule.isActive)}
+                            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                              schedule.isActive
+                                ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                                : 'bg-green-100 text-green-700 hover:bg-green-200'
+                            }`}
+                            title={schedule.isActive ? 'Disable Schedule' : 'Enable Schedule'}
+                          >
+                            {schedule.isActive ? 'Disable' : 'Enable'}
+                          </button>
+                          <button
+                            onClick={() => handleDeleteScheduledReport(schedule.id)}
+                            className="px-3 py-1 bg-red-100 text-red-700 hover:bg-red-200 rounded text-xs font-medium transition-colors"
+                            title="Delete Schedule"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="sticky bottom-0 bg-slate-50 border-t px-6 py-4 flex items-center justify-between">
+              <button
+                onClick={loadScheduledReports}
+                className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-100 transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Refresh
+              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setShowScheduledReportsModal(false);
+                    setShowSchedulerModal(true);
+                  }}
+                  className="btn-primary flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  New Schedule
+                </button>
+                <button
+                  onClick={() => setShowScheduledReportsModal(false)}
+                  className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-100 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} */}
     </>
   );
 }

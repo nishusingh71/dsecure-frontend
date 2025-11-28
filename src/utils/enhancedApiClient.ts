@@ -47,8 +47,16 @@ export interface User {
   newPassword?: string // For password change
   user_role?:string
   last_login?:string
- user_group?:string 
- licesne_allocation?:string
+  user_group?:string 
+  licesne_allocation?:string
+  // ✅ Subuser-specific fields (for when User API returns Subuser data)
+  subuser_name?: string
+  subuser_phone?: string
+  subuser_email?: string
+  name?: string // Generic name field (alias for user_name or subuser_name)
+  phone?: string // Generic phone field (alias for phone_number or subuser_phone)
+  email?: string // Generic email field (alias for user_email or subuser_email)
+  activity_status?:string
 }
 
 export interface Subuser {
@@ -68,9 +76,14 @@ export interface Subuser {
   role?: string
   department?: string
   last_login?: string
+  last_logout?: string
   subuser_group?: string
   license_allocation?: string
   name?:string
+  phone?:string
+  currentPassword?: string // For password change
+  newPassword?: string // For password change
+  activity_status?:string
 }
 
 export interface EnhancedSubuser extends Subuser {
@@ -179,6 +192,7 @@ export interface Command {
   issued_at: string
   command_json?: string
   command_status: string
+  machine_hash:Machine['fingerprint_hash']
 }
 
 // Sessions interface
@@ -521,7 +535,7 @@ class EnhancedApiClient {
   // Authentication endpoints
   async login(credentials: LoginRequest, rememberMe: boolean = false): Promise<ApiResponse<AuthResponse>> {
     try {
-      const loginUrl = `${API_BASE_URL}/api/Auth/login`
+      const loginUrl = `${API_BASE_URL}/api/RoleBasedAuth/login`
       
       if (DEBUG_MODE) {
         console.log('🚀 Starting login request to:', loginUrl)
@@ -564,6 +578,7 @@ class EnhancedApiClient {
 
           // Create user object with role information
           // Preserve all fields from API response, including userRole/user_role
+          // ✅ Handle both User and Subuser field names (subuser_name, subuser_phone)
           const userData = {
             ...user, // Keep all original fields from API response
             ...response.data, // Include all top-level response fields
@@ -572,11 +587,15 @@ class EnhancedApiClient {
             user_role: user?.user_role || response.data?.user_role || user?.userRole || response.data?.userRole, // Preserve snake_case
             id: decodedToken.sub || user?.userId || user?.user_id || user?.id || response.data?.userId,
             email: decodedToken.email || user?.email || response.data?.email || credentials.email,
-            name: decodedToken.name || user?.userName || user?.user_name || user?.name || response.data?.userName || 'User',
+            name: decodedToken.name || user?.userName || user?.user_name || user?.subuser_name || user?.name || response.data?.userName || response.data?.subuser_name || 'User',
+            user_name: user?.user_name || user?.userName || user?.subuser_name || response.data?.user_name || response.data?.subuser_name,
+            subuser_name: user?.subuser_name || user?.user_name || user?.userName || response.data?.subuser_name||user?.name,
             department: user?.department || response.data?.department,
             user_group: user?.user_group || user?.userGroup || response.data?.userGroup || response.data?.user_group,
             timezone: user?.timezone || response.data?.timezone,
-            phone: user?.phone || response.data?.phone,
+            phone: user?.phone || user?.phone_number || user?.subuser_phone || response.data?.phone || response.data?.subuser_phone,
+            phone_number: user?.phone_number || user?.phone || user?.subuser_phone || response.data?.phone_number || response.data?.phone,
+            subuser_phone: user?.subuser_phone || user?.phone || user?.phone_number || response.data?.subuser_phone,
             token: token // Add token to userData for easy access
           }
 
@@ -797,12 +816,19 @@ class EnhancedApiClient {
   }
 
   // Change password endpoint - PATCH /api/EnhancedUsers/{email}/change-password
-  async changePassword(email: string, currentPassword: string, newPassword: string): Promise<ApiResponse<{ message: string }>> {
-    return this.request<{ message: string }>(`/api/EnhancedUsers/${encodeURIComponent(email)}/change-password`, {
+  async changePassword(currentPassword: string, newPassword: string): Promise<ApiResponse<{ message: string }>> {
+    return this.request<{ message: string }>(`/api/RoleBasedAuth/change-password`, {
       method: 'PATCH',
       body: JSON.stringify({ currentPassword, newPassword }),
     })
   }
+// Change password endpoint- PATCH /api/EnhancedSubuser/{email}/change-password
+  // async changePasswordSub(email: string, currentPassword: string, newPassword: string): Promise<ApiResponse<{ message: string }>> {
+  //   return this.request<{ message: string }>(`/api/EnhancedSubuser/${encodeURIComponent(email)}/change-password`, {
+  //     method: 'PATCH',
+  //     body: JSON.stringify({ currentPassword, newPassword }),
+  //   })
+  // }
 
   async deleteUser(id: string): Promise<ApiResponse<void>> {
     return this.request<void>(`/api/Users/${id}`, {
@@ -811,9 +837,9 @@ class EnhancedApiClient {
   }
 
   // Subuser endpoints
-  async getSubusers(): Promise<ApiResponse<Subuser[]>> {
-    return this.request<Subuser[]>('/api/Subuser')
-  }
+  // async getSubusers(): Promise<ApiResponse<Subuser[]>> {
+  //   return this.request<Subuser[]>('/api/Subuser')
+  // }
   async getSubusersBySuperuser(superuserEmail: string): Promise<ApiResponse<Subuser[]>> {
     return this.request<Subuser[]>(`/api/Subuser/by-superuser/${encodeURIComponent(superuserEmail)}`)
   }
@@ -826,46 +852,49 @@ class EnhancedApiClient {
     return this.request<EnhancedSubuser[]>(`/api/EnhancedSubusers/by-parent/${encodeURIComponent(parentEmail)}`)
   }
 
-  async getDynamicUserSubusers(): Promise<ApiResponse<Subuser[]>> {
-    return this.request<Subuser[]>('/api/DynamicUser/subusers')
-  }
+  // async getDynamicUserSubusers(): Promise<ApiResponse<Subuser[]>> {
+  //   return this.request<Subuser[]>('/api/DynamicUser/subusers')
+  // }
 
-  async getSubuserManagement(): Promise<ApiResponse<Subuser[]>> {
-    return this.request<Subuser[]>('/api/SubuserManagement')
-  }
+  // async getSubuserManagement(): Promise<ApiResponse<Subuser[]>> {
+  //   return this.request<Subuser[]>('/api/SubuserManagement')
+  // }
 
   // 🔄 Master method to fetch subusers with fallback across all available endpoints
   async getAllSubusersWithFallback(userEmail?: string): Promise<ApiResponse<Subuser[]>> {
     console.log('🔄 Starting getAllSubusersWithFallback...')
     console.log('📧 User email provided:', userEmail || 'None')
 
-    // Define all possible endpoints to try
+    // ✅ Define endpoint strategies with PRIORITY ORDER
+    // Priority 1: User-specific endpoints (by-superuser, by-parent) - returns only current user's subusers
+    // Priority 2: Generic endpoints - returns all subusers from database (fallback only)
     const endpointStrategies = [
-      // Strategy 1: DynamicUser endpoint (try first)
-      {
-        name: 'DynamicUser/subusers',
-        execute: () => this.getDynamicUserSubusers(),
-      },
-      // Strategy 2: SubuserManagement endpoint
-      {
-        name: 'SubuserManagement',
-        execute: () => this.getSubuserManagement(),
-      },
-      // Strategy 3: Base Subuser endpoint
-      {
-        name: 'Subuser',
-        execute: () => this.getSubusers(),
-      },
-      // Strategy 4: EnhancedSubusers by parent (if email provided)
-      ...(userEmail ? [{
-        name: 'EnhancedSubusers/by-parent',
-        execute: () => this.getEnhancedSubusersByParent(userEmail),
-      }] : []),
-      // Strategy 5: Subuser by superuser (if email provided)
+      // ✅ PRIORITY 1: Subuser by superuser (if email provided) - MOST SPECIFIC
       ...(userEmail ? [{
         name: 'Subuser/by-superuser',
         execute: () => this.getSubusersBySuperuser(userEmail),
       }] : []),
+      // ✅ PRIORITY 2: EnhancedSubusers by parent (if email provided)
+      ...(userEmail ? [{
+        name: 'EnhancedSubusers/by-parent',
+        execute: () => this.getEnhancedSubusersByParent(userEmail),
+      }] : []),
+      // ⚠️ FALLBACK: Generic endpoints (only if user-specific endpoints fail)
+      // Strategy 3: DynamicUser endpoint
+      // {
+      //   name: 'DynamicUser/subusers',
+      //   execute: () => this.getDynamicUserSubusers(),
+      // },
+      // Strategy 4: SubuserManagement endpoint
+      // {
+      //   name: 'SubuserManagement',
+      //   execute: () => this.getSubuserManagement(),
+      // },
+      // Strategy 5: Base Subuser endpoint (last resort)
+      // {
+      //   name: 'Subuser',
+      //   execute: () => this.getSubusers(),
+      // },
     ]
 
     // Try each endpoint until we get data
@@ -903,7 +932,7 @@ class EnhancedApiClient {
   }
 
 async createSubuser(subuserData: {
-  subuser_username: string
+  name: string
   subuser_email: string
   role: string
   department?: string
@@ -911,6 +940,7 @@ async createSubuser(subuserData: {
   phone: string
   subuser_group?: string
   superuser_email: string
+  license_allocation?: string
 }): Promise<ApiResponse<Subuser>> {
   return this.request<Subuser>('/api/EnhancedSubuser', {
     method: 'POST',
@@ -924,17 +954,81 @@ async createSubuser(subuserData: {
     });
   }
 
-  async updateEnhancedSubuser(email: string, userData: {
+  async updateEnhancedSubuser(email: string, subuserData: {
+    subuser_name?: string
     name?: string
+    subuser_role?: string
     role?: string
     department?: string
+    subuser_phone?: string
     phone?: string
     status?: string
   }): Promise<ApiResponse<EnhancedSubuser>> {
+    // Map field names to backend expected format
+    const mappedData: any = {}
+    
+    if (subuserData.subuser_name || subuserData.name) {
+      mappedData.subuser_name = subuserData.subuser_name || subuserData.name
+    }
+    if (subuserData.subuser_role || subuserData.role) {
+      mappedData.subuser_role = subuserData.subuser_role || subuserData.role
+    }
+    if (subuserData.department) {
+      mappedData.department = subuserData.department
+    }
+    if (subuserData.subuser_phone || subuserData.phone) {
+      mappedData.subuser_phone = subuserData.subuser_phone || subuserData.phone
+    }
+    if (subuserData.status) {
+      mappedData.status = subuserData.status
+    }
+    
+    console.log('📤 UpdateEnhancedSubuser - Mapped data:', mappedData)
+    
     return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeURIComponent(email)}`, {
       method: 'PUT',
-      body: JSON.stringify(userData)
+      body: JSON.stringify(mappedData)
     });
+  }
+
+  async updateEnhancedSubuserByParent(parentEmail: string, subuserEmail: string, userData: {
+    subuser_name?: string
+    name?: string
+    subuser_role?: string
+    role?: string
+    department?: string
+    subuser_phone?: string
+    phone?: string
+    status?: string
+  }): Promise<ApiResponse<EnhancedSubuser>> {
+    // Map field names to backend expected format
+    const mappedData: any = {}
+    
+    if (userData.subuser_name || userData.name) {
+      mappedData.subuser_name = userData.subuser_name || userData.name
+    }
+    if (userData.subuser_role || userData.role) {
+      mappedData.subuser_role = userData.subuser_role || userData.role
+    }
+    if (userData.department) {
+      mappedData.department = userData.department
+    }
+    if (userData.subuser_phone || userData.phone) {
+      mappedData.subuser_phone = userData.subuser_phone || userData.phone
+    }
+    if (userData.status) {
+      mappedData.status = userData.status
+    }
+    
+    console.log('📤 UpdateEnhancedSubuserByParent - Parent:', parentEmail, 'Subuser:', subuserEmail, 'Data:', mappedData)
+    
+    return this.request<EnhancedSubuser>(
+      `/api/EnhancedSubusers/by-parent/${encodeURIComponent(parentEmail)}/subuser/${encodeURIComponent(subuserEmail)}`, 
+      {
+        method: 'PATCH',
+        body: JSON.stringify(mappedData)
+      }
+    );
   }
 
 
@@ -1080,6 +1174,11 @@ async createSubuser(subuserData: {
   }
   async getSessions(): Promise<ApiResponse<Session[]>> {
     return this.request<Session[]>(`/api/Sessions`)
+  }
+
+  // Time API methods
+  async getServerTime(): Promise<ApiResponse<{ serverTime: string; utcTime: string; timezone: string }>> {
+    return this.request<{ serverTime: string; utcTime: string; timezone: string }>(`/api/Time/server-time`)
   }
 
   // Utility methods

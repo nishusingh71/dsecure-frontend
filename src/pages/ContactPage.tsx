@@ -29,8 +29,8 @@ export default function ContactPage() {
 interface OfficeContact {
   name: string;
   title: string;
-  phone: string;
-  email: string;
+  phone?: string;
+  email?: string;
   directEmail?: string;
 }
 
@@ -55,8 +55,8 @@ interface Office {
   };
   contacts: {
     primary: OfficeContact;
-    sales: { phone: string; email: string };
-    support: { phone: string; email: string };
+    sales?: { phone: string; email: string };
+    support?: { phone: string; email: string };
   };
   services: string[];
   languages: string[];
@@ -283,18 +283,18 @@ function ContactPageContent() {
         primary: {
           name: "Varun Kumar Singh",
           title: "Managing Director",
-          phone: "(971)564427403",
-          email: "info@infotreeit.com",
-          directEmail: "varun@infotreeit.com",
+          // phone: "(971)564427403",
+          // email: "info@infotreeit.com",
+          // directEmail: "varun@infotreeit.com",
         },
-        sales: {
-          phone: "(971)564427403",
-          email: "sales@infotreeit.com",
-        },
-        support: {
-          phone: "(971)564427403",
-          email: "support@infotreeit.com",
-        },
+        // sales: {
+        //   phone: "(971)564427403",
+        //   email: "sales@infotreeit.com",
+        // },
+        // support: {
+        //   phone: "(971)564427403",
+        //   email: "support@infotreeit.com",
+        // },
       },
       // Additional Details
       services: [
@@ -329,18 +329,18 @@ function ContactPageContent() {
         primary: {
           name: "Dhruv Rai",
           title: "CEO",
-          phone: "8527346992",
-          email: "dhruv.rai@dsecuretech.com",
-          directEmail: "dhruv.rai@dsecuretech.com",
+          // phone: "8527346992",
+          // email: "dhruv.rai@dsecuretech.com",
+          // directEmail: "dhruv.rai@dsecuretech.com",
         },
-        sales: {
-          phone: "8527346992",
-          email: "sales@dsecuretech.com",
-        },
-        support: {
-          phone: "8527346992",
-          email: "support@dsecuretech.com",
-        },
+        // sales: {
+        //   phone: "8527346992",
+        //   email: "sales@dsecuretech.com",
+        // },
+        // support: {
+        //   phone: "8527346992",
+        //   email: "support@dsecuretech.com",
+        // },
       },
       services: ["Data Erasure Solutions"],
       languages: ["English", "Hindi"],
@@ -1450,7 +1450,8 @@ function ContactPageContent() {
                         </span>
                       </div>
 
-                      {/* Primary Phone */}
+                      {/* Primary Phone - Only show if phone exists */}
+                      {(office.contacts.primary as any).phone && (
                       <div className="flex items-center gap-3">
                         <svg
                           className="w-4 h-4 text-slate-400"
@@ -1466,14 +1467,16 @@ function ContactPageContent() {
                           />
                         </svg>
                         <a
-                          href={`tel:${office.contacts.primary.phone}`}
+                          href={`tel:${(office.contacts.primary as any).phone}`}
                           className="hover:text-emerald-600 transition-colors"
                         >
-                          {office.contacts.primary.phone}
+                          {(office.contacts.primary as any).phone}
                         </a>
                       </div>
+                      )}
 
-                      {/* Primary Email */}
+                      {/* Primary Email - Only show if email exists */}
+                      {(office.contacts.primary as any).email && (
                       <div className="flex items-center gap-3">
                         <svg
                           className="w-4 h-4 text-slate-400"
@@ -1489,12 +1492,13 @@ function ContactPageContent() {
                           />
                         </svg>
                         <a
-                          href={`mailto:${office.contacts.primary.email}`}
+                          href={`mailto:${(office.contacts.primary as any).email}`}
                           className="hover:text-emerald-600 transition-colors"
                         >
-                          {office.contacts.primary.email}
+                          {(office.contacts.primary as any).email}
                         </a>
                       </div>
+                      )}
 
                       {/* Working Hours & Timezone */}
                       <div className="flex items-center gap-3">
@@ -1535,42 +1539,54 @@ function ContactPageContent() {
                       </div>
                     </div>
 
-                    {/* Action Buttons */}
+                    {/* Action Buttons - Only show if contact info exists */}
+                    {((office.contacts.primary as any).email || (office.contacts.primary as any).phone) && (
                     <div className="flex gap-2 pt-4 border-t border-slate-200">
-                      <a
-                        href={`mailto:${office.contacts.primary.email}?subject=Meeting Request - ${office.location.city} Office`}
-                        className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                      >
-                        Contact Office
-                      </a>
-                      <a
-                        href={`tel:${office.contacts.primary.phone}`}
-                        className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                      >
-                        Call Now
-                      </a>
+                      {(office.contacts.primary as any).email && (
+                        <a
+                          href={`mailto:${(office.contacts.primary as any).email}?subject=Meeting Request - ${office.location.city} Office`}
+                          className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          Contact Office
+                        </a>
+                      )}
+                      {(office.contacts.primary as any).phone && (
+                        <a
+                          href={`tel:${(office.contacts.primary as any).phone}`}
+                          className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          Call Now
+                        </a>
+                      )}
                     </div>
+                    )}
 
-                    {/* Quick Contact Options */}
+                    {/* Quick Contact Options - Only show if sales/support emails exist */}
+                    {((office.contacts as any).sales?.email || (office.contacts as any).support?.email) && (
                     <div className="mt-3 pt-3 border-t border-slate-100">
                       <p className="text-xs text-slate-500 mb-2">
                         Quick Contact:
                       </p>
                       <div className="flex gap-4 text-xs">
-                        <a
-                          href={`mailto:${office.contacts.sales.email}`}
-                          className="text-emerald-600 hover:underline"
-                        >
-                          Sales: {office.contacts.sales.email}
-                        </a>
-                        <a
-                          href={`mailto:${office.contacts.support.email}`}
-                          className="text-emerald-600 hover:underline"
-                        >
-                          Support: {office.contacts.support.email}
-                        </a>
+                        {(office.contacts as any).sales?.email && (
+                          <a
+                            href={`mailto:${(office.contacts as any).sales.email}`}
+                            className="text-emerald-600 hover:underline"
+                          >
+                            Sales: {(office.contacts as any).sales.email}
+                          </a>
+                        )}
+                        {(office.contacts as any).support?.email && (
+                          <a
+                            href={`mailto:${(office.contacts as any).support.email}`}
+                            className="text-emerald-600 hover:underline"
+                          >
+                            Support: {(office.contacts as any).support.email}
+                          </a>
+                        )}
                       </div>
                     </div>
+                    )}
                   </div>
                 </Reveal>
               ))}

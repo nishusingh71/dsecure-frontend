@@ -172,7 +172,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canCreateUser: true,
     canEditUser: true,
     canDeleteUser: false, // ❌ Cannot delete users
-    canViewAllUsers: false,
+    canViewAllUsers: true, // ✅ Can view all users
     canViewSubordinateUsers: true, // ✅ Only subordinates
     canManageSuperAdmin: false,
     canManageAdmin: false,

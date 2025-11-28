@@ -17,7 +17,7 @@ export default function AdminLogs() {
   const [levelFilter, setLevelFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [dateFilter, setDateFilter] = useState('')
-  const [emailFilter, setEmailFilter] = useState<'all' | 'by-email'>('by-email') // ✅ Default to current user's logs
+  const [emailFilter, setEmailFilter] = useState<'all' | 'by-email'>('all') // ✅ Default to ALL logs
   const [showDetails, setShowDetails] = useState<number | null>(null)
   
   // ✅ Get user role - Only admin and superadmin can see "All Logs" filter
@@ -80,13 +80,13 @@ export default function AdminLogs() {
     }
   };
   
-  // Data states - Initialize with cached data
-  const [systemLogs, setSystemLogs] = useState<SystemLog[]>(() => getCachedData('logs') || [])
-  const [commands, setCommands] = useState<Command[]>(() => getCachedData('commands') || [])
-  const [sessions, setSessions] = useState<Session[]>(() => getCachedData('sessions') || [])
+  // Data states - Initialize with empty arrays, let loadAllData handle fetching/caching
+  const [systemLogs, setSystemLogs] = useState<SystemLog[]>([])
+  const [commands, setCommands] = useState<Command[]>([])
+  const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
   
-  const pageSize = 20
+  const pageSize = 30 // ⚡ Increased from 20 to reduce pagination overhead
 
   // Load all data on component mount
   useEffect(() => {
@@ -95,18 +95,22 @@ export default function AdminLogs() {
 
   const loadAllData = async () => {
     setLoading(true)
+    const startTime = performance.now()
     
-    // ✅ Check cache first for instant display
-    const cachedLogs = getCachedData('logs');
-    const cachedCommands = getCachedData('commands');
-    const cachedSessions = getCachedData('sessions');
+    // ✅ Use dynamic cache keys based on emailFilter
+    const cacheKeySuffix = emailFilter;
+    const cachedLogs = getCachedData(`logs_${cacheKeySuffix}`);
+    const cachedCommands = getCachedData(`commands_${cacheKeySuffix}`);
+    const cachedSessions = getCachedData(`sessions_${cacheKeySuffix}`);
     
-    if (cachedLogs || cachedCommands || cachedSessions) {
-      console.log('⚡ Displaying cached data');
-      if (cachedLogs) setSystemLogs(cachedLogs);
-      if (cachedCommands) setCommands(cachedCommands);
-      if (cachedSessions) setSessions(cachedSessions);
-      setLoading(false); // Hide loader since we have cached data
+    if (cachedLogs && cachedCommands && cachedSessions) {
+      console.log(`⚡ Displaying cached data for filter: ${emailFilter}`);
+      setSystemLogs(cachedLogs);
+      setCommands(cachedCommands);
+      setSessions(cachedSessions);
+      setLoading(false);
+      console.log(`⏱️ Cache load time: ${(performance.now() - startTime).toFixed(2)}ms`);
+      return; // Skip API call if all data is cached for this filter
     }
     
     try {
@@ -122,47 +126,48 @@ export default function AdminLogs() {
       console.log('📊 Fetching logs, commands, and sessions for:', userEmail)
       console.log('🔍 Filter mode:', emailFilter)
 
-      let logsRes, commandsRes, sessionsRes
+      // ⚡ PARALLEL API CALLS - Much faster than sequential
+      const [logsRes, commandsRes, sessionsRes] = await Promise.all([
+        emailFilter === 'by-email' 
+          ? apiClient.getSystemLogsByEmail(userEmail)
+          : apiClient.getSystemLogs(),
+        emailFilter === 'by-email'
+          ? apiClient.getCommandsByEmail(userEmail)
+          : apiClient.getCommands(),
+        emailFilter === 'by-email'
+          ? apiClient.getSessionsByEmail(userEmail)
+          : apiClient.getSessions()
+      ])
 
-      if (emailFilter === 'by-email') {
-        // Fetch by user email (including subusers)
-        logsRes = await apiClient.getSystemLogsByEmail(userEmail)
-        commandsRes = await apiClient.getCommandsByEmail(userEmail)
-        sessionsRes = await apiClient.getSessionsByEmail(userEmail)
-      } else {
-        // Fetch all logs/commands/sessions
-        logsRes = await apiClient.getSystemLogs()
-        commandsRes = await apiClient.getCommands()
-        sessionsRes = await apiClient.getSessions()
-      }
-
-      // Set data and cache it
+      // Set data and cache it with dynamic keys based on emailFilter
+      const cacheKey = emailFilter;
+      
       if (logsRes.success && logsRes.data) {
         setSystemLogs(logsRes.data)
-        setCachedData('logs', logsRes.data); // ✅ Cache API data
+        setCachedData(`logs_${cacheKey}`, logsRes.data);
         console.log('✅ Logs loaded:', logsRes.data.length)
       } else {
         setSystemLogs([])
-        console.warn('⚠️ No logs found')
       }
       
       if (commandsRes.success && commandsRes.data) {
         setCommands(commandsRes.data)
-        setCachedData('commands', commandsRes.data); // ✅ Cache API data
+        setCachedData(`commands_${cacheKey}`, commandsRes.data);
         console.log('✅ Commands loaded:', commandsRes.data.length)
       } else {
         setCommands([])
-        console.warn('⚠️ No commands found')
       }
       
       if (sessionsRes.success && sessionsRes.data) {
         setSessions(sessionsRes.data)
-        setCachedData('sessions', sessionsRes.data); // ✅ Cache API data
+        setCachedData(`sessions_${cacheKey}`, sessionsRes.data);
         console.log('✅ Sessions loaded:', sessionsRes.data.length)
       } else {
         setSessions([])
-        console.warn('⚠️ No sessions found')
       }
+
+      const loadTime = (performance.now() - startTime).toFixed(2)
+      console.log(`⏱️ Total API load time: ${loadTime}ms`)
 
     } catch (error) {
       console.error('❌ Error loading data:', error)
@@ -174,68 +179,103 @@ export default function AdminLogs() {
 
 
 
-  // Filter and sort data based on active tab
+  // ⚡ Optimized filtering with early returns and case-insensitive search
   const filteredLogs = useMemo(() => {
-    let result = systemLogs.filter(log => {
-      const matchesQuery = 
-        log.log_message?.toLowerCase().includes(query.toLowerCase()) ||
-        log.user_email?.toLowerCase().includes(query.toLowerCase())
-      const matchesLevel = !levelFilter || log.log_level === levelFilter
-      const matchesDate = !dateFilter || log.created_at?.startsWith(dateFilter)
-      return matchesQuery && matchesLevel && matchesDate
-    })
+    const lowerQuery = query.toLowerCase()
+    let result = systemLogs
+    
+    // Apply filters only if set (faster)
+    if (query || levelFilter || dateFilter) {
+      result = systemLogs.filter(log => {
+        if (levelFilter && log.log_level !== levelFilter) return false
+        if (dateFilter && !log.created_at?.startsWith(dateFilter)) return false
+        if (query) {
+          const message = log.log_message?.toLowerCase() || ''
+          const email = log.user_email?.toLowerCase() || ''
+          if (!message.includes(lowerQuery) && !email.includes(lowerQuery)) return false
+        }
+        return true
+      })
+    }
+    
+    // Sort only once at the end
     return result.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
   }, [systemLogs, query, levelFilter, dateFilter])
 
   const filteredCommands = useMemo(() => {
-    let result = commands.filter(cmd => {
-      const matchesQuery = cmd.command_text?.toLowerCase().includes(query.toLowerCase())
-      const matchesStatus = !statusFilter || cmd.command_status === statusFilter
-      const matchesDate = !dateFilter || cmd.issued_at?.startsWith(dateFilter)
-      return matchesQuery && matchesStatus && matchesDate
-    })
+    const lowerQuery = query.toLowerCase()
+    let result = commands
+    
+    if (query || statusFilter || dateFilter) {
+      result = commands.filter(cmd => {
+        if (statusFilter && cmd.command_status !== statusFilter) return false
+        if (dateFilter && !cmd.issued_at?.startsWith(dateFilter)) return false
+        if (query && !cmd.command_text?.toLowerCase().includes(lowerQuery)) return false
+        return true
+      })
+    }
+    
     return result.sort((a, b) => new Date(b.issued_at).getTime() - new Date(a.issued_at).getTime())
   }, [commands, query, statusFilter, dateFilter])
 
   const filteredSessions = useMemo(() => {
-    let result = sessions.filter(session => {
-      const matchesQuery = 
-        session.user_email?.toLowerCase().includes(query.toLowerCase()) ||
-        session.ip_address?.toLowerCase().includes(query.toLowerCase())
-      const matchesStatus = !statusFilter || session.session_status === statusFilter
-      const matchesDate = !dateFilter || session.login_time?.startsWith(dateFilter)
-      return matchesQuery && matchesStatus && matchesDate
-    })
+    const lowerQuery = query.toLowerCase()
+    let result = sessions
+    
+    if (query || statusFilter || dateFilter) {
+      result = sessions.filter(session => {
+        if (statusFilter && session.session_status !== statusFilter) return false
+        if (dateFilter && !session.login_time?.startsWith(dateFilter)) return false
+        if (query) {
+          const email = session.user_email?.toLowerCase() || ''
+          const ip = session.ip_address?.toLowerCase() || ''
+          if (!email.includes(lowerQuery) && !ip.includes(lowerQuery)) return false
+        }
+        return true
+      })
+    }
+    
     return result.sort((a, b) => new Date(b.login_time).getTime() - new Date(a.login_time).getTime())
   }, [sessions, query, statusFilter, dateFilter])
 
   // Get current tab data
-  const getCurrentData = () => {
+  // ⚡ Optimized data selection - only calculate what's needed
+  const currentData = useMemo(() => {
     switch (activeTab) {
       case 'logs': return filteredLogs
       case 'commands': return filteredCommands
       case 'sessions': return filteredSessions
     }
-  }
-
-  const currentData = getCurrentData()
-  const uniqueLevels = useMemo(() => [...new Set(systemLogs.map(log => log.log_level))], [systemLogs])
+  }, [activeTab, filteredLogs, filteredCommands, filteredSessions])
+  
+  // ⚡ Only calculate unique values when tab is active
+  const uniqueLevels = useMemo(() => {
+    if (activeTab !== 'logs') return []
+    return [...new Set(systemLogs.map(log => log.log_level).filter(Boolean))]
+  }, [systemLogs, activeTab])
+  
   const uniqueStatuses = useMemo(() => {
     if (activeTab === 'commands') {
-      return [...new Set(commands.map(cmd => cmd.command_status))]
+      return [...new Set(commands.map(cmd => cmd.command_status).filter(Boolean))]
     }
-    return [...new Set(sessions.map(session => session.session_status))]
+    if (activeTab === 'sessions') {
+      return [...new Set(sessions.map(session => session.session_status).filter(Boolean))]
+    }
+    return []
   }, [activeTab, commands, sessions])
 
   const totalPages = Math.max(1, Math.ceil(currentData.length / pageSize))
-  const paginatedData = currentData.slice((page-1)*pageSize, page*pageSize)
+  const paginatedData = useMemo(() => 
+    currentData.slice((page-1)*pageSize, page*pageSize),
+    [currentData, page, pageSize]
+  )
 
   const clearAllFilters = () => {
     setQuery('')
     setLevelFilter('')
     setStatusFilter('')
     setDateFilter('')
-    setEmailFilter('by-email')
+    setEmailFilter('all') // ✅ Reset to ALL logs
     setPage(1)
   }
 
@@ -268,23 +308,47 @@ export default function AdminLogs() {
     return 'bg-gray-100 text-gray-800'
   }
 
+  // ⚡ Memoized date formatting with cache
+  const dateCache = useMemo(() => new Map<string, string>(), [])
+  
   const formatDate = (dateString: string) => {
+    if (!dateString) return 'N/A'
+    
+    // Check cache first
+    if (dateCache.has(dateString)) {
+      return dateCache.get(dateString)!
+    }
+    
     const date = new Date(dateString)
-    return date.toLocaleString('en-US', { 
+    const formatted = date.toLocaleString('en-US', { 
       year: 'numeric', 
       month: 'short', 
       day: 'numeric', 
       hour: '2-digit', 
       minute: '2-digit' 
     })
+    
+    dateCache.set(dateString, formatted)
+    return formatted
   }
 
-  // Helper function to parse and format JSON details in a user-friendly way
+  // ⚡ Memoized JSON parsing cache to avoid re-parsing on every render
+  const jsonCache = useMemo(() => new Map<string, any>(), [])
+  
   const parseJsonDetails = (jsonString: string) => {
+    if (!jsonString) return null
+    
+    // Check cache first
+    if (jsonCache.has(jsonString)) {
+      return jsonCache.get(jsonString)
+    }
+    
     try {
       const data = JSON.parse(jsonString)
+      jsonCache.set(jsonString, data)
       return data
     } catch {
+      jsonCache.set(jsonString, null)
       return null
     }
   }
@@ -411,8 +475,8 @@ export default function AdminLogs() {
                   onChange={(e) => setEmailFilter(e.target.value as 'all' | 'by-email')}
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                 >
-                  <option value="by-email">My Logs (Including Subusers)</option>
                   <option value="all">All Logs</option>
+                  <option value="by-email">My Logs</option>
                 </select>
               </div>
             )}

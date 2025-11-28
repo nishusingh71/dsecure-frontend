@@ -36,51 +36,63 @@ export function useSubusers(userEmail?: string, enabled: boolean = true) {
       
       console.log(`✅ React Query: Fetched ${response.data.length} subusers`)
       
-      // Enhance each subuser with complete user details (subuser_group, last_login, department, etc.)
+      // Enhance each subuser with complete user details
+      // ✅ Strategy: Use API response data, but ALWAYS fetch /api/Users for critical fields
       const enhancedSubusers = await Promise.all(
         response.data.map(async (subuser) => {
           try {
-            console.log(`🔍 Fetching enhanced details for: ${subuser.subuser_email}`)
+            console.log(`🔍 Processing subuser: ${subuser.subuser_email}`)
+            console.log(`📦 API Response data:`, {
+              subuser_group: subuser.subuser_group,
+              license_allocation: subuser.license_allocation,
+              status: subuser.status,
+              department: subuser.department,
+              role: subuser.role || subuser.subuser_role,
+              last_login: subuser.last_login
+            })
             
-            // Fetch complete user data from /api/Users/{email}
-            const userDataRes = await apiClient.getUserByEmail(subuser.subuser_email)
+            // ✅ ALWAYS fetch /api/Users/{email} for department and role (critical fields)
+            let userData = null
+            try {
+              console.log(`🔍 Fetching user details from /api/Users/${subuser.subuser_email}`)
+              const userDataRes = await apiClient.getUserByEmail(subuser.subuser_email)
+              if (userDataRes.success && userDataRes.data) {
+                userData = userDataRes.data
+                console.log(`✅ User data fetched:`, {
+                  department: userData.department,
+                  role: userData.user_role || userData.role,
+                  user_group: userData.user_group,
+                  last_login: userData.last_login
+                })
+              }
+            } catch (err) {
+              console.warn(`⚠️ Failed to fetch user data for ${subuser.subuser_email}:`, err)
+            }
             
-            if (userDataRes.success && userDataRes.data) {
-              console.log(`✅ User data for ${subuser.subuser_email}:`, {
-                subuser_group: userDataRes.data.user_group,
-                last_login: userDataRes.data.last_login,
-                department: userDataRes.data.department,
-                role: userDataRes.data.user_role || userDataRes.data.role
-              })
-              
-              // Fetch machines for license usage calculation
-              const machinesRes = await apiClient.getMachinesByEmail(subuser.subuser_email)
-              let licenseUsage = 0
-              
-              if (machinesRes.success && machinesRes.data) {
-                licenseUsage = machinesRes.data.filter(
-                  (machine: any) => (machine.demo_usage_count || 0) > 0
-                ).length
-              }
-              
-              return {
-                ...subuser,
-                // Add all enhanced fields from /api/Users/{email}
-                subuser_group: userDataRes.data.user_group || 'N/A',
-                last_login: userDataRes.data.last_login || userDataRes.data.lastLogin || 'Never',
-                department: userDataRes.data.department || 'N/A',
-                role: userDataRes.data.user_role || userDataRes.data.role || 'user',
-                defaultRole: userDataRes.data.user_role || userDataRes.data.role || 'user',
-                status: userDataRes.data.status || 'active',
-                license_allocation: userDataRes.data.licesne_allocation || '0',
-                licenseUsage,
-              }
-            } else {
-              console.warn(`⚠️ Failed to fetch user data for ${subuser.subuser_email}`)
-              return subuser
+            // Fetch machines for license usage calculation
+            const machinesRes = await apiClient.getMachinesByEmail(subuser.subuser_email)
+            let licenseUsage = 0
+            
+            if (machinesRes.success && machinesRes.data) {
+              licenseUsage = machinesRes.data.filter(
+                (machine: any) => (machine.demo_usage_count || 0) > 0
+              ).length
+            }
+            
+            return {
+              ...subuser,
+              // ✅ Priority: API response > /api/Users > Default
+              subuser_group: subuser.subuser_group || userData?.user_group || 'N/A',
+              license_allocation: subuser.license_allocation || userData?.licesne_allocation || '0',
+              last_login: subuser.last_login || userData?.last_login || userData?.lastLogin || 'Never',
+              department: subuser.department || userData?.department || 'N/A',
+              role: subuser.role || subuser.subuser_role || userData?.user_role || userData?.role || 'user',
+              defaultRole: subuser.role || subuser.subuser_role || userData?.user_role || userData?.role || 'user',
+              status: subuser.status || userData?.status || 'active',
+              licenseUsage,
             }
           } catch (error) {
-            console.error(`❌ Error enhancing subuser ${subuser.subuser_email}:`, error)
+            console.error(`❌ Error processing subuser ${subuser.subuser_email}:`, error)
             return subuser
           }
         })

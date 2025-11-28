@@ -8,6 +8,7 @@ import "./responsive.css";
 import { HelmetProvider } from "react-helmet-async";
 import { ToastProvider } from './components/Toast';
 import { preloadCriticalResources } from './utils/performanceOptimizer';
+import './utils/internationalization'; // Initialize i18n
 
 // Preload critical resources
 preloadCriticalResources();

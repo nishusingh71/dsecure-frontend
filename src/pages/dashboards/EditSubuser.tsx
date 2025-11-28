@@ -1,8 +1,23 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useNotification } from '@/contexts/NotificationContext'
+import { useAuth } from '@/auth/AuthContext'
 import { apiClient } from '@/utils/enhancedApiClient'
 import { Helmet } from 'react-helmet-async'
+
+// Helper function to get user_email from localStorage (RoleBasedAuth)
+function getUserEmailFromStorage(): string | null {
+  try {
+    const userData = localStorage.getItem('user_data')
+    if (!userData) return null
+    
+    const parsedData = JSON.parse(userData)
+    return parsedData.user_email || parsedData.email || null
+  } catch (error) {
+    console.error('Failed to parse user_data from localStorage:', error)
+    return null
+  }
+}
 
 interface SubuserData {
   subuser_email: string
@@ -19,6 +34,7 @@ export default function EditSubuser() {
   const navigate = useNavigate()
   const location = useLocation()
   const { showSuccess, showError, showInfo } = useNotification()
+  const { user } = useAuth()
   
   const userData = location.state?.user as SubuserData
   
@@ -32,6 +48,61 @@ export default function EditSubuser() {
   })
   
   const [loading, setLoading] = useState(false)
+  const [fetchingData, setFetchingData] = useState(true)
+
+  // Fetch fresh data from API on component mount
+  useEffect(() => {
+    const fetchSubuserData = async () => {
+      if (!userData?.subuser_email) {
+        showError('No User Data', 'No user email provided. Redirecting...')
+        setTimeout(() => navigate('/admin/subusers'), 1000)
+        return
+      }
+
+      try {
+        console.log('🔄 Fetching fresh data for:', userData.subuser_email)
+        const res = await apiClient.getEnhancedSubuser(userData.subuser_email)
+
+        if (res?.success && res.data) {
+          const enhanced = res.data
+          console.log('✅ Fresh subuser data received:', enhanced)
+
+          // Extract values with proper fallbacks
+          const userName = enhanced.subuser_name || enhanced.name || ''
+          const userPhone = enhanced.subuser_phone || enhanced.phone || ''
+          const userRole = enhanced.role || enhanced.subuser_role || enhanced.defaultRole || 'user'
+          const userDept = enhanced.department || ''
+          const userStatus = enhanced.status || 'active'
+
+          console.log('📋 Setting form data:')
+          console.log('  - Email:', enhanced.subuser_email)
+          console.log('  - Name:', userName)
+          console.log('  - Phone:', userPhone)
+          console.log('  - Role:', userRole)
+          console.log('  - Department:', userDept)
+          console.log('  - Status:', userStatus)
+
+          setFormData({
+            subuser_email: enhanced.subuser_email,
+            subuser_name: userName,
+            role: userRole,
+            department: userDept,
+            phone: userPhone,
+            status: userStatus
+          })
+        } else {
+          console.warn('⚠️ Failed to fetch fresh data, using location state')
+        }
+      } catch (error) {
+        console.error('❌ Error fetching subuser data:', error)
+        showError('Fetch Error', 'Could not load latest user data. Using cached data.')
+      } finally {
+        setFetchingData(false)
+      }
+    }
+
+    fetchSubuserData()
+  }, [userData?.subuser_email])
 
   useEffect(() => {
     if (!userData) {
@@ -47,14 +118,40 @@ export default function EditSubuser() {
     try {
       showInfo(`Updating user ${formData.subuser_email}...`)
       
-      // Update user via EnhancedSubuser API
-      const response = await apiClient.updateEnhancedSubuser(formData.subuser_email, {
-        name: formData.subuser_name,
-        role: formData.role,
-        department: formData.department,
-        phone: formData.phone,
-        status: formData.status
-      })
+      // Get parent email from RoleBasedAuth user_data in localStorage
+      let parentEmail: string | undefined | null = getUserEmailFromStorage()
+      
+      // Fallback to AuthContext if localStorage doesn't have it
+      if (!parentEmail) {
+        parentEmail = user?.email
+      }
+      
+      // Debug logging
+      console.log('🔍 Debug - User email from localStorage (user_data):', getUserEmailFromStorage())
+      console.log('🔍 Debug - User email from AuthContext:', user?.email)
+      console.log('🔍 Debug - Final parent email:', parentEmail)
+      
+      // Final validation
+      if (!parentEmail || parentEmail === 'unknown@example.com' || parentEmail.includes('unknown')) {
+        console.error('❌ Invalid parent email detected:', parentEmail)
+        throw new Error('Valid parent email not found. Please log out and log in again.')
+      }
+      
+      console.log('✅ Using parent email:', parentEmail)
+      console.log('📤 Update request - Parent:', parentEmail, 'Subuser:', formData.subuser_email)
+      
+      // Update user via EnhancedSubusers/by-parent endpoint
+      const response = await apiClient.updateEnhancedSubuserByParent(
+        parentEmail,
+        formData.subuser_email,
+        {
+          name: formData.subuser_name,
+          role: formData.role,
+          department: formData.department,
+          phone: formData.phone,
+          status: formData.status
+        }
+      )
 
       if (response.success) {
         showSuccess(`User ${formData.subuser_email} updated successfully`)
@@ -63,7 +160,7 @@ export default function EditSubuser() {
         throw new Error(response.error || 'Failed to update user')
       }
     } catch (error) {
-      console.error('Error updating user:', error)
+      console.error('❌ Error updating user:', error)
       showError('Update Failed', error instanceof Error ? error.message : 'Failed to update user')
     } finally {
       setLoading(false)
@@ -74,7 +171,7 @@ export default function EditSubuser() {
     navigate('/admin/subusers')
   }
 
-  if (!userData) {
+  if (!userData || fetchingData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
         <div className="text-center">
@@ -84,7 +181,7 @@ export default function EditSubuser() {
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </div>
-          <p className="text-slate-600">Loading user data...</p>
+          <p className="text-slate-600">{fetchingData ? 'Loading user data...' : 'Redirecting...'}</p>
         </div>
       </div>
     )
@@ -154,16 +251,13 @@ export default function EditSubuser() {
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Role
                 </label>
-                <select
+                <input
+                  type="text"
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                   className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="user">User</option>
-                  <option value="manager">Manager</option>
-                  <option value="admin">Admin</option>
-                  <option value="superadmin">Super Admin</option>
-                </select>
+                  placeholder="user, manager, admin, superadmin"
+                />
               </div>
 
               {/* Department */}
@@ -199,20 +293,17 @@ export default function EditSubuser() {
                 <label className="block text-sm font-medium text-slate-700 mb-1">
                   Account Status
                 </label>
-                <select
+                <input
+                  type="text"
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                   className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="suspended">Suspended</option>
-                  <option value="pending">Pending</option>
-                </select>
+                  placeholder="active, inactive, suspended, pending"
+                />
               </div>
 
               {/* Additional Info (Read-only) */}
-              {userData.licenseUsage !== undefined && (
+              {/* {userData.licenseUsage !== undefined && (
                 <div className="bg-slate-50 rounded-md p-4">
                   <h3 className="text-sm font-medium text-slate-700 mb-2">Additional Information</h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
@@ -230,7 +321,7 @@ export default function EditSubuser() {
                     )}
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* Action Buttons */}
               <div className="flex items-center justify-end gap-3 pt-4 border-t">

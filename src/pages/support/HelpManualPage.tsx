@@ -264,6 +264,74 @@ const HelpManualPage: React.FC = memo(() => {
         },
       ],
     },
+    {
+      id: 7,
+      title: "Help & Documentation",
+      description: "Comprehensive help resources and interactive documentation",
+      icon: "📚",
+      subsections: [
+        {
+          id: 15,
+          title: "Installation Screenshots Guide",
+          description:
+            "Visual step-by-step installation process with detailed screenshots",
+          url: "/support/manual/installation-guide",
+          pageCount: 12,
+        },
+        {
+          id: 16,
+          title: "System Setup & Configuration",
+          description: "Complete system configuration with visual examples",
+          url: "/support/manual/system-setup",
+          pageCount: 10,
+        },
+        {
+          id: 17,
+          title: "Working with DSecure Interface",
+          description:
+            "Complete guide to using DSecure with activation and file erasure operations",
+          url: "/support/manual/working-with-dsecure",
+          pageCount: 15,
+        },
+        {
+          id: 71,
+          title: "Complete Manual",
+          description:
+            "Comprehensive single-page manual with all DSecure features and functionality",
+          url: "/support/help-manual/complete-manual",
+          pageCount: 1,
+        },
+         {
+          id: 79,
+          title: "Complete Network Manual",
+          description:
+            "Comprehensive single-page manual with all DSecure network features and functionality",
+          url: "/support/help-manual/complete-network-manual",
+          pageCount: 1,
+        },
+        {
+          id: 72,
+          title: "Working with Reports",
+          description: "Report generation, management, and customization guide",
+          url: "/support/help-manual/report-management",
+          pageCount: 8,
+        },
+        {
+          id: 73,
+          title: "DSecure FAQ",
+          description: "Frequently asked questions and detailed answers",
+          url: "/support/help-manual/faqs",
+          pageCount: 12,
+        },
+        {
+          id: 74,
+          title: "Schedule Settings",
+          description: "Automated scheduling and task management configuration",
+          url: "/support/help-manual/schedule-settings",
+          pageCount: 6,
+        },
+      ],
+    },
   ];
 
   const filteredSections = manualSections.filter((section) => {

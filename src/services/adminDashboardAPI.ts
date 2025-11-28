@@ -65,6 +65,8 @@ interface ProfileData {
   department?: string
   avatar?: string
   licenses?: number // For User stats - number of licenses assigned to user
+  license_allocation?: string // License allocation count from user data
+  is_private_cloud?: boolean // Private cloud access flag
 }
 
 // Additional interfaces for other admin pages
@@ -136,225 +138,15 @@ interface Report {
   size?: string
 }
 
-// Default data - this will be used when API is not available
-const DEFAULT_DASHBOARD_STATS: DashboardStats = {
-  totalLicenses: '3,287',
-  activeUsers: '156',
-  availableLicenses: '1,200',
-  successRate: '99.2%',
-  changes: {
-    totalLicenses: { value: '+12%', trend: 'up' },
-    activeUsers: { value: '+5', trend: 'up' },
-    availableLicenses: { value: '-8%', trend: 'down' },
-    successRate: { value: '+0.3%', trend: 'up' }
-  }
-}
-
-const DEFAULT_USER_ACTIVITY: UserActivity[] = [
-  { email: 'john@example.com', loginTime: 'Thu Oct 02 2025 13:48:24', logoutTime: '', status: 'active' },
-  { email: 'alice@admin.com', loginTime: 'Thu Oct 02 2025 09:30:15', logoutTime: 'Thu Oct 02 2025 17:45:22', status: 'offline' },
-  { email: 'bob@example.com', loginTime: 'Thu Oct 02 2025 08:15:30', logoutTime: '', status: 'active' },
-  { email: 'carol@example.com', loginTime: 'Wed Oct 01 2025 16:20:45', logoutTime: 'Wed Oct 01 2025 18:30:12', status: 'offline' }
-]
-
-const DEFAULT_GROUPS: GroupData[] = [
-  { name: 'Default Group', description: 'Default users Selection', licenses: 2322, date: '2023-01-06 04:21:04' },
-  { name: 'Pool Group', description: 'Pool users', licenses: 200, date: '2023-01-06 04:21:04' },
-  { name: 'IT Department', description: 'IT Department Users', licenses: 150, date: '2024-02-09 12:08:52' },
-  { name: 'Security Team', description: 'Security Operations', licenses: 75, date: '2025-04-23 01:44:34' }
-]
-
-const DEFAULT_LICENSE_DATA: LicenseData[] = [
-  { product: 'DSecure Drive Eraser', total: 1460, consumed: 1345, available: 115 },
-  { product: 'DSecure Network Eraser', total: 462, consumed: 292, available: 170 },
-  { product: 'DSecure Mobile Diagnostics', total: 200, consumed: 66, available: 134 },
-  { product: 'DSecure Hardware Diagnostics', total: 446, consumed: 281, available: 165 },
-  { product: 'DSecure Cloud Eraser', total: 300, consumed: 226, available: 74 }
-]
-
-const DEFAULT_RECENT_REPORTS: RecentReport[] = [
-  { id: '2832', type: 'Drive Eraser', devices: 1, status: 'completed', date: 'Wed, Oct 01, 2025', method: 'NIST 800-88 Purge' },
-  { id: '2831', type: 'Mobile Diagnostics', devices: 5, status: 'running', date: 'Tue, Sep 30, 2025', method: 'Hardware Scan' },
-  { id: '2830', type: 'Network Eraser', devices: 12, status: 'completed', date: 'Tue, Sep 30, 2025', method: 'DoD 5220.22-M' },
-  { id: '2829', type: 'File Eraser', devices: 3, status: 'failed', date: 'Mon, Sep 29, 2025', method: 'Secure Delete' }
-]
-
-const DEFAULT_PROFILE_DATA: ProfileData = {
-  name: 'Rohit',
-  email: 'rohit.kumar@stellarinfo.com',
-  timezone: 'Asia/Kolkata',
-  role: 'Admin',
-  phone: '+91 9876543210',
-  department: 'IT Administration'
-}
-
-// Default data for additional admin pages
-const DEFAULT_LOG_ENTRIES: LogEntry[] = [
-  {
-    id: 'log_001',
-    timestamp: '2025-10-09 09:01:12',
-    level: 'info',
-    category: 'System',
-    message: 'System startup completed successfully',
-    user: 'System',
-    source: 'Core Service',
-    details: 'All services initialized, memory usage: 45%, CPU: 12%'
-  },
-  {
-    id: 'log_002',
-    timestamp: '2025-10-09 09:07:51',
-    level: 'success',
-    category: 'Data Erasure',
-    message: 'Secure erase job 3421 completed successfully',
-    user: 'john.doe@company.com',
-    source: 'Erase Engine',
-    details: 'Device: Samsung SSD 970 EVO, Method: NIST 800-88, Verification: Passed'
-  },
-  {
-    id: 'log_003',
-    timestamp: '2025-10-09 09:15:23',
-    level: 'info',
-    category: 'Authentication',
-    message: 'User login successful',
-    user: 'jane.smith@company.com',
-    source: 'Auth Service',
-    details: 'IP: 192.168.1.105, Location: New York, Device: Chrome/Windows'
-  },
-  {
-    id: 'log_004',
-    timestamp: '2025-10-09 09:22:15',
-    level: 'warning',
-    category: 'License',
-    message: 'License usage approaching limit',
-    user: 'System',
-    source: 'License Manager',
-    details: 'Current usage: 85%, Limit: 100 concurrent users, Expires: 2025-12-31'
-  },
-  {
-    id: 'log_005',
-    timestamp: '2025-10-09 09:30:42',
-    level: 'error',
-    category: 'Data Erasure',
-    message: 'Erase job 3422 failed - disk read error',
-    user: 'alice.brown@company.com',
-    source: 'Erase Engine',
-    details: 'Device: WD Blue HDD 1TB, Error: Sector 1,234,567 unreadable, Retry attempts: 3'
-  }
-]
-
-const DEFAULT_MACHINES: Machine[] = [
-  { hostname: 'edge-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-  { hostname: 'edge-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
-  { hostname: 'lab-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-  { hostname: 'lab-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'maintenance' },
-  { hostname: 'qa-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-  { hostname: 'qa-02', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
-  { hostname: 'dev-01', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' },
-  { hostname: 'prod-01', eraseOption: 'Quick Erase', license: 'Premium', status: 'online' },
-  { hostname: 'prod-02', eraseOption: 'Secure Erase', license: 'Premium', status: 'maintenance' },
-  { hostname: 'test-01', eraseOption: 'Quick Erase', license: 'Basic', status: 'offline' },
-  { hostname: 'edge-03', eraseOption: 'Secure Erase', license: 'Enterprise', status: 'online' }
-]
-
-const DEFAULT_PERFORMANCE_METRICS: PerformanceMetrics = {
-  monthlyErasures: {
-    value: 1240,
-    data: [120, 140, 130, 180, 220, 210, 260, 240, 280, 300, 320, 340]
-  },
-  avgDuration: {
-    value: '6m 21s',
-    data: [7.2, 6.8, 6.5, 6.1, 5.9, 6.2, 6.0, 6.3, 6.1, 6.2, 6.4, 6.3]
-  },
-  successRate: {
-    value: '100%',
-    data: [97.8, 98.1, 98.0, 98.2, 98.4, 98.5, 98.3, 98.6, 98.4, 98.5, 98.6, 98.4]
-  },
-  throughput: {
-    data: [120, 140, 160, 180, 200, 240, 260, 230, 250, 270, 300, 340],
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  }
-}
-
-const DEFAULT_ADMIN_REPORTS: AdminReport[] = [
-  { id: 'AR-2025-1001', date: '2025-09-01', devices: 25, status: 'completed', department: 'IT' },
-  { id: 'AR-2025-1002', date: '2025-09-02', devices: 50, status: 'pending', department: 'HR' },
-  { id: 'AR-2025-1003', date: '2025-09-03', devices: 75, status: 'completed', department: 'Finance' },
-  { id: 'AR-2025-1004', date: '2025-09-04', devices: 100, status: 'failed', department: 'IT' },
-  { id: 'AR-2025-1005', date: '2025-09-05', devices: 125, status: 'completed', department: 'Operations' }
-]
-
-const DEFAULT_USERS: User[] = [
-  { id: '1', email: 'john.doe@company.com', name: 'John Doe', role: 'admin', status: 'active', department: 'IT', lastLogin: '2025-09-26' },
-  { id: '2', email: 'jane.smith@company.com', name: 'Jane Smith', role: 'user', status: 'active', department: 'HR', lastLogin: '2025-09-25' },
-  { id: '3', email: 'bob.johnson@company.com', name: 'Bob Johnson', role: 'operator', status: 'inactive', department: 'Operations', lastLogin: '2025-09-20' },
-  { id: '4', email: 'alice.brown@company.com', name: 'Alice Brown', role: 'user', status: 'active', department: 'Finance', lastLogin: '2025-09-26' },
-  { id: '5', email: 'charlie.wilson@company.com', name: 'Charlie Wilson', role: 'admin', status: 'pending', department: 'IT', lastLogin: 'Never' }
-]
-
-const DEFAULT_REPORTS: Report[] = [
-  {
-    id: 'ER-2832',
-    type: 'Drive Eraser',
-    status: 'completed',
-    date: '2025-10-09',
-    devices: 5,
-    method: 'NIST 800-88 Purge',
-    duration: '2h 15m',
-    size: '2.4 TB'
-  },
-  {
-    id: 'ER-2831',
-    type: 'Mobile Diagnostics',
-    status: 'running',
-    date: '2025-10-09',
-    devices: 3,
-    method: 'Hardware Scan',
-    duration: '45m',
-    size: '1.2 TB'
-  },
-  {
-    id: 'ER-2830',
-    type: 'Network Eraser',
-    status: 'completed',
-    date: '2025-10-08',
-    devices: 12,
-    method: 'DoD 5220.22-M',
-    duration: '4h 30m',
-    size: '8.7 TB'
-  },
-  {
-    id: 'ER-2829',
-    type: 'File Eraser',
-    status: 'failed',
-    date: '2025-10-07',
-    devices: 1,
-    method: 'Secure Delete',
-    duration: '15m',
-    size: '0.5 TB'
-  },
-  {
-    id: 'ER-2828',
-    type: 'Server Eraser',
-    status: 'completed',
-    date: '2025-10-07',
-    devices: 8,
-    method: 'Gutmann Method',
-    duration: '6h 45m',
-    size: '15.3 TB'
-  }
-]
+// NOTE: All default/fallback data removed - All data must come from live API
+// If API fails, UI will show "Data not available" message
 
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com/api'
-const USE_API = import.meta.env.VITE_USE_API === 'true' || false
+const USE_API = import.meta.env.VITE_USE_API === 'true' || true // Always use live API
 
-// Generic API call function
+// Generic API call function - NO FALLBACK DATA - All data must come from live API
 async function apiCall<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
-  if (!USE_API) {
-    // Return default data when API is disabled
-    return { success: true, data: getDefaultData(endpoint) as T }
-  }
-
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers: {
@@ -372,43 +164,18 @@ async function apiCall<T>(endpoint: string, options?: RequestInit): Promise<ApiR
     const data = await response.json()
     return { success: true, data }
   } catch (error) {
-    console.warn(`API call failed for ${endpoint}, using default data:`, error)
-    // Fallback to default data on API failure
-    return { success: true, data: getDefaultData(endpoint) as T }
+    console.error(`❌ API call failed for ${endpoint}:`, error)
+    // NO FALLBACK - Return error response so UI can show "Data not available"
+    return { 
+      success: false, 
+      data: null as unknown as T,
+      error: error instanceof Error ? error.message : 'API call failed'
+    }
   }
 }
 
-// Get default data based on endpoint
-function getDefaultData(endpoint: string): any {
-  switch (endpoint) {
-    case '/admin/dashboard/stats':
-      return DEFAULT_DASHBOARD_STATS
-    case '/admin/dashboard/user-activity':
-      return DEFAULT_USER_ACTIVITY
-    case '/admin/dashboard/groups':
-      return DEFAULT_GROUPS
-    case '/admin/dashboard/license-data':
-      return DEFAULT_LICENSE_DATA
-    case '/admin/dashboard/recent-reports':
-      return DEFAULT_RECENT_REPORTS
-    case '/admin/profile':
-      return DEFAULT_PROFILE_DATA
-    case '/admin/logs':
-      return DEFAULT_LOG_ENTRIES
-    case '/admin/machines':
-      return DEFAULT_MACHINES
-    case '/admin/performance':
-      return DEFAULT_PERFORMANCE_METRICS
-    case '/admin/reports':
-      return DEFAULT_ADMIN_REPORTS
-    case '/admin/subusers':
-      return DEFAULT_USERS
-    case '/reports':
-      return DEFAULT_REPORTS
-    default:
-      return null
-  }
-}
+// NOTE: All default/fallback data has been removed
+// All data MUST come from live API - UI will show "Data not available" if API fails
 
 // Admin Dashboard API Functions
 export class AdminDashboardAPI {
@@ -771,18 +538,4 @@ export type {
   ApiResponse
 }
 
-// Export default data for direct access if needed
-export {
-  DEFAULT_DASHBOARD_STATS,
-  DEFAULT_USER_ACTIVITY,
-  DEFAULT_GROUPS,
-  DEFAULT_LICENSE_DATA,
-  DEFAULT_RECENT_REPORTS,
-  DEFAULT_PROFILE_DATA,
-  DEFAULT_LOG_ENTRIES,
-  DEFAULT_MACHINES,
-  DEFAULT_PERFORMANCE_METRICS,
-  DEFAULT_ADMIN_REPORTS,
-  DEFAULT_USERS,
-  DEFAULT_REPORTS
-}
+// NOTE: Default data exports removed - All data must come from live API

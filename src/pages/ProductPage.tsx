@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
@@ -42,6 +43,7 @@ const downloadCatalog = (productType: 'drive-eraser' | 'file-eraser') => {
 };
 
 const ProductPage: React.FC = () => {
+  const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState<{
     [key: string]: boolean;
   }>({
@@ -71,7 +73,7 @@ const ProductPage: React.FC = () => {
   const features = {
     platform: [
       {
-        name: "Windows Support",
+        name: t('products.windowsSupport'),
         base: "check",
         standard: "check",
         cloud: "check",
@@ -80,7 +82,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Linux Support",
+        name: t('products.linuxSupport'),
         base: "x",
         standard: "check",
         cloud: "check",
@@ -89,7 +91,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "macOS Support",
+        name: t('products.macosSupport'),
         base: "x",
         standard: "check",
         cloud: "check",
@@ -98,7 +100,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Multi-language UI & Reports (17+)",
+        name: t('products.multiLanguageUI'),
         base: "pending",
         standard: "pending",
         cloud: "pending",
@@ -109,7 +111,7 @@ const ProductPage: React.FC = () => {
     ],
     core: [
       {
-        name: "30+ International Algorithms (SSD Trim, Crypto Erase)",
+        name: t('products.thirtyAlgorithms'),
         base: "check",
         standard: "check",
         cloud: "check",
@@ -118,7 +120,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "File & Folder Erase",
+        name: t('products.fileFolderErase'),
         base: "check",
         standard: "check",
         cloud: "check",
@@ -127,7 +129,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Erase Traces (Browser, System, App data)",
+        name: t('products.eraseTraces'),
         base: "check",
         standard: "check",
         cloud: "check",
@@ -136,7 +138,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Erase Deleted Data / Free Space",
+        name: t('products.eraseDeletedData'),
         base: "x",
         standard: "check",
         cloud: "check",
@@ -145,7 +147,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Erase Volume",
+        name: t('products.eraseVolume'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -154,7 +156,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-5",
       },
       {
-        name: "Erase Disk (Full Device)",
+        name: t('products.eraseDisk'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -163,7 +165,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-1",
       },
       {
-        name: "Scheduled Erase",
+        name: t('products.scheduledErase'),
         base: "check-file",
         standard: "check-expanded",
         cloud: "check",
@@ -172,7 +174,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Cloud Storage Erase (Google Drive, others coming soon)",
+        name: t('products.cloudStorageErase'),
         base: "check",
         standard: "check",
         cloud: "check",
@@ -183,7 +185,7 @@ const ProductPage: React.FC = () => {
     ],
     reporting: [
       {
-        name: "Local PDF Reports",
+        name: t('products.localPdfReports'),
         base: "x",
         standard: "check",
         cloud: "check",
@@ -192,7 +194,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "White-Label Reports",
+        name: t('products.whiteLabelReports'),
         base: "x",
         standard: "x",
         cloud: "check",
@@ -201,7 +203,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Cloud Report Upload/Sync",
+        name: t('products.cloudReportUpload'),
         base: "x",
         standard: "x",
         cloud: "check-slow",
@@ -210,7 +212,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-fastest",
       },
       {
-        name: "XML Report Format",
+        name: t('products.xmlReportFormat'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -219,7 +221,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Audit-Grade Compliance Certificates",
+        name: t('products.auditGradeCompliance'),
         base: "x",
         standard: "check",
         cloud: "check",
@@ -228,7 +230,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "User/Action Logs",
+        name: t('products.userActionLogs'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -239,7 +241,7 @@ const ProductPage: React.FC = () => {
     ],
     services: [
       {
-        name: "Web Dashboard",
+        name: t('products.webDashboard'),
         base: "limited",
         standard: "check",
         cloud: "check",
@@ -248,7 +250,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Cloud Commands (Remote Jobs)",
+        name: t('products.cloudCommands'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -257,7 +259,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "Custom Installer (auto-register machine)",
+        name: t('products.customInstaller'),
         base: "locked",
         standard: "locked",
         cloud: "locked",
@@ -266,7 +268,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-5",
       },
       {
-        name: "Sub-User Management",
+        name: t('products.subUserManagement'),
         base: "locked-profiles",
         standard: "locked",
         cloud: "locked",
@@ -275,7 +277,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: "Private Cloud Support",
+        name: t('products.privateCloudSupport'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -284,7 +286,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-1",
       },
       {
-        name: "Multi-Level User Logs",
+        name: t('products.multiLevelUserLogs'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -293,7 +295,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: "White-Label Dashboard",
+        name: t('products.whiteLabelDashboard'),
         base: "x",
         standard: "x",
         cloud: "check",
@@ -304,7 +306,7 @@ const ProductPage: React.FC = () => {
     ],
     addons: [
       {
-        name: "Additional Disk Erasure Licenses",
+        name: t('products.additionalDiskLicenses'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -313,7 +315,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: "Additional Volume Erasure Licenses",
+        name: t('products.additionalVolumeLicenses'),
         base: "x",
         standard: "x",
         cloud: "x",
@@ -322,7 +324,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: "Extra Custom Installer Packages",
+        name: t('products.extraCustomInstaller'),
         base: "locked",
         standard: "locked",
         cloud: "locked",
@@ -331,7 +333,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: "Extra Sub-Users",
+        name: t('products.extraSubUsers'),
         base: "locked",
         standard: "locked",
         cloud: "locked",
@@ -340,7 +342,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: "Extra Private Clouds",
+        name: t('products.extraPrivateClouds'),
         base: "x",
         standard: "locked",
         cloud: "locked",
@@ -349,7 +351,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: "Bespoke Integrations (SIEM, IT tools, etc.)",
+        name: t('products.bespokeIntegrations'),
         base: "locked",
         standard: "locked",
         cloud: "locked",
@@ -358,7 +360,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: "Dedicated SLA/Support Manager",
+        name: t('products.dedicatedSlaSupport'),
         base: "locked",
         standard: "locked",
         cloud: "locked",
@@ -372,22 +374,22 @@ const ProductPage: React.FC = () => {
   const comparisonSections = [
     {
       key: "platform" as const,
-      title: "Platform & OS Support",
+      title: t('products.platformOsSupport'),
       data: features.platform,
     },
     {
       key: "core" as const,
-      title: "Core Erasure Capabilities",
+      title: t('products.coreErasureCapabilities'),
       data: features.core,
     },
     {
       key: "reporting" as const,
-      title: "Reporting & Compliance",
+      title: t('products.reportingCompliance'),
       data: features.reporting,
     },
     {
       key: "addons" as const,
-      title: "Add-On / Optional Customization",
+      title: t('products.addOnCustomization'),
       data: features.addons,
     },
   ];
@@ -425,7 +427,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ClipboardIcon className={`${iconClass} text-emerald-600`} />
             <span className={`${textClass} font-medium text-emerald-600`}>
-              Files
+              {t('products.files')}
             </span>
           </div>
         );
@@ -434,7 +436,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ClipboardIcon className={`${iconClass} text-emerald-600`} />
             <span className={`${textClass} font-medium text-emerald-600`}>
-              All
+              {t('products.all')}
             </span>
           </div>
         );
@@ -443,7 +445,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-amber-500`} />
             <span className={`${textClass} font-medium text-amber-500`}>
-              Basic
+              {t('products.basic')}
             </span>
           </div>
         );
@@ -452,7 +454,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-emerald-500`} />
             <span className={`${textClass} font-medium text-emerald-500`}>
-              Fast
+              {t('products.fast')}
             </span>
           </div>
         );
@@ -461,7 +463,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-emerald-600`} />
             <span className={`${textClass} font-medium text-emerald-600`}>
-              Faster
+              {t('products.faster')}
             </span>
           </div>
         );
@@ -470,7 +472,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-purple-600`} />
             <span className={`${textClass} font-medium text-purple-600`}>
-              Premium
+              {t('products.premium')}
             </span>
           </div>
         );
@@ -495,7 +497,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ShieldIcon className={`${iconClass} text-amber-600`} />
             <span className={`${textClass} font-medium text-amber-600`}>
-              Add-on
+              {t('products.addon')}
             </span>
           </div>
         );
@@ -504,7 +506,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ShieldIcon className={`${iconClass} text-amber-600`} />
             <span className={`${textClass} font-medium text-amber-600`}>
-              Profiles
+              {t('products.profiles')}
             </span>
           </div>
         );
@@ -513,7 +515,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <StarIcon className={`${iconClass} text-blue-600`} />
             <span className={`${textClass} font-medium text-blue-600`}>
-              Coming Soon
+              {t('products.comingSoon')}
             </span>
           </div>
         );
@@ -522,7 +524,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <GearIcon className={`${iconClass} text-slate-600`} />
             <span className={`${textClass} font-medium text-slate-600`}>
-              Limited
+              {t('products.limited')}
             </span>
           </div>
         );
@@ -542,13 +544,12 @@ const ProductPage: React.FC = () => {
           <div className="max-w-6xl mx-auto">
             <Reveal>
               <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-emerald-700 mb-4 xs:mb-6">
-                D-Secure Data Erasure Solutions
+                {t('products.title')}
               </h1>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="max-w-4xl mx-auto text-lg xs:text-xl sm:text-2xl text-slate-600 mb-6 xs:mb-8 leading-relaxed">
-                Enterprise-grade drive and file erasure software trusted by
-                global organizations for secure, certified data destruction.
+                {t('products.subtitle')}
               </p>
             </Reveal>
             <Reveal delayMs={200}>
@@ -557,14 +558,14 @@ const ProductPage: React.FC = () => {
                   to="/contact?request=free-demo"
                   className="inline-flex items-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-all shadow-2xl hover:shadow-2xl hover:scale-105 text-base xs:text-lg w-full sm:w-auto justify-center"
                 >
-                  Request Free Demo
+                  {t('products.requestFreeDemo')}
                   <ArrowRightIcon className="ml-2 xs:ml-3 w-4 xs:w-5 h-4 xs:h-5" />
                 </Link>
                 <Link
                   to="/pricing-and-plan"
                   className="inline-flex items-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-bold hover:bg-emerald-50 transition-all text-base xs:text-lg w-full sm:w-auto justify-center"
                 >
-                  Buy Licenses
+                  {t('products.buyLicenses')}
                 </Link>
               </div>
             </Reveal>
@@ -579,73 +580,72 @@ const ProductPage: React.FC = () => {
               <Reveal>
                 <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-6 xs:p-8 sm:p-10 border border-emerald-100 group relative overflow-hidden">
                   <div className="absolute top-4 xs:top-6 right-4 xs:right-6 bg-emerald-600 text-white px-3 xs:px-4 py-1 rounded-full text-xs xs:text-sm font-bold">
-                    MOST POPULAR
+                    {t('products.mostPopular')}
                   </div>
                   <div className="flex-none">
                     <DatabaseIcon className="w-12 xs:w-14 sm:w-16 h-12 xs:h-14 sm:h-16 text-emerald-600 mb-4 xs:mb-6 transition-transform group-hover:scale-110" />
                     <h3 className="text-xl xs:text-2xl sm:text-3xl font-bold mb-2 text-slate-900">
-                      D-Secure Drive Eraser
+                      {t('products.driveEraserTitle')}
                     </h3>
                     <p className="text-slate-600 mb-3 xs:mb-4 leading-relaxed text-base xs:text-lg font-semibold">
-                      Secure Drive Wiping Software
+                      {t('products.driveEraserSubtitle')}
                     </p>
                     <p className="text-slate-600 mb-4 xs:mb-6 leading-relaxed text-sm xs:text-base">
-                      Wipe Hard Drive, SSD, PC, Laptop, Mac® & Server. Deploy
-                      via USB & PXE Boot on Supported Devices.
+                      {t('products.driveEraserDesc')}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 xs:gap-6 mb-6 xs:mb-8 flex-1">
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-3 xs:mb-4 text-sm xs:text-base">
-                        Key Features
+                        {t('products.keyFeatures')}
                       </h4>
                       <ul className="text-slate-700 space-y-3 text-sm">
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          26 Global Erasure Standards
+                          {t('products.erasureStandards')}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          Cloud Console Integration
+                          {t('products.cloudConsoleIntegration')}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          USB, PXE Boot & EXE
+                          {t('products.usbPxeBoot')}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          Digitally Signed Certificates
+                          {t('products.digitallySigned')}
                         </li>
                       </ul>
                     </div>
 
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        Technical Specs
+                        {t('products.technicalSpecs')}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between border-b border-slate-200 pb-2">
                           <span className="text-slate-600">
-                            Supported Types
+                            {t('products.supportedTypes')}
                           </span>
                           <span className="font-semibold">
-                            HDD,SSD,NVME,etc
+                            {t('products.supportedTypesValue')}
                           </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
                           <span className="text-slate-600">
-                            Erasure Methods
+                            {t('products.erasureMethods')}
                           </span>
-                          <span className="font-semibold">26 Standards</span>
+                          <span className="font-semibold">{t('products.twentySixStandards')}</span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">Deployment</span>
-                          <span className="font-semibold">USB,EXE</span>
+                          <span className="text-slate-600">{t('products.deployment')}</span>
+                          <span className="font-semibold">{t('products.deploymentValue')}</span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">Licenses</span>
-                          <span className="font-semibold">Never Expire</span>
+                          <span className="text-slate-600">{t('products.licenses')}</span>
+                          <span className="font-semibold">{t('products.licensesValue')}</span>
                         </div>
                       </div>
                     </div>
@@ -653,34 +653,34 @@ const ProductPage: React.FC = () => {
 
                   <div className="mb-8">
                     <h4 className="font-semibold text-slate-900 mb-3">
-                      Key Benefits
+                      {t('products.keyBenefits')}
                     </h4>
                     <ul className="text-slate-700 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Safeguard Privacy & Mitigate Risks
+                        {t('products.safeguardPrivacy')}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Prevent Data Thefts & Leakage
+                        {t('products.preventDataThefts')}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Get Maximum Resale Value
+                        {t('products.maxResaleValue')}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Compliance with Global Standards
+                        {t('products.globalStandardsCompliance')}
                       </li>
                     </ul>
                   </div>
 
                   <div className="mb-6">
                     <div className="text-3xl font-bold text-slate-900 mb-2">
-                      Starting at $20
+                      {t('products.startingAt')} $20
                     </div>
                     <div className="text-slate-600">
-                      Pay-per-use licenses that never expire
+                      {t('products.payPerUse')}
                     </div>
                   </div>
 
@@ -690,13 +690,13 @@ const ProductPage: React.FC = () => {
                       className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center gap-2"
                     >
                       <ClipboardIcon className="w-4 h-4" />
-                      Data Sheet
+                      {t('products.dataSheet')}
                     </button>
                     <Link
                       to="/contact?request=free-license&product=drive-eraser"
                       className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
                     >
-                      Request Free Demo
+                      {t('products.requestFreeDemo')}
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
                   </div>
@@ -704,7 +704,7 @@ const ProductPage: React.FC = () => {
                     to="/pricing-and-plan?product=drive-eraser"
                     className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center mt-2"
                   >
-                    Buy Now
+                    {t('products.buyNow')}
                   </Link>
                 </div>
               </Reveal>
@@ -713,68 +713,66 @@ const ProductPage: React.FC = () => {
               <Reveal delayMs={100}>
                 <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-10 border border-emerald-100 group relative overflow-hidden">
                   <div className="absolute top-6 right-6 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                    BEST RATED
+                    {t('products.bestRated')}
                   </div>
                   <div className="flex-none">
                     <ServerIcon className="w-16 h-16 text-emerald-600 mb-6 transition-transform group-hover:scale-110" />
                     <h3 className="text-3xl font-bold mb-2 text-slate-900">
-                      D-Secure File Eraser
+                      {t('products.fileEraserTitle')}
                     </h3>
                     <p className="text-slate-600 mb-4 leading-relaxed text-lg font-semibold">
-                      File & Folder Erasure Software
+                      {t('products.fileEraserSubtitle')}
                     </p>
                     <p className="text-slate-600 mb-6 leading-relaxed">
-                      Wipe Files from Windows, Mac, & Linux Systems. Also Wipe
-                      Servers & Data on Domain Network Connected Computers via
-                      Network Edition.
+                      {t('products.fileEraserDesc')}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 flex-1">
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        Key Features
+                        {t('products.keyFeatures')}
                       </h4>
                       <ul className="text-slate-700 space-y-3 text-sm">
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          26 Global Erasure Standards
+                          {t('products.erasureStandards')}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          Windows, Mac & Linux Support
+                          {t('products.multiLanguageUI')}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          Google Drive Erasure
+                          {t('products.googleDriveErasure')}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          Comprehensive Reporting
+                          {t('products.comprehensiveReporting')}
                         </li>
                       </ul>
                     </div>
 
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        Platform Support
+                        {t('products.platformSupport')}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">Windows</span>
-                          <span className="font-semibold">Full Support</span>
+                          <span className="text-slate-600">{t('products.windows')}</span>
+                          <span className="font-semibold">{t('products.windowsFullSupport')}</span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">macOS</span>
-                          <span className="font-semibold">Full Support</span>
+                          <span className="text-slate-600">{t('products.macos')}</span>
+                          <span className="font-semibold">{t('products.macosFullSupport')}</span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">Linux</span>
-                          <span className="font-semibold">Full Support</span>
+                          <span className="text-slate-600">{t('products.linux')}</span>
+                          <span className="font-semibold">{t('products.linuxFullSupport')}</span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">Cloud</span>
-                          <span className="font-semibold">Enterprise</span>
+                          <span className="text-slate-600">{t('products.cloud')}</span>
+                          <span className="font-semibold">{t('products.cloudEnterprise')}</span>
                         </div>
                       </div>
                     </div>
@@ -782,34 +780,34 @@ const ProductPage: React.FC = () => {
 
                   <div className="mb-8">
                     <h4 className="font-semibold text-slate-900 mb-3">
-                      Use Cases
+                      {t('products.useCases')}
                     </h4>
                     <ul className="text-slate-700 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Individual Users & Personal Files
+                        {t('products.individualUsers')}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Corporate Data Protection
+                        {t('products.corporateDataProtection')}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Cloud Erasure
+                        {t('products.cloudErasure')}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        Compliance & Audit Requirements
+                        {t('products.complianceAudit')}
                       </li>
                     </ul>
                   </div>
 
                   <div className="mb-6">
                     <div className="text-3xl font-bold text-slate-900 mb-2">
-                      Starting at $40
+                      {t('products.startingAt')} $40
                     </div>
                     <div className="text-slate-600">
-                      Individual & enterprise licenses available
+                      {t('products.individualEnterpriseAvailable')}
                     </div>
                   </div>
 
@@ -819,14 +817,14 @@ const ProductPage: React.FC = () => {
                       className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center gap-2"
                     >
                       <ClipboardIcon className="w-4 h-4" />
-                      Data Sheet
+                      {t('products.dataSheet')}
                     </button>
 
                     <Link
                       to="/contact?request=free-demo&product=file-eraser"
                       className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
                     >
-                      Request Free Demo
+                      {t('products.requestFreeDemo')}
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
                   </div>
@@ -834,7 +832,7 @@ const ProductPage: React.FC = () => {
                     to="/pricing-and-plan?product=file-eraser"
                     className="mt-2 flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
                   >
-                    Buy Now
+                    {t('products.buyNow')}
                   </Link>
                 </div>
               </Reveal>
@@ -848,11 +846,10 @@ const ProductPage: React.FC = () => {
             <Reveal>
               <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                  File Eraser – Features & Plans
+                  {t('products.fileErasureFeatures')}
                 </h2>
                 <p className="text-lg text-slate-600 mb-6 max-w-4xl mx-auto">
-                  Compare all features and plans for D-Secure File Eraser. For
-                  Drive Eraser, see services below.
+                  {t('products.compareAllFeatures')}
                 </p>
               </div>
             </Reveal>
@@ -862,13 +859,13 @@ const ProductPage: React.FC = () => {
               <div className="bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
                 <div className="hidden sm:block">
                   <div className="grid grid-cols-7 gap-0 bg-emerald-600 text-white">
-                    <div className="p-6 font-semibold">Feature</div>
+                    <div className="p-6 font-semibold">{t('products.feature')}</div>
                     {pricingPlans.map((plan) => (
                       <div key={plan.name} className="p-6 text-center relative">
-                        <div className="font-bold text-lg">{plan.name}</div>
+                        <div className="font-bold text-lg">{t(`products.${plan.name.toLowerCase()}`)}</div>
                         {plan.tag && (
                           <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">
-                            {plan.tag}
+                            {plan.tag === 'Popular' ? t('products.popular') : t('products.premium')}
                           </div>
                         )}
                       </div>
@@ -1004,14 +1001,14 @@ const ProductPage: React.FC = () => {
                         to="/contact?request=free-demo&product=file-eraser"
                         className="inline-flex items-center justify-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl bg-emerald-600 text-white text-sm xs:text-base sm:text-lg font-bold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl w-full sm:w-auto"
                       >
-                        Request Free Demo
+                        {t('products.requestFreeDemoBtn')}
                         <ArrowRightIcon className="ml-2 xs:ml-3 w-4 xs:w-5 h-4 xs:h-5" />
                       </Link>
                       <Link
                         to="/pricing-and-plan?product=file-eraser"
                         className="inline-flex items-center justify-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 text-sm xs:text-base sm:text-lg font-bold hover:bg-emerald-50 transition-all w-full sm:w-auto"
                       >
-                        Buy Licenses
+                        {t('products.buyLicensesBtn')}
                       </Link>
                     </div>
                   </div>
@@ -1024,11 +1021,10 @@ const ProductPage: React.FC = () => {
               <div className="mt-20 bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
                 <div className="text-center py-10">
                   <h2 className="text-3xl font-bold text-slate-900 mb-2">
-                    Services – Available for File & Drive Eraser
+                    {t('products.servicesAvailable')}
                   </h2>
                   <p className="text-slate-600 max-w-2xl mx-auto">
-                    The following services are available for both File Eraser
-                    and Drive Eraser products.
+                    {t('products.servicesDescription')}
                   </p>
                 </div>
                 <div className="overflow-x-auto">
@@ -1036,19 +1032,19 @@ const ProductPage: React.FC = () => {
                     <thead className="bg-emerald-600 text-white">
                       <tr>
                         <th className="px-6 py-4 text-left font-semibold">
-                          Service
+                          {t('products.service')}
                         </th>
                         <th className="px-6 py-4 text-center font-semibold">
-                          File Eraser
+                          {t('products.fileEraser')}
                         </th>
                         <th className="px-6 py-4 text-center font-semibold">
-                          Drive Eraser
+                          {t('products.driveEraser')}
                         </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-slate-100">
                       <tr>
-                        <td className="px-6 py-4">Web Dashboard</td>
+                        <td className="px-6 py-4">{t('products.webDashboard')}</td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
                         </td>
@@ -1058,7 +1054,7 @@ const ProductPage: React.FC = () => {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          Cloud Commands (Remote Jobs)
+                          {t('products.cloudCommands')}
                         </td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
@@ -1069,7 +1065,7 @@ const ProductPage: React.FC = () => {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          Custom Installer (auto-register machine)
+                          {t('products.customInstaller')}
                         </td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
@@ -1079,7 +1075,7 @@ const ProductPage: React.FC = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="px-6 py-4">Private Cloud Support</td>
+                        <td className="px-6 py-4">{t('products.privateCloudSupport')}</td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
                         </td>
@@ -1088,7 +1084,7 @@ const ProductPage: React.FC = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="px-6 py-4">Multi-Level User Logs</td>
+                        <td className="px-6 py-4">{t('products.multiLevelUserLogs')}</td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
                         </td>
@@ -1097,7 +1093,7 @@ const ProductPage: React.FC = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="px-6 py-4">White-Label Dashboard</td>
+                        <td className="px-6 py-4">{t('products.whiteLabelDashboard')}</td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
                         </td>
@@ -1117,25 +1113,24 @@ const ProductPage: React.FC = () => {
         <section className="text-center py-20 px-6 sm:px-10 bg-gradient-to-br from-emerald-600 to-teal-600 text-white">
           <Reveal>
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              Ready to Secure Your Data Destruction Process?
+              {t('products.readyToSecure')}
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-emerald-100 mb-8">
-              Join thousands of enterprises worldwide that trust D-Secure for
-              certified, compliant data erasure solutions.
+              {t('products.joinThousands')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/contact"
                 className="inline-flex items-center px-8 py-4 rounded-xl bg-white text-emerald-700 font-bold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl text-lg"
               >
-                Request Free Demo
+                {t('products.requestFreeDemoCtA')}
                 <ArrowRightIcon className="ml-3 w-5 h-5" />
               </Link>
               <Link
                 to="/pricing-and-plan"
                 className="inline-flex items-center px-8 py-4 rounded-xl border-2 border-white text-white font-bold hover:bg-white hover:text-emerald-700 transition-all text-lg"
               >
-                Buy Licenses Now
+                {t('products.buyLicensesNow')}
               </Link>
             </div>
           </Reveal>

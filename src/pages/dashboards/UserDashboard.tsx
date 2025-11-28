@@ -4,6 +4,8 @@ import Reveal from '@/components/Reveal'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apiClient } from '@/utils/enhancedApiClient'
+import type { EnhancedSubuser } from '@/utils/enhancedApiClient'
 
 export default function UserDashboard() {
   const { user, logout } = useAuth()
@@ -15,6 +17,123 @@ export default function UserDashboard() {
     quickActions: false
   })
   const profileMenuRef = useRef<HTMLDivElement>(null)
+  
+  // Profile data state - can be user or subuser
+  const [profileData, setProfileData] = useState<{
+    name: string
+    email: string
+    role: string
+    department?: string
+    phone?: string
+    isSubuser: boolean
+  } | null>(null)
+  const [loadingProfile, setLoadingProfile] = useState(true)
+
+  // Fetch profile data - user or subuser based on localStorage
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setLoadingProfile(true)
+        
+        // Get stored user data from localStorage
+        const storedUserData = localStorage.getItem('user_data')
+        
+        if (!storedUserData) {
+          console.log('⚠️ No user_data in localStorage')
+          // Fallback to AuthContext user
+          if (user) {
+            setProfileData({
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              department: user.department,
+              phone: user.phone_number,
+              isSubuser: false
+            })
+          }
+          setLoadingProfile(false)
+          return
+        }
+
+        const parsedData = JSON.parse(storedUserData)
+        console.log('📦 Parsed user_data:', parsedData)
+        
+        // Check if logged-in user is a subuser
+        const userType = parsedData.user_type || parsedData.userType || user?.role
+        const isSubuser = userType === 'subuser'
+        
+        console.log(`🔍 User Type: ${userType}, Is Subuser: ${isSubuser}`)
+
+        if (isSubuser) {
+          // Fetch subuser data from API
+          const subuserEmail = parsedData.user_email || parsedData.email || user?.email
+          
+          if (!subuserEmail) {
+            console.error('❌ No subuser email found')
+            setLoadingProfile(false)
+            return
+          }
+
+          console.log(`📧 Fetching subuser data for: ${subuserEmail}`)
+          
+          const response = await apiClient.getEnhancedSubuser(subuserEmail)
+          
+          if (response.success && response.data) {
+            const subuserData = response.data
+            console.log('✅ Subuser data fetched:', subuserData)
+            
+            // Use Subuser interface fields: subuser_name, subuser_phone, name, phone
+            setProfileData({
+              name: subuserData.subuser_name || subuserData.name || 'Subuser',
+              email: subuserData.subuser_email || subuserEmail,
+              role: subuserData.subuser_role || subuserData.role || 'Subuser',
+              department: subuserData.department,
+              phone: subuserData.subuser_phone || subuserData.phone,
+              isSubuser: true
+            })
+          } else {
+            console.warn('⚠️ Failed to fetch subuser data, using stored data')
+            setProfileData({
+              name: parsedData.user_name || parsedData.name || user?.name || 'Subuser',
+              email: subuserEmail,
+              role: parsedData.user_role || parsedData.role || 'Subuser',
+              department: parsedData.department || user?.department,
+              phone: parsedData.phone_number || user?.phone_number,
+              isSubuser: true
+            })
+          }
+        } else {
+          // Regular user - use AuthContext or localStorage data
+          console.log('👤 Regular user detected')
+          setProfileData({
+            name: parsedData.user_name || parsedData.name || user?.name || 'User',
+            email: parsedData.user_email || parsedData.email || user?.email || '',
+            role: parsedData.user_role || parsedData.role || user?.role || 'User',
+            department: parsedData.department || user?.department,
+            phone: parsedData.phone_number || user?.phone_number,
+            isSubuser: false
+          })
+        }
+      } catch (error) {
+        console.error('❌ Error fetching profile data:', error)
+        // Fallback to AuthContext user
+        if (user) {
+          setProfileData({
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            department: user.department,
+            phone: user.phone_number,
+            isSubuser: false
+          })
+        }
+      } finally {
+        setLoadingProfile(false)
+      }
+    }
+
+    fetchProfileData()
+  }, [user])
 
   // Close profile menu when clicking outside
   useEffect(() => {
@@ -97,7 +216,7 @@ export default function UserDashboard() {
           {/* Circular Avatar */}
           <div className="relative">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand to-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
-              {getUserInitials(user?.name || '')}
+              {loadingProfile ? '...' : getUserInitials(profileData?.name || user?.name || '')}
             </div>
             <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white"></div>
           </div>
@@ -105,11 +224,14 @@ export default function UserDashboard() {
           {/* User Info */}
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
-              Welcome back, {user?.name}
+              {loadingProfile ? 'Loading...' : `Welcome back, ${profileData?.name || user?.name || 'User'}`}
             </h1>
             <p className="mt-1 text-slate-600 flex items-center gap-2">
               <span className="inline-block w-2 h-2 rounded-full bg-green-400"></span>
-              {user?.email || 'user@example.com'} • Account Active
+              {loadingProfile ? 'Loading...' : profileData?.email || user?.email || 'user@example.com'}
+              {' • '}
+              {loadingProfile ? '...' : profileData?.isSubuser ? 'Subuser Account' : 'Account Active'}
+              {profileData?.department && ` • ${profileData.department}`}
             </p>
           </div>
         </div>
@@ -132,8 +254,13 @@ export default function UserDashboard() {
             {showProfileMenu && (
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-200 py-1 z-50">
                 <div className="px-4 py-3 border-b border-slate-100">
-                  <p className="text-sm font-medium text-slate-900">{user?.name}</p>
-                  <p className="text-sm text-slate-500">{user?.email}</p>
+                  <p className="text-sm font-medium text-slate-900">{profileData?.name || user?.name}</p>
+                  <p className="text-sm text-slate-500">{profileData?.email || user?.email}</p>
+                  {profileData?.isSubuser && (
+                    <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded">
+                      Subuser
+                    </span>
+                  )}
                 </div>
                 <button className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

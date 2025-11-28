@@ -59,3 +59,15 @@ desktop.ini
 **/Old Firefox Data/
 **/cache/
 **/temp/
+
+# Markdown documentation files
+*.md
+
+# Screenshots folder
+ss/
+*png
+*jpg
+*jpeg
+*gif
+*bmp
+*webp

@@ -7,9 +7,12 @@ import { Helmet } from "react-helmet-async";
 import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
 import ScrollToTop from "@/components/ScrollToTop";
 import BlogPage from "@/components/BlogPage";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useTranslation } from 'react-i18next';
 
 export default function MainLayout() {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [authKey, setAuthKey] = useState(0); // Force re-render on auth state change
@@ -102,7 +105,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                Products
+                {t('common.products')}
               </NavLink>
               <NavLink
                 to="/solutions"
@@ -113,7 +116,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                Solutions
+                {t('solutions.title')}
               </NavLink>
               <NavLink
                 to="/resources"
@@ -124,7 +127,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                Resources
+                {t('common.resources')}
               </NavLink>
               <NavLink
                 to="/partners"
@@ -135,7 +138,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                Partners
+                {t('common.partners')}
               </NavLink>
               <NavLink
                 to="/support"
@@ -146,12 +149,15 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                Support
+                {t('nav.support')}
               </NavLink>
             </nav>
 
             {/* Right side - User Authentication & Mobile Menu */}
             <div className="flex items-center gap-3">
+              {/* Language Switcher */}
+              {/* <LanguageSwitcher variant="minimal" showLabel={false} className="hidden lg:flex" /> */}
+              
               {/* User Authentication Navigation */}
               <nav className="hidden lg:flex xl:flex xxl:flex items-center gap-3 lg:gap-4 xl:gap-5 xxl:gap-6 text-sm lg:text-sm xl:text-base xxl:text-base">
                 {user ? (
@@ -224,7 +230,7 @@ export default function MainLayout() {
                           d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                         />
                       </svg>
-                      Login
+                      {t('common.login')}
                     </NavLink>
                   </>
                 )}
@@ -300,7 +306,7 @@ export default function MainLayout() {
                       d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"
                     />
                   </svg>
-                  products
+                  {t('common.products')}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -321,7 +327,7 @@ export default function MainLayout() {
                       d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
                     />
                   </svg>
-                  Solutions
+                  {t('solutions.title')}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -342,7 +348,7 @@ export default function MainLayout() {
                       d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     />
                   </svg>
-                  Resources
+                  {t('common.resources')}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -363,7 +369,7 @@ export default function MainLayout() {
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  Partners
+                  {t('common.partners')}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -384,7 +390,7 @@ export default function MainLayout() {
                       d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
                     />
                   </svg>
-                  Support
+                  {t('nav.support')}
                 </NavLink>
                 {/* <NavLink
                 onClick={() => setOpen(false)}
@@ -407,6 +413,12 @@ export default function MainLayout() {
                 </svg>
                 Contact
               </NavLink> */}
+                
+                {/* Language Switcher for Mobile */}
+                {/* <div className="px-4 py-3">
+                  <LanguageSwitcher variant="default" showLabel={true} />
+                </div> */}
+                
                 {user ? (
                   <div className="flex flex-col gap-3 px-4 pt-6 mt-4 border-t border-slate-200/60">
                     <NavLink
@@ -535,9 +547,7 @@ export default function MainLayout() {
                     />
                   </Link>
                   <p className="text-slate-300 leading-relaxed mb-4 xs:mb-5 sm:mb-6 text-sm xs:text-base sm:text-base md:text-base lg:text-base xl:text-lg xxl:text-lg">
-                    Leading provider of Compliant data erasure solutions for
-                    enterprises worldwide. Secure your data lifecycle with our
-                    enterprise-grade security solutions.
+                    {t('footer.description')}
                   </p>
 
                   {/* Trust Indicators */}
@@ -625,7 +635,7 @@ export default function MainLayout() {
                   {/* Services */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      products
+                      {t('footer.products')}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -637,7 +647,7 @@ export default function MainLayout() {
                             window.location.href = "/products";
                           }}
                         >
-                          All products
+                          {t('footer.allProducts')}
                         </Link>
                       </li>
                       <li>
@@ -645,7 +655,7 @@ export default function MainLayout() {
                           to="/products"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Drive Erasure
+                          {t('footer.driveErasure')}
                         </Link>
                       </li>
                       <li>
@@ -653,7 +663,7 @@ export default function MainLayout() {
                           to="/products"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          File Erasure
+                          {t('footer.fileErasure')}
                         </Link>
                       </li>
                       {/* <li>
@@ -678,7 +688,7 @@ export default function MainLayout() {
                   {/* Solutions */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      Solutions
+                      {t('footer.solutions')}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -690,7 +700,7 @@ export default function MainLayout() {
                             window.location.href = "/#industries";
                           }}
                         >
-                          All Solutions
+                          {t('footer.allSolutions')}
                         </Link>
                       </li>
                       <li>
@@ -698,7 +708,7 @@ export default function MainLayout() {
                           to="/solutions/healthcare"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Healthcare
+                          {t('footer.healthcare')}
                         </Link>
                       </li>
                       <li>
@@ -706,7 +716,7 @@ export default function MainLayout() {
                           to="/solutions/financial-services"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Financial Services
+                          {t('footer.financialServices')}
                         </Link>
                       </li>
                       <li>
@@ -714,7 +724,7 @@ export default function MainLayout() {
                           to="/solutions/government"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Government
+                          {t('footer.government')}
                         </Link>
                       </li>
                       <li>
@@ -722,7 +732,7 @@ export default function MainLayout() {
                           to="/solutions/education"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Education
+                          {t('footer.education')}
                         </Link>
                       </li>
                     </ul>
@@ -731,7 +741,7 @@ export default function MainLayout() {
                   {/* Resources */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      Resources
+                      {t('footer.resources')}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -739,7 +749,7 @@ export default function MainLayout() {
                           to="resources/documentation?type=documentation"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Documentation
+                          {t('footer.documentation')}
                         </Link>
                       </li>
                       <li>
@@ -747,7 +757,7 @@ export default function MainLayout() {
                           to="/resources/compliance?type=compliance"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Compliance
+                          {t('footer.compliance')}
                         </Link>
                       </li>
                       <li>
@@ -755,7 +765,7 @@ export default function MainLayout() {
                           to="/blog"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Blog
+                          {t('footer.blog')}
                         </Link>
                       </li>
                       <li>
@@ -763,7 +773,7 @@ export default function MainLayout() {
                           to="/solutions?type=case-studies"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Case Studies
+                          {t('footer.caseStudies')}
                         </Link>
                       </li>
                       {/* <li>
@@ -780,7 +790,7 @@ export default function MainLayout() {
                   {/* Company */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      Company
+                      {t('footer.company')}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -788,7 +798,7 @@ export default function MainLayout() {
                           to="/about"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          About Us
+                          {t('footer.aboutUs')}
                         </Link>
                       </li>
                       <li>
@@ -796,7 +806,7 @@ export default function MainLayout() {
                           to="/contact"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Contact
+                          {t('footer.contact')}
                         </Link>
                       </li>
                       {/* <li>
@@ -812,7 +822,7 @@ export default function MainLayout() {
                           to="/partners"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          Partners
+                          {t('footer.partners')}
                         </Link>
                       </li>
                       {/* <li>
@@ -834,13 +844,12 @@ export default function MainLayout() {
               <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
                 <div className="flex flex-col sm:flex-row gap-6 items-center text-slate-400 text-sm">
                   <p>
-                    © {new Date().getFullYear()} D-Secure Inc. All rights
-                    reserved.
+                    © {new Date().getFullYear()} {t('footer.copyright')}
                   </p>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-green-400">
                       <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-xs">All systems operational</span>
+                      <span className="text-xs">{t('footer.systemStatus')}</span>
                     </div>
                   </div>
                 </div>
@@ -851,35 +860,35 @@ export default function MainLayout() {
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Privacy Policy"
                   >
-                    Privacy Policy
+                    {t('footer.privacyPolicy')}
                   </Link>
                   <Link
                     to="/legal-policy"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Legal Policy"
                   >
-                    Legal Policy
+                    {t('footer.legalPolicy')}
                   </Link>
                   <Link
                     to="/terms-of-service"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Terms of Service"
                   >
-                    Terms of Service
+                    {t('footer.termsOfService')}
                   </Link>
                   <Link
                     to="/cookie-policy"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Cookie Policy"
                   >
-                    Cookie Policy
+                    {t('footer.cookiePolicy')}
                   </Link>
                   <Link
                     to="/security"
                     className="hover:text-brand transition-colors"
                     aria-label="View our security practices and certifications"
                   >
-                    Security
+                    {t('footer.security')}
                   </Link>
                   <Link
                     to="/status"

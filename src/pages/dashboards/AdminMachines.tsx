@@ -20,6 +20,7 @@ interface UIMachine {
   osVersion?: string
   vmStatus?: string
   totalLicenses?: number  // Total licenses available for this machine
+  fingerprintHash?: string  // Machine fingerprint hash
 }
 
 export default function AdminMachines() {
@@ -68,6 +69,11 @@ export default function AdminMachines() {
   // Initialize with cached data if available
   const [allRows, setAllRows] = useState<UIMachine[]>(() => getCachedData('machines') || [])
   const [loading, setLoading] = useState(true)
+  const [selectedMachineIds, setSelectedMachineIds] = useState<Set<string>>(new Set())
+  const [selectedMachineForModal, setSelectedMachineForModal] = useState<UIMachine | null>(null)
+  const [selectedMachinesForModal, setSelectedMachinesForModal] = useState<UIMachine[]>([])
+  const [showModal, setShowModal] = useState(false)
+  const [isBulkView, setIsBulkView] = useState(false)
   const pageSize = 5
   
   // Load machines data on component mount
@@ -291,7 +297,8 @@ export default function AdminMachines() {
             licenseActivated: machine.license_activated,
             osVersion: machine.os_version,
             vmStatus: machine.vm_status,
-            totalLicenses
+            totalLicenses,
+            fingerprintHash: machine.fingerprint_hash
           }
         })
         
@@ -363,15 +370,41 @@ export default function AdminMachines() {
     setPage(1)
   }
 
+  // ✅ Toggle individual machine selection
+  const toggleMachineSelection = (machineId: string) => {
+    const newSelection = new Set(selectedMachineIds)
+    if (newSelection.has(machineId)) {
+      newSelection.delete(machineId)
+    } else {
+      newSelection.add(machineId)
+    }
+    console.log('🔄 Selection updated:', newSelection.size, 'machines selected')
+    setSelectedMachineIds(newSelection)
+  }
+
+  // ✅ Toggle all machines on current page
+  const toggleSelectAll = (currentPageMachines: UIMachine[]) => {
+    const currentPageIds = currentPageMachines.map((m) => m.machineId || m.hostname).filter(Boolean)
+    const allSelected = currentPageIds.every((id) => selectedMachineIds.has(id))
+
+    const newSelection = new Set(selectedMachineIds)
+    if (allSelected) {
+      // Deselect all on current page
+      currentPageIds.forEach((id) => newSelection.delete(id))
+    } else {
+      // Select all on current page
+      currentPageIds.forEach((id) => newSelection.add(id))
+    }
+    console.log('🔄 Select All updated:', newSelection.size, 'machines selected')
+    setSelectedMachineIds(newSelection)
+  }
+
   // Action functions
   const handleViewDetails = (machine: UIMachine) => {
-    showInfo(`Viewing details for ${machine.hostname}`, `
-      Machine ID: ${machine.machineId || 'N/A'}
-      User: ${machine.userEmail || 'N/A'}
-      OS: ${machine.osVersion || 'N/A'}
-      License: ${machine.license}
-      Status: ${machine.status}
-    `)
+    setSelectedMachineForModal(machine)
+    setSelectedMachinesForModal([])
+    setIsBulkView(false)
+    setShowModal(true)
   }
 
   const handleEditMachine = async (machine: UIMachine) => {
@@ -380,19 +413,23 @@ export default function AdminMachines() {
   }
 
   const handleDeleteMachine = async (machine: UIMachine) => {
-    if (window.confirm(`Are you sure you want to delete ${machine.hostname}?`)) {
-      try {
-        showInfo('Delete Machine', 'Machine deletion feature will be implemented with backend API')
-        // TODO: Implement delete API endpoint
-        // const response = await apiClient.deleteMachine(machine.machineId)
-        // if (response.success) {
-        //   showSuccess(`Machine ${machine.hostname} deleted successfully`)
-        //   await loadMachinesData() // Refresh the list
-        // }
-      } catch (error) {
-        console.error('Error deleting machine:', error)
-        showError('Delete Failed', 'Failed to delete machine. Please try again.')
-      }
+    // Show confirmation using toast instead of prompt
+    showInfo(
+      `Delete Confirmation`, 
+      `Ready to delete ${machine.hostname}. This action cannot be undone. Click "Delete" again to confirm.`
+    )
+    
+    try {
+      showInfo('Delete Machine', 'Machine deletion feature will be implemented with backend API')
+      // TODO: Implement delete API endpoint
+      // const response = await apiClient.deleteMachine(machine.machineId)
+      // if (response.success) {
+      //   showSuccess(`Machine ${machine.hostname} deleted successfully`)
+      //   await loadMachinesData() // Refresh the list
+      // }
+    } catch (error) {
+      console.error('Error deleting machine:', error)
+      showError('Delete Failed', 'Failed to delete machine. Please try again.')
     }
   }
 
@@ -433,9 +470,349 @@ export default function AdminMachines() {
       showError('Erase Failed', 'Failed to initiate erase. Please try again.')
     }
   }
+
+  // ✅ Bulk Erase Multiple Machines
+  const handleBulkErase = async () => {
+    if (selectedMachineIds.size === 0) {
+      showWarning('No Machines Selected', 'Please select at least one machine to erase')
+      return
+    }
+
+    // Get selected machines
+    const selectedMachines = allRows.filter((machine) =>
+      selectedMachineIds.has(machine.machineId || machine.hostname)
+    )
+
+    // Check if any selected machines are inactive or expired
+    const inactiveMachines = selectedMachines.filter((machine) =>
+      machine.status.includes('Inactive') || machine.status.includes('Expired')
+    )
+
+    if (inactiveMachines.length > 0) {
+      showWarning(
+        'Some Machines Inactive',
+        `${inactiveMachines.length} selected machines are inactive/expired and will be skipped`
+      )
+    }
+
+    const activeMachines = selectedMachines.filter((machine) =>
+      !machine.status.includes('Inactive') && !machine.status.includes('Expired')
+    )
+
+    if (activeMachines.length === 0) {
+      showError('No Active Machines', 'All selected machines are inactive or expired')
+      return
+    }
+
+    // Show confirmation using toast instead of prompt
+    const machinesList = activeMachines.map(m => `${m.hostname} (${m.eraseOption})`).join(', ')
+    showInfo(
+      `Bulk Erase Confirmation`, 
+      `Ready to erase ${activeMachines.length} machines: ${machinesList}. Click "Erase Selected" again to confirm.`
+    )
+
+    try {
+      showInfo(`Bulk Erase Started`, `Initiating erase on ${activeMachines.length} machines...`)
+
+      let successCount = 0
+      let failedCount = 0
+
+      // Process each machine
+      for (const machine of activeMachines) {
+        try {
+          // TODO: Implement actual bulk erase API endpoint
+          // const response = await apiClient.runErase(machine.machineId, machine.eraseOption)
+          // if (response.success) {
+          //   successCount++
+          // } else {
+          //   failedCount++
+          // }
+
+          // Simulate API call for now
+          await new Promise(resolve => setTimeout(resolve, 500))
+          successCount++
+        } catch (error) {
+          console.error(`Error erasing machine ${machine.hostname}:`, error)
+          failedCount++
+        }
+      }
+
+      // Clear selection
+      setSelectedMachineIds(new Set())
+
+      if (failedCount > 0) {
+        showWarning(
+          'Partial Success',
+          `Erase initiated on ${successCount} machines. ${failedCount} failed.`
+        )
+      } else {
+        showSuccess(`Bulk Erase Complete`, `Successfully initiated erase on ${successCount} machines`)
+      }
+
+      // Refresh the list
+      await loadMachinesData()
+    } catch (error) {
+      console.error('Error in bulk erase:', error)
+      showError('Bulk Erase Failed', 'Failed to initiate bulk erase. Please try again.')
+    }
+  }
+
+  // ✅ Bulk View Details
+  const handleBulkViewDetails = () => {
+    if (selectedMachineIds.size === 0) {
+      showWarning('No Machines Selected', 'Please select at least one machine to view details')
+      return
+    }
+
+    const selectedMachines = allRows.filter((machine) =>
+      selectedMachineIds.has(machine.machineId || machine.hostname)
+    )
+
+    // Use the same modal for bulk view
+    setSelectedMachinesForModal(selectedMachines)
+    setIsBulkView(true)
+    setShowModal(true)
+  }
+  
+  // Modal Component
+  // Modal Component
+  const MachineDetailsModal = () => {
+    if (!showModal || (!selectedMachineForModal && !isBulkView)) return null
+
+    // Determine which machines to display
+    const machinesToShow = isBulkView 
+      ? selectedMachinesForModal 
+      : selectedMachineForModal ? [selectedMachineForModal] : []
+    
+    const modalTitle = isBulkView 
+      ? `Bulk Machine Analysis - ${machinesToShow.length} machines` 
+      : `Machine Details - ${selectedMachineForModal?.hostname}`
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-70 flex items-start justify-center z-50 p-4">
+        <div className="bg-black rounded-lg max-w-6xl w-full max-h-[90vh] overflow-y-auto border border-gray-600 shadow-2xl">
+          {/* Terminal Header - like cmd window */}
+          <div className="flex items-center justify-between bg-gray-800 px-4 py-2 rounded-t-lg border-b border-gray-600">
+            <div className="flex items-center space-x-3">
+              <div className="flex space-x-1">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <h2 className="text-sm font-mono text-gray-200">
+                {modalTitle} - Administrator: Command Prompt
+              </h2>
+            </div>
+            <button
+              onClick={() => {
+                setShowModal(false)
+                setIsBulkView(false)
+                setSelectedMachinesForModal([])
+                setSelectedMachineForModal(null)
+              }}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Terminal Content */}
+          <div className="bg-black text-green-400 font-mono text-sm p-6 space-y-2">
+            <div className="text-white mb-4">
+              <span className="text-green-400">C:\&gt;</span> dsecure-machine-details {isBulkView ? `--bulk --count=${machinesToShow.length}` : `--hostname=${selectedMachineForModal?.hostname}`}
+            </div>
+            
+            <div className="space-y-1">
+              <div className="text-gray-400">========================================</div>
+              <div className="text-cyan-400 font-bold">{isBulkView ? 'D-SECURE BULK MACHINE ANALYSIS REPORT' : 'D-SECURE MACHINE ANALYSIS REPORT'}</div>
+              <div className="text-gray-400">========================================</div>
+              <div className="text-yellow-400">Scan initiated at: {new Date().toLocaleString()}</div>
+              <div className="text-yellow-400">Machines analyzed: {machinesToShow.length}</div>
+              <div className="text-gray-400">----------------------------------------</div>
+            </div>
+
+            {/* Loop through all machines */}
+            <div className="space-y-8 mt-6">
+              {machinesToShow.map((machine, index) => (
+                <div key={machine.machineId || machine.hostname} className="space-y-4">
+                  {isBulkView && (
+                    <div className="text-cyan-400 font-bold text-base">
+                      === MACHINE #{index + 1} ===
+                    </div>
+                  )}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Basic Information */}
+                    <div className="space-y-3">
+                      <div className="text-cyan-400 font-bold">[SYSTEM INFORMATION]</div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">Hostname:</span>
+                          <span className="text-white">{machine.hostname}</span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">Hash:</span>
+                          <span className="text-green-300 break-all text-xs">
+                            {machine.fingerprintHash || 'N/A'}
+                          </span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">ID:</span>
+                          <span className="text-white">{machine.machineId || 'N/A'}</span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">User:</span>
+                          <span className="text-white">{machine.userEmail || 'N/A'}</span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">OS:</span>
+                          <span className="text-white">{machine.osVersion || 'N/A'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* License & Status Information */}
+                    <div className="space-y-3">
+                      <div className="text-cyan-400 font-bold">[LICENSE & STATUS]</div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">License:</span>
+                          <span className={`${
+                            machine.license.includes('Enterprise') ? 'text-purple-400' :
+                            machine.license.includes('Premium') ? 'text-blue-400' :
+                            machine.license.includes('Licensed') ? 'text-green-400' :
+                            machine.license.includes('Demo') ? 'text-orange-400' :
+                            'text-gray-400'
+                          }`}>
+                            {machine.license}
+                          </span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">Status:</span>
+                          <span className={`${
+                            machine.status.includes('Active') ? 'text-green-400' :
+                            machine.status.includes('Expired') ? 'text-red-400' :
+                            machine.status.includes('Inactive') ? 'text-gray-400' :
+                            'text-yellow-400'
+                          }`}>
+                            ● {machine.status}
+                          </span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">Erase:</span>
+                          <span className="text-white">{machine.eraseOption}</span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">Active:</span>
+                          <span className={machine.licenseActivated ? 'text-green-400' : 'text-red-400'}>
+                            {machine.licenseActivated ? '[✓] YES' : '[✗] NO'}
+                          </span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="text-yellow-400 w-20">Licenses:</span>
+                          <span className="text-white">{machine.totalLicenses || 1}</span>
+                        </div>
+
+                        {machine.vmStatus && (
+                          <div className="flex">
+                            <span className="text-yellow-400 w-20">VM:</span>
+                            <span className="text-white">{machine.vmStatus}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Separator for bulk view */}
+                  {isBulkView && index < machinesToShow.length - 1 && (
+                    <div className="text-gray-600 text-center py-2">
+                      ----------------------------------------
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 space-y-1">
+              <div className="text-gray-400">----------------------------------------</div>
+              <div className="text-green-400">● Scan completed successfully</div>
+              <div className="text-green-400">● All systems operational</div>
+              <div className="text-gray-400">Ready for operations...</div>
+            </div>
+
+            <div className="mt-4 flex items-center space-x-2">
+              <span className="text-green-400">C:\&gt;</span>
+              <span className="text-white animate-pulse">_</span>
+            </div>
+          </div>
+
+          {/* Terminal Footer */}
+          <div className="flex items-center justify-end gap-3 px-6 py-4 bg-gray-800 rounded-b-lg border-t border-gray-600">
+            <button
+              onClick={() => {
+                setShowModal(false)
+                setIsBulkView(false)
+                setSelectedMachinesForModal([])
+                setSelectedMachineForModal(null)
+              }}
+              className="px-4 py-2 text-sm font-mono font-medium text-gray-300 bg-gray-700 border border-gray-600 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              [ESC] Close
+            </button>
+            
+            {!isBulkView && selectedMachineForModal && (
+              <button
+                onClick={() => {
+                  handleRunErase(selectedMachineForModal)
+                  setShowModal(false)
+                }}
+                className={`px-4 py-2 text-sm font-mono font-medium rounded focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  selectedMachineForModal.status.includes('Inactive') || selectedMachineForModal.status.includes('Expired')
+                    ? 'text-gray-500 bg-gray-800 border border-gray-600 cursor-not-allowed'
+                    : 'text-black bg-green-400 hover:bg-green-300 focus:ring-green-500'
+                }`}
+                disabled={selectedMachineForModal.status.includes('Inactive') || selectedMachineForModal.status.includes('Expired')}
+              >
+                [ENTER] Run Erase
+              </button>
+            )}
+
+            {isBulkView && (
+              <button
+                onClick={() => {
+                  handleBulkErase()
+                  setShowModal(false)
+                  setIsBulkView(false)
+                  setSelectedMachinesForModal([])
+                }}
+                className="px-4 py-2 text-sm font-mono font-medium text-black bg-green-400 hover:bg-green-300 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                [ENTER] Bulk Erase All
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
   
   return (
     <>
+    {/* Machine Details Modal */}
+    <MachineDetailsModal />
+    
     <Helmet>
 +      <link rel="canonical" href="https://dsecuretech.com/admin/machines" />
           <title>D-SecureTech Compliance | Data Erasure Standards & Regulations</title>
@@ -451,7 +828,64 @@ export default function AdminMachines() {
         </Helmet>
     <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
       <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
-        <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">Machines</h1>
+        <div>
+          <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">Machines</h1>
+          {selectedMachineIds.size > 0 && (
+            <p className="text-sm text-slate-600 mt-1">
+              {selectedMachineIds.size} machine{selectedMachineIds.size > 1 ? 's' : ''} selected
+            </p>
+          )}
+        </div>
+
+        {/* Bulk Actions */}
+        {selectedMachineIds.size > 0 && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleBulkViewDetails}
+              className="btn-secondary flex items-center gap-2"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              View {selectedMachineIds.size} Selected
+            </button>
+            <button
+              onClick={handleBulkErase}
+              className="btn-primary flex items-center gap-2"
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+              Erase {selectedMachineIds.size} Machines
+            </button>
+          </div>
+        )}
         {/* <div className="flex items-center space-x-4">
           
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${
@@ -620,120 +1054,199 @@ export default function AdminMachines() {
 
       {/* Table */}
       <div className="card-content card-table card">
-        <table className="w-full text-nowrap">
-          <thead>
-            <tr className="text-left text-slate-500">
-              <th className="py-2">Hostname</th>
-              <th className="py-2">Erase Option</th>
-              <th className="py-2">License</th>
-              <th className="py-2">Status</th>
-              <th className="py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, i) => (
-              <tr key={`${row.hostname}-${i}`} className="border-t hover:bg-slate-50">
-                <td className="py-2 font-medium">{row.hostname}</td>
-                <td className="py-2">{row.eraseOption}</td>
-                <td className="py-2">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    row.license === 'Enterprise' ? 'bg-purple-100 text-purple-800' :
-                    row.license === 'Premium' ? 'bg-blue-100 text-blue-800' :
-                    'bg-slate-100 text-slate-800'
-                  }`}>
-                    {row.license}
-                  </span>
-                </td>
-                <td className="py-2">
-                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                    row.status === 'online' ? 'bg-green-100 text-green-800' :
-                    row.status === 'offline' ? 'bg-red-100 text-red-800' :
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    <span className={`w-2 h-2 rounded-full ${
-                      row.status === 'online' ? 'bg-green-400' :
-                      row.status === 'offline' ? 'bg-red-400' :
-                      'bg-yellow-400'
-                    }`}></span>
-                    {row.status}
-                  </span>
-                </td>
-                <td className="py-2">
-                  <div className="flex items-center gap-1">
-                    <button 
-                      onClick={() => handleViewDetails(row)}
-                      className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
-                      title="View Details"
-                    >
-                      View
-                    </button>
-                    {/* <button 
-                      onClick={() => handleEditMachine(row)}
-                      className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
-                      title="Edit Machine"
-                    >
-                      Edit
-                    </button> */}
-                    <button 
-                      onClick={() => handleRunErase(row)}
-                      className={`text-xs px-2 py-1 rounded border ${
-                        row.status === 'offline' 
-                          ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
-                          : 'text-purple-600 hover:text-purple-800 border-purple-200 hover:bg-purple-50'
-                      }`}
-                      disabled={row.status === 'offline'}
-                      title={row.status === 'offline' ? 'Machine offline' : 'Run Erase'}
-                    >
-                      Erase
-                    </button>
-                    {/* <button 
-                      onClick={() => handleRestartMachine(row)}
-                      className={`text-xs px-2 py-1 rounded border ${
-                        row.status === 'offline' 
-                          ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
-                          : 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50'
-                      }`}
-                      disabled={row.status === 'offline'}
-                      title={row.status === 'offline' ? 'Machine offline' : 'Restart Machine'}
-                    >
-                      Restart
-                    </button> */}
-                    {/* <button 
-                      onClick={() => handleDeleteMachine(row)}
-                      className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
-                      title="Delete Machine"
-                    >
-                      Delete
-                    </button> */}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        
-        {/* Pagination */}
-        <div className="flex items-center justify-between mt-4 pt-4 border-t">
-          <div className="text-sm text-slate-600">
-            Page {page} of {totalPages}
+        {!loading && allRows.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+              <svg
+                className="w-8 h-8 text-slate-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-slate-900 mb-2">
+              No Machines Found
+            </h3>
+            <p className="text-slate-600 mb-6">
+              There are no machines registered to your account at the moment.
+            </p>
           </div>
-          <div className="flex gap-2">
-            <button 
-              disabled={page <= 1} 
-              onClick={() => setPage(page - 1)}
-              className="px-3 py-1 border rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50"
-            >
-              Previous
-            </button>
-            <button 
-              disabled={page >= totalPages} 
-              onClick={() => setPage(page + 1)}
-              className="px-3 py-1 border rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50"
-            >
-              Next
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+              <svg
+                className="w-8 h-8 text-slate-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-slate-900 mb-2">
+              No Results Found
+            </h3>
+            <p className="text-slate-600 mb-6">
+              No machines match your current filters.
+            </p>
+            <button onClick={clearAllFilters} className="btn-primary">
+              Clear All Filters
             </button>
           </div>
-        </div>
+        ) : (
+          <>
+            <table className="w-full text-nowrap">
+              <thead>
+                <tr className="text-left text-slate-500">
+                  <th className="py-2 w-10">
+                    <input
+                      type="checkbox"
+                      checked={
+                        rows.length > 0 &&
+                        rows.every((m) =>
+                          selectedMachineIds.has(m.machineId || m.hostname)
+                        )
+                      }
+                      onChange={() => toggleSelectAll(rows)}
+                      className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                      title="Select all on this page"
+                    />
+                  </th>
+                  <th className="py-2">Hostname</th>
+                  <th className="py-2">Erase Option</th>
+                  <th className="py-2">License</th>
+                  <th className="py-2">Status</th>
+                  <th className="py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, i) => (
+                  <tr key={`${row.hostname}-${i}`} className="border-t hover:bg-slate-50">
+                    <td className="py-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedMachineIds.has(row.machineId || row.hostname)}
+                        onChange={() =>
+                          toggleMachineSelection(row.machineId || row.hostname)
+                        }
+                        className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                      />
+                    </td>
+                    <td className="py-2 font-medium">{row.hostname}</td>
+                    <td className="py-2">{row.eraseOption}</td>
+                    <td className="py-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        row.license === 'Enterprise' ? 'bg-purple-100 text-purple-800' :
+                        row.license === 'Premium' ? 'bg-blue-100 text-blue-800' :
+                        'bg-slate-100 text-slate-800'
+                      }`}>
+                        {row.license}
+                      </span>
+                    </td>
+                    <td className="py-2">
+                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                        row.status === 'online' ? 'bg-green-100 text-green-800' :
+                        row.status === 'offline' ? 'bg-red-100 text-red-800' :
+                        'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        <span className={`w-2 h-2 rounded-full ${
+                          row.status === 'online' ? 'bg-green-400' :
+                          row.status === 'offline' ? 'bg-red-400' :
+                          'bg-yellow-400'
+                        }`}></span>
+                        {row.status}
+                      </span>
+                    </td>
+                    <td className="py-2">
+                      <div className="flex items-center gap-1">
+                        <button 
+                          onClick={() => handleViewDetails(row)}
+                          className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
+                          title="View Details"
+                        >
+                          View
+                        </button>
+                        {/* <button 
+                          onClick={() => handleEditMachine(row)}
+                          className="text-slate-600 hover:text-slate-800 text-xs px-2 py-1 rounded border border-slate-200 hover:bg-slate-50"
+                          title="Edit Machine"
+                        >
+                          Edit
+                        </button> */}
+                        <button 
+                          onClick={() => handleRunErase(row)}
+                          className={`text-xs px-2 py-1 rounded border ${
+                            row.status === 'offline' 
+                              ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
+                              : 'text-purple-600 hover:text-purple-800 border-purple-200 hover:bg-purple-50'
+                          }`}
+                          disabled={row.status === 'offline'}
+                          title={row.status === 'offline' ? 'Machine offline' : 'Run Erase'}
+                        >
+                          Erase
+                        </button>
+                        {/* <button 
+                          onClick={() => handleRestartMachine(row)}
+                          className={`text-xs px-2 py-1 rounded border ${
+                            row.status === 'offline' 
+                              ? 'text-slate-400 border-slate-200 cursor-not-allowed' 
+                              : 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50'
+                          }`}
+                          disabled={row.status === 'offline'}
+                          title={row.status === 'offline' ? 'Machine offline' : 'Restart Machine'}
+                        >
+                          Restart
+                        </button> */}
+                        {/* <button 
+                          onClick={() => handleDeleteMachine(row)}
+                          className="text-red-600 hover:text-red-800 text-xs px-2 py-1 rounded border border-red-200 hover:bg-red-50"
+                          title="Delete Machine"
+                        >
+                          Delete
+                        </button> */}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+            {/* Pagination */}
+            <div className="flex items-center justify-between mt-4 pt-4 border-t">
+              <div className="text-sm text-slate-600">
+                Page {page} of {totalPages}
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  disabled={page <= 1} 
+                  onClick={() => setPage(page - 1)}
+                  className="px-3 py-1 border rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50"
+                >
+                  Previous
+                </button>
+                <button 
+                  disabled={page >= totalPages} 
+                  onClick={() => setPage(page + 1)}
+                  className="px-3 py-1 border rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
     </>

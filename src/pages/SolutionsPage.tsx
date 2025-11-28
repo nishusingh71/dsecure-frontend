@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
+import { useTranslation } from "react-i18next";
 import {
   BuildingIcon,
   ShieldIcon,
@@ -29,6 +30,7 @@ export default function SolutionsPage() {
 }
 
 function SolutionsPageContent() {
+  const { t } = useTranslation();
   type IndustryKey = keyof typeof solutions;
   const [activeIndustry, setActiveIndustry] = useState<IndustryKey>(
     "enterprise"
@@ -68,253 +70,233 @@ function SolutionsPageContent() {
 
   const solutions = {
     enterprise: {
-      title: "Enterprise Solutions",
-      subtitle: "Complete IT asset lifecycle management",
-      description:
-        "Ease enterprise cloud migrations, IT asset decommissioning and end-of-life data erasure with Compliant and secure data erasure software. Get Compliant erasure at scale for all your IT data storage assets across workforce, operations, and data centers.",
+      title: t('solutions.enterprise'),
+      subtitle: t('solutions.enterpriseSubtitle'),
+      description: t('solutions.enterpriseDesc'),
       icon: (
         <HoverIcon>
           {(filled) => <BuildingIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        "Software-based data sanitization for safe and sustainable reuse",
-        "Tamper-proof audit trail with digitally signed reports",
-        "Compatible with ServiceNow and common IT asset management platforms",
-        "Supports cloud migration, data center, and endpoint device erasure",
-        "Active environment erasure for enterprise data management policies",
-        "Reduced e-waste and increased technology investment returns",
+        t('solutions.enterpriseBenefit1'),
+        t('solutions.enterpriseBenefit2'),
+        t('solutions.enterpriseBenefit3'),
+        t('solutions.enterpriseBenefit4'),
+        t('solutions.enterpriseBenefit5'),
+        t('solutions.enterpriseBenefit6'),
       ],
       useCases: [
         {
-          title: "Cloud Migration",
-          description:
-            "Secure data handling during cloud infrastructure transitions",
+          title: t('solutions.enterpriseUseCase1Title'),
+          description: t('solutions.enterpriseUseCase1Desc'),
         },
         {
-          title: "Data Center Erasure",
-          description:
-            "Meticulous erasure from servers, loose drives, and storage networks",
+          title: t('solutions.enterpriseUseCase2Title'),
+          description: t('solutions.enterpriseUseCase2Desc'),
         },
         {
-          title: "Endpoint Device Management",
-          description:
-            "Erase data from desktops, laptops, mobile devices, and removable media",
+          title: t('solutions.enterpriseUseCase3Title'),
+          description: t('solutions.enterpriseUseCase3Desc'),
         },
         {
-          title: "Data Retention Policies",
-          description: "Securely remove ROT data from storage mediums",
+          title: t('solutions.enterpriseUseCase4Title'),
+          description: t('solutions.enterpriseUseCase4Desc'),
         },
         {
-          title: "Employee Offboarding",
-          description: "Complete data removal from departing employee devices",
+          title: t('solutions.enterpriseUseCase5Title'),
+          description: t('solutions.enterpriseUseCase5Desc'),
         },
         {
-          title: "Storage & Loose Drives",
-          description:
-            "Securely manage loose drives and large-scale storage systems",
+          title: t('solutions.enterpriseUseCase6Title'),
+          description: t('solutions.enterpriseUseCase6Desc'),
         },
       ],
     },
     itad: {
-      title: "ITAD Solutions",
-      subtitle: "IT Asset Disposition made simple",
-      description:
-        "Trusted ITAD partner solutions that automate end-of-life IT asset diagnostics and sanitization at scale. Streamline workflows, eliminate downtime, and maximize profits while ensuring data protection across laptops, desktops, servers, loose drives, and mobile devices.",
+      title: t('solutions.itad'),
+      subtitle: t('solutions.itadSubtitle'),
+      description: t('solutions.itadDesc'),
       icon: (
         <HoverIcon>
           {(filled) => <ShieldIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        "Intelligent Business Routing (IBR) for streamlined workflows",
-        "High-volume mobile device processing for resale and recycling",
-        "Extended Asset Management compatible with AMS/ERP systems",
-        "Tamper-proof, audit-worthy reports for customer compliance",
-        "Two-way communication reducing human error and increasing speed",
-        "Support for Android, iOS and broad variety of IT assets",
+        t('solutions.itadBenefit1'),
+        t('solutions.itadBenefit2'),
+        t('solutions.itadBenefit3'),
+        t('solutions.itadBenefit4'),
+        t('solutions.itadBenefit5'),
+        t('solutions.itadBenefit6'),
       ],
       useCases: [
         {
-          title: "Laptop & Desktop Processing",
-          description:
-            "Sanitize individual assets for resale and recycling preparation",
+          title: t('solutions.itadUseCase1Title'),
+          description: t('solutions.itadUseCase1Desc'),
         },
         {
-          title: "Loose Drives Management",
-          description:
-            "Meet security and compliance objectives for loose drive processing",
+          title: t('solutions.itadUseCase2Title'),
+          description: t('solutions.itadUseCase2Desc'),
         },
         {
-          title: "Server Processing",
-          description:
-            "Secure server management processes with automated workflows",
+          title: t('solutions.itadUseCase3Title'),
+          description: t('solutions.itadUseCase3Desc'),
         },
         {
-          title: "Storage Systems",
-          description:
-            "Monitor and manage drives, arrays, and large-scale storage systems",
+          title: t('solutions.itadUseCase4Title'),
+          description: t('solutions.itadUseCase4Desc'),
         },
         {
-          title: "Mobile Device Operations",
-          description:
-            "Process high volumes of mobile devices for repair, resale, or recycling",
+          title: t('solutions.itadUseCase5Title'),
+          description: t('solutions.itadUseCase5Desc'),
         },
         {
-          title: "Multi-Client Workflows",
-          description:
-            "Seamless platform supporting multiple client requirements simultaneously",
+          title: t('solutions.itadUseCase6Title'),
+          description: t('solutions.itadUseCase6Desc'),
         },
       ],
     },
     healthcare: {
-      title: "Healthcare Solutions",
-      subtitle: "HIPAA-compliant data sanitization",
-      description:
-        "Specialized solutions for healthcare organizations requiring HIPAA compliance and patient data protection.",
+      title: t('solutions.healthcare'),
+      subtitle: t('solutions.healthcareSubtitle'),
+      description: t('solutions.healthcareDesc'),
       icon: (
         <HoverIcon>
           {(filled) => <HeartIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        "HIPAA-compliant data destruction",
-        "PHI-specific sanitization protocols",
-        "Medical device data erasure",
-        "Regulatory audit support",
+        t('solutions.healthcareBenefit1'),
+        t('solutions.healthcareBenefit2'),
+        t('solutions.healthcareBenefit3'),
+        t('solutions.healthcareBenefit4'),
       ],
       useCases: [
         {
-          title: "Medical Device Lifecycle",
-          description: "Secure erasure of diagnostic and monitoring equipment",
+          title: t('solutions.healthcareUseCase1Title'),
+          description: t('solutions.healthcareUseCase1Desc'),
         },
         {
-          title: "EMR System Migrations",
-          description: "Safe data handling during system upgrades",
+          title: t('solutions.healthcareUseCase2Title'),
+          description: t('solutions.healthcareUseCase2Desc'),
         },
         {
-          title: "Research Data Management",
-          description: "Compliant destruction of clinical trial data",
+          title: t('solutions.healthcareUseCase3Title'),
+          description: t('solutions.healthcareUseCase3Desc'),
         },
         {
-          title: "HIPAA Audit Preparation",
-          description: "Documentation for compliance audits",
+          title: t('solutions.healthcareUseCase4Title'),
+          description: t('solutions.healthcareUseCase4Desc'),
         },
       ],
     },
     financial: {
-      title: "Financial Services",
-      subtitle: "Banking-grade security standards",
-      description:
-        "Ultra-secure data sanitization for financial institutions with stringent regulatory requirements.",
+      title: t('solutions.financial'),
+      subtitle: t('solutions.financialSubtitle'),
+      description: t('solutions.financialDesc'),
       icon: (
         <HoverIcon>
           {(filled) => <DollarIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        "SOX and PCI DSS compliance",
-        "Customer data protection",
-        "Trading system sanitization",
-        "Regulatory reporting automation",
+        t('solutions.financialBenefit1'),
+        t('solutions.financialBenefit2'),
+        t('solutions.financialBenefit3'),
+        t('solutions.financialBenefit4'),
       ],
       useCases: [
         {
-          title: "Trading Floor Equipment",
-          description: "Secure erasure of high-frequency trading systems",
+          title: t('solutions.financialUseCase1Title'),
+          description: t('solutions.financialUseCase1Desc'),
         },
         {
-          title: "Customer Data Protection",
-          description: "PII and financial data sanitization",
+          title: t('solutions.financialUseCase2Title'),
+          description: t('solutions.financialUseCase2Desc'),
         },
         {
-          title: "Regulatory Compliance",
-          description: "SOX, PCI DSS, and GDPR compliance support",
+          title: t('solutions.financialUseCase3Title'),
+          description: t('solutions.financialUseCase3Desc'),
         },
         {
-          title: "Branch Closures",
-          description: "Complete sanitization during office relocations",
+          title: t('solutions.financialUseCase4Title'),
+          description: t('solutions.financialUseCase4Desc'),
         },
       ],
     },
     government: {
-      title: "Government Solutions",
-      subtitle: "Military-grade security for public sector",
-      description:
-        "Securely sanitize drives in PCs, laptops, Mac devices, and rackmount storage with NIST-tested software. Comply with federal and state regulations including CMMC 2.0, NIST 800-171, and other government security standards for complete data protection.",
+      title: t('solutions.government'),
+      subtitle: t('solutions.governmentSubtitle'),
+      description: t('solutions.governmentDesc'),
       icon: (
         <HoverIcon>
           {(filled) => <GlobeIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        "NIST 800-88, DoD 3/7 pass global data erasure standards compliance",
-        "FISMA, CMMC 2.0, HIPAA, GLBA regulatory compliance support",
-        "Common Criteria Compliant for Assurance Level EAL 2",
-        "Wipe up to 100 drives and devices simultaneously",
-        "Cloud and offline (USB boot) deployment options",
-        "ISO customization for standardizing erasure across locations",
-        "Centralized console with tamper-proof reports and certificates",
+        t('solutions.governmentBenefit1'),
+        t('solutions.governmentBenefit2'),
+        t('solutions.governmentBenefit3'),
+        t('solutions.governmentBenefit4'),
+        t('solutions.governmentBenefit5'),
+        t('solutions.governmentBenefit6'),
+        t('solutions.governmentBenefit7'),
       ],
       useCases: [
         {
-          title: "Federal Data Centers",
-          description:
-            "Secure erasure of government servers and storage systems",
+          title: t('solutions.governmentUseCase1Title'),
+          description: t('solutions.governmentUseCase1Desc'),
         },
         {
-          title: "Defense Establishments",
-          description:
-            "High-security offline erasure for classified environments",
+          title: t('solutions.governmentUseCase2Title'),
+          description: t('solutions.governmentUseCase2Desc'),
         },
         {
-          title: "Research Laboratories",
-          description: "Compliant data destruction for sensitive research data",
+          title: t('solutions.governmentUseCase3Title'),
+          description: t('solutions.governmentUseCase3Desc'),
         },
         {
-          title: "Banking Facilities",
-          description: "Financial sector compliance with government oversight",
+          title: t('solutions.governmentUseCase4Title'),
+          description: t('solutions.governmentUseCase4Desc'),
         },
         {
-          title: "Agency Modernization",
-          description:
-            "Secure data handling during system upgrades and migrations",
+          title: t('solutions.governmentUseCase5Title'),
+          description: t('solutions.governmentUseCase5Desc'),
         },
         {
-          title: "Mobile Device Management",
-          description:
-            "Government-grade mobile device sanitization and diagnostics",
+          title: t('solutions.governmentUseCase6Title'),
+          description: t('solutions.governmentUseCase6Desc'),
         },
       ],
     },
     serviceProviders: {
-      title: "Service Providers",
-      subtitle: "White-label solutions for MSPs",
-      description:
-        "Comprehensive data sanitization services that MSPs can offer to their clients with full branding.",
+      title: t('solutions.serviceProviders'),
+      subtitle: t('solutions.serviceProvidersSubtitle'),
+      description: t('solutions.serviceProvidersDesc'),
       icon: (
         <HoverIcon>
           {(filled) => <BriefcaseIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        "White-label branding options",
-        "Multi-tenant client management",
-        "Revenue sharing programs",
-        "Technical support included",
+        t('solutions.serviceProvidersBenefit1'),
+        t('solutions.serviceProvidersBenefit2'),
+        t('solutions.serviceProvidersBenefit3'),
+        t('solutions.serviceProvidersBenefit4'),
       ],
       useCases: [
         {
-          title: "Client Services",
-          description: "Offer data sanitization as a managed service",
+          title: t('solutions.serviceProvidersUseCase1Title'),
+          description: t('solutions.serviceProvidersUseCase1Desc'),
         },
         {
-          title: "Partner Programs",
-          description: "Revenue-generating partnerships",
+          title: t('solutions.serviceProvidersUseCase2Title'),
+          description: t('solutions.serviceProvidersUseCase2Desc'),
         },
         {
-          title: "Support Services",
-          description: "24/7 technical support for your clients",
+          title: t('solutions.serviceProvidersUseCase3Title'),
+          description: t('solutions.serviceProvidersUseCase3Desc'),
         },
       ],
     },
@@ -322,14 +304,11 @@ function SolutionsPageContent() {
 
   const caseStudies = [
     {
-      company: "Asia Pacific Medical Group",
-      industry: "Healthcare",
-      challenge:
-        "Regional healthcare network needed HIPAA-compliant data erasure for 25+ medical devices across 12 countries within strict 3-month compliance deadline.",
-      solution:
-        "Deployed DSecure Healthcare solution with automated PHI-specific protocols and multi-region compliance reporting for seamless rollout.",
-      results:
-        "100% compliance achieved in 10 weeks, 85% reduction in manual processes, zero data breaches during transition",
+      company: t('solutions.caseStudy1Company'),
+      industry: t('solutions.caseStudy1Industry'),
+      challenge: t('solutions.caseStudy1Challenge'),
+      solution: t('solutions.caseStudy1Solution'),
+      results: t('solutions.caseStudy1Results'),
       // 🏥 → HeartIcon
       logo: (
         <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
@@ -338,14 +317,11 @@ function SolutionsPageContent() {
       ),
     },
     {
-      company: "Southeast Banking Corporation",
-      industry: "Financial Services",
-      challenge:
-        "State-owned bank required PCI DSS compliant data sanitization across data centers, ATMs, and branch systems while maintaining 24/7 operations.",
-      solution:
-        "Implemented DSecure Enterprise with automated lifecycle management, remote erasure capabilities, and real-time compliance monitoring.",
-      results:
-        "Zero operational downtime, 95% faster audit preparation, $1.8M annual cost savings through automation",
+      company: t('solutions.caseStudy2Company'),
+      industry: t('solutions.caseStudy2Industry'),
+      challenge: t('solutions.caseStudy2Challenge'),
+      solution: t('solutions.caseStudy2Solution'),
+      results: t('solutions.caseStudy2Results'),
       // 🏦 → DollarIcon
       logo: (
         <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
@@ -354,14 +330,11 @@ function SolutionsPageContent() {
       ),
     },
     {
-      company: "Global IT Recovery Solutions",
-      industry: "IT Asset Disposition",
-      challenge:
-        "ITAD provider processing 100+ enterprise devices monthly needed scalable solution to handle multiple client compliance requirements simultaneously.",
-      solution:
-        "Deployed DSecure ITAD platform with multi-tenant architecture, automated certification generation, and bulk processing capabilities.",
-      results:
-        "300% increase in device processing capacity, 99.9% client satisfaction, automated invoicing reduced admin costs by 60%",
+      company: t('solutions.caseStudy3Company'),
+      industry: t('solutions.caseStudy3Industry'),
+      challenge: t('solutions.caseStudy3Challenge'),
+      solution: t('solutions.caseStudy3Solution'),
+      results: t('solutions.caseStudy3Results'),
       // ♻️ → Recycle Icon (inline SVG)
       logo: (
         <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
@@ -429,22 +402,20 @@ function SolutionsPageContent() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Industry-Specific Solutions
+                  {t('solutions.heroTag')}
                 </div>
               </Reveal>
               <Reveal delayMs={10}>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-6">
-                  Tailored Data Erasure for{" "}
+                  {t('solutions.heroTitle')}{" "}
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-                    Every Industry
+                    {t('solutions.heroTitleHighlight')}
                   </span>
                 </h1>
               </Reveal>
               <Reveal delayMs={20}>
                 <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
-                  Specialized workflows, compliance frameworks, and reporting
-                  tools designed for your industry's unique requirements. From
-                  healthcare HIPAA compliance to financial PCI DSS standards.
+                  {t('solutions.heroSubtitle')}
                 </p>
               </Reveal>
               <Reveal delayMs={30}>
@@ -458,7 +429,7 @@ function SolutionsPageContent() {
                         />
                       )}
                     </HoverIcon>
-                    Discuss Your Needs
+                    {t('solutions.discussNeeds')}
                   </a>
                   <a href="#solutions" className="btn-secondary group">
                     <HoverIcon>
@@ -469,7 +440,7 @@ function SolutionsPageContent() {
                         />
                       )}
                     </HoverIcon>
-                    Explore Solutions
+                    {t('solutions.exploreSolutions')}
                   </a>
                 </div>
               </Reveal>
@@ -487,7 +458,7 @@ function SolutionsPageContent() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span> Industries Served</span>
+                    <span>{t('solutions.industriesServed')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg
@@ -501,7 +472,7 @@ function SolutionsPageContent() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span>100% Compliance Rate</span>
+                    <span>{t('solutions.complianceRate')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg
@@ -515,7 +486,7 @@ function SolutionsPageContent() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span>24/7 Expert Support</span>
+                    <span>{t('solutions.expertSupport')}</span>
                   </div>
                 </div>
               </Reveal>
@@ -825,7 +796,7 @@ function SolutionsPageContent() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 lg:mb-8">
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        Key Benefits
+                        {t('solutions.keyBenefits')}
                       </h4>
                       <div className="space-y-3">
                         {solutions[activeIndustry].benefits.map(
@@ -854,7 +825,7 @@ function SolutionsPageContent() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        Common Use Cases
+                        {t('solutions.useCases')}
                       </h4>
                       <div className="space-y-3">
                         {solutions[activeIndustry].useCases.map(
@@ -1093,19 +1064,19 @@ function SolutionsPageContent() {
                   <div className="space-y-4 text-sm">
                     <div>
                       <div className="font-medium text-slate-900 mb-1">
-                        Challenge:
+                        {t('solutions.challenge')}:
                       </div>
                       <div className="text-slate-600">{study.challenge}</div>
                     </div>
                     <div>
                       <div className="font-medium text-slate-900 mb-1">
-                        Solution:
+                        {t('solutions.solution')}:
                       </div>
                       <div className="text-slate-600">{study.solution}</div>
                     </div>
                     <div>
                       <div className="font-medium text-slate-900 mb-1">
-                        Results:
+                        {t('solutions.results')}:
                       </div>
                       <div className="text-emerald-600 font-medium">
                         {study.results}

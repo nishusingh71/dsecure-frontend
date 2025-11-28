@@ -20,9 +20,11 @@ import { useEffect, memo, useMemo, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { usePerformanceMonitor } from "@/utils/performanceUtils";
+import { useTranslation } from 'react-i18next';
 
 const HomePage = memo(function HomePage() {
   usePerformanceMonitor('HomePage');
+  const { t } = useTranslation();
 
   const scrollToHash = useCallback(() => {
     const hash = window.location.hash;
@@ -53,15 +55,13 @@ const HomePage = memo(function HomePage() {
               <Reveal>
                 <div className="space-y-6">
                   <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl xxl:text-7xl font-bold tracking-tight text-slate-900 leading-tight xs:leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight xxl:leading-tight">
-                    Secure Data Erasure for{" "}
+                    {t('hero.title')}{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      Modern Enterprises
+                      {t('hero.titleHighlight')}
                     </span>
                   </h1>
                   <p className="text-base xs:text-lg sm:text-lg md:text-xl lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 leading-relaxed xs:leading-relaxed sm:leading-relaxed md:leading-relaxed lg:leading-relaxed xl:leading-relaxed xxl:leading-relaxed">
-                    D-Secure helps organizations permanently erase data across
-                    devices and clouds with Compliant workflows that meet global
-                    compliance standards.
+                    {t('hero.subtitle')}
                   </p>
                 </div>
               </Reveal>
@@ -79,7 +79,7 @@ const HomePage = memo(function HomePage() {
                         />
                       )}
                     </HoverIcon>
-                    Explore Products
+                    {t('home.exploreProducts')}
                   </Link>
                   <Link
                     to="/pricing-and-plan"
@@ -102,7 +102,7 @@ const HomePage = memo(function HomePage() {
                         </svg>
                       )}
                     </HoverIcon>
-                    Buy Now
+                    {t('pricing.contactSales')}
                   </Link>
                 </div>
               </Reveal>
@@ -143,11 +143,11 @@ const HomePage = memo(function HomePage() {
                       <div className="absolute bottom-6 left-6 flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2">
                         <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
                         <span className="text-sm text-slate-700 font-medium">
-                          Secure Erasure Active
+                          {t('home.secureErasureActive')}
                         </span>
                       </div>
                       <div className="absolute top-6 right-6 bg-emerald-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
-                        256-bit Encryption
+                        {t('home.encryptionBadge')}
                       </div>
                     </div>
                   </div>
@@ -210,14 +210,13 @@ const HomePage = memo(function HomePage() {
                 />
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                Try Enterprise FREE for 14 Days
+                {t('home.enterpriseTrialTitle')}
               </h2>
               <p className="text-xl md:text-2xl mb-2 opacity-90">
-                Test all Enterprise features on 1 device
+                {t('home.enterpriseTrialSubtitle')}
               </p>
               <p className="text-lg mb-8 opacity-80">
-                No credit card required • No purchase needed • Full feature
-                access
+                {t('home.enterpriseTrialNote')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Link
@@ -226,7 +225,7 @@ const HomePage = memo(function HomePage() {
                 >
                   {/* 🚀 → LightningIcon */}
                   <LightningIcon className="w-5 h-5 mr-2" filled={true} />
-                  Start Free Enterprise Trial
+                  {t('home.enterpriseTrialButton')}
                 </Link>
                 <Link
                   to="/contact"
@@ -246,7 +245,7 @@ const HomePage = memo(function HomePage() {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.74 21 5 16.26 5 10.5V5z"
                     />
                   </svg>
-                  Contact Sales Team
+                  {t('home.enterpriseTrialContact')}
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -257,11 +256,10 @@ const HomePage = memo(function HomePage() {
                       <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
                     </div>
                     <h3 className="font-semibold mb-2">
-                      Full Enterprise Features
+                      {t('home.enterpriseFeature1')}
                     </h3>
                     <p className="text-sm opacity-80">
-                      Access all advanced capabilities including volume erasure,
-                      custom installers, and private cloud support
+                      {t('home.enterpriseFeature1Desc')}
                     </p>
                   </div>
                 </Reveal>
@@ -274,10 +272,9 @@ const HomePage = memo(function HomePage() {
                         filled={true}
                       />
                     </div>
-                    <h3 className="font-semibold mb-2">Instant Activation</h3>
+                    <h3 className="font-semibold mb-2">{t('home.enterpriseFeature2')}</h3>
                     <p className="text-sm opacity-80">
-                      Get started immediately with enterprise-grade data erasure
-                      on your test device
+                      {t('home.enterpriseFeature2Desc')}
                     </p>
                   </div>
                 </Reveal>
@@ -287,10 +284,9 @@ const HomePage = memo(function HomePage() {
                     <div className="text-2xl mb-3 text-white">
                       <StarIcon className="w-8 h-8 mx-auto" filled={true} />
                     </div>
-                    <h3 className="font-semibold mb-2">Risk-Free Testing</h3>
+                    <h3 className="font-semibold mb-2">{t('home.enterpriseFeature3')}</h3>
                     <p className="text-sm opacity-80">
-                      Evaluate enterprise capabilities with no commitment or
-                      payment information required
+                      {t('home.enterpriseFeature3Desc')}
                     </p>
                   </div>
                 </Reveal>
@@ -306,17 +302,15 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Global{" "}
+                {t('home.featuresTitle')}{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-emerald-600">
-                  Compliance Standards
+                  {t('home.standards')}
                 </span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                Compliant and compliant with major international standards and
-                regulations. Meet the most stringent regulatory requirements
-                with verifiable, repeatable erasure protocols.
+                {t('home.featuresSubtitle')}
               </p>
             </Reveal>
           </div>
@@ -331,9 +325,9 @@ const HomePage = memo(function HomePage() {
                     <ShieldIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    NIST 800-88
+                    {t('home.nist80088')}
                   </h3>
-                  <p className="text-xs text-slate-500">Media Sanitization</p>
+                  <p className="text-xs text-slate-500">{t('home.nist80088Desc')}</p>
                 </div>
               </div>
             </Reveal>
@@ -345,9 +339,9 @@ const HomePage = memo(function HomePage() {
                     <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                    GDPR
+                    {t('home.gdpr')}
                   </h3>
-                  <p className="text-xs text-slate-500">Data Protection</p>
+                  <p className="text-xs text-slate-500">{t('home.gdprDesc')}</p>
                 </div>
               </div>
             </Reveal>
@@ -359,9 +353,9 @@ const HomePage = memo(function HomePage() {
                     <HeartIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    HIPAA
+                    {t('home.hipaa')}
                   </h3>
-                  <p className="text-xs text-slate-500">Healthcare Privacy</p>
+                  <p className="text-xs text-slate-500">{t('home.hipaaDesc')}</p>
                 </div>
               </div>
             </Reveal>
@@ -385,9 +379,9 @@ const HomePage = memo(function HomePage() {
                     </svg>
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors">
-                    SOX
+                    {t('home.sox')}
                   </h3>
-                  <p className="text-xs text-slate-500">Financial Controls</p>
+                  <p className="text-xs text-slate-500">{t('home.soxDesc')}</p>
                 </div>
               </div>
             </Reveal>
@@ -399,9 +393,9 @@ const HomePage = memo(function HomePage() {
                     <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                    ISO 27001
+                    {t('home.iso27001')}
                   </h3>
-                  <p className="text-xs text-slate-500">Security Management</p>
+                  <p className="text-xs text-slate-500">{t('home.iso27001Desc')}</p>
                 </div>
               </div>
             </Reveal>
@@ -425,9 +419,9 @@ const HomePage = memo(function HomePage() {
                     </svg>
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-red-600 transition-colors">
-                    PCI DSS
+                    {t('home.pciDss')}
                   </h3>
-                  <p className="text-xs text-slate-500">Payment Security</p>
+                  <p className="text-xs text-slate-500">{t('home.pciDssDesc')}</p>
                 </div>
               </div>
             </Reveal>
@@ -443,13 +437,13 @@ const HomePage = memo(function HomePage() {
                     <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                    Common Criteria
+                    {t('home.commonCriteria')}
                   </h3>
                   <p className="text-sm text-emerald-600 font-medium mb-2">
-                    EAL 4+
+                    {t('home.commonCriteriaLevel')}
                   </p>
                   <p className="text-xs text-slate-500">
-                    International security certification
+                    {t('home.commonCriteriaDesc')}
                   </p>
                 </div>
               </div>
@@ -470,13 +464,13 @@ const HomePage = memo(function HomePage() {
                     </svg>
                   </div>
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                    FIPS 140-2
+                    {t('home.fips1402')}
                   </h3>
                   <p className="text-sm text-blue-600 font-medium mb-2">
-                    Level 3
+                    {t('home.fips1402Level')}
                   </p>
                   <p className="text-xs text-slate-500">
-                    Cryptographic module validation
+                    {t('home.fips1402Desc')}
                   </p>
                 </div>
               </div>
@@ -537,11 +531,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">
-                    Verifiable Erasure
+                    {t('home.verifiableErasure')}
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Tamper-proof certificates with digital signatures and
-                    cryptographic verification
+                    {t('home.verifiableErasureDesc')}
                   </p>
                 </div>
                 <div className="text-center">
@@ -556,11 +549,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">
-                    Audit-Ready Reports
+                    {t('home.auditReadyReports')}
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Comprehensive documentation for compliance audits and
-                    regulatory requirements
+                    {t('home.auditReadyReportsDesc')}
                   </p>
                 </div>
                 <div className="text-center md:col-span-2 lg:col-span-1">
@@ -575,11 +567,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">
-                    Global Standards
+                    {t('home.globalStandards')}
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    Compliance with international frameworks across countries
-                    and jurisdictions
+                    {t('home.globalStandardsDesc')}
                   </p>
                 </div>
               </div>
@@ -591,7 +582,7 @@ const HomePage = memo(function HomePage() {
                 to="/compliance"
                 className="btn-primary inline-flex items-center justify-center"
               >
-                <span>Explore Compliance Standards</span>
+                <span>{t('home.exploreComplianceStandards')}</span>
                 <HoverIcon>
                   {(filled) => (
                     <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
@@ -615,21 +606,18 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-12 lg:mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
-                Why Choose D-Secure?
+                {t('home.whyChooseTitle')}
               </h2>
               <p className="text-lg md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-                Leading organizations trust D-Secure for comprehensive data
-                erasure solutions that ensure security, compliance, and peace of
-                mind.
+                {t('home.whyChooseSubtitle')}
               </p>
             </Reveal>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16">
             {[
               {
-                title: "Military-Grade Security",
-                description:
-                  "DOD 5220.22-M and NIST 800-88 compliant erasure methods ensure your data is permanently destroyed.",
+                titleKey: "home.reason1Title",
+                descKey: "home.reason1Desc",
                 icon: (
                   <HoverIcon>
                     {(filled) => (
@@ -643,9 +631,8 @@ const HomePage = memo(function HomePage() {
                 bgColor: "bg-gradient-to-br from-emerald-500 to-emerald-600",
               },
               {
-                title: "Enterprise Scale",
-                description:
-                  "Handle thousands of devices simultaneously with our powerful orchestration and automation tools.",
+                titleKey: "home.reason3Title",
+                descKey: "home.reason3Desc",
                 icon: (
                   <HoverIcon>
                     {(filled) => (
@@ -659,9 +646,8 @@ const HomePage = memo(function HomePage() {
                 bgColor: "bg-gradient-to-br from-emerald-500 to-emerald-600",
               },
               {
-                title: "Complete Audit Trail",
-                description:
-                  "Tamper-proof certificates and comprehensive reporting for regulatory compliance and audits.",
+                titleKey: "home.feature3Title",
+                descKey: "home.feature3Desc",
                 icon: (
                   <HoverIcon>
                     {(filled) => (
@@ -675,9 +661,8 @@ const HomePage = memo(function HomePage() {
                 bgColor: "bg-gradient-to-br from-teal-500 to-teal-600",
               },
               {
-                title: "Global Compliance",
-                description:
-                  "Meet GDPR, HIPAA, SOX, and other international data protection standards with Compliant workflows.",
+                titleKey: "home.reason2Title",
+                descKey: "home.reason2Desc",
                 icon: (
                   <HoverIcon>
                     {(filled) => (
@@ -691,9 +676,8 @@ const HomePage = memo(function HomePage() {
                 bgColor: "bg-gradient-to-br from-orange-500 to-orange-600",
               },
               {
-                title: "Zero Downtime",
-                description:
-                  "Perform secure erasure operations without disrupting your business operations or workflows.",
+                titleKey: "home.feature5Title",
+                descKey: "home.feature5Desc",
                 icon: (
                   <HoverIcon>
                     {(filled) => (
@@ -707,9 +691,8 @@ const HomePage = memo(function HomePage() {
                 bgColor: "bg-gradient-to-br from-teal-500 to-teal-600",
               },
               {
-                title: "24/7 Expert Support",
-                description:
-                  "Get immediate assistance from our data security experts whenever you need it.",
+                titleKey: "home.feature6Title",
+                descKey: "home.feature6Desc",
                 icon: (
                   <HoverIcon>
                     {(filled) => (
@@ -723,7 +706,7 @@ const HomePage = memo(function HomePage() {
                 bgColor: "bg-gradient-to-br from-rose-500 to-rose-600",
               },
             ].map((feature, i) => (
-              <Reveal key={feature.title} delayMs={i * 100}>
+              <Reveal key={feature.titleKey} delayMs={i * 100}>
                 <div className="group card hover:shadow-lg hover:-translate-y-1 transition-transform duration-200 ease-out h-full flex flex-col relative overflow-hidden">
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${
@@ -748,10 +731,10 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-brand transition-colors duration-200">
-                        {feature.title}
+                        {t(feature.titleKey)}
                       </h3>
                       <p className="text-slate-600 leading-relaxed">
-                        {feature.description}
+                        {t(feature.descKey)}
                       </p>
                     </div>
                   </div>
@@ -767,40 +750,40 @@ const HomePage = memo(function HomePage() {
                   <Reveal delayMs={20}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        100k+
+                        {t('home.devicesCount')}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        Devices Secured
+                        {t('home.devices')}
                       </div>
                     </div>
                   </Reveal>
                   <Reveal delayMs={30}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        100%
+                        {t('home.complianceRate')}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        Success Rate
+                        {t('home.compliance')}
                       </div>
                     </div>
                   </Reveal>
                   <Reveal delayMs={40}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        256-bit
+                        {t('home.encryptionStrength')}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        SSL Encryption
+                        {t('home.encryption')}
                       </div>
                     </div>
                   </Reveal>
                   <Reveal delayMs={50}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-orange-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        24/7
+                        {t('home.supportAvailability')}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        Expert Support
+                        {t('home.support')}
                       </div>
                     </div>
                   </Reveal>
@@ -820,17 +803,15 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Trusted by{" "}
+                {t('home.industriesTitle').split(' ').slice(0, 2).join(' ')}{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-                  Industries
+                  {t('home.industriesTitle').split(' ').slice(2).join(' ')}
                 </span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                From healthcare to finance, government to enterprise - our
-                specialized workflows ensure compliance and security across
-                every sector.
+                {t('home.industriesSubtitle')}
               </p>
             </Reveal>
           </div>
@@ -852,14 +833,13 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        Healthcare
+                        {t('home.healthcare')}
                       </h3>
-                      <p className="text-sm text-slate-500">HIPAA Compliance</p>
+                      <p className="text-sm text-slate-500">{t('home.healthcareCompliance')}</p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    HIPAA-compliant data destruction with PHI-specific
-                    sanitization protocols for medical devices and EMR systems.
+                    {t('home.healthcareDesc')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
@@ -894,14 +874,13 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        Financial Services
+                        {t('home.financial')}
                       </h3>
-                      <p className="text-sm text-slate-500">SOX & PCI DSS</p>
+                      <p className="text-sm text-slate-500">{t('home.financialCompliance')}</p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    Banking-grade security with SOX and PCI DSS compliance for
-                    trading systems and customer data protection.
+                    {t('home.financialDesc')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
@@ -931,21 +910,20 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        Government
+                        {t('home.government')}
                       </h3>
-                      <p className="text-sm text-slate-500">Military-Grade</p>
+                      <p className="text-sm text-slate-500">{t('home.governmentCompliance')}</p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    NIST 800-88, DoD 3/7 pass compliance with Common Criteria
-                    Compliant security for federal agencies.
+                    {t('home.governmentDesc')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
-                      DoD Standards
+                      {t('home.dodStandards')}
                     </span>
                     <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
-                      Federal Agencies
+                      {t('home.federalAgencies')}
                     </span>
                   </div>
                 </div>
@@ -968,14 +946,13 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        Enterprise
+                        {t('home.enterprise')}
                       </h3>
-                      <p className="text-sm text-slate-500">Cloud Migration</p>
+                      <p className="text-sm text-slate-500">{t('home.enterpriseCompliance')}</p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    Comprehensive data center erasure supporting cloud
-                    migrations and endpoint device management at scale.
+                    {t('home.enterpriseDesc')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
@@ -1005,16 +982,15 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        ITAD Services
+                        {t('home.itadServices')}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Asset Disposition
+                        {t('home.itadCompliance')}
                       </p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    Complete asset disposition workflows with automated
-                    processing for resale, recycling, and compliance.
+                    {t('home.itadDesc')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
@@ -1049,14 +1025,13 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        Service Providers
+                        {t('home.serviceProviders')}
                       </h3>
-                      <p className="text-sm text-slate-500">White-Label</p>
+                      <p className="text-sm text-slate-500">{t('home.serviceProvidersCompliance')}</p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    White-label branding with multi-tenant client management and
-                    revenue sharing programs for MSPs.
+                    {t('home.serviceProvidersDesc')}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
@@ -1076,7 +1051,7 @@ const HomePage = memo(function HomePage() {
                 to="/solutions"
                 className="btn-primary inline-flex items-center justify-center"
               >
-                <span>Explore All Industry Solutions</span>
+                <span>{t('home.exploreAllIndustrySolutions')}</span>
                 <HoverIcon>
                   {(filled) => (
                     <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
@@ -1094,17 +1069,15 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Complete{" "}
+                {t('home.servicesTitle').split(' ').slice(0, 1).join(' ')}{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                  Data Erasure Suite
+                  {t('home.servicesTitle').split(' ').slice(1).join(' ')}
                 </span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                Military-grade data sanitization across all platforms - from
-                individual devices to enterprise networks and cloud
-                infrastructure.
+                {t('home.servicesSubtitle')}
               </p>
             </Reveal>
           </div>
@@ -1127,10 +1100,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    D-Secure Drive Eraser
+                    {t('home.driveEraserTitle')}
                   </h3>
                   <p className="text-slate-600 mb-6">
-                    Secure Drive Wiping Software - Wipe Hard Drive, SSD, PC, Laptop, Mac® & Server. Deploy via USB & PXE Boot on Supported Devices.
+                    {t('home.driveEraserDesc')}
                   </p>
                 </div>
                 <div className="space-y-3 mb-6">
@@ -1149,7 +1122,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      26 Global Erasure Standards
+                      {t('home.driveEraserFeature1')}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1167,7 +1140,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Cloud Console Integration
+                      {t('home.driveEraserFeature2')}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1185,7 +1158,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      USB, PXE Boot & EXE
+                      {t('home.driveEraserFeature3')}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1203,23 +1176,23 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Digitally Signed Certificates
+                      {t('home.driveEraserFeature4')}
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
                   <div className="text-xl font-bold text-slate-900 mb-2">
-                    Starting at $20
+                    {t('home.driveEraserPrice')}
                   </div>
                   <div className="text-slate-600 text-sm">
-                    Pay-per-use licenses that never expire
+                    {t('home.driveEraserPriceNote')}
                   </div>
                 </div>
                 <Link
                   to="/products?focus=drive-eraser"
                   className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium group"
                 >
-                  <span>View Product Details</span>
+                  <span>{t('home.viewProductDetails')}</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
                     fill="none"
@@ -1255,10 +1228,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    D-Secure File Eraser
+                    {t('home.fileEraserTitle')}
                   </h3>
                   <p className="text-slate-600 mb-6">
-                    File & Folder Erasure Software - Wipe Files from Windows, Mac, & Linux Systems. Also Wipe Servers & Data on Domain Network Connected Computers.
+                    {t('home.fileEraserDesc')}
                   </p>
                 </div>
                 <div className="space-y-3 mb-6">
@@ -1277,7 +1250,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      30+ International Algorithms
+                      {t('home.fileEraserFeature1')}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1295,7 +1268,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Cross-Platform Support
+                      {t('home.fileEraserFeature2')}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1313,7 +1286,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Google Drive 
+                      {t('home.fileEraserFeature3')}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1331,23 +1304,23 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      Enterprise Licensing
+                      {t('home.fileEraserFeature4')}
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
                   <div className="text-xl font-bold text-slate-900 mb-2">
-                    Starting at $40
+                    {t('home.fileEraserPrice')}
                   </div>
                   <div className="text-slate-600 text-sm">
-                    Multiple plans: Base, Standard, Cloud, Network, Pro & Enterprise
+                    {t('home.fileEraserPriceNote')}
                   </div>
                 </div>
                 <Link
                   to="/products?focus=file-eraser"
                   className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium group"
                 >
-                  <span>View Product Details</span>
+                  <span>{t('home.viewProductDetails')}</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
                     fill="none"
@@ -1371,7 +1344,7 @@ const HomePage = memo(function HomePage() {
                 to="/products"
                 className="btn-primary inline-flex items-center justify-center"
               >
-                <span>View All Products</span>
+                <span>{t('home.viewAllProducts')}</span>
                 <HoverIcon>
                   {(filled) => (
                     <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
@@ -1394,15 +1367,13 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Trusted by Organizations{" "}
-                <span className="text-yellow-300">Worldwide</span>
+                {t('home.trustedTitle').split(' ').slice(0, 3).join(' ')}{" "}
+                <span className="text-yellow-300">{t('home.trustedTitle').split(' ').slice(3).join(' ')}</span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-white/90 max-w-3xl mx-auto">
-                D-Secure has become the global standard for secure data erasure,
-                protecting millions of devices and serving the world's most
-                security-conscious organizations.
+                {t('home.trustedSubtitle')}
               </p>
             </Reveal>
           </div>
@@ -1425,11 +1396,10 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold">Military-Grade Security</h3>
+                  <h3 className="text-xl font-bold">{t('home.militaryGradeSecurity')}</h3>
                 </div>
                 <p className="text-white/90">
-                  DOD 5220.22-M and NIST 800-88 Compliant erasure methods with
-                  Common Criteria EAL 4+ validation.
+                  {t('home.militaryGradeDesc')}
                 </p>
               </div>
             </Reveal>
@@ -1451,11 +1421,10 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold">Enterprise Scale</h3>
+                  <h3 className="text-xl font-bold">{t('home.enterpriseScale')}</h3>
                 </div>
                 <p className="text-white/90">
-                  Process up to 500 servers and 100 devices per hour with
-                  automated workflows and centralized management.
+                  {t('home.enterpriseScaleDesc')}
                 </p>
               </div>
             </Reveal>
@@ -1477,11 +1446,10 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold">Global Compliance</h3>
+                  <h3 className="text-xl font-bold">{t('home.globalCompliance')}</h3>
                 </div>
                 <p className="text-white/90">
-                  Meet GDPR, HIPAA, SOX, and 20+ other international standards
-                  with automated compliance reporting.
+                  {t('home.globalComplianceDesc')}
                 </p>
               </div>
             </Reveal>
@@ -1523,9 +1491,7 @@ const HomePage = memo(function HomePage() {
                   </div>
                 </div>
                 <blockquote className="text-slate-600 italic leading-relaxed flex-1">
-                  "We needed a reliable data erasure solution for our startup.
-                  D-Secure exceeded our expectations with its intuitive
-                  interface and comprehensive security features."
+                  "{t('home.testimonial1')}"
                 </blockquote>
               </div>
             </Reveal>
@@ -1543,13 +1509,11 @@ const HomePage = memo(function HomePage() {
                     <h4 className="font-semibold text-slate-900 text-lg">
                       Elena Rodriguez
                     </h4>
-                    <p className="text-blue-600 text-sm font-medium">Client</p>
+                    <p className="text-blue-600 text-sm font-medium">{t('home.client')}</p>
                   </div>
                 </div>
                 <blockquote className="text-slate-600 italic leading-relaxed">
-                  "As an early adopter, I'm impressed by D-Secure's innovative
-                  approach to data security. The team is responsive and the
-                  product keeps improving."
+                  "{t('home.testimonial2')}"
                 </blockquote>
               </div>
             </Reveal>
@@ -1567,13 +1531,11 @@ const HomePage = memo(function HomePage() {
                     <h4 className="font-semibold text-slate-900 text-lg">
                       James Thompson
                     </h4>
-                    <p className="text-blue-600 text-sm font-medium">Client</p>
+                    <p className="text-blue-600 text-sm font-medium">{t('home.client')}</p>
                   </div>
                 </div>
                 <blockquote className="text-slate-600 italic leading-relaxed">
-                  "D-Secure's fresh take on data erasure is exactly what the
-                  market needs. Simple, secure, and built with modern compliance
-                  standards in mind."
+                  "{t('home.testimonial3')}"
                 </blockquote>
               </div>
             </Reveal>
