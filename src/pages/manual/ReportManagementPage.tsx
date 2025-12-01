@@ -216,7 +216,7 @@ const ReportManagementPage: React.FC = () => {
                     </h3>
                     <ol className="space-y-3 text-gray-700 list-decimal list-inside">
                       <li>
-                        Go to <strong>BitRaser File Eraser</strong>.
+                        Go to <strong>D-SecureFile Eraser</strong>.
                       </li>
                       <li>
                         Select <strong>Report</strong> from the left pane.
@@ -252,7 +252,7 @@ const ReportManagementPage: React.FC = () => {
                       generated. The report can be saved in PDF or XML format.
                     </p>
                     <ol className="space-y-3 text-gray-700 list-decimal list-inside">
-                      <li>Go to BitRaser File Eraser.</li>
+                      <li>Go to D-SecureFile Eraser.</li>
                       <li>Select Report from left pane.</li>
                       <li>
                         Select checkboxes next to reports, then click Save
@@ -278,13 +278,13 @@ const ReportManagementPage: React.FC = () => {
 
                 <div className="bg-gray-50 rounded-lg p-6 space-y-4">
                   <p className="text-gray-700">
-                    BitRaser File Eraser lets you send selected reports to{' '}
+                    D-SecureFile Eraser lets you send selected reports to{' '}
                     <strong className="text-indigo-600">DSecure Cloud</strong>.
                     Ensure Cloud Console connection is active.
                   </p>
 
                   <ol className="space-y-3 text-gray-700 list-decimal list-inside">
-                    <li>Open BitRaser File Eraser.</li>
+                    <li>Open D-SecureFile Eraser.</li>
                     <li>Select Report from menu.</li>
                     <li>
                       Click Cloud icon from Action tab to send report to DSecure
@@ -317,10 +317,10 @@ const ReportManagementPage: React.FC = () => {
 
                 <div className="bg-gray-50 rounded-lg p-6">
                   <p className="text-gray-700 mb-4">
-                    BitRaser File Eraser allows customization of reports.
+                    D-SecureFile Eraser allows customization of reports.
                   </p>
                   <ol className="space-y-3 text-gray-700 list-decimal list-inside mb-4">
-                    <li>Go to BitRaser File Eraser.</li>
+                    <li>Go to D-SecureFile Eraser.</li>
                     <li>Select Report from left menu.</li>
                     <li>Click Report Settings button.</li>
                     <li>Edit fields as per need.</li>

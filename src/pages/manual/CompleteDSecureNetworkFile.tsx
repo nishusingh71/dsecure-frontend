@@ -776,7 +776,7 @@ const sections: Section[] = [
               "Data Recovery: DSecureTech Data Recovery (Windows/Mac), DSecureTech Photo Recovery.",
               "Email Repair & Conversion: Repair for Exchange/Outlook, Converter for EDB/OST.",
               "File & Database Repair: Repair for MS SQL, Repair for Video.",
-              "Data Erasure: BitRaser Drive Eraser, BitRaser File Eraser.",
+              "Data Erasure: D-SecureDrive Eraser, D-SecureFile Eraser.",
             ],
           },
         ],

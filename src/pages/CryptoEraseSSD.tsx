@@ -162,7 +162,7 @@ const CryptoEraseSSDGuide: React.FC = () => {
                   <li>
                     <strong>Use certified tools:</strong> Manufacturer utilities
                     (Samsung Magician, Intel Toolbox) or certified software
-                    (BitRaser Drive Eraser) provide tamper-proof certificates
+                    (D-SecureDrive Eraser) provide tamper-proof certificates
                     and audit logs.
                   </li>
                   <li>
@@ -237,7 +237,7 @@ const CryptoEraseSSDGuide: React.FC = () => {
           </div>
         </section>
 
-        {/* Step-by-step (BitRaser example) */}
+        {/* Step-by-step (D-Secureexample) */}
         <section className="py-12">
           <div className="container-responsive">
             <Reveal>
@@ -248,7 +248,7 @@ const CryptoEraseSSDGuide: React.FC = () => {
 
                 <ol className="list-decimal list-inside text-slate-700 space-y-3">
                   <li>
-                    Download BitRaser ISO and create bootable USB media
+                    Download D-SecureISO and create bootable USB media
                     (Windows/Mac).
                   </li>
                   <li>
@@ -269,7 +269,7 @@ const CryptoEraseSSDGuide: React.FC = () => {
                 </ol>
 
                 <p className="text-slate-700 text-sm mt-4">
-                  Note: If the drive is not encrypted, BitRaser and vendor
+                  Note: If the drive is not encrypted, D-Secureand vendor
                   utilities also offer firmware-based sanitize commands — choose
                   the correct method based on device capabilities.
                 </p>

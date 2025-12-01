@@ -7,7 +7,7 @@ const BitraserIntegrationPage: React.FC = memo(() => {
   return (
     <>
       <Helmet>
-        <title>Bitraser Integration | D-Secure</title>
+        <title>D-SecureIntegration | D-Secure</title>
       </Helmet>
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
@@ -20,7 +20,7 @@ const BitraserIntegrationPage: React.FC = memo(() => {
                 Back
               </Link>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                Bitraser Integration
+                D-SecureIntegration
               </h1>
             </Reveal>
           </div>
@@ -31,7 +31,7 @@ const BitraserIntegrationPage: React.FC = memo(() => {
               <div className="prose prose-lg max-w-none">
                 <h2 className="text-3xl font-bold text-slate-900 mb-6">Overview</h2>
                 <ul className="space-y-3 text-slate-700">
-                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Comprehensive Bitraser Integration guide</li>
+                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Comprehensive D-SecureIntegration guide</li>
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Step-by-step instructions</li>
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Best practices and recommendations</li>
                 </ul>

@@ -256,7 +256,7 @@ const HelpManualIndexPage: React.FC = () => {
               <div className="flex-1">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Complete DSecure Manual</h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Comprehensive single-page manual covering all BitRaser screenshots content transformed for DSecure, including FAQs, cloud integration, settings, reports, scheduling, and advanced configurations.
+                  Comprehensive single-page manual covering all D-Securescreenshots content transformed for DSecure, including FAQs, cloud integration, settings, reports, scheduling, and advanced configurations.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="flex items-center space-x-2">

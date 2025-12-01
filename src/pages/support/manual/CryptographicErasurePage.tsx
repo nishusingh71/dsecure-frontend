@@ -61,7 +61,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
         },
         {
           id: 23,
-          title: "BitRaser Integration",
+          title: "D-SecureIntegration",
           description: "DSecure tools and drive eraser USB workflow",
           url: "/support/manual/bitraser-integration",
           pageCount: 2,
@@ -601,7 +601,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   color: "bg-teal-500",
                 },
                 {
-                  title: "BitRaser Tools",
+                  title: "D-SecureTools",
                   description: "Integration documentation",
                   icon: "💾",
                   url: "/products/bitraser-drive-eraser",
