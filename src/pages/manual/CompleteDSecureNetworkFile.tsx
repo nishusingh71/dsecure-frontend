@@ -419,7 +419,7 @@ const sections: Section[] = [
               "Support portal & knowledgebase",
               "Chat with technician",
               "Submit enquiry",
-              "Email techsupport@stellarinfo.com",
+              "Email techsupport@dsecuretech.com",
             ],
           },
         ],
@@ -747,16 +747,16 @@ const sections: Section[] = [
     ],
   },
 
-  // 6. About Stellar
+  // 6. About D-Secure
   {
-    id: "about-stellar",
+    id: "about-D-Secure",
     icon: Building,
     title: "6. About DSecureTech",
     summary:
       "DSecure is a global Data Care organization: Recovery, Email Repair & Conversion, File/DB Repair, and Data Erasure.",
     subsections: [
       {
-        id: "stellar-overview",
+        id: "D-Secure-overview",
         title: "DSecure Overview",
         blocks: [
           {
@@ -767,7 +767,7 @@ const sections: Section[] = [
         ],
       },
       {
-        id: "stellar-portfolio",
+        id: "D-Secure-portfolio",
         title: "Product Portfolio",
         blocks: [
           {

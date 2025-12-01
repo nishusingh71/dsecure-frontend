@@ -1188,10 +1188,10 @@ const SupportPage: React.FC = () => {
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
                   <span className="text-brand">DSecure</span>
                   <sup className="text-brand text-lg"></sup> Is An Innovation
-                  FROM STELLAR
+                  FROM D-Secure
                 </h2>
                 <p className="text-xl text-slate-300">
-                  Stellar Brings to The World Future-Ready Data Solutions
+                  D-Secure Brings to The World Future-Ready Data Solutions
                 </p>
               </div>
             </Reveal>
