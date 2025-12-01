@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useNotification } from "@/contexts/NotificationContext";
 import { Helmet } from "react-helmet-async";
+import SchemaBuilder from "@/components/SchemaBuilder";
 
 export default function PrivateCloudSetup() {
   const navigate = useNavigate();
@@ -223,7 +224,7 @@ export default function PrivateCloudSetup() {
                 </div>
               </div>
 
-              {/* Table Selection */}
+              {/* Table Selection - COMMENTED OUT
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                   <svg
@@ -284,8 +285,9 @@ export default function PrivateCloudSetup() {
                   </div>
                 )}
               </div>
+              */}
 
-              {/* Migration Options */}
+              {/* Migration Options - COMMENTED OUT
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                   <svg
@@ -311,7 +313,6 @@ export default function PrivateCloudSetup() {
                 </h2>
 
                 <div className="space-y-4">
-                  {/* Migrate Data Toggle */}
                   <label className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -354,7 +355,6 @@ export default function PrivateCloudSetup() {
                     </div>
                   </label>
 
-                  {/* Migrate Tables Toggle */}
                   <label className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -398,6 +398,7 @@ export default function PrivateCloudSetup() {
                   </label>
                 </div>
               </div>
+              */}
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
@@ -413,8 +414,7 @@ export default function PrivateCloudSetup() {
                   type="submit"
                   disabled={
                     loading ||
-                    !privateCloudForm.connectionString.trim() ||
-                    privateCloudForm.selectedTables.length === 0
+                    !privateCloudForm.connectionString.trim()
                   }
                   className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-700 text-white rounded-lg hover:from-purple-600 hover:to-purple-800 transition-all font-medium shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
@@ -460,6 +460,11 @@ export default function PrivateCloudSetup() {
                     </>
                   )}
                 </button>
+              </div>
+
+              {/* Schema Builder - Shows SQL for all tables */}
+              <div className="mt-6">
+                <SchemaBuilder />
               </div>
             </div>
           </form>
