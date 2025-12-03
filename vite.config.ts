@@ -45,20 +45,14 @@ export default defineConfig({
       output: {
         // Enhanced chunk splitting for better code-splitting
         manualChunks: (id) => {
-          // React core - keep together for context
+          // React core + helmet + router - keep together to avoid initialization issues
           if (id.includes('node_modules/react/') || 
               id.includes('node_modules/react-dom/') ||
-              id.includes('node_modules/scheduler/')) {
-            return 'react-vendor'
-          }
-          // React Router
-          if (id.includes('node_modules/react-router') || 
+              id.includes('node_modules/scheduler/') ||
+              id.includes('react-helmet') ||
+              id.includes('node_modules/react-router') || 
               id.includes('node_modules/@remix-run/')) {
-            return 'react-router'
-          }
-          // React Helmet
-          if (id.includes('react-helmet')) {
-            return 'react-helmet'
+            return 'react-vendor'
           }
           // TanStack Query
           if (id.includes('@tanstack/react-query')) {
