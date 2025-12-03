@@ -1,7 +1,9 @@
 // API Service for Admin Dashboard
 // This file contains all API endpoints and data fetching logic for the admin dashboard
+// ✅ Updated to use apiClient with automatic decryption interceptor
 
 import { Subuser } from "@/utils/enhancedApiClient"
+import { api } from "@/utils/apiClient"
 
 interface ApiResponse<T> {
   success: boolean
@@ -142,34 +144,55 @@ interface Report {
 // If API fails, UI will show "Data not available" message
 
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com/api'
-const USE_API = import.meta.env.VITE_USE_API === 'true' || true // Always use live API
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'
 
-// Generic API call function - NO FALLBACK DATA - All data must come from live API
-async function apiCall<T>(endpoint: string, options?: RequestInit): Promise<ApiResponse<T>> {
+// ✅ Generic API call function using axios with automatic decryption
+// The `api` instance from apiClient.ts has an interceptor that automatically
+// decrypts encrypted responses from the .NET backend
+async function apiCall<T>(endpoint: string, options?: { method?: string; body?: string; headers?: Record<string, string> }): Promise<ApiResponse<T>> {
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-        ...options?.headers
-      },
-      ...options
-    })
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`)
+    const method = options?.method?.toUpperCase() || 'GET'
+    let response;
+    
+    // Use axios api instance which has decryption interceptor
+    if (method === 'GET') {
+      response = await api.get(`${endpoint}`, {
+        headers: options?.headers
+      })
+    } else if (method === 'POST') {
+      response = await api.post(`${endpoint}`, options?.body ? JSON.parse(options.body) : undefined, {
+        headers: options?.headers
+      })
+    } else if (method === 'PUT') {
+      response = await api.put(`${endpoint}`, options?.body ? JSON.parse(options.body) : undefined, {
+        headers: options?.headers
+      })
+    } else if (method === 'DELETE') {
+      response = await api.delete(`${endpoint}`, {
+        headers: options?.headers
+      })
+    } else if (method === 'PATCH') {
+      response = await api.patch(`${endpoint}`, options?.body ? JSON.parse(options.body) : undefined, {
+        headers: options?.headers
+      })
+    } else {
+      response = await api.request({
+        url: endpoint,
+        method: method as any,
+        data: options?.body ? JSON.parse(options.body) : undefined,
+        headers: options?.headers
+      })
     }
 
-    const data = await response.json()
-    return { success: true, data }
-  } catch (error) {
+    // Response is already decrypted by axios interceptor
+    return { success: true, data: response.data }
+  } catch (error: any) {
     console.error(`❌ API call failed for ${endpoint}:`, error)
     // NO FALLBACK - Return error response so UI can show "Data not available"
     return { 
       success: false, 
       data: null as unknown as T,
-      error: error instanceof Error ? error.message : 'API call failed'
+      error: error?.response?.data?.message || error?.message || 'API call failed'
     }
   }
 }
@@ -206,6 +229,7 @@ export class AdminDashboardAPI {
   }
 
   // Get admin profile - Fetch from backend using user email
+  // ✅ Updated to use axios api with automatic decryption
   static async getAdminProfile(): Promise<ApiResponse<ProfileData>> {
     try {
       // Get user email from stored user data
@@ -228,20 +252,10 @@ export class AdminDashboardAPI {
       
       console.log('🔍 Fetching profile for email:', userEmail);
       
-      // Fetch user data from backend API using email
-      const response = await fetch(`https://api.dsecuretech.com/api/Users/${userEmail}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('dsecure_access_token') || ''}`
-        }
-      });
+      // ✅ Use axios api instance with automatic decryption
+      const response = await api.get(`/api/Users/${userEmail}`);
+      const data = response.data;
       
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-      
-      const data = await response.json();
       console.log('✅ Profile data received:', data);
       
       // Transform backend data to ProfileData format
@@ -267,17 +281,18 @@ export class AdminDashboardAPI {
         message: 'Profile fetched successfully'
       };
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Error fetching profile:', error);
       return {
         success: false,
         data: {} as ProfileData,
-        error: error instanceof Error ? error.message : 'Failed to fetch profile'
+        error: error?.response?.data?.message || error?.message || 'Failed to fetch profile'
       };
     }
   }
 
   // Update admin profile - Update backend using user email
+  // ✅ Updated to use axios api with automatic decryption
   static async updateAdminProfile(profileData: Partial<ProfileData>): Promise<ApiResponse<ProfileData>> {
     try {
       // Get user email from stored user data or profileData
@@ -310,21 +325,9 @@ export class AdminDashboardAPI {
         user_type: profileData.role
       };
       
-      // Update user data in backend API
-      const response = await fetch(`https://api.dsecuretech.com/api/Users/${userEmail}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('dsecure_access_token') || ''}`
-        },
-        body: JSON.stringify(backendData)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
-      }
-      
-      const data = await response.json();
+      // ✅ Use axios api instance with automatic decryption
+      const response = await api.put(`/api/Users/${userEmail}`, backendData);
+      const data = response.data;
       console.log('✅ Profile updated successfully:', data);
       
       // Transform response back to ProfileData format

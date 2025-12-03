@@ -1,8 +1,11 @@
 // import { User } from './authService';
 // import { Subuser } from './enhancedApiClient';
 // Enhanced API Client with JWT Integration
+// ✅ Updated to use api instance with automatic decryption interceptor
 import axios, { AxiosResponse } from 'axios'
 import { authService } from './authService.js'
+import { EncryptionService, isEncryptedResponse } from './EncryptionService'
+import { api } from './apiClient'
 
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'
@@ -10,6 +13,19 @@ const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000')
 
 // Debug mode for development
 const DEBUG_MODE = import.meta.env.DEV
+
+/**
+ * Helper function to decrypt response data if encrypted
+ */
+function decryptResponseIfNeeded<T>(data: unknown): T {
+  if (isEncryptedResponse(data)) {
+    if (DEBUG_MODE) {
+      console.log('🔐 Encrypted response detected, decrypting...')
+    }
+    return EncryptionService.decrypt<T>(data.data)
+  }
+  return data as T
+}
 
 if (DEBUG_MODE) {
   console.log('API Configuration:', {
@@ -361,6 +377,10 @@ class EnhancedApiClient {
       if (response.status !== 204 && contentLength !== '0' && contentType?.includes('application/json')) {
         try {
           data = await response.json()
+          
+          // ✅ Decrypt response if encrypted
+          data = decryptResponseIfNeeded<any>(data)
+          
         } catch (jsonError) {
           // If JSON parsing fails but response is ok, treat as success with null data
           if (response.ok) {
@@ -489,20 +509,16 @@ class EnhancedApiClient {
 
   // Public API methods
   
-  // API Health Check
+  // API Health Check - Uses api instance with decryption interceptor
   async testConnection(): Promise<ApiResponse<any>> {
     try {
-      const testUrl = `${API_BASE_URL}/api/health`
-      
       if (DEBUG_MODE) {
-        console.log('🔍 Testing API connection to:', testUrl)
+        console.log('🔍 Testing API connection to:', `${API_BASE_URL}/api/health`)
       }
 
-      const response: AxiosResponse = await axios.get(testUrl, {
-        timeout: 5000, // Short timeout for health check
-        headers: {
-          'Accept': 'application/json'
-        }
+      // ✅ Use api instance which has decryption interceptor
+      const response = await api.get('/api/health', {
+        timeout: 5000 // Short timeout for health check
       })
 
       if (DEBUG_MODE) {
@@ -535,37 +551,34 @@ class EnhancedApiClient {
   // Authentication endpoints
   async login(credentials: LoginRequest, rememberMe: boolean = false): Promise<ApiResponse<AuthResponse>> {
     try {
-      const loginUrl = `${API_BASE_URL}/api/RoleBasedAuth/login`
-      
       if (DEBUG_MODE) {
-        console.log('🚀 Starting login request to:', loginUrl)
+        console.log('🚀 Starting login request to:', `${API_BASE_URL}/api/RoleBasedAuth/login`)
         console.log('📧 Credentials email:', credentials.email)
         console.log('🔧 API Configuration:', { API_BASE_URL, API_TIMEOUT })
       }
 
-      // Make direct axios POST request to the login API
-      const response: AxiosResponse = await axios.post(
-        loginUrl,
+      // ✅ Use api instance which has decryption interceptor (auto-decrypts encrypted responses)
+      const response = await api.post(
+        '/api/RoleBasedAuth/login',
         {
           email: credentials.email,
           password: credentials.password
         },
         {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
           timeout: API_TIMEOUT
         }
       )
 
+      // Response is already decrypted by axios interceptor
+      const responseData = response.data
+
       if (DEBUG_MODE) {
-        console.log('Login API Response:', response.data)
+        console.log('Login API Response (decrypted):', responseData)
       }
 
       // Check if login was successful and we have a JWT token
-      if (response.status === 200 && response.data?.token) {
-        const { token, user, refreshToken } = response.data
+      if (response.status === 200 && responseData?.token) {
+        const { token, user, refreshToken } = responseData
 
         // Verify JWT token structure
         if (this.isValidJWT(token)) {
@@ -581,21 +594,21 @@ class EnhancedApiClient {
           // ✅ Handle both User and Subuser field names (subuser_name, subuser_phone)
           const userData = {
             ...user, // Keep all original fields from API response
-            ...response.data, // Include all top-level response fields
-            role: user?.userRole || user?.user_role || decodedToken.role || user?.role || response.data?.userRole || response.data?.user_role || 'user',
-            userRole: user?.userRole || response.data?.userRole || user?.user_role || response.data?.user_role, // Preserve camelCase
-            user_role: user?.user_role || response.data?.user_role || user?.userRole || response.data?.userRole, // Preserve snake_case
-            id: decodedToken.sub || user?.userId || user?.user_id || user?.id || response.data?.userId,
-            email: decodedToken.email || user?.email || response.data?.email || credentials.email,
-            name: decodedToken.name || user?.userName || user?.user_name || user?.subuser_name || user?.name || response.data?.userName || response.data?.subuser_name || 'User',
-            user_name: user?.user_name || user?.userName || user?.subuser_name || response.data?.user_name || response.data?.subuser_name,
-            subuser_name: user?.subuser_name || user?.user_name || user?.userName || response.data?.subuser_name||user?.name,
-            department: user?.department || response.data?.department,
-            user_group: user?.user_group || user?.userGroup || response.data?.userGroup || response.data?.user_group,
-            timezone: user?.timezone || response.data?.timezone,
-            phone: user?.phone || user?.phone_number || user?.subuser_phone || response.data?.phone || response.data?.subuser_phone,
-            phone_number: user?.phone_number || user?.phone || user?.subuser_phone || response.data?.phone_number || response.data?.phone,
-            subuser_phone: user?.subuser_phone || user?.phone || user?.phone_number || response.data?.subuser_phone,
+            ...responseData, // Include all top-level response fields (decrypted)
+            role: user?.userRole || user?.user_role || decodedToken.role || user?.role || responseData?.userRole || responseData?.user_role || 'user',
+            userRole: user?.userRole || responseData?.userRole || user?.user_role || responseData?.user_role, // Preserve camelCase
+            user_role: user?.user_role || responseData?.user_role || user?.userRole || responseData?.userRole, // Preserve snake_case
+            id: decodedToken.sub || user?.userId || user?.user_id || user?.id || responseData?.userId,
+            email: decodedToken.email || user?.email || responseData?.email || credentials.email,
+            name: decodedToken.name || user?.userName || user?.user_name || user?.subuser_name || user?.name || responseData?.userName || responseData?.subuser_name || 'User',
+            user_name: user?.user_name || user?.userName || user?.subuser_name || responseData?.user_name || responseData?.subuser_name,
+            subuser_name: user?.subuser_name || user?.user_name || user?.userName || responseData?.subuser_name||user?.name,
+            department: user?.department || responseData?.department,
+            user_group: user?.user_group || user?.userGroup || responseData?.userGroup || responseData?.user_group,
+            timezone: user?.timezone || responseData?.timezone,
+            phone: user?.phone || user?.phone_number || user?.subuser_phone || responseData?.phone || responseData?.subuser_phone,
+            phone_number: user?.phone_number || user?.phone || user?.subuser_phone || responseData?.phone_number || responseData?.phone,
+            subuser_phone: user?.subuser_phone || user?.phone || user?.phone_number || responseData?.subuser_phone,
             token: token // Add token to userData for easy access
           }
 
@@ -1053,7 +1066,7 @@ async createSubuser(subuserData: {
   }
 
   async getAuditReportsByEmail(email: string): Promise<ApiResponse<AuditReport[]>> {
-    return this.request<AuditReport[]>(`/api/AuditReports/by-email/${encodeURIComponent(email)}`)
+    return this.request<AuditReport[]>(`/api/EnhancedAuditReports/by-email/${encodeURIComponent(email)}`)
   }
   
   async getAuditReports(): Promise<ApiResponse<AuditReport[]>> {

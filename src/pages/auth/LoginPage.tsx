@@ -2,7 +2,7 @@ import { FormEvent, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { Helmet } from "react-helmet-async";
-import axios from "axios";
+import { api, setAuthToken } from "@/utils/apiClient";
 import { authService } from "@/utils/authService";
 
 export default function LoginPage() {
@@ -50,8 +50,8 @@ export default function LoginPage() {
       console.log("🔐 Step 1: Requesting OTP for:", forgotEmail);
 
       // First, call the backend API to generate OTP and resetToken
-      const backendResponse = await axios.post(
-        "https://api.dsecuretech.com/api/forgot/request",
+      const backendResponse = await api.post(
+        "/api/forgot/request",
         { email: forgotEmail },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -85,8 +85,10 @@ export default function LoginPage() {
           `Your OTP for password reset is: ${backendResponse.data.otp}. This OTP is valid for 10 minutes.`
         );
 
-        await axios.post(`https://formsubmit.co/${forgotEmail}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        // FormSubmit.co is external service - use fetch directly
+        await fetch(`https://formsubmit.co/${forgotEmail}`, {
+          method: 'POST',
+          body: formData,
         });
 
         console.log("✅ OTP sent via FormSubmit.co");
@@ -116,10 +118,9 @@ export default function LoginPage() {
     try {
       console.log("🔐 Step 2: Validating reset link with token:", token);
 
-      const response = await axios.post(
-        "https://api.dsecuretech.com/api/forgot/validate-reset-link",
-        { resetToken: token },
-        { headers: { "Content-Type": "application/json" } }
+      const response = await api.post(
+        "/api/forgot/validate-reset-link",
+        { resetToken: token }
       );
 
       console.log("✅ Step 2 Response:", response.data);
@@ -161,13 +162,12 @@ export default function LoginPage() {
       console.log("  - Email:", forgotEmail);
       console.log("  - OTP:", otp);
 
-      const response = await axios.post(
-        "https://api.dsecuretech.com/api/forgot/verify-otp",
+      const response = await api.post(
+        "/api/forgot/verify-otp",
         {
           email: forgotEmail,
           otp: otp,
-        },
-        { headers: { "Content-Type": "application/json" } }
+        }
       );
 
       console.log("✅ Step 3 Response:", response.data);
@@ -205,10 +205,9 @@ export default function LoginPage() {
     try {
       console.log("🔄 Resending OTP for:", forgotEmail);
 
-      const response = await axios.post(
-        "https://api.dsecuretech.com/api/forgot/resend-otp",
-        { email: forgotEmail },
-        { headers: { "Content-Type": "application/json" } }
+      const response = await api.post(
+        "/api/forgot/resend-otp",
+        { email: forgotEmail }
       );
 
       console.log("✅ Resend OTP Response:", response.data);
@@ -229,8 +228,10 @@ export default function LoginPage() {
           `Your OTP for password reset is: ${response.data.otp}. This OTP is valid for 10 minutes.`
         );
 
-        await axios.post(`https://formsubmit.co/${forgotEmail}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
+        // FormSubmit.co is external service - use fetch directly
+        await fetch(`https://formsubmit.co/${forgotEmail}`, {
+          method: 'POST',
+          body: formData,
         });
 
         showToast(
@@ -273,15 +274,14 @@ export default function LoginPage() {
       console.log("  - Reset Token:", resetToken);
       console.log("  - New Password: ******");
 
-      const response = await axios.post(
-        "https://api.dsecuretech.com/api/forgot/reset",
+      const response = await api.post(
+        "/api/forgot/reset",
         {
           email: forgotEmail,
           otp: otp,
           resetToken: resetToken,
           newPassword: newPassword,
-        },
-        { headers: { "Content-Type": "application/json" } }
+        }
       );
 
       console.log("✅ Step 4 Response:", response.data);
@@ -435,18 +435,12 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Make API call to .NET backend
-      const response = await axios.post(
+      // Make API call to .NET backend (auto-decryption handled by interceptor)
+      const response = await api.post(
         "https://api.dsecuretech.com/api/RoleBasedAuth/login",
         {
           email: email,
           password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("jwt_token") || ""}`,
-          },
         }
       );
 
@@ -494,8 +488,8 @@ export default function LoginPage() {
       localStorage.setItem("user_data", JSON.stringify(user));
       localStorage.setItem("authUser", JSON.stringify(user));
 
-      // 🔐 Set default axios authorization header
-      axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+      // 🔐 Set auth token for all future API requests
+      setAuthToken(data.token, rememberMe);
 
       // ✅ Show success toast
       showToast("Login successful! Redirecting...", "success");
