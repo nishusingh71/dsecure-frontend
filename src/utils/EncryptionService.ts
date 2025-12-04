@@ -18,9 +18,10 @@
  */
 
 import CryptoJS from 'crypto-js';
+import pako from 'pako';
 
 // Secret key from environment
-const SECRET_KEY = import.meta.env.VITE_RES_KEY || '2b8A!1Pv]{0ykhpp^F,D28*MV6!}|~~£';
+const SECRET_KEY = import.meta.env.VITE_RES_KEY || '2b8A1Pv0ykhppFD28MV6ResponseKey!';
 
 /**
  * Interface for encrypted response from backend
@@ -233,36 +234,68 @@ class EncryptionServiceClass {
         padding: CryptoJS.pad.Pkcs7,
       });
 
-      // Step 6: Convert decrypted WordArray to UTF-8 string
-      const decryptedString = decrypted.toString(CryptoJS.enc.Utf8);
-
-      if (!decryptedString) {
+      // Step 6: Convert decrypted WordArray to bytes for decompression
+      const decryptedWords = decrypted.words;
+      const decryptedSigBytes = decrypted.sigBytes;
+      
+      if (decryptedSigBytes === 0) {
         // Additional debugging for failed decryption
         if (import.meta.env.DEV) {
           console.error('❌ Decryption produced empty result');
           console.error('   This usually means key/IV mismatch');
-          console.error(`   Decrypted raw (hex): ${decrypted.toString(CryptoJS.enc.Hex)}`);
         }
         throw new Error('Decryption produced empty result - key/IV mismatch or corrupted data');
       }
 
-      if (import.meta.env.DEV) {
-        console.log('✅ Decryption successful');
-        console.log(`   Decrypted string length: ${decryptedString.length} chars`);
-        // Log first 100 chars for debugging
-        console.log(`   Preview: ${decryptedString.substring(0, 100)}...`);
+      // Convert WordArray to Uint8Array for pako decompression
+      const decryptedBytes = new Uint8Array(decryptedSigBytes);
+      for (let i = 0; i < decryptedSigBytes; i++) {
+        const wordIndex = Math.floor(i / 4);
+        const byteIndex = i % 4;
+        decryptedBytes[i] = (decryptedWords[wordIndex] >>> (24 - byteIndex * 8)) & 0xff;
       }
 
-      // Step 7: Try to parse as JSON, fallback to raw string
+      if (import.meta.env.DEV) {
+        console.log('🔓 Decryption successful, now decompressing...');
+        console.log(`   Decrypted bytes: ${decryptedSigBytes}`);
+      }
+
+      // Step 7: Gzip Decompress using pako
+      let decompressedString: string;
       try {
-        const parsedData = JSON.parse(decryptedString);
+        decompressedString = pako.ungzip(decryptedBytes, { to: 'string' });
+        if (import.meta.env.DEV) {
+          console.log('✅ Decompression successful');
+          console.log(`   Decompressed string length: ${decompressedString.length} chars`);
+          // Log first 100 chars for debugging
+          console.log(`   Preview: ${decompressedString.substring(0, 100)}...`);
+        }
+      } catch (decompressError) {
+        // If decompression fails, maybe data wasn't compressed - try as raw UTF-8
+        if (import.meta.env.DEV) {
+          console.log('⚠️ Gzip decompression failed, trying as raw UTF-8...');
+        }
+        decompressedString = decrypted.toString(CryptoJS.enc.Utf8);
+        
+        if (!decompressedString) {
+          throw new Error('Data is neither gzip compressed nor valid UTF-8');
+        }
+        
+        if (import.meta.env.DEV) {
+          console.log('✅ Raw UTF-8 decoding successful (data was not compressed)');
+        }
+      }
+
+      // Step 8: Try to parse as JSON, fallback to raw string
+      try {
+        const parsedData = JSON.parse(decompressedString);
         return parsedData as T;
       } catch {
         // Not valid JSON, return as string (e.g., for JWT tokens)
         if (import.meta.env.DEV) {
           console.log('   Response is not JSON, returning as string');
         }
-        return decryptedString as T;
+        return decompressedString as T;
       }
     } catch (error) {
       console.error('❌ Decryption failed:', error);

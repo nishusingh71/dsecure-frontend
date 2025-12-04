@@ -303,11 +303,11 @@ CREATE TABLE \`subuser\` (
   \`phone\` varchar(255) DEFAULT NULL,
   \`department\` varchar(100) DEFAULT NULL,
   \`role\` varchar(100) DEFAULT NULL,
-  \`permissions\` json DEFAULT NULL,
+  \`permissionsJson\` json DEFAULT NULL,
   \`assignedMachines\` int(11) DEFAULT '0',
   \`maxMachines\` int(11) DEFAULT '0',
-  \`machineIds\` json DEFAULT NULL,
-  \`licenseIds\` json DEFAULT NULL,
+  \`machineIdsJson\` json DEFAULT NULL,
+  \`licenseIdsJson\` json DEFAULT NULL,
   \`groupId\` bigint(20) DEFAULT '0',
   \`status\` varchar(50) DEFAULT 'inactive',
   \`activity_status\` varchar(50) DEFAULT 'offline',
@@ -320,7 +320,7 @@ CREATE TABLE \`subuser\` (
   \`systemAlerts\` tinyint(1) DEFAULT '1',
   \`last_login\` varchar(50) DEFAULT NULL,
   \`last_logout\` varchar(50) DEFAULT NULL,
-  \`failedLoginCount\` int(11) DEFAULT '0',
+  \`failedLoginAttempts\` int(11) DEFAULT '0',
   \`lockedUntil\` datetime DEFAULT NULL,
   \`createdBy\` bigint(20) DEFAULT '0',
   \`createdAt\` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -339,18 +339,20 @@ CREATE TABLE \`subuser\` (
   \`organization_name\` varchar(100) DEFAULT NULL,
   PRIMARY KEY (\`subuser_id\`),
   UNIQUE KEY \`uk_subuser_email\` (\`subuser_email\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 2. Create Users Table (Main Admin/Users)
 CREATE TABLE \`Users\` (
   \`user_id\` int(11) NOT NULL AUTO_INCREMENT,
   \`user_name\` varchar(255) NOT NULL,
   \`user_email\` varchar(255) NOT NULL,
-  \`is_private_server\` tinyint(1) DEFAULT NULL,
-  \`private_api_key\` tinyint(1) DEFAULT NULL,
+  \`user_password\` varchar(255) NOT NULL,
+  \`hash_password\` Longtext NOT NULL,
+  \`is_private_cloud\` tinyint(1) DEFAULT NULL,
+  \`private_api\` tinyint(1) DEFAULT NULL,
   \`phone_number\` varchar(20) DEFAULT NULL,
-  \`payment_details\` json DEFAULT NULL,
-  \`license_details\` json DEFAULT NULL,
+  \`payment_details_json\` json DEFAULT NULL,
+  \`license_details_json\` json DEFAULT NULL,
   \`created_at\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   \`updated_at\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   \`department\` varchar(50) DEFAULT NULL,
@@ -368,7 +370,7 @@ CREATE TABLE \`Users\` (
   \`last_login_ip\` varchar(50) DEFAULT NULL,
   PRIMARY KEY (\`user_id\`),
   UNIQUE KEY \`uk_user_email\` (\`user_email\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+);`,
   },
   {
     id: "rbac",
@@ -383,7 +385,7 @@ CREATE TABLE \`Roles\` (
   \`CreatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (\`RoleId\`),
   UNIQUE KEY \`uk_RoleName\` (\`RoleName\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 4. Create Permissions Table
 CREATE TABLE \`Permissions\` (
@@ -393,7 +395,7 @@ CREATE TABLE \`Permissions\` (
   \`CreatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (\`PermissionId\`),
   UNIQUE KEY \`uk_PermissionName\` (\`PermissionName\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 5. Create Routes Table (API Endpoints)
 CREATE TABLE \`Routes\` (
@@ -404,7 +406,7 @@ CREATE TABLE \`Routes\` (
   \`CreatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (\`RouteId\`),
   INDEX \`idx_RoutePath\` (\`RoutePath\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+);`,
   },
   {
     id: "rbac-mappings",
@@ -418,7 +420,7 @@ CREATE TABLE \`UserRoles\` (
   \`AssignedByEmail\` longtext NOT NULL,
   PRIMARY KEY (\`UserId\`, \`RoleId\`),
   CONSTRAINT \`fk_UserRoles_Roles\` FOREIGN KEY (\`RoleId\`) REFERENCES \`Roles\` (\`RoleId\`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 7. Create SubuserRoles (Links Subusers to Roles)
 CREATE TABLE \`SubuserRoles\` (
@@ -429,7 +431,7 @@ CREATE TABLE \`SubuserRoles\` (
   PRIMARY KEY (\`SubuserId\`, \`RoleId\`),
   CONSTRAINT \`fk_SubuserRoles_Subuser\` FOREIGN KEY (\`SubuserId\`) REFERENCES \`subuser\` (\`subuser_id\`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT \`fk_SubuserRoles_Roles\` FOREIGN KEY (\`RoleId\`) REFERENCES \`Roles\` (\`RoleId\`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 8. Create RolePermissions (Links Roles to Permissions)
 CREATE TABLE \`RolePermissions\` (
@@ -438,7 +440,7 @@ CREATE TABLE \`RolePermissions\` (
   PRIMARY KEY (\`RoleId\`, \`PermissionId\`),
   CONSTRAINT \`fk_RolePermissions_Roles\` FOREIGN KEY (\`RoleId\`) REFERENCES \`Roles\` (\`RoleId\`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT \`fk_RolePermissions_Permissions\` FOREIGN KEY (\`PermissionId\`) REFERENCES \`Permissions\` (\`PermissionId\`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+);`,
   },
   {
     id: "monitoring",
@@ -455,7 +457,7 @@ CREATE TABLE \`Sessions\` (
   \`session_status\` varchar(50) NOT NULL DEFAULT 'active',
   PRIMARY KEY (\`session_id\`),
   INDEX \`idx_user_email\` (\`user_email\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 10. Create Logs Table
 CREATE TABLE \`Logs\` (
@@ -468,7 +470,7 @@ CREATE TABLE \`Logs\` (
   PRIMARY KEY (\`log_id\`),
   INDEX \`idx_logs_created_at\` (\`created_at\`),
   INDEX \`idx_logs_user_email\` (\`user_email\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 11. Create Commands Table
 CREATE TABLE \`commands\` (
@@ -481,7 +483,7 @@ CREATE TABLE \`commands\` (
   PRIMARY KEY (\`Command_id\`),
   INDEX \`idx_command_status\` (\`command_status\`),
   INDEX \`idx_commands_user_email\` (\`user_email\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+);`,
   },
   {
     id: "business-logic",
@@ -489,7 +491,7 @@ CREATE TABLE \`commands\` (
     description: "Machine fingerprints and audit reports",
     sql: `-- 12. Create Machines Table
 CREATE TABLE \`Machines\` (
-  \`fingerprint\` varchar(255) NOT NULL,
+  \`fingerprint_hash\` varchar(255) NOT NULL,
   \`mac_address\` varchar(255) NOT NULL,
   \`physical_drive_id\` varchar(255) NOT NULL,
   \`cpu_id\` varchar(255) NOT NULL,
@@ -497,19 +499,19 @@ CREATE TABLE \`Machines\` (
   \`os_version\` varchar(255) NOT NULL,
   \`user_email\` varchar(255) NOT NULL,
   \`subuser_email\` varchar(255) DEFAULT NULL,
-  \`license_active\` tinyint(1) NOT NULL DEFAULT '0',
+  \`license_activated\` tinyint(1) NOT NULL DEFAULT '0',
   \`license_activation_date\` datetime(6) DEFAULT NULL,
-  \`license_days\` int(11) NOT NULL DEFAULT '0',
-  \`license_details\` json NOT NULL,
-  \`demo_usage\` int(11) NOT NULL DEFAULT '0',
+  \`license_days_valid\` int(11) NOT NULL DEFAULT '0',
+  \`license_details_json\` json NOT NULL,
+  \`demo_usage_count\` int(11) NOT NULL DEFAULT '0',
   \`created_at\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   \`updated_at\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   \`vm_status\` longtext NOT NULL,
-  \`machine_config\` json DEFAULT NULL,
-  PRIMARY KEY (\`fingerprint\`),
+  \`machine_details_json\` json DEFAULT NULL,
+  PRIMARY KEY (\`fingerprint_hash\`),
   INDEX \`idx_machines_user_email\` (\`user_email\`),
   INDEX \`idx_machines_mac_address\` (\`mac_address\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 -- 13. Create AuditReports Table
 CREATE TABLE \`AuditReports\` (
@@ -523,7 +525,7 @@ CREATE TABLE \`AuditReports\` (
   PRIMARY KEY (\`report_id\`),
   INDEX \`idx_client_email\` (\`client_email\`),
   INDEX \`idx_synced\` (\`synced\`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+);`,
   },
 ];
 
