@@ -44,23 +44,18 @@ export default defineConfig({
       treeshake: 'recommended',
       output: {
         // Enhanced chunk splitting for better code-splitting
+        // Bundle all React-dependent libraries together to avoid initialization issues
         manualChunks: (id) => {
-          // React core + helmet + router - keep together to avoid initialization issues
+          // React core + all React-dependent libraries - keep together to avoid initialization issues
           if (id.includes('node_modules/react/') || 
               id.includes('node_modules/react-dom/') ||
               id.includes('node_modules/scheduler/') ||
               id.includes('react-helmet') ||
               id.includes('node_modules/react-router') || 
-              id.includes('node_modules/@remix-run/')) {
+              id.includes('node_modules/@remix-run/') ||
+              id.includes('@tanstack/react-query') ||
+              id.includes('framer-motion')) {
             return 'react-vendor'
-          }
-          // TanStack Query
-          if (id.includes('@tanstack/react-query')) {
-            return 'query'
-          }
-          // Animation library
-          if (id.includes('framer-motion')) {
-            return 'framer'
           }
           // JSZip
           if (id.includes('jszip')) {
