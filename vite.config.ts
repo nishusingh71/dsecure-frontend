@@ -16,7 +16,7 @@ export default defineConfig({
   },
   // Enhanced performance optimizations
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', '@tanstack/react-query', 'react-helmet-async'],
     exclude: ['@vite/client', '@vite/env']
   },
   
@@ -31,7 +31,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     // Increase chunk size limit to suppress warnings
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 2000,
     // Enhanced minification
     minify: 'esbuild',
     // Target modern browsers for better performance
@@ -43,36 +43,13 @@ export default defineConfig({
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // Enhanced chunk splitting for better code-splitting
-        // Bundle all React-dependent libraries together to avoid initialization issues
+        // ✅ Simplified chunk splitting - bundle all vendor libs together to avoid initialization errors
         manualChunks: (id) => {
-          // React core + all React-dependent libraries - keep together to avoid initialization issues
-          if (id.includes('node_modules/react/') || 
-              id.includes('node_modules/react-dom/') ||
-              id.includes('node_modules/scheduler/') ||
-              id.includes('react-helmet') ||
-              id.includes('node_modules/react-router') || 
-              id.includes('node_modules/@remix-run/') ||
-              id.includes('@tanstack/react-query') ||
-              id.includes('framer-motion')) {
-            return 'react-vendor'
+          // ALL node_modules go into vendor chunk to avoid initialization order issues
+          if (id.includes('node_modules')) {
+            return 'vendor'
           }
-          // JSZip
-          if (id.includes('jszip')) {
-            return 'jszip'
-          }
-          // Utilities
-          if (id.includes('node_modules/axios') || 
-              id.includes('node_modules/date-fns') ||
-              id.includes('node_modules/clsx') ||
-              id.includes('node_modules/tailwind-merge')) {
-            return 'utils'
-          }
-          // Lucide icons
-          if (id.includes('lucide-react')) {
-            return 'icons'
-          }
-          // Split large dashboard pages
+          // Split large dashboard pages for code splitting
           if (id.includes('AdminDashboard')) {
             return 'admin-dashboard'
           }
@@ -104,7 +81,7 @@ export default defineConfig({
     devSourcemap: false
   },
   
-  // Enable compression
+  // Enable compression - remove console logs in production
   esbuild: {
     drop: ['console', 'debugger']
   }
