@@ -681,6 +681,9 @@ export default function LoginPage() {
                     <p className="text-xs text-slate-500 mt-2">
                       We'll send you an OTP to verify your identity
                     </p>
+                     <p className="text-xs green-slate-500 mt-2">
+                      Note:- Once you confirm the initial activation link from FormSubmit.co, you will receive all future OTPs via email. 
+                    </p>
                   </div>
 
                   <div className="flex gap-3">
