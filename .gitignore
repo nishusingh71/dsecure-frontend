@@ -63,6 +63,17 @@ desktop.ini
 # Markdown documentation files
 *.md
 
+# Python files
+*.py
+
+# Testing files and folders
+testsprite_tests/
+src/tests/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
 # Screenshots folder
 ss/
 *png
