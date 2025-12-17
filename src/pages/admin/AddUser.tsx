@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -85,7 +85,7 @@ export default function AddUser() {
         return
       }
 
-      console.log('📧 Fetching user details for:', userEmail)
+      // console.log('📧 Fetching user details for:', userEmail)
       
       // Fetch user details from /api/Users/{email}
       const userRes = await apiClient.getUserByEmail(userEmail)
@@ -104,7 +104,7 @@ export default function AddUser() {
         }
         
         setLoggedInUserData(displayData)
-        console.log('✅ Logged-in user data loaded:', displayData)
+        // console.log('✅ Logged-in user data loaded:', displayData)
       } else {
         console.warn('⚠️ Failed to fetch user details:', userRes.error)
       }
@@ -156,7 +156,7 @@ export default function AddUser() {
         createdAt: new Date().toISOString()
       }
       
-      console.log('Creating user:', newUser)
+      // console.log('Creating user:', newUser)
       
       // Success message
       alert(`User "${formData.name}" has been created successfully!`)

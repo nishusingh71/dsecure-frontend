@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useAuth } from '@/auth/AuthContext';
 import { hasPermission, type RolePermissions } from '@/utils/rolePermissions';
 import { getPrimaryRole } from '@/utils/roleHelper';
@@ -65,11 +65,11 @@ export const RoleBased: React.FC<RoleBasedProps> = ({
     const storedUserData = getUserDataFromStorage();
     if (storedUserData) {
       currentUser = storedUserData;
-      console.log('🔄 RoleBased: Using localStorage user data as fallback:', {
-        role: storedUserData.role,
-        roles: storedUserData.roles,
-        email: storedUserData.email
-      });
+      // console.log('🔄 RoleBased: Using localStorage user data as fallback:', {
+        // role: storedUserData.role,
+        // roles: storedUserData.roles,
+        // email: storedUserData.email
+      // });
     }
   }
   
@@ -81,18 +81,18 @@ export const RoleBased: React.FC<RoleBasedProps> = ({
   // Get the user's primary role using the helper
   const userRole = getPrimaryRole(currentUser);
   
-  console.log('🔍 RoleBased check:', {
-    userRole,
-    permission,
-    requestedRoles: roles,
-    userFromContext: !!user,
-    userFromStorage: !user && !!currentUser
-  });
+  // console.log('🔍 RoleBased check:', {
+  //   userRole,
+  //   permission,
+  //   requestedRoles: roles,
+  //   userFromContext: !!user,
+  //   userFromStorage: !user && !!currentUser
+  // });
 
   // Check permission-based access
   if (permission) {
     const hasAccess = hasPermission(userRole, permission);
-    console.log(`🔐 Permission check: ${permission} = ${hasAccess} (role: ${userRole})`);
+    // console.log(`🔐 Permission check: ${permission} = ${hasAccess} (role: ${userRole})`);
     if (!hasAccess) {
       return <>{fallback}</>;
     }
@@ -105,7 +105,7 @@ export const RoleBased: React.FC<RoleBasedProps> = ({
       ? roles.every(role => role.toLowerCase() === normalizedUserRole)
       : roles.some(role => role.toLowerCase() === normalizedUserRole);
     
-    console.log(`👤 Role check: ${normalizedUserRole} in [${roles.join(', ')}] = ${hasRole}`);
+    // console.log(`👤 Role check: ${normalizedUserRole} in [${roles.join(', ')}] = ${hasRole}`);
     
     if (!hasRole) {
       return <>{fallback}</>;

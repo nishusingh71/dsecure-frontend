@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
@@ -122,7 +122,7 @@ export default function AdminReports() {
 
   const handleDownloadReport = (reportId: string) => {
     // Handle report download
-    console.log('Downloading report:', reportId)
+    // console.log('Downloading report:', reportId)
   }
 
   return (

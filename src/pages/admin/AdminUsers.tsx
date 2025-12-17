@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
@@ -82,7 +82,7 @@ export default function AdminUsers() {
   const handleDeleteUser = (userId: string) => {
     if (confirm('Are you sure you want to delete this user?')) {
       // Handle user deletion
-      console.log('Deleting user:', userId)
+      // console.log('Deleting user:', userId)
     }
   }
 
@@ -113,7 +113,7 @@ export default function AdminUsers() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
       
-      console.log(`Updating licenses for user ${selectedUser.id} from ${selectedUser.licenses} to ${newCount}`)
+      // console.log(`Updating licenses for user ${selectedUser.id} from ${selectedUser.licenses} to ${newCount}`)
       
       // Update the user licenses in the mock data
       const userIndex = users.findIndex(u => u.id === selectedUser.id)

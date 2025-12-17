@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
 import Reveal from '@/components/Reveal'
 import { Helmet } from 'react-helmet-async'
@@ -39,7 +39,7 @@ export default function UserDashboard() {
         const storedUserData = localStorage.getItem('user_data')
         
         if (!storedUserData) {
-          console.log('⚠️ No user_data in localStorage')
+          // console.log('⚠️ No user_data in localStorage')
           // Fallback to AuthContext user
           if (user) {
             setProfileData({
@@ -56,13 +56,13 @@ export default function UserDashboard() {
         }
 
         const parsedData = JSON.parse(storedUserData)
-        console.log('📦 Parsed user_data:', parsedData)
+        // console.log('📦 Parsed user_data:', parsedData)
         
         // Check if logged-in user is a subuser
         const userType = parsedData.user_type || parsedData.userType || user?.role
         const isSubuser = userType === 'subuser'
         
-        console.log(`🔍 User Type: ${userType}, Is Subuser: ${isSubuser}`)
+        // console.log(`🔍 User Type: ${userType}, Is Subuser: ${isSubuser}`)
 
         if (isSubuser) {
           // Fetch subuser data from API
@@ -74,13 +74,13 @@ export default function UserDashboard() {
             return
           }
 
-          console.log(`📧 Fetching subuser data for: ${subuserEmail}`)
+          // console.log(`📧 Fetching subuser data for: ${subuserEmail}`)
           
           const response = await apiClient.getEnhancedSubuser(subuserEmail)
           
           if (response.success && response.data) {
             const subuserData = response.data
-            console.log('✅ Subuser data fetched:', subuserData)
+            // console.log('✅ Subuser data fetched:', subuserData)
             
             // Use Subuser interface fields: subuser_name, subuser_phone, name, phone
             setProfileData({
@@ -104,7 +104,7 @@ export default function UserDashboard() {
           }
         } else {
           // Regular user - use AuthContext or localStorage data
-          console.log('👤 Regular user detected')
+          // console.log('👤 Regular user detected')
           setProfileData({
             name: parsedData.user_name || parsedData.name || user?.name || 'User',
             email: parsedData.user_email || parsedData.email || user?.email || '',

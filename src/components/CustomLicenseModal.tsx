@@ -1,4 +1,4 @@
-import React, { useState, memo, useMemo, useCallback } from 'react';
+﻿import React, { useState, memo, useMemo, useCallback } from 'react';
 
 interface CustomLicenseModalProps {
   isOpen: boolean;
@@ -160,17 +160,17 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
       }
     }
     
-    console.log('Validation results:', { formData, newErrors });
+    // console.log('Validation results:', { formData, newErrors });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted with data:', formData);
+    // console.log('Form submitted with data:', formData);
     
     if (validateForm()) {
-      console.log('Form validation passed, calling onSubmit');
+      // console.log('Form validation passed, calling onSubmit');
       try {
         await onSubmit(formData);
         // Don't close modal here - let the parent handle success/error
@@ -179,7 +179,7 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
         // Error handling is done by the parent component
       }
     } else {
-      console.log('Form validation failed with errors:', errors);
+      // console.log('Form validation failed with errors:', errors);
       // Scroll to first error field
       const firstErrorField = document.querySelector('.border-red-500');
       if (firstErrorField) {

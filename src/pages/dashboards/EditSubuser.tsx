@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useAuth } from '@/auth/AuthContext'
@@ -60,12 +60,12 @@ export default function EditSubuser() {
       }
 
       try {
-        console.log('🔄 Fetching fresh data for:', userData.subuser_email)
+        // console.log('🔄 Fetching fresh data for:', userData.subuser_email)
         const res = await apiClient.getEnhancedSubuser(userData.subuser_email)
 
         if (res?.success && res.data) {
           const enhanced = res.data
-          console.log('✅ Fresh subuser data received:', enhanced)
+          // console.log('✅ Fresh subuser data received:', enhanced)
 
           // Extract values with proper fallbacks
           const userName = enhanced.subuser_name || enhanced.name || ''
@@ -74,13 +74,13 @@ export default function EditSubuser() {
           const userDept = enhanced.department || ''
           const userStatus = enhanced.status || 'active'
 
-          console.log('📋 Setting form data:')
-          console.log('  - Email:', enhanced.subuser_email)
-          console.log('  - Name:', userName)
-          console.log('  - Phone:', userPhone)
-          console.log('  - Role:', userRole)
-          console.log('  - Department:', userDept)
-          console.log('  - Status:', userStatus)
+          // console.log('📋 Setting form data:')
+          // console.log('  - Email:', enhanced.subuser_email)
+          // console.log('  - Name:', userName)
+          // console.log('  - Phone:', userPhone)
+          // console.log('  - Role:', userRole)
+          // console.log('  - Department:', userDept)
+          // console.log('  - Status:', userStatus)
 
           setFormData({
             subuser_email: enhanced.subuser_email,
@@ -127,9 +127,9 @@ export default function EditSubuser() {
       }
       
       // Debug logging
-      console.log('🔍 Debug - User email from localStorage (user_data):', getUserEmailFromStorage())
-      console.log('🔍 Debug - User email from AuthContext:', user?.email)
-      console.log('🔍 Debug - Final parent email:', parentEmail)
+      // console.log('🔍 Debug - User email from localStorage (user_data):', getUserEmailFromStorage())
+      // console.log('🔍 Debug - User email from AuthContext:', user?.email)
+      // console.log('🔍 Debug - Final parent email:', parentEmail)
       
       // Final validation
       if (!parentEmail || parentEmail === 'unknown@example.com' || parentEmail.includes('unknown')) {
@@ -137,8 +137,8 @@ export default function EditSubuser() {
         throw new Error('Valid parent email not found. Please log out and log in again.')
       }
       
-      console.log('✅ Using parent email:', parentEmail)
-      console.log('📤 Update request - Parent:', parentEmail, 'Subuser:', formData.subuser_email)
+      // console.log('✅ Using parent email:', parentEmail)
+      // console.log('📤 Update request - Parent:', parentEmail, 'Subuser:', formData.subuser_email)
       
       // Update user via EnhancedSubusers/by-parent endpoint
       const response = await apiClient.updateEnhancedSubuserByParent(

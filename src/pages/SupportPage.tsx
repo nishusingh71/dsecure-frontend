@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, memo } from "react";
+﻿import React, { useState, useCallback, useMemo, memo } from "react";
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
@@ -504,7 +504,7 @@ const SupportPage: React.FC = () => {
   }, [navigate]);
 
   const handleLicenseSubmit = useCallback((formData: LicenseFormData) => {
-    console.log('License request from Support Page:', formData);
+    // console.log('License request from Support Page:', formData);
     
     // Prepare email data for EmailJS
     const emailData = {
@@ -531,7 +531,7 @@ const SupportPage: React.FC = () => {
     };
 
     // Log email data for debugging
-    console.log('License email data prepared:', emailData);
+    // console.log('License email data prepared:', emailData);
     
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
@@ -552,7 +552,7 @@ const SupportPage: React.FC = () => {
   }, [showToast]);
 
   const handlePartnershipSubmit = useCallback((formData: PartnershipFormData) => {
-    console.log('Partnership request from Support Page:', formData);
+    // console.log('Partnership request from Support Page:', formData);
     
     // Prepare email data for EmailJS
     const emailData = {
@@ -576,7 +576,7 @@ const SupportPage: React.FC = () => {
     };
     
     // Log email data for debugging
-    console.log('Partnership email data prepared:', emailData);
+    // console.log('Partnership email data prepared:', emailData);
     
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
@@ -618,7 +618,7 @@ const SupportPage: React.FC = () => {
     };
 
     // Log email data for debugging
-    console.log('Support ticket email data prepared:', emailData);
+    // console.log('Support ticket email data prepared:', emailData);
     
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)

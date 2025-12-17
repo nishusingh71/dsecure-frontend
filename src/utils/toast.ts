@@ -1,4 +1,4 @@
-// Toast notification utility for the entire application
+﻿// Toast notification utility for the entire application
 
 export interface ToastNotification {
   message: string;
@@ -31,7 +31,7 @@ export const showToast = (
     toastHandler({ message, type, duration });
   } else {
     // Fallback to console if no handler is registered
-    console.log(`Toast [${type.toUpperCase()}]: ${message}`);
+    // console.log(`Toast [${type.toUpperCase()}]: ${message}`);
   }
 };
 

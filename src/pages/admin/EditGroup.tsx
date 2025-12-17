@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -113,7 +113,7 @@ export default function EditGroup() {
         updatedAt: new Date().toISOString()
       }
       
-      console.log('Updating group:', updatedGroup)
+      // console.log('Updating group:', updatedGroup)
       
       // Success message
       alert(`Group "${formData.name}" has been updated successfully!`)

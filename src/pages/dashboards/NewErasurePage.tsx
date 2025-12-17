@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+﻿import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Reveal from '@/components/Reveal'
 import { useAuth } from '@/auth/AuthContext'
@@ -81,7 +81,7 @@ const NewErasurePage: React.FC = () => {
 
   const handleStartErasure = () => {
     // Here you would typically make an API call to start the erasure process
-    console.log('Starting erasure with config:', config)
+    // console.log('Starting erasure with config:', config)
     alert('Erasure process started successfully!')
   }
 

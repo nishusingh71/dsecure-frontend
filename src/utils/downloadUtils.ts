@@ -1,4 +1,4 @@
-// Download utility functions
+﻿// Download utility functions
 export const generateDummyPDF = (title: string, pages: number = 1): Blob => {
   // Create a simple PDF-like content
   const pdfContent = `%PDF-1.4
@@ -103,7 +103,7 @@ export const downloadResource = (resource: {
     URL.revokeObjectURL(url);
     
     // Show success message (optional)
-    console.log(`Downloaded: ${resource.title}`);
+    // console.log(`Downloaded: ${resource.title}`);
     
     return true;
   } catch (error) {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SEO Utility - Centralized SEO metadata management for DSecure Tech
  * Provides consistent, optimized meta tags and structured data across all pages
  */
@@ -912,7 +912,7 @@ export const generateMetaTags = (seoData: SEOMetadata) => {
 // SEO performance monitoring
 export const trackSEOPerformance = (pageName: string, metrics: any) => {
   // Implementation for tracking SEO performance metrics
-  console.log(`SEO Performance for ${pageName}:`, metrics);
+  // console.log(`SEO Performance for ${pageName}:`, metrics);
 };
 
 // Keyword density analyzer

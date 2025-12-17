@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -50,7 +50,7 @@ export default function AdminSettings() {
 
   const handleSaveSettings = () => {
     // Handle settings save
-    console.log('Saving settings:', settings)
+    // console.log('Saving settings:', settings)
     alert('Settings saved successfully!')
   }
 

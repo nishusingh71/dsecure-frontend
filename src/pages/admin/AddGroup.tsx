@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -83,7 +83,7 @@ export default function AddGroup() {
         })
       }
       
-      console.log('Creating group:', newGroup)
+      // console.log('Creating group:', newGroup)
       
       // Success message
       alert(`Group "${formData.name}" has been created successfully!`)

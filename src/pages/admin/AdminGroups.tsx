@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -109,7 +109,7 @@ export default function AdminGroups() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
       
-      console.log(`Updating licenses for group ${selectedGroup.id} from ${selectedGroup.licenses} to ${newCount}`)
+      // console.log(`Updating licenses for group ${selectedGroup.id} from ${selectedGroup.licenses} to ${newCount}`)
       
       // Update the group licenses in the mock data
       const groupIndex = mockGroups.findIndex(g => g.id === selectedGroup.id)

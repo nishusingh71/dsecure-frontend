@@ -1,4 +1,4 @@
-// Role-Based Access Control (RBAC) System for Admin Dashboard
+﻿// Role-Based Access Control (RBAC) System for Admin Dashboard
 
 export type UserRole = 'superadmin' | 'administrator' | 'admin' | 'manager' | 'user';
 
@@ -242,15 +242,15 @@ export function getRolePermissions(role: string): RolePermissions {
   const permissions = ROLE_PERMISSIONS[normalizedRole] || ROLE_PERMISSIONS.user;
   
   // Debug logging
-  console.log('📋 getRolePermissions:', {
-    originalRole: role,
-    normalizedRole,
-    hasPermissions: !!ROLE_PERMISSIONS[normalizedRole],
-    usingFallback: !ROLE_PERMISSIONS[normalizedRole],
-    canViewAllUsers: permissions.canViewAllUsers,
-    canViewGroups: permissions.canViewGroups,
-    canViewSettings: permissions.canViewSettings
-  });
+  // console.log('📋 getRolePermissions:', {
+  //   originalRole: role,
+  //   normalizedRole,
+  //   hasPermissions: !!ROLE_PERMISSIONS[normalizedRole],
+  //   usingFallback: !ROLE_PERMISSIONS[normalizedRole],
+  //   canViewAllUsers: permissions.canViewAllUsers,
+  //   canViewGroups: permissions.canViewGroups,
+  //   canViewSettings: permissions.canViewSettings
+  // });
   
   return permissions;
 }

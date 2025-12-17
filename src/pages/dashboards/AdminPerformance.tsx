@@ -1,4 +1,4 @@
-import Sparkline from '@/components/Sparkline'
+﻿import Sparkline from '@/components/Sparkline'
 import BarChart from '@/components/BarChart'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
@@ -69,7 +69,7 @@ export default function AdminPerformance() {
   // ✅ DEMO MODE: Load static data
   useEffect(() => {
     if (isDemo) {
-      console.log('🎭 DEMO MODE - Loading static performance data');
+      // console.log('🎭 DEMO MODE - Loading static performance data');
       setPerformanceData(DEMO_PERFORMANCE_DATA);
     }
   }, [isDemo])
@@ -79,7 +79,7 @@ export default function AdminPerformance() {
     if (isDemo) return;
     
     if (performanceQuery.data) {
-      console.log('✅ Performance data loaded from React Query:', performanceQuery.data)
+      // console.log('✅ Performance data loaded from React Query:', performanceQuery.data)
       setPerformanceData(performanceQuery.data)
     } else if (performanceQuery.isError) {
       console.error('❌ Error loading performance data:', performanceQuery.error)

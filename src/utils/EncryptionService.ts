@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 🔐 AES-256-CBC Decryption Service for .NET 8 Backend
  * 
  * This service handles decryption of encrypted API responses from the backend.
@@ -173,14 +173,14 @@ class EncryptionServiceClass {
     if (import.meta.env.DEV) {
       const encoder = new TextEncoder();
       const originalBytes = encoder.encode(this.rawKeyString);
-      console.log('🔐 EncryptionService initialized');
-      console.log(`   Original key string length: ${this.rawKeyString.length} chars`);
-      console.log(`   Original key UTF-8 bytes: ${originalBytes.length} bytes`);
-      console.log(`   Processed key (after PadOrTruncate): ${this.secretKey.sigBytes} bytes`);
+      // console.log('🔐 EncryptionService initialized');
+      // console.log(`   Original key string length: ${this.rawKeyString.length} chars`);
+      // console.log(`   Original key UTF-8 bytes: ${originalBytes.length} bytes`);
+      // console.log(`   Processed key (after PadOrTruncate): ${this.secretKey.sigBytes} bytes`);
       
       // Log first few bytes for verification (don't log full key in production!)
       const keyHex = this.secretKey.toString(CryptoJS.enc.Hex);
-      console.log(`   Key (first 16 hex chars): ${keyHex.substring(0, 16)}...`);
+      // console.log(`   Key (first 16 hex chars): ${keyHex.substring(0, 16)}...`);
     }
   }
 
@@ -203,9 +203,9 @@ class EncryptionServiceClass {
       const encryptedData = CryptoJS.enc.Base64.parse(encryptedBase64);
       
       if (import.meta.env.DEV) {
-        console.log('🔓 Decrypting data...');
-        console.log(`   Base64 length: ${encryptedBase64.length} chars`);
-        console.log(`   Total encrypted bytes: ${encryptedData.sigBytes}`);
+        // console.log('🔓 Decrypting data...');
+        // console.log(`   Base64 length: ${encryptedBase64.length} chars`);
+        // console.log(`   Total encrypted bytes: ${encryptedData.sigBytes}`);
       }
       
       // Validate minimum length (IV 16 bytes + at least 1 block of ciphertext)
@@ -217,9 +217,9 @@ class EncryptionServiceClass {
       const { iv, ciphertext } = extractIVAndCiphertext(encryptedData);
 
       if (import.meta.env.DEV) {
-        console.log(`   IV: ${iv.sigBytes} bytes`);
-        console.log(`   IV (hex): ${iv.toString(CryptoJS.enc.Hex)}`);
-        console.log(`   Ciphertext: ${ciphertext.sigBytes} bytes`);
+        // console.log(`   IV: ${iv.sigBytes} bytes`);
+        // console.log(`   IV (hex): ${iv.toString(CryptoJS.enc.Hex)}`);
+        // console.log(`   Ciphertext: ${ciphertext.sigBytes} bytes`);
       }
 
       // Step 4: Create CipherParams object for decryption
@@ -256,8 +256,8 @@ class EncryptionServiceClass {
       }
 
       if (import.meta.env.DEV) {
-        console.log('🔓 Decryption successful, now decompressing...');
-        console.log(`   Decrypted bytes: ${decryptedSigBytes}`);
+        // console.log('🔓 Decryption successful, now decompressing...');
+        // console.log(`   Decrypted bytes: ${decryptedSigBytes}`);
       }
 
       // Step 7: Gzip Decompress using pako
@@ -265,15 +265,15 @@ class EncryptionServiceClass {
       try {
         decompressedString = pako.ungzip(decryptedBytes, { to: 'string' });
         if (import.meta.env.DEV) {
-          console.log('✅ Decompression successful');
-          console.log(`   Decompressed string length: ${decompressedString.length} chars`);
+          // console.log('✅ Decompression successful');
+          // console.log(`   Decompressed string length: ${decompressedString.length} chars`);
           // Log first 100 chars for debugging
-          console.log(`   Preview: ${decompressedString.substring(0, 100)}...`);
+          // console.log(`   Preview: ${decompressedString.substring(0, 100)}...`);
         }
       } catch (decompressError) {
         // If decompression fails, maybe data wasn't compressed - try as raw UTF-8
         if (import.meta.env.DEV) {
-          console.log('⚠️ Gzip decompression failed, trying as raw UTF-8...');
+          // console.log('⚠️ Gzip decompression failed, trying as raw UTF-8...');
         }
         decompressedString = decrypted.toString(CryptoJS.enc.Utf8);
         
@@ -282,7 +282,7 @@ class EncryptionServiceClass {
         }
         
         if (import.meta.env.DEV) {
-          console.log('✅ Raw UTF-8 decoding successful (data was not compressed)');
+          // console.log('✅ Raw UTF-8 decoding successful (data was not compressed)');
         }
       }
 
@@ -293,7 +293,7 @@ class EncryptionServiceClass {
       } catch {
         // Not valid JSON, return as string (e.g., for JWT tokens)
         if (import.meta.env.DEV) {
-          console.log('   Response is not JSON, returning as string');
+          // console.log('   Response is not JSON, returning as string');
         }
         return decompressedString as T;
       }
@@ -319,7 +319,7 @@ class EncryptionServiceClass {
   decryptResponse<T = unknown>(responseData: unknown): T {
     if (this.isEncrypted(responseData)) {
       if (import.meta.env.DEV) {
-        console.log('🔐 Encrypted response detected, decrypting...');
+        // console.log('🔐 Encrypted response detected, decrypting...');
       }
       return this.decrypt<T>(responseData.data);
     }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useNotification } from "@/contexts/NotificationContext";
@@ -85,7 +85,7 @@ export default function PrivateCloudSetup() {
         throw new Error("Failed to submit form");
       }
 
-      console.log("🚀 Private Cloud Setup Data sent to FormSubmit:", privateCloudForm);
+      // console.log("🚀 Private Cloud Setup Data sent to FormSubmit:", privateCloudForm);
 
       showSuccess(
         "Private Cloud Setup Initiated",

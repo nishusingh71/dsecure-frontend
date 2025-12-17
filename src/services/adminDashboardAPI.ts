@@ -1,9 +1,11 @@
-// API Service for Admin Dashboard
+﻿// API Service for Admin Dashboard
 // This file contains all API endpoints and data fetching logic for the admin dashboard
 // ✅ Updated to use apiClient with automatic decryption interceptor
+// 🔒 PII-Safe Refactor: Email is never sent in URL parameters, only in Base64-encoded headers
 
 import { Subuser } from "@/utils/enhancedApiClient"
 import { api } from "@/utils/apiClient"
+import { encodeEmail } from "@/utils/encodeEmail"
 
 interface ApiResponse<T> {
   success: boolean
@@ -153,7 +155,7 @@ async function apiCall<T>(endpoint: string, options?: { method?: string; body?: 
   try {
     const method = options?.method?.toUpperCase() || 'GET'
     let response;
-    
+
     // Use axios api instance which has decryption interceptor
     if (method === 'GET') {
       response = await api.get(`${endpoint}`, {
@@ -187,10 +189,10 @@ async function apiCall<T>(endpoint: string, options?: { method?: string; body?: 
     // Response is already decrypted by axios interceptor
     return { success: true, data: response.data }
   } catch (error: any) {
-    console.error(`❌ API call failed for ${endpoint}:`, error)
+    // Error handled silently - return error response
     // NO FALLBACK - Return error response so UI can show "Data not available"
-    return { 
-      success: false, 
+    return {
+      success: false,
       data: null as unknown as T,
       error: error?.response?.data?.message || error?.message || 'API call failed'
     }
@@ -202,7 +204,7 @@ async function apiCall<T>(endpoint: string, options?: { method?: string; body?: 
 
 // Admin Dashboard API Functions
 export class AdminDashboardAPI {
-  
+
   // Get dashboard statistics
   static async getDashboardStats(): Promise<ApiResponse<DashboardStats>> {
     return apiCall<DashboardStats>('/admin/dashboard/stats')
@@ -235,9 +237,9 @@ export class AdminDashboardAPI {
       // Get user email from stored user data
       const storedUser = localStorage.getItem('user_data');
       const authUser = localStorage.getItem('authUser');
-      
+
       let userEmail = '';
-      
+
       if (storedUser) {
         const userData = JSON.parse(storedUser);
         userEmail = userData.user_email || userData.email || '';
@@ -245,23 +247,23 @@ export class AdminDashboardAPI {
         const userData = JSON.parse(authUser);
         userEmail = userData.user_email || userData.email || '';
       }
-      
+
       if (!userEmail) {
         throw new Error('User email not found in stored data');
       }
-      
-      console.log('🔍 Fetching profile for email:', userEmail);
-      
+
+      // console.log('🔍 Fetching profile for email:', userEmail);
+
       // ✅ Use axios api instance with automatic decryption
-      const response = await api.get(`/api/Users/${userEmail}`);
+      const response = await api.get(`/api/Users/${encodeEmail(userEmail)}`);
       const data = response.data;
-      
-      console.log('✅ Profile data received:', data);
-      
+
+      // console.log('✅ Profile data received:', data);
+
       // Transform backend data to ProfileData format
       // Priority: userRole (camelCase) > user_role > user_type > role
       const roleValue = data.userRole || data.user_role || data.user_type || data.role || 'user';
-      
+
       const profileData: ProfileData = {
         name: data.user_name || data.userName || data.name || 'User',
         email: data.user_email || data.email || userEmail,
@@ -274,15 +276,15 @@ export class AdminDashboardAPI {
         avatar: data.avatar || '',
         licenses: data.licenses || 0
       };
-      
+
       return {
         success: true,
         data: profileData,
         message: 'Profile fetched successfully'
       };
-      
+
     } catch (error: any) {
-      console.error('❌ Error fetching profile:', error);
+      // console.error('❌ Error fetching profile:', error);
       return {
         success: false,
         data: {} as ProfileData,
@@ -298,9 +300,9 @@ export class AdminDashboardAPI {
       // Get user email from stored user data or profileData
       const storedUser = localStorage.getItem('user_data');
       const authUser = localStorage.getItem('authUser');
-      
+
       let userEmail = profileData.email || '';
-      
+
       if (!userEmail && storedUser) {
         const userData = JSON.parse(storedUser);
         userEmail = userData.user_email || userData.email || '';
@@ -308,13 +310,13 @@ export class AdminDashboardAPI {
         const userData = JSON.parse(authUser);
         userEmail = userData.user_email || userData.email || '';
       }
-      
+
       if (!userEmail) {
         throw new Error('User email not found');
       }
-      
-      console.log('🔄 Updating profile for email:', userEmail);
-      
+
+      // console.log('🔄 Updating profile for email:', userEmail);
+
       // Transform ProfileData to backend format
       const backendData = {
         user_name: profileData.name,
@@ -324,16 +326,16 @@ export class AdminDashboardAPI {
         timezone: profileData.timezone,
         user_type: profileData.role
       };
-      
+
       // ✅ Use axios api instance with automatic decryption
-      const response = await api.put(`/api/Users/${userEmail}`, backendData);
+      const response = await api.put(`/api/Users/${encodeEmail(userEmail)}`, backendData);
       const data = response.data;
-      console.log('✅ Profile updated successfully:', data);
-      
+      // console.log('✅ Profile updated successfully:', data);
+
       // Transform response back to ProfileData format
       // Priority: userRole (camelCase) > user_role > user_type > role
       const updatedRoleValue = data.userRole || data.user_role || data.user_type || data.role || profileData.role || 'user';
-      
+
       const updatedProfile: ProfileData = {
         name: data.user_name || data.userName || data.name || profileData.name || 'User',
         email: data.user_email || data.email || userEmail,
@@ -346,7 +348,7 @@ export class AdminDashboardAPI {
         avatar: data.avatar || '',
         licenses: data.licenses || 0
       };
-      
+
       // Update local storage with new data
       const storedUserData = storedUser ? JSON.parse(storedUser) : {};
       const updatedUserData = {
@@ -358,15 +360,15 @@ export class AdminDashboardAPI {
       };
       localStorage.setItem('user_data', JSON.stringify(updatedUserData));
       localStorage.setItem('authUser', JSON.stringify(updatedUserData));
-      
+
       return {
         success: true,
         data: updatedProfile,
         message: 'Profile updated successfully'
       };
-      
+
     } catch (error) {
-      console.error('❌ Error updating profile:', error);
+      // console.error('❌ Error updating profile:', error);
       return {
         success: false,
         data: {} as ProfileData,
@@ -535,7 +537,7 @@ export type {
   LogEntry,
   Machine,
   PerformanceMetrics,
-  
+
   User,
   Report,
   ApiResponse

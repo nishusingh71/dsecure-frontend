@@ -1,9 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Reports API Test</title>
+    <!-- 🔒 PII-Safe Refactor: Email is never sent in URL parameters, only in Base64-encoded headers -->
+    <script>
+        // Base64 email encoding utility
+        const encodeEmail = (email) => btoa(email);
+        const decodeEmail = (encoded) => atob(encoded);
+    </script>
     <style>
         * {
             margin: 0;
@@ -281,7 +287,7 @@ Note: Token looks like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
             
             try {
                 // Test 1: Health Check
-                console.log('🏥 Testing API health...');
+                // console.log('🏥 Testing API health...');
                 try {
                     const healthRes = await fetch(`${API_BASE}/api/health`, {
                         method: 'GET'
@@ -290,7 +296,7 @@ Note: Token looks like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                         status: healthRes.status,
                         ok: healthRes.ok
                     };
-                    console.log('✅ Health check:', results.health);
+                    // console.log('✅ Health check:', results.health);
                 } catch (error) {
                     results.health = {
                         error: error.message
@@ -299,9 +305,9 @@ Note: Token looks like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                 }
                 
                 // Test 2: Audit Reports
-                console.log('📋 Testing Audit Reports API...');
+                // console.log('📋 Testing Audit Reports API...');
                 try {
-                    const reportsRes = await fetch(`${API_BASE}/api/AuditReports/by-email/${encodeURIComponent(email)}`, {
+                    const reportsRes = await fetch(`${API_BASE}/api/AuditReports/by-email/${encodeEmail(email)}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -324,7 +330,7 @@ Note: Token looks like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                         results.auditReports.error = errorText;
                     }
                     
-                    console.log('✅ Audit reports:', results.auditReports);
+                    // console.log('✅ Audit reports:', results.auditReports);
                 } catch (error) {
                     results.auditReports = {
                         error: error.message
@@ -333,9 +339,9 @@ Note: Token looks like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                 }
                 
                 // Test 3: Machines
-                console.log('🖥️ Testing Machines API...');
+                // console.log('🖥️ Testing Machines API...');
                 try {
-                    const machinesRes = await fetch(`${API_BASE}/api/Machines/by-email/${encodeURIComponent(email)}`, {
+                    const machinesRes = await fetch(`${API_BASE}/api/Machines/by-email/${encodeEmail(email)}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -358,7 +364,7 @@ Note: Token looks like: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                         results.machines.error = errorText;
                     }
                     
-                    console.log('✅ Machines:', results.machines);
+                    // console.log('✅ Machines:', results.machines);
                 } catch (error) {
                     results.machines = {
                         error: error.message

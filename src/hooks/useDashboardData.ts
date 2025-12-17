@@ -1,10 +1,10 @@
 import { useQueries, useQuery } from '@tanstack/react-query'
-import { 
-  AdminDashboardAPI, 
-  type DashboardStats, 
-  type UserActivity, 
-  type GroupData, 
-  type LicenseData, 
+import {
+  AdminDashboardAPI,
+  type DashboardStats,
+  type UserActivity,
+  type GroupData,
+  type LicenseData,
   type RecentReport,
   type ProfileData
 } from '@/services/adminDashboardAPI'
@@ -167,18 +167,18 @@ export function useDashboardData(enabled: boolean = true) {
     profile: profileQuery.data || null,
 
     // Loading states
-    isLoading: statsQuery.isLoading || activityQuery.isLoading || 
-               groupsQuery.isLoading || licenseQuery.isLoading || 
-               reportsQuery.isLoading || profileQuery.isLoading,
-    
-    isRefetching: statsQuery.isRefetching || activityQuery.isRefetching || 
-                  groupsQuery.isRefetching || licenseQuery.isRefetching || 
-                  reportsQuery.isRefetching || profileQuery.isRefetching,
+    isLoading: statsQuery.isLoading || activityQuery.isLoading ||
+      groupsQuery.isLoading || licenseQuery.isLoading ||
+      reportsQuery.isLoading || profileQuery.isLoading,
+
+    isRefetching: statsQuery.isRefetching || activityQuery.isRefetching ||
+      groupsQuery.isRefetching || licenseQuery.isRefetching ||
+      reportsQuery.isRefetching || profileQuery.isRefetching,
 
     // Error states
-    hasError: statsQuery.isError || activityQuery.isError || 
-              groupsQuery.isError || licenseQuery.isError || 
-              reportsQuery.isError || profileQuery.isError,
+    hasError: statsQuery.isError || activityQuery.isError ||
+      groupsQuery.isError || licenseQuery.isError ||
+      reportsQuery.isError || profileQuery.isError,
 
     errors: {
       stats: statsQuery.error,

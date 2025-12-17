@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from "react";
+﻿import { useMemo, useState, useRef } from "react";
 import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
@@ -45,7 +45,7 @@ export default function AdminReports() {
       if (cached) {
         const { data, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          console.log(`✅ Using cached data for ${key}`);
+          // console.log(`✅ Using cached data for ${key}`);
           return data;
         }
         localStorage.removeItem(`admin_cache_${key}`);
@@ -65,7 +65,7 @@ export default function AdminReports() {
           timestamp: Date.now(),
         })
       );
-      console.log(`💾 Cached data for ${key}`);
+      // console.log(`💾 Cached data for ${key}`);
     } catch (e) {
       console.warn(`⚠️ Cache write error for ${key}:`, e);
     }
@@ -517,7 +517,7 @@ export default function AdminReports() {
 
     // 🎮 Demo Mode Check - Show static data only
     if (isDemoMode()) {
-      console.log('🎮 Demo Mode Active - Using static audit reports data')
+      // console.log('🎮 Demo Mode Active - Using static audit reports data')
       // Map DEMO_AUDIT_REPORTS to AdminReport format
       const demoReports = DEMO_AUDIT_REPORTS.map(report => ({
         id: report.report_id,
@@ -544,7 +544,7 @@ export default function AdminReports() {
     // ✅ Check cache first for instant display
     const cachedReports = getCachedData("reports");
     if (cachedReports && cachedReports.length > 0) {
-      console.log("⚡ Displaying cached reports data");
+      // console.log("⚡ Displaying cached reports data");
       setAllRows(cachedReports);
       setLoading(false); // Hide loader since we have cached data
     }
@@ -559,7 +559,7 @@ export default function AdminReports() {
       if (storedUser) {
         try {
           storedUserData = JSON.parse(storedUser);
-          console.log("� Parsed user_data from localStorage:", storedUserData);
+          // console.log("� Parsed user_data from localStorage:", storedUserData);
         } catch (e) {
           console.error("Error parsing user_data:", e);
         }
@@ -568,7 +568,7 @@ export default function AdminReports() {
       if (!storedUserData && authUser) {
         try {
           storedUserData = JSON.parse(authUser);
-          console.log("� Parsed authUser from localStorage:", storedUserData);
+          // console.log("� Parsed authUser from localStorage:", storedUserData);
         } catch (e) {
           console.error("Error parsing authUser:", e);
         }
@@ -576,12 +576,12 @@ export default function AdminReports() {
 
       // 2. Get user from JWT token
       const user = authService.getUserFromToken();
-      console.log("� User from token:", user);
+      // console.log("� User from token:", user);
 
       // 3. PRIORITY: Use user_email from localStorage user_data, then from token
       const userEmail =
         storedUserData?.user_email || user?.user_email || user?.email;
-      console.log("📧 Final userEmail for reports:", userEmail);
+      // console.log("📧 Final userEmail for reports:", userEmail);
 
       if (!userEmail) {
         console.error("❌ No user email found");
@@ -594,14 +594,14 @@ export default function AdminReports() {
         return;
       }
 
-      console.log("📋 Fetching audit reports for email:", userEmail);
+      // console.log("📋 Fetching audit reports for email:", userEmail);
 
       // Call API: /api/AuditReports/by-email/{email}
       const auditReportsRes = await apiClient.getAuditReportsByEmail(userEmail);
-      console.log("📥 API Response:", auditReportsRes);
+      // console.log("📥 API Response:", auditReportsRes);
 
       if (auditReportsRes.success && auditReportsRes.data) {
-        console.log("✅ Audit reports fetched:", auditReportsRes.data.length);
+        // console.log("✅ Audit reports fetched:", auditReportsRes.data.length);
 
         // Ensure data is an array
         const reportsArray = Array.isArray(auditReportsRes.data)
@@ -610,14 +610,14 @@ export default function AdminReports() {
 
         // If no reports found
         if (reportsArray.length === 0) {
-          console.log("ℹ️ No audit reports found");
+          // console.log("ℹ️ No audit reports found");
           showInfo("No Reports", "No audit reports found.");
           setAllRows([]);
           setLoading(false);
           return;
         }
 
-        console.log("🔄 Processing reports with report_details_json...");
+        // console.log("🔄 Processing reports with report_details_json...");
 
         // Process each report
         const processedReports = reportsArray.map((report: any) => {
@@ -628,7 +628,7 @@ export default function AdminReports() {
           if (report.report_details_json) {
             try {
               reportDetails = JSON.parse(report.report_details_json);
-              console.log("📄 Parsed report_details_json:", reportDetails);
+              // console.log("📄 Parsed report_details_json:", reportDetails);
 
               // Get device count from erasure_log array
               if (
@@ -639,7 +639,7 @@ export default function AdminReports() {
               }
             } catch (e) {
               console.warn(`⚠️ Failed to parse report_details_json:`, e);
-              console.log("❌ Raw data:", report.report_details_json);
+              // console.log("❌ Raw data:", report.report_details_json);
             }
           }
 
@@ -672,7 +672,7 @@ export default function AdminReports() {
             _details: reportDetails,
           };
 
-          console.log("✅ Mapped:", mappedReport);
+          // console.log("✅ Mapped:", mappedReport);
           return mappedReport;
         });
 
@@ -875,7 +875,7 @@ export default function AdminReports() {
         return;
       }
 
-      console.log("📄 Report details for PDF:", reportDetails);
+      // console.log("📄 Report details for PDF:", reportDetails);
 
       // Extract all fields from report_details_json for PDF generation
       const pdfPayload = {
@@ -927,10 +927,10 @@ export default function AdminReports() {
         validatorSignature: reportDetails?.validator_signature || "",
       };
 
-      console.log(
-        "📤 Sending PDF payload:",
-        JSON.stringify(pdfPayload, null, 2)
-      );
+      // console.log(
+        // "📤 Sending PDF payload:",
+        // JSON.stringify(pdfPayload, null, 2)
+      // );
 
       // Call the PDF export API endpoint with GET method and report_id as query param
       const reportId =
@@ -949,8 +949,8 @@ export default function AdminReports() {
         }
       );
 
-      console.log("📥 Response status:", response.status);
-      console.log("📥 Response headers:", response.headers);
+      // console.log("📥 Response status:", response.status);
+      // console.log("📥 Response headers:", response.headers);
 
       if (!response.ok) {
         // Try to get error message from response body
@@ -967,7 +967,7 @@ export default function AdminReports() {
 
       // Get the PDF blob
       const blob = await response.blob();
-      console.log("✅ PDF blob received, size:", blob.size);
+      // console.log("✅ PDF blob received, size:", blob.size);
 
       // Create download link
       const url = window.URL.createObjectURL(blob);
@@ -1114,7 +1114,7 @@ export default function AdminReports() {
     } else {
       newSelection.add(reportId);
     }
-    console.log("🔄 Selection updated:", newSelection.size, "reports selected");
+    // console.log("🔄 Selection updated:", newSelection.size, "reports selected");
     setSelectedReportIds(newSelection);
   };
 
@@ -1131,11 +1131,11 @@ export default function AdminReports() {
       // Select all on current page
       currentPageIds.forEach((id) => newSelection.add(id));
     }
-    console.log(
-      "🔄 Select All updated:",
-      newSelection.size,
-      "reports selected"
-    );
+    // console.log(
+      // "🔄 Select All updated:",
+      // newSelection.size,
+      // "reports selected"
+    // );
     setSelectedReportIds(newSelection);
   };
 

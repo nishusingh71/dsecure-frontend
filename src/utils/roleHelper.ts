@@ -1,4 +1,4 @@
-import { UserRole } from './rolePermissions';
+﻿import { UserRole } from './rolePermissions';
 /**
  * Role Helper Utilities
  * 
@@ -17,40 +17,40 @@ export function getPrimaryRole(userData: any): string {
   // 1️⃣ FIRST PRIORITY: userRole field (camelCase from API response)
   if (userData?.userRole && typeof userData.userRole === 'string') {
     const role = userData.userRole;
-    console.log('✅ Using userRole (camelCase):', role, '→', role.toLowerCase());
+    // console.log('✅ Using userRole (camelCase):', role, '→', role.toLowerCase());
     return role.toLowerCase();
   }
   
   // 2️⃣ SECOND PRIORITY: user_role field (snake_case)
   if (userData?.user_role && typeof userData.user_role === 'string') {
     const role = userData.user_role;
-    console.log('✅ Using user_role (snake_case):', role, '→', role.toLowerCase());
+    // console.log('✅ Using user_role (snake_case):', role, '→', role.toLowerCase());
     return role.toLowerCase();
   }
   
   // 3️⃣ THIRD PRIORITY: role string
   if (userData?.role && typeof userData.role === 'string') {
     const role = userData.role;
-    console.log('✅ Using role field:', role, '→', role.toLowerCase());
+    // console.log('✅ Using role field:', role, '→', role.toLowerCase());
     return role.toLowerCase();
   }
   
   // 4️⃣ FOURTH PRIORITY: roles array (only if not empty)
   if (userData?.roles && Array.isArray(userData.roles) && userData.roles.length > 0) {
     const role = userData.roles[0];
-    console.log('✅ Using roles[0]:', role, '→', role.toLowerCase());
+    // console.log('✅ Using roles[0]:', role, '→', role.toLowerCase());
     return role.toLowerCase();
   }
   
   // 5️⃣ FIFTH PRIORITY: user_type
   if (userData?.user_type && typeof userData.user_type === 'string') {
     const role = userData.user_type;
-    console.log('⚠️ Using user_type:', role, '→', role.toLowerCase());
+    // console.log('⚠️ Using user_type:', role, '→', role.toLowerCase());
     return role.toLowerCase();
   }
   
   // 6️⃣ Default to 'user'
-  console.log('❌ No role found, using default: user');
+  // console.log('❌ No role found, using default: user');
   return 'user';
 }
 

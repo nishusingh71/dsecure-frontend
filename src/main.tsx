@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
@@ -9,6 +9,21 @@ import { HelmetProvider } from "react-helmet-async";
 import { ToastProvider } from './components/Toast';
 import { preloadCriticalResources } from './utils/performanceOptimizer';
 import './utils/internationalization'; // Initialize i18n
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 🔇 GLOBAL CONSOLE SUPPRESSOR - Keeps browser console clean
+// ═══════════════════════════════════════════════════════════════════════════════
+const ENABLE_CONSOLE = true; // Set to true to enable console output for debugging
+
+if (!ENABLE_CONSOLE) {
+  const noop = () => { };
+  console.log = noop;
+  console.warn = noop;
+  console.error = noop;
+  console.info = noop;
+  console.debug = noop;
+}
+// ═══════════════════════════════════════════════════════════════════════════════
 
 // Preload critical resources
 preloadCriticalResources();
@@ -21,7 +36,7 @@ if ("performance" in window && process.env.NODE_ENV === 'production') {
       entryList.getEntries().forEach((entry) => {
         // Only log in development
         if (process.env.NODE_ENV === 'development') {
-          console.log(entry.name, entry.startTime);
+          // console.log(entry.name, entry.startTime);
         }
       });
     }).observe({ entryTypes: ["largest-contentful-paint", "first-input", "cumulative-layout-shift"] });

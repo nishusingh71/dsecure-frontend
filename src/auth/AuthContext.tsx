@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react'
+﻿import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react'
 import { authService } from '../utils/authService'
 import { apiClient } from '../utils/enhancedApiClient'
 import type { User } from '../utils/enhancedApiClient'
@@ -59,40 +59,40 @@ function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   // 1️⃣ FIRST PRIORITY: userRole field (camelCase from API response)
   if (jwtUser?.userRole && typeof jwtUser.userRole === 'string') {
     primaryRole = jwtUser.userRole.toLowerCase() as Role;
-    console.log('✅ Using userRole (camelCase) from API:', primaryRole);
+    // console.log('✅ Using userRole (camelCase) from API:', primaryRole);
   } 
   // 2️⃣ SECOND PRIORITY: user_role field (snake_case)
   else if (jwtUser?.user_role && typeof jwtUser.user_role === 'string') {
     primaryRole = jwtUser.user_role.toLowerCase() as Role;
-    console.log('✅ Using user_role (snake_case) from API:', primaryRole);
+    // console.log('✅ Using user_role (snake_case) from API:', primaryRole);
   } 
   // 3️⃣ THIRD PRIORITY: role field
   else if (jwtUser?.role && typeof jwtUser.role === 'string') {
     primaryRole = jwtUser.role.toLowerCase() as Role;
-    console.log('✅ Using role field:', primaryRole);
+    // console.log('✅ Using role field:', primaryRole);
   }
   // 4️⃣ FOURTH PRIORITY: roles array (only if not empty)
   else if (jwtUser?.roles && Array.isArray(jwtUser.roles) && jwtUser.roles.length > 0) {
     primaryRole = jwtUser.roles[0].toLowerCase() as Role;
-    console.log('✅ Using roles[0]:', primaryRole);
+    // console.log('✅ Using roles[0]:', primaryRole);
   }
   // 5️⃣ FIFTH PRIORITY: userType field (from JWT token)
   else if (jwtUser?.userType && typeof jwtUser.userType === 'string') {
     primaryRole = jwtUser.userType.toLowerCase() as Role;
-    console.log('✅ Using userType from token:', primaryRole);
+    // console.log('✅ Using userType from token:', primaryRole);
   }
   // 6️⃣ SIXTH PRIORITY: user_type field
   else if (jwtUser?.user_type && typeof jwtUser.user_type === 'string') {
     primaryRole = jwtUser.user_type.toLowerCase() as Role;
-    console.log('✅ Using user_type field:', primaryRole);
+    // console.log('✅ Using user_type field:', primaryRole);
   }
   // 7️⃣ Default fallback
   else {
-    console.log('⚠️ No role found, using default: user');
+    // console.log('⚠️ No role found, using default: user');
   }
   
-  console.log('🎯 Final role extracted:', primaryRole);
-  console.log('📦 Full API response data:', jwtUser);
+  // console.log('🎯 Final role extracted:', primaryRole);
+  // console.log('📦 Full API response data:', jwtUser);
   
   return {
     id: jwtUser?.userId || jwtUser?.user_id || jwtUser?.sub || jwtUser?.id || 'unknown',
@@ -187,7 +187,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const handleAuthStateChange = (event: Event) => {
       try {
         const customEvent = event as CustomEvent
-        console.log('🔔 AuthContext received authStateChanged event:', customEvent.detail);
+        // console.log('🔔 AuthContext received authStateChanged event:', customEvent.detail);
         
         if (customEvent.detail?.authenticated && customEvent.detail?.token) {
           // User just logged in - update AuthContext
@@ -195,12 +195,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (jwtUser) {
             const authUser = convertJWTUserToAuthUser(jwtUser, customEvent.detail.token)
             setUser(authUser)
-            console.log('✅ AuthContext user updated after login:', authUser);
+            // console.log('✅ AuthContext user updated after login:', authUser);
           }
         } else if (customEvent.detail === null) {
           // User just logged out
           setUser(null)
-          console.log('✅ AuthContext user cleared after logout');
+          // console.log('✅ AuthContext user cleared after logout');
         }
       } catch (error) {
         console.error('Auth state change handling failed:', error)
@@ -449,7 +449,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       keysToRemove.forEach(key => localStorage.removeItem(key))
       
-      console.log('✅ Logout successful - All user data and caches cleared')
+      // console.log('✅ Logout successful - All user data and caches cleared')
     } catch (err) {
       console.error('Logout error:', err)
       // Even if API fails, clear all local data
@@ -474,7 +474,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Dispatch auth state change event to update header immediately
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
       
-      console.log('🔄 Auth state changed - All caches cleared, ready for new user login')
+      // console.log('🔄 Auth state changed - All caches cleared, ready for new user login')
     }
   }, [])
 

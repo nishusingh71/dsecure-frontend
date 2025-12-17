@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+﻿import { useMemo, useState } from 'react'
 import { exportToCsv, openPrintView } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -132,7 +132,7 @@ export default function AdminSubusers() {
   const currentUserRole = getUserRole()
   const canEditOrDelete = currentUserRole === 'admin' || currentUserRole === 'superadmin'
   
-  console.log('🔍 Current User Role:', currentUserRole, '| Can Edit/Delete:', canEditOrDelete)
+  // console.log('🔍 Current User Role:', currentUserRole, '| Can Edit/Delete:', canEditOrDelete)
   
   // ✅ Check if current user is a subuser
   const getUserType = (): string => {
@@ -151,8 +151,8 @@ export default function AdminSubusers() {
   const currentUserType = getUserType()
   const isSubuser = currentUserType === 'subuser'
   
-  console.log('👤 User Type:', currentUserType, '| Is Subuser:', isSubuser)
-  console.log('📧 Current User Email:', userEmail)
+  // console.log('👤 User Type:', currentUserType, '| Is Subuser:', isSubuser)
+  // console.log('📧 Current User Email:', userEmail)
   
   // ✅ Fetch subusers filtered by current user's email (works for both regular users and subusers)
   // If subuser has sub-subusers, they will be shown; if not, empty state will appear
@@ -238,7 +238,7 @@ export default function AdminSubusers() {
   const handleEditUser = async (user: SubuserTableRow) => {
     // 🎭 DEMO MODE: Navigate directly with demo data, skip API call
     if (isDemo) {
-      console.log('🎭 Demo Mode: Navigating to edit page with demo data');
+      // console.log('🎭 Demo Mode: Navigating to edit page with demo data');
       
       // Find full user data from DEMO_SUBUSERS
       const demoUser = DEMO_SUBUSERS.find(u => u.subuser_email === user.subuser_email);
@@ -274,7 +274,7 @@ export default function AdminSubusers() {
 
       const enhanced = res.data
       
-      console.log('🔍 Enhanced subuser data from API:', enhanced)
+      // console.log('🔍 Enhanced subuser data from API:', enhanced)
       
       // Extract name with proper fallbacks
       const userName = enhanced.subuser_name || enhanced.name || ''
@@ -285,10 +285,10 @@ export default function AdminSubusers() {
       // Extract role with proper fallbacks
       const userRole = enhanced.role || enhanced.subuser_role || enhanced.defaultRole || user.roles || 'user'
       
-      console.log('📋 Extracted values:')
-      console.log('  - Name:', userName)
-      console.log('  - Phone:', userPhone)
-      console.log('  - Role:', userRole)
+      // console.log('📋 Extracted values:')
+      // console.log('  - Name:', userName)
+      // console.log('  - Phone:', userPhone)
+      // console.log('  - Role:', userRole)
 
       navigate('/admin/edit-subuser', {
         state: {

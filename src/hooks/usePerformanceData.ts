@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+﻿import { useQuery } from '@tanstack/react-query'
 import { useAuditReports } from './useAuditReports'
 import { useUserMachines } from './useUserMachines'
 import { AdminDashboardAPI } from '@/services/adminDashboardAPI'
@@ -23,7 +23,7 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
     queryKey: performanceKeys.data(userEmail),
     queryFn: async (): Promise<PerformanceData> => {
       try {
-        console.log('🔄 Calculating performance metrics from cached data...')
+        // console.log('🔄 Calculating performance metrics from cached data...')
         
         // Use existing data from React Query cache and calculate performance
         const monthsData: Record<string, {
@@ -103,13 +103,13 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
           throughput
         }
 
-        console.log('✅ Performance metrics calculated successfully:', {
-          monthlyErasures: monthlyErasures.length,
-          avgDuration: avgDuration.length,
-          throughput: throughput.length,
-          totalErasures: monthlyErasures.reduce((sum, m) => sum + m.count, 0),
-          totalActiveMachines: Object.values(monthsData).reduce((sum, m) => sum + m.activeMachines.size, 0)
-        })
+        // console.log('✅ Performance metrics calculated successfully:', {
+        //   monthlyErasures: monthlyErasures.length,
+        //   avgDuration: avgDuration.length,
+        //   throughput: throughput.length,
+        //   totalErasures: monthlyErasures.reduce((sum, m) => sum + m.count, 0),
+        //   totalActiveMachines: Object.values(monthsData).reduce((sum, m) => sum + m.activeMachines.size, 0)
+        // })
 
         return result
 

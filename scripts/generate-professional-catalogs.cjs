@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 // More professional PDF generation with better formatting
@@ -122,7 +122,7 @@ ${650 + contentStream.length}
 %%EOF`;
 
     fs.writeFileSync(outputPath, pdfContent);
-    console.log(`Professional PDF created: ${outputPath}`);
+    // console.log(`Professional PDF created: ${outputPath}`);
 }
 
 // Drive Eraser catalog data
@@ -268,7 +268,7 @@ try {
     createProfessionalPDF(fileEraserData, 
         path.join(outputDir, 'dsecure-file-eraser-catalog.pdf'));
     
-    console.log('Professional PDF catalogs generated successfully!');
+    // console.log('Professional PDF catalogs generated successfully!');
 } catch (error) {
     console.error('Error generating PDFs:', error);
 }

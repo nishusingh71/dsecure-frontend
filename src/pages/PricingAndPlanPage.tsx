@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from "react";
+﻿import React, { useState, memo, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import CustomLicenseModal, {
@@ -664,7 +664,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
   };
 
   const handleCustomLicenseSubmit = async (data: CustomLicenseData) => {
-    console.log("handleCustomLicenseSubmit called with data:", data);
+    // console.log("handleCustomLicenseSubmit called with data:", data);
     
     try {
       // Use the useFormSubmission hook to handle the form submission

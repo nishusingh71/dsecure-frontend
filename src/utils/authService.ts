@@ -1,4 +1,4 @@
-// JWT Authentication Service - Enhanced
+﻿// JWT Authentication Service - Enhanced
 import { jwtDecode } from 'jwt-decode'
 
 // Storage keys for different data types
@@ -47,13 +47,13 @@ class AuthService {
       if (!accessToken || typeof accessToken !== 'string' || accessToken.trim() === '') {
         throw new Error('Invalid access token provided')
       }
-      
+
       // Check if token has basic JWT structure
       const tokenParts = accessToken.split('.')
       if (tokenParts.length !== 3) {
         console.warn('Access token does not have standard JWT format, but saving anyway')
       }
-      
+
       // Validate refresh token if provided
       if (refreshToken && (typeof refreshToken !== 'string' || refreshToken.trim() === '')) {
         console.warn('Invalid refresh token provided, ignoring...')
@@ -67,7 +67,7 @@ class AuthService {
           localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
         }
         localStorage.setItem(STORAGE_KEYS.REMEMBER_ME, 'true')
-        
+
         // Clear session storage
         sessionStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN)
         sessionStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
@@ -78,7 +78,7 @@ class AuthService {
           sessionStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
         }
         localStorage.removeItem(STORAGE_KEYS.REMEMBER_ME)
-        
+
         // Clear localStorage tokens
         localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN)
         localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
@@ -87,7 +87,7 @@ class AuthService {
       // Set up automatic token refresh
       this.scheduleTokenRefresh(accessToken)
       // //console.log('Tokens saved successfully')
-      
+
     } catch (error) {
       // console.error('Failed to save tokens:', error)
       throw new Error('Failed to save authentication tokens')
@@ -96,7 +96,7 @@ class AuthService {
 
   getAccessToken(): string | null {
     const isRemembered = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === 'true'
-    
+
     if (isRemembered) {
       return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
     } else {
@@ -106,7 +106,7 @@ class AuthService {
 
   getRefreshToken(): string | null {
     const isRemembered = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === 'true'
-    
+
     if (isRemembered) {
       return localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN)
     } else {
@@ -119,12 +119,12 @@ class AuthService {
     sessionStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN)
     sessionStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
     sessionStorage.removeItem(STORAGE_KEYS.USER_DATA)
-    
+
     localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.USER_DATA)
     localStorage.removeItem(STORAGE_KEYS.REMEMBER_ME)
-    
+
     // Also clear the actual user_data key that's being used
     localStorage.removeItem('user_data')
     localStorage.removeItem('authUser')
@@ -135,17 +135,17 @@ class AuthService {
       this.refreshTimeoutId = null
     }
 
-    console.log('✅ All authentication data cleared from storage')
+    // console.log('✅ All authentication data cleared from storage')
   }
 
   isAuthenticated(): boolean {
     // ✅ Check for demo mode first - demo users are always authenticated
     const isDemoMode = localStorage.getItem('demo_mode') === 'true'
     if (isDemoMode) {
-      console.log('🎭 Demo mode detected - user is authenticated')
+      // console.log('🎭 Demo mode detected - user is authenticated')
       return true
     }
-    
+
     const token = this.getAccessToken()
     if (!token) return false
 
@@ -167,7 +167,7 @@ class AuthService {
   isTokenValid(token: string): boolean {
     try {
       const payload = jwtDecode<JWTPayload>(token)
-      
+
       if (!payload.exp) {
         // console.warn('Token does not have expiration time')
         return true // Assume valid if no expiration
@@ -175,11 +175,11 @@ class AuthService {
 
       const currentTime = Math.floor(Date.now() / 1000)
       const isValid = payload.exp > currentTime
-      
+
       if (!isValid) {
         // //console.log('Token has expired')
       }
-      
+
       return isValid
     } catch (error) {
       // console.error('Error validating token:', error)
@@ -191,25 +191,25 @@ class AuthService {
     try {
       // First, try to get user_email from stored user_data in localStorage
       const storedUserData = this.getStoredUserData()
-      console.log('💾 Stored user_data from localStorage:', storedUserData)
-      
+      // console.log('💾 Stored user_data from localStorage:', storedUserData)
+
       const accessToken = token || this.getAccessToken()
       if (!accessToken) return null
 
       const payload = jwtDecode<JWTPayload>(accessToken)
-      
+
       // Extract user ID safely with fallbacks
       const userId = payload.sub || payload.id || payload.user_id || 'unknown'
-      
+
       // Extract username safely with fallbacks  
       const username = payload.user_name || payload.username || payload.name || 'Unknown User'
-      
+
       // PRIORITY: Use user_email from stored user_data, then JWT, then fallback
       const email = storedUserData?.user_email || payload.user_email || payload.email || 'unknown@example.com'
-      
-      console.log('🔍 JWT Payload:', { user_email: payload.user_email, email: payload.email })
-      console.log('✅ Final extracted email:', email)
-      
+
+      // console.log('🔍 JWT Payload:', { user_email: payload.user_email, email: payload.email })
+      // console.log('✅ Final extracted email:', email)
+
       return {
         id: String(userId),
         email: String(email),
@@ -237,8 +237,8 @@ class AuthService {
   hasAnyPermission(requiredPermissions: string[]): boolean {
     const user = this.getUserFromToken()
     if (!user?.permissions) return false
-    
-    return requiredPermissions.some(permission => 
+
+    return requiredPermissions.some(permission =>
       user.permissions?.includes(permission)
     )
   }
@@ -246,8 +246,8 @@ class AuthService {
   hasAllPermissions(requiredPermissions: string[]): boolean {
     const user = this.getUserFromToken()
     if (!user?.permissions) return false
-    
-    return requiredPermissions.every(permission => 
+
+    return requiredPermissions.every(permission =>
       user.permissions?.includes(permission)
     )
   }
@@ -258,7 +258,7 @@ class AuthService {
       if (!accessToken) return
 
       const payload = jwtDecode<JWTPayload>(accessToken)
-      
+
       if (!payload.exp) {
         console.warn('Token does not have expiration time, cannot schedule refresh')
         return
@@ -266,10 +266,10 @@ class AuthService {
 
       const currentTime = Math.floor(Date.now() / 1000)
       const expirationTime = payload.exp
-      
+
       // Refresh 5 minutes before expiration
       const refreshTime = expirationTime - currentTime - (5 * 60)
-      
+
       if (refreshTime <= 0) {
         // //console.log('Token is about to expire, should refresh immediately')
         this.attemptTokenRefresh()
@@ -313,14 +313,14 @@ class AuthService {
       if (response.ok) {
         const data = await response.json()
         const isRemembered = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === 'true'
-        
+
         this.saveTokens(data.accessToken, data.refreshToken, isRemembered)
-        
+
         // Notify components about token refresh
-        window.dispatchEvent(new CustomEvent('tokenRefreshed', { 
-          detail: { token: data.accessToken } 
+        window.dispatchEvent(new CustomEvent('tokenRefreshed', {
+          detail: { token: data.accessToken }
         }))
-        
+
         // //console.log('Token refreshed successfully')
       } else {
         // console.error('Token refresh failed')
@@ -354,14 +354,14 @@ class AuthService {
       if (response.ok) {
         const data = await response.json()
         const isRemembered = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === 'true'
-        
+
         this.saveTokens(data.accessToken, data.refreshToken, isRemembered)
-        
+
         // Notify components about token refresh
-        window.dispatchEvent(new CustomEvent('tokenRefreshed', { 
-          detail: { token: data.accessToken } 
+        window.dispatchEvent(new CustomEvent('tokenRefreshed', {
+          detail: { token: data.accessToken }
         }))
-        
+
         return true
       } else {
         this.clearTokens()
@@ -380,9 +380,9 @@ class AuthService {
       if (!accessToken) return null
 
       const payload = jwtDecode<JWTPayload>(accessToken)
-      
+
       if (!payload.exp) return null
-      
+
       return new Date(payload.exp * 1000)
     } catch (error) {
       console.error('Error getting token expiration:', error)
@@ -393,7 +393,7 @@ class AuthService {
   getTimeUntilExpiration(token?: string): number | null {
     const expiration = this.getTokenExpiration(token)
     if (!expiration) return null
-    
+
     return expiration.getTime() - Date.now()
   }
 
@@ -406,7 +406,7 @@ class AuthService {
   isTokenAboutToExpire(token?: string): boolean {
     const timeUntilExpiry = this.getTimeUntilExpiration(token)
     if (!timeUntilExpiry) return false
-    
+
     // Return true if token expires in less than 5 minutes (300000 ms)
     return timeUntilExpiry < 300000
   }
@@ -422,12 +422,12 @@ class AuthService {
     try {
       const userData = this.getUserFromToken()
       const storedUserData = this.getStoredUserData()
-      
+
       // Check from JWT first, then stored data
       const paymentDetails = userData?.paymentDetails || storedUserData?.payment_details_json
-      
+
       if (!paymentDetails) return false
-      
+
       // If it's a string, try to parse it
       if (typeof paymentDetails === 'string') {
         try {
@@ -437,7 +437,7 @@ class AuthService {
           return false
         }
       }
-      
+
       // If it's already an object
       return Object.keys(paymentDetails).length > 0
     } catch (error) {
@@ -451,12 +451,12 @@ class AuthService {
     try {
       const userData = this.getUserFromToken()
       const storedUserData = this.getStoredUserData()
-      
+
       // Check from JWT first, then stored data
       const licenseDetails = userData?.licenseDetails || storedUserData?.license_details_json
-      
+
       if (!licenseDetails) return false
-      
+
       // If it's a string, try to parse it
       if (typeof licenseDetails === 'string') {
         try {
@@ -466,7 +466,7 @@ class AuthService {
           return false
         }
       }
-      
+
       // If it's already an object
       return Object.keys(licenseDetails).length > 0
     } catch (error) {
@@ -480,7 +480,7 @@ class AuthService {
     try {
       const isRemembered = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === 'true'
       const dataString = JSON.stringify(userData)
-      
+
       if (isRemembered) {
         localStorage.setItem(STORAGE_KEYS.USER_DATA, dataString)
       } else {
@@ -495,10 +495,10 @@ class AuthService {
   getStoredUserData(): any | null {
     try {
       const isRemembered = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === 'true'
-      const dataString = isRemembered 
+      const dataString = isRemembered
         ? localStorage.getItem(STORAGE_KEYS.USER_DATA)
         : sessionStorage.getItem(STORAGE_KEYS.USER_DATA)
-      
+
       return dataString ? JSON.parse(dataString) : null
     } catch (error) {
       console.error('Error getting stored user data:', error)
@@ -510,6 +510,33 @@ class AuthService {
   getAuthHeader(): { Authorization: string } | {} {
     const token = this.getAccessToken()
     return token ? { Authorization: `Bearer ${token}` } : {}
+  }
+
+  // ✅ Get current user's email from token or stored data
+  getUserEmail(): string | null {
+    try {
+      // Try from stored user data first
+      const storedUser = localStorage.getItem('user_data');
+      const authUser = localStorage.getItem('authUser');
+
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        const email = userData.user_email || userData.email;
+        if (email) return email;
+      }
+
+      if (authUser) {
+        const userData = JSON.parse(authUser);
+        const email = userData.user_email || userData.email;
+        if (email) return email;
+      }
+
+      // Fallback to token
+      const user = this.getUserFromToken();
+      return user?.email || user?.user_email || null;
+    } catch {
+      return null;
+    }
   }
 
   setTokens(accessToken: string, refreshToken?: string, rememberMe: boolean = false): void {
@@ -530,12 +557,12 @@ class AuthService {
     try {
       const paymentDetails = user?.payment_details_json
       if (!paymentDetails || paymentDetails === '{}') return false
-      
+
       if (typeof paymentDetails === 'string') {
         const parsed = JSON.parse(paymentDetails)
         return Object.keys(parsed).length > 0
       }
-      
+
       return Object.keys(paymentDetails).length > 0
     } catch {
       return false
@@ -546,12 +573,12 @@ class AuthService {
     try {
       const licenseDetails = user?.license_details_json
       if (!licenseDetails || licenseDetails === '{}') return false
-      
+
       if (typeof licenseDetails === 'string') {
         const parsed = JSON.parse(licenseDetails)
         return Object.keys(parsed).length > 0
       }
-      
+
       return Object.keys(licenseDetails).length > 0
     } catch {
       return false
@@ -564,14 +591,14 @@ class AuthService {
 
   getRedirectPath(user: any): string {
     if (!user) return '/login'
-    
+
     const hasPayment = this.hasValidPaymentDetails(user)
     const hasLicense = this.hasValidLicenseDetails(user)
-    
+
     if (!hasPayment || !hasLicense) {
       return '/payment-setup'
     }
-    
+
     // Everyone redirects to admin dashboard
     return '/admin'  // Admin dashboard for all users
   }

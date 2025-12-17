@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+﻿import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect, useCallback, memo } from "react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
@@ -38,7 +38,7 @@ export default function MainLayout() {
   useEffect(() => {
     const handleAuthStateChange = () => {
       setAuthKey((prev) => prev + 1);
-      console.log('🔄 Header updated - Auth state changed');
+      // console.log('🔄 Header updated - Auth state changed');
     };
 
     window.addEventListener('authStateChanged', handleAuthStateChange);

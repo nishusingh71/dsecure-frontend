@@ -1,4 +1,4 @@
-/**
+﻿/**
  * COMPREHENSIVE FORM FIXES AND OPTIMIZATIONS
  * 
  * This file contains fixes for all forms in the application:
@@ -40,7 +40,7 @@ export const showGlobalToast = (
   if (globalToastHandler) {
     globalToastHandler(toast);
   } else {
-    console.log(`Toast [${type.toUpperCase()}]: ${message}`);
+    // console.log(`Toast [${type.toUpperCase()}]: ${message}`);
   }
 };
 

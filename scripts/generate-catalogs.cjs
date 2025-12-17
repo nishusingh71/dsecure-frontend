@@ -1,4 +1,4 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 
 // Simple PDF generation function
@@ -76,7 +76,7 @@ ${600 + content.length}
 %%EOF`;
 
     fs.writeFileSync(outputPath, pdfHeader);
-    console.log(`PDF created: ${outputPath}`);
+    // console.log(`PDF created: ${outputPath}`);
 }
 
 // Drive Eraser content
@@ -173,7 +173,7 @@ try {
     createSimplePDF('D-Secure File Eraser Catalog', fileEraserContent, 
         path.join(outputDir, 'dsecure-file-eraser-catalog.pdf'));
     
-    console.log('PDF catalogs generated successfully!');
+    // console.log('PDF catalogs generated successfully!');
 } catch (error) {
     console.error('Error generating PDFs:', error);
 }

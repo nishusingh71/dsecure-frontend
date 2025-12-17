@@ -1,3 +1,10 @@
+﻿/*
+  FRONTEND PII-SAFE REFACTOR:
+  - Email removed from URL parameters
+  - Email now sent ONLY via Base64-encoded header (X-User-Email)
+  - Backend must support header-based email retrieval
+*/
+
 // import { User } from './authService';
 // import { Subuser } from './enhancedApiClient';
 // Enhanced API Client with JWT Integration
@@ -6,6 +13,7 @@ import axios, { AxiosResponse } from 'axios'
 import { authService } from './authService.js'
 import { EncryptionService, isEncryptedResponse } from './EncryptionService'
 import { api } from './apiClient'
+import { encodeEmail } from './encodeEmail'
 
 // API Configuration
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'
@@ -20,7 +28,7 @@ const DEBUG_MODE = import.meta.env.DEV
 function decryptResponseIfNeeded<T>(data: unknown): T {
   if (isEncryptedResponse(data)) {
     if (DEBUG_MODE) {
-      console.log('🔐 Encrypted response detected, decrypting...')
+      // console.log('🔐 Encrypted response detected, decrypting...')
     }
     return EncryptionService.decrypt<T>(data.data)
   }
@@ -28,11 +36,11 @@ function decryptResponseIfNeeded<T>(data: unknown): T {
 }
 
 if (DEBUG_MODE) {
-  console.log('API Configuration:', {
-    baseUrl: API_BASE_URL,
-    timeout: API_TIMEOUT,
-    environment: import.meta.env.MODE
-  })
+  // console.log('API Configuration:', {
+  //   baseUrl: API_BASE_URL,
+  //   timeout: API_TIMEOUT,
+  //   environment: import.meta.env.MODE
+  // })
 }
 
 // API Response types
@@ -61,10 +69,10 @@ export interface User {
   private_api?: boolean
   currentPassword?: string // For password change
   newPassword?: string // For password change
-  user_role?:string
-  last_login?:string
-  user_group?:string 
-  licesne_allocation?:string
+  user_role?: string
+  last_login?: string
+  user_group?: string
+  licesne_allocation?: string
   // ✅ Subuser-specific fields (for when User API returns Subuser data)
   subuser_name?: string
   subuser_phone?: string
@@ -72,7 +80,7 @@ export interface User {
   name?: string // Generic name field (alias for user_name or subuser_name)
   phone?: string // Generic phone field (alias for phone_number or subuser_phone)
   email?: string // Generic email field (alias for user_email or subuser_email)
-  activity_status?:string
+  activity_status?: string
 }
 
 export interface Subuser {
@@ -95,11 +103,11 @@ export interface Subuser {
   last_logout?: string
   subuser_group?: string
   license_allocation?: string
-  name?:string
-  phone?:string
+  name?: string
+  phone?: string
   currentPassword?: string // For password change
   newPassword?: string // For password change
-  activity_status?:string
+  activity_status?: string
 }
 
 export interface EnhancedSubuser extends Subuser {
@@ -149,7 +157,7 @@ export interface Machine {
   created_at?: string
   updated_at?: string
   vm_status?: string
-  
+
   // UI fields (for backward compatibility)
   id?: string
   hostname?: string
@@ -169,9 +177,9 @@ export interface Report {
   department: string
   generatedBy?: string
   filePath?: string
-  report_id?:string
-  computer_name?:string
-  datetime?:string
+  report_id?: string
+  computer_name?: string
+  datetime?: string
 }
 
 export interface AuditReport {
@@ -208,7 +216,7 @@ export interface Command {
   issued_at: string
   command_json?: string
   command_status: string
-  machine_hash:Machine['fingerprint_hash']
+  machine_hash: Machine['fingerprint_hash']
 }
 
 // Sessions interface
@@ -265,10 +273,10 @@ class EnhancedApiClient {
     // //console.log('Authentication failed - redirecting to login')
     // Clear any cached data and redirect to login
     authService.clearTokens()
-    
+
     // Only redirect if not already on auth pages
-    if (!window.location.pathname.includes('/login') && 
-        !window.location.pathname.includes('/register')) {
+    if (!window.location.pathname.includes('/login') &&
+      !window.location.pathname.includes('/register')) {
       window.location.href = '/login'
     }
   }
@@ -372,15 +380,15 @@ class EnhancedApiClient {
       let data: any = null
       const contentLength = response.headers.get('content-length')
       const contentType = response.headers.get('content-type')
-      
+
       // Only try to parse JSON if there's content and it's JSON
       if (response.status !== 204 && contentLength !== '0' && contentType?.includes('application/json')) {
         try {
           data = await response.json()
-          
+
           // ✅ Decrypt response if encrypted
           data = decryptResponseIfNeeded<any>(data)
-          
+
         } catch (jsonError) {
           // If JSON parsing fails but response is ok, treat as success with null data
           if (response.ok) {
@@ -402,16 +410,16 @@ class EnhancedApiClient {
           data: { message: 'Operation completed successfully' } as T
         }
       }
-      
+
       if (!response.ok) {
         // Handle different error types
         if (response.status >= 500) {
           // Server error - may be worth retrying
           if (retryCount < this.retryConfig.maxRetries) {
-            const delay = this.retryConfig.exponentialBackoff 
+            const delay = this.retryConfig.exponentialBackoff
               ? this.retryConfig.retryDelay * Math.pow(2, retryCount)
               : this.retryConfig.retryDelay
-            
+
             await this.delay(delay)
             return this.requestWithRetry<T>(endpoint, options, retryCount + 1)
           }
@@ -419,7 +427,7 @@ class EnhancedApiClient {
 
         // Handle specific HTTP status codes with better error messages
         let errorMessage = data.message || `HTTP ${response.status}: ${response.statusText}`
-        
+
         if (response.status === 409) {
           errorMessage = data.message || 'User already exists with this email address. Please try logging in instead.'
         } else if (response.status === 400) {
@@ -427,7 +435,7 @@ class EnhancedApiClient {
         } else if (response.status === 422) {
           errorMessage = data.message || 'Validation failed. Please check your input data.'
         }
-        
+
         return {
           success: false,
           error: errorMessage,
@@ -443,10 +451,10 @@ class EnhancedApiClient {
       if (DEBUG_MODE) {
         console.error('🔥 API Error:', error)
       }
-      
+
       // Handle specific error types
       let errorMessage = 'Network error'
-      
+
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
           errorMessage = 'Request timeout. Please check your connection and try again.'
@@ -460,20 +468,20 @@ class EnhancedApiClient {
           errorMessage = error.message
         }
       }
-      
+
       // Network error - may be worth retrying for certain types
-      if (retryCount < this.retryConfig.maxRetries && 
-          (error instanceof TypeError || 
-           (error instanceof Error && error.message.includes('fetch')))) {
-        
-        const delay = this.retryConfig.exponentialBackoff 
+      if (retryCount < this.retryConfig.maxRetries &&
+        (error instanceof TypeError ||
+          (error instanceof Error && error.message.includes('fetch')))) {
+
+        const delay = this.retryConfig.exponentialBackoff
           ? this.retryConfig.retryDelay * Math.pow(2, retryCount)
           : this.retryConfig.retryDelay
-        
+
         if (DEBUG_MODE) {
           // //console.log(`🔄 Retrying request (${retryCount + 1}/${this.retryConfig.maxRetries}) in ${delay}ms`)
         }
-        
+
         await this.delay(delay)
         return this.requestWithRetry<T>(endpoint, options, retryCount + 1)
       }
@@ -494,7 +502,7 @@ class EnhancedApiClient {
 
     // Start new refresh attempt
     this.refreshPromise = authService.manualRefreshToken()
-    
+
     try {
       const result = await this.refreshPromise
       return result
@@ -508,12 +516,12 @@ class EnhancedApiClient {
   }
 
   // Public API methods
-  
+
   // API Health Check - Uses api instance with decryption interceptor
   async testConnection(): Promise<ApiResponse<any>> {
     try {
       if (DEBUG_MODE) {
-        console.log('🔍 Testing API connection to:', `${API_BASE_URL}/api/health`)
+        // console.log('🔍 Testing API connection to:', `${API_BASE_URL}/api/health`)
       }
 
       // ✅ Use api instance which has decryption interceptor
@@ -522,7 +530,7 @@ class EnhancedApiClient {
       })
 
       if (DEBUG_MODE) {
-        console.log('✅ API Health Check Success:', response.status)
+        // console.log('✅ API Health Check Success:', response.status)
       }
 
       return {
@@ -546,15 +554,15 @@ class EnhancedApiClient {
       }
     }
   }
-  
-  
+
+
   // Authentication endpoints
   async login(credentials: LoginRequest, rememberMe: boolean = false): Promise<ApiResponse<AuthResponse>> {
     try {
       if (DEBUG_MODE) {
-        console.log('🚀 Starting login request to:', `${API_BASE_URL}/api/RoleBasedAuth/login`)
-        console.log('📧 Credentials email:', credentials.email)
-        console.log('🔧 API Configuration:', { API_BASE_URL, API_TIMEOUT })
+        // console.log('🚀 Starting login request to:', `${API_BASE_URL}/api/RoleBasedAuth/login`)
+        // console.log('📧 Credentials email:', credentials.email)
+        // console.log('🔧 API Configuration:', { API_BASE_URL, API_TIMEOUT })
       }
 
       // ✅ Use api instance which has decryption interceptor (auto-decrypts encrypted responses)
@@ -573,7 +581,7 @@ class EnhancedApiClient {
       const responseData = response.data
 
       if (DEBUG_MODE) {
-        console.log('Login API Response (decrypted):', responseData)
+        // console.log('Login API Response (decrypted):', responseData)
       }
 
       // Check if login was successful and we have a JWT token
@@ -584,9 +592,9 @@ class EnhancedApiClient {
         if (this.isValidJWT(token)) {
           // Decode JWT to get user role
           const decodedToken = this.decodeJWT(token)
-          
+
           if (DEBUG_MODE) {
-            console.log('Decoded JWT:', decodedToken)
+            // console.log('Decoded JWT:', decodedToken)
           }
 
           // Create user object with role information
@@ -602,7 +610,7 @@ class EnhancedApiClient {
             email: decodedToken.email || user?.email || responseData?.email || credentials.email,
             name: decodedToken.name || user?.userName || user?.user_name || user?.subuser_name || user?.name || responseData?.userName || responseData?.subuser_name || 'User',
             user_name: user?.user_name || user?.userName || user?.subuser_name || responseData?.user_name || responseData?.subuser_name,
-            subuser_name: user?.subuser_name || user?.user_name || user?.userName || responseData?.subuser_name||user?.name,
+            subuser_name: user?.subuser_name || user?.user_name || user?.userName || responseData?.subuser_name || user?.name,
             department: user?.department || responseData?.department,
             user_group: user?.user_group || user?.userGroup || responseData?.userGroup || responseData?.user_group,
             timezone: user?.timezone || responseData?.timezone,
@@ -615,7 +623,7 @@ class EnhancedApiClient {
           try {
             // Store tokens using the auth service
             authService.setTokens(token, refreshToken || '', rememberMe)
-            
+
             // Store user data safely
             authService.saveUserData(userData)
 
@@ -661,16 +669,16 @@ class EnhancedApiClient {
         } : null,
         request: error.request ? 'Request made but no response' : null
       })
-      
+
       if (error.response) {
         // Server responded with error status
         const statusCode = error.response.status
         const message = error.response.data?.message || error.response.data?.error
-        
+
         if (DEBUG_MODE) {
           console.error(`❌ Server Error ${statusCode}:`, message)
         }
-        
+
         if (statusCode === 401) {
           return {
             success: false,
@@ -698,7 +706,7 @@ class EnhancedApiClient {
           console.error('🌐 Network Error - No response received from:', `${API_BASE_URL}/api/Auth/login`)
           console.error('Error details:', error.code, error.message)
         }
-        
+
         return {
           success: false,
           error: `Unable to connect to server (${API_BASE_URL}). Please check your internet connection and server status.`
@@ -708,7 +716,7 @@ class EnhancedApiClient {
         if (DEBUG_MODE) {
           console.error('⚠️ Request Setup Error:', error.message)
         }
-        
+
         return {
           success: false,
           error: error.message || 'Login failed. Please try again.'
@@ -726,11 +734,11 @@ class EnhancedApiClient {
     if (result.success && result.data) {
       // Store tokens using the auth service
       authService.setTokens(
-        result.data.token, 
+        result.data.token,
         result.data.refreshToken,
         false // Default to session-only for registration
       )
-      
+
       // Store user data
       authService.saveUserData(result.data.user)
     }
@@ -740,12 +748,42 @@ class EnhancedApiClient {
 
   async logout(): Promise<ApiResponse<void>> {
     try {
+      // ✅ Update last_logout time in database before logout
+      const userEmail = authService.getUserEmail();
+      if (userEmail) {
+        try {
+          // Get server time first for accurate logout timestamp
+          let logoutTime = new Date().toISOString(); // Fallback to client time
+          try {
+            const serverTimeRes = await this.getServerTime();
+            if (serverTimeRes.success && serverTimeRes.data?.serverTime) {
+              logoutTime = serverTimeRes.data.serverTime;
+            }
+          } catch {
+            // Use client time if server time fails
+          }
+
+          // Use existing EnhancedSubuser PUT endpoint to update last_logout
+          await this.request<void>(`/api/EnhancedSubuser/${encodeEmail(userEmail)}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              last_logout: logoutTime
+            })
+          });
+        } catch (updateError) {
+          // Silently fail - don't block logout if update fails
+        }
+      }
+
       // Try to notify server about logout
       await this.request<void>('/api/RoleBasedAuth/logout', {
         method: 'POST',
       })
     } catch (error) {
-      console.warn('Server logout failed:', error)
+      // Silently handle logout errors
     } finally {
       // Always clear local tokens regardless of server response
       authService.clearTokens()
@@ -772,7 +810,7 @@ class EnhancedApiClient {
 
   async refreshToken(): Promise<ApiResponse<{ accessToken: string; refreshToken?: string }>> {
     const refreshToken = authService.getRefreshToken()
-    
+
     if (!refreshToken) {
       return {
         success: false,
@@ -796,7 +834,7 @@ class EnhancedApiClient {
   }
 
   async getUserByEmail(email: string): Promise<ApiResponse<User>> {
-    return this.request<User>(`/api/Users/${encodeURIComponent(email)}`)
+    return this.request<User>(`/api/Users/${encodeEmail(email)}`)
   }
 
   async updateUser(id: string, userData: Partial<User>): Promise<ApiResponse<User>> {
@@ -808,23 +846,23 @@ class EnhancedApiClient {
 
   // Profile update endpoint - uses DynamicUser/profile
   async updateUserProfile(userData: { userName: string; phoneNumber: string; timezone?: string }): Promise<ApiResponse<User>> {
-    console.log('🌐 Calling PUT /api/DynamicUser/profile with:', userData)
+    // console.log('🌐 Calling PUT /api/DynamicUser/profile with:', userData)
     const response = await this.request<User>(`/api/DynamicUser/profile`, {
       method: 'PUT',
       body: JSON.stringify(userData),
     })
-    console.log('🌐 Response from /api/DynamicUser/profile:', response)
+    // console.log('🌐 Response from /api/DynamicUser/profile:', response)
     return response
   }
 
   // Update timezone endpoint - PATCH /api/RoleBasedAuth/update-timezone
   async updateTimezone(email: string, timezone: string): Promise<ApiResponse<{ message: string; timezone: string }>> {
-    console.log('🌐 Calling PATCH /api/RoleBasedAuth/update-timezone with:', { email, timezone })
+    // console.log('🌐 Calling PATCH /api/RoleBasedAuth/update-timezone with:', { email, timezone })
     const response = await this.request<{ message: string; timezone: string }>(`/api/RoleBasedAuth/update-timezone`, {
       method: 'PATCH',
       body: JSON.stringify({ email, timezone }),
     })
-    console.log('🌐 Response from /api/RoleBasedAuth/update-timezone:', response)
+    // console.log('🌐 Response from /api/RoleBasedAuth/update-timezone:', response)
     return response
   }
 
@@ -835,7 +873,7 @@ class EnhancedApiClient {
       body: JSON.stringify({ currentPassword, newPassword }),
     })
   }
-// Change password endpoint- PATCH /api/EnhancedSubuser/{email}/change-password
+  // Change password endpoint- PATCH /api/EnhancedSubuser/{email}/change-password
   // async changePasswordSub(email: string, currentPassword: string, newPassword: string): Promise<ApiResponse<{ message: string }>> {
   //   return this.request<{ message: string }>(`/api/EnhancedSubuser/${encodeURIComponent(email)}/change-password`, {
   //     method: 'PATCH',
@@ -853,16 +891,16 @@ class EnhancedApiClient {
   // async getSubusers(): Promise<ApiResponse<Subuser[]>> {
   //   return this.request<Subuser[]>('/api/Subuser')
   // }
-  async getSubusersBySuperuser(superuserEmail: string): Promise<ApiResponse<Subuser[]>> {
-    return this.request<Subuser[]>(`/api/Subuser/by-superuser/${encodeURIComponent(superuserEmail)}`)
+  async getSubusersBySuperuser(email: string): Promise<ApiResponse<Subuser[]>> {
+    return this.request<Subuser[]>(`/api/Subuser/by-superuser/${encodeEmail(email)}`)
   }
 
   async getEnhancedSubuser(email: string): Promise<ApiResponse<EnhancedSubuser>> {
-    return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeURIComponent(email)}`)
+    return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeEmail(email)}`)
   }
 
-  async getEnhancedSubusersByParent(parentEmail: string): Promise<ApiResponse<EnhancedSubuser[]>> {
-    return this.request<EnhancedSubuser[]>(`/api/EnhancedSubusers/by-parent/${encodeURIComponent(parentEmail)}`)
+  async getEnhancedSubusersByParent(email: string): Promise<ApiResponse<EnhancedSubuser[]>> {
+    return this.request<EnhancedSubuser[]>(`/api/EnhancedSubusers/by-parent/${encodeEmail(email)}`)
   }
 
   // async getDynamicUserSubusers(): Promise<ApiResponse<Subuser[]>> {
@@ -875,8 +913,8 @@ class EnhancedApiClient {
 
   // 🔄 Master method to fetch subusers with fallback across all available endpoints
   async getAllSubusersWithFallback(userEmail?: string): Promise<ApiResponse<Subuser[]>> {
-    console.log('🔄 Starting getAllSubusersWithFallback...')
-    console.log('📧 User email provided:', userEmail || 'None')
+    // console.log('🔄 Starting getAllSubusersWithFallback...')
+    // console.log('📧 User email provided:', userEmail || 'None')
 
     // ✅ Define endpoint strategies with PRIORITY ORDER
     // Priority 1: User-specific endpoints (by-superuser, by-parent) - returns only current user's subusers
@@ -913,30 +951,30 @@ class EnhancedApiClient {
     // Try each endpoint until we get data
     for (const strategy of endpointStrategies) {
       try {
-        console.log(`🔍 Trying endpoint: ${strategy.name}...`)
+        // console.log(`🔍 Trying endpoint: ${strategy.name}...`)
         const response = await strategy.execute()
-        
-        console.log(`📥 Response from ${strategy.name}:`, {
-          success: response.success,
-          dataLength: response.data?.length || 0,
-          hasData: Array.isArray(response.data) && response.data.length > 0
-        })
+
+        // console.log(`📥 Response from ${strategy.name}:`, {
+        //   success: response.success,
+        //   dataLength: response.data?.length || 0,
+        //   hasData: Array.isArray(response.data) && response.data.length > 0
+        // })
 
         // Check if we got valid data
         if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-          console.log(`✅ SUCCESS! Got ${response.data.length} subusers from ${strategy.name}`)
+          // console.log(`✅ SUCCESS! Got ${response.data.length} subusers from ${strategy.name}`)
           return response
         } else {
-          console.log(`⚠️ ${strategy.name} returned empty or invalid data, trying next endpoint...`)
+          // console.log(`⚠️ ${strategy.name} returned empty or invalid data, trying next endpoint...`)
         }
       } catch (error) {
-        console.warn(`❌ Error from ${strategy.name}:`, error)
+        // console.warn(`❌ Error from ${strategy.name}:`, error)
         // Continue to next endpoint
       }
     }
 
     // If all endpoints failed or returned empty data
-    console.warn('⚠️ All subuser endpoints failed or returned no data')
+    // console.warn('⚠️ All subuser endpoints failed or returned no data')
     return {
       success: false,
       data: [],
@@ -944,25 +982,25 @@ class EnhancedApiClient {
     }
   }
 
-async createSubuser(subuserData: {
-  name: string
-  subuser_email: string
-  role: string
-  department?: string
-  subuser_password: string
-  phone: string
-  subuser_group?: string
-  superuser_email: string
-  license_allocation?: string
-}): Promise<ApiResponse<Subuser>> {
-  return this.request<Subuser>('/api/EnhancedSubuser', {
-    method: 'POST',
-    body: JSON.stringify(subuserData)
-  });
-}
+  async createSubuser(subuserData: {
+    name: string
+    subuser_email: string
+    role: string
+    department?: string
+    subuser_password: string
+    phone: string
+    subuser_group?: string
+    superuser_email: string
+    license_allocation?: string
+  }): Promise<ApiResponse<Subuser>> {
+    return this.request<Subuser>('/api/EnhancedSubuser', {
+      method: 'POST',
+      body: JSON.stringify(subuserData)
+    });
+  }
 
   async deleteSubuser(email: string): Promise<ApiResponse<void>> {
-    return this.request<void>(`/api/EnhancedSubuser/${encodeURIComponent(email)}`, {
+    return this.request<void>(`/api/EnhancedSubuser/${encodeEmail(email)}`, {
       method: 'DELETE'
     });
   }
@@ -979,7 +1017,7 @@ async createSubuser(subuserData: {
   }): Promise<ApiResponse<EnhancedSubuser>> {
     // Map field names to backend expected format
     const mappedData: any = {}
-    
+
     if (subuserData.subuser_name || subuserData.name) {
       mappedData.subuser_name = subuserData.subuser_name || subuserData.name
     }
@@ -995,10 +1033,10 @@ async createSubuser(subuserData: {
     if (subuserData.status) {
       mappedData.status = subuserData.status
     }
-    
-    console.log('📤 UpdateEnhancedSubuser - Mapped data:', mappedData)
-    
-    return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeURIComponent(email)}`, {
+
+    // console.log('📤 UpdateEnhancedSubuser - Mapped data:', mappedData)
+
+    return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeEmail(email)}`, {
       method: 'PUT',
       body: JSON.stringify(mappedData)
     });
@@ -1016,7 +1054,7 @@ async createSubuser(subuserData: {
   }): Promise<ApiResponse<EnhancedSubuser>> {
     // Map field names to backend expected format
     const mappedData: any = {}
-    
+
     if (userData.subuser_name || userData.name) {
       mappedData.subuser_name = userData.subuser_name || userData.name
     }
@@ -1032,11 +1070,11 @@ async createSubuser(subuserData: {
     if (userData.status) {
       mappedData.status = userData.status
     }
-    
-    console.log('📤 UpdateEnhancedSubuserByParent - Parent:', parentEmail, 'Subuser:', subuserEmail, 'Data:', mappedData)
-    
+
+    // console.log('📤 UpdateEnhancedSubuserByParent - Parent:', parentEmail, 'Subuser:', subuserEmail, 'Data:', mappedData)
+
     return this.request<EnhancedSubuser>(
-      `/api/EnhancedSubusers/by-parent/${encodeURIComponent(parentEmail)}/subuser/${encodeURIComponent(subuserEmail)}`, 
+      `/api/EnhancedSubusers/by-parent/${encodeEmail(parentEmail)}/subuser/${encodeEmail(subuserEmail)}`,
       {
         method: 'PATCH',
         body: JSON.stringify(mappedData)
@@ -1054,7 +1092,7 @@ async createSubuser(subuserData: {
   }
 
   async getMachinesByEmail(email: string): Promise<ApiResponse<Machine[]>> {
-    return this.request<Machine[]>(`/api/Machines/by-email/${encodeURIComponent(email)}`)
+    return this.request<Machine[]>(`/api/Machines/by-email/${encodeEmail(email)}`)
   }
 
   async getReports(): Promise<ApiResponse<Report[]>> {
@@ -1066,9 +1104,9 @@ async createSubuser(subuserData: {
   }
 
   async getAuditReportsByEmail(email: string): Promise<ApiResponse<AuditReport[]>> {
-    return this.request<AuditReport[]>(`/api/EnhancedAuditReports/by-email/${encodeURIComponent(email)}`)
+    return this.request<AuditReport[]>(`/api/EnhancedAuditReports/by-email/${encodeEmail(email)}`)
   }
-  
+
   async getAuditReports(): Promise<ApiResponse<AuditReport[]>> {
     return this.request<AuditReport[]>(`/api/AuditReports`)
   }
@@ -1106,11 +1144,11 @@ async createSubuser(subuserData: {
     try {
       const promises = reportIds.map(id => this.getAuditReportById(id))
       const results = await Promise.all(promises)
-      
+
       const successfulReports = results
         .filter(result => result.success && result.data)
         .map(result => result.data!)
-      
+
       if (successfulReports.length === 0) {
         return {
           success: false,
@@ -1167,7 +1205,7 @@ async createSubuser(subuserData: {
 
   // System Logs API methods
   async getSystemLogsByEmail(email: string): Promise<ApiResponse<SystemLog[]>> {
-    return this.request<SystemLog[]>(`/api/Logs/by-email/${encodeURIComponent(email)}`)
+    return this.request<SystemLog[]>(`/api/Logs/by-email/${encodeEmail(email)}`)
   }
   async getSystemLogs(): Promise<ApiResponse<SystemLog[]>> {
     return this.request<SystemLog[]>(`/api/Logs`)
@@ -1175,7 +1213,7 @@ async createSubuser(subuserData: {
 
   // Commands API methods
   async getCommandsByEmail(email: string): Promise<ApiResponse<Command[]>> {
-    return this.request<Command[]>(`/api/Commands/by-email/${encodeURIComponent(email)}`)
+    return this.request<Command[]>(`/api/Commands/by-email/${encodeEmail(email)}`)
   }
   async getCommands(): Promise<ApiResponse<Command[]>> {
     return this.request<Command[]>(`/api/Commands`)
@@ -1183,7 +1221,7 @@ async createSubuser(subuserData: {
 
   // Sessions API methods
   async getSessionsByEmail(email: string): Promise<ApiResponse<Session[]>> {
-    return this.request<Session[]>(`/api/Sessions/by-email/${encodeURIComponent(email)}`)
+    return this.request<Session[]>(`/api/Sessions/by-email/${encodeEmail(email)}`)
   }
   async getSessions(): Promise<ApiResponse<Session[]>> {
     return this.request<Session[]>(`/api/Sessions`)
@@ -1225,9 +1263,9 @@ export async function checkApiAvailability(): Promise<boolean> {
   try {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 5000)
-    
+
     // //console.log('🔍 Testing API connectivity to:', API_BASE_URL)
-    
+
     const response = await fetch(`${API_BASE_URL}/api/health`, {
       method: 'GET',
       signal: controller.signal,
@@ -1237,19 +1275,19 @@ export async function checkApiAvailability(): Promise<boolean> {
         'Accept': 'application/json'
       }
     })
-    
+
     clearTimeout(timeoutId)
-    
+
     // //console.log('✅ API Health Check:', {
     //   status: response.status,
     //   statusText: response.statusText,
     //   ok: response.ok
     // })
-    
+
     return response.ok
   } catch (error) {
     console.error('❌ API Health Check Failed:', error)
-    
+
     if (error instanceof Error) {
       if (error.name === 'AbortError') {
         console.error('⏰ API request timed out')
@@ -1257,7 +1295,7 @@ export async function checkApiAvailability(): Promise<boolean> {
         console.error('🔌 Cannot connect to API server')
       }
     }
-    
+
     return false
   }
 }

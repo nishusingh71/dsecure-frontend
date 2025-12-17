@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/AuthContext'
+﻿import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -103,7 +103,7 @@ export default function EditUser() {
         updatedAt: new Date().toISOString()
       }
       
-      console.log('Updating user:', updatedUser)
+      // console.log('Updating user:', updatedUser)
       
       // Success message
       alert(`User "${formData.name}" has been updated successfully!`)

@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/AuthContext";
+﻿import { useAuth } from "@/auth/AuthContext";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -123,7 +123,7 @@ export default function GenerateReport() {
     try {
       if (reportId) {
         // Custom report generation using specific API endpoint
-        console.log("Generating custom report for ID:", reportId);
+        // console.log("Generating custom report for ID:", reportId);
 
         // Create FormData for file uploads
         const submitData = new FormData();
@@ -194,7 +194,7 @@ export default function GenerateReport() {
         }
       } else if (isBulkMode && bulkReportIds.length > 0) {
         // Bulk report generation with ZIP download
-        console.log("Generating bulk reports for IDs:", bulkReportIds);
+        // console.log("Generating bulk reports for IDs:", bulkReportIds);
 
         showInfo(`Customizing ${bulkReportIds.length} reports...`);
 
@@ -334,10 +334,10 @@ export default function GenerateReport() {
         // Simulate API call for regular report generation
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        console.log(
-          "Generating regular report with data:",
-          Object.fromEntries(submitData)
-        );
+        // console.log(
+          // "Generating regular report with data:",
+          // Object.fromEntries(submitData)
+        // );
 
         showSuccess(
           "Report Generation Started",

@@ -73,7 +73,9 @@ src/tests/
 *.test.tsx
 *.spec.ts
 *.spec.tsx
-
+.test-api.html
+.validate-email-pii.js
+.generate-professional-catalogs.cjs
 # Screenshots folder
 ss/
 *png

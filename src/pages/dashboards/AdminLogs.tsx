@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+﻿import { useMemo, useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { exportToCsv } from '@/utils/csv'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -58,7 +58,7 @@ export default function AdminLogs() {
       if (cached) {
         const { data, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          console.log(`✅ Using cached data for ${key}`);
+          // console.log(`✅ Using cached data for ${key}`);
           return data;
         }
         localStorage.removeItem(`admin_cache_${key}`);
@@ -75,7 +75,7 @@ export default function AdminLogs() {
         data,
         timestamp: Date.now()
       }));
-      console.log(`💾 Cached data for ${key}`);
+      // console.log(`💾 Cached data for ${key}`);
     } catch (e) {
       console.warn(`⚠️ Cache write error for ${key}:`, e);
     }
@@ -100,7 +100,7 @@ export default function AdminLogs() {
     
     // ✅ DEMO MODE: Return static data instead of API calls
     if (isDemoMode()) {
-      console.log('🎭 DEMO MODE - Loading static demo data for AdminLogs');
+      // console.log('🎭 DEMO MODE - Loading static demo data for AdminLogs');
       setSystemLogs(DEMO_SYSTEM_LOGS as any);
       setCommands(DEMO_COMMANDS as any);
       setSessions(DEMO_SESSIONS as any);
@@ -115,12 +115,12 @@ export default function AdminLogs() {
     const cachedSessions = getCachedData(`sessions_${cacheKeySuffix}`);
     
     if (cachedLogs && cachedCommands && cachedSessions) {
-      console.log(`⚡ Displaying cached data for filter: ${emailFilter}`);
+      // console.log(`⚡ Displaying cached data for filter: ${emailFilter}`);
       setSystemLogs(cachedLogs);
       setCommands(cachedCommands);
       setSessions(cachedSessions);
       setLoading(false);
-      console.log(`⏱️ Cache load time: ${(performance.now() - startTime).toFixed(2)}ms`);
+      // console.log(`⏱️ Cache load time: ${(performance.now() - startTime).toFixed(2)}ms`);
       return; // Skip API call if all data is cached for this filter
     }
     
@@ -134,8 +134,8 @@ export default function AdminLogs() {
         return
       }
 
-      console.log('📊 Fetching logs, commands, and sessions for:', userEmail)
-      console.log('🔍 Filter mode:', emailFilter)
+      // console.log('📊 Fetching logs, commands, and sessions for:', userEmail)
+      // console.log('🔍 Filter mode:', emailFilter)
 
       // ⚡ PARALLEL API CALLS - Much faster than sequential
       const [logsRes, commandsRes, sessionsRes] = await Promise.all([
@@ -156,7 +156,7 @@ export default function AdminLogs() {
       if (logsRes.success && logsRes.data) {
         setSystemLogs(logsRes.data)
         setCachedData(`logs_${cacheKey}`, logsRes.data);
-        console.log('✅ Logs loaded:', logsRes.data.length)
+        // console.log('✅ Logs loaded:', logsRes.data.length)
       } else {
         setSystemLogs([])
       }
@@ -164,7 +164,7 @@ export default function AdminLogs() {
       if (commandsRes.success && commandsRes.data) {
         setCommands(commandsRes.data)
         setCachedData(`commands_${cacheKey}`, commandsRes.data);
-        console.log('✅ Commands loaded:', commandsRes.data.length)
+        // console.log('✅ Commands loaded:', commandsRes.data.length)
       } else {
         setCommands([])
       }
@@ -172,13 +172,13 @@ export default function AdminLogs() {
       if (sessionsRes.success && sessionsRes.data) {
         setSessions(sessionsRes.data)
         setCachedData(`sessions_${cacheKey}`, sessionsRes.data);
-        console.log('✅ Sessions loaded:', sessionsRes.data.length)
+        // console.log('✅ Sessions loaded:', sessionsRes.data.length)
       } else {
         setSessions([])
       }
 
       const loadTime = (performance.now() - startTime).toFixed(2)
-      console.log(`⏱️ Total API load time: ${loadTime}ms`)
+      // console.log(`⏱️ Total API load time: ${loadTime}ms`)
 
     } catch (error) {
       console.error('❌ Error loading data:', error)

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+﻿import { useMemo, useState } from 'react'
 import { exportToCsv } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -44,7 +44,7 @@ export default function AdminMachines() {
       if (cached) {
         const { data, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          console.log(`✅ Using cached data for ${key}`);
+          // console.log(`✅ Using cached data for ${key}`);
           return data;
         }
         localStorage.removeItem(`admin_cache_${key}`);
@@ -61,7 +61,7 @@ export default function AdminMachines() {
         data,
         timestamp: Date.now()
       }));
-      console.log(`💾 Cached data for ${key}`);
+      // console.log(`💾 Cached data for ${key}`);
     } catch (e) {
       console.warn(`⚠️ Cache write error for ${key}:`, e);
     }
@@ -87,7 +87,7 @@ export default function AdminMachines() {
     
     // 🎮 Demo Mode Check - Show static data only
     if (isDemoMode()) {
-      console.log('🎮 Demo Mode Active - Using static machines data')
+      // console.log('🎮 Demo Mode Active - Using static machines data')
       setAllRows(DEMO_MACHINES)
       setLoading(false)
       return
@@ -96,7 +96,7 @@ export default function AdminMachines() {
     // ✅ Check cache first for instant display
     const cachedMachines = getCachedData('machines');
     if (cachedMachines && cachedMachines.length > 0) {
-      console.log('⚡ Displaying cached machines data');
+      // console.log('⚡ Displaying cached machines data');
       setAllRows(cachedMachines);
       setLoading(false); // Hide loader since we have cached data
     }
@@ -111,7 +111,7 @@ export default function AdminMachines() {
       if (storedUser) {
         try {
           storedUserData = JSON.parse(storedUser);
-          console.log('💾 Parsed user_data from localStorage:', storedUserData);
+          // console.log('💾 Parsed user_data from localStorage:', storedUserData);
         } catch (e) {
           console.error('Error parsing user_data:', e);
         }
@@ -120,7 +120,7 @@ export default function AdminMachines() {
       if (!storedUserData && authUser) {
         try {
           storedUserData = JSON.parse(authUser);
-          console.log('💾 Parsed authUser from localStorage:', storedUserData);
+          // console.log('💾 Parsed authUser from localStorage:', storedUserData);
         } catch (e) {
           console.error('Error parsing authUser:', e);
         }
@@ -128,11 +128,11 @@ export default function AdminMachines() {
       
       // 2. Get user from JWT token
       const user = authService.getUserFromToken()
-      console.log('👤 User from token:', user)
+      // console.log('👤 User from token:', user)
       
       // 3. PRIORITY: Use user_email from localStorage user_data, then from token
       const userEmail = storedUserData?.user_email || user?.user_email || user?.email
-      console.log('📧 Final userEmail for machines:', userEmail)
+      // console.log('📧 Final userEmail for machines:', userEmail)
       
       if (!userEmail) {
         console.error('❌ No user email found')
@@ -142,12 +142,12 @@ export default function AdminMachines() {
         return
       }
 
-      console.log('🖥️ Fetching machines for email:', userEmail)
+      // console.log('🖥️ Fetching machines for email:', userEmail)
       
       // Try to fetch machines by email first
       let machinesRes = await apiClient.getMachinesByEmail(userEmail)
-      console.log('📥 Machines API Response:', machinesRes)
-      console.log('📥 Full Response Object:', JSON.stringify(machinesRes, null, 2))
+      // console.log('📥 Machines API Response:', machinesRes)
+      // console.log('📥 Full Response Object:', JSON.stringify(machinesRes, null, 2))
       
       // Smart fallback: If 404 or error, try getting all machines
       if (!machinesRes.success || machinesRes.error) {
@@ -156,11 +156,11 @@ export default function AdminMachines() {
         showWarning('API Fallback', 'Using alternate data source for machines')
         
         const allMachinesRes = await apiClient.getMachines()
-        console.log('📥 All Machines Response:', allMachinesRes)
-        console.log('📥 All Machines Data Count:', allMachinesRes.data?.length || 0)
+        // console.log('📥 All Machines Response:', allMachinesRes)
+        // console.log('📥 All Machines Data Count:', allMachinesRes.data?.length || 0)
         
         if (allMachinesRes.success && allMachinesRes.data) {
-          console.log('🔍 Sample machine data:', JSON.stringify(allMachinesRes.data[0], null, 2))
+          // console.log('🔍 Sample machine data:', JSON.stringify(allMachinesRes.data[0], null, 2))
           
           // Filter machines by user email (case-insensitive)
           const userMachines = allMachinesRes.data.filter(
@@ -169,26 +169,26 @@ export default function AdminMachines() {
               const subEmail = machine.subuser_email?.toLowerCase() || ''
               const targetEmail = userEmail.toLowerCase()
               
-              console.log(`🔍 Checking machine: ${machine.machine_id}, user_email: ${machineEmail}, subuser_email: ${subEmail}`)
+              // console.log(`🔍 Checking machine: ${machine.machine_id}, user_email: ${machineEmail}, subuser_email: ${subEmail}`)
               
               return machineEmail === targetEmail || subEmail === targetEmail
             }
           )
           machinesRes = { success: true, data: userMachines }
-          console.log(`✅ Filtered ${userMachines.length} machines from ${allMachinesRes.data.length} total`)
-          console.log(`✅ Filtered machines:`, userMachines)
+          // console.log(`✅ Filtered ${userMachines.length} machines from ${allMachinesRes.data.length} total`)
+          // console.log(`✅ Filtered machines:`, userMachines)
         } else {
           console.error('❌ Failed to fetch all machines:', allMachinesRes.error)
         }
       }
       
       if (machinesRes.success && machinesRes.data) {
-        console.log('✅ Final Machines fetched:', machinesRes.data.length)
-        console.log('✅ Machines data:', machinesRes.data)
+        // console.log('✅ Final Machines fetched:', machinesRes.data.length)
+        // console.log('✅ Machines data:', machinesRes.data)
         
         // If no machines found, set empty array
         if (machinesRes.data.length === 0) {
-          console.log('ℹ️ No machines found for this user')
+          // console.log('ℹ️ No machines found for this user')
           showInfo('No Machines', 'No machines found for your account')
           setAllRows([])
           setLoading(false)
@@ -210,7 +210,7 @@ export default function AdminMachines() {
           if (machine.license_details_json) {
             try {
               licenseDetails = JSON.parse(machine.license_details_json)
-              console.log('📄 Parsed license_details_json for machine:', machine.machine_id, licenseDetails)
+              // console.log('📄 Parsed license_details_json for machine:', machine.machine_id, licenseDetails)
               
               // Extract erase option from license details
               if (licenseDetails.erase_option) {
@@ -311,7 +311,7 @@ export default function AdminMachines() {
           }
         })
         
-        console.log('✅ Mapped machines:', uiMachines)
+        // console.log('✅ Mapped machines:', uiMachines)
         setAllRows(uiMachines)
         setCachedData('machines', uiMachines) // ✅ Cache API data
       } else {
@@ -387,7 +387,7 @@ export default function AdminMachines() {
     } else {
       newSelection.add(machineId)
     }
-    console.log('🔄 Selection updated:', newSelection.size, 'machines selected')
+    // console.log('🔄 Selection updated:', newSelection.size, 'machines selected')
     setSelectedMachineIds(newSelection)
   }
 
@@ -404,7 +404,7 @@ export default function AdminMachines() {
       // Select all on current page
       currentPageIds.forEach((id) => newSelection.add(id))
     }
-    console.log('🔄 Select All updated:', newSelection.size, 'machines selected')
+    // console.log('🔄 Select All updated:', newSelection.size, 'machines selected')
     setSelectedMachineIds(newSelection)
   }
 
