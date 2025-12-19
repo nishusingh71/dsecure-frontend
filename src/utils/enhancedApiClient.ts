@@ -845,7 +845,7 @@ class EnhancedApiClient {
   }
 
   // Profile update endpoint - uses DynamicUser/profile
-  async updateUserProfile(userData: { userName: string; phoneNumber: string; timezone?: string }): Promise<ApiResponse<User>> {
+  async updateUserProfile(userData: { userName: string; timezone?: string }): Promise<ApiResponse<User>> {
     // console.log('🌐 Calling PUT /api/DynamicUser/profile with:', userData)
     const response = await this.request<User>(`/api/DynamicUser/profile`, {
       method: 'PUT',

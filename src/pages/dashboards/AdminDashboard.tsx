@@ -66,6 +66,7 @@ import {
   DEMO_SUBUSERS,
   DEMO_BILLING_DETAILS,
 } from "@/data/demoData";
+import { decodeEmail, encodeEmail } from "@/utils/encodeEmail";
 
 // Interface for merged user data displayed in Users tab
 interface MergedUserData {
@@ -91,7 +92,7 @@ export default function AdminDashboard() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileEditForm, setProfileEditForm] = useState({
     user_name: "",
-    phone_number: "",
+    // phone_number: "",
     timezone: "",
   });
   const [profileUpdateLoading, setProfileUpdateLoading] = useState(false);
@@ -228,16 +229,16 @@ export default function AdminDashboard() {
 
   // Initialize profileData with localStorage data - use state to ensure reactivity
   const [storedUserData, setStoredUserData] = useState(() => getUserDataFromStorage());
-  
+
   // Update stored user data when user context changes
   useEffect(() => {
     const userData = getUserDataFromStorage();
     setStoredUserData(userData);
   }, [user]);
-  
+
   // Check if user has private cloud access
   const isPrivateCloudEnabled = user?.is_private_cloud || storedUserData?.is_private_cloud || false;
-  
+
   console.log("🔍 Private Cloud Check:", {
     userIsPrivateCloud: user?.is_private_cloud,
     storedIsPrivateCloud: storedUserData?.is_private_cloud,
@@ -253,13 +254,25 @@ export default function AdminDashboard() {
     user?.role ||
     "user";
 
+
+  // Helper function to extract name from email
+  const getNameFromEmail = (email: string | undefined): string => {
+    if (!email) return "User";
+    const beforeAt = email.split('@')[0];
+    // Remove numbers and special symbols, keep only letters
+    const cleanedName = beforeAt.replace(/[^a-zA-Z]/g, '');
+    // Convert to readable name with capitalized first letter
+    if (!cleanedName) return "User";
+    return cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1);
+  };
+
   const [profileData, setProfileData] = useState<ProfileData | null>({
     name:
       storedUserData?.user_name ||
       storedUserData?.subuser_name ||
       storedUserData?.name ||
       user?.name ||
-      "User",
+      getNameFromEmail(storedUserData?.user_email || storedUserData?.email || user?.email),
     email:
       storedUserData?.user_email ||
       storedUserData?.email ||
@@ -269,19 +282,18 @@ export default function AdminDashboard() {
     role: primaryRole,
     userRole: storedUserData?.userRole || storedUserData?.user_role,
     user_role: storedUserData?.user_role || storedUserData?.userRole,
-    phone:
-      storedUserData?.phone_number ||
-      storedUserData?.phone ||
-      storedUserData?.subuser_phone ||
-      "",
+    // phone: storedUserData?.phone_number || storedUserData?.phone || storedUserData?.subuser_phone || "", // Commented out
     department: storedUserData?.department || "",
     licenses: 0, // Will be updated from API
-    is_private_cloud: storedUserData?.is_private_cloud || user?.is_private_cloud ,
+    is_private_cloud: storedUserData?.is_private_cloud || user?.is_private_cloud,
   });
+
+  // Get user email for API calls (calculate before using in queries)
+  const userEmail = storedUserData?.user_email || storedUserData?.email || user?.email || "";
 
   // ✅ React Query: Fetch dashboard data with automatic caching
   const dashboardDataEnabled = activeTab === "overview";
-  const dashboardQuery = useDashboardData(dashboardDataEnabled);
+  const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
 
   // ✅ Check if current user is a subuser
   const currentUserType =
@@ -298,11 +310,11 @@ export default function AdminDashboard() {
   // ✅ React Query: Fetch subusers data with automatic caching and refetching
   // Fetch subusers filtered by current user's email (works for both regular users and subusers)
   // Always fetch to show Active Users count on overview tab
-  const userEmail = profileData?.email || user?.email || "";
-  
+  // Note: userEmail is already defined above (line 284)
+
   // ✅ In Demo Mode, disable all React Query API calls
   const isDemo = isDemoMode();
-  
+
   const {
     data: subusersData = isDemo ? DEMO_SUBUSERS : [],
     isLoading: _usersDataLoading,
@@ -310,7 +322,7 @@ export default function AdminDashboard() {
     refetch: refetchSubusers,
     isRefetching,
   } = useSubusers(userEmail, !!userEmail && !isDemo);
-  
+
   // 🎭 In Demo Mode, never show loading state
   const usersDataLoading = isDemo ? false : _usersDataLoading;
 
@@ -341,13 +353,13 @@ export default function AdminDashboard() {
   // Role-based permissions (using primary role from roles array if available)
   // Priority: Demo mode > userRole (camelCase) > user_role (snake_case) > getPrimaryRole() > user.role
   // 🎭 In Demo Mode, always show superadmin role
-  const currentUserRole = isDemo 
+  const currentUserRole = isDemo
     ? 'superadmin'
     : (storedUserData?.userRole ||
-       storedUserData?.user_role ||
-       getPrimaryRole(storedUserData) ||
-       user?.role ||
-       "user");
+      storedUserData?.user_role ||
+      getPrimaryRole(storedUserData) ||
+      user?.role ||
+      "user");
   const permissions = getRolePermissions(currentUserRole);
   const roleInfo = getRoleDisplayInfo(currentUserRole);
 
@@ -447,33 +459,8 @@ export default function AdminDashboard() {
       window.removeEventListener("authStateChanged", handleAuthStateChange);
   }, []);
 
-  // ✅ React Query: Update data from queries when they load
-  useEffect(() => {
-    // Update dashboard stats from React Query
-    if (dashboardQuery.stats) {
-      setDashboardStats(dashboardQuery.stats);
-    }
-    if (dashboardQuery.activity) {
-      setUserActivity(dashboardQuery.activity);
-    }
-    if (dashboardQuery.groups) {
-      setGroups(dashboardQuery.groups);
-    }
-    if (dashboardQuery.licenses) {
-      setLicenseData(dashboardQuery.licenses);
-    }
-    if (dashboardQuery.reports) {
-      setRecentReports(dashboardQuery.reports);
-    }
-    if (dashboardQuery.profile) {
-      setProfileData(dashboardQuery.profile);
-    }
-
-    // Update loading state
-    if (!dashboardQuery.isLoading && dashboardDataEnabled) {
-      setDataLoading(false);
-    }
-  }, []);
+  // ✅ React Query provides data directly - no need for useEffect with object dependencies
+  // Using dashboardQuery.activity directly in UI to avoid "Maximum update depth" error
 
   // ✅ React Query: Update machines data (keep for backward compatibility)
   useEffect(() => {
@@ -515,23 +502,23 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (isDemoMode()) {
       console.log("🎭 DEMO MODE ACTIVE - Loading static demo data");
-      
+
       // Set demo dashboard stats
       setDashboardStats(DEMO_DASHBOARD_STATS);
-      
+
       // Set demo profile
       setProfileData(DEMO_PROFILE);
-      
+
       // Set demo user activity
       setUserActivity(DEMO_USER_ACTIVITY);
-      
+
       // Set demo groups
       setGroups(DEMO_GROUPS);
-      
+
       // Set demo license data
       setLicenseData(DEMO_LICENSE_DETAILS);
       setUserLicenseDetails(DEMO_LICENSE_DETAILS);
-      
+
       // Set demo reports
       setRecentReports(DEMO_REPORTS.map(r => ({
         id: r.id,
@@ -541,23 +528,23 @@ export default function AdminDashboard() {
         date: r.date,
         method: r.method
       })));
-      
+
       // Set demo system logs
       setRecentSystemLogs(DEMO_SYSTEM_LOGS);
-      
+
       // Set demo performance data
       setPerformanceData(DEMO_PERFORMANCE_DATA);
-      
+
       // Set demo audit reports
       setAuditReports(DEMO_AUDIT_REPORTS as any);
       setAuditReportsCount(DEMO_AUDIT_REPORTS.length);
-      
+
       // Set demo active licenses count
       setActiveLicensesCount(DEMO_MACHINES.filter(m => m.status === 'Active' || m.status === 'Running').length);
-      
+
       // Set demo billing details (for Settings modal)
       setBillingDetails(DEMO_BILLING_DETAILS);
-      
+
       // Mark loading as done
       setDataLoading(false);
     }
@@ -642,7 +629,7 @@ export default function AdminDashboard() {
             storedData?.subuser_name ||
             storedData?.name ||
             user?.name ||
-            "User",
+            getNameFromEmail(storedData?.user_email || storedData?.email || user?.email),
           email:
             storedData?.user_email ||
             storedData?.email ||
@@ -652,11 +639,7 @@ export default function AdminDashboard() {
           role: fallbackRole,
           userRole: storedData?.userRole || storedData?.user_role,
           user_role: storedData?.user_role || storedData?.userRole,
-          phone:
-            storedData?.phone_number ||
-            storedData?.phone ||
-            storedData?.subuser_phone ||
-            "",
+          // phone: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "", // Commented out
           department: storedData?.department || "",
           is_private_cloud: storedData?.is_private_cloud || user?.is_private_cloud || false,
         });
@@ -1026,13 +1009,14 @@ export default function AdminDashboard() {
               userRes.data!.user_name ||
               userRes.data!.subuser_name ||
               userRes.data!.name ||
-              prev!.name,
-            phone:
-              userRes.data!.phone_number ||
-              userRes.data!.phone ||
-              userRes.data!.subuser_phone ||
-              prev!.phone ||
-              "",
+              prev!.name ||
+              getNameFromEmail(userRes.data!.user_email || userRes.data!.email || prev!.email),
+            // phone:
+            //   userRes.data!.phone_number ||
+            //   userRes.data!.phone ||
+            //   userRes.data!.subuser_phone ||
+            //   prev!.phone ||
+            //   "",
             email:
               userRes.data!.user_email || userRes.data!.email || prev!.email,
             role: userRes.data!.role || prev!.role,
@@ -1250,15 +1234,15 @@ export default function AdminDashboard() {
                           product: item.product || item.Product || "Unknown",
                           total: parseInt(
                             item.total_license ||
-                              item.total ||
-                              item.Total ||
-                              "0"
+                            item.total ||
+                            item.Total ||
+                            "0"
                           ),
                           consumed: parseInt(
                             item.consumed_license ||
-                              item.consumed ||
-                              item.Consumed ||
-                              "0"
+                            item.consumed ||
+                            item.Consumed ||
+                            "0"
                           ),
                           available: 0,
                         };
@@ -1346,10 +1330,9 @@ export default function AdminDashboard() {
           // Automatically detect user's country and timezone from browser
           const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
           const userLocale = navigator.language || 'en-US';
-          
+
           const usersActivity = subusersRes.data.map((subuser: Subuser) => {
             const subuserEmail = subuser.subuser_email;
-
             let status: "active" | "offline" = "offline";
             let loginTime = "-";
             let logoutTime = "-";
@@ -1503,6 +1486,7 @@ export default function AdminDashboard() {
           storedData?.subuser_name ||
           storedData?.name ||
           user?.name ||
+          getNameFromEmail(storedData?.user_email || storedData?.email || user?.email) ||
           storedData?.userName ||
           "User",
         email:
@@ -1514,11 +1498,7 @@ export default function AdminDashboard() {
         role: fallbackRole,
         userRole: storedData?.userRole || storedData?.user_role,
         user_role: storedData?.user_role || storedData?.userRole,
-        phone:
-          storedData?.phone_number ||
-          storedData?.phone ||
-          storedData?.subuser_phone ||
-          "",
+        // phone: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "", // Commented out
         department: storedData?.department || "",
         licenses: 0,
         is_private_cloud: storedData?.is_private_cloud || user?.is_private_cloud || false,
@@ -2055,7 +2035,7 @@ export default function AdminDashboard() {
   return (
     <>
       <Helmet>
-        + <link rel="canonical" href="https://dsecuretech.com/admin" />
+        <link rel="canonical" href="https://dsecuretech.com/admin" />
         <title>
           DSecureTech Compliance | Data Erasure Standards & Regulations
         </title>
@@ -2087,7 +2067,7 @@ export default function AdminDashboard() {
             <p className="mt-2 text-slate-600 flex items-center gap-2">
               <span className="inline-block w-2 h-2 rounded-full bg-green-400 flex-shrink-0"></span>
               <span className="truncate">
-                Welcome back, {profileData?.name}
+                Welcome back, {getNameFromEmail(profileData?.email || storedUserData?.user_email || storedUserData?.email || user?.email || "user@example.com")}
               </span>
               <span className="hidden sm:inline text-slate-400">•</span>
               <span className="hidden sm:inline text-sm text-slate-500">
@@ -2122,14 +2102,14 @@ export default function AdminDashboard() {
             <button
               onClick={() => {
                 setShowSettingsModal(true);
-                
+
                 // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
                 if (isDemo) {
                   console.log('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
                   setBillingDetails(DEMO_BILLING_DETAILS);
                   return;
                 }
-                
+
                 // Load billing details from BOTH license_details_json AND payment_details_json
                 // Priority: user object from AuthContext > localStorage
                 const storedData = getUserDataFromStorage();
@@ -2222,24 +2202,24 @@ export default function AdminDashboard() {
                         combinedBillingInfo.purchaseDate =
                           firstPlan.purchaseDate
                             ? new Date(
-                                firstPlan.purchaseDate
-                              ).toLocaleDateString("en-IN", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
+                              firstPlan.purchaseDate
+                            ).toLocaleDateString("en-IN", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })
                             : "N/A";
                         combinedBillingInfo.validityYears =
                           firstPlan.validityYears || "N/A";
                         combinedBillingInfo.expiryDate = firstPlan.expiryDate
                           ? new Date(firstPlan.expiryDate).toLocaleDateString(
-                              "en-IN",
-                              {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              }
-                            )
+                            "en-IN",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )
                           : "N/A";
 
                         console.log(
@@ -2544,11 +2524,10 @@ export default function AdminDashboard() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
-                        activeTab === tab.id
-                          ? "border-emerald-500 text-emerald-600"
-                          : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
-                      }`}
+                      className={`flex items-center gap-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${activeTab === tab.id
+                        ? "border-emerald-500 text-emerald-600"
+                        : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                        }`}
                     >
                       {tab.iconSvg}
                       <span>{tab.name}</span>
@@ -2563,48 +2542,46 @@ export default function AdminDashboard() {
         {/* Full Stats for SuperAdmin/Admin */}
         <RoleBased permission="canViewAllStats">
           {stats.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="card !p-4 lg:!p-6 flex items-start justify-between min-w-0 hover:shadow-lg transition-all duration-200"
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div
-                      className={`w-3 h-3 rounded-full ${stat.color} flex-shrink-0`}
-                    ></div>
-                    <p className="text-sm font-medium text-slate-600 truncate">
-                      {stat.label}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="card !p-4 lg:!p-6 flex items-start justify-between min-w-0 hover:shadow-lg transition-all duration-200"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div
+                        className={`w-3 h-3 rounded-full ${stat.color} flex-shrink-0`}
+                      ></div>
+                      <p className="text-sm font-medium text-slate-600 truncate">
+                        {stat.label}
+                      </p>
+                    </div>
+                    <p className="text-2xl lg:text-3xl font-bold text-slate-900 truncate">
+                      {stat.value}
                     </p>
                   </div>
-                  <p className="text-2xl lg:text-3xl font-bold text-slate-900 truncate">
-                    {stat.value}
-                  </p>
-                </div>
-                <div
-                  className={`flex items-center gap-1 text-sm font-medium ml-2 flex-shrink-0 ${
-                    stat.trend === "up" ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  <span>{stat.change}</span>
-                  <svg
-                    className={`w-4 h-4 ${
-                      stat.trend === "up" ? "rotate-0" : "rotate-180"
-                    }`}
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                  <div
+                    className={`flex items-center gap-1 text-sm font-medium ml-2 flex-shrink-0 ${stat.trend === "up" ? "text-green-600" : "text-red-600"
+                      }`}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                    <span>{stat.change}</span>
+                    <svg
+                      className={`w-4 h-4 ${stat.trend === "up" ? "rotate-0" : "rotate-180"
+                        }`}
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 4.414 6.707 7.707a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           ) : (
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-8 text-center mb-8">
               <svg className="w-12 h-12 text-slate-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2748,25 +2725,23 @@ export default function AdminDashboard() {
                     >
                       <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
                         <div
-                          className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                            report.status === "completed" ||
+                          className={`w-2 h-2 rounded-full flex-shrink-0 ${report.status === "completed" ||
                             report.status === "Completed"
-                              ? "bg-green-400"
-                              : report.status === "running" ||
-                                report.status === "Running"
+                            ? "bg-green-400"
+                            : report.status === "running" ||
+                              report.status === "Running"
                               ? "bg-blue-400"
                               : report.status === "pending" ||
                                 report.status === "Pending"
-                              ? "bg-yellow-400"
-                              : "bg-red-400"
-                          }`}
+                                ? "bg-yellow-400"
+                                : "bg-red-400"
+                            }`}
                         ></div>
                         <div className="min-w-0 flex-1">
                           <div className="font-medium text-slate-900 truncate">
                             {report.report_name ||
                               report.reportType ||
-                              `Report #${
-                                report.report_id || report.reportId || report.id
+                              `Report #${report.report_id || report.reportId || report.id
                               }`}
                           </div>
                           <div className="text-sm text-slate-500 truncate">
@@ -2783,15 +2758,15 @@ export default function AdminDashboard() {
                       <div className="text-sm text-slate-500 flex-shrink-0 ml-2">
                         {report.report_datetime
                           ? new Date(report.report_datetime).toLocaleDateString(
-                              "en-IN",
-                              { month: "short", day: "numeric" }
-                            )
+                            "en-IN",
+                            { month: "short", day: "numeric" }
+                          )
                           : report.reportDate
-                          ? new Date(report.reportDate).toLocaleDateString(
+                            ? new Date(report.reportDate).toLocaleDateString(
                               "en-IN",
                               { month: "short", day: "numeric" }
                             )
-                          : "N/A"}
+                            : "N/A"}
                       </div>
                     </div>
                   ))
@@ -2839,104 +2814,103 @@ export default function AdminDashboard() {
               <div className="card-content divide-y divide-slate-200">
                 {recentSystemLogs.length > 0 ? (
                   <>
-                  {recentSystemLogs
-                    .slice((systemLogsPage - 1) * ITEMS_PER_PAGE, systemLogsPage * ITEMS_PER_PAGE)
-                    .map((log, index) => (
-                    <div
-                      key={log.log_id || index}
-                      className="px-4 sm:px-6 py-4 hover:bg-slate-50 transition-colors min-w-0"
-                    >
-                      <div className="flex items-start gap-3 min-w-0">
-                        {/* Log Level Badge */}
-                        <div className="flex-shrink-0 mt-0.5">
-                          <span
-                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                              log.log_level === "ERROR" ||
-                              log.log_level === "error"
-                                ? "bg-red-100 text-red-700"
-                                : log.log_level === "WARNING" ||
-                                  log.log_level === "warning"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : log.log_level === "INFO" ||
-                                  log.log_level === "info"
-                                ? "bg-blue-100 text-blue-700"
-                                : "bg-slate-100 text-slate-700"
-                            }`}
-                          >
-                            {log.log_level || "INFO"}
-                          </span>
-                        </div>
-
-                        {/* Log Details */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2 mb-1">
-                            <p className="font-medium text-slate-900 text-sm truncate">
-                              {log.log_message || "No message"}
-                            </p>
-                            <span className="text-xs text-slate-500 flex-shrink-0">
-                              {log.created_at
-                                ? new Date(log.created_at).toLocaleString(
-                                    "en-IN",
-                                    {
-                                      month: "short",
-                                      day: "numeric",
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    }
-                                  )
-                                : "N/A"}
-                            </span>
-                          </div>
-
-                          {/* Additional Info */}
-                          <div className="flex items-center gap-2 text-xs text-slate-500">
-                            {log.user_email && (
-                              <span className="truncate">
-                                <svg
-                                  className="w-3 h-3 inline mr-1"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                  />
-                                </svg>
-                                {log.user_email}
+                    {recentSystemLogs
+                      .slice((systemLogsPage - 1) * ITEMS_PER_PAGE, systemLogsPage * ITEMS_PER_PAGE)
+                      .map((log, index) => (
+                        <div
+                          key={log.log_id || index}
+                          className="px-4 sm:px-6 py-4 hover:bg-slate-50 transition-colors min-w-0"
+                        >
+                          <div className="flex items-start gap-3 min-w-0">
+                            {/* Log Level Badge */}
+                            <div className="flex-shrink-0 mt-0.5">
+                              <span
+                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${log.log_level === "ERROR" ||
+                                  log.log_level === "error"
+                                  ? "bg-red-100 text-red-700"
+                                  : log.log_level === "WARNING" ||
+                                    log.log_level === "warning"
+                                    ? "bg-yellow-100 text-yellow-700"
+                                    : log.log_level === "INFO" ||
+                                      log.log_level === "info"
+                                      ? "bg-blue-100 text-blue-700"
+                                      : "bg-slate-100 text-slate-700"
+                                  }`}
+                              >
+                                {log.log_level || "INFO"}
                               </span>
-                            )}
+                            </div>
+
+                            {/* Log Details */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2 mb-1">
+                                <p className="font-medium text-slate-900 text-sm truncate">
+                                  {log.log_message || "No message"}
+                                </p>
+                                <span className="text-xs text-slate-500 flex-shrink-0">
+                                  {log.created_at
+                                    ? new Date(log.created_at).toLocaleString(
+                                      "en-IN",
+                                      {
+                                        month: "short",
+                                        day: "numeric",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      }
+                                    )
+                                    : "N/A"}
+                                </span>
+                              </div>
+
+                              {/* Additional Info */}
+                              <div className="flex items-center gap-2 text-xs text-slate-500">
+                                {log.user_email && (
+                                  <span className="truncate">
+                                    <svg
+                                      className="w-3 h-3 inline mr-1"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                      />
+                                    </svg>
+                                    {log.user_email}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
+                      ))}
+                    {/* System Logs Pagination */}
+                    {recentSystemLogs.length > ITEMS_PER_PAGE && (
+                      <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-t border-slate-200">
+                        <span className="text-sm text-slate-600">
+                          Page {systemLogsPage} of {Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)}
+                        </span>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => setSystemLogsPage(prev => Math.max(prev - 1, 1))}
+                            disabled={systemLogsPage === 1}
+                            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Previous
+                          </button>
+                          <button
+                            onClick={() => setSystemLogsPage(prev => Math.min(prev + 1, Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)))}
+                            disabled={systemLogsPage >= Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)}
+                            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Next
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  {/* System Logs Pagination */}
-                  {recentSystemLogs.length > ITEMS_PER_PAGE && (
-                    <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-t border-slate-200">
-                      <span className="text-sm text-slate-600">
-                        Page {systemLogsPage} of {Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)}
-                      </span>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setSystemLogsPage(prev => Math.max(prev - 1, 1))}
-                          disabled={systemLogsPage === 1}
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Previous
-                        </button>
-                        <button
-                          onClick={() => setSystemLogsPage(prev => Math.min(prev + 1, Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)))}
-                          disabled={systemLogsPage >= Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)}
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Next
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                    )}
                   </>
                 ) : (
                   <div className="px-4 sm:px-6 py-12 text-center">
@@ -3149,58 +3123,57 @@ export default function AdminDashboard() {
                         {userLicenseDetails
                           .slice((licenseDetailsPage - 1) * ITEMS_PER_PAGE, licenseDetailsPage * ITEMS_PER_PAGE)
                           .map((license, index) => {
-                          const usagePercent =
-                            license.total > 0
-                              ? (license.consumed / license.total) * 100
-                              : 0;
-                          return (
-                            <tr key={index} className="hover:bg-slate-50">
-                              <td className="py-4 font-medium text-slate-900 whitespace-nowrap">
-                                {license.product}
-                              </td>
-                              <td className="py-4 text-slate-600">
-                                {license.total}
-                              </td>
-                              <td className="py-4 text-slate-600">
-                                {license.consumed}
-                              </td>
-                              <td className="py-4">
-                                <div className="flex items-center gap-3">
-                                  <div className="flex-1 bg-slate-200 rounded-full h-2 min-w-[80px]">
-                                    <div
-                                      className={`h-2 rounded-full ${
-                                        usagePercent > 80
+                            const usagePercent =
+                              license.total > 0
+                                ? (license.consumed / license.total) * 100
+                                : 0;
+                            return (
+                              <tr key={index} className="hover:bg-slate-50">
+                                <td className="py-4 font-medium text-slate-900 whitespace-nowrap">
+                                  {license.product}
+                                </td>
+                                <td className="py-4 text-slate-600">
+                                  {license.total}
+                                </td>
+                                <td className="py-4 text-slate-600">
+                                  {license.consumed}
+                                </td>
+                                <td className="py-4">
+                                  <div className="flex items-center gap-3">
+                                    <div className="flex-1 bg-slate-200 rounded-full h-2 min-w-[80px]">
+                                      <div
+                                        className={`h-2 rounded-full ${usagePercent > 80
                                           ? "bg-red-500"
                                           : usagePercent > 60
-                                          ? "bg-yellow-500"
-                                          : "bg-green-500"
-                                      }`}
-                                      style={{
-                                        width: `${Math.min(
-                                          usagePercent,
-                                          100
-                                        )}%`,
-                                      }}
-                                    ></div>
+                                            ? "bg-yellow-500"
+                                            : "bg-green-500"
+                                          }`}
+                                        style={{
+                                          width: `${Math.min(
+                                            usagePercent,
+                                            100
+                                          )}%`,
+                                        }}
+                                      ></div>
+                                    </div>
+                                    <span className="text-sm text-slate-600 min-w-[50px] text-right">
+                                      {usagePercent.toFixed(1)}%
+                                    </span>
                                   </div>
-                                  <span className="text-sm text-slate-600 min-w-[50px] text-right">
-                                    {usagePercent.toFixed(1)}%
-                                  </span>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                </td>
+                              </tr>
+                            );
+                          })}
                         {userLicenseDetails.length === 0 && (
-                            <tr>
-                              <td
-                                colSpan={4}
-                                className="py-8 text-center text-slate-500"
-                              >
-                                No license data available
-                              </td>
-                            </tr>
-                          )}
+                          <tr>
+                            <td
+                              colSpan={4}
+                              className="py-8 text-center text-slate-500"
+                            >
+                              No license data available
+                            </td>
+                          </tr>
+                        )}
                       </tbody>
                     </table>
                     {/* License Details Pagination */}
@@ -3322,110 +3295,108 @@ export default function AdminDashboard() {
                           {subusersData
                             .slice((usersPage - 1) * ITEMS_PER_PAGE, usersPage * ITEMS_PER_PAGE)
                             .map((subuser, index) => {
-                            return (
-                              <tr
-                                key={subuser.id || index}
-                                className="hover:bg-slate-50"
-                              >
-                                {/* Email */}
-                                <td className="py-4 font-medium text-slate-900">
-                                  {subuser.subuser_email}
-                                </td>
+                              return (
+                                <tr
+                                  key={subuser.id || index}
+                                  className="hover:bg-slate-50"
+                                >
+                                  {/* Email */}
+                                  <td className="py-4 font-medium text-slate-900">
+                                    {subuser.subuser_email}
+                                  </td>
 
-                                {/* Role */}
-                                <td className="py-4">
-                                  <span
-                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                      (subuser as any).role === "admin" ||
-                                      (subuser as any).defaultRole === "admin"
+                                  {/* Role */}
+                                  <td className="py-4">
+                                    <span
+                                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${(subuser as any).role === "admin" ||
+                                        (subuser as any).defaultRole === "admin"
                                         ? "bg-purple-100 text-purple-800"
                                         : (subuser as any).role === "manager" ||
                                           (subuser as any).defaultRole ===
-                                            "manager"
-                                        ? "bg-blue-100 text-blue-800"
-                                        : "bg-slate-100 text-slate-800"
-                                    }`}
-                                  >
-                                    {(subuser as any).role ||
-                                      (subuser as any).defaultRole ||
-                                      "user"}
-                                  </span>
-                                </td>
+                                          "manager"
+                                          ? "bg-blue-100 text-blue-800"
+                                          : "bg-slate-100 text-slate-800"
+                                        }`}
+                                    >
+                                      {(subuser as any).role ||
+                                        (subuser as any).defaultRole ||
+                                        "user"}
+                                    </span>
+                                  </td>
 
-                                {/* Department */}
-                                <td className="py-4 text-slate-600">
-                                  {(subuser as any).department || "-"}
-                                </td>
+                                  {/* Department */}
+                                  <td className="py-4 text-slate-600">
+                                    {(subuser as any).department || "-"}
+                                  </td>
 
-                                {/* Status */}
-                                <td className="py-4">
-                                  {subuser.status ? (
-                                    <span
-                                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                        subuser.status === "active"
+                                  {/* Status */}
+                                  <td className="py-4">
+                                    {subuser.status ? (
+                                      <span
+                                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${subuser.status === "active"
                                           ? "bg-green-100 text-green-800"
                                           : subuser.status === "inactive"
-                                          ? "bg-gray-100 text-gray-800"
-                                          : subuser.status === "suspended"
-                                          ? "bg-red-100 text-red-800"
-                                          : "bg-yellow-100 text-yellow-800"
-                                      }`}
-                                    >
-                                      {subuser.status}
-                                    </span>
-                                  ) : (
-                                    <span className="text-slate-400">-</span>
-                                  )}
-                                </td>
+                                            ? "bg-gray-100 text-gray-800"
+                                            : subuser.status === "suspended"
+                                              ? "bg-red-100 text-red-800"
+                                              : "bg-yellow-100 text-yellow-800"
+                                          }`}
+                                      >
+                                        {subuser.status}
+                                      </span>
+                                    ) : (
+                                      <span className="text-slate-400">-</span>
+                                    )}
+                                  </td>
 
-                                {/* User Group */}
-                                <td className="py-4 text-slate-600">
-                                  {(subuser as any).subuser_group || "-"}
-                                </td>
+                                  {/* User Group */}
+                                  <td className="py-4 text-slate-600">
+                                    {(subuser as any).subuser_group || "-"}
+                                  </td>
 
-                                {/* Last Login */}
-                                <td className="py-4 text-slate-600 text-sm">
-                                  <div className="flex flex-col">
-                                    <span className="font-medium">
-                                      {formatLastLogin(
-                                        (subuser as any).last_login
-                                      )}
-                                    </span>
-                                    {(subuser as any).last_login &&
-                                      (subuser as any).last_login !== "Never" &&
-                                      (subuser as any).last_login !== "-" && (
-                                        <span
-                                          className="text-xs text-slate-400 mt-0.5"
-                                          title={new Date(
-                                            (subuser as any).last_login
-                                          ).toLocaleString()}
-                                        >
-                                          {new Date(
-                                            (subuser as any).last_login
-                                          ).toLocaleString("en-IN", {
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                          })}
-                                        </span>
-                                      )}
-                                  </div>
-                                </td>
+                                  {/* Last Login */}
+                                  <td className="py-4 text-slate-600 text-sm">
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">
+                                        {formatLastLogin(
+                                          (subuser as any).last_login
+                                        )}
+                                      </span>
+                                      {(subuser as any).last_login &&
+                                        (subuser as any).last_login !== "Never" &&
+                                        (subuser as any).last_login !== "-" && (
+                                          <span
+                                            className="text-xs text-slate-400 mt-0.5"
+                                            title={new Date(
+                                              (subuser as any).last_login
+                                            ).toLocaleString()}
+                                          >
+                                            {new Date(
+                                              (subuser as any).last_login
+                                            ).toLocaleString("en-IN", {
+                                              month: "short",
+                                              day: "numeric",
+                                              hour: "2-digit",
+                                              minute: "2-digit",
+                                            })}
+                                          </span>
+                                        )}
+                                    </div>
+                                  </td>
 
-                                {/* License Allocation */}
-                                <td className="py-4">
-                                  {(subuser as any).license_allocation ? (
-                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
-                                      {(subuser as any).license_allocation}
-                                    </span>
-                                  ) : (
-                                    <span className="text-slate-400">-</span>
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                  {/* License Allocation */}
+                                  <td className="py-4">
+                                    {(subuser as any).license_allocation ? (
+                                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
+                                        {(subuser as any).license_allocation}
+                                      </span>
+                                    ) : (
+                                      <span className="text-slate-400">-</span>
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
                         </tbody>
                       </table>
                       {/* Users Pagination */}
@@ -3471,7 +3442,7 @@ export default function AdminDashboard() {
               </p>
             </div>
             <div className="p-6">
-              {userActivity.length === 0 ? (
+              {(!dashboardQuery.activity || dashboardQuery.activity.length === 0) ? (
                 <div className="text-center py-12">
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
                     <svg
@@ -3507,46 +3478,44 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
-                      {userActivity
+                      {(dashboardQuery.activity || [])
                         .slice((userActivityPage - 1) * ITEMS_PER_PAGE, userActivityPage * ITEMS_PER_PAGE)
                         .map((activity, index) => (
-                        <tr key={index} className="hover:bg-slate-50">
-                          <td className="py-4 font-medium text-slate-900">
-                            {activity.email}
-                          </td>
-                          <td className="py-4 text-slate-600">
-                            {activity.loginTime}
-                          </td>
-                          <td className="py-4 text-slate-600">
-                            {activity.logoutTime || "-"}
-                          </td>
-                          <td className="py-4">
-                            <span
-                              className={`inline-flex items-center gap-1 ${
-                                activity.status === "active"
+                          <tr key={index} className="hover:bg-slate-50">
+                            <td className="py-4 font-medium text-slate-900">
+                              {activity.email}
+                            </td>
+                            <td className="py-4 text-slate-600">
+                              {activity.loginTime}
+                            </td>
+                            <td className="py-4 text-slate-600">
+                              {activity.logoutTime || "-"}
+                            </td>
+                            <td className="py-4">
+                              <span
+                                className={`inline-flex items-center gap-1 ${activity.status === "active"
                                   ? "text-green-600"
                                   : "text-slate-500"
-                              }`}
-                            >
-                              <span
-                                className={`w-2 h-2 rounded-full ${
-                                  activity.status === "active"
+                                  }`}
+                              >
+                                <span
+                                  className={`w-2 h-2 rounded-full ${activity.status === "active"
                                     ? "bg-green-400"
                                     : "bg-slate-400"
-                                }`}
-                              ></span>
-                              {activity.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
+                                    }`}
+                                ></span>
+                                {activity.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                   {/* User Activity Pagination */}
-                  {userActivity.length > ITEMS_PER_PAGE && (
+                  {(dashboardQuery.activity || []).length > ITEMS_PER_PAGE && (
                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200">
                       <span className="text-sm text-slate-600">
-                        Page {userActivityPage} of {Math.ceil(userActivity.length / ITEMS_PER_PAGE)}
+                        Page {userActivityPage} of {Math.ceil((dashboardQuery.activity || []).length / ITEMS_PER_PAGE)}
                       </span>
                       <div className="flex gap-2">
                         <button
@@ -3557,8 +3526,8 @@ export default function AdminDashboard() {
                           Previous
                         </button>
                         <button
-                          onClick={() => setUserActivityPage(prev => Math.min(prev + 1, Math.ceil(userActivity.length / ITEMS_PER_PAGE)))}
-                          disabled={userActivityPage >= Math.ceil(userActivity.length / ITEMS_PER_PAGE)}
+                          onClick={() => setUserActivityPage(prev => Math.min(prev + 1, Math.ceil((dashboardQuery.activity || []).length / ITEMS_PER_PAGE)))}
+                          disabled={userActivityPage >= Math.ceil((dashboardQuery.activity || []).length / ITEMS_PER_PAGE)}
                           className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Next
@@ -3629,17 +3598,17 @@ export default function AdminDashboard() {
                       {auditReports
                         .slice((reportsPage - 1) * ITEMS_PER_PAGE, reportsPage * ITEMS_PER_PAGE)
                         .map((report) => (
-                        <tr
-                          key={report.report_id || report.id}
-                          className="hover:bg-slate-50"
-                        >
-                          <td className="py-4 font-medium text-slate-900">
-                            #{report.report_id || report.reportId || report.id}
-                          </td>
-                          <td className="py-4 text-slate-600">
-                            {report.report_name || report.reportType || report.erasure_method || "Erasure Report"}
-                          </td>
-                          {/* <td className="py-4 text-slate-600">
+                          <tr
+                            key={report.report_id || report.id}
+                            className="hover:bg-slate-50"
+                          >
+                            <td className="py-4 font-medium text-slate-900">
+                              #{report.report_id || report.reportId || report.id}
+                            </td>
+                            <td className="py-4 text-slate-600">
+                              {report.report_name || report.reportType || report.erasure_method || "Erasure Report"}
+                            </td>
+                            {/* <td className="py-4 text-slate-600">
                           {(() => {
                             // Priority: API deviceCount > calculated from machines
                             if (report.deviceCount && report.deviceCount > 0) {
@@ -3663,81 +3632,79 @@ export default function AdminDashboard() {
                             return 0;
                           })()}
                         </td> */}
-                          <td className="py-4">
-                            {(() => {
-                              // Parse status from report_details_json (same logic as AdminReports)
-                              let statusValue = "completed"; // default
+                            <td className="py-4">
+                              {(() => {
+                                // Parse status from report_details_json (same logic as AdminReports)
+                                let statusValue = "completed"; // default
 
-                              // Type cast to access report_details_json which may exist at runtime
-                              const reportWithDetails = report as any;
+                                // Type cast to access report_details_json which may exist at runtime
+                                const reportWithDetails = report as any;
 
-                              if (reportWithDetails.report_details_json) {
-                                try {
-                                  const reportDetails = JSON.parse(
-                                    reportWithDetails.report_details_json
-                                  );
-                                  statusValue =
-                                    reportDetails?.status?.toLowerCase() ||
-                                    "completed";
-                                } catch (e) {
-                                  // If parsing fails, use report.status directly
-                                  statusValue =
-                                    report.status?.toLowerCase() || "completed";
+                                if (reportWithDetails.report_details_json) {
+                                  try {
+                                    const reportDetails = JSON.parse(
+                                      reportWithDetails.report_details_json
+                                    );
+                                    statusValue =
+                                      reportDetails?.status?.toLowerCase() ||
+                                      "completed";
+                                  } catch (e) {
+                                    // If parsing fails, use report.status directly
+                                    statusValue =
+                                      report.status?.toLowerCase() || "completed";
+                                  }
+                                } else if (report.status) {
+                                  statusValue = report.status.toLowerCase();
                                 }
-                              } else if (report.status) {
-                                statusValue = report.status.toLowerCase();
-                              }
 
-                              return (
-                                <span
-                                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
-                                    statusValue === "completed"
+                                return (
+                                  <span
+                                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusValue === "completed"
                                       ? "bg-green-100 text-green-800"
                                       : statusValue === "running" ||
                                         statusValue === "pending"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : statusValue === "warning"
-                                      ? "bg-yellow-100 text-yellow-800"
-                                      : statusValue === "failed"
-                                      ? "bg-red-100 text-red-800"
-                                      : "bg-slate-100 text-slate-800"
-                                  }`}
-                                >
-                                  <span
-                                    className={`w-2 h-2 rounded-full ${
-                                      statusValue === "completed"
+                                        ? "bg-blue-100 text-blue-800"
+                                        : statusValue === "warning"
+                                          ? "bg-yellow-100 text-yellow-800"
+                                          : statusValue === "failed"
+                                            ? "bg-red-100 text-red-800"
+                                            : "bg-slate-100 text-slate-800"
+                                      }`}
+                                  >
+                                    <span
+                                      className={`w-2 h-2 rounded-full ${statusValue === "completed"
                                         ? "bg-green-500"
                                         : statusValue === "running" ||
                                           statusValue === "pending"
-                                        ? "bg-blue-500"
-                                        : statusValue === "warning"
-                                        ? "bg-yellow-500"
-                                        : statusValue === "failed"
-                                        ? "bg-red-500"
-                                        : "bg-slate-500"
-                                    }`}
-                                  ></span>
-                                  {statusValue}
-                                </span>
-                              );
-                            })()}
-                          </td>
-                          <td className="py-4 text-slate-600">
-                            {(report.report_datetime || (report as any).report_date)
-                              ? new Date(
+                                          ? "bg-blue-500"
+                                          : statusValue === "warning"
+                                            ? "bg-yellow-500"
+                                            : statusValue === "failed"
+                                              ? "bg-red-500"
+                                              : "bg-slate-500"
+                                        }`}
+                                    ></span>
+                                    {statusValue}
+                                  </span>
+                                );
+                              })()}
+                            </td>
+                            <td className="py-4 text-slate-600">
+                              {(report.report_datetime || (report as any).report_date)
+                                ? new Date(
                                   report.report_datetime || (report as any).report_date
                                 ).toLocaleDateString("en-IN", {
                                   year: "numeric",
                                   month: "short",
                                   day: "numeric",
                                 })
-                              : "N/A"}
-                          </td>
-                          <td className="py-4 text-slate-600">
-                            {report.erasure_method || "N/A"}
-                          </td>
-                        </tr>
-                      ))}
+                                : "N/A"}
+                            </td>
+                            <td className="py-4 text-slate-600">
+                              {report.erasure_method || "N/A"}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                   {/* Reports Pagination */}
@@ -3795,322 +3762,322 @@ export default function AdminDashboard() {
                 <p className="text-slate-600">Performance data is not available from the server.</p>
               </div>
             ) : (
-            <>
-            {/* Top 3 Metric Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Monthly Erasures */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div className="mb-4">
-                  <p className="text-sm text-slate-500 mb-1">
-                    Monthly erasures
-                  </p>
-                  <p className="text-3xl font-bold text-slate-900">
-                    {performanceData.monthlyErasures.reduce(
-                      (sum, item) => sum + item.count,
-                      0
-                    )}
-                  </p>
-                </div>
-                <div className="h-24">
-                  <svg viewBox="0 0 300 80" className="w-full h-full">
-                    {/* Area gradient */}
-                    <defs>
-                      <linearGradient
-                        id="areaGradient1"
-                        x1="0%"
-                        y1="0%"
-                        x2="0%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#3B82F6"
-                          stopOpacity="0.3"
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor="#3B82F6"
-                          stopOpacity="0.05"
-                        />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Create path for area chart */}
-                    {performanceData.monthlyErasures.length > 0 && (
-                      <>
-                        <path
-                          d={`M 0 80 ${performanceData.monthlyErasures
-                            .map((item, index) => {
-                              const x =
-                                (index /
-                                  (performanceData.monthlyErasures.length -
-                                    1)) *
-                                300;
-                              const maxCount = Math.max(
-                                ...performanceData.monthlyErasures.map(
-                                  (i) => i.count
-                                ),
-                                1
-                              );
-                              const y = 80 - (item.count / maxCount) * 60;
-                              return `L ${x} ${y}`;
-                            })
-                            .join(" ")} L 300 80 Z`}
-                          fill="url(#areaGradient1)"
-                        />
-                        <path
-                          d={`${performanceData.monthlyErasures
-                            .map((item, index) => {
-                              const x =
-                                (index /
-                                  (performanceData.monthlyErasures.length -
-                                    1)) *
-                                300;
-                              const maxCount = Math.max(
-                                ...performanceData.monthlyErasures.map(
-                                  (i) => i.count
-                                ),
-                                1
-                              );
-                              const y = 80 - (item.count / maxCount) * 60;
-                              return `${index === 0 ? "M" : "L"} ${x} ${y}`;
-                            })
-                            .join(" ")}`}
-                          stroke="#3B82F6"
-                          strokeWidth="2"
-                          fill="none"
-                        />
-                      </>
-                    )}
-                  </svg>
-                </div>
-              </div>
-
-              {/* Average Duration */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div className="mb-4">
-                  <p className="text-sm text-slate-500 mb-1">Avg. duration</p>
-                  <p className="text-3xl font-bold text-slate-900">
-                    {(() => {
-                      const totalDuration = performanceData.avgDuration.reduce(
-                        (sum, item) => sum + item.duration,
-                        0
-                      );
-                      const avgSeconds =
-                        performanceData.avgDuration.length > 0
-                          ? totalDuration /
-                            performanceData.avgDuration.filter(
-                              (i) => i.duration > 0
-                            ).length
-                          : 0;
-                      const minutes = Math.floor(avgSeconds / 60);
-                      const seconds = Math.floor(avgSeconds % 60);
-                      return `${minutes}m ${seconds}s`;
-                    })()}
-                  </p>
-                </div>
-                <div className="h-24">
-                  <svg viewBox="0 0 300 80" className="w-full h-full">
-                    <defs>
-                      <linearGradient
-                        id="areaGradient2"
-                        x1="0%"
-                        y1="0%"
-                        x2="0%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#10B981"
-                          stopOpacity="0.3"
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor="#10B981"
-                          stopOpacity="0.05"
-                        />
-                      </linearGradient>
-                    </defs>
-
-                    {performanceData.avgDuration.length > 0 && (
-                      <>
-                        <path
-                          d={`M 0 80 ${performanceData.avgDuration
-                            .map((item, index) => {
-                              const x =
-                                (index /
-                                  (performanceData.avgDuration.length - 1)) *
-                                300;
-                              const maxDuration = Math.max(
-                                ...performanceData.avgDuration.map(
-                                  (i) => i.duration
-                                ),
-                                1
-                              );
-                              const y = 80 - (item.duration / maxDuration) * 60;
-                              return `L ${x} ${y}`;
-                            })
-                            .join(" ")} L 300 80 Z`}
-                          fill="url(#areaGradient2)"
-                        />
-                        <path
-                          d={`${performanceData.avgDuration
-                            .map((item, index) => {
-                              const x =
-                                (index /
-                                  (performanceData.avgDuration.length - 1)) *
-                                300;
-                              const maxDuration = Math.max(
-                                ...performanceData.avgDuration.map(
-                                  (i) => i.duration
-                                ),
-                                1
-                              );
-                              const y = 80 - (item.duration / maxDuration) * 60;
-                              return `${index === 0 ? "M" : "L"} ${x} ${y}`;
-                            })
-                            .join(" ")}`}
-                          stroke="#10B981"
-                          strokeWidth="2"
-                          fill="none"
-                        />
-                      </>
-                    )}
-                  </svg>
-                </div>
-              </div>
-
-              {/* Success Rate */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div className="mb-4">
-                  <p className="text-sm text-slate-500 mb-1">Success rate</p>
-                  <p className="text-3xl font-bold text-slate-900">
-                    {(() => {
-                      // Calculate total operations from monthly erasures
-                      const totalOperations =
-                        performanceData.monthlyErasures.reduce(
+              <>
+                {/* Top 3 Metric Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Monthly Erasures */}
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <div className="mb-4">
+                      <p className="text-sm text-slate-500 mb-1">
+                        Monthly erasures
+                      </p>
+                      <p className="text-3xl font-bold text-slate-900">
+                        {performanceData.monthlyErasures.reduce(
                           (sum, item) => sum + item.count,
                           0
-                        );
-                      // Show percentage only if there's data, otherwise 0%
-                      return totalOperations > 0 ? "99.2%" : "0%";
-                    })()}
-                  </p>
-                </div>
-                <div className="h-24">
-                  <svg viewBox="0 0 300 80" className="w-full h-full">
-                    <defs>
-                      <linearGradient
-                        id="areaGradient3"
-                        x1="0%"
-                        y1="0%"
-                        x2="0%"
-                        y2="100%"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#F59E0B"
-                          stopOpacity="0.3"
-                        />
-                        <stop
-                          offset="100%"
-                          stopColor="#F59E0B"
-                          stopOpacity="0.05"
-                        />
-                      </linearGradient>
-                    </defs>
-
-                    {performanceData.monthlyErasures.reduce(
-                      (sum, item) => sum + item.count,
-                      0
-                    ) > 0 ? (
-                      <>
-                        {/* Flat 99.2% line - Only show if data exists */}
-                        <path
-                          d="M 0 80 L 0 20 L 300 20 L 300 80 Z"
-                          fill="url(#areaGradient3)"
-                        />
-                        <path
-                          d="M 0 20 L 300 20"
-                          stroke="#F59E0B"
-                          strokeWidth="2"
-                          fill="none"
-                        />
-                      </>
-                    ) : (
-                      <>
-                        {/* Flat 0% line - Show at bottom if no data */}
-                        <path
-                          d="M 0 80 L 300 80"
-                          stroke="#94A3B8"
-                          strokeWidth="2"
-                          fill="none"
-                          strokeDasharray="4 4"
-                        />
-                        <text
-                          x="150"
-                          y="40"
-                          textAnchor="middle"
-                          fill="#94A3B8"
-                          fontSize="12"
-                        >
-                          No data available
-                        </text>
-                      </>
-                    )}
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* Throughput Chart */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-semibold text-slate-900 mb-6">
-                Throughput
-              </h3>
-              <div className="h-64">
-                <svg viewBox="0 0 800 200" className="w-full h-full">
-                  {performanceData.throughput.length > 0 &&
-                    performanceData.throughput.map((item, index) => {
-                      const maxCount = Math.max(
-                        ...performanceData.throughput.map((i) => i.count),
-                        1
-                      );
-                      const barWidth =
-                        800 / performanceData.throughput.length - 10;
-                      const x =
-                        (index * 800) / performanceData.throughput.length + 5;
-                      const barHeight = (item.count / maxCount) * 160;
-                      const y = 160 - barHeight;
-
-                      return (
-                        <g key={index}>
-                          {/* Bar */}
-                          <rect
-                            x={x}
-                            y={y}
-                            width={barWidth}
-                            height={barHeight}
-                            fill="#3B82F6"
-                            rx="4"
-                          />
-                          {/* Month label */}
-                          <text
-                            x={x + barWidth / 2}
-                            y="185"
-                            textAnchor="middle"
-                            fill="#64748B"
-                            fontSize="12"
+                        )}
+                      </p>
+                    </div>
+                    <div className="h-24">
+                      <svg viewBox="0 0 300 80" className="w-full h-full">
+                        {/* Area gradient */}
+                        <defs>
+                          <linearGradient
+                            id="areaGradient1"
+                            x1="0%"
+                            y1="0%"
+                            x2="0%"
+                            y2="100%"
                           >
-                            {item.month}
-                          </text>
-                        </g>
-                      );
-                    })}
-                </svg>
-              </div>
-            </div>
-            </>
+                            <stop
+                              offset="0%"
+                              stopColor="#3B82F6"
+                              stopOpacity="0.3"
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor="#3B82F6"
+                              stopOpacity="0.05"
+                            />
+                          </linearGradient>
+                        </defs>
+
+                        {/* Create path for area chart */}
+                        {performanceData.monthlyErasures.length > 0 && (
+                          <>
+                            <path
+                              d={`M 0 80 ${performanceData.monthlyErasures
+                                .map((item, index) => {
+                                  const x =
+                                    (index /
+                                      (performanceData.monthlyErasures.length -
+                                        1)) *
+                                    300;
+                                  const maxCount = Math.max(
+                                    ...performanceData.monthlyErasures.map(
+                                      (i) => i.count
+                                    ),
+                                    1
+                                  );
+                                  const y = 80 - (item.count / maxCount) * 60;
+                                  return `L ${x} ${y}`;
+                                })
+                                .join(" ")} L 300 80 Z`}
+                              fill="url(#areaGradient1)"
+                            />
+                            <path
+                              d={`${performanceData.monthlyErasures
+                                .map((item, index) => {
+                                  const x =
+                                    (index /
+                                      (performanceData.monthlyErasures.length -
+                                        1)) *
+                                    300;
+                                  const maxCount = Math.max(
+                                    ...performanceData.monthlyErasures.map(
+                                      (i) => i.count
+                                    ),
+                                    1
+                                  );
+                                  const y = 80 - (item.count / maxCount) * 60;
+                                  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+                                })
+                                .join(" ")}`}
+                              stroke="#3B82F6"
+                              strokeWidth="2"
+                              fill="none"
+                            />
+                          </>
+                        )}
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Average Duration */}
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <div className="mb-4">
+                      <p className="text-sm text-slate-500 mb-1">Avg. duration</p>
+                      <p className="text-3xl font-bold text-slate-900">
+                        {(() => {
+                          const totalDuration = performanceData.avgDuration.reduce(
+                            (sum, item) => sum + item.duration,
+                            0
+                          );
+                          const avgSeconds =
+                            performanceData.avgDuration.length > 0
+                              ? totalDuration /
+                              performanceData.avgDuration.filter(
+                                (i) => i.duration > 0
+                              ).length
+                              : 0;
+                          const minutes = Math.floor(avgSeconds / 60);
+                          const seconds = Math.floor(avgSeconds % 60);
+                          return `${minutes}m ${seconds}s`;
+                        })()}
+                      </p>
+                    </div>
+                    <div className="h-24">
+                      <svg viewBox="0 0 300 80" className="w-full h-full">
+                        <defs>
+                          <linearGradient
+                            id="areaGradient2"
+                            x1="0%"
+                            y1="0%"
+                            x2="0%"
+                            y2="100%"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor="#10B981"
+                              stopOpacity="0.3"
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor="#10B981"
+                              stopOpacity="0.05"
+                            />
+                          </linearGradient>
+                        </defs>
+
+                        {performanceData.avgDuration.length > 0 && (
+                          <>
+                            <path
+                              d={`M 0 80 ${performanceData.avgDuration
+                                .map((item, index) => {
+                                  const x =
+                                    (index /
+                                      (performanceData.avgDuration.length - 1)) *
+                                    300;
+                                  const maxDuration = Math.max(
+                                    ...performanceData.avgDuration.map(
+                                      (i) => i.duration
+                                    ),
+                                    1
+                                  );
+                                  const y = 80 - (item.duration / maxDuration) * 60;
+                                  return `L ${x} ${y}`;
+                                })
+                                .join(" ")} L 300 80 Z`}
+                              fill="url(#areaGradient2)"
+                            />
+                            <path
+                              d={`${performanceData.avgDuration
+                                .map((item, index) => {
+                                  const x =
+                                    (index /
+                                      (performanceData.avgDuration.length - 1)) *
+                                    300;
+                                  const maxDuration = Math.max(
+                                    ...performanceData.avgDuration.map(
+                                      (i) => i.duration
+                                    ),
+                                    1
+                                  );
+                                  const y = 80 - (item.duration / maxDuration) * 60;
+                                  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+                                })
+                                .join(" ")}`}
+                              stroke="#10B981"
+                              strokeWidth="2"
+                              fill="none"
+                            />
+                          </>
+                        )}
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Success Rate */}
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <div className="mb-4">
+                      <p className="text-sm text-slate-500 mb-1">Success rate</p>
+                      <p className="text-3xl font-bold text-slate-900">
+                        {(() => {
+                          // Calculate total operations from monthly erasures
+                          const totalOperations =
+                            performanceData.monthlyErasures.reduce(
+                              (sum, item) => sum + item.count,
+                              0
+                            );
+                          // Show percentage only if there's data, otherwise 0%
+                          return totalOperations > 0 ? "99.2%" : "0%";
+                        })()}
+                      </p>
+                    </div>
+                    <div className="h-24">
+                      <svg viewBox="0 0 300 80" className="w-full h-full">
+                        <defs>
+                          <linearGradient
+                            id="areaGradient3"
+                            x1="0%"
+                            y1="0%"
+                            x2="0%"
+                            y2="100%"
+                          >
+                            <stop
+                              offset="0%"
+                              stopColor="#F59E0B"
+                              stopOpacity="0.3"
+                            />
+                            <stop
+                              offset="100%"
+                              stopColor="#F59E0B"
+                              stopOpacity="0.05"
+                            />
+                          </linearGradient>
+                        </defs>
+
+                        {performanceData.monthlyErasures.reduce(
+                          (sum, item) => sum + item.count,
+                          0
+                        ) > 0 ? (
+                          <>
+                            {/* Flat 99.2% line - Only show if data exists */}
+                            <path
+                              d="M 0 80 L 0 20 L 300 20 L 300 80 Z"
+                              fill="url(#areaGradient3)"
+                            />
+                            <path
+                              d="M 0 20 L 300 20"
+                              stroke="#F59E0B"
+                              strokeWidth="2"
+                              fill="none"
+                            />
+                          </>
+                        ) : (
+                          <>
+                            {/* Flat 0% line - Show at bottom if no data */}
+                            <path
+                              d="M 0 80 L 300 80"
+                              stroke="#94A3B8"
+                              strokeWidth="2"
+                              fill="none"
+                              strokeDasharray="4 4"
+                            />
+                            <text
+                              x="150"
+                              y="40"
+                              textAnchor="middle"
+                              fill="#94A3B8"
+                              fontSize="12"
+                            >
+                              No data available
+                            </text>
+                          </>
+                        )}
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Throughput Chart */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                  <h3 className="text-lg font-semibold text-slate-900 mb-6">
+                    Throughput
+                  </h3>
+                  <div className="h-64">
+                    <svg viewBox="0 0 800 200" className="w-full h-full">
+                      {performanceData.throughput.length > 0 &&
+                        performanceData.throughput.map((item, index) => {
+                          const maxCount = Math.max(
+                            ...performanceData.throughput.map((i) => i.count),
+                            1
+                          );
+                          const barWidth =
+                            800 / performanceData.throughput.length - 10;
+                          const x =
+                            (index * 800) / performanceData.throughput.length + 5;
+                          const barHeight = (item.count / maxCount) * 160;
+                          const y = 160 - barHeight;
+
+                          return (
+                            <g key={index}>
+                              {/* Bar */}
+                              <rect
+                                x={x}
+                                y={y}
+                                width={barWidth}
+                                height={barHeight}
+                                fill="#3B82F6"
+                                rx="4"
+                              />
+                              {/* Month label */}
+                              <text
+                                x={x + barWidth / 2}
+                                y="185"
+                                textAnchor="middle"
+                                fill="#64748B"
+                                fontSize="12"
+                              >
+                                {item.month}
+                              </text>
+                            </g>
+                          );
+                        })}
+                    </svg>
+                  </div>
+                </div>
+              </>
             )}
           </div>
         )}
@@ -4331,254 +4298,254 @@ export default function AdminDashboard() {
                     <p className="text-slate-600">License audit data is not available from the server.</p>
                   </div>
                 ) : (
-                <>
-                {/* Summary Cards - Dynamic Data */}
-                {(() => {
-                  const totalLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.total, 0);
-                  const consumedLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.consumed, 0);
-                  const availableLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.available, 0);
-                  const utilizationPercent = totalLicenses > 0 ? ((consumedLicenses / totalLicenses) * 100).toFixed(1) : 0;
-                  
-                  return (
-                    <>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-5 h-5 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-blue-700">
-                          Total Licenses
-                        </div>
-                        <div className="text-2xl font-bold text-blue-900">
-                          {totalLicenses.toLocaleString()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <>
+                    {/* Summary Cards - Dynamic Data */}
+                    {(() => {
+                      const totalLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.total, 0);
+                      const consumedLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.consumed, 0);
+                      const availableLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.available, 0);
+                      const utilizationPercent = totalLicenses > 0 ? ((consumedLicenses / totalLicenses) * 100).toFixed(1) : 0;
 
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-xl border border-emerald-200">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-5 h-5 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-emerald-700">
-                          Active/Used Licenses
-                        </div>
-                        <div className="text-2xl font-bold text-emerald-900">
-                          {consumedLicenses.toLocaleString()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-5 h-5 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-orange-700">
-                          Available
-                        </div>
-                        <div className="text-2xl font-bold text-orange-900">
-                          {availableLicenses.toLocaleString()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-5 h-5 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-purple-700">
-                          Utilization
-                        </div>
-                        <div className="text-2xl font-bold text-purple-900">
-                          {utilizationPercent}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Utilization Chart - Dynamic Data */}
-                <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200 mb-8">
-                  <h4 className="text-lg font-semibold text-slate-900 mb-4">
-                    License Utilization Overview
-                  </h4>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-slate-700">
-                        Overall Utilization
-                      </span>
-                      <span className="text-lg font-bold text-emerald-600">
-                        {utilizationPercent}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-200 rounded-full h-3">
-                      <div
-                        className="bg-gradient-to-r from-emerald-500 to-teal-500 h-3 rounded-full"
-                        style={{ width: `${Math.min(Number(utilizationPercent), 100)}%` }}
-                      ></div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4 text-sm">
-                      <div className="text-center">
-                        <div className="font-medium text-slate-900">
-                          Utilized
-                        </div>
-                        <div className="text-emerald-600 font-semibold">
-                          {consumedLicenses.toLocaleString()} ({utilizationPercent}%)
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-medium text-slate-900">
-                          Available
-                        </div>
-                        <div className="text-orange-600 font-semibold">
-                          {availableLicenses.toLocaleString()} ({totalLicenses > 0 ? (100 - Number(utilizationPercent)).toFixed(1) : 0}%)
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-medium text-slate-900">
-                          Products
-                        </div>
-                        <div className="text-blue-600 font-semibold">
-                          {userLicenseDetails.length}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                    </>
-                  );
-                })()}
-
-                {/* License Breakdown Table - Dynamic Data */}
-                <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-                  <div className="p-4 bg-slate-50 border-b border-slate-200">
-                    <h4 className="text-lg font-semibold text-slate-900">
-                      License Breakdown by Product
-                    </h4>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-slate-50">
-                        <tr>
-                          <th className="text-left p-4 font-semibold text-slate-700">
-                            Product
-                          </th>
-                          <th className="text-left p-4 font-semibold text-slate-700">
-                            Total
-                          </th>
-                          <th className="text-left p-4 font-semibold text-slate-700">
-                            Used
-                          </th>
-                          <th className="text-left p-4 font-semibold text-slate-700">
-                            Available
-                          </th>
-                          <th className="text-left p-4 font-semibold text-slate-700">
-                            Utilization
-                          </th>
-                          <th className="text-left p-4 font-semibold text-slate-700">
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {userLicenseDetails.map((license, index) => {
-                          const usagePercent = license.total > 0 ? (license.consumed / license.total) * 100 : 0;
-                          const statusColor = usagePercent > 80 ? 'red' : usagePercent > 60 ? 'orange' : 'blue';
-                          const statusText = usagePercent > 80 ? 'High Usage' : usagePercent > 60 ? 'Moderate' : 'Low Usage';
-                          const progressColor = usagePercent > 80 ? 'bg-red-500' : usagePercent > 60 ? 'bg-orange-500' : 'bg-blue-500';
-                          
-                          return (
-                            <tr key={index} className="border-t border-slate-200">
-                              <td className="p-4 font-medium text-slate-900">
-                                {license.product}
-                              </td>
-                              <td className="p-4 text-slate-600">{license.total.toLocaleString()}</td>
-                              <td className="p-4 text-slate-600">{license.consumed.toLocaleString()}</td>
-                              <td className="p-4 text-slate-600">{license.available.toLocaleString()}</td>
-                              <td className="p-4">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-16 bg-slate-200 rounded-full h-2">
-                                    <div
-                                      className={`${progressColor} h-2 rounded-full`}
-                                      style={{ width: `${Math.min(usagePercent, 100)}%` }}
-                                    ></div>
-                                  </div>
-                                  <span className={`text-sm font-medium text-${statusColor}-600`}>
-                                    {usagePercent.toFixed(0)}%
-                                  </span>
+                      return (
+                        <>
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                                  <svg
+                                    className="w-5 h-5 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                                    />
+                                  </svg>
                                 </div>
-                              </td>
-                              <td className="p-4">
-                                <span className={`bg-${statusColor}-100 text-${statusColor}-700 px-2 py-1 rounded-full text-xs font-medium`}>
-                                  {statusText}
+                                <div>
+                                  <div className="text-sm font-medium text-blue-700">
+                                    Total Licenses
+                                  </div>
+                                  <div className="text-2xl font-bold text-blue-900">
+                                    {totalLicenses.toLocaleString()}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-xl border border-emerald-200">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
+                                  <svg
+                                    className="w-5 h-5 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium text-emerald-700">
+                                    Active/Used Licenses
+                                  </div>
+                                  <div className="text-2xl font-bold text-emerald-900">
+                                    {consumedLicenses.toLocaleString()}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                                  <svg
+                                    className="w-5 h-5 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                    />
+                                  </svg>
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium text-orange-700">
+                                    Available
+                                  </div>
+                                  <div className="text-2xl font-bold text-orange-900">
+                                    {availableLicenses.toLocaleString()}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                                  <svg
+                                    className="w-5 h-5 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                    />
+                                  </svg>
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium text-purple-700">
+                                    Utilization
+                                  </div>
+                                  <div className="text-2xl font-bold text-purple-900">
+                                    {utilizationPercent}%
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Utilization Chart - Dynamic Data */}
+                          <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200 mb-8">
+                            <h4 className="text-lg font-semibold text-slate-900 mb-4">
+                              License Utilization Overview
+                            </h4>
+                            <div className="space-y-4">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-medium text-slate-700">
+                                  Overall Utilization
                                 </span>
-                              </td>
+                                <span className="text-lg font-bold text-emerald-600">
+                                  {utilizationPercent}%
+                                </span>
+                              </div>
+                              <div className="w-full bg-slate-200 rounded-full h-3">
+                                <div
+                                  className="bg-gradient-to-r from-emerald-500 to-teal-500 h-3 rounded-full"
+                                  style={{ width: `${Math.min(Number(utilizationPercent), 100)}%` }}
+                                ></div>
+                              </div>
+                              <div className="grid grid-cols-3 gap-4 text-sm">
+                                <div className="text-center">
+                                  <div className="font-medium text-slate-900">
+                                    Utilized
+                                  </div>
+                                  <div className="text-emerald-600 font-semibold">
+                                    {consumedLicenses.toLocaleString()} ({utilizationPercent}%)
+                                  </div>
+                                </div>
+                                <div className="text-center">
+                                  <div className="font-medium text-slate-900">
+                                    Available
+                                  </div>
+                                  <div className="text-orange-600 font-semibold">
+                                    {availableLicenses.toLocaleString()} ({totalLicenses > 0 ? (100 - Number(utilizationPercent)).toFixed(1) : 0}%)
+                                  </div>
+                                </div>
+                                <div className="text-center">
+                                  <div className="font-medium text-slate-900">
+                                    Products
+                                  </div>
+                                  <div className="text-blue-600 font-semibold">
+                                    {userLicenseDetails.length}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()}
+
+                    {/* License Breakdown Table - Dynamic Data */}
+                    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                      <div className="p-4 bg-slate-50 border-b border-slate-200">
+                        <h4 className="text-lg font-semibold text-slate-900">
+                          License Breakdown by Product
+                        </h4>
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-slate-50">
+                            <tr>
+                              <th className="text-left p-4 font-semibold text-slate-700">
+                                Product
+                              </th>
+                              <th className="text-left p-4 font-semibold text-slate-700">
+                                Total
+                              </th>
+                              <th className="text-left p-4 font-semibold text-slate-700">
+                                Used
+                              </th>
+                              <th className="text-left p-4 font-semibold text-slate-700">
+                                Available
+                              </th>
+                              <th className="text-left p-4 font-semibold text-slate-700">
+                                Utilization
+                              </th>
+                              <th className="text-left p-4 font-semibold text-slate-700">
+                                Status
+                              </th>
                             </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                </>
+                          </thead>
+                          <tbody>
+                            {userLicenseDetails.map((license, index) => {
+                              const usagePercent = license.total > 0 ? (license.consumed / license.total) * 100 : 0;
+                              const statusColor = usagePercent > 80 ? 'red' : usagePercent > 60 ? 'orange' : 'blue';
+                              const statusText = usagePercent > 80 ? 'High Usage' : usagePercent > 60 ? 'Moderate' : 'Low Usage';
+                              const progressColor = usagePercent > 80 ? 'bg-red-500' : usagePercent > 60 ? 'bg-orange-500' : 'bg-blue-500';
+
+                              return (
+                                <tr key={index} className="border-t border-slate-200">
+                                  <td className="p-4 font-medium text-slate-900">
+                                    {license.product}
+                                  </td>
+                                  <td className="p-4 text-slate-600">{license.total.toLocaleString()}</td>
+                                  <td className="p-4 text-slate-600">{license.consumed.toLocaleString()}</td>
+                                  <td className="p-4 text-slate-600">{license.available.toLocaleString()}</td>
+                                  <td className="p-4">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-16 bg-slate-200 rounded-full h-2">
+                                        <div
+                                          className={`${progressColor} h-2 rounded-full`}
+                                          style={{ width: `${Math.min(usagePercent, 100)}%` }}
+                                        ></div>
+                                      </div>
+                                      <span className={`text-sm font-medium text-${statusColor}-600`}>
+                                        {usagePercent.toFixed(0)}%
+                                      </span>
+                                    </div>
+                                  </td>
+                                  <td className="p-4">
+                                    <span className={`bg-${statusColor}-100 text-${statusColor}-700 px-2 py-1 rounded-full text-xs font-medium`}>
+                                      {statusText}
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </>
                 )}
 
                 {/* Action Buttons */}
@@ -4698,10 +4665,7 @@ export default function AdminDashboard() {
                           Name:
                         </span>
                         <span className="text-slate-900">
-                          {profileData?.name ||
-                            storedUserData?.user_name ||
-                            user?.name ||
-                            "User"}
+                          {getNameFromEmail(profileData?.email || storedUserData?.user_email || user?.email || "user@example.com")}
                         </span>
                       </div>
 
@@ -4717,7 +4681,7 @@ export default function AdminDashboard() {
                         </span>
                       </div>
 
-                      <div className="flex justify-between">
+                      {/* <div className="flex justify-between">
                         <span className="font-medium text-slate-700">
                           Phone:
                         </span>
@@ -4726,7 +4690,7 @@ export default function AdminDashboard() {
                             storedUserData?.phone_number ||
                             "Not provided"}
                         </span>
-                      </div>
+                      </div> */}
 
                       <div className="flex justify-between">
                         <span className="font-medium text-slate-700">
@@ -4831,11 +4795,10 @@ export default function AdminDashboard() {
                           setIsEditingProfile(true);
                           setProfileEditForm({
                             user_name: profileData?.name || user?.name || "",
-                            phone_number: profileData?.phone || "",
                             timezone:
                               profileData?.timezone ||
                               storedUserData?.timezone ||
-                              "Asia/Kolkata",
+                              "Asia/Kolkata"
                           });
                         }}
                         className="bg-brand hover:bg-brand-700 text-white px-6 py-2 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-2 mx-auto"
@@ -4881,7 +4844,7 @@ export default function AdminDashboard() {
                           const profileResponse =
                             await apiClient.updateUserProfile({
                               userName: profileEditForm.user_name,
-                              phoneNumber: profileEditForm.phone_number,
+                              // phoneNumber: profileEditForm.phone_number,
                               timezone: profileEditForm.timezone,
                             });
 
@@ -4918,11 +4881,11 @@ export default function AdminDashboard() {
                                 profileResponse.data?.subuser_name ||
                                 profileResponse.data?.name ||
                                 profileEditForm.user_name,
-                              phone:
-                                profileResponse.data?.phone_number ||
-                                profileResponse.data?.phone ||
-                                profileResponse.data?.subuser_phone ||
-                                profileEditForm.phone_number,
+                              // phone:
+                              //   profileResponse.data?.phone_number ||
+                              //   profileResponse.data?.phone ||
+                              //   profileResponse.data?.subuser_phone ||
+                              //   profileEditForm.phone_number,
                               timezone:
                                 timezoneResponse.data?.timezone ||
                                 profileEditForm.timezone,
@@ -4935,11 +4898,11 @@ export default function AdminDashboard() {
                                 profileResponse.data?.user_name ||
                                 profileResponse.data?.subuser_name ||
                                 profileEditForm.user_name;
-                              storedData.phone_number =
-                                profileResponse.data?.phone_number ||
-                                profileResponse.data?.phone ||
-                                profileResponse.data?.subuser_phone ||
-                                profileEditForm.phone_number;
+                              // storedData.phone_number =
+                              // profileResponse.data?.phone_number ||
+                              // profileResponse.data?.phone ||
+                              // profileResponse.data?.subuser_phone ||
+                              // profileEditForm.phone_number,
                               storedData.timezone =
                                 timezoneResponse.data?.timezone ||
                                 profileEditForm.timezone;
@@ -4997,7 +4960,7 @@ export default function AdminDashboard() {
                       </div>
 
                       {/* Editable: Phone Number */}
-                      <div>
+                      {/* <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
                           Phone Number
                         </label>
@@ -5013,7 +4976,7 @@ export default function AdminDashboard() {
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                           placeholder="Enter phone number"
                         />
-                      </div>
+                      </div> */}
 
                       {/* Editable: Timezone */}
                       <div>
@@ -5242,11 +5205,10 @@ export default function AdminDashboard() {
                 <div className="flex">
                   <button
                     onClick={() => setSettingsTab("billing")}
-                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${
-                      settingsTab === "billing"
-                        ? "text-brand border-b-2 border-brand bg-brand/5"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                    }`}
+                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${settingsTab === "billing"
+                      ? "text-brand border-b-2 border-brand bg-brand/5"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      }`}
                   >
                     <div className="flex items-center justify-center gap-2">
                       <svg
@@ -5267,11 +5229,10 @@ export default function AdminDashboard() {
                   </button>
                   <button
                     onClick={() => setSettingsTab("password")}
-                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${
-                      settingsTab === "password"
-                        ? "text-brand border-b-2 border-brand bg-brand/5"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                    }`}
+                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${settingsTab === "password"
+                      ? "text-brand border-b-2 border-brand bg-brand/5"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      }`}
                   >
                     <div className="flex items-center justify-center gap-2">
                       <svg
@@ -5347,7 +5308,7 @@ export default function AdminDashboard() {
                     })()}
 
                     {billingDetails &&
-                    Object.keys(billingDetails).length > 0 ? (
+                      Object.keys(billingDetails).length > 0 ? (
                       <div className="space-y-4">
                         {/* Accordion 1: Active License Plan */}
                         <div className="bg-gradient-to-br from-brand/5 to-brand/10 rounded-lg border border-brand/20 overflow-hidden">
@@ -5386,9 +5347,8 @@ export default function AdminDashboard() {
                               </div>
                             </div>
                             <svg
-                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${
-                                billingAccordion.activePlan ? "rotate-180" : ""
-                              }`}
+                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${billingAccordion.activePlan ? "rotate-180" : ""
+                                }`}
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -5403,11 +5363,10 @@ export default function AdminDashboard() {
                           </button>
 
                           <div
-                            className={`transition-all duration-300 ease-in-out ${
-                              billingAccordion.activePlan
-                                ? "max-h-96 opacity-100"
-                                : "max-h-0 opacity-0 overflow-hidden"
-                            }`}
+                            className={`transition-all duration-300 ease-in-out ${billingAccordion.activePlan
+                              ? "max-h-96 opacity-100"
+                              : "max-h-0 opacity-0 overflow-hidden"
+                              }`}
                           >
                             <div className="px-6 pb-6">
                               {(() => {
@@ -5553,9 +5512,8 @@ export default function AdminDashboard() {
                               </div>
                             </div>
                             <svg
-                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${
-                                billingAccordion.planInfo ? "rotate-180" : ""
-                              }`}
+                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${billingAccordion.planInfo ? "rotate-180" : ""
+                                }`}
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -5570,11 +5528,10 @@ export default function AdminDashboard() {
                           </button>
 
                           <div
-                            className={`transition-all duration-300 ease-in-out ${
-                              billingAccordion.planInfo
-                                ? "max-h-[600px] opacity-100"
-                                : "max-h-0 opacity-0 overflow-hidden"
-                            }`}
+                            className={`transition-all duration-300 ease-in-out ${billingAccordion.planInfo
+                              ? "max-h-[600px] opacity-100"
+                              : "max-h-0 opacity-0 overflow-hidden"
+                              }`}
                           >
                             <div className="px-6 pb-6 space-y-4">
                               {/* Display parsed billing details - Filter sensitive data */}
@@ -5662,9 +5619,9 @@ export default function AdminDashboard() {
                                         addr.state || "",
                                         addr.country || "",
                                         addr.zipCode ||
-                                          addr.zip ||
-                                          addr.postalCode ||
-                                          "",
+                                        addr.zip ||
+                                        addr.postalCode ||
+                                        "",
                                       ]
                                         .filter(Boolean)
                                         .join(", ");
@@ -5837,11 +5794,10 @@ export default function AdminDashboard() {
                                   // Format display value
                                   let displayValue = String(value);
                                   if (key === "validityYears") {
-                                    displayValue = `${value} ${
-                                      parseInt(String(value)) === 1
-                                        ? "Year"
-                                        : "Years"
-                                    }`;
+                                    displayValue = `${value} ${parseInt(String(value)) === 1
+                                      ? "Year"
+                                      : "Years"
+                                      }`;
                                   }
 
                                   return (
@@ -6840,9 +6796,9 @@ export default function AdminDashboard() {
                     try {
                       // TODO: API call to setup private cloud
                       // await apiClient.setupPrivateCloud(privateCloudForm);
-                      
+
                       await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
-                      
+
                       showSuccess(
                         "Private Cloud Setup",
                         `Successfully configured private cloud with ${privateCloudForm.selectedTables.length} table(s)`

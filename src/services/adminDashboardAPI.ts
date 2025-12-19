@@ -65,7 +65,7 @@ interface ProfileData {
   role: string
   userRole?: string // camelCase from API response
   user_role?: string // snake_case from API response
-  phone?: string
+  // phone?: string // Commented out - not used
   department?: string
   avatar?: string
   licenses?: number // For User stats - number of licenses assigned to user
@@ -211,8 +211,91 @@ export class AdminDashboardAPI {
   }
 
   // Get user activity data
-  static async getUserActivity(): Promise<ApiResponse<UserActivity[]>> {
-    return apiCall<UserActivity[]>('/admin/dashboard/user-activity')
+  static async getUserActivity(userEmail: string): Promise<ApiResponse<UserActivity[]>> {
+    if (!userEmail) {
+      return {
+        success: false,
+        data: [],
+        error: 'User email is required'
+      };
+    }
+
+    try {
+      console.log('🔍 Calling UserActivity API with email:', userEmail);
+
+      const response = await apiCall<{
+        success: boolean;
+        parent_email: string;
+        total_subusers: number;
+        online_subusers: number;
+        offline_subusers: number;
+        subusers: Array<{
+          email: string;
+          name: string;
+          last_login?: string;
+          last_logout?: string;
+          activity_status: string;
+          calculated_status: string;
+          role: string;
+          department: string;
+          status: string;
+        }>;
+      }>(`/api/UserActivity/user-subusers-activity/${encodeEmail(userEmail)}`);
+
+      console.log('📥 UserActivity API raw response:', response);
+
+      if (!response.success || !response.data) {
+        console.warn('⚠️ UserActivity API failed or no data:', response);
+        return {
+          success: false,
+          data: [],
+          error: 'Failed to fetch user activity'
+        };
+      }
+
+      console.log('👥 Subusers count:', response.data.subusers?.length || 0);
+      console.log('👥 Subusers data:', response.data.subusers);
+
+      // Transform backend response to UI format
+      const transformedData: UserActivity[] = response.data.subusers.map(subuser => ({
+        email: subuser.email,
+        loginTime: subuser.last_login
+          ? new Date(subuser.last_login).toLocaleString('en-IN', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          })
+          : 'Never',
+        logoutTime: subuser.last_logout
+          ? new Date(subuser.last_logout).toLocaleString('en-IN', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          })
+          : '-',
+        status: (subuser.calculated_status === 'online' ? 'active' : 'offline') as 'active' | 'offline'
+      }));
+
+      console.log('✅ Transformed UserActivity data:', transformedData);
+
+      return {
+        success: true,
+        data: transformedData
+      };
+    } catch (error: any) {
+      console.error('❌ UserActivity API error:', error);
+      return {
+        success: false,
+        data: [],
+        error: error?.message || 'Failed to fetch user activity'
+      };
+    }
   }
 
   // Get groups data
@@ -271,7 +354,7 @@ export class AdminDashboardAPI {
         role: roleValue,
         userRole: data.userRole || data.user_role, // Keep original field
         user_role: data.user_role || data.userRole, // Keep original field
-        phone: data.phone_number || data.phone || '',
+        // phone: data.phone_number || data.phone || '', // Commented out
         department: data.department || '',
         avatar: data.avatar || '',
         licenses: data.licenses || 0
@@ -321,7 +404,7 @@ export class AdminDashboardAPI {
       const backendData = {
         user_name: profileData.name,
         user_email: profileData.email,
-        phone_number: profileData.phone,
+        // phone_number: profileData.phone, // Commented out
         department: profileData.department,
         timezone: profileData.timezone,
         user_type: profileData.role
@@ -343,7 +426,7 @@ export class AdminDashboardAPI {
         role: updatedRoleValue,
         userRole: data.userRole || data.user_role, // Keep original field
         user_role: data.user_role || data.userRole, // Keep original field
-        phone: data.phone_number || data.phone || profileData.phone || '',
+        // phone: data.phone_number || data.phone || profileData.phone || '', // Commented out
         department: data.department || profileData.department || '',
         avatar: data.avatar || '',
         licenses: data.licenses || 0
@@ -355,7 +438,7 @@ export class AdminDashboardAPI {
         ...storedUserData,
         user_name: updatedProfile.name,
         user_email: updatedProfile.email,
-        phone_number: updatedProfile.phone,
+        // phone_number: updatedProfile.phone, // Commented out
         department: updatedProfile.department
       };
       localStorage.setItem('user_data', JSON.stringify(updatedUserData));

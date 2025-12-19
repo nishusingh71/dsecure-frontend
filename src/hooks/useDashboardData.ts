@@ -45,18 +45,26 @@ export function useDashboardStats(enabled: boolean = true) {
 /**
  * Fetch user activity data
  * Cached for 1 minute (activity updates frequently)
+ * @param userEmail - Email of the user to fetch activity for
  */
-export function useUserActivity(enabled: boolean = true) {
+export function useUserActivity(userEmail: string, enabled: boolean = true) {
+  console.log('🎣 useUserActivity called with:', { userEmail, enabled });
+
   return useQuery({
-    queryKey: dashboardKeys.activity(),
+    queryKey: [...dashboardKeys.activity(), userEmail],
     queryFn: async () => {
-      const response = await AdminDashboardAPI.getUserActivity()
+      console.log('📞 Calling getUserActivity API...');
+      const response = await AdminDashboardAPI.getUserActivity(userEmail)
+
+      console.log('📨 getUserActivity response success:', response.success);
+      console.log('📨 getUserActivity response data:', response.data);
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch user activity')
       }
       return response.data
     },
-    enabled,
+    enabled: enabled && !!userEmail,
     staleTime: 1 * 60 * 1000, // 1 minute
     gcTime: 10 * 60 * 1000,
   })
@@ -146,12 +154,13 @@ export function useAdminProfile(enabled: boolean = true) {
  * Fetch all dashboard data in parallel using useQueries
  * This replaces the manual Promise.all() approach
  * 
+ * @param userEmail - Email of the user to fetch data for
  * @param enabled - Whether to enable all queries
  * @returns Object containing all dashboard data with loading/error states
  */
-export function useDashboardData(enabled: boolean = true) {
+export function useDashboardData(userEmail: string, enabled: boolean = true) {
   const statsQuery = useDashboardStats(enabled)
-  const activityQuery = useUserActivity(enabled)
+  const activityQuery = useUserActivity(userEmail, enabled)
   const groupsQuery = useGroups(enabled)
   const licenseQuery = useLicenseData(enabled)
   const reportsQuery = useRecentReports(enabled)
@@ -213,8 +222,9 @@ export function useDashboardData(enabled: boolean = true) {
 
 /**
  * Manually refetch all dashboard data
+ * @param userEmail - Email of the user to fetch data for
  */
-export function useRefetchDashboard() {
-  const { refetch } = useDashboardData(false)
+export function useRefetchDashboard(userEmail: string) {
+  const { refetch } = useDashboardData(userEmail, false)
   return refetch
 }
