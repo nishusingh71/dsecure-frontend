@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { ChevronRight, ChevronDown, ArrowLeft } from "lucide-react";
+import { ChevronRight, ChevronDown, ArrowLeft, Menu, X } from "lucide-react";
 
 /* ===========================
    Navigation Tree Structure
@@ -113,17 +113,17 @@ const navigationTree: NavItem[] = [
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>2.</strong> Run the installer with administrator privileges</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059276/gbzozkj3u5pahdxjksf4.png" alt="Run Installer" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059276/gbzozkj3u5pahdxjksf4.png" alt="Run Installer" className="w-1/4 mb-6" />
               </div>
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>3.</strong> Follow the installation wizard and accept the license agreement</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/vx47uwocsxgn8wnpchad.png" alt="Installation Wizard" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/vx47uwocsxgn8wnpchad.png" alt="Installation Wizard" className="w-1/4 mb-6" />
               </div>
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>4.</strong> Choose installation directory</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/ddnqzolhtyoprz9lpkk9.png" alt="Choose Directory" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/ddnqzolhtyoprz9lpkk9.png" alt="Choose Directory" className="w-1/4 mb-6" />
               </div>
 
               <div>
@@ -165,7 +165,7 @@ const navigationTree: NavItem[] = [
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>4.</strong> A dialog box appears on the screen with a message "DSecureFileEraser will not have full disk access until it is quit". Click Quit & Reopen.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059282/ivcdyxwxsdqxkdla40bd.png" alt="Quit and Reopen" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059282/ivcdyxwxsdqxkdla40bd.png" alt="Quit and Reopen" className="w-1/4 mb-6" />
               </div>
             </div>
 
@@ -185,12 +185,12 @@ const navigationTree: NavItem[] = [
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>3.</strong> From the bottom, click lock icon and enter your administrator password.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059276/ymo3qpt4z1m7ieuljxln.png" alt="Unlock Settings" className="w-full mb-6" />
+                {/* <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059276/ymo3qpt4z1m7ieuljxln.png" alt="Unlock Settings" className="w-1/4 mb-6" /> */}
               </div>
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>4.</strong> From the given options on the left pane, select Full Disk Access and mark DSecure File Eraser.</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059276/jmhtcz6eafxfspti5lzd.png" alt="Select Full Disk Access" className="w-full mb-6" />
+                {/* <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059276/jmhtcz6eafxfspti5lzd.png" alt="Select Full Disk Access" className="w-1/4 mb-6" /> */}
               </div>
 
               <div>
@@ -216,14 +216,14 @@ const navigationTree: NavItem[] = [
                   The DSecure interface includes tabs for different erasure modes, buttons for actions like 'Erase Now', 'Add Items', and 'Settings'. Familiarize yourself with each element for efficient operation.
                 </p>
                 <div className="space-y-4">
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/stillbeqoxuu7ngsqar1.png" alt="Main Interface" className="w-full" />
+                  <div className=" border-gray-200 rounded overflow-hidden">
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/stillbeqoxuu7ngsqar1.png" alt="Main Interface" className="w-1/6" />
                   </div>
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/ksjcrxlpw4sxjbpaz64o.png" alt="Tabs and Buttons" className="w-full" />
+                  <div className="border-gray-200 rounded-lg overflow-hidden">
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/ksjcrxlpw4sxjbpaz64o.png" alt="Tabs and Buttons" className="w-1/6" />
                   </div>
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/jfutsiyxglz4awa475j0.png" alt="Action Buttons" className="w-full" />
+                  <div className=" border-gray-200 rounded-lg overflow-hidden">
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/jfutsiyxglz4awa475j0.png" alt="Action Buttons" className="w-1/6" />
                   </div>
                 </div>
               </>
@@ -268,7 +268,7 @@ const navigationTree: NavItem[] = [
               <li className="mb-4">
                 <span className="font-medium">Click 'Activate' in the main menu</span>
                 <div className="mt-3 border border-gray-200 rounded-lg overflow-hidden">
-                  <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059231/opax1xjcv9ufa00wwpsa.png" alt="Activate Menu" className="w-full" />
+                  {/* <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059231/opax1xjcv9ufa00wwpsa.png" alt="Activate Menu" className="w-1/4" /> */}
                 </div>
               </li>
               <li className="mb-4">
@@ -328,7 +328,7 @@ const navigationTree: NavItem[] = [
             <div className="space-y-6">
               <div>
                 <p className="text-slate-700 mb-3"><strong>1.</strong> Select 'Erase Files & Folders' tab</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/txv1ijj5lipxradqx809.png" alt="Erase Files Tab" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059275/txv1ijj5lipxradqx809.png" alt="Erase Files Tab" className="w-1/2 mb-6" />
               </div>
 
               <div>
@@ -338,12 +338,12 @@ const navigationTree: NavItem[] = [
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>3.</strong> Review the list of items to erase and choose erasure algorithm</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059239/m0glocsqvrr7zuvtqp76.png" alt="Review Items" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059239/m0glocsqvrr7zuvtqp76.png" alt="Review Items" className="w-1/2 mb-6" />
               </div>
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>4.</strong> Click 'Erase Now' and confirm the action</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059239/t2ibtuvggdmjkodp0gnw.png" alt="Erase Now" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059239/t2ibtuvggdmjkodp0gnw.png" alt="Erase Now" className="w-1/2  mb-6" />
               </div>
 
               <div>
@@ -366,7 +366,7 @@ const navigationTree: NavItem[] = [
             <div className="space-y-6">
               <div>
                 <p className="text-slate-700 mb-3"><strong>1.</strong> Select 'Erase Free Space' tab</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059238/oqbbnytmarytng5exhhl.png" alt="Erase Free Space" className="w-full mb-6" />
+                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059238/oqbbnytmarytng5exhhl.png" alt="Erase Free Space" className="w-1/4 mb-6" />
               </div>
 
               <div>
@@ -399,7 +399,7 @@ const navigationTree: NavItem[] = [
 
               <div>
                 <p className="text-slate-700 mb-3"><strong>2.</strong> Select trace categories to erase</p>
-                <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059237/bomp5hejfcx4iacsy31l.png" alt="Select Trace Categories" className="w-full mb-6" />
+                {/* <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059237/bomp5hejfcx4iacsy31l.png" alt="Select Trace Categories" className="w-1/4 mb-6" /> */}
               </div>
 
               <div>
@@ -473,14 +473,14 @@ const navigationTree: NavItem[] = [
                   Click 'Save Report', choose destination folder, select format (PDF or HTML), and click 'Save'. PDF reports include all annexure data and digital signatures.
                 </p>
                 <div className="space-y-4">
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059236/nit1xmkkthzghpwfxf4c.png" alt="Save Report" className="w-full" />
+                  <div className=" border-gray-200 rounded-lg overflow-hidden">
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059236/nit1xmkkthzghpwfxf4c.png" alt="Save Report" className="w-1/2" />
                   </div>
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059236/n2xc1qwb2nqlurwt9r5z.png" alt="Choose Format" className="w-full" />
+                  <div className=" border-gray-200 rounded-lg overflow-hidden">
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059236/n2xc1qwb2nqlurwt9r5z.png" alt="Choose Format" className="w-1/2" />
                   </div>
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059236/dgdmomjmnj3na1k8vrdh.png" alt="Save Location" className="w-full" />
+                  <div className=" border-gray-200 rounded-lg overflow-hidden">
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059236/dgdmomjmnj3na1k8vrdh.png" alt="Save Location" className="w-1/2" />
                   </div>
                 </div>
               </>
@@ -497,7 +497,7 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className="space-y-4">
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059235/bwisyrcqi57jwkzlmzlm.png" alt="Cloud Console" className="w-full" />
+                    {/* <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059235/bwisyrcqi57jwkzlmzlm.png" alt="Cloud Console" className="w-1/4 " /> */}
                   </div>
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059235/ne20ksdg0zgpe2ax5def.png" alt="Send to Cloud" className="w-full" />
@@ -520,7 +520,7 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className="space-y-4">
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059234/eo9iehbikyezlo5trrax.png" alt="Report Settings" className="w-full" />
+                    {/* <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059234/eo9iehbikyezlo5trrax.png" alt="Report Settings" className="w-1/6" /> */}
                   </div>
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059234/pve2v2at3uyors5jn7c2.jpg" alt="Customize Report" className="w-full" />
@@ -575,13 +575,13 @@ const navigationTree: NavItem[] = [
                     </p>
                     <div className="space-y-4">
                       <div className="border border-gray-200 rounded-lg overflow-hidden">
-                        <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059233/ktrwnbqivw83kmsvnzqa.png" alt="Erasure Options" className="w-full" />
+                        <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059233/ktrwnbqivw83kmsvnzqa.png" alt="Erasure Options" className="w-1/2" />
                       </div>
                       <div className="border border-gray-200 rounded-lg overflow-hidden">
-                        <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059233/c7p8hcetabwbqpwz5vam.png" alt="Algorithm Selection" className="w-full" />
+                        {/* <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059233/c7p8hcetabwbqpwz5vam.png" alt="Algorithm Selection" className="w-1/2" /> */}
                       </div>
                       <div className="border border-gray-200 rounded-lg overflow-hidden">
-                        <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059233/fqfzjzlem8syosh5sadp.png" alt="Verification Settings" className="w-full" />
+                        <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059233/fqfzjzlem8syosh5sadp.png" alt="Verification Settings" className="w-1/2" />
                       </div>
                     </div>
                   </>
@@ -801,15 +801,15 @@ const TreeNavItem: React.FC<TreeNavItemProps> = ({
         }}
       >
         {hasChildren && (
-          <span className="mr-1 flex-shrink-0">
+          <span className="mr-1.5 flex-shrink-0">
             {isExpanded ? (
-              <ChevronDown className="w-3 h-3" />
+              <ChevronDown className="w-3.5 h-3.5" />
             ) : (
-              <ChevronRight className="w-3 h-3" />
+              <ChevronRight className="w-3.5 h-3.5" />
             )}
           </span>
         )}
-        {!hasChildren && <span className="w-4 mr-1" />}
+        {!hasChildren && <span className="w-5 mr-1.5" />}
         <span className="text-sm hover:underline">
           {item.number}. {item.title}
         </span>
@@ -864,6 +864,7 @@ const CompleteDSecureManual: React.FC = () => {
   };
 
   const activeItem = findItemById(navigationTree, activeId);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -874,52 +875,90 @@ const CompleteDSecureManual: React.FC = () => {
 
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-50 to-gray-50">
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link to="/support" className="inline-flex items-center p-2 rounded-full text-slate-500 hover:text-teal-600 hover:bg-slate-100 transition-all">
-                <ArrowLeft className="w-6 h-6" />
+                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
-              <h1 className="text-2xl font-bold text-slate-900">
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900">
                 Complete Manual
               </h1>
             </div>
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 text-slate-600 hover:text-teal-600 rounded-md transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
       </div>
 
       {/* Main Layout */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg flex min-h-[600px]">
+      <div className="w-full px-2 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+        <div className="bg-white rounded-lg flex relative overflow-hidden min-h-[500px] sm:min-h-[600px]">
+
+          {/* Mobile Overlay */}
+          {isMobileMenuOpen && (
+            <div
+              className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+          )}
+
           {/* Sidebar */}
-          <div className="w-80 bg-white p-4 overflow-y-auto">
-            <nav>
-              {navigationTree.map((item) => (
-                <TreeNavItem
-                  key={item.id}
-                  item={item}
-                  activeId={activeId}
-                  expandedIds={expandedIds}
-                  onToggle={toggleExpand}
-                  onSelect={setActiveId}
-                />
-              ))}
-            </nav>
+          <div
+            className={`
+              fixed top-0 left-0 h-full w-72 bg-white z-50 transform transition-transform duration-300 ease-in-out shadow-2xl
+              lg:relative lg:w-80 lg:transform-none lg:shadow-none lg:z-auto
+              ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            `}
+          >
+            <div className="h-full overflow-y-auto p-4">
+              {/* Mobile Close Button */}
+              <div className="lg:hidden flex justify-end mb-4">
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 text-slate-600 hover:text-teal-600 rounded-md"
+                  aria-label="Close menu"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <nav>
+                {navigationTree.map((item) => (
+                  <TreeNavItem
+                    key={item.id}
+                    item={item}
+                    activeId={activeId}
+                    expandedIds={expandedIds}
+                    onToggle={toggleExpand}
+                    onSelect={(id) => {
+                      setActiveId(id);
+                      setIsMobileMenuOpen(false);
+                    }}
+                  />
+                ))}
+              </nav>
+            </div>
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 p-8 overflow-y-auto">
+          <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
             {activeItem && (
               <>
                 {/* Breadcrumb */}
-                <div className="text-sm text-slate-500 mb-4">
+                <div className="text-xs sm:text-sm text-slate-500 mb-3 sm:mb-4">
                   <span className="hover:text-teal-600 cursor-pointer">DSecure File Eraser</span>
-                  <span className="mx-2">/</span>
+                  <span className="mx-1 sm:mx-2">/</span>
                   <span className="text-slate-700">{activeItem.number}. {activeItem.title}</span>
                 </div>
 
                 {/* Title */}
-                <h1 className="text-4xl font-bold text-slate-900 mb-6">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4 sm:mb-6">
                   {activeItem.number}. {activeItem.title}
                 </h1>
 
