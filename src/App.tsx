@@ -101,6 +101,8 @@ import ITADSolution from "./pages/ITADSolution";
 import AdminProfileEdit from "./pages/admin/AdminProfileEdit";
 import EnhancedUserDashboard from "./pages/dashboards/EnhancedUserDashboard";
 import CompleteDSecureNetworkFile from "./pages/manual/CompleteDSecureNetworkFile";
+import NetworkFileManualLayout from "./pages/manual/NetworkFileManualLayout";
+import * as NetworkFilePages from "./pages/manual/network-file";
 const HealthcareSolutionsPage = lazy(() => import("./pages/solutions/HealthcareSolutionsPage"));
 const EnterpriseSolutionsPage = lazy(() => import("./pages/solutions/EnterpriseSolutionsPage"));
 const FinancialSolutionsPage = lazy(() => import("./pages/solutions/FinancialSolutionsPage"));
@@ -852,10 +854,32 @@ export default function App() {
                     path="/support/help-manual/complete-manual"
                     element={<CompleteDSecureManual />}
                   />
+                  {/* Network File Manual - Nested Routes */}
                   <Route
                     path="/support/help-manual/complete-network-manual"
-                    element={<CompleteDSecureNetworkFile />}
-                  />
+                    element={<NetworkFileManualLayout />}
+                  >
+                    <Route index element={<div className="text-center py-12"><p className="text-gray-600">Select a topic from the sidebar to get started</p></div>} />
+                  </Route>
+                  <Route
+                    path="/support/help-manual/network-file"
+                    element={<NetworkFileManualLayout />}
+                  >
+                    <Route path="quick-overview" element={<NetworkFilePages.QuickOverview />} />
+                    <Route path="installation" element={<NetworkFilePages.Installation />} />
+                    <Route path="user-interface" element={<NetworkFilePages.UserInterface />} />
+                    <Route path="licensing" element={<NetworkFilePages.Licensing />} />
+                    <Route path="settings" element={<NetworkFilePages.Settings />} />
+                    <Route path="connecting-domain" element={<NetworkFilePages.ConnectingDomain />} />
+                    <Route path="cloud-integration" element={<NetworkFilePages.CloudIntegration />} />
+                    <Route path="erasing-files" element={<NetworkFilePages.ErasingFiles />} />
+                    <Route path="erasing-traces" element={<NetworkFilePages.ErasingTraces />} />
+                    <Route path="scheduling-tasks" element={<NetworkFilePages.SchedulingTasks />} />
+                    <Route path="report-management" element={<NetworkFilePages.ReportManagement />} />
+                    <Route path="faq" element={<NetworkFilePages.FAQ />} />
+                    <Route path="support" element={<NetworkFilePages.Support />} />
+                    <Route path="about" element={<NetworkFilePages.About />} />
+                  </Route>
                   <Route
                     path="/support/help-manual"
                     element={<HelpManualIndexPage />}
@@ -864,6 +888,7 @@ export default function App() {
                     path="/support/help-manual"
                     element={<HelpManualIndexPage />}
                   />
+
                   <Route
                     path="/support/manual/first-time-setup"
                     element={<FirstTimeSetupPage />}

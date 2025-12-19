@@ -14,6 +14,8 @@ import {
   ChevronRight,
   AlertCircle,
   CheckCircle,
+  Menu,
+  X,
 } from "lucide-react";
 
 /**
@@ -59,24 +61,24 @@ const Anchor: React.FC<{ id: string }> = ({ id }) => (
 const BlockView: React.FC<{ block: Block }> = ({ block }) => {
   switch (block.type) {
     case "p":
-      return <p className="text-gray-700 leading-relaxed">{block.text}</p>;
+      return <p className="text-gray-700 leading-relaxed text-lg">{block.text}</p>;
     case "step": {
       // Extract leading number if present; otherwise auto dot
       return (
         <div className="flex items-start gap-3">
-          <div className="mt-1 shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold flex items-center justify-center">
+          <div className="mt-1 shrink-0 w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold flex items-center justify-center">
             ✓
           </div>
-          <p className="text-gray-700 leading-relaxed">{block.text}</p>
+          <p className="text-gray-700 leading-relaxed text-lg">{block.text}</p>
         </div>
       );
     }
     case "note":
       return (
-        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-3">
+        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
           <div className="flex items-start gap-2">
-            <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
-            <p className="text-amber-900">
+            <AlertCircle className="w-6 h-6 text-amber-600 mt-0.5" />
+            <p className="text-amber-900 text-lg">
               <strong>Note:</strong> {block.text}
             </p>
           </div>
@@ -84,7 +86,7 @@ const BlockView: React.FC<{ block: Block }> = ({ block }) => {
       );
     case "bullets":
       return (
-        <ul className="list-disc pl-6 text-gray-700 space-y-1">
+        <ul className="list-disc pl-6 text-gray-700 space-y-2 text-lg">
           {block.items.map((it, i) => (
             <li key={i}>{it}</li>
           ))}
@@ -117,11 +119,11 @@ const useScrollToHash = () => {
 
 // ---------- Content (consolidated from your inputs) ----------
 const sections: Section[] = [
-  // 2. Quick Overview
+  // Quick Overview
   {
     id: "quick-overview",
     icon: BookOpen,
-    title: "2. Quick Overview",
+    title: "Quick Overview",
     summary:
       "What this guide covers and how to navigate it efficiently in DSecure File Eraser Network.",
     subsections: [
@@ -158,17 +160,17 @@ const sections: Section[] = [
     ],
   },
 
-  // 3. First Steps (multiple)
+  // First Steps
   {
     id: "first-steps",
     icon: Layers,
-    title: "3. First Steps",
+    title: "First Steps",
     summary:
       "Installation, UI overview, licensing & activation, customization, updates, and support.",
     subsections: [
       {
         id: "install-setup",
-        title: "3.1. Installation and Setup",
+        title: "Installation and Setup",
         blocks: [
           {
             type: "bullets",
@@ -199,7 +201,7 @@ const sections: Section[] = [
       },
       {
         id: "ui-overview",
-        title: "3.2. User Interface Overview",
+        title: "User Interface Overview",
         blocks: [
           {
             type: "p",
@@ -215,7 +217,7 @@ const sections: Section[] = [
       },
       {
         id: "ribbons-tabs-buttons",
-        title: "3.2.1. Ribbons, Tabs, and Buttons",
+        title: "Ribbons, Tabs, and Buttons",
         blocks: [
           {
             type: "bullets",
@@ -237,7 +239,7 @@ const sections: Section[] = [
       },
       {
         id: "order-software",
-        title: "3.3. Order the Software",
+        title: "Order the Software",
         blocks: [
           {
             type: "p",
@@ -248,7 +250,7 @@ const sections: Section[] = [
       },
       {
         id: "activation-licensing",
-        title: "3.4. Activation and Licensing",
+        title: "Activation and Licensing",
         blocks: [
           {
             type: "bullets",
@@ -261,7 +263,7 @@ const sections: Section[] = [
       },
       {
         id: "online-offline-activation",
-        title: "3.4.1. Online and Offline Activation",
+        title: "Online and Offline Activation",
         blocks: [
           {
             type: "step",
@@ -277,7 +279,7 @@ const sections: Section[] = [
       },
       {
         id: "manage-licenses",
-        title: "3.4.2. Manage Licenses",
+        title: "Manage Licenses",
         blocks: [
           {
             type: "p",
@@ -288,7 +290,7 @@ const sections: Section[] = [
       },
       {
         id: "view-computers",
-        title: "3.4.2.1. View Computers",
+        title: "View Computers",
         blocks: [
           { type: "step", text: "Activation → Manage Licenses." },
           {
@@ -305,7 +307,7 @@ const sections: Section[] = [
       },
       {
         id: "extend-validity",
-        title: "3.4.2.2. Extend Validity",
+        title: "Extend Validity",
         blocks: [
           {
             type: "p",
@@ -316,7 +318,7 @@ const sections: Section[] = [
       },
       {
         id: "customization-settings",
-        title: "3.5. Customization and Settings",
+        title: "Customization and Settings",
         blocks: [
           {
             type: "bullets",
@@ -330,7 +332,7 @@ const sections: Section[] = [
       },
       {
         id: "general-settings",
-        title: "3.5.1. General Settings",
+        title: "General Settings",
         blocks: [
           {
             type: "step",
@@ -346,7 +348,7 @@ const sections: Section[] = [
       },
       {
         id: "erasure-options",
-        title: "3.5.1.1. Erasure Options",
+        title: "Erasure Options",
         blocks: [
           {
             type: "bullets",
@@ -364,7 +366,7 @@ const sections: Section[] = [
       },
       {
         id: "erase-traces-settings",
-        title: "3.5.2. Erase Traces Settings",
+        title: "Erase Traces Settings",
         blocks: [
           {
             type: "bullets",
@@ -378,7 +380,7 @@ const sections: Section[] = [
       },
       {
         id: "ignore-file-list-settings",
-        title: "3.5.3. Ignore File List Settings",
+        title: "Ignore File List Settings",
         blocks: [
           {
             type: "step",
@@ -394,7 +396,7 @@ const sections: Section[] = [
       },
       {
         id: "updates-maintenance",
-        title: "3.6. Updates and Maintenance",
+        title: "Updates and Maintenance",
         blocks: [
           {
             type: "p",
@@ -411,7 +413,7 @@ const sections: Section[] = [
       },
       {
         id: "contact-support",
-        title: "3.7. Contact and Support",
+        title: "Contact and Support",
         blocks: [
           {
             type: "bullets",
@@ -427,17 +429,17 @@ const sections: Section[] = [
     ],
   },
 
-  // 4. How To
+  // How To
   {
     id: "how-to",
     icon: ClipboardList,
-    title: "4. How To",
+    title: "How To",
     summary:
       "Connect domain, login to cloud, erase files/traces, schedule erasure, and work on reports.",
     subsections: [
       {
         id: "connect-domain",
-        title: "4.1. Connect Domain",
+        title: "Connect Domain",
         blocks: [
           {
             type: "p",
@@ -453,7 +455,7 @@ const sections: Section[] = [
       },
       {
         id: "login-cloud",
-        title: "4.2. Login to DSecure Cloud",
+        title: "Login to DSecure Cloud",
         blocks: [
           {
             type: "step",
@@ -465,7 +467,7 @@ const sections: Section[] = [
       },
       {
         id: "erase-files-folders",
-        title: "4.3. Erase Files & Folders",
+        title: "Erase Files & Folders",
         blocks: [
           {
             type: "step",
@@ -486,7 +488,7 @@ const sections: Section[] = [
       },
       {
         id: "erase-traces",
-        title: "4.4. Erase Internet Activity, Application or System Traces",
+        title: "Erase Internet Activity, Application or System Traces",
         blocks: [
           {
             type: "step",
@@ -504,7 +506,7 @@ const sections: Section[] = [
       },
       {
         id: "schedule-erasure",
-        title: "4.5. Schedule Erasure",
+        title: "Schedule Erasure",
         blocks: [
           {
             type: "p",
@@ -515,7 +517,7 @@ const sections: Section[] = [
       },
       {
         id: "schedule-traces",
-        title: "4.5.1. Schedule Erasure for Erasing Traces",
+        title: "Schedule Erasure for Erasing Traces",
         blocks: [
           {
             type: "step",
@@ -536,7 +538,7 @@ const sections: Section[] = [
       },
       {
         id: "edit-delete-task",
-        title: "4.5.1.1. Edit or Delete an Existing Task",
+        title: "Edit or Delete an Existing Task",
         blocks: [
           {
             type: "step",
@@ -552,7 +554,7 @@ const sections: Section[] = [
       },
       {
         id: "schedule-files-folders",
-        title: "4.5.2. Schedule Erasure for Erasing Files & Folders",
+        title: "Schedule Erasure for Erasing Files & Folders",
         blocks: [
           {
             type: "p",
@@ -563,7 +565,7 @@ const sections: Section[] = [
       },
       {
         id: "create-task-files",
-        title: "4.5.2.1. Create a New Task (Files & Folders)",
+        title: "Create a New Task (Files & Folders)",
         blocks: [
           {
             type: "step",
@@ -593,7 +595,7 @@ const sections: Section[] = [
       },
       {
         id: "edit-task-files",
-        title: "4.5.2.2. Edit an Existing Task (Files & Folders)",
+        title: "Edit an Existing Task (Files & Folders)",
         blocks: [
           {
             type: "step",
@@ -609,7 +611,7 @@ const sections: Section[] = [
       },
       {
         id: "delete-task-files",
-        title: "4.5.2.3. Delete a Scheduled Task (Files & Folders)",
+        title: "Delete a Scheduled Task (Files & Folders)",
         blocks: [
           {
             type: "step",
@@ -625,7 +627,7 @@ const sections: Section[] = [
       },
       {
         id: "work-on-reports",
-        title: "4.6. Work on Reports",
+        title: "Work on Reports",
         blocks: [
           {
             type: "p",
@@ -636,7 +638,7 @@ const sections: Section[] = [
       },
       {
         id: "filter-sort-reports",
-        title: "4.6.1. Filter and Sort Reports",
+        title: "Filter and Sort Reports",
         blocks: [
           {
             type: "step",
@@ -652,7 +654,7 @@ const sections: Section[] = [
       },
       {
         id: "preview-save-report",
-        title: "4.6.2. Preview and Save a Report",
+        title: "Preview and Save a Report",
         blocks: [
           { type: "step", text: "Action → Preview (one at a time)." },
           {
@@ -664,7 +666,7 @@ const sections: Section[] = [
       },
       {
         id: "send-report-cloud",
-        title: "4.6.3. Send a Report to DSecure Cloud",
+        title: "Send a Report to DSecure Cloud",
         blocks: [
           {
             type: "note",
@@ -680,7 +682,7 @@ const sections: Section[] = [
       },
       {
         id: "customize-report-settings",
-        title: "4.6.4. Customize Report Settings",
+        title: "Customize Report Settings",
         blocks: [
           {
             type: "bullets",
@@ -701,57 +703,221 @@ const sections: Section[] = [
     ],
   },
 
-  // 5. FAQs
+  // FAQs
   {
     id: "faqs",
     icon: HelpCircle,
-    title: "5. Frequently Asked Questions (FAQs)",
+    title: "Frequently Asked Questions (FAQs)",
     summary: "Top 20 FAQs for DSecure File Eraser Network.",
     subsections: [
       {
-        id: "faq-list",
-        title: "FAQs",
+        id: "faq-1",
+        title: "What does DSecure File Eraser Network do?",
         blocks: [
           {
-            type: "bullets",
-            items: [
-              "What does DSecure File Eraser Network do?",
-              "Does DSecure remove data beyond recovery?",
-              "Which algorithm should I choose?",
-              "Why admin credentials for domain?",
-              "Check network connection status for all computers?",
-              "Active but inaccessible later — why?",
-              "Erase on non-domain computers?",
-              "If disconnected after scheduling, does task run?",
-              "Offline activation?",
-              "Check expiring licenses?",
-              "Selective internet traces?",
-              "System traces persist?",
-              "Exclude files/folders?",
-              "Duplicate task names?",
-              "Disable confirmation dialog?",
-              "Return/reuse license?",
-              "Get erasure reports?",
-              "Preview/save reports?",
-              "Save multiple reports at once?",
-              "Lose local reports — what to do?",
-            ],
-          },
-          {
-            type: "note",
-            text:
-              "Detailed answers mirror sections above: General/Erasure Options, Connect Domain, Manage Licenses, Reports, and Cloud.",
-          },
-        ],
+            type: "p",
+            text: "DSecure File Eraser Network is a comprehensive data erasure solution for network environments. It allows IT administrators to permanently erase files, folders, and digital traces from multiple networked computers simultaneously from a central console. The software uses advanced overwriting algorithms to ensure that deleted data cannot be recovered, even with sophisticated data recovery tools."
+          }
+        ]
       },
+      {
+        id: "faq-2",
+        title: "Does DSecure really remove data beyond recovery?",
+        blocks: [
+          {
+            type: "p",
+            text: "Yes, absolutely. When you use DSecure File Eraser Network with certified erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
+          }
+        ]
+      },
+      {
+        id: "faq-3",
+        title: "Which erasure algorithm should I choose?",
+        blocks: [
+          {
+            type: "p",
+            text: "The choice depends on your security requirements and available time. For most business use: DoD 5220.22-M (3 passes) or DoD 7-pass provides excellent security with reasonable speed. For highly sensitive government or military data: Use Gutmann (35 passes) or DoD 7-pass for maximum security. For compliance with modern standards: NIST 800-88 Clear is recommended. For quick internal cleanups: 1-pass Zeroes is sufficient. Higher pass counts increase security but also increase the time required for erasure."
+          }
+        ]
+      },
+      {
+        id: "faq-4",
+        title: "Why are administrator credentials required for domain connection?",
+        blocks: [
+          {
+            type: "p",
+            text: "Administrator credentials are necessary because DSecure File Eraser Network needs elevated permissions to access remote computers on the network, read their file systems, and perform permanent erasure operations. Only domain administrators have the necessary rights to execute these operations across multiple computers. This security measure prevents unauthorized users from erasing data on network computers."
+          }
+        ]
+      },
+      {
+        id: "faq-5",
+        title: "Should I check network connection status for all computers?",
+        blocks: [
+          {
+            type: "p",
+            text: "It's recommended to check network connection status before scheduling erasure tasks. This ensures that computers are online and accessible. However, you can skip this check if you're scheduling tasks for later execution. Offline computers will appear in the list but cannot be erased until they're reconnected to the network. The software automatically handles reconnections for scheduled tasks."
+          }
+        ]
+      },
+      {
+        id: "faq-6",
+        title: "A computer was active but became inaccessible later—why?",
+        blocks: [
+          {
+            type: "p",
+            text: "This can happen for several reasons: the computer was turned off or went to sleep mode, network connectivity was lost, the computer was removed from the domain, firewall settings were changed to block access, or the user's session credentials expired. Check the computer's power status, network connection, and domain membership. If the issue persists, verify firewall rules and refresh your domain connection in the application."
+          }
+        ]
+      },
+      {
+        id: "faq-7",
+        title: "Can I erase files on non-domain computers?",
+        blocks: [
+          {
+            type: "p",
+            text: "DSecure File Eraser Network is specifically designed for domain environments and requires Active Directory integration. For standalone computers not joined to a domain, you would need to use the standalone version of DSecure File Eraser. The network version relies on domain infrastructure for authentication, computer discovery, and remote access."
+          }
+        ]
+      },
+      {
+        id: "faq-8",
+        title: "If a computer disconnects after scheduling a task, will the task still run?",
+        blocks: [
+          {
+            type: "p",
+            text: "Scheduled tasks are stored on each individual computer, not centrally. If a computer is offline when the scheduled time arrives, the task will execute when the computer comes back online (for tasks like 'Every Boot') or will be skipped for time-specific tasks. It's best practice to ensure computers remain connected for scheduled erasure tasks to execute as planned."
+          }
+        ]
+      },
+      {
+        id: "faq-9",
+        title: "How do I activate if my server has no internet connection?",
+        blocks: [
+          {
+            type: "p",
+            text: "Use the offline activation method: Generate a Registration ID from the application, email it to techsupport@dsecuretech.com along with your Activation Key, receive a License Key file from support (usually within one business day), and import the License Key file into the application to complete activation. See the Licensing section for detailed step-by-step instructions."
+          }
+        ]
+      },
+      {
+        id: "faq-10",
+        title: "How can I check which licenses are expiring soon?",
+        blocks: [
+          {
+            type: "p",
+            text: "Go to Activation → Manage Licenses. License pools that are expiring soon are highlighted with warning colors in the list. The interface shows the exact expiry date for each pool. You can sort by expiry date to see which licenses need renewal first. It's recommended to set calendar reminders 30 days before expiration."
+          }
+        ]
+      },
+      {
+        id: "faq-11",
+        title: "Can I erase selective internet activity traces instead of all?",
+        blocks: [
+          {
+            type: "p",
+            text: "Yes, absolutely. When you click Erase Traces → Settings, you can choose exactly which types of internet activity to erase for each installed browser. Options include browsing history, cache, cookies, download history, saved passwords, form data, and more. You can also select specific browsers (Chrome, Firefox, Edge, etc.) rather than erasing traces from all browsers."
+          }
+        ]
+      },
+      {
+        id: "faq-12",
+        title: "Why do some system traces persist even after erasure?",
+        blocks: [
+          {
+            type: "p",
+            text: "Some system traces may persist if: applications are currently running and have locked access to their trace files, you don't have sufficient permissions to erase certain system files, Windows is actively using the files, or the files are recreated immediately after erasure by running processes. Close all applications before erasing traces and ensure you have administrator privileges for best results."
+          }
+        ]
+      },
+      {
+        id: "faq-13",
+        title: "Can I exclude specific files or folders from erasure?",
+        blocks: [
+          {
+            type: "p",
+            text: "Yes, use the Ignore File List feature. Go to Home → Settings → Ignore File List. Here you can add file types (extensions like .pdf, .docx), specific file names, or entire folder names. Any items matching the ignore list will automatically be skipped during erasure operations, even if they're selected. This protects critical files from accidental deletion."
+          }
+        ]
+      },
+      {
+        id: "faq-14",
+        title: "Can I create duplicate task names for scheduled tasks?",
+        blocks: [
+          {
+            type: "p",
+            text: "No, each scheduled task must have a unique name. The software prevents duplicate task names to avoid confusion and management issues. Choose descriptive names like 'Daily Temp File Cleanup - Sales Dept' or 'Weekly Browser History Erasure - Legal' to clearly identify each task's purpose and scope."
+          }
+        ]
+      },
+      {
+        id: "faq-15",
+        title: "How do I disable the confirmation dialog before erasure?",
+        blocks: [
+          {
+            type: "p",
+            text: "Go to Home → Settings → General Settings. Uncheck the option 'Confirm to Proceed' or 'Show Confirmation Dialog'. After disabling, erasure operations will begin immediately when you click the Erase button without showing a confirmation prompt. Use this feature only if you're confident in your selections, as it removes the final safety check."
+          }
+        ]
+      },
+      {
+        id: "faq-16",
+        title: "Can I return or reuse a license from one computer to another?",
+        blocks: [
+          {
+            type: "p",
+            text: "Yes. Go to Activation → Manage Licenses, select the license pool, click View Computers, select the computer you want to deactivate, and click Deactivate License. This frees up one license in the pool that can be used to activate another computer. This is useful when replacing computers or redistributing licenses across your organization."
+          }
+        ]
+      },
+      {
+        id: "faq-17",
+        title: "How do I get detailed erasure reports?",
+        blocks: [
+          {
+            type: "p",
+            text: "Erasure reports are automatically generated after every erasure operation. Access them by clicking Home → Reports. You can filter reports by date range and type (Erase Files & Folders or Erase Traces). Each report includes details like computer name, files erased, algorithm used, time taken, success/failure counts, and a unique Report ID for tracking."
+          }
+        ]
+      },
+      {
+        id: "faq-18",
+        title: "Can I preview or save reports for compliance?",
+        blocks: [
+          {
+            type: "p",
+            text: "Yes. In the Reports section, select any report and click Action → Preview to view it on-screen. To save, select the report, click Save, choose PDF or XML format, select a destination folder, and click Save. PDF reports are formatted for printing and sharing, while XML reports can be imported into other systems for analysis."
+          }
+        ]
+      },
+      {
+        id: "faq-19",
+        title: "Can I save multiple reports at once?",
+        blocks: [
+          {
+            type: "p",
+            text: "Currently, reports must be saved individually—you cannot batch-export multiple reports in one operation. To save multiple reports, select and save each one separately. Alternatively, you can send reports to DSecure Cloud in batch, which provides centralized storage and management of all your erasure reports."
+          }
+        ]
+      },
+      {
+        id: "faq-20",
+        title: "What should I do if I lose local reports?",
+        blocks: [
+          {
+            type: "p",
+            text: "If you've been uploading reports to DSecure Cloud, you can access them from the Cloud Console at any time. If you haven't been using Cloud integration, local reports lost due to database corruption or system failure cannot be recovered. To prevent data loss: regularly back up your MariaDB database, enable DSecure Cloud integration and upload reports regularly, export critical reports to PDF and store in a separate location, and configure automated database backups as part of your IT maintenance routine."
+          }
+        ]
+      }
     ],
   },
 
-  // 6. About D-Secure
+  // About DSecureTech
   {
     id: "about-D-Secure",
     icon: Building,
-    title: "6. About DSecureTech",
+    title: "About DSecureTech",
     summary:
       "DSecure is a global Data Care organization: Recovery, Email Repair & Conversion, File/DB Repair, and Data Erasure.",
     subsections: [
@@ -789,6 +955,8 @@ const sections: Section[] = [
 const CompleteDSecureNetworkFile: React.FC = () => {
   useScrollToHash();
   const [query, setQuery] = useState("");
+  const [activeSection, setActiveSection] = useState("");
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const listRef = useRef<HTMLDivElement | null>(null);
 
   // Flattened index for search
@@ -839,7 +1007,27 @@ const CompleteDSecureNetworkFile: React.FC = () => {
     const el = document.querySelector(hash);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const sectionId = hash.replace('#', '');
+      setActiveSection(sectionId);
+      
+      // Find which section this ID belongs to and expand only that section
+      const parentSection = sections.find(s => 
+        s.id === sectionId || s.subsections.some(ss => ss.id === sectionId)
+      );
+      
+      if (parentSection) {
+        // Close all other sections and open only the target section
+        setExpandedSections([parentSection.id]);
+      }
     }
+  };
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => 
+      prev.includes(sectionId) 
+        ? prev.filter(id => id !== sectionId)
+        : [sectionId] // Only keep the newly opened section
+    );
   };
 
   return (
@@ -852,112 +1040,197 @@ const CompleteDSecureNetworkFile: React.FC = () => {
         />
       </Helmet>
 
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-16 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <BookOpen className="w-7 h-7 text-blue-600" />
-              <h1 className="text-xl font-semibold text-gray-900">
-                DSecure File Eraser Network — Complete Manual
-              </h1>
-            </div>
+      {/* Custom Scrollbar Styles */}
+      <style>{`
+        .sidebar-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-track {
+          background: #f3f4f6;
+          border-radius: 3px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 3px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-5px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
+        }
+      `}</style>
 
-            <div className="relative">
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search the manual..."
-                className="w-80 pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-              <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-12 gap-6">
-          {/* Sidebar */}
+      {/* Main Content Area - Bootstrap Docs Layout */}
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex gap-6">
+          {/* Left Sidebar Navigation - Bootstrap Style */}
           <aside
             ref={listRef}
-            className="col-span-12 md:col-span-4 lg:col-span-3 bg-white border border-gray-200 rounded-xl shadow-sm p-4 h-fit sticky top-4"
+            className="hidden lg:block lg:w-64 shrink-0"
           >
-            <nav className="space-y-4">
-              {filtered.map((s) => (
-                <div key={s.id}>
-                  <div className="flex items-center gap-2 text-gray-900 font-semibold mb-2">
-                    <s.icon className="w-5 h-5 text-blue-600" />
-                    <a
-                      href={`#${s.id}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        onJump(`#${s.id}`);
-                      }}
-                      className="hover:text-blue-700"
-                    >
-                      {s.title}
-                    </a>
-                  </div>
-                  <div className="space-y-1">
-                    {s.subsections.map((ss) => (
-                      <a
-                        key={ss.id}
-                        href={`#${ss.id}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onJump(`#${ss.id}`);
-                        }}
-                        className="group flex items-center text-sm text-gray-700 hover:text-blue-700"
-                      >
-                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 mr-1" />
-                        {ss.title}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </nav>
+            <div 
+              className="sticky top-4 p-4 lg:p-0 lg:pr-4 max-h-[calc(100vh-2rem)] overflow-y-auto sidebar-scroll"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#d1d5db #f3f4f6'
+              }}
+            >
+              <nav className="space-y-2">
+                {filtered.map((s) => {
+                  const isExpanded = expandedSections.includes(s.id);
+                  return (
+                    <div key={s.id} className="border-b border-gray-200 pb-2">
+                      {/* Section Header with Accordion */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => toggleSection(s.id)}
+                          className="p-1 hover:bg-gray-100 rounded transition-colors"
+                          aria-label={isExpanded ? "Collapse" : "Expand"}
+                        >
+                          <ChevronRight 
+                            className={`w-4 h-4 text-gray-500 transition-transform ${
+                              isExpanded ? "rotate-90" : ""
+                            }`}
+                          />
+                        </button>
+                        <a
+                          href={`#${s.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onJump(`#${s.id}`);
+                          }}
+                          className={`flex-1 flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md transition-colors ${
+                            activeSection === s.id
+                              ? "bg-blue-100 text-blue-700"
+                              : "text-gray-900 hover:bg-gray-100"
+                          }`}
+                        >
+                          <s.icon className={`w-4 h-4 shrink-0 ${activeSection === s.id ? "text-blue-700" : "text-blue-600"}`} />
+                          <span className={`break-words ${activeSection === s.id ? "text-blue-700" : ""}`}>{s.title}</span>
+                        </a>
+                      </div>
+                      
+                      {/* Subsections - Accordion Content */}
+                      {isExpanded && (
+                        <div className="ml-6 mt-2 space-y-1 border-l-2 border-gray-200 pl-2 animate-fadeIn">
+                          {s.subsections.map((ss) => (
+                            <a
+                              key={ss.id}
+                              href={`#${ss.id}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                onJump(`#${ss.id}`);
+                              }}
+                              className={`flex items-start gap-2 pl-3 py-1.5 text-sm rounded-r-md transition-colors ${
+                                activeSection === ss.id
+                                  ? "bg-blue-50 text-blue-700 border-l-2 border-blue-600 -ml-0.5"
+                                  : "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                              }`}
+                            >
+                              <span className="break-words">{ss.title}</span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </nav>
+            </div>
           </aside>
 
-          {/* Content */}
-          <main className="col-span-12 md:col-span-8 lg:col-span-9 space-y-10">
-            {filtered.map((s) => (
-              <section
-                key={s.id}
-                className="bg-white border border-gray-200 rounded-xl shadow-sm p-6"
-              >
-                <Anchor id={s.id} />
-                <div className="flex items-start gap-3 mb-3">
-                  <s.icon className="w-7 h-7 text-blue-600 mt-0.5" />
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      {s.title}
-                    </h2>
+          {/* Main Content Area */}
+          <main className="flex-1 min-w-0">
+            {/* Welcome Banner */}
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-8 text-white">
+              <h1 className="text-3xl font-bold mb-2">
+                DSecure File Eraser Network Manual
+              </h1>
+              <p className="text-blue-100 text-lg">
+                Complete guide to installation, configuration, and secure data erasure operations
+              </p>
+            </div>
+
+            {/* Content Sections */}
+            <div className="space-y-12">
+              {filtered.map((s) => (
+                <section
+                  key={s.id}
+                  className="scroll-mt-20"
+                >
+                  <Anchor id={s.id} />
+                  
+                  {/* Section Header */}
+                  <div className="mb-8 pb-4 border-b-2 border-gray-200">
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="p-3 bg-blue-100 rounded-lg">
+                        <s.icon className="w-7 h-7 text-blue-600" />
+                      </div>
+                      <h2 className="text-4xl font-bold text-gray-900">
+                        {s.title}
+                      </h2>
+                    </div>
                     {s.summary && (
-                      <p className="text-gray-600 mt-1">{s.summary}</p>
+                      <p className="text-gray-600 text-xl ml-16">{s.summary}</p>
                     )}
                   </div>
-                </div>
 
-                <div className="space-y-8">
-                  {s.subsections.map((ss) => (
-                    <div key={ss.id} className="space-y-3">
-                      <Anchor id={ss.id} />
-                      <h3 className="text-xl font-semibold text-gray-900">
-                        {ss.title}
-                      </h3>
-                      <div className="space-y-3">
-                        {ss.blocks.map((b, i) => (
-                          <BlockView key={i} block={b} />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            ))}
+                  {/* Subsections */}
+                  <div className="space-y-10">
+                    {s.subsections.map((ss) => (
+                      <article
+                        key={ss.id}
+                        className="bg-white rounded-lg border border-gray-200 p-8 hover:shadow-lg transition-shadow"
+                      >
+                        <Anchor id={ss.id} />
+                        
+                        {/* Subsection Header */}
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                          <span className="w-1.5 h-8 bg-blue-600 rounded"></span>
+                          {ss.title}
+                        </h3>
+                        
+                        {/* Content Blocks */}
+                        <div className="space-y-5 text-gray-700 text-base leading-relaxed">
+                          {ss.blocks.map((b, i) => (
+                            <BlockView key={i} block={b} />
+                          ))}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+
+            {/* Footer */}
+            <footer className="mt-16 pt-8 border-t border-gray-200">
+              <div className="text-center text-gray-600">
+                <p className="mb-2">
+                  Need help? Contact{" "}
+                  <a
+                    href="mailto:techsupport@dsecuretech.com"
+                    className="text-blue-600 hover:underline"
+                  >
+                    techsupport@dsecuretech.com
+                  </a>
+                </p>
+                <p className="text-sm text-gray-500">
+                  © {new Date().getFullYear()} DSecureTech. All rights reserved.
+                </p>
+              </div>
+            </footer>
           </main>
         </div>
       </div>
