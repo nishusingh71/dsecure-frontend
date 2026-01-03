@@ -204,8 +204,8 @@ const HelpManualPage: React.FC = memo(() => {
         },
         {
           id: 52,
-          title: "Certificate Generation",
-          description: "Creating tamper-proof certificates of data destruction",
+          title: "Regulatory Document Generation",
+          description: "Creating tamper-proof regulatory documents of data destruction",
           url: "/support/manual/certificates",
           pageCount: 8,
         },
@@ -295,20 +295,20 @@ const HelpManualPage: React.FC = memo(() => {
         },
         {
           id: 71,
-          title: "Complete Manual",
+          title: "DSecure File Eraser Manual",
           description:
             "Comprehensive single-page manual with all DSecure features and functionality",
           url: "/support/help-manual/complete-manual",
           pageCount: 1,
         },
-         {
-          id: 79,
-          title: "Complete Network Manual",
-          description:
-            "Comprehensive single-page manual with all DSecure network features and functionality",
-          url: "/support/help-manual/complete-network-manual",
-          pageCount: 1,
-        },
+        // {
+        //   id: 79,
+        //   title: "DSecure File Eraser Network Manual",
+        //   description:
+        //     "Comprehensive single-page manual with all DSecure network features and functionality",
+        //   url: "/support/help-manual/complete-network-manual",
+        //   pageCount: 1,
+        // },
         {
           id: 72,
           title: "Working with Reports",
@@ -524,9 +524,8 @@ const HelpManualPage: React.FC = memo(() => {
                           </div>
                         </div>
                         <svg
-                          className={`w-5 h-5 text-slate-500 transform transition-transform ${
-                            activeSection === section.id ? "rotate-180" : ""
-                          }`}
+                          className={`w-5 h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
+                            }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

@@ -1,5 +1,7 @@
 ﻿import React, { useState, memo, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import CustomLicenseModal, {
   CustomLicenseData,
@@ -19,7 +21,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("drive-eraser");
-  const [selectedLicenses, setSelectedLicenses] = useState("10");
+  const [selectedLicenses, setSelectedLicenses] = useState("1");
   const [selectedYears, setSelectedYears] = useState("1");
   const [selectedOS, setSelectedOS] = useState("Select");
   const [deliveryMethod, setDeliveryMethod] = useState("electronic");
@@ -31,32 +33,33 @@ const PricingAndPlanPage: React.FC = memo(() => {
   // Read URL parameters and set initial state
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    
+
     // Read plan parameter from URL
     const planFromUrl = searchParams.get('plan');
     if (planFromUrl) {
-      // Map plan names from URL to plan IDs
+      // Map plan names from URL to plan IDs (supports both old names and new IDs)
       const planMapping: { [key: string]: string } = {
         'base': 'basic',
-        'standard': 'standard', 
+        'basic': 'basic',  // Direct ID support
+        'standard': 'standard',
         'cloud': 'cloud',
         'network': 'network',
         'pro': 'pro',
         'enterprise': 'enterprise'
       };
-      
+
       const mappedPlan = planMapping[planFromUrl.toLowerCase()];
       if (mappedPlan) {
         setSelectedPlan(mappedPlan);
       }
     }
-    
+
     // Read product parameter from URL
     const productFromUrl = searchParams.get('product');
     if (productFromUrl) {
       setSelectedCategory(productFromUrl);
     }
-    
+
     // Read section parameter to expand File Eraser section if needed
     const sectionFromUrl = searchParams.get('section');
     if (sectionFromUrl === 'file-eraser') {
@@ -66,7 +69,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   // FIXED: Custom License Form Submission Configuration
   const customLicenseFormConfig = {
-    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com", // FIXED: Correct endpoint
+    endpoint: "https://formsubmit.co/support@dsecuretech.com", // FIXED: Correct endpoint
     requiredFields: ["contactName", "email", "numberOfLicenses", "companyName"],
     successMessage:
       "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours with a personalized quote.",
@@ -176,7 +179,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         contactName: data.contactName,
         email: data.email,
         phone: data.phone || "Not provided",
-        
+
         // Organization Information
         organizationType: data.organizationType,
         organizationName: data.organizationName,
@@ -187,7 +190,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         productName: getCurrentProduct().title,
         productCategory: selectedCategory,
         currentSelectedPlan: getCurrentPlan().name,
-        
+
         // Marketing Data
         pageUrl: window.location.href,
         referrer: document.referrer || "Direct",
@@ -198,7 +201,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
     onSuccess: (data: Record<string, any>) => {
       setShowSpecialPricingModal(false);
-      
+
       if (typeof (window as any).gtag !== "undefined") {
         (window as any).gtag("event", "special_pricing_request", {
           event_category: "sales",
@@ -233,8 +236,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const planOptions = [
     {
       id: "basic",
-      name: "Basic Plan",
-      basePrice: 40,
+      name: "Standard",
+      basePrice: 80,
       description:
         "Essential data erasure features for individuals and small teams",
       category: "Platform & OS Support",
@@ -256,14 +259,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "NOT INCLUDED: White Label Reports",
         "NOT INCLUDED: Compliance Email Report Format",
         "NOT INCLUDED: XML Report Format",
-        "NOT INCLUDED: Audit Grade Compliance Certificates",
+        "NOT INCLUDED: Audit Grade Regulatory Documents",
         "NOT INCLUDED: Inspection Logs",
       ],
     },
     {
       id: "standard",
-      name: "Standard Plan",
-      basePrice: 80,
+      name: "Corporate",
+      basePrice: 150,
       description:
         "Enhanced features with broader OS support and core capabilities",
       category: "Standard Business Solution",
@@ -285,76 +288,77 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "NOT INCLUDED: White Label Reports",
         "NOT INCLUDED: Compliance Email Report Format",
         "NOT INCLUDED: XML Report Format",
-        "NOT INCLUDED: Audit Grade Compliance Certificates",
+        "NOT INCLUDED: Audit Grade Regulatory Documents",
         "NOT INCLUDED: Inspection Logs",
       ],
     },
-    {
-      id: "cloud",
-      name: "Cloud Plan",
-      basePrice: 150,
-      description:
-        "Cloud-integrated solution with advanced reporting capabilities",
-      category: "Cloud-Enhanced Solution",
-      features: [
-        "INCLUDED: Windows Support",
-        "INCLUDED: Linux Support",
-        "INCLUDED: macOS Support",
-        "INCLUDED: Multi-Bootable OS Support (3+)",
-        "INCLUDED: Core Erasure Capabilities",
-        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
-        "INCLUDED: File & Folder Erase",
-        "INCLUDED: Erase Tracks (Browser, System, App data)",
-        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
-        "INCLUDED: Erase Volume",
-        "INCLUDED: Erase Disk (Full Devices)",
-        "INCLUDED: Schedule Erase",
-        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
-        "INCLUDED: Local PDF Reports",
-        "NOT INCLUDED: White Label Reports",
-        "INCLUDED: Compliance Email Report Format",
-        "INCLUDED: XML Report Format",
-        "INCLUDED: Audit Grade Compliance Certificates",
-        "INCLUDED: Inspection Logs",
-      ],
-    },
-    {
-      id: "network",
-      name: "Network Plan",
-      basePrice: 250,
-      description: "Network-wide deployment with centralized management",
-      category: "Network & Management Solution",
-      features: [
-        "INCLUDED: Windows Support",
-        "INCLUDED: Linux Support",
-        "INCLUDED: macOS Support",
-        "INCLUDED: Multi-Bootable OS Support (3+)",
-        "INCLUDED: Core Erasure Capabilities",
-        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
-        "INCLUDED: File & Folder Erase",
-        "INCLUDED: Erase Tracks (Browser, System, App data)",
-        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
-        "INCLUDED: Erase Volume",
-        "INCLUDED: Erase Disk (Full Devices)",
-        "INCLUDED: Schedule Erase",
-        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
-        "INCLUDED: Local PDF Reports",
-        "INCLUDED: White Label Reports",
-        "INCLUDED: Compliance Email Report Format",
-        "INCLUDED: XML Report Format",
-        "INCLUDED: Audit Grade Compliance Certificates",
-        "INCLUDED: Inspection Logs",
-        "INCLUDED: Web Dashboard",
-        "INCLUDED: Cloud Commands (Remote Jobs)",
-        "INCLUDED: Custom Installer (Auto-register functions)",
-        "INCLUDED: Private Cloud Support",
-        "INCLUDED: Multi-Level User Logic",
-      ],
-    },
+    // Hidden: Cloud and Network plans
+    // {
+    //   id: "cloud",
+    //   name: "Cloud",
+    //   basePrice: 150,
+    //   description:
+    //     "Cloud-integrated solution with advanced reporting capabilities",
+    //   category: "Cloud-Enhanced Solution",
+    //   features: [
+    //     "INCLUDED: Windows Support",
+    //     "INCLUDED: Linux Support",
+    //     "INCLUDED: macOS Support",
+    //     "INCLUDED: Multi-Bootable OS Support (3+)",
+    //     "INCLUDED: Core Erasure Capabilities",
+    //     "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+    //     "INCLUDED: File & Folder Erase",
+    //     "INCLUDED: Erase Tracks (Browser, System, App data)",
+    //     "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+    //     "INCLUDED: Erase Volume",
+    //     "INCLUDED: Erase Disk (Full Devices)",
+    //     "INCLUDED: Schedule Erase",
+    //     "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+    //     "INCLUDED: Local PDF Reports",
+    //     "NOT INCLUDED: White Label Reports",
+    //     "INCLUDED: Compliance Email Report Format",
+    //     "INCLUDED: XML Report Format",
+    //     "INCLUDED: Audit Grade Compliance Certificates",
+    //     "INCLUDED: Inspection Logs",
+    //   ],
+    // },
+    // {
+    //   id: "network",
+    //   name: "Network",
+    //   basePrice: 250,
+    //   description: "Network-wide deployment with centralized management",
+    //   category: "Network & Management Solution",
+    //   features: [
+    //     "INCLUDED: Windows Support",
+    //     "INCLUDED: Linux Support",
+    //     "INCLUDED: macOS Support",
+    //     "INCLUDED: Multi-Bootable OS Support (3+)",
+    //     "INCLUDED: Core Erasure Capabilities",
+    //     "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
+    //     "INCLUDED: File & Folder Erase",
+    //     "INCLUDED: Erase Tracks (Browser, System, App data)",
+    //     "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
+    //     "INCLUDED: Erase Volume",
+    //     "INCLUDED: Erase Disk (Full Devices)",
+    //     "INCLUDED: Schedule Erase",
+    //     "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
+    //     "INCLUDED: Local PDF Reports",
+    //     "INCLUDED: White Label Reports",
+    //     "INCLUDED: Compliance Email Report Format",
+    //     "INCLUDED: XML Report Format",
+    //     "INCLUDED: Audit Grade Compliance Certificates",
+    //     "INCLUDED: Inspection Logs",
+    //     "INCLUDED: Web Dashboard",
+    //     "INCLUDED: Cloud Commands (Remote Jobs)",
+    //     "INCLUDED: Custom Installer (Auto-register functions)",
+    //     "INCLUDED: Private Cloud Support",
+    //     "INCLUDED: Multi-Level User Logic",
+    //   ],
+    // },
     {
       id: "pro",
-      name: "Pro Plan",
-      basePrice: 400,
+      name: "Professional",
+      basePrice: 250,
       description:
         "Professional solution with premium add-ons and customization",
       category: "Professional Solution",
@@ -376,7 +380,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "INCLUDED: White Label Reports",
         "INCLUDED: Compliance Email Report Format",
         "INCLUDED: XML Report Format",
-        "INCLUDED: Audit Grade Compliance Certificates",
+        "INCLUDED: Audit Grade Regulatory Documents",
         "INCLUDED: Inspection Logs",
         "INCLUDED: Web Dashboard",
         "INCLUDED: Cloud Commands (Remote Jobs)",
@@ -394,7 +398,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
     {
       id: "enterprise",
-      name: "Enterprise Plan",
+      name: "Enterprise",
       basePrice: 500,
       description:
         "Complete enterprise solution with all features and dedicated support",
@@ -417,7 +421,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "INCLUDED: White Label Reports",
         "INCLUDED: Compliance Email Report Format",
         "INCLUDED: XML Report Format",
-        "INCLUDED: Audit Grade Compliance Certificates",
+        "INCLUDED: Audit Grade Regulatory Documents",
         "INCLUDED: Inspection Logs",
         "INCLUDED: Web Dashboard",
         "INCLUDED: Cloud Commands (Remote Jobs)",
@@ -435,7 +439,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
     {
       id: "custom",
-      name: "Custom Plan",
+      name: "Custom",
       basePrice: 0,
       description:
         "Tailored solution designed specifically for your organization's needs",
@@ -469,17 +473,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
     plan: string
   ) => {
     const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
-    
+
     if (category === "drive-eraser") {
       // Drive Eraser is fixed $20 per license (one-time purchase)
       return Math.round(20 * licenseCount * 100) / 100;
     }
-    
-    // File Eraser uses plan-based pricing
-    const currentPlan = planOptions.find((p) => p.id === plan);
-    if (!currentPlan || plan === "custom") return 0;
 
-    const basePrice = currentPlan.basePrice;
+    // File Eraser is fixed $40 per license per year
+    const basePrice = 40;
     const yearCount = parseInt(years);
 
     // File Eraser is sold annually, so multiply by years
@@ -495,70 +496,30 @@ const PricingAndPlanPage: React.FC = memo(() => {
     if (category === "drive-eraser") {
       return [
         "Complete Hard Drive & SSD Erasure",
-        "Enterprise-Grade Security Standards", 
+        "Enterprise-Grade Security Standards",
         "Multi-Platform Device Support",
-        "Compliance Reporting & Certificates",
+        "Compliance Reporting & Regulatory Documents",
         "Real-time Progress Monitoring",
         "Batch Processing Capabilities",
       ];
     } else if (category === "file-eraser") {
-      // Return plan-specific features based on selected plan
-      const baseFeatures = [
+      return [
         "Secure File & Folder Deletion",
         "30+ International Erasure Algorithms",
         "Real-time Progress Monitoring",
+        "Windows, Mac & Linux Support",
+        "Free Space Cleaning",
+        "Local PDF Reports",
+        "Enhanced Erasure Features",
+        "Cloud Report Upload/Sync",
+        "White-Label Reports",
+        "XML Report Format",
+        "Volume & Disk Erasure",
+        "Network Deployment",
+        "Web Dashboard Access",
+        "Cloud Commands (Remote Jobs)",
+        "Multi-Level User Logs",
       ];
-
-      const planSpecificFeatures = {
-        basic: [
-          "Windows Support Only",
-          "Basic File & Folder Erase",
-          "Essential Erasure Capabilities",
-        ],
-        standard: [
-          "Windows, Mac & Linux Support",
-          "Free Space Cleaning",
-          "Local PDF Reports",
-          "Enhanced Erasure Features",
-        ],
-        cloud: [
-          "All Standard Features",
-          "Cloud Report Upload/Sync",
-          "White-Label Reports",
-          "XML Report Format",
-          "Volume & Disk Erasure",
-        ],
-        network: [
-          "All Cloud Features", 
-          "Network Deployment",
-          "Web Dashboard Access",
-          "Cloud Commands (Remote Jobs)",
-          "Multi-Level User Logs",
-        ],
-        pro: [
-          "All Network Features",
-          "Custom Installer (1 included)",
-          "Private Cloud Support",
-          "Premium Add-ons Available",
-          "Priority Support",
-        ],
-        enterprise: [
-          "All Pro Features Included",
-          "5 Custom Installers",
-          "Unlimited Private Clouds",
-          "Dedicated Support Manager",
-          "Bespoke Integrations Available",
-        ],
-        custom: [
-          "Fully Customized Feature Set",
-          "Bespoke Integration & Development",
-          "Custom Compliance Requirements",
-          "White-label Solutions",
-          "Dedicated Development Team",
-        ],
-      };
-
-      return [...baseFeatures, ...(planSpecificFeatures[plan as keyof typeof planSpecificFeatures] || [])];
     }
     return [];
   };
@@ -638,9 +599,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
     }
 
     // File Eraser plan-based subtitle
-    let subtitle = `${getCurrentPlan().name} - ${selectedLicenses} licenses`;
+    let subtitle = `File Eraser Professional - ${selectedLicenses} licenses`;
     subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? 's' : ''}`;
-    
+
     return subtitle;
   };
 
@@ -654,8 +615,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     // File Eraser plan-based pricing
     const currentPlan = getCurrentPlan();
-    let note = `${currentPlan.name} @ $${currentPlan.basePrice.toFixed(2)}/license/year`;
-    
+    let note = `Professional @ $40.00/license/year`;
+
     if (parseInt(selectedYears) > 1) {
       note += ` × ${selectedYears} years`;
     }
@@ -665,23 +626,23 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   const handleCustomLicenseSubmit = async (data: CustomLicenseData) => {
     // console.log("handleCustomLicenseSubmit called with data:", data);
-    
+
     try {
       // Use the useFormSubmission hook to handle the form submission
       await submitForm(data);
-      
+
       // Show success toast
       showToast(
         "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours.",
         "success"
       );
-      
+
       // Close modal after successful submission
       setShowCustomModal(false);
-      
+
     } catch (error) {
       console.error("Custom license submission error:", error);
-      
+
       // Show error toast
       showToast(
         "Failed to send your custom license request. Please try again or contact our sales team directly.",
@@ -696,64 +657,113 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return;
     }
 
-    const totalPrice = calculatePrice(
-      selectedCategory,
-      selectedLicenses,
-      selectedYears,
-      selectedPlan
-    );
+    // Import Polar client dynamically
+    import('@/utils/polarClient').then(({ redirectToPolarCheckout, isCustomPlan, getPolarProductId, getDriveEraserCheckoutLink, getFileEraserStandardCheckoutLink, getFileEraserEnterpriseCheckoutLink, getFileEraserCorporateCheckoutLink, getFileEraserProfessionalCheckoutLink }) => {
+      // Check if plan is valid for Polar checkout
+      if (isCustomPlan(selectedPlan)) {
+        setShowCustomModal(true);
+        return;
+      }
 
-    let paymentData;
-
-    if (selectedCategory === "drive-eraser") {
-      // Drive Eraser fixed pricing data
-      paymentData = {
-        productName: getCurrentProduct().title,
-        productImage: getCurrentProduct().image,
-        productImageCategory: getCurrentProduct().imageCategory,
-        productVersion: getCurrentProduct().version,
-        quantity: selectedLicenses,
-        duration: "1", // Always 1 year for Drive Eraser (one-time)
-        unitPrice: 20, // Fixed $20 per license
-        totalPrice: totalPrice,
-        deliveryMethod: deliveryMethod,
-        features: [
-          "Complete Hard Drive & SSD Erasure",
-          "Enterprise-Grade Security Standards",
-          "Multi-Platform Device Support",
-          "Compliance Reporting & Certificates",
-          "Real-time Progress Monitoring",
-          "Batch Processing Capabilities",
-        ],
-        planName: undefined, // No plan for Drive Eraser
-        planDescription: undefined, // No plan description
+      // Store order metadata for success page
+      const orderMetadata = {
         category: selectedCategory,
-      };
-    } else {
-      // File Eraser plan-based pricing data
-      const currentPlan = getCurrentPlan();
-      paymentData = {
+        planId: selectedPlan,
+        planName: getCurrentPlan().name,
         productName: getCurrentProduct().title,
-        productImage: getCurrentProduct().image,
-        productImageCategory: getCurrentProduct().imageCategory,
-        productVersion: getCurrentProduct().version,
-        quantity: selectedLicenses,
-        duration: selectedYears,
-        unitPrice: currentPlan.basePrice,
-        totalPrice: totalPrice,
-        deliveryMethod: deliveryMethod,
-        features: currentPlan.features,
-        planName: currentPlan.name,
-        planDescription: currentPlan.description,
-        category: selectedCategory,
+        licenses: selectedLicenses,
+        years: selectedYears,
+        totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
       };
-    }
+      localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
 
-    // Store payment data in localStorage for the payment page
-    localStorage.setItem("paymentData", JSON.stringify(paymentData));
+      // Drive Eraser uses license quantity-based checkout links
+      if (selectedCategory === 'drive-eraser') {
+        const checkoutUrl = getDriveEraserCheckoutLink(selectedLicenses);
+        if (!checkoutUrl) {
+          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
+          return;
+        }
+        console.log('🚀 Redirecting to Drive Eraser checkout:', checkoutUrl);
+        window.location.href = checkoutUrl;
+        return;
+      }
 
-    // Navigate directly to payment page without login requirement
-    navigate("/checkout");
+      // File Eraser Standard plan (id='basic') uses license quantity-based checkout links
+      if (selectedCategory === 'file-eraser' && selectedPlan === 'basic') {
+        const checkoutUrl = getFileEraserStandardCheckoutLink(selectedLicenses);
+        if (!checkoutUrl) {
+          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
+          return;
+        }
+        console.log('🚀 Redirecting to File Eraser Standard checkout:', checkoutUrl);
+        window.location.href = checkoutUrl;
+        return;
+      }
+
+      // File Eraser Enterprise plan uses license quantity-based checkout links
+      if (selectedCategory === 'file-eraser' && selectedPlan === 'enterprise') {
+        const checkoutUrl = getFileEraserEnterpriseCheckoutLink(selectedLicenses);
+        if (!checkoutUrl) {
+          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
+          return;
+        }
+        console.log('🚀 Redirecting to File Eraser Enterprise checkout:', checkoutUrl);
+        window.location.href = checkoutUrl;
+        return;
+      }
+
+      // File Eraser Corporate plan (id='standard') uses license quantity-based checkout links
+      if (selectedCategory === 'file-eraser' && selectedPlan === 'standard') {
+        const checkoutUrl = getFileEraserCorporateCheckoutLink(selectedLicenses);
+        if (!checkoutUrl) {
+          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
+          return;
+        }
+        console.log('🚀 Redirecting to File Eraser Corporate checkout:', checkoutUrl);
+        window.location.href = checkoutUrl;
+        return;
+      }
+
+      // File Eraser Professional plan (id='pro') uses license quantity-based checkout links
+      if (selectedCategory === 'file-eraser' && selectedPlan === 'pro') {
+        const checkoutUrl = getFileEraserProfessionalCheckoutLink(selectedLicenses);
+        if (!checkoutUrl) {
+          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
+          return;
+        }
+        console.log('🚀 Redirecting to File Eraser Professional checkout:', checkoutUrl);
+        window.location.href = checkoutUrl;
+        return;
+      }
+
+      // Other File Eraser plans use plan-based checkout
+      const productId = getPolarProductId(
+        selectedCategory as 'drive-eraser' | 'file-eraser',
+        selectedPlan as 'basic' | 'standard' | 'cloud' | 'network' | 'pro' | 'enterprise'
+      );
+
+      if (!productId) {
+        showToast('Unable to process payment. Please try again.', 'error');
+        return;
+      }
+
+      // Redirect to Polar.sh checkout
+      redirectToPolarCheckout(
+        selectedCategory as 'drive-eraser' | 'file-eraser',
+        selectedPlan as 'basic' | 'standard' | 'cloud' | 'network' | 'pro' | 'enterprise',
+        {
+          category: selectedCategory as 'drive-eraser' | 'file-eraser',
+          planId: selectedPlan as 'basic' | 'standard' | 'cloud' | 'network' | 'pro' | 'enterprise',
+          planName: getCurrentPlan().name,
+          licenses: parseInt(selectedLicenses) || 1,
+          years: parseInt(selectedYears) || 1,
+        }
+      );
+    }).catch((error) => {
+      console.error('Failed to load Polar client:', error);
+      showToast('Payment system unavailable. Please try again later.', 'error');
+    });
   };
 
   const faqs = [
@@ -778,9 +788,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
         "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, bank transfers, and purchase orders for enterprise customers.",
     },
     {
-      question: "Do you offer volume discounts?",
+      question: "Do you offer Volume discounts?",
       answer:
-        "Yes! We offer automatic volume discounts: 10% off for 25+ licenses, 15% off for 50+ licenses, and 20% off for 100+ licenses. Contact us for custom pricing on larger orders.",
+        "Yes! We offer discounts for bulk orders. Please submit a request via our Custom License form to receive a personalized quote with discounted pricing.",
     },
     {
       question: "What kind of support do you provide?",
@@ -791,20 +801,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   return (
     <>
-      <Helmet>
-        <title>
-          Pricing & Plans - D-Secure Data Erasure Software | Professional
-          Licenses
-        </title>
-        <meta
-          name="description"
-          content="Choose the perfect D-Secure data erasure license plan. Drive Eraser, Admin Console, Mobile Eraser & File Eraser. Volume discounts available. Free shipping worldwide."
-        />
-        <meta
-          name="keywords"
-          content="data erasure pricing, secure delete software cost, NIST compliant erasure license, enterprise data wiping plans"
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('pricing-and-plan')} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <div className="container mx-auto px-4 xs:px-6 sm:px-6 md:px-8 py-8 xs:py-10 sm:py-12 md:py-12 max-w-7xl">
@@ -835,12 +832,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   key={category.id}
                   onClick={() => {
                     setSelectedCategory(category.id);
+                    // Update URL with product parameter
+                    navigate(`/pricing-and-plan?product=${category.id}`, { replace: true });
                   }}
-                  className={`p-4 xs:p-5 sm:p-6 rounded-xl text-left transition-all duration-300 border-2 ${
-                    selectedCategory === category.id
-                      ? "bg-gradient-to-br from-teal-500 to-teal-600 text-white border-teal-500 shadow-xl transform scale-105"
-                      : "bg-white text-gray-700 border-gray-200 hover:border-teal-300 hover:shadow-lg hover:scale-102"
-                  }`}
+                  className={`p-4 xs:p-5 sm:p-6 rounded-xl text-left transition-all duration-300 border-2 ${selectedCategory === category.id
+                    ? "bg-gradient-to-br from-teal-500 to-teal-600 text-white border-teal-500 shadow-xl transform scale-105"
+                    : "bg-white text-gray-700 border-gray-200 hover:border-teal-300 hover:shadow-lg hover:scale-102"
+                    }`}
                 >
                   <h3 className="font-semibold text-xs xs:text-sm sm:text-sm mb-1">
                     {category.name}
@@ -878,11 +876,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     {/* Dynamic Product Features */}
                     <div className="space-y-3 mb-6">
                       <h4 className="text-sm font-semibold text-gray-800 mb-3">
-                        {selectedCategory === "drive-eraser" 
-                          ? "Drive Eraser - Key Features:" 
-                          : `${getCurrentPlan().name} - Key Features:`}
+                        {selectedCategory === "drive-eraser"
+                          ? "Drive Eraser - Key Features:"
+                          : `${getCurrentProduct().title} - Key Features:`}
                       </h4>
-                      {selectedCategory === "file-eraser" && (
+                      {false && selectedCategory === "file-eraser" && (
                         <p className="text-xs text-gray-600 mb-3 italic">
                           {getCurrentPlan().description}
                         </p>
@@ -918,8 +916,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         Configure Your License
                       </h3>
                       <div className={`grid gap-3 xs:gap-4 sm:gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"}`}>
-                        {/* Plan Selection - Only show for File Eraser */}
-                        {selectedCategory === "file-eraser" && (
+                        {/* Plan Selection - Only show for File Eraser */}{/* Plans hidden as per request */}
+                        {false && selectedCategory === "file-eraser" && (
                           <div className="space-y-2">
                             <label className="block text-xs xs:text-sm font-semibold text-gray-700">
                               Select Plan:
@@ -934,10 +932,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             >
                               {planOptions.map((plan) => (
                                 <option key={plan.id} value={plan.id}>
-                                  {plan.name} - $
                                   {plan.basePrice > 0
-                                    ? `${plan.basePrice}/license`
-                                    : "Custom"}
+                                    ? `${plan.name} - $${plan.basePrice}/license`
+                                    : plan.name}
                                 </option>
                               ))}
                             </select>
@@ -977,24 +974,20 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             {selectedCategory === "file-eraser" ? "License Duration:" : "License Type:"}
                           </label>
                           <p className="text-xs text-gray-500">
-                            {selectedCategory === "file-eraser" 
-                              ? "File Eraser licenses are sold annually" 
+                            {selectedCategory === "file-eraser"
+                              ? "File Eraser licenses are sold annually ($40/year)"
                               : "Drive Eraser is a one-time purchase"}
                           </p>
                           <select
                             value={selectedCategory === "file-eraser" ? selectedYears : "1"}
                             onChange={(e) => selectedCategory === "file-eraser" && setSelectedYears(e.target.value)}
                             disabled={selectedCategory !== "file-eraser"}
-                            className={`w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400 ${
-                              selectedCategory !== "file-eraser" ? "bg-gray-100 cursor-not-allowed" : ""
-                            }`}
+                            className={`w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400 ${selectedCategory !== "file-eraser" ? "bg-gray-100 cursor-not-allowed" : ""
+                              }`}
                           >
                             {selectedCategory === "file-eraser" ? (
                               <>
                                 <option value="1">1 Year</option>
-                                <option value="2">2 Years</option>
-                                <option value="3">3 Years</option>
-                                <option value="5">5 Years</option>
                               </>
                             ) : (
                               <option value="1">One-time Purchase</option>
@@ -1037,8 +1030,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   <div className="text-xs text-gray-500">{getPriceNote()}</div>
                 </div>
 
-                {/* Plan Summary - Only show for File Eraser */}
-                {selectedCategory === "file-eraser" && (
+                {/* Plan Summary - Only show for File Eraser */}{/* Hidden for single-tier pricing */}
+                {false && selectedCategory === "file-eraser" && (
                   <div className="mb-6 p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl border border-teal-100">
                     <h4 className="font-semibold text-gray-900 mb-2">{getCurrentPlan().name}</h4>
                     <p className="text-xs text-gray-600 mb-2">{getCurrentPlan().description}</p>
@@ -1049,19 +1042,19 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 )}
 
                 {/* Action Button */}
-                <button
+                {/* <button
                   onClick={handleBuyNow}
                   className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg"
                 >
                   {selectedLicenses === "custom" || selectedPlan === "custom"
                     ? " Request Custom Quote"
                     : " Buy Now"}
-                </button>
+                </button> */}
 
                 {/* Trust Indicators */}
                 <div className="space-y-3 text-center">
                   <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
-                    <svg
+                    {/* <svg
                       className="w-5 h-5 text-green-500"
                       fill="currentColor"
                       viewBox="0 0 20 20"
@@ -1071,8 +1064,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                         clipRule="evenodd"
                       />
-                    </svg>
-                    <span>30-day money-back guarantee</span>
+                    </svg> */}
+                    {/* <span>30-day money-back guarantee</span> */}
                   </div>
                   <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
                     <svg
@@ -1112,7 +1105,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
             <div className="text-center">
               <span className="text-blue-700 font-medium">
                 OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS |
-                Certified: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
+                regulated: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
                 Instant Delivery Available
               </span>
             </div>
@@ -1137,9 +1130,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   >
                     <span>{faq.question}</span>
                     <svg
-                      className={`w-5 h-5 transform transition-transform ${
-                        expandedFaq === index ? "rotate-180" : ""
-                      }`}
+                      className={`w-5 h-5 transform transition-transform ${expandedFaq === index ? "rotate-180" : ""
+                        }`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >

@@ -1,6 +1,7 @@
 import Reveal from "@/components/Reveal";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   DollarIcon,
   GearIcon,
@@ -13,6 +14,7 @@ import {
 } from "@/components/FlatIcons";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
+import { ENV } from "@/config/env";
 
 export default function ContactPage() {
   return (
@@ -65,6 +67,7 @@ interface Office {
 }
 
 function ContactPageContent() {
+  const { t } = useTranslation();
   const [usageType, setUsageType] = useState<"business" | "personal">(
     "business"
   );
@@ -132,18 +135,193 @@ function ContactPageContent() {
     setTimeout(() => setToast(null), 6000); // Auto hide after 6 seconds
   };
 
-  // FormSubmit configuration - FIXED ENDPOINT
-  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@dsecuretech.com";
+  // FormSubmit configuration - Primary recipient
+  // const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@dsecuretech.com";
+
+  //   const sendEmail = async (e: React.FormEvent) => {
+  //     e.preventDefault();
+
+  //     // Enhanced validation with better error messages
+  //     const errors: string[] = [];
+
+  //     if (!formData.name?.trim()) {
+  //       errors.push("Name is required");
+  //     }
+
+  //     if (!formData.email?.trim()) {
+  //       errors.push("Email is required");
+  //     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+  //       errors.push("Please enter a valid email address");
+  //     }
+
+  //     if (!formData.message?.trim()) {
+  //       errors.push("Message is required");
+  //     }
+
+  //     if (errors.length > 0) {
+  //       showToast(errors.join(", "), "error");
+  //       return;
+  //     }
+
+  //     try {
+  //       // Timestamps: ISO for DB, Local for email display
+  //       const nowDate = new Date();
+  //       const timestampISO = nowDate.toISOString(); // For DB storage
+  //       const timestampLocal = nowDate.toLocaleString(undefined, { 
+  //         weekday: 'long', 
+  //         year: 'numeric', 
+  //         month: 'long', 
+  //         day: 'numeric', 
+  //         hour: '2-digit', 
+  //         minute: '2-digit',
+  //         timeZoneName: 'short'
+  //       }); // For email display (user's local timezone)
+
+  //       // Prepare form data for both API and FormSubmit
+  //       const submissionData = {
+  //         name: formData.name.trim(),
+  //         email: formData.email.trim(),
+  //         company: formData.company.trim(),
+  //         phone: formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "",
+  //         country: formData.country,
+  //         businessType: formData.businessType,
+  //         solutionType: formData.solutionType,
+  //         complianceRequirements: formData.complianceRequirements,
+  //         message: formData.message.trim(),
+  //         usageType: usageType,
+  //         source: "Contact Page",
+  //         timestamp: new Date().toLocaleString('en-IN', {
+  //           weekday: 'long',
+  //           year: 'numeric',
+  //           month: 'long',
+  //           day: 'numeric',
+  //           hour: '2-digit',
+  //           minute: '2-digit',
+  //           timeZoneName: 'short'
+  //         }),
+  //       };
+
+  //       // 1. Store form data in database via API
+  //       const API_BASE = ENV.API_BASE_URL;
+  //       try {
+  //         await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify(submissionData),
+  //         });
+  //         console.log('📧 Form data stored in database');
+  //       } catch (dbError) {
+  //         console.warn('⚠️ DB storage failed, continuing with email:', dbError);
+  //         // Continue with email submission even if DB fails
+  //       }
+
+  //       // 2. Send email via FormSubmit
+  //       const formSubmitData = new FormData();
+
+  //       // Add form fields with proper formatting
+  //       formSubmitData.append("name", submissionData.name);
+  //       formSubmitData.append("email", submissionData.email);
+  //       formSubmitData.append("company", submissionData.company);
+  //       formSubmitData.append("phone", submissionData.phone);
+  //       formSubmitData.append("country", submissionData.country);
+  //       formSubmitData.append("businessType", submissionData.businessType);
+  //       formSubmitData.append("solutionType", submissionData.solutionType);
+  //       formSubmitData.append("complianceRequirements", submissionData.complianceRequirements);
+  //       formSubmitData.append("message", submissionData.message);
+  //       formSubmitData.append("usageType", submissionData.usageType);
+  //       formSubmitData.append("timestamp", submissionData.timestamp);
+  //       formSubmitData.append("source", submissionData.source);
+
+  //       // FormSubmit configuration for better delivery
+  //       formSubmitData.append("_next", window.location.href);
+  //       formSubmitData.append("_captcha", "false");
+  //       formSubmitData.append("_template", "table");
+  //       formSubmitData.append("_cc", "nishus877@gmail.com,spsingh8477@gmail.com"); // CC additional emails
+  //       formSubmitData.append(
+  //         "_subject",
+  //         "New Contact Form Submission - D-Secure Tech"
+  //       );
+
+  //       // Professional autoresponse message
+  //       formSubmitData.append(
+  //         "_autoresponse",
+  //         `Dear ${submissionData.name},
+
+  // Thank you for reaching out to D-Secure Technologies!
+
+  // We have successfully received your enquiry and our team is reviewing your requirements. A dedicated specialist will contact you within the next 12 business hours to discuss your data security needs.
+
+  // 📋 Your Enquiry Summary:
+  // • Company: ${submissionData.company || 'N/A'}
+  // • Solution Interest: ${submissionData.solutionType || 'General Enquiry'}
+  // • Submitted: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+
+  // In the meantime, feel free to explore our resources:
+  // 🔗 Product Documentation: https://docs.dsecuretech.com
+  // 🔗 Knowledge Base: https://dsecuretech.com/resources
+
+  // If you have any urgent questions, please don't hesitate to reach out to our support team at support@dsecuretech.com.
+
+  // Best regards,
+  // The D-Secure Technologies Team
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // D-Secure Technologies | Enterprise Data Erasure Solutions
+  // 🌐 https://dsecuretech.com
+  // 📧 sales@dsecuretech.com
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  // This is an automated response. Please do not reply to this email.`
+  //       );
+
+  //       const response = await fetch(FORMSUBMIT_ENDPOINT, {
+  //         method: "POST",
+  //         body: formSubmitData,
+  //         headers: {
+  //           'Accept': 'application/json',
+  //         },
+  //       });
+
+  //       if (response.ok) {
+  //         showToast(
+  //           "Your query has been sent successfully! Our sales and tech team will resolve your query within 12 hours.",
+  //           "success"
+  //         );
+
+  //         // Reset form after successful submission
+  //         setFormData({
+  //           name: "",
+  //           email: "",
+  //           company: "",
+  //           phone: "",
+  //           countryCode: "+1",
+  //           country: "United States",
+  //           businessType: "",
+  //           solutionType: "",
+  //           complianceRequirements: "",
+  //           message: "",
+  //         });
+  //       } else {
+  //         throw new Error("Form submission failed");
+  //       }
+  //     } catch (error) {
+  //       console.error("Form submission error:", error);
+  //       showToast("Failed to send message. Please try again later.", "error");
+  //     }
+  //   };
+
+  const FORMSUBMIT_ENDPOINT =
+    "https://formsubmit.co/support@dsecuretech.com";
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Enhanced validation with better error messages
+    // Keep your validation logic (unchanged)
     const errors: string[] = [];
 
-    if (!formData.name?.trim()) {
-      errors.push("Name is required");
-    }
+    if (!formData.name?.trim()) errors.push("Name is required");
 
     if (!formData.email?.trim()) {
       errors.push("Email is required");
@@ -153,8 +331,6 @@ function ContactPageContent() {
 
     if (!formData.message?.trim()) {
       errors.push("Message is required");
-    } else if (formData.message.trim().length < 10) {
-      errors.push("Message must be at least 10 characters long");
     }
 
     if (errors.length > 0) {
@@ -163,74 +339,183 @@ function ContactPageContent() {
     }
 
     try {
+      const now = new Date();
+
+      // Two timestamp formats:
+      // 1. ISO format for database storage (backend can parse this)
+      const timestampISO = now.toISOString();
+
+      // 2. User-friendly format for email display (user's local timezone)
+      const timestampLocal = now.toLocaleString('en-IN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      });
+
+      const submissionData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        company: formData.company?.trim() || "",
+        phone: formData.phone
+          ? `${formData.countryCode} ${formData.phone}`.trim()
+          : "",
+        country: formData.country,
+        businessType: formData.businessType,
+        solutionType: formData.solutionType,
+        complianceRequirements: formData.complianceRequirements,
+        message: formData.message.trim(),
+        usageType,
+        source: "Contact Page",
+        timestamp: timestampISO, // ISO format for database
+      };
+
+      // 1. Store form data in database via API
+      const API_BASE = ENV.API_BASE_URL;
+      try {
+        const apiResponse = await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(submissionData),
+        });
+
+        // Check if API returned validation errors
+        if (!apiResponse.ok) {
+          const errorData = await apiResponse.json();
+
+          // Handle validation errors from backend
+          if (errorData.errors) {
+            const errorMessages = Object.values(errorData.errors)
+              .flat()
+              .join(', ');
+            showToast(errorMessages, 'error');
+            return; // Stop form submission
+          }
+
+          throw new Error('API submission failed');
+        }
+
+        console.log('📧 Form data stored in database');
+      } catch (dbError: any) {
+        // If it's a validation error, we already showed the toast and returned
+        if (dbError.message === 'API submission failed') {
+          showToast('Failed to submit form. Please try again.', 'error');
+          return;
+        }
+
+        console.warn('⚠️ DB storage failed, continuing with email:', dbError);
+        // Continue with email submission even if DB fails
+      }
+
+      /* ======================
+         FORM SUBMIT (EMAIL)
+      ======================= */
       const formSubmitData = new FormData();
 
-      // Add form fields with proper formatting
-      formSubmitData.append("name", formData.name.trim());
-      formSubmitData.append("email", formData.email.trim());
-      formSubmitData.append("company", formData.company.trim());
-      formSubmitData.append(
-        "phone",
-        formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : ""
-      );
-      formSubmitData.append("country", formData.country);
-      formSubmitData.append("businessType", formData.businessType);
-      formSubmitData.append("solutionType", formData.solutionType);
+      // Required fields
+      formSubmitData.append("name", submissionData.name);
+      formSubmitData.append("email", submissionData.email);
+      formSubmitData.append("message", submissionData.message);
+
+      // ⭐ REQUIRED for autoresponse (DO NOT REMOVE)
+      formSubmitData.append("_replyto", submissionData.email);
+
+      // Your additional fields (unchanged)
+      formSubmitData.append("company", submissionData.company);
+      formSubmitData.append("phone", submissionData.phone);
+      formSubmitData.append("country", submissionData.country);
+      formSubmitData.append("businessType", submissionData.businessType);
+      formSubmitData.append("solutionType", submissionData.solutionType);
       formSubmitData.append(
         "complianceRequirements",
-        formData.complianceRequirements
+        submissionData.complianceRequirements
       );
-      formSubmitData.append("message", formData.message.trim());
-      formSubmitData.append("usageType", usageType);
-      formSubmitData.append("timestamp", new Date().toISOString());
-      formSubmitData.append("source", "Contact Page");
+      formSubmitData.append("usageType", submissionData.usageType);
+      formSubmitData.append("timestamp", timestampLocal);
+      formSubmitData.append("source", submissionData.source);
 
-      // FormSubmit configuration for better delivery
-      formSubmitData.append("_next", window.location.href);
+      // FormSubmit configuration (safe)
       formSubmitData.append("_captcha", "false");
       formSubmitData.append("_template", "table");
+
       formSubmitData.append(
         "_subject",
         "New Contact Form Submission - D-Secure Tech"
       );
       formSubmitData.append(
+        "_cc",
+        "dhruv.rai@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com"
+      );
+
+      // ✅ YOUR ORIGINAL CUSTOM AUTORESPONSE (UNCHANGED)
+      formSubmitData.append(
         "_autoresponse",
-        "Thank you for contacting D-Secure Tech! We have received your message and will get back to you within 12 hours."
+        `Dear ${submissionData.name},
+
+Thank you for reaching out to D-Secure Technologies!
+
+We have successfully received your enquiry and our team is reviewing your requirements. A dedicated specialist will contact you within the next 12 business hours to discuss your data security needs.
+
+📋 Your Enquiry Summary:
+• Company: ${submissionData.company || 'N/A'}
+• Solution Interest: ${submissionData.solutionType || 'General Enquiry'}
+• Submitted: ${timestampLocal}
+
+In the meantime, feel free to explore our resources:
+🔗 Product Documentation: https://docs.dsecuretech.com
+🔗 Knowledge Base: https://dsecuretech.com/resources
+
+If you have any urgent questions, please don't hesitate to reach out to our support team at support@dsecuretech.com.
+
+Best regards,
+The D-Secure Technologies Team
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+D-Secure Technologies | Enterprise Data Erasure Solutions
+🌐 https://dsecuretech.com
+📧 sales@dsecuretech.com
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This is an automated response. Please do not reply to this email.`
       );
 
       const response = await fetch(FORMSUBMIT_ENDPOINT, {
         method: "POST",
         body: formSubmitData,
+        headers: {
+          Accept: "application/json",
+        },
       });
 
-      if (response.ok) {
-        showToast(
-          "Your query has been sent successfully! Our sales and tech team will resolve your query within 12 hours.",
-          "success"
-        );
+      if (!response.ok) throw new Error("FormSubmit failed");
 
-        // Reset form after successful submission
-        setFormData({
-          name: "",
-          email: "",
-          company: "",
-          phone: "",
-          countryCode: "+1",
-          country: "United States",
-          businessType: "",
-          solutionType: "",
-          complianceRequirements: "",
-          message: "",
-        });
-      } else {
-        throw new Error("Form submission failed");
-      }
+      showToast(
+        "Thank you! Your enquiry has been submitted successfully.",
+        "success"
+      );
+
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        countryCode: "+1",
+        country: "United States",
+        businessType: "",
+        solutionType: "",
+        complianceRequirements: "",
+        message: "",
+      });
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error("FormSubmit error:", error);
       showToast("Failed to send message. Please try again later.", "error");
     }
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     // //console.log("Form submitted:", formData);
     sendEmail(e);
@@ -481,11 +766,10 @@ function ContactPageContent() {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
-            toast.type === "error"
-              ? "bg-red-50 border-red-200 text-red-800"
-              : "bg-green-50 border-green-200 text-green-800"
-          }`}
+          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${toast.type === "error"
+            ? "bg-red-50 border-red-200 text-red-800"
+            : "bg-green-50 border-green-200 text-green-800"
+            }`}
         >
           <div className="flex items-start gap-3">
             {toast.type === "error" ? (
@@ -1334,7 +1618,7 @@ function ContactPageContent() {
                       <div className="flex-shrink-0">
                         <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center overflow-hidden">
                           {(office.company as any).logoUrl ||
-                          office.company.logo?.startsWith("http") ? (
+                            office.company.logo?.startsWith("http") ? (
                             <img
                               src={
                                 (office.company as any).logoUrl ||
@@ -1365,7 +1649,7 @@ function ContactPageContent() {
                             style={{
                               display:
                                 (office.company as any).logoUrl ||
-                                office.company.logo?.startsWith("http")
+                                  office.company.logo?.startsWith("http")
                                   ? "none"
                                   : "flex",
                             }}
@@ -1452,52 +1736,52 @@ function ContactPageContent() {
 
                       {/* Primary Phone - Only show if phone exists */}
                       {(office.contacts.primary as any).phone && (
-                      <div className="flex items-center gap-3">
-                        <svg
-                          className="w-4 h-4 text-slate-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                          />
-                        </svg>
-                        <a
-                          href={`tel:${(office.contacts.primary as any).phone}`}
-                          className="hover:text-emerald-600 transition-colors"
-                        >
-                          {(office.contacts.primary as any).phone}
-                        </a>
-                      </div>
+                        <div className="flex items-center gap-3">
+                          <svg
+                            className="w-4 h-4 text-slate-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                            />
+                          </svg>
+                          <a
+                            href={`tel:${(office.contacts.primary as any).phone}`}
+                            className="hover:text-emerald-600 transition-colors"
+                          >
+                            {(office.contacts.primary as any).phone}
+                          </a>
+                        </div>
                       )}
 
                       {/* Primary Email - Only show if email exists */}
                       {(office.contacts.primary as any).email && (
-                      <div className="flex items-center gap-3">
-                        <svg
-                          className="w-4 h-4 text-slate-400"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                          />
-                        </svg>
-                        <a
-                          href={`mailto:${(office.contacts.primary as any).email}`}
-                          className="hover:text-emerald-600 transition-colors"
-                        >
-                          {(office.contacts.primary as any).email}
-                        </a>
-                      </div>
+                        <div className="flex items-center gap-3">
+                          <svg
+                            className="w-4 h-4 text-slate-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                            />
+                          </svg>
+                          <a
+                            href={`mailto:${(office.contacts.primary as any).email}`}
+                            className="hover:text-emerald-600 transition-colors"
+                          >
+                            {(office.contacts.primary as any).email}
+                          </a>
+                        </div>
                       )}
 
                       {/* Working Hours & Timezone */}
@@ -1541,51 +1825,51 @@ function ContactPageContent() {
 
                     {/* Action Buttons - Only show if contact info exists */}
                     {((office.contacts.primary as any).email || (office.contacts.primary as any).phone) && (
-                    <div className="flex gap-2 pt-4 border-t border-slate-200">
-                      {(office.contacts.primary as any).email && (
-                        <a
-                          href={`mailto:${(office.contacts.primary as any).email}?subject=Meeting Request - ${office.location.city} Office`}
-                          className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                        >
-                          Contact Office
-                        </a>
-                      )}
-                      {(office.contacts.primary as any).phone && (
-                        <a
-                          href={`tel:${(office.contacts.primary as any).phone}`}
-                          className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
-                        >
-                          Call Now
-                        </a>
-                      )}
-                    </div>
+                      <div className="flex gap-2 pt-4 border-t border-slate-200">
+                        {(office.contacts.primary as any).email && (
+                          <a
+                            href={`mailto:${(office.contacts.primary as any).email}?subject=Meeting Request - ${office.location.city} Office`}
+                            className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            Contact Office
+                          </a>
+                        )}
+                        {(office.contacts.primary as any).phone && (
+                          <a
+                            href={`tel:${(office.contacts.primary as any).phone}`}
+                            className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                          >
+                            Call Now
+                          </a>
+                        )}
+                      </div>
                     )}
 
                     {/* Quick Contact Options - Only show if sales/support emails exist */}
                     {((office.contacts as any).sales?.email || (office.contacts as any).support?.email) && (
-                    <div className="mt-3 pt-3 border-t border-slate-100">
-                      <p className="text-xs text-slate-500 mb-2">
-                        Quick Contact:
-                      </p>
-                      <div className="flex gap-4 text-xs">
-                        {(office.contacts as any).sales?.email && (
-                          <a
-                            href={`mailto:${(office.contacts as any).sales.email}`}
-                            className="text-emerald-600 hover:underline"
-                          >
-                            Sales: {(office.contacts as any).sales.email}
-                          </a>
-                        )}
-                        {(office.contacts as any).support?.email && (
-                          <a
-                            href={`mailto:${(office.contacts as any).support.email}`}
-                            className="text-emerald-600 hover:underline"
-                          >
-                            Support: {(office.contacts as any).support.email}
-                          </a>
-                        )}
+                      <div className="mt-3 pt-3 border-t border-slate-100">
+                        <p className="text-xs text-slate-500 mb-2">
+                          Quick Contact:
+                        </p>
+                        <div className="flex gap-4 text-xs">
+                          {(office.contacts as any).sales?.email && (
+                            <a
+                              href={`mailto:${(office.contacts as any).sales.email}`}
+                              className="text-emerald-600 hover:underline"
+                            >
+                              Sales: {(office.contacts as any).sales.email}
+                            </a>
+                          )}
+                          {(office.contacts as any).support?.email && (
+                            <a
+                              href={`mailto:${(office.contacts as any).support.email}`}
+                              className="text-emerald-600 hover:underline"
+                            >
+                              Support: {(office.contacts as any).support.email}
+                            </a>
+                          )}
+                        </div>
                       </div>
-                    </div>
                     )}
                   </div>
                 </Reveal>
