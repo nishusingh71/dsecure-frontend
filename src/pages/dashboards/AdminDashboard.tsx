@@ -49,7 +49,7 @@ import {
 } from "@/hooks/useAuditReports";
 import { usePerformanceData } from "@/hooks/usePerformanceData";
 import { useSessions } from "@/hooks/useSessions";
-import { group } from "node:console";
+
 
 // ✅ Import Demo Data for "Try Demo Account" mode
 import {

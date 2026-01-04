@@ -10,7 +10,7 @@
 // Enhanced API Client with JWT Integration
 // ✅ Updated to use api instance with automatic decryption interceptor
 import axios, { AxiosResponse } from 'axios'
-import { authService } from './authService.js'
+import { authService } from './authService'
 import { EncryptionService, isEncryptedResponse } from './EncryptionService'
 import { api } from './apiClient'
 import { encodeEmail } from './encodeEmail'
