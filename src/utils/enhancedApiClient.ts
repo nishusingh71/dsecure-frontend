@@ -16,6 +16,7 @@ import { api } from './apiClient'
 import { encodeEmail } from './encodeEmail'
 
 import { ENV } from '../config/env'
+import { ApiResponse, User, Subuser, EnhancedSubuser, license } from '../types/models'
 
 // API Configuration
 const API_BASE_URL = ENV.API_BASE_URL
@@ -45,135 +46,10 @@ if (DEBUG_MODE) {
   // })
 }
 
-// API Response types
-export interface ApiResponse<T> {
-  success: boolean
-  data?: T
-  message?: string
-  error?: string
-}
+// Re-export types for backward compatibility
+export type { ApiResponse, User, Subuser, EnhancedSubuser, license }
 
-export interface User {
-  user_id: string
-  user_email: string
-  user_name: string
-  role: 'admin' | 'user' | 'manager'
-  status?: 'active' | 'inactive' | 'pending' | 'suspended' // Made optional
-  department?: string // Made optional
-  lastLogin?: string
-  createdAt?: string // Made optional (set by backend)
-  updatedAt?: string // Made optional (set by backend)
-  payment_details_json?: string
-  license_details_json?: string
-  phone_number?: string
-  timezone?: string // Timezone field
-  is_private_cloud?: boolean
-  private_api?: boolean
-  currentPassword?: string // For password change
-  newPassword?: string // For password change
-  user_role?: string
-  last_login?: string
-  user_group?: string
-  licesne_allocation?: string
-  // ✅ Subuser-specific fields (for when User API returns Subuser data)
-  subuser_name?: string
-  subuser_phone?: string
-  subuser_email?: string
-  name?: string // Generic name field (alias for user_name or subuser_name)
-  phone?: string // Generic phone field (alias for phone_number or subuser_phone)
-  email?: string // Generic email field (alias for user_email or subuser_email)
-  activity_status?: string
-}
 
-export interface Subuser {
-  id: string
-  user_email: string
-  subuser_email: string
-  subuser_name?: string
-  superuser_email: string
-  created_at?: string
-  status?: string
-  licenseUsage?: number // Calculated from machines with demo_usage_count > 0
-  subuser_role?: string
-  subuser_phone?: string
-  subuser_password?: string
-  // Fields from /api/Users/{email}
-  defaultRole?: string
-  role?: string
-  department?: string
-  last_login?: string
-  last_logout?: string
-  subuser_group?: string
-  license_allocation?: string
-  name?: string
-  phone?: string
-  currentPassword?: string // For password change
-  newPassword?: string // For password change
-  activity_status?: string
-}
-
-export interface EnhancedSubuser extends Subuser {
-  defaultRole?: string // Role fetched from /api/EnhancedSubuser/{email}
-  role?: string // Alias for defaultRole
-  department?: string // Department field from EnhancedSubuser API
-}
-
-export interface license {
-  license_id: string,
-  license_type: string,
-  license_status: string,
-  license_validity: string,
-  license_usage: string,
-  license_allocation: string,
-  license_details_json: string,
-  license_key: string,
-  hwid: string,
-  machine_name: string,
-  mac_address: string,
-  serial_number: string,
-  model: string,
-  manufacturer: string,
-  os_info: string,
-  ip_address: string,
-  cpu_info: string,
-  ram_gb: number,
-  storage_gb: number,
-  cpu_id: string,
-  os: string,
-  os_version: string,
-  status: string,
-  expiry: string,
-  edition: string,
-  // server_revision: number,
-  id: number,
-  expiry_days: number,
-  expiry_date: string,
-  remaining_days: number,
-  created_at: string,
-  last_seen: string,
-  user_email: string,
-  notes: string,
-  total: number,
-  by_status: {
-    active: number,
-    expired: number,
-    revoked: number
-  },
-  by_edition: {
-    basic: number,
-    pro: number,
-    enterprise: number
-  },
-  expiring: {
-    in7Days: number,
-    in30Days: number
-  },
-  licenseDetails: {
-    type: string,
-    count: number,
-    percentage: number
-  }[]
-}
 export interface LoginRequest {
   email: string
   password: string

@@ -3,7 +3,7 @@
 // ✅ Updated to use apiClient with automatic decryption interceptor
 // 🔒 PII-Safe Refactor: Email is never sent in URL parameters, only in Base64-encoded headers
 
-import { Subuser } from "@/utils/enhancedApiClient"
+import { Subuser } from "@/types/models"
 import { api } from "@/utils/apiClient"
 import { encodeEmail } from "@/utils/encodeEmail"
 import { ENV } from "@/config/env"
