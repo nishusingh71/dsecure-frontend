@@ -66,6 +66,10 @@ desktop.ini
 # Python files
 *.py
 
+.env
+.env.local
+.env.*.local
+
 # Testing files and folders
 testsprite_tests/
 src/tests/
@@ -84,3 +88,8 @@ ss/
 *gif
 *bmp
 *webp
+
+# Environment and Config files
+.env.example
+src/config/env.ts
+src/env.d.ts
