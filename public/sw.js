@@ -50,6 +50,10 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url)
 
   // Handle different types of requests
+  if (!url.protocol.startsWith('http')) {
+    return;
+  }
+
   if (request.destination === 'image') {
     // Images: Cache first, then network
     event.respondWith(
@@ -73,6 +77,10 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
+          // Only cache valid responses
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
           const responseClone = response.clone()
           caches.open(DYNAMIC_CACHE)
             .then((cache) => {
@@ -89,6 +97,10 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
+          // Only cache valid responses
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
           const responseClone = response.clone()
           caches.open(DYNAMIC_CACHE)
             .then((cache) => {
@@ -103,6 +115,19 @@ self.addEventListener('fetch', (event) => {
             })
         })
     )
+  } else if (url.pathname.endsWith('site.webmanifest')) {
+    // Manifest: Stale-while-revalidate or Cache First
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        const networkFetch = fetch(request).then((networkResponse) => {
+          caches.open(STATIC_CACHE).then((cache) => {
+            cache.put(request, networkResponse.clone());
+          });
+          return networkResponse;
+        });
+        return cachedResponse || networkFetch;
+      })
+    );
   }
 })
 
