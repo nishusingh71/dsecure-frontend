@@ -1,4 +1,4 @@
-﻿import { ENV, validateEnvConfig } from './config/env';
+﻿import { ENV } from './config/env';
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -10,9 +10,6 @@ import { HelmetProvider } from "react-helmet-async";
 import { ToastProvider } from './components/Toast';
 import { preloadCriticalResources } from './utils/performanceOptimizer';
 import './utils/internationalization'; // Initialize i18n
-
-// Validate environment configuration after all imports complete
-validateEnvConfig();
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 🔇 GLOBAL CONSOLE SUPPRESSOR - Keeps browser console clean
