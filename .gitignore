@@ -89,7 +89,4 @@ ss/
 *bmp
 *webp
 
-# Environment and Config files
-.env.example
-src/config/env.ts
-src/env.d.ts
+

@@ -652,6 +652,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
   };
 
   const handleBuyNow = () => {
+    // SECURITY: Purchase functionality is strictly disabled.
+    // This check prevents execution even if the disabled attribute is removed from the DOM.
+    if (true) {
+      showToast("Purchasing is temporarily disabled for maintenance.", "error");
+      return;
+    }
+
     if (selectedLicenses === "custom" || selectedPlan === "custom") {
       setShowCustomModal(true);
       return;
@@ -659,6 +666,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     // Import Polar client dynamically
     import('@/utils/polarClient').then(({ redirectToPolarCheckout, isCustomPlan, getPolarProductId, getDriveEraserCheckoutLink, getFileEraserStandardCheckoutLink, getFileEraserEnterpriseCheckoutLink, getFileEraserCorporateCheckoutLink, getFileEraserProfessionalCheckoutLink }) => {
+      // ... (rest of the logic remains reachable only if the guard above is removed in source) ...
+
       // Check if plan is valid for Polar checkout
       if (isCustomPlan(selectedPlan)) {
         setShowCustomModal(true);
@@ -1042,9 +1051,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 )}
 
                 {/* Action Button */}
-                <button disabled={true}
+                <button
+                  disabled={true}
                   onClick={handleBuyNow}
-                  className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg"
+                  // Added pointer-events-none, opacity, and gray background to visually and functionally disable it.
+                  className="w-full bg-gray-400 cursor-not-allowed text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg opacity-70 pointer-events-none select-none"
+                  style={{ backgroundImage: 'none', boxShadow: 'none', transform: 'none' }}
                 >
                   {selectedLicenses === "custom" || selectedPlan === "custom"
                     ? " Request Custom Quote"
