@@ -10,7 +10,7 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Does DSecure really remove data beyond recovery?",
-      answer: "Yes, absolutely. When you use DSecure File Eraser Network with certified erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
+      answer: "Yes, absolutely. When you use DSecure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
     },
     {
       question: "Which erasure algorithm should I choose?",
@@ -152,7 +152,7 @@ const FAQ: React.FC = () => {
           <p className="text-gray-700 mb-6 leading-relaxed">
             If your question isn't answered here, we're here to help! Our support team is available through multiple channels.
           </p>
-          
+
           <div className="grid md:grid-cols-3 gap-4">
             <div className="border border-blue-200 rounded-lg p-4 bg-blue-50/30">
               <h3 className="font-semibold text-gray-900 mb-2">Email Support</h3>

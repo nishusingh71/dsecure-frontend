@@ -92,8 +92,8 @@ const DownloadAgentPage: React.FC = () => {
     { id: 'network', name: 'Network' }
   ]
 
-  const filteredAgents = selectedPlatform === 'all' 
-    ? agents 
+  const filteredAgents = selectedPlatform === 'all'
+    ? agents
     : agents.filter(agent => agent.platform === selectedPlatform)
 
   const downloadAgent = (agent: Agent) => {
@@ -146,8 +146,8 @@ const DownloadAgentPage: React.FC = () => {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-6">
-              <Link 
-                to="/admin" 
+              <Link
+                to="/admin"
                 className="p-2 rounded-lg border border-slate-200 hover:bg-white transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,17 +160,26 @@ const DownloadAgentPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Custom Installer Note */}
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-8">
+              <div className="flex items-start">
+                <span className="text-blue-500 text-xl font-bold mr-2">*</span>
+                <p className="text-sm text-blue-900 font-medium pt-0.5">
+                  For custom installer setup, please contact the support team.
+                </p>
+              </div>
+            </div>
+
             {/* Platform Filter */}
             <div className="flex flex-wrap gap-2">
               {platforms.map((platform) => (
                 <button
                   key={platform.id}
                   onClick={() => setSelectedPlatform(platform.id)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedPlatform === platform.id
-                      ? 'bg-brand text-white'
-                      : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
-                  }`}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedPlatform === platform.id
+                    ? 'bg-brand text-white'
+                    : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                    }`}
                 >
                   {platform.name}
                 </button>

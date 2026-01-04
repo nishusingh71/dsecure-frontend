@@ -190,8 +190,8 @@ const HelpManualPage: React.FC = memo(() => {
         },
         {
           id: 52,
-          title: "Certificate Generation",
-          description: "Creating tamper-proof certificates of data destruction",
+          title: "Regulatory Document Generation",
+          description: "Creating tamper-proof regulatory documents of data destruction",
           url: "/support/manual/certificates",
           pageCount: 8
         },
@@ -253,11 +253,11 @@ const HelpManualPage: React.FC = memo(() => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return section.title.toLowerCase().includes(query) ||
-           section.description.toLowerCase().includes(query) ||
-           section.subsections.some(sub => 
-             sub.title.toLowerCase().includes(query) ||
-             sub.description.toLowerCase().includes(query)
-           );
+      section.description.toLowerCase().includes(query) ||
+      section.subsections.some(sub =>
+        sub.title.toLowerCase().includes(query) ||
+        sub.description.toLowerCase().includes(query)
+      );
   });
 
   const toggleSection = (id: number) => {
@@ -399,9 +399,8 @@ const HelpManualPage: React.FC = memo(() => {
                           </div>
                         </div>
                         <svg
-                          className={`w-5 h-5 text-slate-500 transform transition-transform ${
-                            activeSection === section.id ? "rotate-180" : ""
-                          }`}
+                          className={`w-5 h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
+                            }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -409,7 +408,7 @@ const HelpManualPage: React.FC = memo(() => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       </button>
-                      
+
                       {activeSection === section.id && (
                         <div className="px-6 pb-6">
                           <div className="border-t border-slate-200 pt-4">

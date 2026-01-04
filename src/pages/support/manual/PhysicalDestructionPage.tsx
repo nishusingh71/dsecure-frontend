@@ -143,20 +143,20 @@ const PhysicalDestructionPage: React.FC = memo(() => {
     },
     {
       id: 4,
-      title: "Compliance & Certification",
+      title: "Compliance & Regulation",
       description: "Regulatory standards and documentation requirements",
       icon: "📋",
       subsections: [
         {
           id: 41,
-          title: "Certification Standards",
+          title: "Regulation Standards",
           description: "NIST, DoD, ISO, and industry compliance",
           url: "/support/manual/destruction-standards",
           pageCount: 2,
         },
         {
           id: 42,
-          title: "Certificate of Destruction",
+          title: "Regulatory Document of Destruction",
           description: "Documentation and audit trail requirements",
           url: "/support/manual/certificate-destruction",
           pageCount: 2,
@@ -546,9 +546,8 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                           </div>
                         </div>
                         <svg
-                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
-                            activeSection === section.id ? "rotate-180" : ""
-                          }`}
+                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
+                            }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -666,7 +665,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                           Verified Destruction
                         </div>
                         <div className="text-slate-600 text-xs sm:text-sm">
-                          Recorded and certified process
+                          Recorded and regulated process
                         </div>
                       </div>
                     </li>
@@ -691,7 +690,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                 <div className="grid gap-4 sm:gap-6">
                   <div className="bg-slate-50 rounded-xl p-4 sm:p-6 border border-slate-200">
                     <h3 className="font-semibold text-slate-900 mb-3 sm:mb-4 text-lg sm:text-xl">
-                      Certificate of Destruction
+                      Regulatory Document of Destruction
                     </h3>
                     <ul className="space-y-2 sm:space-y-3 text-slate-700">
                       <li className="flex items-start">
@@ -773,7 +772,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                       Our Commitment
                     </h3>
                     <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                      At DSecure, we combine secure logistics, certified
+                      At DSecure, we combine secure logistics, regulated
                       equipment, and audit trails to deliver verifiable
                       destruction of your data-bearing assets — from pickup to
                       proof of destruction.

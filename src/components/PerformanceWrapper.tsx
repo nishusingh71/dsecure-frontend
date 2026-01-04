@@ -5,6 +5,7 @@
 
 import React, { Component } from 'react';
 import { PERFORMANCE_CONFIG, PERFORMANCE_THRESHOLDS } from '@/config/performance';
+import { ENV } from '@/config/env';
 
 interface PerformanceWrapperProps {
   children: React.ReactNode;
@@ -39,13 +40,13 @@ export class PerformanceWrapper extends Component<PerformanceWrapperProps, Perfo
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     const { componentName } = this.props;
-    
+
     if (PERFORMANCE_CONFIG.ENABLE_PERFORMANCE_LOGS) {
       console.error(`Error in ${componentName}:`, error, errorInfo);
     }
-    
+
     // Report to error tracking service in production
-    if (import.meta.env.PROD) {
+    if (ENV.IS_PROD) {
       // Example: Sentry.captureException(error, { extra: errorInfo });
     }
   }
@@ -65,7 +66,7 @@ export class PerformanceWrapper extends Component<PerformanceWrapperProps, Perfo
     if (!PERFORMANCE_CONFIG.ENABLE_DEV_MONITORING) return;
 
     const renderTime = performance.now() - this.mountTime;
-    
+
     // Log slow renders
     if (renderTime > PERFORMANCE_THRESHOLDS.SLOW_RENDER_WARNING) {
       console.warn(`Slow render in ${this.props.componentName}:`, {

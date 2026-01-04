@@ -88,7 +88,7 @@ const WindowsEnterprisePage: React.FC = memo(() => {
                         { step: "1", title: "Device Discovery", desc: "Automatic network scanning and device identification" },
                         { step: "2", title: "Policy Assignment", desc: "Apply erasure policies based on device groups" },
                         { step: "3", title: "Scheduled Execution", desc: "Execute erasure during maintenance windows" },
-                        { step: "4", title: "Compliance Reporting", desc: "Generate audit reports and certificates" }
+                        { step: "4", title: "Compliance Reporting", desc: "Generate audit reports and regulatory documents" }
                       ].map((item) => (
                         <div key={item.step} className="flex items-start space-x-4 p-4 bg-slate-50 rounded-lg">
                           <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
@@ -120,7 +120,7 @@ const WindowsEnterprisePage: React.FC = memo(() => {
                       <ul className="space-y-2 text-slate-700 text-sm">
                         <li>✅ Real-time dashboards</li>
                         <li>✅ Automated notifications</li>
-                        <li>✅ Certificate generation</li>
+                        <li>✅ Regulatory document generation</li>
                         <li>✅ API integration</li>
                       </ul>
                     </div>

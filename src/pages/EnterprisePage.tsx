@@ -5,7 +5,7 @@ const EnterprisePage: React.FC = () => {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-white">
-      
+
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,34 +14,34 @@ const EnterprisePage: React.FC = () => {
               Secure Compliant
             </h1>
             <p className="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
-              Safeguard sensitive data with DSecure's enterprise-grade data erasure platform. Ensure compliance with global data security standards and protect your organization from data breaches with certified, permanent data erasure.
+              Safeguard sensitive data with DSecure's enterprise-grade data erasure platform. Ensure compliance with global data security standards and protect your organization from data breaches with regulated, permanent data erasure.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button 
-              onClick={() => navigate('/contact')}
-              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+              <button
+                onClick={() => navigate('/contact')}
+                className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
                 Start Free Trial
               </button>
 
-          
-              
+
+
             </div>
           </div>
         </div>
         <div> <div className="absolute right-20 top-1/2 -translate-y-1/2 hidden lg:block">
- <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400 via-teal-400 to-emerald-500 rounded-3xl blur-3xl opacity-40 animate-pulse"></div>
-    
-<div className="relative">
-  <img 
-    src="/enterprise_img.png" 
-    alt="Security Shield" 
-    className="w-96 h-96 object-contain rounded-[18%] opacity-85 group-hover:opacity-100 group-hover:scale-110 group-hover:shadow-[0_0_100px_rgba(16,185,129,1)] transition-all duration-700 ease-in-out sepia-[.15] hue-rotate-[80deg] saturate-150"
-  />
-</div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400 via-teal-400 to-emerald-500 rounded-3xl blur-3xl opacity-40 animate-pulse"></div>
 
- 
-</div>
-</div>
+          <div className="relative">
+            <img
+              src="/enterprise_img.png"
+              alt="Security Shield"
+              className="w-96 h-96 object-contain rounded-[18%] opacity-85 group-hover:opacity-100 group-hover:scale-110 group-hover:shadow-[0_0_100px_rgba(16,185,129,1)] transition-all duration-700 ease-in-out sepia-[.15] hue-rotate-[80deg] saturate-150"
+            />
+          </div>
+
+
+        </div>
+        </div>
       </section>
 
       {/* Key Features Section */}
@@ -68,7 +68,7 @@ const EnterprisePage: React.FC = () => {
                 description: "Erase data across desktops, servers, mobile devices, and more"
               },
               {
-                title: "Certified Standards",
+                title: "regulated Standards",
                 description: "Meets international data erasure standards and regulations"
               }
             ].map((feature, index) => (
@@ -148,7 +148,7 @@ const EnterprisePage: React.FC = () => {
           <p className="text-xl text-emerald-50 mb-8 max-w-2xl mx-auto">
             Start your free 14-day trial today. No credit card required.
           </p>
-          <button 
+          <button
             onClick={() => navigate('/contact')}
             className="bg-white text-emerald-700 hover:bg-emerald-50 font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
           >

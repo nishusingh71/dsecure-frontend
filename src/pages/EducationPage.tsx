@@ -157,7 +157,7 @@ const DigitalProtectionSolutions: React.FC = () => {
                     },
                     {
                       title: "24/7 Expert Support",
-                      desc: "Round-the-clock assistance from certified security professionals who understand your unique challenges.",
+                      desc: "Round-the-clock assistance from regulated security professionals who understand your unique challenges.",
                       icon: "🛡️",
                     },
                     {

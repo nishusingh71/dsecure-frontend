@@ -16,10 +16,13 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { EncryptionService, isEncryptedResponse } from './EncryptionService';
 import { encodeEmail } from './encodeEmail';
+import { debugLog, debugError, debugWarn } from './debugLogger';
+
+import { ENV } from '../config/env';
 
 // API Base URL from environment
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com';
-const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || '30000');
+const API_BASE_URL = ENV.API_BASE_URL;
+const API_TIMEOUT = ENV.API_TIMEOUT;
 
 /**
  * Binary content types that should NOT be decrypted
@@ -127,14 +130,12 @@ function createApiInstance(): AxiosInstance {
       }
 
       // Development logging
-      if (import.meta.env.DEV) {
-        // console.log(`📤 API Request: ${config.method?.toUpperCase()} ${config.url}`);
-      }
+      debugLog('API', `📤 ${config.method?.toUpperCase()} ${config.url}`);
 
       return config;
     },
     (error) => {
-      console.error('❌ Request Interceptor Error:', error);
+      debugError('API', 'Request Interceptor Error', error);
       return Promise.reject(error);
     }
   );
@@ -151,9 +152,7 @@ function createApiInstance(): AxiosInstance {
       // RULE 1: BINARY SAFETY - Skip decryption for binary content
       // ─────────────────────────────────────────────────────────────────────────
       if (isBinaryContentType(contentType) || isBinaryUrl(requestUrl)) {
-        if (import.meta.env.DEV) {
-          // console.log(`📦 Binary response detected, skipping decryption: ${requestUrl}`);
-        }
+        debugLog('API', `📦 Binary response, skipping decryption: ${requestUrl}`);
         return response;
       }
 
@@ -168,9 +167,7 @@ function createApiInstance(): AxiosInstance {
           responseData = JSON.parse(responseData);
         } catch {
           // Not JSON, return as-is
-          if (import.meta.env.DEV) {
-            // console.log(`📄 Non-JSON response, returning as-is: ${requestUrl}`);
-          }
+          debugLog('API', `📄 Non-JSON response: ${requestUrl}`);
           return response;
         }
       }
@@ -180,29 +177,25 @@ function createApiInstance(): AxiosInstance {
       // ─────────────────────────────────────────────────────────────────────────
       if (isEncryptedResponse(responseData)) {
         try {
-          if (import.meta.env.DEV) {
-            // console.log(`🔐 Encrypted response detected: ${requestUrl}`);
-          }
+          debugLog('ENCRYPT', `🔐 Encrypted response detected: ${requestUrl}`);
+
+          // Check if data is compressed
+          const isCompressed = responseData.compressed !== false;
+          debugLog('ENCRYPT', `   Compressed: ${isCompressed}`);
 
           // Decrypt the data
-          const decryptedData = EncryptionService.decrypt(responseData.data);
+          const decryptedData = EncryptionService.decrypt(responseData.data, isCompressed);
 
           // Replace response data with decrypted data
           response.data = decryptedData;
 
-          if (import.meta.env.DEV) {
-            // console.log(`✅ Decryption successful: ${requestUrl}`);
-            // console.log('📥 Decrypted Data:', decryptedData);
-          }
+          debugLog('ENCRYPT', `✅ Decryption successful: ${requestUrl}`, decryptedData);
 
           return response;
         } catch (decryptError) {
-          // Decryption error handled silently
+          debugError('ENCRYPT', `Decryption failed for ${requestUrl}`, decryptError);
 
-          // Option 1: Throw error (strict mode)
-          // throw new Error(`Failed to decrypt response: ${decryptError}`);
-
-          // Option 2: Return encrypted data with error flag (graceful degradation)
+          // Return encrypted data with error flag (graceful degradation)
           response.data = {
             ...responseData,
             decryptionError: true,
@@ -217,23 +210,23 @@ function createApiInstance(): AxiosInstance {
       // ─────────────────────────────────────────────────────────────────────────
       response.data = responseData;
 
-      if (import.meta.env.DEV) {
-        // console.log(`📥 API Response: ${response.config.url}`, response.status);
-      }
+      debugLog('API', `📥 Response: ${response.config.url} [${response.status}]`);
 
       return response;
     },
     (error) => {
-      // Handle response errors
+      // Handle response errors with detailed logging
+      const status = error.response?.status;
+      const url = error.config?.url;
+      const method = error.config?.method?.toUpperCase() || 'REQUEST';
+
+      // Always log API errors with full details
+      debugError('API', `${method} ${url} failed [${status || 'NETWORK'}]`, error);
+
       if (error.response) {
-        const status = error.response.status;
-        const url = error.config?.url;
-
-        // Error handled silently
-
         // Handle 401 Unauthorized - Token expired or invalid
         if (status === 401) {
-          // Unauthorized - clearing tokens silently
+          debugWarn('AUTH', 'Session expired - clearing tokens');
           sessionStorage.removeItem('dsecure:jwt');
           localStorage.removeItem('dsecure:jwt');
           localStorage.removeItem('jwt_token');
@@ -252,10 +245,6 @@ function createApiInstance(): AxiosInstance {
             // Keep as string
           }
         }
-      } else if (error.request) {
-        // Network error handled silently
-      } else {
-        // Request setup error handled silently
       }
 
       return Promise.reject(error);

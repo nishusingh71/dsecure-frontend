@@ -37,8 +37,11 @@ export function useDashboardStats(enabled: boolean = true) {
       return response.data
     },
     enabled,
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    gcTime: 10 * 60 * 1000,   // 10 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes - increased from 2 min
+    gcTime: 30 * 60 * 1000,   // 30 minutes in cache
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   })
 }
 
@@ -65,8 +68,11 @@ export function useUserActivity(userEmail: string, enabled: boolean = true) {
       return response.data
     },
     enabled: enabled && !!userEmail,
-    staleTime: 1 * 60 * 1000, // 1 minute
-    gcTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000, // 5 minutes - increased from 1 min
+    gcTime: 30 * 60 * 1000,   // 30 minutes in cache
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   })
 }
 
@@ -85,8 +91,11 @@ export function useGroups(enabled: boolean = true) {
       return response.data
     },
     enabled,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000,
+    staleTime: 30 * 60 * 1000, // 30 minutes - groups rarely change
+    gcTime: 60 * 60 * 1000,    // 1 hour in cache
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   })
 }
 
@@ -105,8 +114,12 @@ export function useLicenseData(enabled: boolean = true) {
       return response.data
     },
     enabled,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000,
+    staleTime: 30 * 60 * 1000, // 30 minutes - keep licenses data fresh for longer
+    gcTime: 60 * 60 * 1000,    // 1 hour in cache
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    retry: 1,
   })
 }
 
@@ -125,8 +138,11 @@ export function useRecentReports(enabled: boolean = true) {
       return response.data
     },
     enabled,
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    gcTime: 10 * 60 * 1000,
+    staleTime: 5 * 60 * 1000, // 5 minutes - increased from 2 min
+    gcTime: 30 * 60 * 1000,   // 30 minutes in cache
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   })
 }
 
@@ -146,7 +162,10 @@ export function useAdminProfile(enabled: boolean = true) {
     },
     enabled,
     staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 20 * 60 * 1000,     // 20 minutes
+    gcTime: 30 * 60 * 1000,     // 30 minutes in cache
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   })
 }
 

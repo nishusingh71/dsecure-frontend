@@ -26,7 +26,7 @@ class MicrosoftClarity {
     if (typeof window === 'undefined' || this.isInitialized) return;
 
     // Skip initialization in development to avoid CORS errors
-    if (process.env.NODE_ENV === 'development') {
+    if (ENV.IS_DEV) {
       this.isInitialized = true;
       return;
     }
@@ -38,8 +38,8 @@ class MicrosoftClarity {
     }
 
     // Clarity initialization script
-    (function(c: any, l: any, a: any, r: any, i: any, t: any, y: any) {
-      c[a] = c[a] || function() {
+    (function (c: any, l: any, a: any, r: any, i: any, t: any, y: any) {
+      c[a] = c[a] || function () {
         (c[a].q = c[a].q || []).push(arguments);
       };
       t = l.createElement(r);
@@ -55,7 +55,7 @@ class MicrosoftClarity {
   // Track custom events
   trackEvent(event: ClarityEvent): void {
     if (!this.isInitialized || typeof window === 'undefined') return;
-    if (process.env.NODE_ENV === 'development') return;
+    if (ENV.IS_DEV) return;
 
     const clarity = (window as any).clarity;
     if (clarity) {
@@ -197,10 +197,12 @@ class MicrosoftClarity {
   }
 }
 
+import { ENV } from '../config/env';
+
 // Initialize Clarity instance
 export const clarity = new MicrosoftClarity({
-  projectId: 'tkbibktdah', // Your actual Clarity Project ID
-  debug: import.meta.env.DEV
+  projectId: ENV.CLARITY_ID, // Your actual Clarity Project ID
+  debug: ENV.DEBUG
 });
 
 // React hook for Clarity tracking

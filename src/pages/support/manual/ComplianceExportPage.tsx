@@ -31,7 +31,7 @@ const ComplianceExportPage: React.FC = memo(() => {
               <div className="prose prose-lg max-w-none">
                 <h2 className="text-3xl font-bold text-slate-900 mb-6">Export Formats</h2>
                 <ul className="space-y-3 text-slate-700">
-                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> PDF certificates</li>
+                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> PDF regulatory documents</li>
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> CSV data export</li>
                 </ul>
               </div>

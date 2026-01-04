@@ -21,7 +21,7 @@ const QuickStartTutorial: React.FC = memo(() => {
         {
           id: 11,
           title: "Download D-Secure Installer",
-          description: "Get the latest certified installer from our secure download portal",
+          description: "Get the latest regulated installer from our secure download portal",
           url: "/support/manual/installation",
           pageCount: 2,
         },
@@ -87,7 +87,7 @@ const QuickStartTutorial: React.FC = memo(() => {
     {
       id: 3,
       title: "Verification & Compliance (2 minutes)",
-      description: "Verify erasure completion and generate compliance certificates",
+      description: "Verify erasure completion and generate compliance regulatory documents",
       icon: "✅",
       subsections: [
         {
@@ -99,8 +99,8 @@ const QuickStartTutorial: React.FC = memo(() => {
         },
         {
           id: 32,
-          title: "Certificate Generation",
-          description: "Create tamper-proof erasure certificates for audit compliance",
+          title: "Regulatory Document Generation",
+          description: "Create tamper-proof erasure regulatory documents for audit compliance",
           url: "/support/manual/certificate-generation",
           pageCount: 2,
         },
@@ -189,7 +189,7 @@ const QuickStartTutorial: React.FC = memo(() => {
       color: "bg-teal-500",
     },
     {
-      title: "Compliance Certificates",
+      title: "Compliance Regulatory Documents",
       description: "Generate audit-ready proof of destruction",
       icon: "📜",
       url: "/support/manual/certificate-generation",

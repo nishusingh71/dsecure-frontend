@@ -27,78 +27,36 @@ export function useSubusers(userEmail?: string, enabled: boolean = true) {
   return useQuery({
     queryKey: subuserKeys.list(userEmail),
     queryFn: async () => {
-      // console.log('🔄 React Query: Fetching subusers with enhanced user details...')
+      // console.log('🔄 React Query: Fetching subusers...')
       const response = await apiClient.getAllSubusersWithFallback(userEmail)
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch subusers')
       }
-      
+
       // console.log(`✅ React Query: Fetched ${response.data.length} subusers`)
-      
-      // Enhance each subuser with complete user details
-      // ✅ Strategy: Use API response data, but ALWAYS fetch /api/Users for critical fields
-      const enhancedSubusers = await Promise.all(
-        response.data.map(async (subuser) => {
-          try {
-            // console.log(`🔍 Processing subuser: ${subuser.subuser_email}`)
-            // console.log(`📦 API Response data:`, {
-            //   subuser_group: subuser.subuser_group,
-            //   license_allocation: subuser.license_allocation,
-            //   status: subuser.status,
-            //   department: subuser.department,
-            //   role: subuser.role || subuser.subuser_role,
-            //   last_login: subuser.last_login
-            // })
-            
-            // ✅ ALWAYS fetch /api/Users/{email} for department and role (critical fields)
-            let userData = null
-            try {
-              // console.log(`🔍 Fetching user details from /api/Users/${subuser.subuser_email}`)
-              const userDataRes = await apiClient.getUserByEmail(subuser.subuser_email)
-              if (userDataRes.success && userDataRes.data) {
-                userData = userDataRes.data
-                // console.log(`✅ User data fetched:`, {
-                //   department: userData.department,
-                //   role: userData.user_role || userData.role,
-                //   user_group: userData.user_group,
-                //   last_login: userData.last_login
-                // })
-              }
-            } catch (err) {
-              console.warn(`⚠️ Failed to fetch user data for ${subuser.subuser_email}:`, err)
-            }
-            
-            // Fetch machines for license usage calculation
-            const machinesRes = await apiClient.getMachinesByEmail(subuser.subuser_email)
-            let licenseUsage = 0
-            
-            if (machinesRes.success && machinesRes.data) {
-              licenseUsage = machinesRes.data.filter(
-                (machine: any) => (machine.demo_usage_count || 0) > 0
-              ).length
-            }
-            
-            return {
-              ...subuser,
-              // ✅ Priority: API response > /api/Users > Default
-              subuser_group: subuser.subuser_group || userData?.user_group || 'N/A',
-              license_allocation: subuser.license_allocation || userData?.licesne_allocation || '0',
-              last_login: subuser.last_login || userData?.last_login || userData?.lastLogin || 'Never',
-              department: subuser.department || userData?.department || 'N/A',
-              role: subuser.role || subuser.subuser_role || userData?.user_role || userData?.role || 'user',
-              defaultRole: subuser.role || subuser.subuser_role || userData?.user_role || userData?.role || 'user',
-              status: subuser.status || userData?.status || 'active',
-              licenseUsage,
-            }
-          } catch (error) {
-            console.error(`❌ Error processing subuser ${subuser.subuser_email}:`, error)
-            return subuser
-          }
-        })
-      )
-      
-      // console.log('✅ All subusers enhanced with user details')
+
+      // ⚡ PERFORMANCE FIX: Return base data immediately without extra API calls
+      // Previously we were making N+1 API calls (getUserByEmail + getMachinesByEmail for each subuser)
+      // This was causing 10 subusers = 20+ extra API calls = very slow loading
+      // Now we use the data already available from the main API response
+      // Detailed user data is fetched on-demand when user clicks "Edit"
+      const enhancedSubusers = response.data.map((subuser) => {
+        return {
+          ...subuser,
+          // Use data from API response, provide sensible defaults
+          subuser_group: subuser.subuser_group || 'N/A',
+          license_allocation: subuser.license_allocation || '0',
+          last_login: subuser.last_login || 'Never',
+          department: subuser.department || 'N/A',
+          role: subuser.role || subuser.subuser_role || 'user',
+          defaultRole: subuser.role || subuser.subuser_role || 'user',
+          status: subuser.status || 'active',
+          licenseUsage: 0, // Will be fetched on-demand when needed
+        }
+      })
+
+      // console.log('✅ Subusers ready for display')
       return enhancedSubusers
     },
     enabled,
@@ -121,11 +79,11 @@ export function useSubuser(email: string, enabled: boolean = true) {
     queryFn: async () => {
       // console.log(`🔍 React Query: Fetching subuser ${email}...`)
       const response = await apiClient.getEnhancedSubuser(email)
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch subuser')
       }
-      
+
       // console.log(`✅ React Query: Fetched subuser ${email}`)
       return response.data
     },
@@ -143,16 +101,16 @@ export function useSubuser(email: string, enabled: boolean = true) {
  */
 export function useCreateSubuser() {
   const queryClient = useQueryClient()
-  
+
   return useMutation({
     mutationFn: async (subuserData: Parameters<typeof apiClient.createSubuser>[0]) => {
       // console.log('📝 React Query: Creating subuser...')
       const response = await apiClient.createSubuser(subuserData)
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to create subuser')
       }
-      
+
       // console.log('✅ React Query: Subuser created successfully')
       return response.data
     },
@@ -172,22 +130,22 @@ export function useCreateSubuser() {
  */
 export function useUpdateSubuser() {
   const queryClient = useQueryClient()
-  
+
   return useMutation({
-    mutationFn: async ({ 
-      email, 
-      userData 
-    }: { 
+    mutationFn: async ({
+      email,
+      userData
+    }: {
       email: string
       userData: Parameters<typeof apiClient.updateEnhancedSubuser>[1]
     }) => {
       // console.log(`✏️ React Query: Updating subuser ${email}...`)
       const response = await apiClient.updateEnhancedSubuser(email, userData)
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to update subuser')
       }
-      
+
       // console.log(`✅ React Query: Subuser ${email} updated successfully`)
       return response.data
     },
@@ -209,16 +167,16 @@ export function useUpdateSubuser() {
  */
 export function useDeleteSubuser() {
   const queryClient = useQueryClient()
-  
+
   return useMutation({
     mutationFn: async (email: string) => {
       // console.log(`🗑️ React Query: Deleting subuser ${email}...`)
       const response = await apiClient.deleteSubuser(email)
-      
+
       if (!response.success) {
         throw new Error(response.message || 'Failed to delete subuser')
       }
-      
+
       // console.log(`✅ React Query: Subuser ${email} deleted successfully`)
       return email
     },
@@ -238,7 +196,7 @@ export function useDeleteSubuser() {
  */
 export function useRefetchSubusers() {
   const queryClient = useQueryClient()
-  
+
   return () => {
     // console.log('🔄 React Query: Manual refetch triggered')
     queryClient.invalidateQueries({ queryKey: subuserKeys.all })
@@ -251,7 +209,7 @@ export function useRefetchSubusers() {
  */
 export function useSubusersCacheStatus() {
   const queryClient = useQueryClient()
-  
+
   return {
     isCached: queryClient.getQueryData(subuserKeys.lists()) !== undefined,
     cacheData: queryClient.getQueryData(subuserKeys.lists()),

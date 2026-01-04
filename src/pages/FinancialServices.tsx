@@ -100,7 +100,7 @@ const FinancialServices: React.FC = () => {
                       },
                       {
                         title: "Auditable Reports",
-                        desc: "Generate tamper-proof digital certificates for every data erasure operation.",
+                        desc: "Generate tamper-proof digital regulatory documents for every data erasure operation.",
                         img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760090536/bwfxnasge68rv2y4pgyj.jpg",
                       },
                     ].map((item, i) => (
@@ -162,7 +162,7 @@ const FinancialServices: React.FC = () => {
                   <p className="text-slate-700 mb-4 leading-relaxed">
                     A leading global bank reduced their data risk exposure by
                     70% and achieved zero compliance violations after
-                    integrating DSecure’s certified erasure system. Their ITAD
+                    integrating DSecure’s regulated erasure system. Their ITAD
                     lifecycle now runs 40% faster with auditable verification.
                   </p>
                 </div>
@@ -172,7 +172,7 @@ const FinancialServices: React.FC = () => {
               <Reveal>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-teal-100 hover:shadow-xl transition-all duration-300">
                   <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                    Certifications & Compliance Standards
+                    Regulations & Compliance Standards
                   </h2>
                   <ul className="list-disc ml-6 text-slate-700 space-y-2">
                     <li>ISO 27001 – Information Security Management</li>

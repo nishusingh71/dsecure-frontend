@@ -44,7 +44,7 @@ const CloudConsoleGuide: React.FC = () => {
         <section className="py-16 bg-white/50">
           <div className="container-responsive">
             <div className="max-w-4xl mx-auto space-y-8">
-              
+
               {/* Cloud Security Overview */}
               <Reveal>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
@@ -58,11 +58,11 @@ const CloudConsoleGuide: React.FC = () => {
                   </div>
                   <div className="space-y-4 text-slate-700 text-lg leading-relaxed">
                     <p>
-                      The DSecure Cloud Console provides a centralized platform for managing data security across 
-                      multiple cloud environments. From data discovery and classification to encryption and 
+                      The DSecure Cloud Console provides a centralized platform for managing data security across
+                      multiple cloud environments. From data discovery and classification to encryption and
                       compliance monitoring, our console ensures your cloud data remains protected.
                     </p>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
                       <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 p-4 rounded-xl text-center">
                         <div className="w-12 h-12 bg-emerald-500 text-white rounded-lg flex items-center justify-center mx-auto mb-3">
@@ -111,7 +111,7 @@ const CloudConsoleGuide: React.FC = () => {
                       Cloud Console Features
                     </h2>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-xl border border-emerald-200">
@@ -124,7 +124,7 @@ const CloudConsoleGuide: React.FC = () => {
                           <h3 className="text-xl font-bold text-emerald-900">Data Discovery & Classification</h3>
                         </div>
                         <p className="text-emerald-700 text-sm leading-relaxed">
-                          Automatically discover and classify sensitive data across all cloud repositories. 
+                          Automatically discover and classify sensitive data across all cloud repositories.
                           AI-powered scanning identifies PII, PHI, financial data, and intellectual property.
                         </p>
                       </div>
@@ -139,7 +139,7 @@ const CloudConsoleGuide: React.FC = () => {
                           <h3 className="text-xl font-bold text-teal-900">Access Control Management</h3>
                         </div>
                         <p className="text-teal-700 text-sm leading-relaxed">
-                          Centralized identity and access management with role-based permissions, 
+                          Centralized identity and access management with role-based permissions,
                           multi-factor authentication, and privileged access controls.
                         </p>
                       </div>
@@ -154,7 +154,7 @@ const CloudConsoleGuide: React.FC = () => {
                           <h3 className="text-xl font-bold text-cyan-900">Compliance Monitoring</h3>
                         </div>
                         <p className="text-cyan-700 text-sm leading-relaxed">
-                          Real-time compliance tracking for GDPR, HIPAA, SOX, PCI-DSS, and other 
+                          Real-time compliance tracking for GDPR, HIPAA, SOX, PCI-DSS, and other
                           regulations with automated reporting and remediation workflows.
                         </p>
                       </div>
@@ -171,7 +171,7 @@ const CloudConsoleGuide: React.FC = () => {
                           <h3 className="text-xl font-bold text-purple-900">Encryption Management</h3>
                         </div>
                         <p className="text-purple-700 text-sm leading-relaxed">
-                          Centralized encryption key management with hardware security modules (HSM), 
+                          Centralized encryption key management with hardware security modules (HSM),
                           key rotation policies, and bring-your-own-key (BYOK) support.
                         </p>
                       </div>
@@ -186,7 +186,7 @@ const CloudConsoleGuide: React.FC = () => {
                           <h3 className="text-xl font-bold text-indigo-900">Threat Detection</h3>
                         </div>
                         <p className="text-indigo-700 text-sm leading-relaxed">
-                          Advanced threat detection using machine learning to identify suspicious activities, 
+                          Advanced threat detection using machine learning to identify suspicious activities,
                           data exfiltration attempts, and unauthorized access patterns.
                         </p>
                       </div>
@@ -201,7 +201,7 @@ const CloudConsoleGuide: React.FC = () => {
                           <h3 className="text-xl font-bold text-pink-900">Audit & Reporting</h3>
                         </div>
                         <p className="text-pink-700 text-sm leading-relaxed">
-                          Comprehensive audit trails with detailed logging, customizable reports, 
+                          Comprehensive audit trails with detailed logging, customizable reports,
                           and executive dashboards for security posture visibility.
                         </p>
                       </div>
@@ -308,7 +308,7 @@ const CloudConsoleGuide: React.FC = () => {
                     </div>
                     <h2 className="text-3xl font-bold mb-4">Cloud Security Best Practices</h2>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="bg-white/10 rounded-xl p-6">
                       <h3 className="text-xl font-bold mb-4">Access Management</h3>
@@ -323,7 +323,7 @@ const CloudConsoleGuide: React.FC = () => {
                         </li>
                         <li className="flex items-start">
                           <span className="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                          Regular access reviews and certification
+                          Regular access reviews and regulation
                         </li>
                         <li className="flex items-start">
                           <span className="w-2 h-2 bg-white rounded-full mt-2 mr-3 flex-shrink-0"></span>
@@ -392,7 +392,7 @@ const CloudConsoleGuide: React.FC = () => {
                       Supported Compliance Standards
                     </h2>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {[
                       { name: "GDPR", description: "EU Data Protection Regulation" },

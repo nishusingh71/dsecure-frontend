@@ -3,6 +3,7 @@ import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
@@ -10,7 +11,7 @@ import { Toast } from "@/components/ui";
 
 
 // Form components - removed memo to prevent focus loss during typing
-const FormInput: React.FC<{ 
+const FormInput: React.FC<{
   type: string;
   name: string;
   value: string;
@@ -18,32 +19,32 @@ const FormInput: React.FC<{
   required?: boolean;
   placeholder: string;
   label: string;
-}> = ({ 
-  type, 
-  name, 
-  value, 
-  onChange, 
-  required, 
-  placeholder, 
-  label 
+}> = ({
+  type,
+  name,
+  value,
+  onChange,
+  required,
+  placeholder,
+  label
 }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label} {required && '*'}
-    </label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-      placeholder={placeholder}
-    />
-  </div>
-);
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {label} {required && '*'}
+      </label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+        placeholder={placeholder}
+      />
+    </div>
+  );
 
-const FormTextarea: React.FC<{ 
+const FormTextarea: React.FC<{
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -51,65 +52,65 @@ const FormTextarea: React.FC<{
   placeholder: string;
   label: string;
   rows: number;
-}> = ({ 
-  name, 
-  value, 
-  onChange, 
-  required, 
-  placeholder, 
+}> = ({
+  name,
+  value,
+  onChange,
+  required,
+  placeholder,
   label,
-  rows 
+  rows
 }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label} {required && '*'}
-    </label>
-    <textarea
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-      rows={rows}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
-      placeholder={placeholder}
-    />
-  </div>
-);
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {label} {required && '*'}
+      </label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        rows={rows}
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+        placeholder={placeholder}
+      />
+    </div>
+  );
 
-const FormSelect: React.FC<{ 
+const FormSelect: React.FC<{
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   options: { value: string; label: string }[];
-}> = ({ 
-  name, 
-  value, 
-  onChange, 
+}> = ({
+  name,
+  value,
+  onChange,
   label,
-  options 
+  options
 }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label}
-    </label>
-    <select
-      name={name}
-      value={value}
-      onChange={onChange}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
-    >
-      {options.map(option => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-  </div>
-);
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {label}
+      </label>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
+      >
+        {options.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 
 // Support Ticket Modal Component - removed memo for consistency
-const SupportTicketModal: React.FC<{ 
+const SupportTicketModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
   ticketForm: {
@@ -124,123 +125,124 @@ const SupportTicketModal: React.FC<{
   onSubmit: (e: React.FormEvent) => void;
   priorityOptions: { value: string; label: string }[];
   categoryOptions: { value: string; label: string }[];
-}> = ({ 
-  isOpen, 
-  onClose, 
-  ticketForm, 
-  onInputChange, 
+}> = ({
+  isOpen,
+  onClose,
+  ticketForm,
+  onInputChange,
   onSubmit,
   priorityOptions,
-  categoryOptions 
+  categoryOptions
 }) => {
-  if (!isOpen) return null;
+    if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-        {/* Fixed Header */}
-        <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
-            <button
-              onClick={onClose}
-              className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
-            >
-              ×
-            </button>
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+          {/* Fixed Header */}
+          <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
+              <button
+                onClick={onClose}
+                className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
+              >
+                ×
+              </button>
+            </div>
+            <p className="mt-2 text-emerald-100">
+              We'll get back to you as soon as possible!
+            </p>
           </div>
-          <p className="mt-2 text-emerald-100">
-            We'll get back to you as soon as possible!
-          </p>
-        </div>
 
-        {/* Scrollable Form Content */}
-        <div className="flex-1 overflow-y-auto modal-scroll-container">
-          <form onSubmit={onSubmit} className="p-6 space-y-6 modal-scroll">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto modal-scroll-container">
+            <form onSubmit={onSubmit} className="p-6 space-y-6 modal-scroll">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormInput
+                  type="text"
+                  name="name"
+                  value={ticketForm.name}
+                  onChange={onInputChange}
+                  required
+                  placeholder="Enter your full name"
+                  label="Full Name"
+                />
+
+                <FormInput
+                  type="email"
+                  name="email"
+                  value={ticketForm.email}
+                  onChange={onInputChange}
+                  required
+                  placeholder="Enter your email address"
+                  label="Email Address"
+                />
+              </div>
+
               <FormInput
                 type="text"
-                name="name"
-                value={ticketForm.name}
+                name="subject"
+                value={ticketForm.subject}
                 onChange={onInputChange}
                 required
-                placeholder="Enter your full name"
-                label="Full Name"
+                placeholder="Brief description of your issue"
+                label="Subject"
               />
 
-              <FormInput
-                type="email"
-                name="email"
-                value={ticketForm.email}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormSelect
+                  name="priority"
+                  value={ticketForm.priority}
+                  onChange={onInputChange}
+                  label="Priority"
+                  options={priorityOptions}
+                />
+
+                <FormSelect
+                  name="category"
+                  value={ticketForm.category}
+                  onChange={onInputChange}
+                  label="Category"
+                  options={categoryOptions}
+                />
+              </div>
+
+              <FormTextarea
+                name="description"
+                value={ticketForm.description}
                 onChange={onInputChange}
                 required
-                placeholder="Enter your email address"
-                label="Email Address"
-              />
-            </div>
-
-            <FormInput
-              type="text"
-              name="subject"
-              value={ticketForm.subject}
-              onChange={onInputChange}
-              required
-              placeholder="Brief description of your issue"
-              label="Subject"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormSelect
-                name="priority"
-                value={ticketForm.priority}
-                onChange={onInputChange}
-                label="Priority"
-                options={priorityOptions}
+                rows={1}
+                placeholder="Please provide detailed information about your issue or question..."
+                label="Description"
               />
 
-              <FormSelect
-                name="category"
-                value={ticketForm.category}
-                onChange={onInputChange}
-                label="Category"
-                options={categoryOptions}
-              />
-            </div>
-
-            <FormTextarea
-              name="description"
-              value={ticketForm.description}
-              onChange={onInputChange}
-              required
-              rows={1}
-              placeholder="Please provide detailed information about your issue or question..."
-              label="Description"
-            />
-
-            <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
-              <button
-                type="submit"
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
-              >
-                Submit Ticket 
-              </button>
-              {/* <button
+              <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
+                >
+                  Submit Ticket
+                </button>
+                {/* <button
                 type="button"
                 onClick={onClose}
                 className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
               >
                 Cancel
               </button> */}
-            </div>
-          </form>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 const SupportPage: React.FC = () => {
   const { toast, showToast, hideToast } = useToast();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeTicketForm, setActiveTicketForm] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
@@ -398,25 +400,25 @@ const SupportPage: React.FC = () => {
   // Search functionality
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    
+
     const query = searchQuery.toLowerCase();
-    
+
     // First, search through regular searchable content
-    const contentResults = searchableContent.filter(item => 
+    const contentResults = searchableContent.filter(item =>
       item.title.toLowerCase().includes(query) ||
       item.description.toLowerCase().includes(query) ||
       item.category.toLowerCase().includes(query) ||
       item.keywords.some(keyword => keyword.includes(query))
     );
-    
+
     // Then, search through trending searches for keyword matches
     const trendingResults = Object.entries(trendingSearches)
       .filter(([searchText, url]) => {
         const searchTextLower = searchText.toLowerCase();
-        return searchTextLower.includes(query) || 
-               query.split(' ').some(word => 
-                 word.length > 2 && searchTextLower.includes(word)
-               );
+        return searchTextLower.includes(query) ||
+          query.split(' ').some(word =>
+            word.length > 2 && searchTextLower.includes(word)
+          );
       })
       .map(([searchText, url]) => ({
         title: searchText,
@@ -425,15 +427,15 @@ const SupportPage: React.FC = () => {
         url: url,
         keywords: searchText.toLowerCase().split(' ')
       }));
-    
+
     // Combine results, prioritizing trending searches
     const combinedResults = [...trendingResults, ...contentResults];
-    
+
     // Remove duplicates based on title and limit to 8 results
-    const uniqueResults = combinedResults.filter((item, index, arr) => 
+    const uniqueResults = combinedResults.filter((item, index, arr) =>
       arr.findIndex(t => t.title.toLowerCase() === item.title.toLowerCase()) === index
     );
-    
+
     return uniqueResults.slice(0, 8);
   }, [searchQuery, searchableContent, trendingSearches]);
 
@@ -450,7 +452,7 @@ const SupportPage: React.FC = () => {
     const shouldShow = value.trim().length > 0;
     setShowSearchResults(shouldShow);
     setSelectedResultIndex(-1);
-    
+
     // Prevent page scroll when search results are shown
     if (shouldShow) {
       document.body.style.overflow = 'hidden';
@@ -473,13 +475,13 @@ const SupportPage: React.FC = () => {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setSelectedResultIndex(prev => 
+        setSelectedResultIndex(prev =>
           prev < searchResults.length - 1 ? prev + 1 : 0
         );
         break;
       case 'ArrowUp':
         e.preventDefault();
-        setSelectedResultIndex(prev => 
+        setSelectedResultIndex(prev =>
           prev > 0 ? prev - 1 : searchResults.length - 1
         );
         break;
@@ -505,7 +507,7 @@ const SupportPage: React.FC = () => {
 
   const handleLicenseSubmit = useCallback((formData: LicenseFormData) => {
     // console.log('License request from Support Page:', formData);
-    
+
     // Prepare email data for EmailJS
     const emailData = {
       service_id: 'your_service_id',
@@ -532,7 +534,7 @@ const SupportPage: React.FC = () => {
 
     // Log email data for debugging
     // console.log('License email data prepared:', emailData);
-    
+
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
     //   .then(() => {
@@ -543,7 +545,7 @@ const SupportPage: React.FC = () => {
     //     console.error('Email sending failed:', error);
     //     showToast('There was an error submitting your request. Please try again.', 'error');
     //   });
-    
+
     // Temporary success simulation
     setTimeout(() => {
       showToast('Free license request submitted successfully! We will send you the license details soon.', 'success');
@@ -553,7 +555,7 @@ const SupportPage: React.FC = () => {
 
   const handlePartnershipSubmit = useCallback((formData: PartnershipFormData) => {
     // console.log('Partnership request from Support Page:', formData);
-    
+
     // Prepare email data for EmailJS
     const emailData = {
       service_id: 'your_service_id',
@@ -574,10 +576,10 @@ const SupportPage: React.FC = () => {
         submission_date: new Date().toLocaleString()
       }
     };
-    
+
     // Log email data for debugging
     // console.log('Partnership email data prepared:', emailData);
-    
+
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
     //   .then(() => {
@@ -588,7 +590,7 @@ const SupportPage: React.FC = () => {
     //     console.error('Email sending failed:', error);
     //     showToast('There was an error submitting your request. Please try again.', 'error');
     //   });
-    
+
     // Temporary success simulation
     setTimeout(() => {
       showToast('Partnership request submitted successfully! We will review your application and get back to you soon.', 'success');
@@ -598,7 +600,7 @@ const SupportPage: React.FC = () => {
 
   const handleTicketSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Prepare email data for EmailJS
     const emailData = {
       service_id: 'your_service_id',
@@ -619,7 +621,7 @@ const SupportPage: React.FC = () => {
 
     // Log email data for debugging
     // console.log('Support ticket email data prepared:', emailData);
-    
+
     // Example EmailJS call (uncomment when configured):
     // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
     //   .then(() => {
@@ -638,7 +640,7 @@ const SupportPage: React.FC = () => {
     //     console.error('Email sending failed:', error);
     //     showToast('There was an error submitting your ticket. Please try again.', 'error');
     //   });
-    
+
     // Temporary success simulation
     showToast("Support ticket submitted successfully! We will get back to you soon.", 'success');
     setActiveTicketForm(false);
@@ -729,7 +731,7 @@ const SupportPage: React.FC = () => {
                               </svg>
                             </button>
                           )}
-                          <button 
+                          <button
                             type="submit"
                             className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-md transition-colors font-medium text-sm"
                           >
@@ -749,11 +751,11 @@ const SupportPage: React.FC = () => {
         {showSearchResults && (
           <>
             {/* Backdrop */}
-            <div 
+            <div
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999]"
               onClick={clearSearch}
             />
-            
+
             {/* Search Results Modal */}
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl mx-4 z-[10000]">
               {searchResults.length > 0 ? (
@@ -778,9 +780,8 @@ const SupportPage: React.FC = () => {
                       <Link
                         key={`${result.title}-${index}`}
                         to={result.url}
-                        className={`block p-4 hover:bg-emerald-50 transition-all border-b border-slate-100 last:border-b-0 ${
-                          index === selectedResultIndex ? 'bg-emerald-50 border-l-4 border-l-emerald-500' : ''
-                        }`}
+                        className={`block p-4 hover:bg-emerald-50 transition-all border-b border-slate-100 last:border-b-0 ${index === selectedResultIndex ? 'bg-emerald-50 border-l-4 border-l-emerald-500' : ''
+                          }`}
                         onClick={clearSearch}
                         onMouseEnter={() => setSelectedResultIndex(index)}
                       >
@@ -839,22 +840,22 @@ const SupportPage: React.FC = () => {
                       <button
                         className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
                         onClick={() => handleTrendingSearchClick(url)}
-                        
+
                       >
-                       {search}
+                        {search}
                       </button>
                       <Link
                         to={url}
                         className="text-slate-500 hover:text-brand transition-colors p-2 rounded-md hover:bg-slate-50"
                         title="Go directly to guide"
                       >
-                        
+
                       </Link>
                     </div>
                   ))}
                 </div>
                 <div className="mt-4 text-sm text-slate-600">
-                  
+
                 </div>
               </div>
             </Reveal>
@@ -1163,7 +1164,7 @@ const SupportPage: React.FC = () => {
                       Interested in finding out more about our solutions?
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <button 
+                      <button
                         onClick={() => setShowLicenseModal(true)}
                         className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300"
                       >

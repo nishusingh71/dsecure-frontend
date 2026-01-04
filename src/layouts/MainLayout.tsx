@@ -64,11 +64,10 @@ export default function MainLayout() {
       </Helmet>
       <div className="min-h-dvh flex flex-col">
         <header
-          className={`border-b sticky top-0 z-50 transition-all duration-300 ${
-            isScrolled
-              ? "bg-white/95 backdrop-blur-xl shadow-lg border-slate-200/50"
-              : "bg-white/80 backdrop-blur-md shadow-sm border-slate-200/30"
-          } supports-[backdrop-filter]:bg-white/80`}
+          className={`border-b sticky top-0 z-50 transition-all duration-300 ${isScrolled
+            ? "bg-white/95 backdrop-blur-xl shadow-lg border-slate-200/50"
+            : "bg-white/80 backdrop-blur-md shadow-sm border-slate-200/30"
+            } supports-[backdrop-filter]:bg-white/80`}
         >
           <div className="mx-auto max-w-7xl px-4 xs:px-4 sm:px-6 md:px-6 lg:px-8 xl:px-8 xxl:px-10 h-16 xs:h-18 sm:h-20 md:h-20 lg:h-22 xl:h-24 xxl:h-24 flex items-center justify-between">
             <Link
@@ -157,7 +156,7 @@ export default function MainLayout() {
             <div className="flex items-center gap-3">
               {/* Language Switcher */}
               {/* <LanguageSwitcher variant="minimal" showLabel={false} className="hidden lg:flex" /> */}
-              
+
               {/* User Authentication Navigation */}
               <nav className="hidden lg:flex xl:flex xxl:flex items-center gap-3 lg:gap-4 xl:gap-5 xxl:gap-6 text-sm lg:text-sm xl:text-base xxl:text-base">
                 {user ? (
@@ -238,11 +237,10 @@ export default function MainLayout() {
 
               {/* Mobile menu button */}
               <button
-                className={`lg:hidden xl:hidden xxl:hidden inline-flex items-center justify-center w-8 xs:w-9 sm:w-10 md:w-10 h-8 xs:h-9 sm:h-10 md:h-10 rounded-lg transition-all duration-200 ${
-                  open
-                    ? "bg-brand text-white hover:bg-brand/90"
-                    : "bg-slate-100 hover:bg-slate-200 text-slate-600"
-                }`}
+                className={`lg:hidden xl:hidden xxl:hidden inline-flex items-center justify-center w-8 xs:w-9 sm:w-10 md:w-10 h-8 xs:h-9 sm:h-10 md:h-10 rounded-lg transition-all duration-200 ${open
+                  ? "bg-brand text-white hover:bg-brand/90"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+                  }`}
                 onClick={toggleMobileMenu}
                 aria-label={
                   open ? "Close navigation menu" : "Open navigation menu"
@@ -278,11 +276,10 @@ export default function MainLayout() {
           {open && (
             <div
               id="mobile-menu"
-              className={`lg:hidden xl:hidden xxl:hidden border-t animate-slide-down ${
-                isScrolled
-                  ? "bg-white/98 backdrop-blur-xl shadow-lg"
-                  : "bg-white/95 backdrop-blur-md"
-              }`}
+              className={`lg:hidden xl:hidden xxl:hidden border-t animate-slide-down ${isScrolled
+                ? "bg-white/98 backdrop-blur-xl shadow-lg"
+                : "bg-white/95 backdrop-blur-md"
+                }`}
               role="navigation"
               aria-label="Mobile navigation menu"
             >
@@ -413,12 +410,12 @@ export default function MainLayout() {
                 </svg>
                 Contact
               </NavLink> */}
-                
+
                 {/* Language Switcher for Mobile */}
                 {/* <div className="px-4 py-3">
                   <LanguageSwitcher variant="default" showLabel={true} />
                 </div> */}
-                
+
                 {user ? (
                   <div className="flex flex-col gap-3 px-4 pt-6 mt-4 border-t border-slate-200/60">
                     <NavLink

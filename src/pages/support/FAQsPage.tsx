@@ -47,7 +47,7 @@ const FAQsPage: React.FC = memo(() => {
     {
       id: 4,
       question: "Is data really unrecoverable after using DSecure?",
-      answer: "Yes, when DSecure's erasure process completes successfully, the data is cryptographically and forensically unrecoverable. Our methods exceed international standards and have been validated by forensic experts. We provide detailed certificates of destruction for compliance purposes.",
+      answer: "Yes, when DSecure's erasure process completes successfully, the data is cryptographically and forensically unrecoverable. Our methods exceed international standards and have been validated by forensic experts. We provide detailed regulatory documents of destruction for compliance purposes.",
       category: "security"
     },
     {
@@ -88,8 +88,8 @@ const FAQsPage: React.FC = memo(() => {
     },
     {
       id: 11,
-      question: "How do I get a certificate of data destruction?",
-      answer: "DSecure automatically generates tamper-proof certificates upon successful completion of erasure operations. These certificates include device details, erasure methods used, timestamps, and digital signatures for legal compliance and audit purposes.",
+      question: "How do I get a regulatory document of data destruction?",
+      answer: "DSecure automatically generates tamper-proof regulatory documents upon successful completion of erasure operations. These regulatory documents include device details, erasure methods used, timestamps, and digital signatures for legal compliance and audit purposes.",
       category: "security"
     },
     {
@@ -102,8 +102,8 @@ const FAQsPage: React.FC = memo(() => {
 
   const filteredFAQs = faqs.filter(faq => {
     const matchesCategory = activeCategory === "all" || faq.category === activeCategory;
-    const matchesSearch = faq.question.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -185,11 +185,10 @@ const FAQsPage: React.FC = memo(() => {
                   <button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
-                    className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                      activeCategory === category.id
+                    className={`px-4 py-2 rounded-full font-medium transition-colors ${activeCategory === category.id
                         ? "bg-emerald-500 text-white"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                    }`}
+                      }`}
                   >
                     {category.name}
                   </button>
@@ -225,9 +224,8 @@ const FAQsPage: React.FC = memo(() => {
                           {faq.question}
                         </h3>
                         <svg
-                          className={`w-5 h-5 text-slate-500 transform transition-transform ${
-                            openFAQ === faq.id ? "rotate-180" : ""
-                          }`}
+                          className={`w-5 h-5 text-slate-500 transform transition-transform ${openFAQ === faq.id ? "rotate-180" : ""
+                            }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

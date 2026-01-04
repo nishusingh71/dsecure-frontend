@@ -3,28 +3,28 @@ import { useState, useEffect } from "react";
 // Table to Module mapping - which tables belong to which module
 const tableToModuleMap: Record<string, string> = {
   // Core Users
-  "subuser": "core-users",
-  "Users": "core-users",
+  subuser: "core-users",
+  Users: "core-users",
   // RBAC
-  "Roles": "rbac",
-  "Permissions": "rbac",
-  "Routes": "rbac",
+  Roles: "rbac",
+  Permissions: "rbac",
+  Routes: "rbac",
   // RBAC Mappings
-  "UserRoles": "rbac-mappings",
-  "SubuserRoles": "rbac-mappings",
-  "RolePermissions": "rbac-mappings",
+  UserRoles: "rbac-mappings",
+  SubuserRoles: "rbac-mappings",
+  RolePermissions: "rbac-mappings",
   // Monitoring
-  "Sessions": "monitoring",
-  "Logs": "monitoring",
-  "Commands": "monitoring",
+  Sessions: "monitoring",
+  Logs: "monitoring",
+  Commands: "monitoring",
   // Business Logic
-  "Machines": "business-logic",
-  "AuditReports": "business-logic",
+  Machines: "business-logic",
+  AuditReports: "business-logic",
 };
 
 // Individual table SQL definitions
 const tableSqlMap: Record<string, { label: string; sql: string }> = {
-  "subuser": {
+  subuser: {
     label: "subuser",
     sql: `-- Create Subuser Table
 CREATE TABLE \`subuser\` (
@@ -78,9 +78,9 @@ CREATE TABLE \`subuser\` (
   \`organization_name\` varchar(100) DEFAULT NULL,
   PRIMARY KEY (\`subuser_id\`),
   UNIQUE KEY \`uk_subuser_email\` (\`subuser_email\`)
-);`
+);`,
   },
-  "Users": {
+  Users: {
     label: "Users",
     sql: `-- Create Users Table (Main Admin/Users)
 CREATE TABLE \`Users\` (
@@ -110,10 +110,21 @@ CREATE TABLE \`Users\` (
   \`organization_name\` varchar(100) DEFAULT NULL,
   \`last_login_ip\` varchar(50) DEFAULT NULL,
   PRIMARY KEY (\`user_id\`),
-  UNIQUE KEY \`uk_user_email\` (\`user_email\`)
-);`
+  UNIQUE KEY \`uk_user_email\` (\`user_email\`),
+  ALTER TABLE users 
+ADD COLUMN IF NOT EXISTS private_db_connection_string TEXT NULL COMMENT 'Encrypted connection string for private DB',
+ADD COLUMN IF NOT EXISTS private_db_created_at DATETIME NULL COMMENT 'When private DB was created',
+ADD COLUMN IF NOT EXISTS private_db_status VARCHAR(20) DEFAULT 'active' COMMENT 'active/inactive/error',
+ADD COLUMN IF NOT EXISTS private_db_last_validated DATETIME NULL COMMENT 'Last successful connection test',
+ADD COLUMN IF NOT EXISTS private_db_schema_version VARCHAR(20) NULL COMMENT 'Schema version of private DB',
+ADD COLUMN IF NOT EXISTS domain VARCHAR(255),
+ADD COLUMN IF NOT EXISTS is_domain_admin VARCHAR(255),
+ADD COLUMN IF NOT EXISTS organization_name VARCHAR(255),
+ADD COLUMN IF NOT EXISTS user_password VARCHAR(255),
+ADD COLUMN IF NOT EXISTS hash_password VARCHAR(255);
+);`,
   },
-  "Roles": {
+  Roles: {
     label: "Roles",
     sql: `-- Create Roles Table
 CREATE TABLE \`Roles\` (
@@ -124,9 +135,9 @@ CREATE TABLE \`Roles\` (
   \`CreatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (\`RoleId\`),
   UNIQUE KEY \`uk_RoleName\` (\`RoleName\`)
-);`
+);`,
   },
-  "Permissions": {
+  Permissions: {
     label: "Permissions",
     sql: `-- Create Permissions Table
 CREATE TABLE \`Permissions\` (
@@ -136,9 +147,9 @@ CREATE TABLE \`Permissions\` (
   \`CreatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (\`PermissionId\`),
   UNIQUE KEY \`uk_PermissionName\` (\`PermissionName\`)
-);`
+);`,
   },
-  "Routes": {
+  Routes: {
     label: "Routes",
     sql: `-- Create Routes Table (API Endpoints)
 CREATE TABLE \`Routes\` (
@@ -149,9 +160,9 @@ CREATE TABLE \`Routes\` (
   \`CreatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (\`RouteId\`),
   INDEX \`idx_RoutePath\` (\`RoutePath\`)
-);`
+);`,
   },
-  "UserRoles": {
+  UserRoles: {
     label: "UserRoles",
     sql: `-- Create UserRoles (Links Users to Roles)
 CREATE TABLE \`UserRoles\` (
@@ -161,9 +172,9 @@ CREATE TABLE \`UserRoles\` (
   \`AssignedByEmail\` longtext NOT NULL,
   PRIMARY KEY (\`UserId\`, \`RoleId\`),
   CONSTRAINT \`fk_UserRoles_Roles\` FOREIGN KEY (\`RoleId\`) REFERENCES \`Roles\` (\`RoleId\`) ON DELETE CASCADE ON UPDATE CASCADE
-);`
+);`,
   },
-  "SubuserRoles": {
+  SubuserRoles: {
     label: "SubuserRoles",
     sql: `-- Create SubuserRoles (Links Subusers to Roles)
 CREATE TABLE \`SubuserRoles\` (
@@ -174,9 +185,9 @@ CREATE TABLE \`SubuserRoles\` (
   PRIMARY KEY (\`SubuserId\`, \`RoleId\`),
   CONSTRAINT \`fk_SubuserRoles_Subuser\` FOREIGN KEY (\`SubuserId\`) REFERENCES \`subuser\` (\`subuser_id\`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT \`fk_SubuserRoles_Roles\` FOREIGN KEY (\`RoleId\`) REFERENCES \`Roles\` (\`RoleId\`) ON DELETE CASCADE ON UPDATE CASCADE
-);`
+);`,
   },
-  "RolePermissions": {
+  RolePermissions: {
     label: "RolePermissions",
     sql: `-- Create RolePermissions (Links Roles to Permissions)
 CREATE TABLE \`RolePermissions\` (
@@ -185,9 +196,9 @@ CREATE TABLE \`RolePermissions\` (
   PRIMARY KEY (\`RoleId\`, \`PermissionId\`),
   CONSTRAINT \`fk_RolePermissions_Roles\` FOREIGN KEY (\`RoleId\`) REFERENCES \`Roles\` (\`RoleId\`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT \`fk_RolePermissions_Permissions\` FOREIGN KEY (\`PermissionId\`) REFERENCES \`Permissions\` (\`PermissionId\`) ON DELETE CASCADE ON UPDATE CASCADE
-);`
+);`,
   },
-  "Sessions": {
+  Sessions: {
     label: "Sessions",
     sql: `-- Create Sessions Table
 CREATE TABLE \`Sessions\` (
@@ -200,9 +211,9 @@ CREATE TABLE \`Sessions\` (
   \`session_status\` varchar(50) NOT NULL DEFAULT 'active',
   PRIMARY KEY (\`session_id\`),
   INDEX \`idx_user_email\` (\`user_email\`)
-);`
+);`,
   },
-  "Logs": {
+  Logs: {
     label: "Logs",
     sql: `-- Create Logs Table
 CREATE TABLE \`Logs\` (
@@ -215,9 +226,9 @@ CREATE TABLE \`Logs\` (
   PRIMARY KEY (\`log_id\`),
   INDEX \`idx_logs_created_at\` (\`created_at\`),
   INDEX \`idx_logs_user_email\` (\`user_email\`)
-);`
+);`,
   },
-  "Commands": {
+  Commands: {
     label: "Commands",
     sql: `-- Create Commands Table
 CREATE TABLE \`commands\` (
@@ -230,9 +241,9 @@ CREATE TABLE \`commands\` (
   PRIMARY KEY (\`Command_id\`),
   INDEX \`idx_command_status\` (\`command_status\`),
   INDEX \`idx_commands_user_email\` (\`user_email\`)
-);`
+);`,
   },
-  "Machines": {
+  Machines: {
     label: "Machines",
     sql: `-- Create Machines Table
 CREATE TABLE \`Machines\` (
@@ -256,9 +267,9 @@ CREATE TABLE \`Machines\` (
   PRIMARY KEY (\`fingerprint_hash\`),
   INDEX \`idx_machines_user_email\` (\`user_email\`),
   INDEX \`idx_machines_mac_address\` (\`mac_address\`)
-);`
+);`,
   },
-  "AuditReports": {
+  AuditReports: {
     label: "AuditReports",
     sql: `-- Create AuditReports Table
 CREATE TABLE \`AuditReports\` (
@@ -272,8 +283,8 @@ CREATE TABLE \`AuditReports\` (
   PRIMARY KEY (\`report_id\`),
   INDEX \`idx_client_email\` (\`client_email\`),
   INDEX \`idx_synced\` (\`synced\`)
-);`
-  }
+);`,
+  },
 };
 
 // Props interface
@@ -339,6 +350,17 @@ CREATE TABLE \`subuser\` (
   \`organization_name\` varchar(100) DEFAULT NULL,
   PRIMARY KEY (\`subuser_id\`),
   UNIQUE KEY \`uk_subuser_email\` (\`subuser_email\`)
+  ALTER TABLE users 
+ADD COLUMN IF NOT EXISTS private_db_connection_string TEXT NULL COMMENT 'Encrypted connection string for private DB',
+ADD COLUMN IF NOT EXISTS private_db_created_at DATETIME NULL COMMENT 'When private DB was created',
+ADD COLUMN IF NOT EXISTS private_db_status VARCHAR(20) DEFAULT 'active' COMMENT 'active/inactive/error',
+ADD COLUMN IF NOT EXISTS private_db_last_validated DATETIME NULL COMMENT 'Last successful connection test',
+ADD COLUMN IF NOT EXISTS private_db_schema_version VARCHAR(20) NULL COMMENT 'Schema version of private DB',
+ADD COLUMN IF NOT EXISTS domain VARCHAR(255),
+ADD COLUMN IF NOT EXISTS is_domain_admin VARCHAR(255),
+ADD COLUMN IF NOT EXISTS organization_name VARCHAR(255),
+ADD COLUMN IF NOT EXISTS user_password VARCHAR(255),
+ADD COLUMN IF NOT EXISTS hash_password VARCHAR(255);
 );
 
 -- 2. Create Users Table (Main Admin/Users)
@@ -535,7 +557,8 @@ const styles = {
     padding: "24px",
     maxWidth: "1200px",
     margin: "0 auto",
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
   header: {
     marginBottom: "24px",
@@ -703,7 +726,9 @@ const styles = {
   },
 };
 
-export default function SchemaBuilder({ selectedTables = [] }: SchemaBuilderProps) {
+export default function SchemaBuilder({
+  selectedTables = [],
+}: SchemaBuilderProps) {
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -812,7 +837,9 @@ export default function SchemaBuilder({ selectedTables = [] }: SchemaBuilderProp
       {selectedTables.length > 0 && (
         <div style={styles.codeSection}>
           <div style={{ ...styles.header, marginTop: "24px" }}>
-            <h2 style={{ ...styles.title, fontSize: "22px" }}>📋 Selected Tables SQL</h2>
+            <h2 style={{ ...styles.title, fontSize: "22px" }}>
+              📋 Selected Tables SQL
+            </h2>
             <p style={styles.subtitle}>
               SQL schema for {selectedTables.length} selected table(s)
             </p>
@@ -830,21 +857,44 @@ export default function SchemaBuilder({ selectedTables = [] }: SchemaBuilderProp
                   <button
                     style={{
                       ...styles.copyButton,
-                      ...(copiedId === tableName ? styles.copyButtonCopied : {}),
+                      ...(copiedId === tableName
+                        ? styles.copyButtonCopied
+                        : {}),
                     }}
                     onClick={() => handleCopy(tableName, tableData.sql)}
                   >
                     {copiedId === tableName ? (
                       <>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
                           <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
                         Copied!
                       </>
                     ) : (
                       <>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <rect
+                            x="9"
+                            y="9"
+                            width="13"
+                            height="13"
+                            rx="2"
+                            ry="2"
+                          ></rect>
                           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                         </svg>
                         Copy

@@ -15,12 +15,14 @@ import { EncryptionService, isEncryptedResponse } from './EncryptionService'
 import { api } from './apiClient'
 import { encodeEmail } from './encodeEmail'
 
+import { ENV } from '../config/env'
+
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'
-const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000')
+const API_BASE_URL = ENV.API_BASE_URL
+const API_TIMEOUT = ENV.API_TIMEOUT
 
 // Debug mode for development
-const DEBUG_MODE = import.meta.env.DEV
+const DEBUG_MODE = ENV.DEBUG
 
 /**
  * Helper function to decrypt response data if encrypted
@@ -39,7 +41,7 @@ if (DEBUG_MODE) {
   // console.log('API Configuration:', {
   //   baseUrl: API_BASE_URL,
   //   timeout: API_TIMEOUT,
-  //   environment: import.meta.env.MODE
+  //   environment: ENV.MODE
   // })
 }
 
@@ -116,6 +118,62 @@ export interface EnhancedSubuser extends Subuser {
   department?: string // Department field from EnhancedSubuser API
 }
 
+export interface license {
+  license_id: string,
+  license_type: string,
+  license_status: string,
+  license_validity: string,
+  license_usage: string,
+  license_allocation: string,
+  license_details_json: string,
+  license_key: string,
+  hwid: string,
+  machine_name: string,
+  mac_address: string,
+  serial_number: string,
+  model: string,
+  manufacturer: string,
+  os_info: string,
+  ip_address: string,
+  cpu_info: string,
+  ram_gb: number,
+  storage_gb: number,
+  cpu_id: string,
+  os: string,
+  os_version: string,
+  status: string,
+  expiry: string,
+  edition: string,
+  // server_revision: number,
+  id: number,
+  expiry_days: number,
+  expiry_date: string,
+  remaining_days: number,
+  created_at: string,
+  last_seen: string,
+  user_email: string,
+  notes: string,
+  total: number,
+  by_status: {
+    active: number,
+    expired: number,
+    revoked: number
+  },
+  by_edition: {
+    basic: number,
+    pro: number,
+    enterprise: number
+  },
+  expiring: {
+    in7Days: number,
+    in30Days: number
+  },
+  licenseDetails: {
+    type: string,
+    count: number,
+    percentage: number
+  }[]
+}
 export interface LoginRequest {
   email: string
   password: string
@@ -247,7 +305,7 @@ class EnhancedApiClient {
 
   constructor(baseURL?: string) {
     this.baseURL = baseURL || API_BASE_URL
-    this.timeout = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000')
+    this.timeout = ENV.API_TIMEOUT
     this.retryConfig = {
       maxRetries: 3,
       retryDelay: 1000,
@@ -491,6 +549,31 @@ class EnhancedApiClient {
         error: errorMessage,
       }
     }
+  }
+
+  // Generic HTTP methods wrappers
+  public get<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { ...options, method: 'GET' })
+  }
+
+  public post<T>(endpoint: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, {
+      ...options,
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined
+    })
+  }
+
+  public put<T>(endpoint: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, {
+      ...options,
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined
+    })
+  }
+
+  public delete<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { ...options, method: 'DELETE' })
   }
 
   // Token refresh with concurrency control
@@ -845,10 +928,10 @@ class EnhancedApiClient {
   }
 
   // Profile update endpoint - uses DynamicUser/profile
-  async updateUserProfile(userData: { userName: string; timezone?: string }): Promise<ApiResponse<User>> {
+  async updateUserProfile(userData: { name: string; phone?: string; timezone?: string }): Promise<ApiResponse<User>> {
     // console.log('🌐 Calling PUT /api/DynamicUser/profile with:', userData)
-    const response = await this.request<User>(`/api/DynamicUser/profile`, {
-      method: 'PUT',
+    const response = await this.request<User>(`/api/RoleBasedAuth/edit-profile`, {
+      method: 'PATCH',
       body: JSON.stringify(userData),
     })
     // console.log('🌐 Response from /api/DynamicUser/profile:', response)
@@ -1093,6 +1176,21 @@ class EnhancedApiClient {
 
   async getMachinesByEmail(email: string): Promise<ApiResponse<Machine[]>> {
     return this.request<Machine[]>(`/api/Machines/by-email/${encodeEmail(email)}`)
+  }
+
+  /**
+   * Transfer machines to a subuser account
+   * @param subuserEmail - Email of the subuser to transfer machines to
+   * @param macAddresses - Array of MAC addresses of machines to transfer
+   */
+  async transferMachinesToSubuser(subuserEmail: string, macAddresses: string[]): Promise<ApiResponse<any>> {
+    return this.request<any>('/api/EnhancedMachines/transfer-to-subuser', {
+      method: 'POST',
+      body: JSON.stringify({
+        subuserEmail: subuserEmail,
+        macAddresses: macAddresses
+      })
+    })
   }
 
   async getReports(): Promise<ApiResponse<Report[]>> {

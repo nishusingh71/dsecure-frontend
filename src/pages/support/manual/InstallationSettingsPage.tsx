@@ -72,16 +72,15 @@ const InstallationSettingsPage: React.FC = memo(() => {
                       { name: "Core Engine", desc: "Essential data erasure functionality", required: true },
                       { name: "GUI Interface", desc: "Graphical user interface", required: true },
                       { name: "Command Line Tools", desc: "CLI utilities for automation", required: false },
-                      { name: "Reporting Module", desc: "Generate erasure certificates", required: false }
+                      { name: "Reporting Module", desc: "Generate erasure regulatory documents", required: false }
                     ].map((item, index) => (
                       <div key={index} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                         <div>
                           <h3 className="font-semibold text-slate-900">{item.name}</h3>
                           <p className="text-slate-600 text-sm">{item.desc}</p>
                         </div>
-                        <div className={`px-3 py-1 rounded text-sm font-medium ${
-                          item.required ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
-                        }`}>
+                        <div className={`px-3 py-1 rounded text-sm font-medium ${item.required ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+                          }`}>
                           {item.required ? 'Required' : 'Optional'}
                         </div>
                       </div>

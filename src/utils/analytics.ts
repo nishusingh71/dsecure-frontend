@@ -56,7 +56,7 @@ class GoogleAnalytics {
     });
 
     this.isInitialized = true;
-    
+
     if (this.debug) {
       //console.log('Google Analytics initialized with ID:', this.trackingId);
     }
@@ -166,10 +166,12 @@ class GoogleAnalytics {
   }
 }
 
+import { ENV } from '../config/env';
+
 // Initialize GA instance
 export const ga = new GoogleAnalytics({
-  trackingId: 'G-6B20XY3K81', // Your actual GA4 ID
-  debug: import.meta.env.DEV
+  trackingId: ENV.GA4_ID, // Your actual GA4 ID
+  debug: ENV.DEBUG
 });
 
 // React hook for GA tracking

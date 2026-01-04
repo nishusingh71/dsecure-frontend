@@ -109,8 +109,8 @@ const UserInterfacePage: React.FC = memo(() => {
     },
     {
       id: 3,
-      title: "Reports, Certificates & Compliance",
-      description: "Generate comprehensive reports and compliance certificates for audit requirements",
+      title: "Reports, Regulatory Documents & Compliance",
+      description: "Generate comprehensive reports and compliance regulatory documents for audit requirements",
       icon: "📋",
       subsections: [
         {
@@ -122,8 +122,8 @@ const UserInterfacePage: React.FC = memo(() => {
         },
         {
           id: 32,
-          title: "Certificate Generation System",
-          description: "Create tamper-proof destruction certificates with digital signatures and compliance data",
+          title: "Regulatory Document Generation System",
+          description: "Create tamper-proof destruction regulatory documents with digital signatures and compliance data",
           url: "/support/manual/certificate-generation",
           pageCount: 3,
         },
@@ -226,7 +226,7 @@ const UserInterfacePage: React.FC = memo(() => {
       color: "bg-teal-500",
     },
     {
-      title: "Reports & Certificates",
+      title: "Reports & Regulatory Documents",
       description: "Generate compliance documentation",
       icon: "📋",
       url: "/support/manual/erasure-reports",

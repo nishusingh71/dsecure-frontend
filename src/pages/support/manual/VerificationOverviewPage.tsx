@@ -45,8 +45,8 @@ const VerificationOverviewPage: React.FC = memo(() => {
                     <p className="text-slate-700">SHA-256 checksums for data integrity</p>
                   </div>
                   <div className="bg-emerald-50 p-6 rounded-lg border border-emerald-200">
-                    <h3 className="font-bold text-emerald-900 mb-2">✓ Certificate Generation</h3>
-                    <p className="text-slate-700">Tamper-proof audit certificates</p>
+                    <h3 className="font-bold text-emerald-900 mb-2">✓ Regulatory Document Generation</h3>
+                    <p className="text-slate-700">Tamper-proof audit regulatory documents</p>
                   </div>
                 </div>
               </div>

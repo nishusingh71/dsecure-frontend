@@ -48,7 +48,7 @@ export const BASE_KEYWORDS = [
   'data erasure application',
   'secure data erasure',
   'permanent data erasure',
-  
+
   // Compliance & Standards
   'NIST 800-88 compliance',
   'NIST data erasure',
@@ -60,7 +60,7 @@ export const BASE_KEYWORDS = [
   'PCI DSS data protection',
   'PCI DSS compliance',
   'ISO 27001 data security',
-  'ISO 27001 certified',
+  'ISO 27001 regulated',
   'ISO 27001 compliance',
   'DoD 5220.22-M standard',
   'DoD data wiping',
@@ -69,7 +69,7 @@ export const BASE_KEYWORDS = [
   'FERPA data protection',
   'CCPA compliance',
   'GLBA data security',
-  
+
   // Enterprise Solutions
   'enterprise data erasure',
   'enterprise data destruction',
@@ -80,17 +80,17 @@ export const BASE_KEYWORDS = [
   'company data destruction',
   'enterprise data management',
   'business data security',
-  
-  // Certified Solutions
-  'certified data destruction',
-  'certified data erasure',
+
+  // regulated Solutions
+  'regulated data destruction',
+  'regulated data erasure',
   'verified data wiping',
   'audited data sanitization',
   'compliant data erasure',
   'approved data destruction',
-  'certified data removal',
+  'regulated data removal',
   'validated data wiping',
-  
+
   // Hardware Specific
   'hard drive wiping software',
   'HDD data erasure',
@@ -102,7 +102,7 @@ export const BASE_KEYWORDS = [
   'SSD data wiping',
   'hard drive erasure tool',
   'SSD secure wiping',
-  
+
   // Device Types
   'laptop data erasure',
   'desktop data wiping',
@@ -114,7 +114,7 @@ export const BASE_KEYWORDS = [
   'RAID array erasure',
   'NAS data destruction',
   'SAN data wiping',
-  
+
   // Security Focused
   'secure data destruction',
   'military grade wiping',
@@ -126,7 +126,7 @@ export const BASE_KEYWORDS = [
   'permanent data removal',
   'irreversible data destruction',
   'complete data eradication',
-  
+
   // Digital Forensics & Recovery Prevention
   'digital forensics',
   'data recovery prevention',
@@ -137,7 +137,7 @@ export const BASE_KEYWORDS = [
   'unrecoverable data deletion',
   'forensic wiping',
   'evidence erasure',
-  
+
   // Data Privacy
   'data privacy compliance',
   'data protection software',
@@ -147,7 +147,7 @@ export const BASE_KEYWORDS = [
   'confidential information erasure',
   'sensitive information destruction',
   'personal information wiping',
-  
+
   // Industry Specific
   'healthcare data erasure',
   'medical data destruction',
@@ -157,7 +157,7 @@ export const BASE_KEYWORDS = [
   'military data wiping',
   'education data erasure',
   'research data destruction',
-  
+
   // Technical Keywords
   'data overwriting software',
   'multiple pass wiping',
@@ -165,10 +165,10 @@ export const BASE_KEYWORDS = [
   'data sanitization method',
   'wipe cycle technology',
   'erasure verification',
-  'destruction certificate',
+  'destruction regulatory document',
   'audit trail erasure',
   'compliance reporting',
-  
+
   // Software Features
   'automated data erasure',
   'scheduled data wiping',
@@ -178,7 +178,7 @@ export const BASE_KEYWORDS = [
   'cloud data erasure',
   'virtual machine wiping',
   'multiple drive erasure',
-  
+
   // Business Benefits
   'cost-effective data destruction',
   'time-saving data erasure',
@@ -188,7 +188,7 @@ export const BASE_KEYWORDS = [
   'flexible erasure solution',
   'easy-to-use data wiping',
   'user-friendly erasure tool',
-  
+
   // Additional Security
   'cybersecurity solution',
   'information security',
@@ -253,7 +253,7 @@ export const generateSoftwareProductSchema = (productName: string, description: 
 // Default SEO metadata for all pages
 export const getDefaultSEO = (): SEOMetadata => ({
   title: 'D-Secure Tech - Enterprise Data Erasure & Sanitization Solutions',
-  description: 'Leading data erasure software for GDPR, HIPAA & compliance. Secure data destruction with NIST 800-88 certification. Enterprise data sanitization solutions.',
+  description: 'Leading data erasure software for GDPR, HIPAA & compliance. Secure data destruction with NIST 800-88 regulation. Enterprise data sanitization solutions.',
   keywords: generateKeywords(),
   canonicalUrl: SEO_CONFIG.baseUrl,
   ogTitle: 'D-Secure Tech - Secure Data Erasure Solutions',
@@ -271,7 +271,7 @@ export const getDefaultSEO = (): SEOMetadata => ({
 export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   home: {
     title: 'D-Secure Tech - Enterprise Data Erasure & Sanitization Software',
-    description: 'Professional data erasure solutions for GDPR, HIPAA & compliance. Secure data destruction with NIST 800-88 certification. Download free trial.',
+    description: 'Professional data erasure solutions for GDPR, HIPAA & compliance. Secure data destruction with NIST 800-88 regulation. Download free trial.',
     keywords: generateKeywords([
       'data erasure software download',
       'free data destruction tool',
@@ -286,25 +286,25 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/'),
   },
-  
+
   services: {
     title: 'Data Erasure Services - Secure Data Destruction | DSecure Tech',
-    description: 'Comprehensive data erasure services including hard drive wiping, SSD sanitization, and certified data destruction for enterprise compliance.',
+    description: 'Comprehensive data erasure services including hard drive wiping, SSD sanitization, and regulated data destruction for enterprise compliance.',
     keywords: generateKeywords([
       'data erasure services',
       'hard drive destruction',
       'SSD data wiping',
-      'certified data destruction',
+      'regulated data destruction',
       'on-site data erasure',
       'professional data wiping service',
       'managed data destruction',
       'data sanitization service',
-      'certified erasure service',
+      'regulated erasure service',
       'on-premise data wiping'
     ]),
     canonicalUrl: getCanonicalUrl('/services'),
   },
-  
+
   solutions: {
     title: 'Enterprise Data Erasure Solutions - GDPR & HIPAA Compliance | DSecure',
     description: 'Complete data sanitization solutions for enterprises. GDPR, HIPAA, and ISO 27001 compliant data erasure software and services.',
@@ -322,7 +322,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/solutions'),
   },
-  
+
   about: {
     title: 'About DSecure Tech - Data Erasure & Security Experts',
     description: 'Learn about DSecure Tech, industry leaders in data erasure and sanitization solutions. Our mission to secure enterprise data worldwide.',
@@ -340,7 +340,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/about'),
   },
-  
+
   contact: {
     title: 'Contact D-Secure Tech - Data Erasure Support & Sales',
     description: 'Contact D-Secure Tech for data erasure solutions, technical support, and enterprise sales. Get expert help with data sanitization needs.',
@@ -358,7 +358,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/contact'),
   },
-  
+
   support: {
     title: 'Support Center - Data Erasure Help & Resources | DSecure Tech',
     description: 'Comprehensive support for DSecure data erasure software. Find guides, documentation, and get technical assistance.',
@@ -376,7 +376,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/support'),
   },
-  
+
   status: {
     title: 'System Status - D-Secure Tech Service Health Dashboard',
     description: 'Real-time status of D-Secure Tech services and infrastructure. Monitor uptime and performance of our data erasure solutions.',
@@ -394,7 +394,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/status'),
   },
-  
+
   pricing: {
     title: 'Pricing - Data Erasure Software Plans | D-Secure Tech',
     description: 'Flexible pricing for D-Secure Tech data erasure software. Enterprise licenses, volume discounts, and free trial available.',
@@ -430,7 +430,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/order-success'),
   },
-  
+
   partners: {
     title: 'Partners - Join D-Secure Tech Partner Program',
     description: 'Become a D-Secure Tech partner. Reseller, integration, and technology partnership opportunities in data erasure market.',
@@ -448,18 +448,18 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: getCanonicalUrl('/partners'),
   },
-  
+
   security: {
     title: 'Security & Compliance - NIST 800-88 & GDPR | D-Secure Tech',
-    description: 'D-Secure Tech security standards and compliance certifications. NIST 800-88, GDPR, HIPAA, and ISO 27001 compliant data erasure.',
+    description: 'D-Secure Tech security standards and compliance regulations. NIST 800-88, GDPR, HIPAA, and ISO 27001 compliant data erasure.',
     keywords: generateKeywords([
       'security standards',
-      'compliance certifications',
+      'compliance regulations',
       'NIST 800-88 compliance',
       'security framework',
       'erasure security standards',
       'compliance framework',
-      'security certification',
+      'security regulation',
       'regulatory standards',
       'compliance requirements',
       'security best practices'
@@ -723,41 +723,9 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl('/checkout'),
   },
 
-  'payment-setup': {
-    title: 'Payment Setup - Configure Billing for D-Secure Tech',
-    description: 'Set up payment methods and billing information for D-Secure Tech software subscriptions and services.',
-    keywords: generateKeywords([
-      'payment setup',
-      'billing configuration',
-      'subscription management',
-      'payment methods',
-      'billing setup',
-      'payment configuration',
-      'subscription setup',
-      'billing management',
-      'payment method setup',
-      'billing information setup'
-    ]),
-    canonicalUrl: getCanonicalUrl('/payment-setup'),
-  },
 
-  'pricing-and-plan': {
-    title: 'Pricing & Plans - Choose Your D-Secure Tech Package',
-    description: 'Compare D-Secure Tech pricing plans and packages. Find the right data erasure solution for your needs.',
-    keywords: generateKeywords([
-      'pricing plans',
-      'software packages',
-      'license comparison',
-      'plan features',
-      'package comparison',
-      'plan options',
-      'software packages comparison',
-      'license plans',
-      'subscription plans',
-      'enterprise packages'
-    ]),
-    canonicalUrl: getCanonicalUrl('/pricing-and-plan'),
-  },
+
+
 
   // Utility pages
   'not-found': {
@@ -821,10 +789,10 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'compliance center',
       'data erasure standards',
       'regulatory compliance',
-      'certification requirements',
+      'regulation requirements',
       'compliance information',
       'regulatory standards',
-      'certification center',
+      'regulation center',
       'compliance guidelines',
       'industry compliance',
       'regulatory requirements'
@@ -866,6 +834,92 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'hospital data security'
     ]),
     canonicalUrl: getCanonicalUrl('/solutions/healthcare'),
+  },
+
+  'login': {
+    title: 'Login - DSecure Tech | Data Erasure Management Platform',
+    description: 'Login to your DSecure Tech account to manage data erasure tasks, view compliance reports, and ensure enterprise security.',
+    keywords: generateKeywords([
+      'DSecure login',
+      'account login',
+      'user dashboard',
+      'erasure management',
+      'compliance portal',
+      'secure login',
+      'enterprise access',
+      'client portal',
+      'erasure reports login',
+      'management console'
+    ]),
+    canonicalUrl: getCanonicalUrl('/login'),
+  },
+
+  'register': {
+    title: 'Create Account | DSecure Tech - Secure Data Erasure Solutions',
+    description: 'Create your DSecure Tech account to access professional data erasure solutions. Join thousands of enterprises securing their data with compliant erasure.',
+    keywords: generateKeywords([
+      'DSecure register',
+      'create account',
+      'data erasure signup',
+      'enterprise data security',
+      'secure erasure account',
+      'signup form',
+      'new user registration',
+      'get started',
+      'enterprise account',
+      'compliance platform signup'
+    ]),
+    canonicalUrl: getCanonicalUrl('/register'),
+  },
+
+  'cloud-erasure': {
+    title: 'Cloud Erasure Service | Multi-Cloud Data Protection',
+    description: 'Comprehensive cloud erasure service for AWS, Azure, GCP, and SaaS applications. Secure cloud data removal with blockchain verification.',
+    keywords: generateKeywords([
+      'cloud erasure',
+      'cloud data removal',
+      'AWS data sanitization',
+      'Azure data deletion',
+      'GCP data protection',
+      'SaaS data erasure',
+      'multi-cloud erasure',
+      'cloud storage wiping',
+      'virtual machine erasure',
+      'cloud compliance'
+    ]),
+    canonicalUrl: getCanonicalUrl('/services/cloud-erasure'),
+  },
+
+  'pricing-and-plan': {
+    title: 'Pricing & Plans - D-Secure Data Erasure Software | Professional Licenses',
+    description: 'Choose the perfect D-Secure data erasure license plan. Drive Eraser, Admin Console, Mobile Eraser & File Eraser. Volume discounts available. Free shipping worldwide.',
+    keywords: generateKeywords([
+      'data erasure pricing',
+      'secure delete software cost',
+      'NIST compliant erasure license',
+      'enterprise data wiping plans',
+      'drive eraser price',
+      'license cost',
+      'volume licensing',
+      'enterprise pricing'
+    ]),
+    canonicalUrl: getCanonicalUrl('/pricing-and-plan'),
+  },
+
+  'payment-setup': {
+    title: 'Payment & License Setup | DSecure Tech - Complete Your Setup',
+    description: 'Complete your DSecure Tech payment and license setup. Configure billing details and license requirements to access all data erasure features.',
+    keywords: generateKeywords([
+      'DSecure payment setup',
+      'license configuration',
+      'billing setup',
+      'enterprise license',
+      'data erasure license',
+      'payment portal',
+      'checkout configuration',
+      'license activation'
+    ]),
+    canonicalUrl: getCanonicalUrl('/payment'),
   }
 };
 
@@ -873,7 +927,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 export const getSEOForPage = (pageName: keyof typeof PAGE_SEO): SEOMetadata => {
   const defaultSEO = getDefaultSEO();
   const pageSEO = PAGE_SEO[pageName] || {};
-  
+
   return {
     ...defaultSEO,
     ...pageSEO,
@@ -919,13 +973,13 @@ export const trackSEOPerformance = (pageName: string, metrics: any) => {
 export const analyzeKeywordDensity = (content: string, keywords: string[]) => {
   const wordCount = content.split(/\s+/).length;
   const density: Record<string, number> = {};
-  
+
   keywords.forEach(keyword => {
     const regex = new RegExp(keyword, 'gi');
     const matches = content.match(regex);
     const count = matches ? matches.length : 0;
     density[keyword] = (count / wordCount) * 100;
   });
-  
+
   return density;
 };

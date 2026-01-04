@@ -4,6 +4,7 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Helmet } from "react-helmet-async";
 import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   AdminDashboardAPI,
   type DashboardStats,
@@ -47,6 +48,7 @@ import {
   useEnhancedAuditReports,
 } from "@/hooks/useAuditReports";
 import { usePerformanceData } from "@/hooks/usePerformanceData";
+import { useSessions } from "@/hooks/useSessions";
 import { group } from "node:console";
 
 // ✅ Import Demo Data for "Try Demo Account" mode
@@ -80,6 +82,7 @@ interface MergedUserData {
 }
 
 export default function AdminDashboard() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { showSuccess, showError, showInfo } = useNotification();
   const navigate = useNavigate();
@@ -92,7 +95,7 @@ export default function AdminDashboard() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileEditForm, setProfileEditForm] = useState({
     user_name: "",
-    // phone_number: "",
+    phone_number: "",
     timezone: "",
   });
   const [profileUpdateLoading, setProfileUpdateLoading] = useState(false);
@@ -162,13 +165,21 @@ export default function AdminDashboard() {
   });
   const [privateCloudLoading, setPrivateCloudLoading] = useState(false);
 
-  // Pagination states - 5 items per page
-  const ITEMS_PER_PAGE = 5;
+  // Pagination states - dynamic items per page for each tab
+  const pageSizeOptions = [5, 10, 25, 50, 100];
+  const [licensePageSize, setLicensePageSize] = useState(5);
+  const [usersPageSize, setUsersPageSize] = useState(5);
+  const [activityPageSize, setActivityPageSize] = useState(5);
+  const [reportsPageSize, setReportsPageSize] = useState(5);
+  const [systemLogsPageSize, setSystemLogsPageSize] = useState(5);
+  const [recentReportsPageSize, setRecentReportsPageSize] = useState(5);
+
   const [usersPage, setUsersPage] = useState(1);
   const [userActivityPage, setUserActivityPage] = useState(1);
   const [reportsPage, setReportsPage] = useState(1);
   const [systemLogsPage, setSystemLogsPage] = useState(1);
   const [licenseDetailsPage, setLicenseDetailsPage] = useState(1);
+  const [recentReportsPage, setRecentReportsPage] = useState(1);
 
   // Helper function to get user data from localStorage
   const getUserDataFromStorage = () => {
@@ -210,6 +221,7 @@ export default function AdminDashboard() {
     []
   );
   const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>([]);
+  const [recentSessions, setRecentSessions] = useState<any[]>([]);
 
   // Performance data state
   const [performanceData, setPerformanceData] = useState<{
@@ -273,6 +285,11 @@ export default function AdminDashboard() {
       storedUserData?.name ||
       user?.name ||
       getNameFromEmail(storedUserData?.user_email || storedUserData?.email || user?.email),
+    phone_number:
+      storedUserData?.phone_number ||
+      storedUserData?.phone ||
+      storedUserData?.subuser_phone ||
+      user?.phone_number,
     email:
       storedUserData?.user_email ||
       storedUserData?.email ||
@@ -282,7 +299,7 @@ export default function AdminDashboard() {
     role: primaryRole,
     userRole: storedUserData?.userRole || storedUserData?.user_role,
     user_role: storedUserData?.user_role || storedUserData?.userRole,
-    // phone: storedUserData?.phone_number || storedUserData?.phone || storedUserData?.subuser_phone || "", // Commented out
+    phone: storedUserData?.phone_number || storedUserData?.phone || storedUserData?.subuser_phone || "",
     department: storedUserData?.department || "",
     licenses: 0, // Will be updated from API
     is_private_cloud: storedUserData?.is_private_cloud || user?.is_private_cloud,
@@ -341,6 +358,12 @@ export default function AdminDashboard() {
   const performanceQuery = usePerformanceData(
     isDemo ? '' : userEmail,
     !!userEmail && activeTab === "overview" && !isDemo
+  );
+
+  // ✅ React Query: Fetch sessions data with caching (disabled in demo mode)
+  const sessionsQuery = useSessions(
+    isDemo ? '' : userEmail,
+    !!userEmail && !isDemo
   );
 
   // React Query mutations for CRUD operations
@@ -462,6 +485,38 @@ export default function AdminDashboard() {
   // ✅ React Query provides data directly - no need for useEffect with object dependencies
   // Using dashboardQuery.activity directly in UI to avoid "Maximum update depth" error
 
+  // ✅ React Query: Sync dashboard data from useDashboardData hook to local state
+  // This ensures cached data is properly used without re-fetching
+  const dashboardData = useDashboardData(userEmail, !!userEmail && !isDemo);
+
+  useEffect(() => {
+    if (isDemo) return; // Skip in demo mode
+
+    // Sync stats
+    if (dashboardData.stats) {
+      setDashboardStats(dashboardData.stats);
+    }
+
+    // Sync groups
+    if (dashboardData.groups && dashboardData.groups.length > 0) {
+      setGroups(dashboardData.groups);
+    }
+
+    // Sync license data (from React Query cache)
+    if (dashboardData.licenses && dashboardData.licenses.length > 0) {
+      setLicenseData(dashboardData.licenses);
+      setUserLicenseDetails(dashboardData.licenses);
+      console.log('✅ License data synced from React Query cache:', dashboardData.licenses.length, 'items');
+    }
+
+    // Sync reports
+    if (dashboardData.reports && dashboardData.reports.length > 0) {
+      setRecentReports(dashboardData.reports);
+    }
+
+    // Note: Profile data is handled separately via profileData state initialization and fallback logic
+  }, [dashboardData.stats, dashboardData.groups, dashboardData.licenses, dashboardData.reports, isDemo]);
+
   // ✅ React Query: Update machines data (keep for backward compatibility)
   useEffect(() => {
     if (machinesQuery.data) {
@@ -497,6 +552,17 @@ export default function AdminDashboard() {
       );
     }
   }, [performanceQuery.data]);
+
+  // ✅ React Query: Update sessions data from cache
+  useEffect(() => {
+    if (sessionsQuery.data) {
+      setRecentSessions(sessionsQuery.data);
+      console.log(
+        "✅ Sessions data updated from React Query cache:",
+        sessionsQuery.data.length
+      );
+    }
+  }, [sessionsQuery.data]);
 
   // ✅ DEMO MODE: Set static/dummy data when user logs in via "Try Demo Account"
   useEffect(() => {
@@ -639,7 +705,7 @@ export default function AdminDashboard() {
           role: fallbackRole,
           userRole: storedData?.userRole || storedData?.user_role,
           user_role: storedData?.user_role || storedData?.userRole,
-          // phone: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "", // Commented out
+          phone_number: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "", // Commented out
           department: storedData?.department || "",
           is_private_cloud: storedData?.is_private_cloud || user?.is_private_cloud || false,
         });
@@ -708,14 +774,12 @@ export default function AdminDashboard() {
         );
         console.log("👤 User Type:", storedUserData?.user_type || "user");
 
-        const [userRes, subusersRes, sessionsRes, systemLogsRes] =
+        // ✅ Sessions are now fetched via React Query (sessionsQuery) - removed from Promise.all
+        const [userRes, subusersRes, systemLogsRes] =
           await Promise.all([
             apiClient.getUserByEmail(userEmailForLogs),
             apiClient
               .getSubusersBySuperuser(userEmailForLogs)
-              .catch(() => ({ success: false, data: null })),
-            apiClient
-              .getSessions()
               .catch(() => ({ success: false, data: null })),
             apiClient
               .getSystemLogsByEmail(userEmailForLogs)
@@ -820,8 +884,7 @@ export default function AdminDashboard() {
           // Use React Query data for performance calculations
           const performanceAuditReports = auditReportsQuery.data || [];
           const performanceMachines = machinesQuery.data || [];
-          const performanceSessions =
-            sessionsRes?.success && sessionsRes.data ? sessionsRes.data : [];
+          const performanceSessions = sessionsQuery.data || [];
           const performanceSystemLogs =
             systemLogsRes?.success && systemLogsRes.data
               ? systemLogsRes.data
@@ -1011,27 +1074,29 @@ export default function AdminDashboard() {
               userRes.data!.name ||
               prev!.name ||
               getNameFromEmail(userRes.data!.user_email || userRes.data!.email || prev!.email),
-            // phone:
-            //   userRes.data!.phone_number ||
-            //   userRes.data!.phone ||
-            //   userRes.data!.subuser_phone ||
-            //   prev!.phone ||
-            //   "",
+            phone:
+              userRes.data!.phone_number ||
+              userRes.data!.phone ||
+              userRes.data!.subuser_phone,
             email:
               userRes.data!.user_email || userRes.data!.email || prev!.email,
             role: userRes.data!.role || prev!.role,
             is_private_cloud: userRes.data!.is_private_cloud ?? prev!.is_private_cloud,
           }));
 
-          // ✅ UPDATE LOCALSTORAGE with latest database data
+          // ✅ UPDATE LOCALSTORAGE with latest database data including billing details
           const storedData = getUserDataFromStorage();
           if (storedData) {
             storedData.user_name = userRes.data!.user_name;
             storedData.phone_number = userRes.data!.phone_number;
             storedData.is_private_cloud = userRes.data!.is_private_cloud;
+            // ✅ Save billing details JSON for Settings modal
+            storedData.license_details_json = userRes.data!.license_details_json;
+            storedData.payment_details_json = userRes.data!.payment_details_json;
             localStorage.setItem("user_data", JSON.stringify(storedData));
             localStorage.setItem("authUser", JSON.stringify(storedData));
             console.log("💾 LocalStorage synced with database on page load, is_private_cloud:", userRes.data!.is_private_cloud);
+            console.log("💾 LocalStorage synced billing: license_details_json =", !!storedData.license_details_json, "| payment_details_json =", !!storedData.payment_details_json);
           }
 
           // Process license details if available
@@ -1305,11 +1370,8 @@ export default function AdminDashboard() {
         ) {
           console.log("✅ Subusers fetched:", subusersRes.data.length);
 
-          let sessionsData: Session[] = [];
-          if (sessionsRes.success && sessionsRes.data) {
-            sessionsData = sessionsRes.data;
-            console.log("✅ Sessions fetched:", sessionsData.length);
-          }
+          // ✅ Use sessions from React Query cache
+          const sessionsData: Session[] = sessionsQuery.data || [];
 
           // Fetch server time from API
           let currentTime = new Date().getTime();
@@ -1423,14 +1485,20 @@ export default function AdminDashboard() {
               last_logout: subuser.last_logout,
               loginTime,
               logoutTime,
-              status,
+              status: subuser.activity_status,
             });
+
+            // Ensure status is either "active" or "offline"
+            const finalStatus: "active" | "offline" =
+              (subuser.activity_status === "active" || subuser.activity_status === "Active")
+                ? "active"
+                : "offline";
 
             return {
               email: subuserEmail,
               loginTime,
               logoutTime,
-              status,
+              status: finalStatus,
             };
           });
 
@@ -1443,6 +1511,8 @@ export default function AdminDashboard() {
           console.warn("⚠️ No subusers found for superuser:", userEmail);
           setUserActivity([]);
         }
+
+        // ✅ Sessions data is now handled by React Query (sessionsQuery) - no need to process here
 
         // Process system logs data
         if (systemLogsRes.success && systemLogsRes.data) {
@@ -1498,7 +1568,7 @@ export default function AdminDashboard() {
         role: fallbackRole,
         userRole: storedData?.userRole || storedData?.user_role,
         user_role: storedData?.user_role || storedData?.userRole,
-        // phone: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "", // Commented out
+        phone: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "",
         department: storedData?.department || "",
         licenses: 0,
         is_private_cloud: storedData?.is_private_cloud || user?.is_private_cloud || false,
@@ -1671,29 +1741,29 @@ export default function AdminDashboard() {
       {
         label: "Total Licenses",
         value: dashboardStats.totalLicenses,
-        change: dashboardStats.changes.totalLicenses.value,
-        trend: dashboardStats.changes.totalLicenses.trend,
+        change: dashboardStats.changes?.totalLicenses?.value || '0',
+        trend: dashboardStats.changes?.totalLicenses?.trend || 'up',
         color: "bg-blue-500",
       },
       {
         label: "Active Users",
         value: dashboardStats.activeUsers,
-        change: dashboardStats.changes.activeUsers.value,
-        trend: dashboardStats.changes.activeUsers.trend,
+        change: dashboardStats.changes?.activeUsers?.value || '0',
+        trend: dashboardStats.changes?.activeUsers?.trend || 'up',
         color: "bg-emerald-500",
       },
       {
         label: "Available Licenses",
         value: dashboardStats.availableLicenses,
-        change: dashboardStats.changes.availableLicenses.value,
-        trend: dashboardStats.changes.availableLicenses.trend,
+        change: dashboardStats.changes?.availableLicenses?.value || '0',
+        trend: dashboardStats.changes?.availableLicenses?.trend || 'up',
         color: "bg-orange-500",
       },
       {
         label: "Success Rate",
         value: dashboardStats.successRate,
-        change: dashboardStats.changes.successRate.value,
-        trend: dashboardStats.changes.successRate.trend,
+        change: dashboardStats.changes?.successRate?.value || '0%',
+        trend: dashboardStats.changes?.successRate?.trend || 'up',
         color: "bg-purple-500",
       },
     ];
@@ -2055,7 +2125,7 @@ export default function AdminDashboard() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-                Admin Dashboard
+                {t('dashboard.adminDashboard')}
               </h1>
               {/* Role Badge */}
               <span
@@ -2067,7 +2137,7 @@ export default function AdminDashboard() {
             <p className="mt-2 text-slate-600 flex items-center gap-2">
               <span className="inline-block w-2 h-2 rounded-full bg-green-400 flex-shrink-0"></span>
               <span className="truncate">
-                Welcome back, {getNameFromEmail(profileData?.email || storedUserData?.user_email || storedUserData?.email || user?.email || "user@example.com")}
+                {t('dashboard.welcomeBack')}, {storedUserData?.name || storedUserData?.user_name || storedUserData?.subuser_name || profileData?.name || user?.name || getNameFromEmail(profileData?.email || storedUserData?.user_email || storedUserData?.email || user?.email || "user@example.com")}
               </span>
               <span className="hidden sm:inline text-slate-400">•</span>
               <span className="hidden sm:inline text-sm text-slate-500">
@@ -2081,11 +2151,11 @@ export default function AdminDashboard() {
               onClick={() => setShowProfileModal(true)}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 rounded-lg transition-all duration-200 shadow-lg"
             >
-              <span>My Profile</span>
+              <span>{t('dashboard.profile')}</span>
             </button>
 
             {/* Private Cloud Setup Button - Only if is_private_cloud is true */}
-            {isPrivateCloudEnabled && (
+            {/* {isPrivateCloudEnabled && !isDemo && (
               <button
                 onClick={() => navigate('/admin/private-cloud-setup')}
                 className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-lg transition-all duration-200 shadow-lg"
@@ -2096,11 +2166,21 @@ export default function AdminDashboard() {
                 </svg>
                 <span className="hidden sm:inline">Private Cloud</span>
               </button>
-            )}
+            )} */}
+            <button
+              onClick={() => navigate('/admin/private-cloud-setup')}
+              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-lg transition-all duration-200 shadow-lg"
+              title="Private Cloud Setup"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+              </svg>
+              <span className="hidden sm:inline">Private Cloud</span>
+            </button>
 
             {/* Settings Button - Billing & Password */}
             <button
-              onClick={() => {
+              onClick={async () => {
                 setShowSettingsModal(true);
 
                 // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
@@ -2110,219 +2190,177 @@ export default function AdminDashboard() {
                   return;
                 }
 
-                // Load billing details from BOTH license_details_json AND payment_details_json
-                // Priority: user object from AuthContext > localStorage
-                const storedData = getUserDataFromStorage();
+                // ✅ CACHE CHECK: If billing data already loaded, don't fetch again
+                if (billingDetails && Object.keys(billingDetails).length > 0) {
+                  console.log("✅ Using cached billing data, skipping API call");
+                  return;
+                }
 
-                console.log("🔍 DEBUG: Settings button clicked");
-                console.log("🔍 DEBUG: user object:", user);
-                console.log("🔍 DEBUG: storedData:", storedData);
-                console.log(
-                  "🔍 DEBUG: user.license_details_json:",
-                  user?.license_details_json
-                );
-                console.log(
-                  "🔍 DEBUG: user.payment_details_json:",
-                  user?.payment_details_json
-                );
+                // Get user email for API call
+                const userEmail = user?.email || (user as any)?.user_email || storedUserData?.user_email || storedUserData?.email;
+
+                if (!userEmail) {
+                  console.log("⚠️ No user email found for billing fetch");
+                  return;
+                }
+
+                // Helper function to format date in user's local timezone
+                const formatDateLocal = (dateStr: string | undefined) => {
+                  if (!dateStr) return "N/A";
+                  try {
+                    return new Date(dateStr).toLocaleDateString(undefined, {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric"
+                    });
+                  } catch {
+                    return dateStr;
+                  }
+                };
 
                 let combinedBillingInfo: any = {};
 
-                // 1️⃣ Load license details (plan info, licenses, etc.)
-                // Try user object first, then fallback to localStorage
-                const licenseDetailsJson =
-                  user?.license_details_json ||
-                  storedData?.license_details_json;
+                try {
+                  // 📡 Fetch fresh user data from API to get payment_details_json
+                  console.log("📡 Fetching user billing data from API for:", userEmail);
+                  const apiUserRes = await apiClient.getUserByEmail(userEmail);
 
-                console.log(
-                  "🔍 DEBUG: licenseDetailsJson:",
-                  licenseDetailsJson
-                );
-                console.log(
-                  "🔍 DEBUG: licenseDetailsJson type:",
-                  typeof licenseDetailsJson
-                );
-                console.log(
-                  '🔍 DEBUG: licenseDetailsJson !== "{}":',
-                  licenseDetailsJson !== "{}"
-                );
+                  if (apiUserRes.success && apiUserRes.data) {
+                    const apiUser = apiUserRes.data;
+                    console.log("✅ API User data received:", apiUser);
 
-                if (licenseDetailsJson && licenseDetailsJson !== "{}") {
-                  try {
-                    const parsed = JSON.parse(licenseDetailsJson);
-                    console.log(
-                      "✅ License details loaded for billing:",
-                      parsed
-                    );
-                    console.log("🔍 DEBUG: parsed.plans:", parsed.plans);
-                    console.log("🔍 DEBUG: parsed.summary:", parsed.summary);
-                    console.log(
-                      "✅ License details loaded for billing:",
-                      parsed
-                    );
-                    console.log("🔍 DEBUG: parsed.plans:", parsed.plans);
-                    console.log("🔍 DEBUG: parsed.summary:", parsed.summary);
+                    // Debug: Show what fields are available
+                    const hasLicense = !!apiUser.license_details_json && apiUser.license_details_json !== "{}";
+                    const hasPayment = !!apiUser.payment_details_json && apiUser.payment_details_json !== "{}";
+                    console.log("🔍 Has license_details_json:", hasLicense, "| Has payment_details_json:", hasPayment);
 
-                    // Extract relevant billing information
-                    if (parsed.plans && parsed.summary) {
-                      console.log(
-                        "🔍 DEBUG: Entering plans && summary condition"
-                      );
-                      combinedBillingInfo = {
-                        activePlanTypes:
-                          parsed.summary.activePlanTypes?.join(", ") || "N/A",
-                        activePlanIds:
-                          parsed.summary.activePlanIds?.join(", ") || "N/A",
-                        totalPurchases: parsed.summary.totalPurchases || 0,
-                        totalLicenses:
-                          parsed.summary.totalLicensesAcrossAllPlans || 0,
-                        availableLicenses:
-                          parsed.summary.totalAvailableLicenses || 0,
-                        consumedLicenses:
-                          parsed.summary.totalConsumedLicenses || 0,
-                        userEmail:
-                          parsed.useremail ||
-                          user?.email ||
-                          storedData?.user_email ||
-                          "N/A",
-                      };
+                    // 1️⃣ Load license details and normalize to DEMO format
+                    const licenseDetailsJson = apiUser.license_details_json;
+                    if (licenseDetailsJson && licenseDetailsJson !== "{}") {
+                      try {
+                        const parsed = JSON.parse(licenseDetailsJson);
+                        console.log("✅ License details parsed:", parsed);
 
-                      console.log(
-                        "🔍 DEBUG: combinedBillingInfo after summary:",
-                        combinedBillingInfo
-                      );
+                        // Handle format with plans array and summary
+                        if (parsed.plans && parsed.summary) {
+                          combinedBillingInfo = {
+                            activePlanTypes: parsed.summary.activePlanTypes?.join(", ") || "N/A",
+                            activePlanIds: parsed.summary.activePlanIds?.join(", ") || "N/A",
+                            totalPurchases: parsed.summary.totalPurchases || 0,
+                            totalLicenses: parsed.summary.totalLicensesAcrossAllPlans || 0,
+                            availableLicenses: parsed.summary.totalAvailableLicenses || 0,
+                            consumedLicenses: parsed.summary.totalConsumedLicenses || 0,
+                            usedLicenses: parsed.summary.totalConsumedLicenses || 0,
+                            userEmail: parsed.useremail || userEmail,
+                            status: "Active",
+                          };
 
-                      // Add plan-specific details
-                      if (parsed.plans.length > 0) {
-                        console.log(
-                          "🔍 DEBUG: parsed.plans[0]:",
-                          parsed.plans[0]
-                        );
-                        const firstPlan = parsed.plans[0];
-                        combinedBillingInfo.purchaseDate =
-                          firstPlan.purchaseDate
-                            ? new Date(
-                              firstPlan.purchaseDate
-                            ).toLocaleDateString("en-IN", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })
-                            : "N/A";
-                        combinedBillingInfo.validityYears =
-                          firstPlan.validityYears || "N/A";
-                        combinedBillingInfo.expiryDate = firstPlan.expiryDate
-                          ? new Date(firstPlan.expiryDate).toLocaleDateString(
-                            "en-IN",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )
-                          : "N/A";
-
-                        console.log(
-                          "🔍 DEBUG: combinedBillingInfo after plan details:",
-                          combinedBillingInfo
-                        );
+                          if (parsed.plans.length > 0) {
+                            const firstPlan = parsed.plans[0];
+                            // Extract planType from firstPlan if not in summary
+                            combinedBillingInfo.planType = firstPlan.planType || firstPlan.plan_type || combinedBillingInfo.activePlanTypes;
+                            combinedBillingInfo.totalLicenses = firstPlan.totalLicenses || firstPlan.total_licenses || combinedBillingInfo.totalLicenses || 0;
+                            combinedBillingInfo.purchaseDate = formatDateLocal(firstPlan.purchaseDate);
+                            combinedBillingInfo.startDate = formatDateLocal(firstPlan.startDate || firstPlan.purchaseDate);
+                            combinedBillingInfo.validityYears = firstPlan.validityYears || firstPlan.validity_years || "N/A";
+                            combinedBillingInfo.expiryDate = formatDateLocal(firstPlan.expiryDate);
+                            combinedBillingInfo.billingCycle = firstPlan.billingCycle || firstPlan.billing_cycle || "Annual";
+                            combinedBillingInfo.amount = firstPlan.amount || firstPlan.price || "N/A";
+                            combinedBillingInfo.features = Array.isArray(firstPlan.features)
+                              ? firstPlan.features.join(", ")
+                              : (firstPlan.features || "Standard Features");
+                          }
+                        } else {
+                          // Direct object format - normalize field names to DEMO format
+                          combinedBillingInfo = {
+                            activePlanTypes: parsed.plan_type || parsed.planType || parsed.activePlanTypes || "Standard",
+                            activePlanIds: parsed.plan_id || parsed.planId || parsed.activePlanIds || "N/A",
+                            totalPurchases: parsed.total_purchases || parsed.totalPurchases || 1,
+                            totalLicenses: parsed.total_licenses || parsed.totalLicenses || parsed.licenses || parsed.totalLicenses || 0,
+                            availableLicenses: parsed.available_licenses || parsed.availableLicenses || 0,
+                            consumedLicenses: parsed.consumed_licenses || parsed.consumedLicenses || parsed.usedLicenses || 0,
+                            usedLicenses: parsed.used_licenses || parsed.usedLicenses || parsed.consumedLicenses || 0,
+                            validityYears: parsed.validity_years || parsed.validityYears || "1",
+                            purchaseDate: formatDateLocal(parsed.purchase_date || parsed.purchaseDate),
+                            startDate: formatDateLocal(parsed.start_date || parsed.startDate),
+                            expiryDate: formatDateLocal(parsed.expiry_date || parsed.expiryDate),
+                            billingCycle: parsed.billing_cycle || parsed.billingCycle || "Annual",
+                            amount: parsed.amount || parsed.price || "N/A",
+                            status: parsed.status || "Active",
+                            userEmail: parsed.user_email || parsed.userEmail || userEmail,
+                            features: Array.isArray(parsed.features)
+                              ? parsed.features.join(", ")
+                              : (parsed.features || "Standard Features"),
+                          };
+                        }
+                      } catch (e) {
+                        console.error("❌ Failed to parse license details:", e);
                       }
-
-                      console.log(
-                        "✅ License info extracted:",
-                        combinedBillingInfo
-                      );
-                    } else {
-                      console.log(
-                        "⚠️ DEBUG: No plans/summary, using raw parsed data"
-                      );
-                      combinedBillingInfo = parsed;
-                      console.log(
-                        "🔍 DEBUG: combinedBillingInfo = parsed:",
-                        combinedBillingInfo
-                      );
                     }
-                  } catch (e) {
-                    console.error("❌ Failed to parse license details:", e);
-                    console.error(
-                      "🔍 DEBUG: licenseDetailsJson that failed to parse:",
-                      licenseDetailsJson
-                    );
+
+                    // 2️⃣ Load payment details
+                    const paymentDetailsJson = apiUser.payment_details_json;
+                    if (paymentDetailsJson && paymentDetailsJson !== "{}") {
+                      try {
+                        const paymentParsed = JSON.parse(paymentDetailsJson);
+                        console.log("✅ Payment details parsed:", paymentParsed);
+                        combinedBillingInfo = { ...combinedBillingInfo, ...paymentParsed };
+                      } catch (e) {
+                        console.error("❌ Failed to parse payment details:", e);
+                      }
+                    }
+
+                    // 3️⃣ If still empty, use basic user info as fallback
+                    if (Object.keys(combinedBillingInfo).length === 0) {
+                      console.log("⚠️ No billing/payment JSON found, using basic user info");
+                      combinedBillingInfo = {
+                        userEmail: apiUser.user_email || apiUser.email || userEmail,
+                        userName: apiUser.user_name || apiUser.name || "N/A",
+                        userRole: apiUser.role || apiUser.user_role || "N/A",
+                        status: apiUser.status || "active",
+                        department: apiUser.department || "N/A",
+                        licenseAllocation: apiUser.licesne_allocation || (apiUser as any).license_allocation || "0",
+                        timezone: apiUser.timezone || "N/A",
+                        isPrivateCloud: apiUser.is_private_cloud ? "Yes" : "No",
+                        lastLogin: apiUser.last_login || "N/A",
+                      };
+                    }
+                  } else {
+                    console.log("⚠️ API call failed, falling back to localStorage");
+                    // Fallback to localStorage data
+                    const storedData = getUserDataFromStorage();
+                    const licenseDetailsJson = storedData?.license_details_json;
+                    const paymentDetailsJson = storedData?.payment_details_json;
+
+                    if (licenseDetailsJson && licenseDetailsJson !== "{}") {
+                      try {
+                        combinedBillingInfo = JSON.parse(licenseDetailsJson);
+                      } catch (e) { /* ignore */ }
+                    }
+                    if (paymentDetailsJson && paymentDetailsJson !== "{}") {
+                      try {
+                        combinedBillingInfo = { ...combinedBillingInfo, ...JSON.parse(paymentDetailsJson) };
+                      } catch (e) { /* ignore */ }
+                    }
+
+                    // Fallback to basic stored user data
+                    if (Object.keys(combinedBillingInfo).length === 0 && storedData) {
+                      combinedBillingInfo = {
+                        userEmail: storedData.user_email || storedData.email || userEmail,
+                        userName: storedData.user_name || storedData.name || "N/A",
+                        userRole: storedData.role || storedData.user_role || "N/A",
+                        status: storedData.status || "active",
+                        department: storedData.department || "N/A",
+                        licenseAllocation: storedData.license_allocation || "0",
+                      };
+                    }
                   }
-                } else {
-                  console.log(
-                    "⚠️ DEBUG: No license details found or empty JSON"
-                  );
-                  console.log(
-                    "🔍 DEBUG: licenseDetailsJson value:",
-                    licenseDetailsJson
-                  );
+                } catch (error) {
+                  console.error("❌ Error fetching billing data:", error);
                 }
 
-                // 2️⃣ Load payment details (card info, billing address, etc.)
-                // Try user object first, then fallback to localStorage
-                const paymentDetailsJson =
-                  user?.payment_details_json ||
-                  storedData?.payment_details_json;
-
-                console.log(
-                  "🔍 DEBUG: paymentDetailsJson:",
-                  paymentDetailsJson
-                );
-                console.log(
-                  "🔍 DEBUG: paymentDetailsJson type:",
-                  typeof paymentDetailsJson
-                );
-
-                if (paymentDetailsJson && paymentDetailsJson !== "{}") {
-                  try {
-                    const paymentParsed = JSON.parse(paymentDetailsJson);
-                    console.log(
-                      "✅ Payment details loaded from API response:",
-                      paymentParsed
-                    );
-
-                    // Merge payment details with license details
-                    combinedBillingInfo = {
-                      ...combinedBillingInfo,
-                      ...paymentParsed,
-                    };
-
-                    console.log(
-                      "✅ Combined billing info with payment details:",
-                      combinedBillingInfo
-                    );
-                  } catch (e) {
-                    console.error("❌ Failed to parse payment details:", e);
-                    console.error(
-                      "🔍 DEBUG: paymentDetailsJson that failed to parse:",
-                      paymentDetailsJson
-                    );
-                  }
-                } else {
-                  console.log(
-                    "ℹ️ No payment details found in user object or localStorage"
-                  );
-                }
-
-                // Set the combined billing details
-                console.log(
-                  "🔍 DEBUG: About to set billingDetails state with:",
-                  combinedBillingInfo
-                );
-                console.log(
-                  "🔍 DEBUG: Object.keys(combinedBillingInfo):",
-                  Object.keys(combinedBillingInfo)
-                );
-                console.log(
-                  "🔍 DEBUG: Object.entries(combinedBillingInfo):",
-                  Object.entries(combinedBillingInfo)
-                );
+                console.log("✅ Final billing details:", combinedBillingInfo);
                 setBillingDetails(combinedBillingInfo);
-                console.log(
-                  "✅ Final billing details set:",
-                  combinedBillingInfo
-                );
               }}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
               title="Settings - Billing & Password"
@@ -2348,6 +2386,40 @@ export default function AdminDashboard() {
               </svg>
               <span className="hidden sm:inline">Settings</span>
             </button>
+
+
+            {/* Private Cloud Button - For Superadmin (Not Demo) */}
+            {/* {currentUserRole === 'superadmin' && isDemo && (
+              <button
+                onClick={() => {
+                  // Always navigate to private cloud page
+                  // Page will handle enabled/disabled state internally
+                  navigate('/admin/private-cloud-setup');
+                }}
+                className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-300 rounded-lg transition-all duration-200 shadow-sm"
+                title="Private Cloud"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                  />
+                </svg>
+                <span className="hidden sm:inline">Private Cloud</span>
+              </button>
+            )} */}
+
+            {/* Private Cloud Button (Gradient) - Only for Private Cloud Enabled Users */}
+
+
+
 
             {/* Renew License Button */}
             {/* <button 
@@ -2398,7 +2470,7 @@ export default function AdminDashboard() {
                 {[
                   {
                     id: "overview",
-                    name: "Overview",
+                    name: t('dashboard.overview'),
                     permission: "canViewDashboard", // All roles can see
                     iconSvg: (
                       <svg
@@ -2418,7 +2490,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "licenses",
-                    name: "Licenses",
+                    name: t('dashboard.licenses'),
                     permission: "canViewLicenses", // All roles except basic user can see
                     iconSvg: (
                       <svg
@@ -2438,7 +2510,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "users",
-                    name: "Users",
+                    name: t('dashboard.users'),
                     permission: "canViewAllUsers", // Only admin/superadmin/manager
                     iconSvg: (
                       <svg
@@ -2458,7 +2530,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "activity",
-                    name: "User Activity",
+                    name: t('dashboard.userActivity'),
                     permission: "canViewAllUsers", // Only admin/superadmin/manager
                     iconSvg: (
                       <svg
@@ -2478,7 +2550,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "reports",
-                    name: "Reports",
+                    name: t('dashboard.reports'),
                     permission: "canViewReports", // All roles can see
                     iconSvg: (
                       <svg
@@ -2498,7 +2570,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "performance",
-                    name: "Performance",
+                    name: t('dashboard.performance'),
                     permission: "canViewDashboard", // All roles can see
                     iconSvg: (
                       <svg
@@ -2512,6 +2584,26 @@ export default function AdminDashboard() {
                           strokeLinejoin="round"
                           strokeWidth={2}
                           d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                        />
+                      </svg>
+                    ),
+                  },
+                  {
+                    id: "mydownloads",
+                    name: "My Downloads",
+                    permission: "canViewDashboard", // All roles can see
+                    iconSvg: (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                         />
                       </svg>
                     ),
@@ -2658,8 +2750,9 @@ export default function AdminDashboard() {
                 </p>
               </div>
               <p className="text-2xl lg:text-3xl font-bold text-slate-900">
-                {userLicenseDetails.reduce((sum, lic) => sum + lic.total, 0) ||
-                  0}
+                {(Array.isArray(userLicenseDetails)
+                  ? userLicenseDetails.reduce((sum, lic) => sum + (lic.total || 0), 0)
+                  : 0) || 0}
               </p>
               <p className="text-sm text-slate-500 mt-2">All licenses</p>
             </div>
@@ -2716,60 +2809,63 @@ export default function AdminDashboard() {
                   View All
                 </Link>
               </div>
-              <div className="card-content divide-y divide-slate-200">
+              <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto scrollbar-hide">
                 {auditReports.length > 0 ? (
-                  auditReports.slice(0, 4).map((report) => (
-                    <div
-                      key={report.id || report.report_id}
-                      className="px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors min-w-0"
-                    >
-                      <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                  <>
+                    {auditReports
+                      .slice((recentReportsPage - 1) * recentReportsPageSize, recentReportsPage * recentReportsPageSize)
+                      .map((report) => (
                         <div
-                          className={`w-2 h-2 rounded-full flex-shrink-0 ${report.status === "completed" ||
-                            report.status === "Completed"
-                            ? "bg-green-400"
-                            : report.status === "running" ||
-                              report.status === "Running"
-                              ? "bg-blue-400"
-                              : report.status === "pending" ||
-                                report.status === "Pending"
-                                ? "bg-yellow-400"
-                                : "bg-red-400"
-                            }`}
-                        ></div>
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-slate-900 truncate">
-                            {report.report_name ||
-                              report.reportType ||
-                              `Report #${report.report_id || report.reportId || report.id
-                              }`}
+                          key={report.id || report.report_id}
+                          className="px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors min-w-0"
+                        >
+                          <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                            <div
+                              className={`w-2 h-2 rounded-full flex-shrink-0 ${report.status === "completed" ||
+                                report.status === "Completed"
+                                ? "bg-green-400"
+                                : report.status === "running" ||
+                                  report.status === "Running"
+                                  ? "bg-blue-400"
+                                  : report.status === "pending" ||
+                                    report.status === "Pending"
+                                    ? "bg-yellow-400"
+                                    : "bg-red-400"
+                                }`}
+                            ></div>
+                            <div className="min-w-0 flex-1">
+                              <div className="font-medium text-slate-900 truncate">
+                                {report.report_name ||
+                                  report.reportType ||
+                                  `Report #${report.report_id || report.reportId || report.id
+                                  }`}
+                              </div>
+                              <div className="text-sm text-slate-500 truncate">
+                                {report.erasure_method && (
+                                  <span>{report.erasure_method}</span>
+                                )}
+                                {report.reportType && (
+                                  <span>{report.reportType}</span>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          <div className="text-sm text-slate-500 truncate">
-                            {report.erasure_method && (
-                              <span>{report.erasure_method}</span>
-                            )}
-                            {report.reportType && (
-                              <span>{report.reportType}</span>
-                            )}
-                            {/* {report.deviceCount && <span>{report.deviceCount} devices</span>} */}
+                          <div className="text-sm text-slate-500 flex-shrink-0 ml-2">
+                            {report.report_datetime
+                              ? new Date(report.report_datetime).toLocaleDateString(
+                                "en-IN",
+                                { month: "short", day: "numeric" }
+                              )
+                              : report.reportDate
+                                ? new Date(report.reportDate).toLocaleDateString(
+                                  "en-IN",
+                                  { month: "short", day: "numeric" }
+                                )
+                                : "N/A"}
                           </div>
                         </div>
-                      </div>
-                      <div className="text-sm text-slate-500 flex-shrink-0 ml-2">
-                        {report.report_datetime
-                          ? new Date(report.report_datetime).toLocaleDateString(
-                            "en-IN",
-                            { month: "short", day: "numeric" }
-                          )
-                          : report.reportDate
-                            ? new Date(report.reportDate).toLocaleDateString(
-                              "en-IN",
-                              { month: "short", day: "numeric" }
-                            )
-                            : "N/A"}
-                      </div>
-                    </div>
-                  ))
+                      ))}
+                  </>
                 ) : (
                   <div className="px-4 sm:px-6 py-12 text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
@@ -2796,60 +2892,94 @@ export default function AdminDashboard() {
                   </div>
                 )}
               </div>
+              {/* Recent Reports Pagination Footer */}
+              {auditReports.length > 0 && (
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 sm:px-6 py-3 border-t border-slate-200 bg-slate-50">
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs text-slate-600">Rows per page:</label>
+                    <select
+                      value={recentReportsPageSize}
+                      onChange={(e) => { setRecentReportsPageSize(parseInt(e.target.value, 10)); setRecentReportsPage(1); }}
+                      className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                    >
+                      {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                    </select>
+                    <span className="text-xs text-slate-500">
+                      Showing {Math.min((recentReportsPage - 1) * recentReportsPageSize + 1, auditReports.length)} to {Math.min(recentReportsPage * recentReportsPageSize, auditReports.length)} of {auditReports.length}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-600">
+                      Page {recentReportsPage} of {Math.ceil(auditReports.length / recentReportsPageSize)}
+                    </span>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => setRecentReportsPage(prev => Math.max(prev - 1, 1))}
+                        disabled={recentReportsPage === 1}
+                        className="px-2 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Prev
+                      </button>
+                      <button
+                        onClick={() => setRecentReportsPage(prev => Math.min(prev + 1, Math.ceil(auditReports.length / recentReportsPageSize)))}
+                        disabled={recentReportsPage >= Math.ceil(auditReports.length / recentReportsPageSize)}
+                        className="px-2 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Recent System Logs */}
+            {/* Recent Sessions */}
             <div className="card !p-0 min-w-0">
               <div className="px-4 sm:px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                 <h2 className="font-semibold text-slate-900">
-                  Recent System Logs
+                  Recent Sessions
                 </h2>
                 <Link
-                  to="/admin/logs"
+                  to="/admin/sessions"
                   className="text-emerald-600 hover:text-emerald-700 text-sm font-medium"
                 >
                   View All
                 </Link>
               </div>
-              <div className="card-content divide-y divide-slate-200">
-                {recentSystemLogs.length > 0 ? (
+              <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                {recentSessions.length > 0 ? (
                   <>
-                    {recentSystemLogs
-                      .slice((systemLogsPage - 1) * ITEMS_PER_PAGE, systemLogsPage * ITEMS_PER_PAGE)
-                      .map((log, index) => (
+                    {recentSessions
+                      .slice((systemLogsPage - 1) * systemLogsPageSize, systemLogsPage * systemLogsPageSize)
+                      .map((session, index) => (
                         <div
-                          key={log.log_id || index}
+                          key={session.session_id || index}
                           className="px-4 sm:px-6 py-4 hover:bg-slate-50 transition-colors min-w-0"
                         >
                           <div className="flex items-start gap-3 min-w-0">
-                            {/* Log Level Badge */}
+                            {/* Session Status Badge */}
                             <div className="flex-shrink-0 mt-0.5">
                               <span
-                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${log.log_level === "ERROR" ||
-                                  log.log_level === "error"
-                                  ? "bg-red-100 text-red-700"
-                                  : log.log_level === "WARNING" ||
-                                    log.log_level === "warning"
-                                    ? "bg-yellow-100 text-yellow-700"
-                                    : log.log_level === "INFO" ||
-                                      log.log_level === "info"
-                                      ? "bg-blue-100 text-blue-700"
-                                      : "bg-slate-100 text-slate-700"
+                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${session.session_status === "active" || session.session_status === "Active"
+                                  ? "bg-green-100 text-green-700"
+                                  : session.session_status === "inactive" || session.session_status === "Inactive"
+                                    ? "bg-red-100 text-red-700"
+                                    : "bg-slate-100 text-slate-700"
                                   }`}
                               >
-                                {log.log_level || "INFO"}
+                                {session.session_status || "Unknown"}
                               </span>
                             </div>
 
-                            {/* Log Details */}
+                            {/* Session Details */}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-start justify-between gap-2 mb-1">
                                 <p className="font-medium text-slate-900 text-sm truncate">
-                                  {log.log_message || "No message"}
+                                  {session.user_email || "Unknown User"}
                                 </p>
                                 <span className="text-xs text-slate-500 flex-shrink-0">
-                                  {log.created_at
-                                    ? new Date(log.created_at).toLocaleString(
+                                  {session.login_time
+                                    ? new Date(session.login_time).toLocaleString(
                                       "en-IN",
                                       {
                                         month: "short",
@@ -2863,8 +2993,8 @@ export default function AdminDashboard() {
                               </div>
 
                               {/* Additional Info */}
-                              <div className="flex items-center gap-2 text-xs text-slate-500">
-                                {log.user_email && (
+                              <div className="flex items-center gap-3 text-xs text-slate-500">
+                                {session.ip_address && (
                                   <span className="truncate">
                                     <svg
                                       className="w-3 h-3 inline mr-1"
@@ -2876,10 +3006,15 @@ export default function AdminDashboard() {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth={2}
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
                                       />
                                     </svg>
-                                    {log.user_email}
+                                    {session.ip_address}
+                                  </span>
+                                )}
+                                {session.logout_time && (
+                                  <span className="truncate text-slate-400">
+                                    Logout: {new Date(session.logout_time).toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit" })}
                                   </span>
                                 )}
                               </div>
@@ -2887,30 +3022,7 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                       ))}
-                    {/* System Logs Pagination */}
-                    {recentSystemLogs.length > ITEMS_PER_PAGE && (
-                      <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-t border-slate-200">
-                        <span className="text-sm text-slate-600">
-                          Page {systemLogsPage} of {Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)}
-                        </span>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => setSystemLogsPage(prev => Math.max(prev - 1, 1))}
-                            disabled={systemLogsPage === 1}
-                            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Previous
-                          </button>
-                          <button
-                            onClick={() => setSystemLogsPage(prev => Math.min(prev + 1, Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)))}
-                            disabled={systemLogsPage >= Math.ceil(recentSystemLogs.length / ITEMS_PER_PAGE)}
-                            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </div>
-                    )}
+
                   </>
                 ) : (
                   <div className="px-4 sm:px-6 py-12 text-center">
@@ -2925,19 +3037,53 @@ export default function AdminDashboard() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
                     </div>
                     <h3 className="text-lg font-medium text-slate-900 mb-2">
-                      No Logs Found
+                      No Sessions Found
                     </h3>
                     <p className="text-sm text-slate-600">
-                      No recent system logs available at this time.
+                      No recent sessions available at this time.
                     </p>
                   </div>
                 )}
               </div>
+              {/* Sessions Pagination - always show when data exists */}
+              {recentSessions.length > 0 && (
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 sm:px-6 py-4 border-t border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs text-slate-600">Rows:</label>
+                    <select
+                      value={systemLogsPageSize}
+                      onChange={(e) => { setSystemLogsPageSize(parseInt(e.target.value, 10)); setSystemLogsPage(1); }}
+                      className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                    >
+                      {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                    </select>
+                  </div>
+                  <span className="text-sm text-slate-600">
+                    Page {systemLogsPage} of {Math.ceil(recentSessions.length / systemLogsPageSize)}
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSystemLogsPage(prev => Math.max(prev - 1, 1))}
+                      disabled={systemLogsPage === 1}
+                      className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => setSystemLogsPage(prev => Math.min(prev + 1, Math.ceil(recentSessions.length / systemLogsPageSize)))}
+                      disabled={systemLogsPage >= Math.ceil(recentSessions.length / systemLogsPageSize)}
+                      className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Quick Actions - COMMENTED OUT AS PER REQUIREMENT */}
@@ -3100,10 +3246,10 @@ export default function AdminDashboard() {
                 </p>
               </div>
               <div className="p-4 sm:p-6">
-                <div className="overflow-x-auto -mx-2 sm:mx-0">
+                <div className="overflow-x-auto -mx-2 sm:mx-0 max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
                   <div className="inline-block min-w-full align-middle">
                     <table className="min-w-full">
-                      <thead>
+                      <thead className="sticky top-0 bg-white shadow-sm z-10">
                         <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
                           <th className="pb-3 font-medium whitespace-nowrap">
                             Product
@@ -3120,8 +3266,8 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200">
-                        {userLicenseDetails
-                          .slice((licenseDetailsPage - 1) * ITEMS_PER_PAGE, licenseDetailsPage * ITEMS_PER_PAGE)
+                        {(Array.isArray(userLicenseDetails) ? userLicenseDetails : [])
+                          .slice((licenseDetailsPage - 1) * licensePageSize, licenseDetailsPage * licensePageSize)
                           .map((license, index) => {
                             const usagePercent =
                               license.total > 0
@@ -3164,7 +3310,7 @@ export default function AdminDashboard() {
                               </tr>
                             );
                           })}
-                        {userLicenseDetails.length === 0 && (
+                        {(!Array.isArray(userLicenseDetails) || userLicenseDetails.length === 0) && (
                           <tr>
                             <td
                               colSpan={4}
@@ -3176,32 +3322,48 @@ export default function AdminDashboard() {
                         )}
                       </tbody>
                     </table>
-                    {/* License Details Pagination */}
-                    {userLicenseDetails.length > ITEMS_PER_PAGE && (
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200">
-                        <span className="text-sm text-slate-600">
-                          Page {licenseDetailsPage} of {Math.ceil(userLicenseDetails.length / ITEMS_PER_PAGE)}
-                        </span>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => setLicenseDetailsPage(prev => Math.max(prev - 1, 1))}
-                            disabled={licenseDetailsPage === 1}
-                            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Previous
-                          </button>
-                          <button
-                            onClick={() => setLicenseDetailsPage(prev => Math.min(prev + 1, Math.ceil(userLicenseDetails.length / ITEMS_PER_PAGE)))}
-                            disabled={licenseDetailsPage >= Math.ceil(userLicenseDetails.length / ITEMS_PER_PAGE)}
-                            className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
+                {/* License Details Pagination - always show when data exists */}
+                {userLicenseDetails.length > 0 && (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
+                      <select
+                        value={licensePageSize}
+                        onChange={(e) => { setLicensePageSize(parseInt(e.target.value, 10)); setLicenseDetailsPage(1); }}
+                        className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                      >
+                        {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                      </select>
+                      <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
+                        Showing {Math.min((licenseDetailsPage - 1) * licensePageSize + 1, userLicenseDetails.length)} to {Math.min(licenseDetailsPage * licensePageSize, userLicenseDetails.length)} of {userLicenseDetails.length}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <span className="text-xs sm:text-sm text-slate-600">
+                        Page {licenseDetailsPage} of {Math.ceil(userLicenseDetails.length / licensePageSize)}
+                      </span>
+                      <div className="flex gap-1 sm:gap-2">
+                        <button
+                          onClick={() => setLicenseDetailsPage(prev => Math.max(prev - 1, 1))}
+                          disabled={licenseDetailsPage === 1}
+                          className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <span className="sm:hidden">Prev</span>
+                          <span className="hidden sm:inline">Previous</span>
+                        </button>
+                        <button
+                          onClick={() => setLicenseDetailsPage(prev => Math.min(prev + 1, Math.ceil(userLicenseDetails.length / licensePageSize)))}
+                          disabled={licenseDetailsPage >= Math.ceil(userLicenseDetails.length / licensePageSize)}
+                          className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -3276,24 +3438,24 @@ export default function AdminDashboard() {
                 {/* Users Table - Show for all users if data exists */}
                 {!usersDataLoading && subusersData.length > 0 && (
                   <div>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
                       <table className="w-full">
-                        <thead>
+                        <thead className="sticky top-0 bg-white shadow-sm z-10">
                           <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                            <th className="pb-3 font-medium">Email</th>
-                            <th className="pb-3 font-medium">Role</th>
-                            <th className="pb-3 font-medium">Department</th>
-                            <th className="pb-3 font-medium">Status</th>
-                            <th className="pb-3 font-medium">Group</th>
-                            <th className="pb-3 font-medium">Last Login</th>
-                            <th className="pb-3 font-medium">
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Email</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Role</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden md:table-cell">Department</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Status</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden lg:table-cell">Group</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">Last Login</th>
+                            <th className="pb-3 font-medium whitespace-nowrap hidden xl:table-cell">
                               License Allocation
                             </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {subusersData
-                            .slice((usersPage - 1) * ITEMS_PER_PAGE, usersPage * ITEMS_PER_PAGE)
+                            .slice((usersPage - 1) * usersPageSize, usersPage * usersPageSize)
                             .map((subuser, index) => {
                               return (
                                 <tr
@@ -3325,7 +3487,7 @@ export default function AdminDashboard() {
                                   </td>
 
                                   {/* Department */}
-                                  <td className="py-4 text-slate-600">
+                                  <td className="py-4 text-slate-600 hidden md:table-cell">
                                     {(subuser as any).department || "-"}
                                   </td>
 
@@ -3350,12 +3512,12 @@ export default function AdminDashboard() {
                                   </td>
 
                                   {/* User Group */}
-                                  <td className="py-4 text-slate-600">
+                                  <td className="py-4 text-slate-600 hidden lg:table-cell">
                                     {(subuser as any).subuser_group || "-"}
                                   </td>
 
                                   {/* Last Login */}
-                                  <td className="py-4 text-slate-600 text-sm">
+                                  <td className="py-4 text-slate-600 text-sm hidden sm:table-cell">
                                     <div className="flex flex-col">
                                       <span className="font-medium">
                                         {formatLastLogin(
@@ -3385,7 +3547,7 @@ export default function AdminDashboard() {
                                   </td>
 
                                   {/* License Allocation */}
-                                  <td className="py-4">
+                                  <td className="py-4 hidden xl:table-cell">
                                     {(subuser as any).license_allocation ? (
                                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
                                         {(subuser as any).license_allocation}
@@ -3399,31 +3561,47 @@ export default function AdminDashboard() {
                             })}
                         </tbody>
                       </table>
-                      {/* Users Pagination */}
-                      {subusersData.length > ITEMS_PER_PAGE && (
-                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200">
-                          <span className="text-sm text-slate-600">
-                            Page {usersPage} of {Math.ceil(subusersData.length / ITEMS_PER_PAGE)}
+                    </div>
+                    {/* Users Pagination - always show when data exists */}
+                    {subusersData.length > 0 && (
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                          <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
+                          <select
+                            value={usersPageSize}
+                            onChange={(e) => { setUsersPageSize(parseInt(e.target.value, 10)); setUsersPage(1); }}
+                            className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                          >
+                            {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                          </select>
+                          <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
+                            Showing {Math.min((usersPage - 1) * usersPageSize + 1, subusersData.length)} to {Math.min(usersPage * usersPageSize, subusersData.length)} of {subusersData.length}
                           </span>
-                          <div className="flex gap-2">
+                        </div>
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <span className="text-xs sm:text-sm text-slate-600">
+                            Page {usersPage} of {Math.ceil(subusersData.length / usersPageSize)}
+                          </span>
+                          <div className="flex gap-1 sm:gap-2">
                             <button
                               onClick={() => setUsersPage(prev => Math.max(prev - 1, 1))}
                               disabled={usersPage === 1}
-                              className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              Previous
+                              <span className="sm:hidden">Prev</span>
+                              <span className="hidden sm:inline">Previous</span>
                             </button>
                             <button
-                              onClick={() => setUsersPage(prev => Math.min(prev + 1, Math.ceil(subusersData.length / ITEMS_PER_PAGE)))}
-                              disabled={usersPage >= Math.ceil(subusersData.length / ITEMS_PER_PAGE)}
-                              className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                              onClick={() => setUsersPage(prev => Math.min(prev + 1, Math.ceil(subusersData.length / usersPageSize)))}
+                              disabled={usersPage >= Math.ceil(subusersData.length / usersPageSize)}
+                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               Next
                             </button>
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -3442,101 +3620,126 @@ export default function AdminDashboard() {
               </p>
             </div>
             <div className="p-6">
-              {(!dashboardQuery.activity || dashboardQuery.activity.length === 0) ? (
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
-                    <svg
-                      className="w-8 h-8 text-slate-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-medium text-slate-900 mb-2">
-                    No Data Available
-                  </h3>
-                  <p className="text-slate-600 mb-6">
-                    No user activity data available from the server.
-                  </p>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                        <th className="pb-3 font-medium">User Email</th>
-                        <th className="pb-3 font-medium">Login Time</th>
-                        <th className="pb-3 font-medium">Logout Time</th>
-                        <th className="pb-3 font-medium">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200">
-                      {(dashboardQuery.activity || [])
-                        .slice((userActivityPage - 1) * ITEMS_PER_PAGE, userActivityPage * ITEMS_PER_PAGE)
-                        .map((activity, index) => (
-                          <tr key={index} className="hover:bg-slate-50">
-                            <td className="py-4 font-medium text-slate-900">
-                              {activity.email}
-                            </td>
-                            <td className="py-4 text-slate-600">
-                              {activity.loginTime}
-                            </td>
-                            <td className="py-4 text-slate-600">
-                              {activity.logoutTime || "-"}
-                            </td>
-                            <td className="py-4">
-                              <span
-                                className={`inline-flex items-center gap-1 ${activity.status === "active"
-                                  ? "text-green-600"
-                                  : "text-slate-500"
-                                  }`}
-                              >
-                                <span
-                                  className={`w-2 h-2 rounded-full ${activity.status === "active"
-                                    ? "bg-green-400"
-                                    : "bg-slate-400"
-                                    }`}
-                                ></span>
-                                {activity.status}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                  {/* User Activity Pagination */}
-                  {(dashboardQuery.activity || []).length > ITEMS_PER_PAGE && (
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200">
-                      <span className="text-sm text-slate-600">
-                        Page {userActivityPage} of {Math.ceil((dashboardQuery.activity || []).length / ITEMS_PER_PAGE)}
-                      </span>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setUserActivityPage(prev => Math.max(prev - 1, 1))}
-                          disabled={userActivityPage === 1}
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              {/* Use demo data when in demo mode, otherwise use API data */}
+              {(() => {
+                const activityData = isDemo ? DEMO_USER_ACTIVITY : (dashboardData.activity || []);
+                if (!activityData || activityData.length === 0) {
+                  return (
+                    <div className="text-center py-12">
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+                        <svg
+                          className="w-8 h-8 text-slate-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
-                          Previous
-                        </button>
-                        <button
-                          onClick={() => setUserActivityPage(prev => Math.min(prev + 1, Math.ceil((dashboardQuery.activity || []).length / ITEMS_PER_PAGE)))}
-                          disabled={userActivityPage >= Math.ceil((dashboardQuery.activity || []).length / ITEMS_PER_PAGE)}
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Next
-                        </button>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                          />
+                        </svg>
                       </div>
+                      <h3 className="text-lg font-medium text-slate-900 mb-2">
+                        No Data Available
+                      </h3>
+                      <p className="text-slate-600 mb-6">
+                        No user activity data available from the server.
+                      </p>
                     </div>
-                  )}
-                </div>
-              )}
+                  );
+                }
+                return (
+                  <>
+                    <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                      <table className="w-full">
+                        <thead className="sticky top-0 bg-white shadow-sm z-10">
+                          <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">User Email</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Login Time</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">Logout Time</th>
+                            <th className="pb-3 font-medium whitespace-nowrap">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200">
+                          {activityData
+                            .slice((userActivityPage - 1) * activityPageSize, userActivityPage * activityPageSize)
+                            .map((activity, index) => (
+                              <tr key={index} className="hover:bg-slate-50">
+                                <td className="py-4 font-medium text-slate-900">
+                                  {activity.email}
+                                </td>
+                                <td className="py-4 text-slate-600">
+                                  {activity.loginTime}
+                                </td>
+                                <td className="py-4 text-slate-600 hidden sm:table-cell">
+                                  {activity.logoutTime || "-"}
+                                </td>
+                                <td className="py-4">
+                                  <span
+                                    className={`inline-flex items-center gap-1 ${activity.status === "active"
+                                      ? "text-green-600"
+                                      : "text-slate-500"
+                                      }`}
+                                  >
+                                    <span
+                                      className={`w-2 h-2 rounded-full ${activity.status === "active"
+                                        ? "bg-green-400"
+                                        : "bg-slate-400"
+                                        }`}
+                                    ></span>
+                                    {activity.status}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {/* User Activity Pagination - always show when data exists */}
+                    {activityData.length > 0 && (
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                          <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
+                          <select
+                            value={activityPageSize}
+                            onChange={(e) => { setActivityPageSize(parseInt(e.target.value, 10)); setUserActivityPage(1); }}
+                            className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                          >
+                            {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                          </select>
+                          <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
+                            Showing {Math.min((userActivityPage - 1) * activityPageSize + 1, activityData.length)} to {Math.min(userActivityPage * activityPageSize, activityData.length)} of {activityData.length}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <span className="text-xs sm:text-sm text-slate-600">
+                            Page {userActivityPage} of {Math.ceil(activityData.length / activityPageSize)}
+                          </span>
+                          <div className="flex gap-1 sm:gap-2">
+                            <button
+                              onClick={() => setUserActivityPage(prev => Math.max(prev - 1, 1))}
+                              disabled={userActivityPage === 1}
+                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <span className="sm:hidden">Prev</span>
+                              <span className="hidden sm:inline">Previous</span>
+                            </button>
+                            <button
+                              onClick={() => setUserActivityPage(prev => Math.min(prev + 1, Math.ceil(activityData.length / activityPageSize)))}
+                              disabled={userActivityPage >= Math.ceil(activityData.length / activityPageSize)}
+                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Next
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         )}
@@ -3582,158 +3785,175 @@ export default function AdminDashboard() {
                   </p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                        <th className="pb-3 font-medium">Report ID</th>
-                        <th className="pb-3 font-medium">Type</th>
-                        {/* <th className="pb-3 font-medium">Devices</th> */}
-                        <th className="pb-3 font-medium">Status</th>
-                        <th className="pb-3 font-medium">Date</th>
-                        <th className="pb-3 font-medium">Method</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200">
-                      {auditReports
-                        .slice((reportsPage - 1) * ITEMS_PER_PAGE, reportsPage * ITEMS_PER_PAGE)
-                        .map((report) => (
-                          <tr
-                            key={report.report_id || report.id}
-                            className="hover:bg-slate-50"
-                          >
-                            <td className="py-4 font-medium text-slate-900">
-                              #{report.report_id || report.reportId || report.id}
-                            </td>
-                            <td className="py-4 text-slate-600">
-                              {report.report_name || report.reportType || report.erasure_method || "Erasure Report"}
-                            </td>
-                            {/* <td className="py-4 text-slate-600">
-                          {(() => {
-                            // Priority: API deviceCount > calculated from machines
-                            if (report.deviceCount && report.deviceCount > 0) {
-                              return report.deviceCount;
-                            }
-                            
-                            // Calculate from actual machines data
-                            if (machinesQuery.data && machinesQuery.data.length > 0) {
-                              // If report has user_email, filter machines by that email
-                              if (report.user_email) {
-                                const userMachines = machinesQuery.data.filter(
-                                  (machine: Machine) => machine.user_email === report.user_email
-                                );
-                                return userMachines.length || 0;
+                <>
+                  <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                    <table className="w-full">
+                      <thead className="sticky top-0 bg-white shadow-sm z-10">
+                        <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">Report ID</th>
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">Type</th>
+                          {/* <th className="pb-3 font-medium">Devices</th> */}
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">Status</th>
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">Date</th>
+                          <th className="pb-3 font-medium whitespace-nowrap hidden md:table-cell">Method</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200">
+                        {auditReports
+                          .slice((reportsPage - 1) * reportsPageSize, reportsPage * reportsPageSize)
+                          .map((report) => (
+                            <tr
+                              key={report.report_id || report.id}
+                              className="hover:bg-slate-50"
+                            >
+                              <td className="py-4 font-medium text-slate-900">
+                                #{report.report_id || report.reportId || report.id}
+                              </td>
+                              <td className="py-4 text-slate-600">
+                                {report.report_name || report.reportType || report.erasure_method || "Erasure Report"}
+                              </td>
+                              {/* <td className="py-4 text-slate-600">
+                            {(() => {
+                              // Priority: API deviceCount > calculated from machines
+                              if (report.deviceCount && report.deviceCount > 0) {
+                                return report.deviceCount;
                               }
-                              // Otherwise return total machines count
-                              return machinesQuery.data.length;
-                            }
-                            
-                            // Fallback if no data available
-                            return 0;
-                          })()}
-                        </td> */}
-                            <td className="py-4">
-                              {(() => {
-                                // Parse status from report_details_json (same logic as AdminReports)
-                                let statusValue = "completed"; // default
-
-                                // Type cast to access report_details_json which may exist at runtime
-                                const reportWithDetails = report as any;
-
-                                if (reportWithDetails.report_details_json) {
-                                  try {
-                                    const reportDetails = JSON.parse(
-                                      reportWithDetails.report_details_json
-                                    );
-                                    statusValue =
-                                      reportDetails?.status?.toLowerCase() ||
-                                      "completed";
-                                  } catch (e) {
-                                    // If parsing fails, use report.status directly
-                                    statusValue =
-                                      report.status?.toLowerCase() || "completed";
-                                  }
-                                } else if (report.status) {
-                                  statusValue = report.status.toLowerCase();
+                              
+                              // Calculate from actual machines data
+                              if (machinesQuery.data && machinesQuery.data.length > 0) {
+                                // If report has user_email, filter machines by that email
+                                if (report.user_email) {
+                                  const userMachines = machinesQuery.data.filter(
+                                    (machine: Machine) => machine.user_email === report.user_email
+                                  );
+                                  return userMachines.length || 0;
                                 }
+                                // Otherwise return total machines count
+                                return machinesQuery.data.length;
+                              }
+                              
+                              // Fallback if no data available
+                              return 0;
+                            })()}
+                          </td> */}
+                              <td className="py-4">
+                                {(() => {
+                                  // Parse status from report_details_json (same logic as AdminReports)
+                                  let statusValue = "completed"; // default
 
-                                return (
-                                  <span
-                                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusValue === "completed"
-                                      ? "bg-green-100 text-green-800"
-                                      : statusValue === "running" ||
-                                        statusValue === "pending"
-                                        ? "bg-blue-100 text-blue-800"
-                                        : statusValue === "warning"
-                                          ? "bg-yellow-100 text-yellow-800"
-                                          : statusValue === "failed"
-                                            ? "bg-red-100 text-red-800"
-                                            : "bg-slate-100 text-slate-800"
-                                      }`}
-                                  >
+                                  // Type cast to access report_details_json which may exist at runtime
+                                  const reportWithDetails = report as any;
+
+                                  if (reportWithDetails.report_details_json) {
+                                    try {
+                                      const reportDetails = JSON.parse(
+                                        reportWithDetails.report_details_json
+                                      );
+                                      statusValue =
+                                        reportDetails?.status?.toLowerCase() ||
+                                        "completed";
+                                    } catch (e) {
+                                      // If parsing fails, use report.status directly
+                                      statusValue =
+                                        report.status?.toLowerCase() || "completed";
+                                    }
+                                  } else if (report.status) {
+                                    statusValue = report.status.toLowerCase();
+                                  }
+
+                                  return (
                                     <span
-                                      className={`w-2 h-2 rounded-full ${statusValue === "completed"
-                                        ? "bg-green-500"
+                                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusValue === "completed"
+                                        ? "bg-green-100 text-green-800"
                                         : statusValue === "running" ||
                                           statusValue === "pending"
-                                          ? "bg-blue-500"
+                                          ? "bg-blue-100 text-blue-800"
                                           : statusValue === "warning"
-                                            ? "bg-yellow-500"
+                                            ? "bg-yellow-100 text-yellow-800"
                                             : statusValue === "failed"
-                                              ? "bg-red-500"
-                                              : "bg-slate-500"
+                                              ? "bg-red-100 text-red-800"
+                                              : "bg-slate-100 text-slate-800"
                                         }`}
-                                    ></span>
-                                    {statusValue}
-                                  </span>
-                                );
-                              })()}
-                            </td>
-                            <td className="py-4 text-slate-600">
-                              {(report.report_datetime || (report as any).report_date)
-                                ? new Date(
-                                  report.report_datetime || (report as any).report_date
-                                ).toLocaleDateString("en-IN", {
-                                  year: "numeric",
-                                  month: "short",
-                                  day: "numeric",
-                                })
-                                : "N/A"}
-                            </td>
-                            <td className="py-4 text-slate-600">
-                              {report.erasure_method || "N/A"}
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                  {/* Reports Pagination */}
-                  {auditReports.length > ITEMS_PER_PAGE && (
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-200">
-                      <span className="text-sm text-slate-600">
-                        Page {reportsPage} of {Math.ceil(auditReports.length / ITEMS_PER_PAGE)}
-                      </span>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setReportsPage(prev => Math.max(prev - 1, 1))}
-                          disabled={reportsPage === 1}
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                      <span
+                                        className={`w-2 h-2 rounded-full ${statusValue === "completed"
+                                          ? "bg-green-500"
+                                          : statusValue === "running" ||
+                                            statusValue === "pending"
+                                            ? "bg-blue-500"
+                                            : statusValue === "warning"
+                                              ? "bg-yellow-500"
+                                              : statusValue === "failed"
+                                                ? "bg-red-500"
+                                                : "bg-slate-500"
+                                          }`}
+                                      ></span>
+                                      {statusValue}
+                                    </span>
+                                  );
+                                })()}
+                              </td>
+                              <td className="py-4 text-slate-600 hidden sm:table-cell">
+                                {(report.report_datetime || (report as any).report_date)
+                                  ? new Date(
+                                    report.report_datetime || (report as any).report_date
+                                  ).toLocaleDateString("en-IN", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  })
+                                  : "N/A"}
+                              </td>
+                              <td className="py-4 text-slate-600 hidden md:table-cell">
+                                {report.erasure_method || "N/A"}
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  {/* Reports Pagination - always show when data exists */}
+                  {auditReports.length > 0 && (
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
+                        <select
+                          value={reportsPageSize}
+                          onChange={(e) => { setReportsPageSize(parseInt(e.target.value, 10)); setReportsPage(1); }}
+                          className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                         >
-                          Previous
-                        </button>
-                        <button
-                          onClick={() => setReportsPage(prev => Math.min(prev + 1, Math.ceil(auditReports.length / ITEMS_PER_PAGE)))}
-                          disabled={reportsPage >= Math.ceil(auditReports.length / ITEMS_PER_PAGE)}
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Next
-                        </button>
+                          {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                        </select>
+                        <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
+                          Showing {Math.min((reportsPage - 1) * reportsPageSize + 1, auditReports.length)} to {Math.min(reportsPage * reportsPageSize, auditReports.length)} of {auditReports.length}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <span className="text-xs sm:text-sm text-slate-600">
+                          Page {reportsPage} of {Math.ceil(auditReports.length / reportsPageSize)}
+                        </span>
+                        <div className="flex gap-1 sm:gap-2">
+                          <button
+                            onClick={() => setReportsPage(prev => Math.max(prev - 1, 1))}
+                            disabled={reportsPage === 1}
+                            className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <span className="sm:hidden">Prev</span>
+                            <span className="hidden sm:inline">Previous</span>
+                          </button>
+                          <button
+                            onClick={() => setReportsPage(prev => Math.min(prev + 1, Math.ceil(auditReports.length / reportsPageSize)))}
+                            disabled={reportsPage >= Math.ceil(auditReports.length / reportsPageSize)}
+                            className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Next
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
-                </div>
-              )}
-            </div>
+                </>
+              )}</div>
           </div>
         )}
 
@@ -3810,8 +4030,7 @@ export default function AdminDashboard() {
                                 .map((item, index) => {
                                   const x =
                                     (index /
-                                      (performanceData.monthlyErasures.length -
-                                        1)) *
+                                      Math.max(performanceData.monthlyErasures.length - 1, 1)) *
                                     300;
                                   const maxCount = Math.max(
                                     ...performanceData.monthlyErasures.map(
@@ -3830,8 +4049,7 @@ export default function AdminDashboard() {
                                 .map((item, index) => {
                                   const x =
                                     (index /
-                                      (performanceData.monthlyErasures.length -
-                                        1)) *
+                                      Math.max(performanceData.monthlyErasures.length - 1, 1)) *
                                     300;
                                   const maxCount = Math.max(
                                     ...performanceData.monthlyErasures.map(
@@ -3906,7 +4124,7 @@ export default function AdminDashboard() {
                                 .map((item, index) => {
                                   const x =
                                     (index /
-                                      (performanceData.avgDuration.length - 1)) *
+                                      Math.max(performanceData.avgDuration.length - 1, 1)) *
                                     300;
                                   const maxDuration = Math.max(
                                     ...performanceData.avgDuration.map(
@@ -3925,7 +4143,7 @@ export default function AdminDashboard() {
                                 .map((item, index) => {
                                   const x =
                                     (index /
-                                      (performanceData.avgDuration.length - 1)) *
+                                      Math.max(performanceData.avgDuration.length - 1, 1)) *
                                     300;
                                   const maxDuration = Math.max(
                                     ...performanceData.avgDuration.map(
@@ -4665,7 +4883,7 @@ export default function AdminDashboard() {
                           Name:
                         </span>
                         <span className="text-slate-900">
-                          {getNameFromEmail(profileData?.email || storedUserData?.user_email || user?.email || "user@example.com")}
+                          {storedUserData?.name || storedUserData?.user_name || storedUserData?.subuser_name || profileData?.name || user?.name || getNameFromEmail(profileData?.email || storedUserData?.user_email || user?.email || "user@example.com")}
                         </span>
                       </div>
 
@@ -4681,7 +4899,7 @@ export default function AdminDashboard() {
                         </span>
                       </div>
 
-                      {/* <div className="flex justify-between">
+                      <div className="flex justify-between">
                         <span className="font-medium text-slate-700">
                           Phone:
                         </span>
@@ -4690,7 +4908,7 @@ export default function AdminDashboard() {
                             storedUserData?.phone_number ||
                             "Not provided"}
                         </span>
-                      </div> */}
+                      </div>
 
                       <div className="flex justify-between">
                         <span className="font-medium text-slate-700">
@@ -4795,6 +5013,7 @@ export default function AdminDashboard() {
                           setIsEditingProfile(true);
                           setProfileEditForm({
                             user_name: profileData?.name || user?.name || "",
+                            phone_number: profileData?.phone || storedUserData?.phone_number || "",
                             timezone:
                               profileData?.timezone ||
                               storedUserData?.timezone ||
@@ -4843,8 +5062,8 @@ export default function AdminDashboard() {
                           // 1. Update name and phone via DynamicUser/profile
                           const profileResponse =
                             await apiClient.updateUserProfile({
-                              userName: profileEditForm.user_name,
-                              // phoneNumber: profileEditForm.phone_number,
+                              name: profileEditForm.user_name,
+                              phone: profileEditForm.phone_number,
                               timezone: profileEditForm.timezone,
                             });
 
@@ -4881,11 +5100,11 @@ export default function AdminDashboard() {
                                 profileResponse.data?.subuser_name ||
                                 profileResponse.data?.name ||
                                 profileEditForm.user_name,
-                              // phone:
-                              //   profileResponse.data?.phone_number ||
-                              //   profileResponse.data?.phone ||
-                              //   profileResponse.data?.subuser_phone ||
-                              //   profileEditForm.phone_number,
+                              phone:
+                                profileResponse.data?.phone_number ||
+                                profileResponse.data?.phone ||
+                                profileResponse.data?.subuser_phone ||
+                                profileEditForm.phone_number,
                               timezone:
                                 timezoneResponse.data?.timezone ||
                                 profileEditForm.timezone,
@@ -4898,12 +5117,12 @@ export default function AdminDashboard() {
                                 profileResponse.data?.user_name ||
                                 profileResponse.data?.subuser_name ||
                                 profileEditForm.user_name;
-                              // storedData.phone_number =
-                              // profileResponse.data?.phone_number ||
-                              // profileResponse.data?.phone ||
-                              // profileResponse.data?.subuser_phone ||
-                              // profileEditForm.phone_number,
-                              storedData.timezone =
+                              storedData.phone_number =
+                                profileResponse.data?.phone_number ||
+                                profileResponse.data?.phone ||
+                                profileResponse.data?.subuser_phone ||
+                                profileEditForm.phone_number,
+                                storedData.timezone =
                                 timezoneResponse.data?.timezone ||
                                 profileEditForm.timezone;
                               localStorage.setItem(
@@ -4960,7 +5179,7 @@ export default function AdminDashboard() {
                       </div>
 
                       {/* Editable: Phone Number */}
-                      {/* <div>
+                      <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
                           Phone Number
                         </label>
@@ -4976,7 +5195,7 @@ export default function AdminDashboard() {
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                           placeholder="Enter phone number"
                         />
-                      </div> */}
+                      </div>
 
                       {/* Editable: Timezone */}
                       <div>
@@ -5265,8 +5484,40 @@ export default function AdminDashboard() {
                       <button
                         type="button"
                         onClick={() => {
-                          // Navigate to pricing page or license renewal
-                          window.location.href = "/pricing-and-plan";
+                          // Get current user data for prefilling checkout
+                          const userData = storedUserData || user;
+                          const firstName = userData?.user_name?.split(' ')[0] || userData?.name?.split(' ')[0] || '';
+                          const lastName = userData?.user_name?.split(' ').slice(1).join(' ') || userData?.name?.split(' ').slice(1).join(' ') || '';
+                          const email = userData?.user_email || userData?.email || '';
+                          const phone = userData?.phone_number || userData?.phone || '';
+                          const company = userData?.company || userData?.organization || userData?.department || '';
+
+                          // Get plan type and license count from billing details
+                          const planType = billingDetails?.planType || billingDetails?.activePlanTypes || billingDetails?.plan_type || 'Standard';
+                          const totalLicenses = billingDetails?.totalLicenses || billingDetails?.total_licenses || billingDetails?.purchase_details?.total_licenses || '1';
+
+                          // Get price/amount from billing details
+                          const amount = billingDetails?.amount || billingDetails?.price || billingDetails?.unitPrice || '99';
+                          const validityYears = billingDetails?.validityYears || billingDetails?.validity_years || '1';
+                          const expiryDate = billingDetails?.expiryDate || billingDetails?.expiry_date || '';
+
+                          // Build query params with user data and plan info
+                          const params = new URLSearchParams({
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            phone: phone,
+                            company: company,
+                            planType: String(planType),
+                            licenses: String(totalLicenses),
+                            price: String(amount).replace(/[^0-9.]/g, '') || '99',
+                            validityYears: String(validityYears),
+                            expiryDate: String(expiryDate),
+                            renew: 'true',
+                          });
+
+                          // Navigate to checkout with prefilled data
+                          window.location.href = `/checkout?${params.toString()}`;
                         }}
                         className="px-4 py-2 bg-gradient-to-r from-brand to-brand/80 text-white rounded-lg hover:from-brand/90 hover:to-brand/70 transition-all duration-200 flex items-center gap-2 shadow-sm"
                       >
@@ -5386,15 +5637,15 @@ export default function AdminDashboard() {
                                     Plan Type
                                   </p>
                                   <p className="text-lg font-bold text-brand">
-                                    {billingDetails.activePlanTypes || "N/A"}
+                                    {billingDetails.activePlanTypes || billingDetails.planType || billingDetails.plan_type || "N/A"}
                                   </p>
                                 </div>
                                 <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
                                   <p className="text-xs text-slate-600 mb-1">
-                                    Total Purchases
+                                    Total Licenses
                                   </p>
                                   <p className="text-lg font-bold text-slate-900">
-                                    {billingDetails.totalPurchases || 0}
+                                    {billingDetails.purchase_details?.total_licenses || billingDetails.total_licenses || 0}
                                   </p>
                                 </div>
                               </div>
@@ -5537,13 +5788,61 @@ export default function AdminDashboard() {
                               {/* Display parsed billing details - Filter sensitive data */}
                               {Object.entries(billingDetails).map(
                                 ([key, value]) => {
-                                  // Skip fields already shown in cards above
+                                  // Skip fields already shown in cards above and raw JSON fields
                                   const skipFields = [
                                     "activePlanTypes",
                                     "totalPurchases",
                                     "totalLicenses",
                                     "consumedLicenses",
                                     "availableLicenses",
+                                    // Hide raw JSON array/object fields
+                                    "plans",
+                                    "summary",
+                                    "activeBindings",
+                                    "useremail",
+                                    "machines",
+                                    "bindings",
+                                    // Duplicate/internal fields
+                                    "activePlanIds",
+                                    "usedLicenses",
+                                    // Payment/gateway internal fields
+                                    "paymentGate",
+                                    "paymentGateway",
+                                    "payment_gate",
+                                    "payment_gateway",
+                                    "gatewayId",
+                                    "gateway_id",
+                                    "transactionId",
+                                    "transaction_id",
+                                    "orderId",
+                                    "order_id",
+                                    // Internal IDs and timestamps
+                                    "purchaseId",
+                                    "purchase_id",
+                                    "invoiceId",
+                                    "invoice_id",
+                                    "unbindCount",
+                                    "licenseTransferAllowed",
+                                    "planNotes",
+                                    "plan_notes",
+                                    // Additional payment/internal fields
+                                    "paymentVerified",
+                                    "payment_verified",
+                                    "paymentId",
+                                    "payment_id",
+                                    "currency",
+                                    // Nested objects to hide
+                                    "purchaseDetails",
+                                    "purchase_details",
+                                    // Additional internal/timestamp fields
+                                    "transactionDate",
+                                    "transaction_date",
+                                    "transactionStatus",
+                                    "transaction_status",
+                                    "updatedAt",
+                                    "updated_at",
+                                    "userEmail",
+                                    "user_email",
                                   ];
 
                                   if (skipFields.includes(key)) {
@@ -5596,6 +5895,10 @@ export default function AdminDashboard() {
                                     typeof value === "object" &&
                                     value !== null
                                   ) {
+                                    // ✅ Skip arrays entirely (like activeBindings, machines, etc.)
+                                    if (Array.isArray(value)) {
+                                      return null;
+                                    }
                                     // Check if it's an address object
                                     const isAddress = [
                                       "street",
@@ -5793,6 +6096,21 @@ export default function AdminDashboard() {
 
                                   // Format display value
                                   let displayValue = String(value);
+
+                                  // Detect and format ISO date strings (e.g., 2024-12-01T10:05:00Z)
+                                  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+                                  if (typeof value === 'string' && isoDateRegex.test(value)) {
+                                    try {
+                                      displayValue = new Date(value).toLocaleDateString(undefined, {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                      });
+                                    } catch {
+                                      // Keep original value if parsing fails
+                                    }
+                                  }
+
                                   if (key === "validityYears") {
                                     displayValue = `${value} ${parseInt(String(value)) === 1
                                       ? "Year"
@@ -6584,6 +6902,137 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {/* My Downloads Tab */}
+        {activeTab === "mydownloads" && (
+          <div className="space-y-6">
+            <div className="card">
+              <div className="px-6 py-5 border-b border-slate-200">
+                <h2 className="font-semibold text-slate-900">
+                  Software Downloads
+                </h2>
+                <p className="text-sm text-slate-600 mt-1">
+                  Download DSecure software installers for your platform
+                </p>
+              </div>
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                  {/* File Eraser */}
+                  <div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-200 hover:border-emerald-400 hover:shadow-lg transition-all duration-200">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-900">File Eraser</h3>
+                        <p className="text-xs text-slate-600">Version 2.0.1</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-700 mb-4">
+                      Securely erase files and folders with military-grade algorithms
+                    </p>
+                    <Link
+                      to="/download?product=file-eraser"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 rounded-lg transition-all"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download Now
+                    </Link>
+                  </div>
+
+                  {/* Drive Eraser */}
+                  <div className="group bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 hover:border-blue-400 hover:shadow-lg transition-all duration-200">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-900">Drive Eraser</h3>
+                        <p className="text-xs text-slate-600">Version 2.0.1</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-700 mb-4">
+                      Complete drive sanitization for HDDs and SSDs
+                    </p>
+                    <Link
+                      to="/download?product=drive-eraser"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg transition-all"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download Now
+                    </Link>
+                  </div>
+
+                  {/* Network Eraser - HIDDEN */}
+                  {/* <div className="group bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200 hover:border-purple-400 hover:shadow-lg transition-all duration-200">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-900">Network Eraser</h3>
+                        <p className="text-xs text-slate-600">Version 2.0.1</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-700 mb-4">
+                      Enterprise network-wide data sanitization solution
+                    </p>
+                    <Link
+                      to="/download?product=drive-eraser"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 rounded-lg transition-all"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download Now
+                    </Link>
+                  </div> */}
+                </div>
+
+                {/* System Requirements - HIDDEN */}
+                {/* <div className="mt-8 bg-slate-50 rounded-lg p-6 border border-slate-200">
+                  <h4 className="text-sm font-semibold text-slate-900 mb-3">System Requirements</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-700">
+                    <div>
+                      <p className="font-medium text-slate-900 mb-1">Windows</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• Windows 10/11 (64-bit)</li>
+                        <li>• 4GB RAM minimum</li>
+                        <li>• 500MB free disk space</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900 mb-1">macOS</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• macOS 10.15 or later</li>
+                        <li>• 4GB RAM minimum</li>
+                        <li>• 500MB free disk space</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900 mb-1">Linux</p>
+                      <ul className="text-xs space-y-1">
+                        <li>• Ubuntu 20.04+ / CentOS 8+</li>
+                        <li>• 4GB RAM minimum</li>
+                        <li>• 500MB free disk space</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div> */}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Private Cloud Setup Modal */}
         {showPrivateCloudModal && (
           <div
@@ -6836,7 +7285,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
-      </div>
+      </div >
     </>
   );
 }

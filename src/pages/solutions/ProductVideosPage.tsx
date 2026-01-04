@@ -137,8 +137,8 @@ const ProductVideosPage: React.FC = memo(() => {
     },
     {
       id: 9,
-      title: "Compliance and Certification Reports",
-      description: "Generate tamper-proof certificates and compliance reports for audit purposes and regulatory requirements.",
+      title: "Compliance and Regulatory Reports",
+      description: "Generate tamper-proof regulatory documents and compliance reports for audit purposes and regulatory requirements.",
       duration: "11:29",
       category: "enterprise",
       difficulty: "Intermediate",
@@ -164,8 +164,8 @@ const ProductVideosPage: React.FC = memo(() => {
   const filteredVideos = videos.filter(video => {
     const matchesCategory = activeCategory === "all" || video.category === activeCategory;
     const matchesDifficulty = activeDifficulty === "all" || video.difficulty === activeDifficulty;
-    const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         video.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      video.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesDifficulty && matchesSearch;
   });
 
@@ -187,10 +187,10 @@ const ProductVideosPage: React.FC = memo(() => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
   };
 
@@ -309,11 +309,10 @@ const ProductVideosPage: React.FC = memo(() => {
                       <button
                         key={category.id}
                         onClick={() => setActiveCategory(category.id)}
-                        className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                          activeCategory === category.id
+                        className={`px-4 py-2 rounded-full font-medium transition-colors ${activeCategory === category.id
                             ? "bg-emerald-500 text-white"
                             : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                        }`}
+                          }`}
                       >
                         {category.name}
                       </button>
@@ -329,11 +328,10 @@ const ProductVideosPage: React.FC = memo(() => {
                       <button
                         key={difficulty.id}
                         onClick={() => setActiveDifficulty(difficulty.id)}
-                        className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                          activeDifficulty === difficulty.id
+                        className={`px-4 py-2 rounded-full font-medium transition-colors ${activeDifficulty === difficulty.id
                             ? "bg-emerald-500 text-white"
                             : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                        }`}
+                          }`}
                       >
                         {difficulty.name}
                       </button>
@@ -393,15 +391,15 @@ const ProductVideosPage: React.FC = memo(() => {
                           </span>
                           <span className="text-sm text-slate-500">{formatViews(video.views)} views</span>
                         </div>
-                        
+
                         <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
                           {video.title}
                         </h3>
-                        
+
                         <p className="text-slate-600 text-sm leading-relaxed mb-4">
                           {video.description}
                         </p>
-                        
+
                         <div className="flex items-center justify-between text-sm text-slate-500">
                           <span>{formatDate(video.publishDate)}</span>
                           <button

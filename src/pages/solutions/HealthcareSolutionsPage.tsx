@@ -16,7 +16,7 @@ export default function HealthcareSolutionsPage() {
       category: "Compliance"
     },
     {
-      title: "Medical Device Sanitization", 
+      title: "Medical Device Sanitization",
       description: "Specialized erasure for medical equipment and devices",
       features: ["Device Compatibility", "FDA Compliance", "Verification"],
       category: "Hardware"
@@ -36,7 +36,7 @@ export default function HealthcareSolutionsPage() {
     {
       title: "Hospital IT Asset Disposal",
       description: "End-of-life device sanitization for healthcare facilities",
-      features: ["Asset Tracking", "Certificate Generation", "Compliance"],
+      features: ["Asset Tracking", "Regulatory Document Generation", "Compliance"],
       category: "Hardware"
     },
     {
@@ -66,7 +66,7 @@ export default function HealthcareSolutionsPage() {
   return (
     <>
       <SEOHead seo={getSEOForPage("healthcare-solutions")} />
-      
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
         <div className="container-responsive">
@@ -123,7 +123,7 @@ export default function HealthcareSolutionsPage() {
               </Reveal>
             ))}
           </div>
-          
+
           {filteredSolutions.length === 0 && (
             <div className="text-center py-12">
               <p className="text-slate-600">No solutions found matching your search.</p>

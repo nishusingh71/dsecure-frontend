@@ -38,7 +38,7 @@ const DataSanitizationComplianceBlog: React.FC = () => {
               <p className="text-slate-700 leading-relaxed">
                 Organizations must follow standards like{" "}
                 <strong className="text-emerald-600">NIST 800-88</strong> or <strong className="text-emerald-600">ISO/IEC 27040</strong> to
-                ensure proper data sanitization. Using certified software tools
+                ensure proper data sanitization. Using regulated software tools
                 and maintaining audit logs are critical for compliance.
               </p>
               <p className="text-slate-700 leading-relaxed">

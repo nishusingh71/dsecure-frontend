@@ -34,7 +34,7 @@ const NavigationPage: React.FC = memo(() => {
             <Reveal>
               <div className="prose prose-lg max-w-none">
                 <h2 className="text-3xl font-bold text-slate-900 mb-6">Navigation Structure</h2>
-                
+
                 <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-lg border border-emerald-200 mb-8">
                   <h3 className="text-xl font-bold text-emerald-900 mb-3">Main Menu Categories</h3>
                   <div className="space-y-4">
@@ -52,7 +52,7 @@ const NavigationPage: React.FC = memo(() => {
                     </div>
                     <div className="bg-white p-4 rounded-lg">
                       <h4 className="font-bold text-slate-900 mb-2">📋 Reports</h4>
-                      <p className="text-slate-700">Certificates, audit trails, compliance exports</p>
+                      <p className="text-slate-700">Regulatory documents, audit trails, compliance exports</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg">
                       <h4 className="font-bold text-slate-900 mb-2">⚙️ Settings</h4>

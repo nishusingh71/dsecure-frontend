@@ -8,41 +8,43 @@ export const PERFORMANCE_THRESHOLDS = {
   // Component render time thresholds (ms)
   SLOW_RENDER_WARNING: 50,
   CRITICAL_RENDER_WARNING: 100,
-  
+
   // Bundle size thresholds (KB)
   CHUNK_SIZE_WARNING: 500,
   CHUNK_SIZE_ERROR: 1000,
-  
+
   // Image optimization settings
   IMAGE_LAZY_LOAD_THRESHOLD: '50px',
   IMAGE_QUALITY: 85,
-  
+
   // Search debounce delay
   SEARCH_DEBOUNCE_MS: 300,
-  
+
   // Virtual scrolling settings
   VIRTUAL_ITEM_HEIGHT: 50,
   VIRTUAL_CONTAINER_HEIGHT: 400,
   VIRTUAL_OVERSCAN: 5,
-  
+
   // Pagination settings
   DEFAULT_PAGE_SIZE: 50,
   MAX_PAGE_SIZE: 200,
 };
 
+import { ENV } from './env';
+
 // Performance monitoring configuration
 export const PERFORMANCE_CONFIG = {
   // Enable performance monitoring in development
-  ENABLE_DEV_MONITORING: import.meta.env.DEV,
-  
+  ENABLE_DEV_MONITORING: ENV.IS_DEV,
+
   // Enable Web Vitals tracking
   ENABLE_WEB_VITALS: true,
-  
+
   // Enable React DevTools Profiler
-  ENABLE_PROFILER: import.meta.env.DEV,
-  
+  ENABLE_PROFILER: ENV.IS_DEV,
+
   // Enable performance logging
-  ENABLE_PERFORMANCE_LOGS: import.meta.env.DEV,
+  ENABLE_PERFORMANCE_LOGS: ENV.IS_DEV,
 };
 
 // Component optimization settings
@@ -55,7 +57,7 @@ export const OPTIMIZATION_SETTINGS = {
     'SEOHead',
     'Reveal'
   ],
-  
+
   // Heavy components that should be lazy loaded
   LAZY_LOAD_COMPONENTS: [
     'PricingPage',
@@ -63,7 +65,7 @@ export const OPTIMIZATION_SETTINGS = {
     'AdminDashboard',
     'SupportPage'
   ],
-  
+
   // Components that benefit from virtual scrolling
   VIRTUAL_SCROLL_COMPONENTS: [
     'AdminMachines',
@@ -82,10 +84,10 @@ export const BUNDLE_CONFIG = {
     'ui': ['@headlessui/react', 'framer-motion'],
     'utils': ['lodash', 'date-fns'],
   },
-  
+
   // Page-based code splitting
   PAGE_CHUNKS: true,
-  
+
   // Component-based code splitting
   COMPONENT_CHUNKS: true,
 };
@@ -94,7 +96,7 @@ export const BUNDLE_CONFIG = {
 export const IMAGE_CONFIG = {
   // Supported formats in order of preference
   FORMATS: ['webp', 'avif', 'jpg', 'png'],
-  
+
   // Responsive image breakpoints
   BREAKPOINTS: {
     xs: 320,
@@ -104,7 +106,7 @@ export const IMAGE_CONFIG = {
     xl: 1280,
     '2xl': 1536,
   },
-  
+
   // Quality settings per format
   QUALITY: {
     webp: 85,
@@ -118,13 +120,13 @@ export const IMAGE_CONFIG = {
 export const MEMORY_CONFIG = {
   // Maximum items to keep in memory
   MAX_CACHED_ITEMS: 100,
-  
+
   // Cache TTL in milliseconds
   CACHE_TTL: 5 * 60 * 1000, // 5 minutes
-  
+
   // Enable garbage collection hints
   ENABLE_GC_HINTS: true,
-  
+
   // Component unmount cleanup
   CLEANUP_ON_UNMOUNT: true,
 };
@@ -133,13 +135,13 @@ export const MEMORY_CONFIG = {
 export const DEV_HELPERS = {
   // Log slow renders
   LOG_SLOW_RENDERS: true,
-  
+
   // Highlight re-renders
   HIGHLIGHT_RERENDERS: false,
-  
+
   // Show performance metrics
   SHOW_METRICS: true,
-  
+
   // Bundle analyzer
-  ANALYZE_BUNDLE: import.meta.env.VITE_ANALYZE === 'true',
+  ANALYZE_BUNDLE: false, // ENV.IS_ANALYZE not currently in env.ts, removed direct access
 };

@@ -18,7 +18,7 @@ export default function SearchDemoPage() {
 
   const products: Product[] = [
     { id: 1, name: "DoD 5220.22-M Erasure", category: "Security", description: "Military-grade data sanitization", price: 299, tags: "dod military secure" },
-    { id: 2, name: "NIST 800-88 Compliance", category: "Security", description: "NIST certified erasure methods", price: 399, tags: "nist compliance certified" },
+    { id: 2, name: "NIST 800-88 Compliance", category: "Security", description: "NIST regulated erasure methods", price: 399, tags: "nist compliance regulated" },
     { id: 3, name: "HIPAA Data Protection", category: "Healthcare", description: "Healthcare data security solution", price: 499, tags: "hipaa healthcare phi" },
     { id: 4, name: "SSD Secure Erase", category: "Hardware", description: "Optimized SSD erasure technology", price: 199, tags: "ssd hardware fast" },
     { id: 5, name: "HDD Wiping Tool", category: "Hardware", description: "Traditional hard drive sanitization", price: 149, tags: "hdd hardware legacy" },
@@ -66,25 +66,25 @@ export default function SearchDemoPage() {
     }
   );
 
-  const displayProducts = searchQuery.trim() 
-    ? filteredItems.filter(p => 
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.tags.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+  const displayProducts = searchQuery.trim()
+    ? filteredItems.filter(p =>
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.tags.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : filteredItems;
 
   return (
     <>
-      <SEOHead 
+      <SEOHead
         seo={{
           title: "Advanced Search Demo - DSecure",
           description: "Experience our advanced search functionality with autocomplete, suggestions, and smart filtering",
           keywords: "search, demo, advanced search, autocomplete",
           canonicalUrl: "/search-demo"
-        }} 
+        }}
       />
-      
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
         <div className="container-responsive">
@@ -124,7 +124,7 @@ export default function SearchDemoPage() {
         <div className="container-responsive">
           <div className="flex flex-wrap gap-4 items-center">
             <span className="text-sm font-semibold text-slate-700">Filter by:</span>
-            
+
             {/* Category Filter */}
             <select
               value={filters.category || "All"}

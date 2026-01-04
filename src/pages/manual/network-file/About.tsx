@@ -39,7 +39,7 @@ const About: React.FC = () => {
             <Globe className="w-7 h-7 text-blue-600" />
             Global Presence
           </h2>
-          
+
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg">
               <div className="text-4xl font-bold text-blue-600 mb-2">190+</div>
@@ -77,7 +77,7 @@ const About: React.FC = () => {
             <Award className="w-7 h-7 text-green-600" />
             Product Portfolio
           </h2>
-          
+
           <div className="space-y-6">
             {/* Data Recovery */}
             <div className="border-l-4 border-green-500 bg-green-50 rounded-r-lg p-6">
@@ -159,7 +159,7 @@ const About: React.FC = () => {
             <Users className="w-7 h-7 text-indigo-600" />
             Why Choose DSecureTech
           </h2>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-start gap-4">
               <div className="shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -176,7 +176,7 @@ const About: React.FC = () => {
                 <Shield className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">Security Certified</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">Security regulated</h3>
                 <p className="text-gray-700">Compliance with international data protection and erasure standards</p>
               </div>
             </div>
@@ -209,7 +209,7 @@ const About: React.FC = () => {
           <p className="text-indigo-100 text-lg mb-6">
             Have questions or need support? Our team is here to help you 24/7.
           </p>
-          
+
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-white/10 rounded-lg p-4">
               <h3 className="font-semibold mb-2">Technical Support</h3>

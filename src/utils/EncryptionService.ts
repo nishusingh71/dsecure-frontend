@@ -20,8 +20,10 @@
 import CryptoJS from 'crypto-js';
 import pako from 'pako';
 
+import { ENV } from '../config/env';
+
 // Secret key from environment
-const SECRET_KEY = import.meta.env.VITE_RES_KEY || '2b8A1Pv0ykhppFD28MV6ResponseKey!';
+const SECRET_KEY = ENV.RES_KEY;
 
 /**
  * Interface for encrypted response from backend
@@ -29,6 +31,7 @@ const SECRET_KEY = import.meta.env.VITE_RES_KEY || '2b8A1Pv0ykhppFD28MV6Response
 export interface EncryptedResponse {
   encrypted: true;
   data: string; // Base64 encoded: IV (16 bytes) + Ciphertext
+  compressed?: boolean; // Whether data is Gzip compressed (default: true)
 }
 
 /**
@@ -63,10 +66,10 @@ function getZeroPaddedKey(key: string, targetLength: number = 32): CryptoJS.lib.
   // Using TextEncoder for accurate UTF-8 encoding (same as .NET Encoding.UTF8.GetBytes)
   const encoder = new TextEncoder();
   const keyBytes = encoder.encode(key);
-  
+
   // Step 2: Create a new Uint8Array with exact target length (initialized with zeros)
   const paddedKey = new Uint8Array(targetLength);
-  
+
   // Step 3: Copy key bytes (PadOrTruncate logic)
   // - If keyBytes.length < targetLength: remaining bytes stay as 0x00
   // - If keyBytes.length > targetLength: only first targetLength bytes are copied
@@ -74,20 +77,20 @@ function getZeroPaddedKey(key: string, targetLength: number = 32): CryptoJS.lib.
   for (let i = 0; i < bytesToCopy; i++) {
     paddedKey[i] = keyBytes[i];
   }
-  
+
   // Step 4: Convert Uint8Array to CryptoJS WordArray
   // CryptoJS uses 32-bit words (4 bytes per word)
   const words: number[] = [];
   for (let i = 0; i < targetLength; i += 4) {
     // Combine 4 bytes into one 32-bit word (big-endian)
-    const word = 
+    const word =
       ((paddedKey[i] || 0) << 24) |
       ((paddedKey[i + 1] || 0) << 16) |
       ((paddedKey[i + 2] || 0) << 8) |
       (paddedKey[i + 3] || 0);
     words.push(word >>> 0); // Convert to unsigned 32-bit integer
   }
-  
+
   return CryptoJS.lib.WordArray.create(words, targetLength);
 }
 
@@ -111,7 +114,7 @@ function extractIVAndCiphertext(encryptedData: CryptoJS.lib.WordArray): {
   // Convert WordArray to byte array for precise extraction
   const totalBytes = encryptedData.sigBytes;
   const words = encryptedData.words;
-  
+
   // Extract all bytes
   const allBytes = new Uint8Array(totalBytes);
   for (let i = 0; i < totalBytes; i++) {
@@ -119,36 +122,36 @@ function extractIVAndCiphertext(encryptedData: CryptoJS.lib.WordArray): {
     const byteIndex = i % 4;
     allBytes[i] = (words[wordIndex] >>> (24 - byteIndex * 8)) & 0xff;
   }
-  
+
   // IV is first 16 bytes
   const ivBytes = allBytes.slice(0, 16);
-  
+
   // Ciphertext is remaining bytes
   const ciphertextBytes = allBytes.slice(16);
-  
+
   // Convert IV bytes to WordArray
   const ivWords: number[] = [];
   for (let i = 0; i < 16; i += 4) {
-    const word = 
+    const word =
       ((ivBytes[i] || 0) << 24) |
       ((ivBytes[i + 1] || 0) << 16) |
       ((ivBytes[i + 2] || 0) << 8) |
       (ivBytes[i + 3] || 0);
     ivWords.push(word >>> 0);
   }
-  
+
   // Convert Ciphertext bytes to WordArray
   const ciphertextWords: number[] = [];
   const ciphertextLength = ciphertextBytes.length;
   for (let i = 0; i < ciphertextLength; i += 4) {
-    const word = 
+    const word =
       ((ciphertextBytes[i] || 0) << 24) |
       ((ciphertextBytes[i + 1] || 0) << 16) |
       ((ciphertextBytes[i + 2] || 0) << 8) |
       (ciphertextBytes[i + 3] || 0);
     ciphertextWords.push(word >>> 0);
   }
-  
+
   return {
     iv: CryptoJS.lib.WordArray.create(ivWords, 16),
     ciphertext: CryptoJS.lib.WordArray.create(ciphertextWords, ciphertextLength)
@@ -165,19 +168,19 @@ class EncryptionServiceClass {
 
   constructor() {
     this.rawKeyString = SECRET_KEY;
-    
+
     // Process key using PadOrTruncate logic (exactly matching .NET backend)
     this.secretKey = getZeroPaddedKey(this.rawKeyString, 32);
-    
+
     // Debug logging
-    if (import.meta.env.DEV) {
+    if (ENV.IS_DEV) {
       const encoder = new TextEncoder();
       const originalBytes = encoder.encode(this.rawKeyString);
       // console.log('🔐 EncryptionService initialized');
       // console.log(`   Original key string length: ${this.rawKeyString.length} chars`);
       // console.log(`   Original key UTF-8 bytes: ${originalBytes.length} bytes`);
       // console.log(`   Processed key (after PadOrTruncate): ${this.secretKey.sigBytes} bytes`);
-      
+
       // Log first few bytes for verification (don't log full key in production!)
       const keyHex = this.secretKey.toString(CryptoJS.enc.Hex);
       // console.log(`   Key (first 16 hex chars): ${keyHex.substring(0, 16)}...`);
@@ -197,17 +200,17 @@ class EncryptionServiceClass {
    * @param encryptedBase64 - Base64 encoded string containing IV + Ciphertext
    * @returns Decrypted data (JSON object or string)
    */
-  decrypt<T = unknown>(encryptedBase64: string): T {
+  decrypt<T = unknown>(encryptedBase64: string, isCompressed: boolean = true): T {
     try {
       // Step 1: Decode Base64 string to WordArray
       const encryptedData = CryptoJS.enc.Base64.parse(encryptedBase64);
-      
-      if (import.meta.env.DEV) {
-        // console.log('🔓 Decrypting data...');
-        // console.log(`   Base64 length: ${encryptedBase64.length} chars`);
-        // console.log(`   Total encrypted bytes: ${encryptedData.sigBytes}`);
+
+      if (ENV.IS_DEV) {
+        console.log('🔓 Decrypting data...');
+        console.log(`   Base64 length: ${encryptedBase64.length} chars`);
+        console.log(`   Total encrypted bytes: ${encryptedData.sigBytes}`);
       }
-      
+
       // Validate minimum length (IV 16 bytes + at least 1 block of ciphertext)
       if (encryptedData.sigBytes < 17) {
         throw new Error(`Encrypted data too short: ${encryptedData.sigBytes} bytes (minimum: 17)`);
@@ -216,10 +219,10 @@ class EncryptionServiceClass {
       // Step 2 & 3: Extract IV and Ciphertext using byte-accurate extraction
       const { iv, ciphertext } = extractIVAndCiphertext(encryptedData);
 
-      if (import.meta.env.DEV) {
-        // console.log(`   IV: ${iv.sigBytes} bytes`);
-        // console.log(`   IV (hex): ${iv.toString(CryptoJS.enc.Hex)}`);
-        // console.log(`   Ciphertext: ${ciphertext.sigBytes} bytes`);
+      if (ENV.IS_DEV) {
+        console.log(`   IV: ${iv.sigBytes} bytes`);
+        console.log(`   Ciphertext: ${ciphertext.sigBytes} bytes`);
+        console.log(`   Compressed: ${isCompressed}`);
       }
 
       // Step 4: Create CipherParams object for decryption
@@ -237,10 +240,10 @@ class EncryptionServiceClass {
       // Step 6: Convert decrypted WordArray to bytes for decompression
       const decryptedWords = decrypted.words;
       const decryptedSigBytes = decrypted.sigBytes;
-      
+
       if (decryptedSigBytes === 0) {
         // Additional debugging for failed decryption
-        if (import.meta.env.DEV) {
+        if (ENV.IS_DEV) {
           console.error('❌ Decryption produced empty result');
           console.error('   This usually means key/IV mismatch');
         }
@@ -255,34 +258,51 @@ class EncryptionServiceClass {
         decryptedBytes[i] = (decryptedWords[wordIndex] >>> (24 - byteIndex * 8)) & 0xff;
       }
 
-      if (import.meta.env.DEV) {
+      if (ENV.IS_DEV) {
         // console.log('🔓 Decryption successful, now decompressing...');
         // console.log(`   Decrypted bytes: ${decryptedSigBytes}`);
       }
 
-      // Step 7: Gzip Decompress using pako
+      // Step 7: Decompress if data is compressed, otherwise decode as UTF-8
       let decompressedString: string;
-      try {
-        decompressedString = pako.ungzip(decryptedBytes, { to: 'string' });
-        if (import.meta.env.DEV) {
-          // console.log('✅ Decompression successful');
-          // console.log(`   Decompressed string length: ${decompressedString.length} chars`);
-          // Log first 100 chars for debugging
-          // console.log(`   Preview: ${decompressedString.substring(0, 100)}...`);
+
+      if (isCompressed) {
+        // Gzip Decompress using pako
+        try {
+          decompressedString = pako.ungzip(decryptedBytes, { to: 'string' });
+          if (ENV.IS_DEV) {
+            // console.log('✅ Decompression successful');
+            // console.log(`   Decompressed string length: ${decompressedString.length} chars`);
+          }
+        } catch (decompressError) {
+          // If decompression fails, maybe data wasn't compressed - try as raw UTF-8
+          if (ENV.IS_DEV) {
+            // console.log('⚠️ Gzip decompression failed, trying as raw UTF-8...');
+          }
+          decompressedString = decrypted.toString(CryptoJS.enc.Utf8);
+
+          if (!decompressedString) {
+            throw new Error('Data is neither gzip compressed nor valid UTF-8');
+          }
+
+          if (ENV.IS_DEV) {
+            // console.log('✅ Raw UTF-8 decoding successful (data was not compressed)');
+          }
         }
-      } catch (decompressError) {
-        // If decompression fails, maybe data wasn't compressed - try as raw UTF-8
-        if (import.meta.env.DEV) {
-          // console.log('⚠️ Gzip decompression failed, trying as raw UTF-8...');
+      } else {
+        // Data is not compressed, decode as raw UTF-8 directly
+        if (ENV.IS_DEV) {
+          // console.log('ℹ️ Data is not compressed (compressed: false), decoding as UTF-8...');
         }
         decompressedString = decrypted.toString(CryptoJS.enc.Utf8);
-        
+
         if (!decompressedString) {
-          throw new Error('Data is neither gzip compressed nor valid UTF-8');
+          throw new Error('Failed to decode decrypted data as UTF-8');
         }
-        
-        if (import.meta.env.DEV) {
-          // console.log('✅ Raw UTF-8 decoding successful (data was not compressed)');
+
+        if (ENV.IS_DEV) {
+          // console.log('✅ UTF-8 decoding successful (no compression)');
+          // console.log(`   String length: ${decompressedString.length} chars`);
         }
       }
 
@@ -292,7 +312,7 @@ class EncryptionServiceClass {
         return parsedData as T;
       } catch {
         // Not valid JSON, return as string (e.g., for JWT tokens)
-        if (import.meta.env.DEV) {
+        if (ENV.IS_DEV) {
           // console.log('   Response is not JSON, returning as string');
         }
         return decompressedString as T;
@@ -318,10 +338,13 @@ class EncryptionServiceClass {
    */
   decryptResponse<T = unknown>(responseData: unknown): T {
     if (this.isEncrypted(responseData)) {
-      if (import.meta.env.DEV) {
+      if (ENV.IS_DEV) {
         // console.log('🔐 Encrypted response detected, decrypting...');
+        // console.log(`   Compressed: ${responseData.compressed !== false}`);
       }
-      return this.decrypt<T>(responseData.data);
+      // Check if data is compressed (default to true if not specified)
+      const isCompressed = responseData.compressed !== false;
+      return this.decrypt<T>(responseData.data, isCompressed);
     }
     return responseData as T;
   }
@@ -331,11 +354,11 @@ class EncryptionServiceClass {
    * Returns null in production
    */
   getKeyInfo(): { originalLength: number; processedLength: number; keyHexPreview: string } | null {
-    if (!import.meta.env.DEV) return null;
-    
+    if (!ENV.IS_DEV) return null;
+
     const encoder = new TextEncoder();
     const originalBytes = encoder.encode(this.rawKeyString);
-    
+
     return {
       originalLength: originalBytes.length,
       processedLength: this.secretKey.sigBytes,

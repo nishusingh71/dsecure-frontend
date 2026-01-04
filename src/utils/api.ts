@@ -1,5 +1,7 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://localhost:44316'
+import { ENV } from '../config/env';
+
+const API_BASE_URL = ENV.API_BASE_URL
 
 // API Response types
 export interface ApiResponse<T> {
@@ -69,8 +71,8 @@ class ApiClient {
   private timeout: number
 
   constructor(baseURL?: string) {
-    this.baseURL = baseURL || import.meta.env.VITE_API_BASE_URL || 'https://localhost:44316'
-    this.timeout = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000')
+    this.baseURL = baseURL || ENV.API_BASE_URL
+    this.timeout = ENV.API_TIMEOUT
     this.token = sessionStorage.getItem('dsecure:jwt') // Changed to sessionStorage
   }
 
@@ -89,7 +91,7 @@ class ApiClient {
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`
-    
+
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
@@ -102,7 +104,7 @@ class ApiClient {
     try {
       const response = await fetch(url, config)
       const data = await response.json()
-      
+
       if (!response.ok) {
         return {
           success: false,
@@ -201,7 +203,7 @@ export const apiClient = new ApiClient()
 // Check if API is available
 export async function checkApiAvailability(): Promise<boolean> {
   try {
-    const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://bitraserapiproject-2.onrender.com'
+    const baseURL = ENV.API_BASE_URL
     const response = await fetch(`${baseURL}/health`, {
       method: 'GET',
       timeout: 10000,

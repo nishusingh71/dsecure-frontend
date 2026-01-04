@@ -6,6 +6,7 @@
 import { Subuser } from "@/utils/enhancedApiClient"
 import { api } from "@/utils/apiClient"
 import { encodeEmail } from "@/utils/encodeEmail"
+import { ENV } from "@/config/env"
 
 interface ApiResponse<T> {
   success: boolean
@@ -65,7 +66,8 @@ interface ProfileData {
   role: string
   userRole?: string // camelCase from API response
   user_role?: string // snake_case from API response
-  // phone?: string // Commented out - not used
+  phone?: string // Commented out - not used
+  phone_number?: string // Phone number field from backend
   department?: string
   avatar?: string
   licenses?: number // For User stats - number of licenses assigned to user
@@ -146,7 +148,7 @@ interface Report {
 // If API fails, UI will show "Data not available" message
 
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dsecuretech.com'
+const API_BASE_URL = ENV.API_BASE_URL
 
 // ✅ Generic API call function using axios with automatic decryption
 // The `api` instance from apiClient.ts has an interceptor that automatically

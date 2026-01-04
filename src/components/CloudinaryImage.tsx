@@ -1,4 +1,5 @@
 import React from 'react'
+import { ENV } from '@/config/env'
 import { AdvancedImage } from '@cloudinary/react'
 import { cld, transformations, getOptimizedImageUrl, getResponsiveSrcSet } from '@/utils/cloudinary'
 import { quality } from '@cloudinary/url-gen/actions/delivery'
@@ -27,21 +28,21 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   responsive = false,
   onClick
 }) => {
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  
+  const cloudName = ENV.CLOUDINARY_CLOUD_NAME;
+
   // Enhanced debugging for missing cloud name
   if (!cloudName) {
     console.warn('🚨 Cloudinary Debug: VITE_CLOUDINARY_CLOUD_NAME is not set');
-    console.warn('🔍 Environment variables available:', Object.keys(import.meta.env));
+    // console.warn('🔍 Environment variables available:', Object.keys(ENV));
     console.warn('📋 Expected variable: VITE_CLOUDINARY_CLOUD_NAME=dhwi5wevf');
-    
+
     if (fallback) {
       //console.log(`✅ Using fallback image for: ${publicId}`);
       return (
-        <img 
-          src={fallback} 
-          alt={alt} 
-          className={className} 
+        <img
+          src={fallback}
+          alt={alt}
+          className={className}
           loading={loading}
           onClick={onClick}
         />
@@ -57,7 +58,7 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   try {
     // Get the appropriate transformation
     let cloudinaryImage
-    
+
     if (transformation === 'logo' && transformations.logo[size as keyof typeof transformations.logo]) {
       cloudinaryImage = transformations.logo[size as keyof typeof transformations.logo](publicId)
     } else if (transformation === 'hero' && transformations.hero[size as keyof typeof transformations.hero]) {
@@ -77,7 +78,7 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
       // Use regular img with srcSet for responsive images
       const srcSet = getResponsiveSrcSet(publicId)
       const src = getOptimizedImageUrl(publicId, 'medium')
-      
+
       return (
         <img
           src={src}
@@ -103,19 +104,19 @@ export const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
     )
   } catch (error) {
     console.warn(`Failed to render Cloudinary image: ${publicId}`, error)
-    
+
     if (fallback) {
       return (
-        <img 
-          src={fallback} 
-          alt={alt} 
-          className={className} 
+        <img
+          src={fallback}
+          alt={alt}
+          className={className}
           loading={loading}
           onClick={onClick}
         />
       )
     }
-    
+
     return (
       <div className={`bg-slate-200 flex items-center justify-center ${className}`}>
         <span className="text-slate-500 text-xs">Failed to load image</span>

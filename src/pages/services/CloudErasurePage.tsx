@@ -2,9 +2,11 @@ import Reveal from '@/components/Reveal'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { 
-  CheckIcon, 
-  CloudIcon, 
+import SEOHead from '@/components/SEOHead'
+import { getSEOForPage } from '@/utils/seo'
+import {
+  CheckIcon,
+  CloudIcon,
   ShieldIcon,
   DatabaseIcon,
   GearIcon,
@@ -16,22 +18,8 @@ import {
 export default function CloudErasurePage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/services/cloud-erasure" />
-        <title>
-          Cloud Erasure Service | Multi-Cloud Data Protection
-        </title>
-        <meta
-          name="description"
-          content="Comprehensive cloud erasure service for AWS, Azure, GCP, and SaaS applications. Secure cloud data removal with blockchain verification."
-        />
-        <meta
-          name="keywords"
-          content="cloud erasure, cloud data removal, AWS data sanitization, Azure data deletion, GCP data protection, SaaS data erasure"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
-      
+      <SEOHead seo={getSEOForPage('cloud-erasure')} />
+
       <CloudErasureContent />
     </>
   );
@@ -182,7 +170,7 @@ function CloudErasureContent() {
                 </Reveal>
                 <Reveal delayMs={20}>
                   <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                    Comprehensive cloud data sanitization for multi-cloud environments. Secure erasure 
+                    Comprehensive cloud data sanitization for multi-cloud environments. Secure erasure
                     for AWS, Azure, GCP, and SaaS applications with blockchain verification.
                   </p>
                 </Reveal>
@@ -194,7 +182,7 @@ function CloudErasureContent() {
                   </div>
                 </Reveal>
               </div>
-              
+
               <div>
                 <Reveal delayMs={40}>
                   <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-6">
@@ -285,7 +273,7 @@ function CloudErasureContent() {
           <div className="space-y-4">
             {erasureCapabilities.map((capability, index) => (
               <Reveal key={index} delayMs={index * 10}>
-                <div 
+                <div
                   className="bg-white rounded-xl border border-slate-200 overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300"
                   onClick={() => toggleSection(capability.name)}
                 >
@@ -304,8 +292,8 @@ function CloudErasureContent() {
                         <span className="text-sm font-medium text-brand">{capability.coverage}</span>
                         <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
                           <HoverIcon>
-                            {(filled) => 
-                              expandedSection === capability.name ? 
+                            {(filled) =>
+                              expandedSection === capability.name ?
                                 <ArrowDownIcon className="w-5 h-5 text-slate-600 transform rotate-180" filled={filled} /> :
                                 <ArrowDownIcon className="w-5 h-5 text-slate-600" filled={filled} />
                             }
@@ -313,7 +301,7 @@ function CloudErasureContent() {
                         </div>
                       </div>
                     </div>
-                    
+
                     {expandedSection === capability.name && (
                       <div className="mt-6 pt-6 border-t border-slate-200">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -460,7 +448,7 @@ function CloudErasureContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-brand-light mb-8">
-                Get started with comprehensive cloud erasure service today. 
+                Get started with comprehensive cloud erasure service today.
                 Contact our experts for a multi-cloud security assessment.
               </p>
             </Reveal>

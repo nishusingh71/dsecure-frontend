@@ -1096,7 +1096,7 @@ const PartnersPage: React.FC = () => {
 
             {/* Find Partners Section */}
           </div>
-                
+
         </section>
 
         {/* ITAD Partner Program */}
@@ -2285,7 +2285,7 @@ const PartnersPage: React.FC = () => {
                       Our team of Compliant professionals ensures complete data
                       destruction compliance with international standards
                       including NIST 800-88, DOD 5220.22-M, and Common Criteria.
-                      We provide comprehensive certificates of destruction for
+                      We provide comprehensive regulatory documents of destruction for
                       audit purposes and maintain the highest levels of security
                       throughout the data erasure process.
                     </p>
@@ -2304,7 +2304,7 @@ const PartnersPage: React.FC = () => {
                       "Mobile Device Wiping",
                       "Server Decommissioning",
                       "Compliance Consulting",
-                      "Certificate Generation",
+                      "Regulatory Document Generation",
                       "On-site Services",
                     ].map((service, index) => (
                       <div

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
+import { ENV } from '../config/env'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/auth/AuthContext'
 import { SetupStatusAlert, useSetupStatus } from '@/components/PaymentLicenseGuard'
 import { authService } from '../utils/authService'
-import { Helmet } from 'react-helmet-async'
 import { useToast } from '@/components/Toast'
+import SEOHead from '@/components/SEOHead'
+import { getSEOForPage } from '@/utils/seo'
 
 interface PlanDetails {
   title: string
@@ -19,7 +21,7 @@ interface SetupFormData {
   cvv: string
   cardholder_name: string
   billing_address: string
-  
+
   // License Details
   license_type: string
   company_name: string
@@ -33,12 +35,12 @@ export default function PaymentSetupPage() {
   const { user, getSmartRedirectPath } = useAuth()
   const setupStatus = useSetupStatus()
   const toast = useToast()
-  
+
   const [selectedPlan, setSelectedPlan] = useState<PlanDetails | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
   const [isProcessing, setIsProcessing] = useState(false)
   const [setupComplete, setSetupComplete] = useState(false)
-  
+
   const [formData, setFormData] = useState<SetupFormData>({
     // Payment Details
     payment_method: 'card',
@@ -47,7 +49,7 @@ export default function PaymentSetupPage() {
     cvv: '',
     cardholder_name: '',
     billing_address: '',
-    
+
     // License Details
     license_type: 'standard',
     company_name: '',
@@ -84,7 +86,7 @@ export default function PaymentSetupPage() {
           const paymentData = JSON.parse(user.payment_details_json)
           setFormData(prev => ({ ...prev, ...paymentData }))
         }
-        
+
         if (user.license_details_json && user.license_details_json !== '{}') {
           const licenseData = JSON.parse(user.license_details_json)
           setFormData(prev => ({ ...prev, ...licenseData }))
@@ -101,7 +103,7 @@ export default function PaymentSetupPage() {
 
   const handleSubmitPaymentDetails = async () => {
     setIsProcessing(true)
-    
+
     try {
       // Prepare payment details
       const paymentDetails = {
@@ -116,13 +118,13 @@ export default function PaymentSetupPage() {
 
       // In a real app, you would call your API to update user payment details
       // await apiClient.updateUserPaymentDetails(paymentDetails)
-      
+
       // For now, we'll simulate success
       // //console.log('Payment details saved:', paymentDetails)
-      
+
       // Move to license step
       setCurrentStep(2)
-      
+
     } catch (error) {
       console.error('Payment setup failed:', error)
       toast.showToast('Payment setup failed. Please try again.', 'error')
@@ -133,7 +135,7 @@ export default function PaymentSetupPage() {
 
   const handleSubmitLicenseDetails = async () => {
     setIsProcessing(true)
-    
+
     try {
       // Prepare license details
       const licenseDetails = {
@@ -149,18 +151,18 @@ export default function PaymentSetupPage() {
 
       // In a real app, you would call your API to update user license details
       // await apiClient.updateUserLicenseDetails(licenseDetails)
-      
+
       // For now, we'll simulate success
       // //console.log('License details saved:', licenseDetails)
-      
+
       setSetupComplete(true)
-      
+
       // After a short delay, redirect to the appropriate dashboard
       setTimeout(() => {
         const redirectPath = getSmartRedirectPath()
         navigate(redirectPath, { replace: true })
       }, 2000)
-      
+
     } catch (error) {
       console.error('License setup failed:', error)
       toast.showToast('License setup failed. Please try again.', 'error')
@@ -173,7 +175,7 @@ export default function PaymentSetupPage() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">Payment Information</h3>
-        
+
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -302,7 +304,7 @@ export default function PaymentSetupPage() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">License Configuration</h3>
-        
+
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -447,28 +449,11 @@ export default function PaymentSetupPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <Helmet>
-        <title>Payment & License Setup | DSecure Tech - Complete Your Setup</title>
-        <meta name="description" content="Complete your DSecure Tech payment and license setup. Configure billing details and license requirements to access all data erasure features." />
-        <meta name="keywords" content="DSecure payment setup, license configuration, billing, enterprise license, data erasure license" />
-        <meta name="robots" content="noindex, nofollow" />
-        <link rel="canonical" href="https://dsecuretech.com/payment" />
-        
-        {/* Open Graph */}
-        <meta property="og:title" content="Payment & License Setup | DSecure Tech" />
-        <meta property="og:description" content="Complete your DSecure Tech setup with payment and license configuration." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://dsecuretech.com/payment" />
-        
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="Payment & License Setup | DSecure Tech" />
-        <meta name="twitter:description" content="Complete your DSecure Tech setup with payment and license configuration." />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('payment-setup')} />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Setup Status Alert */}
         <SetupStatusAlert />
-        
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Complete Your Setup</h1>
@@ -484,8 +469,8 @@ export default function PaymentSetupPage() {
               <div key={step} className="flex items-center">
                 <div className={`
                   flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
-                  ${currentStep >= step 
-                    ? 'bg-blue-600 text-white' 
+                  ${currentStep >= step
+                    ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-400'
                   }
                 `}>
@@ -523,7 +508,7 @@ export default function PaymentSetupPage() {
         </div>
 
         {/* Setup Status Info */}
-        {import.meta.env.DEV && (
+        {ENV.IS_DEV && (
           <div className="mt-8 bg-gray-100 rounded-lg p-4">
             <h4 className="font-medium text-gray-700 mb-2">🔧 Setup Status Debug</h4>
             <pre className="text-xs text-gray-600 overflow-auto">

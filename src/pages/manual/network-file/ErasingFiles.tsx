@@ -35,7 +35,7 @@ const ErasingFiles: React.FC = () => {
             When you delete a file using Windows Explorer or empty the Recycle Bin, you're only removing the file's reference from the file system—the actual data remains intact on your hard drive until it's eventually overwritten by new data. This creates a significant security risk: anyone with data recovery software can retrieve deleted files, potentially exposing sensitive business information, confidential documents, financial records, or personal data long after you thought it was gone.
           </p>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Secure erasure solves this problem by overwriting the file's storage space with random data multiple times, following certified algorithms that meet international standards. This process ensures that even sophisticated forensic recovery tools cannot retrieve your data. Organizations subject to regulations like GDPR, HIPAA, SOX, or PCI-DSS often require secure erasure to demonstrate compliance with data protection mandates.
+            Secure erasure solves this problem by overwriting the file's storage space with random data multiple times, following regulated algorithms that meet international standards. This process ensures that even sophisticated forensic recovery tools cannot retrieve your data. Organizations subject to regulations like GDPR, HIPAA, SOX, or PCI-DSS often require secure erasure to demonstrate compliance with data protection mandates.
           </p>
           <div className="bg-white rounded-lg border border-red-300 p-5">
             <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
@@ -219,7 +219,7 @@ const ErasingFiles: React.FC = () => {
               </div>
             </div>
 
-{/* Continuing remaining steps in similar expanded format */}
+            {/* Continuing remaining steps in similar expanded format */}
             <div className="border-2 border-green-400 rounded-xl p-6 bg-gradient-to-r from-green-50 to-emerald-50">
               <div className="flex items-start gap-4 mb-4">
                 <div className="shrink-0 w-14 h-14 rounded-full bg-green-600 text-white text-xl font-bold flex items-center justify-center shadow-lg">3</div>
@@ -403,7 +403,7 @@ const ErasingFiles: React.FC = () => {
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
             File Erasure Best Practices
           </h2>
-          
+
           <div className="grid md:grid-cols-2 gap-5">
             <div className="border-2 border-green-300 rounded-xl p-5 bg-gradient-to-br from-green-50 to-emerald-50">
               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2 text-lg">
@@ -487,7 +487,7 @@ const ErasingFiles: React.FC = () => {
             <AlertCircle className="w-7 h-7 text-amber-600" />
             Common Issues and Solutions
           </h2>
-          
+
           <div className="space-y-4">
             <div className="bg-white rounded-lg p-4 border border-amber-300">
               <p className="font-bold text-gray-900 mb-2">❌ Files show as "Failed" in summary</p>

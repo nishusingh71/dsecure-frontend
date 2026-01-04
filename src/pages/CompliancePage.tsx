@@ -1,15 +1,15 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { 
-  ShieldIcon, 
-  ClipboardIcon, 
-  GearIcon, 
+import {
+  ShieldIcon,
+  ClipboardIcon,
+  GearIcon,
   CheckIcon,
   LightningIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
-  HoverIcon 
+  HoverIcon
 } from '@/components/FlatIcons'
 import { Helmet } from 'react-helmet-async';
 import SEOHead from '../components/SEOHead'
@@ -47,7 +47,7 @@ export default function CompliancePage() {
         />
         <meta name="robots" content="index, follow" />
       </Helmet>
-      
+
       <CompliancePageContent />
     </>
   );
@@ -90,7 +90,7 @@ function CompliancePageContent() {
         'Destroy: Render media unusable and data unrecoverable',
         'Documentation: Maintain records of sanitization activities'
       ],
-      implementation: 'DSecure implements all NIST 800-88 Rev. 1 sanitization categories with automated verification and certificate generation.'
+      implementation: 'DSecure implements all NIST 800-88 Rev. 1 sanitization categories with automated verification and regulatory document generation.'
     },
     iso27001: {
       title: 'ISO 27001',
@@ -144,7 +144,7 @@ function CompliancePageContent() {
         'Data integrity and accuracy controls',
         'Secure retention and disposal of records',
         'Audit trail requirements',
-        'Management certification of controls'
+        'Management regulation of controls'
       ],
       implementation: 'DSecure supports SOX compliance through tamper-proof audit trails, secure data handling, and management reporting.'
     },
@@ -168,7 +168,7 @@ function CompliancePageContent() {
     {
       name: 'Common Criteria',
       level: 'EAL 4+',
-      description: 'International standard for computer security certification',
+      description: 'International standard for computer security regulation',
       icon: '🛡️'
     },
     {
@@ -186,15 +186,15 @@ function CompliancePageContent() {
     {
       name: 'CSA STAR',
       level: 'Gold',
-      description: 'Cloud Security Alliance certification',
+      description: 'Cloud Security Alliance regulation',
       icon: '⭐'
     }
   ]
 
   const auditFeatures = [
     {
-      title: 'Tamper-Proof Certificates',
-      description: 'Cryptographically signed certificates that cannot be forged.',
+      title: 'Tamper-Proof Regulatory Documents',
+      description: 'Cryptographically signed regulatory documents that cannot be forged.',
       icon: (
         <HoverIcon>
           {(filled) => <ShieldIcon className="w-6 h-6" filled={filled} />}
@@ -232,19 +232,19 @@ function CompliancePageContent() {
 
   return (
     <>
-    <Helmet>
-      <link rel="canonical" href="https://dsecuretech.com/compliance" />
-      <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-      <meta
-        name="description"
-        content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-      />
-      <meta
-        name="keywords"
-        content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-      />
-      <meta name="robots" content="index, follow" />
-    </Helmet>
+      <Helmet>
+        <link rel="canonical" href="https://dsecuretech.com/compliance" />
+        <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
+        <meta
+          name="description"
+          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+        />
+        <meta
+          name="keywords"
+          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
+        />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-white to-teal-50">
         <div className="container-app py-16 md:py-24">
@@ -256,7 +256,7 @@ function CompliancePageContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Meet and exceed global data sanitization frameworks with verifiable, 
+                Meet and exceed global data sanitization frameworks with verifiable,
                 repeatable erasure protocols. Built for the most stringent regulatory requirements.
               </p>
             </Reveal>
@@ -290,11 +290,10 @@ function CompliancePageContent() {
               <button
                 key={key}
                 onClick={() => setActiveStandard(key)}
-                className={`text-center p-3 lg:p-4 rounded-xl transition-all duration-200 ${
-                  activeStandard === key
+                className={`text-center p-3 lg:p-4 rounded-xl transition-all duration-200 ${activeStandard === key
                     ? 'bg-purple-100 border-2 border-purple-300 shadow-lg'
                     : 'bg-white border-2 border-slate-200 hover:border-slate-300'
-                }`}
+                  }`}
               >
                 <div className="text-2xl lg:text-3xl mb-1 lg:mb-2">{standard.icon}</div>
                 <div className="font-semibold text-slate-900 text-xs lg:text-sm">{standard.title}</div>
@@ -389,7 +388,7 @@ function CompliancePageContent() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Navigation Footer */}
               <div className="flex items-center justify-between p-4 md:p-6 border-t border-slate-200/60 bg-slate-50/50">
                 <button
@@ -406,13 +405,13 @@ function CompliancePageContent() {
                   </HoverIcon>
                   <span className="text-sm font-medium">Previous Standard</span>
                 </button>
-                
+
                 <div className="text-center">
                   <div className="text-xs text-slate-400">
                     {Object.keys(standards).indexOf(activeStandard as string) + 1} of {Object.keys(standards).length}
                   </div>
                 </div>
-                
+
                 <button
                   onClick={() => {
                     const standardKeys = Object.keys(standards);
@@ -470,7 +469,7 @@ function CompliancePageContent() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {auditFeatures.map((feature, i) => (
-              <Reveal key={i} delayMs={i*100}>
+              <Reveal key={i} delayMs={i * 100}>
                 <div className="flex items-start gap-4 p-6 bg-white rounded-xl shadow-lg border border-slate-200/60">
                   <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
                     {feature.icon}
@@ -493,7 +492,7 @@ function CompliancePageContent() {
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 md:p-12 text-center text-white">
               <h2 className="text-3xl font-bold mb-4">Ensure Your Compliance Today</h2>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Don't let compliance concerns hold back your data erasure operations. 
+                Don't let compliance concerns hold back your data erasure operations.
                 Get expert guidance on meeting your regulatory requirements.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

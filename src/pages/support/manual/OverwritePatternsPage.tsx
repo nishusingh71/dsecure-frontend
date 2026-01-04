@@ -201,8 +201,8 @@ const OverwritePatternsPage: React.FC = memo(() => {
         },
         {
           id: 62,
-          title: "Security Assurance & Certification",
-          description: "Audit trails, certificates, and third-party validation",
+          title: "Security Assurance & Regulation",
+          description: "Audit trails, regulatory documents, and third-party validation",
           url: "/support/manual/security-assurance",
           pageCount: 2,
         },
@@ -512,9 +512,8 @@ const OverwritePatternsPage: React.FC = memo(() => {
                           </div>
                         </div>
                         <svg
-                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
-                            activeSection === section.id ? "rotate-180" : ""
-                          }`}
+                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
+                            }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -909,7 +908,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center text-white">
                 <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8">
-                  Compliance & Certification
+                  Compliance & Regulation
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-12 max-w-4xl mx-auto">
                   <div className="text-center">

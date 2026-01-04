@@ -726,7 +726,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Yes, absolutely. When you use DSecure File Eraser Network with certified erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
+            text: "Yes, absolutely. When you use DSecure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
           }
         ]
       },
@@ -987,8 +987,8 @@ const CompleteDSecureNetworkFile: React.FC = () => {
                   b.type === "p" || b.type === "note" || b.type === "step"
                     ? (b as any).text?.toLowerCase?.() || ""
                     : b.type === "bullets"
-                    ? (b as any).items?.join(" ").toLowerCase?.() || ""
-                    : ""
+                      ? (b as any).items?.join(" ").toLowerCase?.() || ""
+                      : ""
                 )
                 .join(" ");
             return textBlob.includes(q) || ss.title.toLowerCase().includes(q)
@@ -1009,12 +1009,12 @@ const CompleteDSecureNetworkFile: React.FC = () => {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
       const sectionId = hash.replace('#', '');
       setActiveSection(sectionId);
-      
+
       // Find which section this ID belongs to and expand only that section
-      const parentSection = sections.find(s => 
+      const parentSection = sections.find(s =>
         s.id === sectionId || s.subsections.some(ss => ss.id === sectionId)
       );
-      
+
       if (parentSection) {
         // Close all other sections and open only the target section
         setExpandedSections([parentSection.id]);
@@ -1023,8 +1023,8 @@ const CompleteDSecureNetworkFile: React.FC = () => {
   };
 
   const toggleSection = (sectionId: string) => {
-    setExpandedSections(prev => 
-      prev.includes(sectionId) 
+    setExpandedSections(prev =>
+      prev.includes(sectionId)
         ? prev.filter(id => id !== sectionId)
         : [sectionId] // Only keep the newly opened section
     );
@@ -1079,7 +1079,7 @@ const CompleteDSecureNetworkFile: React.FC = () => {
             ref={listRef}
             className="hidden lg:block lg:w-64 shrink-0"
           >
-            <div 
+            <div
               className="sticky top-4 p-4 lg:p-0 lg:pr-4 max-h-[calc(100vh-2rem)] overflow-y-auto sidebar-scroll"
               style={{
                 scrollbarWidth: 'thin',
@@ -1098,10 +1098,9 @@ const CompleteDSecureNetworkFile: React.FC = () => {
                           className="p-1 hover:bg-gray-100 rounded transition-colors"
                           aria-label={isExpanded ? "Collapse" : "Expand"}
                         >
-                          <ChevronRight 
-                            className={`w-4 h-4 text-gray-500 transition-transform ${
-                              isExpanded ? "rotate-90" : ""
-                            }`}
+                          <ChevronRight
+                            className={`w-4 h-4 text-gray-500 transition-transform ${isExpanded ? "rotate-90" : ""
+                              }`}
                           />
                         </button>
                         <a
@@ -1110,17 +1109,16 @@ const CompleteDSecureNetworkFile: React.FC = () => {
                             e.preventDefault();
                             onJump(`#${s.id}`);
                           }}
-                          className={`flex-1 flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md transition-colors ${
-                            activeSection === s.id
+                          className={`flex-1 flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-md transition-colors ${activeSection === s.id
                               ? "bg-blue-100 text-blue-700"
                               : "text-gray-900 hover:bg-gray-100"
-                          }`}
+                            }`}
                         >
                           <s.icon className={`w-4 h-4 shrink-0 ${activeSection === s.id ? "text-blue-700" : "text-blue-600"}`} />
                           <span className={`break-words ${activeSection === s.id ? "text-blue-700" : ""}`}>{s.title}</span>
                         </a>
                       </div>
-                      
+
                       {/* Subsections - Accordion Content */}
                       {isExpanded && (
                         <div className="ml-6 mt-2 space-y-1 border-l-2 border-gray-200 pl-2 animate-fadeIn">
@@ -1132,11 +1130,10 @@ const CompleteDSecureNetworkFile: React.FC = () => {
                                 e.preventDefault();
                                 onJump(`#${ss.id}`);
                               }}
-                              className={`flex items-start gap-2 pl-3 py-1.5 text-sm rounded-r-md transition-colors ${
-                                activeSection === ss.id
+                              className={`flex items-start gap-2 pl-3 py-1.5 text-sm rounded-r-md transition-colors ${activeSection === ss.id
                                   ? "bg-blue-50 text-blue-700 border-l-2 border-blue-600 -ml-0.5"
                                   : "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
-                              }`}
+                                }`}
                             >
                               <span className="break-words">{ss.title}</span>
                             </a>
@@ -1170,7 +1167,7 @@ const CompleteDSecureNetworkFile: React.FC = () => {
                   className="scroll-mt-20"
                 >
                   <Anchor id={s.id} />
-                  
+
                   {/* Section Header */}
                   <div className="mb-8 pb-4 border-b-2 border-gray-200">
                     <div className="flex items-center gap-4 mb-3">
@@ -1194,13 +1191,13 @@ const CompleteDSecureNetworkFile: React.FC = () => {
                         className="bg-white rounded-lg border border-gray-200 p-8 hover:shadow-lg transition-shadow"
                       >
                         <Anchor id={ss.id} />
-                        
+
                         {/* Subsection Header */}
                         <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
                           <span className="w-1.5 h-8 bg-blue-600 rounded"></span>
                           {ss.title}
                         </h3>
-                        
+
                         {/* Content Blocks */}
                         <div className="space-y-5 text-gray-700 text-base leading-relaxed">
                           {ss.blocks.map((b, i) => (

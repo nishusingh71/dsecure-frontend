@@ -7,9 +7,9 @@ const RetainOSGuide: React.FC = () => {
     <>
       <Helmet>
         <title>Retain OS Guide | DSecure - Selective Data Erasure</title>
-        <meta 
-          name="description" 
-          content="Learn how to wipe everything and retain your operating system using DSecure selective erasure methods." 
+        <meta
+          name="description"
+          content="Learn how to wipe everything and retain your operating system using DSecure selective erasure methods."
         />
       </Helmet>
 
@@ -41,7 +41,7 @@ const RetainOSGuide: React.FC = () => {
         <section className="py-16 bg-white/50">
           <div className="container-responsive">
             <div className="max-w-4xl mx-auto space-y-8">
-              
+
               {/* Overview Section */}
               <Reveal>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
@@ -55,12 +55,12 @@ const RetainOSGuide: React.FC = () => {
                   </div>
                   <div className="space-y-4 text-slate-700 text-lg leading-relaxed">
                     <p>
-                      DSecure's selective erasure technology allows you to permanently delete sensitive data, 
-                      applications, and files while preserving your operating system and essential system files. 
-                      This approach is ideal for device redeployment, selling, or transferring ownership without 
+                      DSecure's selective erasure technology allows you to permanently delete sensitive data,
+                      applications, and files while preserving your operating system and essential system files.
+                      This approach is ideal for device redeployment, selling, or transferring ownership without
                       the need to reinstall the operating system.
                     </p>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                       <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-xl">
                         <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center mb-4">
@@ -103,7 +103,7 @@ const RetainOSGuide: React.FC = () => {
                       What Gets Erased vs What's Retained
                     </h2>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                       <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center">
@@ -268,7 +268,7 @@ const RetainOSGuide: React.FC = () => {
                       <div>
                         <h3 className="text-lg font-semibold text-slate-900 mb-2">Verification & Reporting</h3>
                         <p className="text-slate-700">
-                          Review the completion report and certificate. The system will remain bootable with a clean OS ready for redeployment.
+                          Review the completion report and regulatory document. The system will remain bootable with a clean OS ready for redeployment.
                         </p>
                       </div>
                     </div>
@@ -285,7 +285,7 @@ const RetainOSGuide: React.FC = () => {
                       Follow these guidelines for optimal selective erasure results
                     </p>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
                       <h3 className="text-xl font-semibold mb-4 flex items-center">

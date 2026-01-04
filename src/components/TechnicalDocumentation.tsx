@@ -56,16 +56,16 @@ const TechnicalDocumentation: React.FC = () => {
         <section className="py-16 bg-white/50">
           <div className="container-responsive">
             <div className="max-w-5xl mx-auto space-y-10">
-              {/* The Need for Certified Data Erasure */}
+              {/* The Need for regulated Data Erasure */}
               <Reveal>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
                   <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                    The Need for Certified Data Erasure
+                    The Need for regulated Data Erasure
                   </h2>
                   <p className="text-slate-700 text-lg leading-relaxed mb-6">
                     In today's digital world, simply deleting files is not
                     enough. Data remnants pose significant security and
-                    compliance risks. Certified data erasure ensures complete,
+                    compliance risks. regulated data erasure ensures complete,
                     verifiable sanitization of sensitive information in
                     compliance with global standards.
                   </p>
@@ -301,7 +301,7 @@ const TechnicalDocumentation: React.FC = () => {
                       },
                       {
                         title: "Schedule Training",
-                        desc: "Book training with certified engineers for hands-on setup.",
+                        desc: "Book training with regulated engineers for hands-on setup.",
                       },
                       {
                         title: "Contact Support",

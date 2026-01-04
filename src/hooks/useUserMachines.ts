@@ -28,7 +28,7 @@ export function useUserMachines(userEmail?: string, enabled: boolean = true) {
       }
 
       const response = await apiClient.getMachinesByEmail(userEmail)
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch machines')
       }
@@ -36,8 +36,11 @@ export function useUserMachines(userEmail?: string, enabled: boolean = true) {
       return response.data
     },
     enabled: enabled && !!userEmail,
-    staleTime: 3 * 60 * 1000,  // 3 minutes - machines data moderately stable
-    gcTime: 10 * 60 * 1000,    // 10 minutes in cache
+    staleTime: 30 * 60 * 1000,  // 30 minutes - keep licenses data fresh for longer
+    gcTime: 60 * 60 * 1000,     // 1 hour in cache - persist even when component unmounts
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
     retry: 1,
   })
 }
@@ -53,7 +56,7 @@ export function useAllMachines(enabled: boolean = true) {
     queryKey: machineKeys.allMachines(),
     queryFn: async () => {
       const response = await apiClient.getMachines()
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch all machines')
       }
@@ -61,8 +64,11 @@ export function useAllMachines(enabled: boolean = true) {
       return response.data
     },
     enabled,
-    staleTime: 3 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
+    staleTime: 30 * 60 * 1000, // 30 minutes - keep licenses data fresh for longer
+    gcTime: 60 * 60 * 1000,    // 1 hour in cache
+    placeholderData: (previousData) => previousData, // Show previous data while refetching
+    refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
     retry: 1,
   })
 }
@@ -76,7 +82,7 @@ export function useAllMachines(enabled: boolean = true) {
  */
 export function useActiveLicensesCount(userEmail?: string) {
   const { data: machines = [] } = useUserMachines(userEmail)
-  
+
   return machines.filter((machine: Machine) => machine.license_activated === true).length
 }
 
@@ -85,7 +91,7 @@ export function useActiveLicensesCount(userEmail?: string) {
  */
 export function useRefetchMachines() {
   const queryClient = useQueryClient()
-  
+
   return (userEmail?: string) => {
     if (userEmail) {
       queryClient.invalidateQueries({ queryKey: machineKeys.list(userEmail) })

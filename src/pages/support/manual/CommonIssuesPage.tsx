@@ -59,9 +59,9 @@ const CommonIssuesPage: React.FC = memo(() => {
     },
     {
       id: 6,
-      title: "Certificate Generation Error or Missing Reports",
-      description: "Unable to generate certificate of destruction after successful erasure, or reports are corrupted.",
-      solution: "Step 1: Ensure adequate disk space (minimum 1GB free) in output directory. Step 2: Check write permissions for D-Secure in Documents folder. Step 3: Verify system date/time is correct for certificate timestamps. Step 4: Restart D-Secure service from Windows Services. Step 5: Try changing output directory to different location. Step 6: Disable antivirus real-time protection temporarily. Step 7: Run D-Secure as administrator. Step 8: Check Windows Event Viewer for detailed error messages.",
+      title: "Regulatory Document Generation Error or Missing Reports",
+      description: "Unable to generate regulatory document of destruction after successful erasure, or reports are corrupted.",
+      solution: "Step 1: Ensure adequate disk space (minimum 1GB free) in output directory. Step 2: Check write permissions for D-Secure in Documents folder. Step 3: Verify system date/time is correct for regulatory document timestamps. Step 4: Restart D-Secure service from Windows Services. Step 5: Try changing output directory to different location. Step 6: Disable antivirus real-time protection temporarily. Step 7: Run D-Secure as administrator. Step 8: Check Windows Event Viewer for detailed error messages.",
       category: "Reporting",
       severity: "Medium",
     },
@@ -141,8 +141,8 @@ const CommonIssuesPage: React.FC = memo(() => {
 
   const categories = ["All", "Installation", "Hardware", "Erasure", "Licensing", "Performance", "Reporting", "Encryption", "Network"];
 
-  const filteredIssues = selectedCategory === "All" 
-    ? issues 
+  const filteredIssues = selectedCategory === "All"
+    ? issues
     : issues.filter(issue => issue.category === selectedCategory);
 
   const toggleIssue = (id: number) => {
@@ -257,11 +257,10 @@ const CommonIssuesPage: React.FC = memo(() => {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
-                      selectedCategory === category
+                    className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${selectedCategory === category
                         ? "bg-emerald-500 text-white"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                    }`}
+                      }`}
                   >
                     {category}
                   </button>
@@ -299,9 +298,8 @@ const CommonIssuesPage: React.FC = memo(() => {
                         </div>
                       </div>
                       <svg
-                        className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
-                          activeIssue === issue.id ? "rotate-180" : ""
-                        }`}
+                        className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${activeIssue === issue.id ? "rotate-180" : ""
+                          }`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

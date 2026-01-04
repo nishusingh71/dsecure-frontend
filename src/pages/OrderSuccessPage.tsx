@@ -43,10 +43,60 @@ export default function OrderSuccessPage() {
   const seo = getSEOForPage('order-success');
 
   useEffect(() => {
+    // Check URL params for Polar.sh callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const checkoutId = urlParams.get('checkout_id') || urlParams.get('session_id');
+
+    // First check for pendingOrder (from Polar.sh flow)
+    const pendingOrder = localStorage.getItem('pendingOrder');
+    if (pendingOrder) {
+      const pending = JSON.parse(pendingOrder);
+
+      // Create order data from pending order
+      const polarOrderData: OrderData = {
+        orderId: checkoutId || `POLAR-${Date.now()}`,
+        productName: pending.productName || `D-Secure ${pending.category === 'drive-eraser' ? 'Drive Eraser' : 'File Eraser'}`,
+        productImage: '',
+        productImageCategory: pending.category,
+        category: pending.category,
+        productVersion: 'D-Secure Suite',
+        quantity: pending.licenses || '1',
+        duration: pending.years || '1',
+        totalPrice: pending.totalPrice || 0,
+        planName: pending.planName,
+        planDescription: `${pending.planName} - ${pending.licenses || 1} license(s)`,
+        features: [
+          'INCLUDED: Secure Data Erasure',
+          'INCLUDED: NIST 800-88 Compliance',
+          'INCLUDED: Audit Reports & Regulatory Documents',
+          'INCLUDED: Technical Support',
+          'INCLUDED: Software Updates',
+        ],
+        customer: {
+          firstName: 'Valued',
+          lastName: 'Customer',
+          email: 'customer@email.com', // Will be from Polar webhook
+          company: '',
+        },
+        paymentMethod: 'Polar.sh',
+        status: 'confirmed',
+        orderDate: new Date().toISOString(),
+      };
+
+      setOrderData(polarOrderData);
+
+      // Clear pending order and save actual order
+      localStorage.removeItem('pendingOrder');
+      localStorage.setItem('orderData', JSON.stringify(polarOrderData));
+      return;
+    }
+
+    // Fallback: Check for old orderData format
     const savedOrderData = localStorage.getItem('orderData');
     if (savedOrderData) {
       setOrderData(JSON.parse(savedOrderData));
     } else {
+      // No order data found - redirect to pricing
       navigate('/pricing-and-plan');
     }
   }, [navigate]);
@@ -64,263 +114,263 @@ export default function OrderSuccessPage() {
       ) : (
         <div className="min-h-screen bg-gray-50 py-12">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Success Header */}
-        <div className="text-center mb-12">
-          <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
-            <svg className="h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Order Confirmed!</h1>
-          <p className="text-xl text-gray-600 mb-2">
-            Thank you for your purchase, {orderData.customer.firstName}!
-          </p>
-          <p className="text-gray-500">
-            Your order has been successfully processed and you'll receive confirmation shortly.
-          </p>
-        </div>
-
-        {/* Order Details Card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
-            <h2 className="text-xl font-bold text-white">Order Details</h2>
-          </div>
-          
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Order Information</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Order ID:</span>
-                    <span className="font-mono text-gray-900 font-semibold">{orderData.orderId}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Order Date:</span>
-                    <span className="text-gray-900">{new Date(orderData.orderDate).toLocaleDateString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Payment Method:</span>
-                    <span className="text-gray-900 capitalize">{orderData.paymentMethod}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Status:</span>
-                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                      {orderData.status.toUpperCase()}
-                    </span>
-                  </div>
-                </div>
+            {/* Success Header */}
+            <div className="text-center mb-12">
+              <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+                <svg className="h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
               </div>
-              
-              <div>
-                <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Product Details</h3>
-                <div className="flex items-start space-x-4">
-                  <ProductImage
-                    category={orderData.productImageCategory || orderData.category || 'drive-eraser'}
-                    productName={orderData.productName}
-                    version={orderData.productVersion || 'Professional'}
-                    size="medium"
-                    className="flex-shrink-0"
-                  />
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{orderData.productName}</h4>
-                    {orderData.planName && orderData.category !== "drive-eraser" && (
-                      <div className="mt-1 mb-2">
-                        <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
-                          {orderData.planName}
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">Order Confirmed!</h1>
+              <p className="text-xl text-gray-600 mb-2">
+                Thank you for your purchase, {orderData.customer.firstName}!
+              </p>
+              <p className="text-gray-500">
+                Your order has been successfully processed and you'll receive confirmation shortly.
+              </p>
+            </div>
+
+            {/* Order Details Card */}
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-8">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                <h2 className="text-xl font-bold text-white">Order Details</h2>
+              </div>
+
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Order Information</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Order ID:</span>
+                        <span className="font-mono text-gray-900 font-semibold">{orderData.orderId}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Order Date:</span>
+                        <span className="text-gray-900">{new Date(orderData.orderDate).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Payment Method:</span>
+                        <span className="text-gray-900 capitalize">{orderData.paymentMethod}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Status:</span>
+                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                          {orderData.status.toUpperCase()}
                         </span>
-                        {orderData.planCategory && (
-                          <span className="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full font-medium ml-1">
-                            {orderData.planCategory}
-                          </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Product Details</h3>
+                    <div className="flex items-start space-x-4">
+                      <ProductImage
+                        category={orderData.productImageCategory || orderData.category || 'drive-eraser'}
+                        productName={orderData.productName}
+                        version={orderData.productVersion || 'Professional'}
+                        size="medium"
+                        className="flex-shrink-0"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900">{orderData.productName}</h4>
+                        {orderData.planName && orderData.category !== "drive-eraser" && (
+                          <div className="mt-1 mb-2">
+                            <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
+                              {orderData.planName}
+                            </span>
+                            {orderData.planCategory && (
+                              <span className="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full font-medium ml-1">
+                                {orderData.planCategory}
+                              </span>
+                            )}
+                          </div>
                         )}
+                        <p className="text-gray-600">
+                          {orderData.quantity} licenses × {orderData.duration} year{parseInt(orderData.duration) > 1 ? 's' : ''}
+                        </p>
+                        {orderData.category === "file-eraser" && orderData.planDescription && (
+                          <p className="text-xs text-gray-500 mt-1 italic">
+                            {orderData.planDescription}
+                          </p>
+                        )}
+                        {orderData.category === "drive-eraser" && (
+                          <p className="text-xs text-gray-500 mt-1 italic">
+                            Secure drive wiping with military-grade overwriting standards
+                          </p>
+                        )}
+                        <p className="text-lg font-bold text-blue-600 mt-1">
+                          ${orderData.totalPrice.toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Features Included */}
+                    {orderData.features && orderData.features.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Features Included</h4>
+                        <div className="grid grid-cols-1 gap-2">
+                          {orderData.features
+                            .filter((feature) => feature.startsWith("INCLUDED:"))
+                            .map((feature, index) => (
+                              <div key={index} className="flex items-center space-x-2">
+                                <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <span className="text-sm text-gray-700">{feature.replace("INCLUDED: ", "")}</span>
+                              </div>
+                            ))}
+                        </div>
                       </div>
                     )}
-                    <p className="text-gray-600">
-                      {orderData.quantity} licenses × {orderData.duration} year{parseInt(orderData.duration) > 1 ? 's' : ''}
-                    </p>
-                    {orderData.category === "file-eraser" && orderData.planDescription && (
-                      <p className="text-xs text-gray-500 mt-1 italic">
-                        {orderData.planDescription}
-                      </p>
-                    )}
-                    {orderData.category === "drive-eraser" && (
-                      <p className="text-xs text-gray-500 mt-1 italic">
-                        Secure drive wiping with military-grade overwriting standards
-                      </p>
-                    )}
-                    <p className="text-lg font-bold text-blue-600 mt-1">
-                      ${orderData.totalPrice.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Features Included */}
-                {orderData.features && orderData.features.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Features Included</h4>
-                    <div className="grid grid-cols-1 gap-2">
-                      {orderData.features
-                        .filter((feature) => feature.startsWith("INCLUDED:"))
-                        .map((feature, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                          <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                          </svg>
-                          <span className="text-sm text-gray-700">{feature.replace("INCLUDED: ", "")}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* Add-ons Section */}
-                {orderData.addonsData && orderData.addonsData.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-gray-200">
-                    <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Premium Add-ons</h4>
-                    <div className="space-y-2">
-                      {orderData.addonsData.map((addon) => (
-                        <div key={addon.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-sm">{addon.icon}</span>
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{addon.name}</p>
-                              <p className="text-xs text-gray-600">{addon.description}</p>
+
+                    {/* Add-ons Section */}
+                    {orderData.addonsData && orderData.addonsData.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Premium Add-ons</h4>
+                        <div className="space-y-2">
+                          {orderData.addonsData.map((addon) => (
+                            <div key={addon.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                              <div className="flex items-center space-x-2">
+                                <span className="text-sm">{addon.icon}</span>
+                                <div>
+                                  <p className="text-sm font-medium text-gray-900">{addon.name}</p>
+                                  <p className="text-xs text-gray-600">{addon.description}</p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-xs text-gray-500">
+                                  ${(addon.price * parseInt(orderData.quantity) * parseInt(orderData.duration)).toLocaleString()}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-xs text-gray-500">
-                              ${(addon.price * parseInt(orderData.quantity) * parseInt(orderData.duration)).toLocaleString()}
-                            </p>
-                          </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Customer Information */}
+                <div className="border-t pt-6">
+                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Customer Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <span className="text-gray-600">Name:</span>
+                      <span className="ml-2 text-gray-900 font-medium">
+                        {orderData.customer.firstName} {orderData.customer.lastName}
+                      </span>
                     </div>
+                    <div>
+                      <span className="text-gray-600">Email:</span>
+                      <span className="ml-2 text-gray-900 font-medium">{orderData.customer.email}</span>
+                    </div>
+                    {orderData.customer.company && (
+                      <div className="md:col-span-2">
+                        <span className="text-gray-600">Company:</span>
+                        <span className="ml-2 text-gray-900 font-medium">{orderData.customer.company}</span>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
 
-            {/* Customer Information */}
-            <div className="border-t pt-6">
-              <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Customer Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Next Steps */}
+            <div className="bg-blue-50 rounded-2xl p-6 mb-8">
+              <h3 className="text-lg font-bold text-blue-900 mb-4">What Happens Next?</h3>
+              <div className="space-y-3">
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-blue-600">1</span>
+                  </div>
+                  <p className="text-blue-800">
+                    <strong>Email Confirmation:</strong> You'll receive an order confirmation email within 5 minutes.
+                  </p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-blue-600">2</span>
+                  </div>
+                  <p className="text-blue-800">
+                    <strong>License Delivery:</strong> Your software license and download links will be sent within 24 hours.
+                  </p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-blue-600">3</span>
+                  </div>
+                  <p className="text-blue-800">
+                    <strong>Support Access:</strong> You'll receive access to our premium support portal and documentation.
+                  </p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-blue-600">4</span>
+                  </div>
+                  <p className="text-blue-800">
+                    <strong>Getting Started:</strong> Our team will contact you within 48 hours to help with setup and onboarding.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <Link
+                to="/support"
+                className="bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all text-center"
+              >
+                Contact Support
+              </Link>
+              <Link
+                to="/downloads"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
+              >
+                Download Center
+              </Link>
+              <Link
+                to="/admin"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
+              >
+                Admin Dashboard
+              </Link>
+            </div>
+
+            {/* Additional Information */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Frequently Asked Questions</h3>
+              <div className="space-y-4">
                 <div>
-                  <span className="text-gray-600">Name:</span>
-                  <span className="ml-2 text-gray-900 font-medium">
-                    {orderData.customer.firstName} {orderData.customer.lastName}
-                  </span>
+                  <h4 className="font-semibold text-gray-900">When will I receive my license?</h4>
+                  <p className="text-gray-600 text-sm mt-1">
+                    License keys and download instructions are typically delivered within 24 hours during business days.
+                  </p>
                 </div>
                 <div>
-                  <span className="text-gray-600">Email:</span>
-                  <span className="ml-2 text-gray-900 font-medium">{orderData.customer.email}</span>
+                  <h4 className="font-semibold text-gray-900">Can I upgrade my license later?</h4>
+                  <p className="text-gray-600 text-sm mt-1">
+                    Yes! Contact our sales team to upgrade your license at any time. You'll only pay the difference.
+                  </p>
                 </div>
-                {orderData.customer.company && (
-                  <div className="md:col-span-2">
-                    <span className="text-gray-600">Company:</span>
-                    <span className="ml-2 text-gray-900 font-medium">{orderData.customer.company}</span>
-                  </div>
-                )}
+                <div>
+                  <h4 className="font-semibold text-gray-900">What if I need help with installation?</h4>
+                  <p className="text-gray-600 text-sm mt-1">
+                    Our technical support team provides free installation assistance and setup guidance for all customers.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Next Steps */}
-        <div className="bg-blue-50 rounded-2xl p-6 mb-8">
-          <h3 className="text-lg font-bold text-blue-900 mb-4">What Happens Next?</h3>
-          <div className="space-y-3">
-            <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-xs font-bold text-blue-600">1</span>
-              </div>
-              <p className="text-blue-800">
-                <strong>Email Confirmation:</strong> You'll receive an order confirmation email within 5 minutes.
-              </p>
+            {/* Footer Actions */}
+            <div className="text-center mt-8">
+              <Link
+                to="/products"
+                className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+              >
+                ← Return to Products
+              </Link>
             </div>
-            <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-xs font-bold text-blue-600">2</span>
-              </div>
-              <p className="text-blue-800">
-                <strong>License Delivery:</strong> Your software license and download links will be sent within 24 hours.
-              </p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-xs font-bold text-blue-600">3</span>
-              </div>
-              <p className="text-blue-800">
-                <strong>Support Access:</strong> You'll receive access to our premium support portal and documentation.
-              </p>
-            </div>
-            <div className="flex items-start space-x-3">
-              <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-xs font-bold text-blue-600">4</span>
-              </div>
-              <p className="text-blue-800">
-                <strong>Getting Started:</strong> Our team will contact you within 48 hours to help with setup and onboarding.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Link
-            to="/support"
-            className="bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all text-center"
-          >
-            Contact Support
-          </Link>
-          <Link
-            to="/downloads"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
-          >
-            Download Center
-          </Link>
-          <Link
-            to="/admin"
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
-          >
-            Admin Dashboard
-          </Link>
-        </div>
-
-        {/* Additional Information */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Frequently Asked Questions</h3>
-          <div className="space-y-4">
-            <div>
-              <h4 className="font-semibold text-gray-900">When will I receive my license?</h4>
-              <p className="text-gray-600 text-sm mt-1">
-                License keys and download instructions are typically delivered within 24 hours during business days.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">Can I upgrade my license later?</h4>
-              <p className="text-gray-600 text-sm mt-1">
-                Yes! Contact our sales team to upgrade your license at any time. You'll only pay the difference.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">What if I need help with installation?</h4>
-              <p className="text-gray-600 text-sm mt-1">
-                Our technical support team provides free installation assistance and setup guidance for all customers.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Actions */}
-        <div className="text-center mt-8">
-          <Link
-            to="/products"
-            className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-          >
-            ← Return to Products
-          </Link>
-        </div>
           </div>
         </div>
       )}

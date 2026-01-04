@@ -102,7 +102,7 @@ const HomePage = memo(function HomePage() {
                         </svg>
                       )}
                     </HoverIcon>
-                    {t('pricing.contactSales')}
+                    Buy Now
                   </Link>
                 </div>
               </Reveal>
@@ -709,19 +709,18 @@ const HomePage = memo(function HomePage() {
               <Reveal key={feature.titleKey} delayMs={i * 100}>
                 <div className="group card hover:shadow-lg hover:-translate-y-1 transition-transform duration-200 ease-out h-full flex flex-col relative overflow-hidden">
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${
-                      feature.bgColor.includes("blue")
-                        ? "from-blue-50 to-transparent"
-                        : feature.bgColor.includes("emerald")
+                    className={`absolute inset-0 bg-gradient-to-br ${feature.bgColor.includes("blue")
+                      ? "from-blue-50 to-transparent"
+                      : feature.bgColor.includes("emerald")
                         ? "from-emerald-50 to-transparent"
                         : feature.bgColor.includes("purple")
-                        ? "from-purple-50 to-transparent"
-                        : feature.bgColor.includes("orange")
-                        ? "from-orange-50 to-transparent"
-                        : feature.bgColor.includes("teal")
-                        ? "from-teal-50 to-transparent"
-                        : "from-rose-50 to-transparent"
-                    } opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                          ? "from-purple-50 to-transparent"
+                          : feature.bgColor.includes("orange")
+                            ? "from-orange-50 to-transparent"
+                            : feature.bgColor.includes("teal")
+                              ? "from-teal-50 to-transparent"
+                              : "from-rose-50 to-transparent"
+                      } opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
                   ></div>
                   <div className="relative z-10">
                     <div

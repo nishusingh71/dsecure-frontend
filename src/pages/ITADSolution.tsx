@@ -3,7 +3,7 @@
 // const ITADSolution: React.FC = () => {
 //   return (
 //     <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] text-gray-800 antialiased">
-    
+
 
 //       {/* Hero Section */}
 //       <section className="bg-gradient-to-br from-[#f8fafc] via-white to-[#f1f5f9] py-20">
@@ -54,13 +54,13 @@
 //               Permanently erase data from drives, computers, servers, and mobile devices with military-grade security
 //             </p>
 //           </div>
-          
+
 //           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 //             <div className="bg-white p-8 rounded-2xl text-center hover:shadow-xl transition border border-gray-100 group">
 //               <div className="w-16 h-16 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-100 transition">
 //                 <span className="text-3xl">🔐</span>
 //               </div>
-//               <h3 className="text-xl font-bold text-gray-900 mb-3">Certified Data Erasure</h3>
+//               <h3 className="text-xl font-bold text-gray-900 mb-3">regulated Data Erasure</h3>
 //               <p className="text-gray-600 leading-relaxed">
 //                 Military-grade data sanitization using NIST 800-88 and international 
 //                 standards for permanent data destruction.
@@ -103,7 +103,7 @@
 //         </div>
 //       </section>
 
-     
+
 
 //       {/* Device Support Section */}
 //       <section className="py-20 bg-white">
@@ -114,7 +114,7 @@
 //           <p className="text-center text-gray-600 text-lg mb-16 max-w-2xl mx-auto">
 //             Comprehensive data erasure across all storage media and devices
 //           </p>
-          
+
 //           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 //             <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100">
 //               <div className="text-6xl mb-4">💻</div>
@@ -151,7 +151,7 @@
 //           <p className="text-center text-gray-600 text-lg mb-16 max-w-2xl mx-auto">
 //             Tailored ITAD solutions for every industry vertical
 //           </p>
-          
+
 //           <div className="grid md:grid-cols-2 gap-8">
 //             <div className="bg-white p-8 rounded-2xl shadow-md border-l-4 border-[#2563eb] hover:shadow-xl transition">
 //               <h3 className="text-2xl font-bold text-gray-900 mb-4">Enterprise Data Centers</h3>
@@ -206,7 +206,7 @@
 //               <ul className="space-y-3">
 //                 <li className="flex items-start">
 //                   <span className="text-[#2563eb] font-bold mr-3 text-xl">✓</span>
-//                   <span className="text-gray-700">HIPAA-certified data erasure processes</span>
+//                   <span className="text-gray-700">HIPAA-regulated data erasure processes</span>
 //                 </li>
 //                 <li className="flex items-start">
 //                   <span className="text-[#2563eb] font-bold mr-3 text-xl">✓</span>
@@ -250,7 +250,7 @@
 //           <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
 //             Frequently Asked Questions
 //           </h2>
-          
+
 //           <div className="space-y-6">
 //             <div className="bg-white p-6 rounded-xl border-l-4 border-[#2563eb] hover:shadow-md transition">
 //               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -314,12 +314,12 @@
 //         </div>
 //       </section>
 
-    
 
-      
-    
 
-      
+
+
+
+
 //     </div>
 //   );
 // };
@@ -336,7 +336,7 @@
 // const ITADSolution: React.FC = () => {
 //   return (
 //     <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] text-gray-800 antialiased bg-white">
-      
+
 //       {/* Hero Section */}
 //       <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-24 overflow-hidden">
 //         {/* Background Decoration */}
@@ -355,7 +355,7 @@
 //                 </svg>
 //                 <span>Secure IT Asset Disposition</span>
 //               </div>
-              
+
 //               <div>
 //                 <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
 //                   Secure IT Asset
@@ -369,7 +369,7 @@
 //                   international data security regulations.
 //                 </p>
 //               </div>
-              
+
 //               <div className="flex flex-col sm:flex-row gap-4">
 //                 <button className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
 //                   Get Started
@@ -382,7 +382,7 @@
 //                 </button>
 //               </div>
 //             </div>
-            
+
 //             {/* Right Image/Illustration */}
 //             <div className="hidden md:block">
 //               <div className="relative">
@@ -391,7 +391,7 @@
 //                   {/* Decorative Elements */}
 //                   <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl rotate-12 opacity-20"></div>
 //                   <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl -rotate-12 opacity-20"></div>
-                  
+
 //                   {/* Content */}
 //                   <div className="relative space-y-8">
 //                     {/* Icon */}
@@ -405,17 +405,17 @@
 //                         </div>
 //                       </div>
 //                     </div>
-                    
+
 //                     {/* Title */}
 //                     <div className="text-center space-y-3">
 //                       <h3 className="text-2xl font-bold text-gray-900">
 //                         Secure Asset Disposal
 //                       </h3>
 //                       <p className="text-gray-600">
-//                         NIST 800-88 Certified Data Erasure
+//                         NIST 800-88 regulated Data Erasure
 //                       </p>
 //                     </div>
-                    
+
 //                     {/* Stats */}
 //                     <div className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-100">
 //                       <div className="text-center">
@@ -453,11 +453,11 @@
 //               Permanently erase data from all devices with military-grade security
 //             </p>
 //           </div>
-          
+
 //           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 //             {[
-//               { icon: '🔐', title: 'Certified Data Erasure', desc: 'Military-grade data sanitization using NIST 800-88 standards.' },
-//               { icon: '📜', title: 'Compliance Certificates', desc: 'Tamper-proof certificates with detailed audit trails.' },
+//               { icon: '🔐', title: 'regulated Data Erasure', desc: 'Military-grade data sanitization using NIST 800-88 standards.' },
+//               { icon: '📜', title: 'Compliance Regulatory Documents', desc: 'Tamper-proof regulatory documents with detailed audit trails.' },
 //               { icon: '📈', title: 'Asset Management', desc: 'Track assets from deployment through secure disposal.' },
 //               { icon: '♻️', title: 'Sustainable E-Waste', desc: 'Environmentally responsible disposal practices.' }
 //             ].map((feature, idx) => (
@@ -485,7 +485,7 @@
 //               Comprehensive data erasure across all storage media
 //             </p>
 //           </div>
-          
+
 //           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 //             {[
 //               { icon: '💻', title: 'Computers', desc: 'Desktops, Laptops, Workstations' },
@@ -517,7 +517,7 @@
 //               Specialized ITAD solutions for every sector
 //             </p>
 //           </div>
-          
+
 //           <div className="grid md:grid-cols-2 gap-6">
 //             {[
 //               {
@@ -528,12 +528,12 @@
 //               {
 //                 title: 'Financial Services',
 //                 desc: 'Meet regulatory requirements for customer data protection and secure disposal.',
-//                 features: ['PCI DSS Level 1 compliant', 'SOX compliance support', 'Verified certificates']
+//                 features: ['PCI DSS Level 1 compliant', 'SOX compliance support', 'Verified regulatory documents']
 //               },
 //               {
 //                 title: 'Healthcare Organizations',
 //                 desc: 'HIPAA-compliant data sanitization for medical devices and health records.',
-//                 features: ['HIPAA-certified erasure', 'PHI data protection', 'Chain of custody docs']
+//                 features: ['HIPAA-regulated erasure', 'PHI data protection', 'Chain of custody docs']
 //               },
 //               {
 //                 title: 'Government & Defense',
@@ -574,7 +574,7 @@
 //               Everything you need to know about ITAD
 //             </p>
 //           </div>
-          
+
 //           <div className="space-y-4">
 //             {[
 //               {
@@ -583,15 +583,15 @@
 //               },
 //               {
 //                 q: 'How secure is your data erasure process?',
-//                 a: 'Our solution uses military-grade sanitization algorithms that overwrite data multiple times. We support NIST 800-88, DoD 5220.22-M, and 15+ international standards, all verified with tamper-proof certificates.'
+//                 a: 'Our solution uses military-grade sanitization algorithms that overwrite data multiple times. We support NIST 800-88, DoD 5220.22-M, and 15+ international standards, all verified with tamper-proof regulatory documents.'
 //               },
 //               {
 //                 q: 'Which compliance standards do you support?',
 //                 a: 'DSecure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
 //               },
 //               {
-//                 q: 'Do you provide certificates of data destruction?',
-//                 a: 'Yes, we generate digitally signed, tamper-proof certificates for every erased device with complete asset details, erasure method, timestamp, and verification results.'
+//                 q: 'Do you provide regulatory documents of data destruction?',
+//                 a: 'Yes, we generate digitally signed, tamper-proof regulatory documents for every erased device with complete asset details, erasure method, timestamp, and verification results.'
 //               },
 //               {
 //                 q: 'Can you handle large-scale enterprise deployments?',
@@ -612,7 +612,7 @@
 //         </div>
 //       </section>
 
-     
+
 //     </div>
 //   );
 // };
@@ -627,7 +627,7 @@
 // const ITADSolution: React.FC = () => {
 //   return (
 //     <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] antialiased" style={{ backgroundColor: '#ffffff', color: '#1f2937' }}>
-      
+
 //       {/* Hero Section */}
 //       <section className="relative py-24 overflow-hidden" style={{ backgroundColor: '#e8f5e9' }}>
 //         {/* Background Decoration */}
@@ -646,7 +646,7 @@
 //                 </svg>
 //                 <span>Secure IT Asset Disposition</span>
 //               </div>
-              
+
 //               <div>
 //                 <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6" style={{ color: '#1f2937' }}>
 //                   Secure IT Asset
@@ -660,7 +660,7 @@
 //                   international data security regulations.
 //                 </p>
 //               </div>
-              
+
 //               <div className="flex flex-col sm:flex-row gap-4">
 //                 <button className="inline-flex items-center justify-center text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" style={{ backgroundColor: '#059669' }}>
 //                   Get Started
@@ -673,7 +673,7 @@
 //                 </button>
 //               </div>
 //             </div>
-            
+
 //             {/* Right Image/Illustration */}
 //             <div className="hidden md:block">
 //               <div className="relative">
@@ -682,7 +682,7 @@
 //                   {/* Decorative Elements */}
 //                   <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl rotate-12 opacity-20"></div>
 //                   <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl -rotate-12 opacity-20"></div>
-                  
+
 //                   {/* Content */}
 //                   <div className="relative space-y-8">
 //                     {/* Icon */}
@@ -696,17 +696,17 @@
 //                         </div>
 //                       </div>
 //                     </div>
-                    
+
 //                     {/* Title */}
 //                     <div className="text-center space-y-3">
 //                       <h3 className="text-2xl font-bold" style={{ color: '#1f2937' }}>
 //                         Secure Asset Disposal
 //                       </h3>
 //                       <p style={{ color: '#6b7280' }}>
-//                         NIST 800-88 Certified Data Erasure
+//                         NIST 800-88 regulated Data Erasure
 //                       </p>
 //                     </div>
-                    
+
 //                     {/* Stats */}
 //                     <div className="grid grid-cols-3 gap-4 pt-6 border-t" style={{ borderColor: '#e5e7eb' }}>
 //                       <div className="text-center">
@@ -744,10 +744,10 @@
 //               Permanently erase data from all devices with military-grade security
 //             </p>
 //           </div>
-          
+
 //           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 //             {[
-//               { icon: '🔐', title: 'Certified Data Erasure', desc: 'Military-grade data sanitization using NIST 800-88 standards.' },
+//               { icon: '🔐', title: 'regulated Data Erasure', desc: 'Military-grade data sanitization using NIST 800-88 standards.' },
 //               { icon: '📜', title: 'Compliance Certificates', desc: 'Tamper-proof certificates with detailed audit trails.' },
 //               { icon: '📈', title: 'Asset Management', desc: 'Track assets from deployment through secure disposal.' },
 //               { icon: '♻️', title: 'Sustainable E-Waste', desc: 'Environmentally responsible disposal practices.' }
@@ -776,7 +776,7 @@
 //               Comprehensive data erasure across all storage media
 //             </p>
 //           </div>
-          
+
 //           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 //             {[
 //               { icon: '💻', title: 'Computers', desc: 'Desktops, Laptops, Workstations' },
@@ -808,7 +808,7 @@
 //               Specialized ITAD solutions for every sector
 //             </p>
 //           </div>
-          
+
 //           <div className="grid md:grid-cols-2 gap-6">
 //             {[
 //               {
@@ -824,7 +824,7 @@
 //               {
 //                 title: 'Healthcare Organizations',
 //                 desc: 'HIPAA-compliant data sanitization for medical devices and health records.',
-//                 features: ['HIPAA-certified erasure', 'PHI data protection', 'Chain of custody docs']
+//                 features: ['HIPAA-regulated erasure', 'PHI data protection', 'Chain of custody docs']
 //               },
 //               {
 //                 title: 'Government & Defense',
@@ -865,7 +865,7 @@
 //               Everything you need to know about ITAD
 //             </p>
 //           </div>
-          
+
 //           <div className="space-y-4">
 //             {[
 //               {
@@ -917,7 +917,7 @@ const ITADSolution: React.FC = () => {
   const navigate = useNavigate();
   return (
     <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] antialiased" style={{ backgroundColor: '#ffffff', color: '#1f2937' }}>
-      
+
       {/* Hero Section */}
       <section className="relative py-24 overflow-hidden" style={{ backgroundColor: '#e8f5e9' }}>
         {/* Background Decoration */}
@@ -936,7 +936,7 @@ const ITADSolution: React.FC = () => {
                 </svg>
                 <span>Secure IT Asset Disposition</span>
               </div>
-              
+
               <div>
                 <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6" style={{ color: '#1f2937' }}>
                   Secure IT Asset{" "}
@@ -945,25 +945,25 @@ const ITADSolution: React.FC = () => {
                   </span>
                 </h1>
                 <p className="text-xl leading-relaxed" style={{ color: '#4b5563' }}>
-                  Comprehensive ITAD solution that helps organizations securely retire, 
-                  sanitize, and dispose of IT assets while maintaining compliance with 
+                  Comprehensive ITAD solution that helps organizations securely retire,
+                  sanitize, and dispose of IT assets while maintaining compliance with
                   international data security regulations.
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                onClick={() => navigate('/contact')}
-                className="inline-flex items-center justify-center text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" style={{ backgroundColor: '#059669' }}>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="inline-flex items-center justify-center text-white px-8 py-4 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" style={{ backgroundColor: '#059669' }}>
                   Start Free Trial
                   <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </button>
-                
+
               </div>
             </div>
-            
+
             {/* Right Image/Illustration */}
             <div className="hidden md:block">
               <div className="relative">
@@ -972,7 +972,7 @@ const ITADSolution: React.FC = () => {
                   {/* Decorative Elements */}
                   <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-2xl rotate-12 opacity-20"></div>
                   <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl -rotate-12 opacity-20"></div>
-                  
+
                   {/* Content */}
                   <div className="relative space-y-8">
                     {/* Icon */}
@@ -986,17 +986,17 @@ const ITADSolution: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Title */}
                     <div className="text-center space-y-3">
                       <h3 className="text-2xl font-bold" style={{ color: '#1f2937' }}>
                         Secure Asset Disposal
                       </h3>
                       <p style={{ color: '#6b7280' }}>
-                        NIST 800-88 Certified Data Erasure
+                        NIST 800-88 regulated Data Erasure
                       </p>
                     </div>
-                    
+
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-4 pt-6 border-t" style={{ borderColor: '#e5e7eb' }}>
                       <div className="text-center">
@@ -1034,11 +1034,11 @@ const ITADSolution: React.FC = () => {
               Permanently erase data from all devices with military-grade security
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: '🔐', title: 'Certified Data Erasure', desc: 'Military-grade data sanitization using NIST 800-88 standards.' },
-              { icon: '📜', title: 'Compliance Certificates', desc: 'Tamper-proof certificates with detailed audit trails.' },
+              { icon: '🔐', title: 'regulated Data Erasure', desc: 'Military-grade data sanitization using NIST 800-88 standards.' },
+              { icon: '📜', title: 'Compliance Regulatory Documents', desc: 'Tamper-proof regulatory documents with detailed audit trails.' },
               { icon: '📈', title: 'Asset Management', desc: 'Track assets from deployment through secure disposal.' },
               { icon: '♻️', title: 'Sustainable E-Waste', desc: 'Environmentally responsible disposal practices.' }
             ].map((feature, idx) => (
@@ -1066,7 +1066,7 @@ const ITADSolution: React.FC = () => {
               Comprehensive data erasure across all storage media
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: '💻', title: 'Computers', desc: 'Desktops, Laptops, Workstations' },
@@ -1098,7 +1098,7 @@ const ITADSolution: React.FC = () => {
               Specialized ITAD solutions for every sector
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-6">
             {[
               {
@@ -1109,12 +1109,12 @@ const ITADSolution: React.FC = () => {
               {
                 title: 'Financial Services',
                 desc: 'Meet regulatory requirements for customer data protection and secure disposal.',
-                features: ['PCI DSS Level 1 compliant', 'SOX compliance support', 'Verified certificates']
+                features: ['PCI DSS Level 1 compliant', 'SOX compliance support', 'Verified regulatory documents']
               },
               {
                 title: 'Healthcare Organizations',
                 desc: 'HIPAA-compliant data sanitization for medical devices and health records.',
-                features: ['HIPAA-certified erasure', 'PHI data protection', 'Chain of custody docs']
+                features: ['HIPAA-regulated erasure', 'PHI data protection', 'Chain of custody docs']
               },
               {
                 title: 'Government & Defense',
@@ -1155,7 +1155,7 @@ const ITADSolution: React.FC = () => {
               Everything you need to know about ITAD
             </p>
           </div>
-          
+
           <div className="space-y-4">
             {[
               {
@@ -1164,15 +1164,15 @@ const ITADSolution: React.FC = () => {
               },
               {
                 q: 'How secure is your data erasure process?',
-                a: 'Our solution uses military-grade sanitization algorithms that overwrite data multiple times. We support NIST 800-88, DoD 5220.22-M, and 15+ international standards, all verified with tamper-proof certificates.'
+                a: 'Our solution uses military-grade sanitization algorithms that overwrite data multiple times. We support NIST 800-88, DoD 5220.22-M, and 15+ international standards, all verified with tamper-proof regulatory documents.'
               },
               {
                 q: 'Which compliance standards do you support?',
                 a: 'DSecure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
               },
               {
-                q: 'Do you provide certificates of data destruction?',
-                a: 'Yes, we generate digitally signed, tamper-proof certificates for every erased device with complete asset details, erasure method, timestamp, and verification results.'
+                q: 'Do you provide regulatory documents of data destruction?',
+                a: 'Yes, we generate digitally signed, tamper-proof regulatory documents for every erased device with complete asset details, erasure method, timestamp, and verification results.'
               },
               {
                 q: 'Can you handle large-scale enterprise deployments?',

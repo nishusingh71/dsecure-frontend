@@ -58,9 +58,9 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                   Empower Your Service Portfolio
                 </h2>
                 <p className="text-slate-700 text-lg leading-relaxed mb-6">
-                  Comprehensive data sanitization services that MSPs can offer to their clients with full branding. 
-                  Our white-label solutions enable you to expand your service offerings, increase revenue, and 
-                  provide enterprise-grade data security to your customers without the overhead of developing 
+                  Comprehensive data sanitization services that MSPs can offer to their clients with full branding.
+                  Our white-label solutions enable you to expand your service offerings, increase revenue, and
+                  provide enterprise-grade data security to your customers without the overhead of developing
                   your own solutions.
                 </p>
                 <img
@@ -144,7 +144,7 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                     },
                     {
                       title: "Automated Reporting",
-                      desc: "Generate branded compliance reports and certificates for your clients with automated workflows.",
+                      desc: "Generate branded compliance reports and regulatory documents for your clients with automated workflows.",
                       icon: "📊",
                     },
                   ].map((useCase, i) => (
@@ -214,7 +214,7 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                   Ready to Become a Partner?
                 </h2>
                 <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Join our growing network of service providers and start offering 
+                  Join our growing network of service providers and start offering
                   enterprise-grade data erasure solutions to your clients today.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

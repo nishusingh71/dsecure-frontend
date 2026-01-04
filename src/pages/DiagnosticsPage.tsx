@@ -2,9 +2,11 @@ import React from 'react';
 import SEOHead from '../components/SEOHead';
 import { getSEOForPage } from '../utils/seo';
 
+import { ENV } from '../config/env';
+
 const DiagnosticsPage: React.FC = () => {
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  
+  const cloudName = ENV.CLOUDINARY_CLOUD_NAME;
+
   const testUrls = [
     {
       name: 'Main Logo',
@@ -22,12 +24,12 @@ const DiagnosticsPage: React.FC = () => {
       <SEOHead seo={getSEOForPage('diagnostics')} />
       <div className="max-w-4xl mx-auto px-4">
         <h1 className="text-3xl font-bold mb-8">Cloudinary Diagnostics</h1>
-        
+
         <div className="bg-white rounded-lg shadow p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Environment Variables</h2>
           <div className="space-y-2">
             <p><strong>VITE_CLOUDINARY_CLOUD_NAME:</strong> <code className="bg-gray-100 px-2 py-1 rounded">{cloudName || 'NOT SET'}</code></p>
-            <p><strong>Status:</strong> 
+            <p><strong>Status:</strong>
               <span className={`ml-2 px-2 py-1 rounded text-sm ${cloudName ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                 {cloudName ? 'CONFIGURED' : 'MISSING'}
               </span>
@@ -42,15 +44,15 @@ const DiagnosticsPage: React.FC = () => {
               <div key={index} className="border rounded-lg p-4">
                 <h3 className="font-medium mb-2">{test.name}</h3>
                 <p className="text-sm text-gray-600 mb-3">URL: <code className="bg-gray-100 px-1 rounded">{test.url}</code></p>
-                
+
                 <div className="flex items-center gap-4">
                   <div className="flex-shrink-0">
-                    <img 
-                      src={test.url} 
+                    <img
+                      src={test.url}
                       alt={test.name}
                       className="w-16 h-16 object-contain border rounded"
-                      onLoad={() => {}}
-                      onError={() => {}}
+                      onLoad={() => { }}
+                      onError={() => { }}
                     />
                   </div>
                   <div>

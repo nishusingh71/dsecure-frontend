@@ -1042,14 +1042,17 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 )}
 
                 {/* Action Button */}
-                {/* <button
+                <button disabled={true}
                   onClick={handleBuyNow}
                   className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg"
                 >
                   {selectedLicenses === "custom" || selectedPlan === "custom"
                     ? " Request Custom Quote"
                     : " Buy Now"}
-                </button> */}
+                </button>
+                <p className="text-xs text-center text-gray-500">
+                  currently disabled for maintenance.
+                </p>
 
                 {/* Trust Indicators */}
                 <div className="space-y-3 text-center">

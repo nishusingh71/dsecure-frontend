@@ -20,7 +20,7 @@ export default function SecurityPage() {
               Security Practices
             </h1>
             <p className="text-base xs:text-lg sm:text-lg md:text-xl lg:text-xl xl:text-2xl xxl:text-2xl text-slate-600 light:text-slate-300 max-w-3xl mx-auto">
-              Enterprise-grade security measures and certifications that protect
+              Enterprise-grade security measures and regulations that protect
               your data and ensure compliance with global standards.
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function SecurityPage() {
           {/* Certifications */}
           <section className="mb-12 xs:mb-14 sm:mb-16 md:mb-20 lg:mb-24 xl:mb-28 xxl:mb-32">
             <h2 className="text-2xl xs:text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl xxl:text-5xl font-semibold text-slate-900 light:text-white text-center mb-8 xs:mb-10 sm:mb-12 md:mb-14 lg:mb-16 xl:mb-18 xxl:mb-20">
-              Security Certifications & Compliance
+              Security Regulations & Compliance
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xs:gap-7 sm:gap-8 md:gap-9 lg:gap-10 xl:gap-11 xxl:gap-12">
               <div className="text-center p-6 xs:p-7 sm:p-8 md:p-8 lg:p-9 xl:p-10 xxl:p-11 bg-slate-50 light:bg-slate-800 rounded-xl hover:shadow-lg transition-shadow">
@@ -99,7 +99,7 @@ export default function SecurityPage() {
                   ISO 27001
                 </h3>
                 <p className="text-sm xs:text-sm sm:text-base md:text-base lg:text-lg xl:text-lg xxl:text-xl text-slate-600 light:text-slate-300">
-                  Information Security Management System certification
+                  Information Security Management System regulation
                 </p>
               </div>
 
@@ -249,7 +249,7 @@ export default function SecurityPage() {
                 </h3>
                 <p className="text-base xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 light:text-slate-300 leading-relaxed">
                   Compliant data erasure ensuring complete data destruction with
-                  verifiable certificates.
+                  verifiable regulatory documents.
                 </p>
               </div>
 
@@ -298,7 +298,7 @@ export default function SecurityPage() {
                   Expert Team
                 </h3>
                 <p className="text-base xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 light:text-slate-300 leading-relaxed">
-                  Dedicated security professionals with advanced certifications
+                  Dedicated security professionals with advanced regulatory credentials
                   and years of experience.
                 </p>
               </div>

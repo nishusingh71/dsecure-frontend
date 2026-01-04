@@ -31,7 +31,7 @@ const UserInterface: React.FC = () => {
             Understanding the Interface Design
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-           DSecure File Eraser Network features a modern, intuitive interface inspired by Microsoft Office's ribbon design pattern. This familiar layout minimizes the learning curve for users accustomed to Windows applications while providing quick access to powerful erasure features. Whether you're a first-time user or an experienced IT administrator, the interface is designed to make complex network-wide data erasure operations straightforward and manageable.
+            DSecure File Eraser Network features a modern, intuitive interface inspired by Microsoft Office's ribbon design pattern. This familiar layout minimizes the learning curve for users accustomed to Windows applications while providing quick access to powerful erasure features. Whether you're a first-time user or an experienced IT administrator, the interface is designed to make complex network-wide data erasure operations straightforward and manageable.
           </p>
           <p className="text-gray-700 leading-relaxed">
             The interface prioritizes clarity and efficiency. All major functions are organized logically into ribbon tabs, with the most frequently used operations prominently displayed on the Home ribbon. Context-sensitive panels adapt to your current task, showing relevant options and information without cluttering the screen. This thoughtful design allows you to focus on your erasure operations rather than searching for features, making your workflow smoother and more productive across daily tasks ranging from simple file deletions to complex scheduled erasure operations spanning multiple computers.
@@ -183,7 +183,7 @@ const UserInterface: React.FC = () => {
                     Configure application preferences including erasure algorithms, verification methods, and operational behaviors.
                   </p>
                   <p className="text-xs text-gray-600">
-                    Choose from 17+ certified erasure algorithms. Set ignore lists for files/folders to protect. Customize report branding with company logos.
+                    Choose from 17+ regulated erasure algorithms. Set ignore lists for files/folders to protect. Customize report branding with company logos.
                   </p>
                 </div>
 

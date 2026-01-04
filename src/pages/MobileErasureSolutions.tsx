@@ -42,7 +42,7 @@ const MobileErasureSolutions: React.FC = () => {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
-                Certified, Secure, and Auditable Data Erasure for Smartphones &
+                regulated, Secure, and Auditable Data Erasure for Smartphones &
                 Tablets
               </p>
               <img
@@ -66,10 +66,10 @@ const MobileErasureSolutions: React.FC = () => {
                   As mobile devices store increasing amounts of personal and
                   enterprise data, secure erasure is critical to prevent
                   unauthorized recovery during reuse, resale, or recycling.
-                  D-Secure’s certified mobile erasure ensures all data,
+                  D-Secure’s regulated mobile erasure ensures all data,
                   configurations, and credentials are permanently removed
                   according to international standards such as NIST 800-88 Rev.
-                  1 and ADISA Certification.
+                  1 and ADISA Regulation.
                 </p>
                 <img
                   src="https://images.unsplash.com/photo-1523473827534-86c31d54351f?auto=format&fit=crop&w=1200&q=80"
@@ -88,13 +88,13 @@ const MobileErasureSolutions: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
                     {
-                      title: "Certified Multi-OS Support",
+                      title: "regulated Multi-OS Support",
                       desc: "Supports Android, iOS, iPadOS, and other mobile operating systems using verified secure wipe protocols.",
                       img: "https://images.unsplash.com/photo-1611078489935-0cb964de46b4?auto=format&fit=crop&w=800&q=80",
                     },
                     {
                       title: "Tamper-Proof Reporting",
-                      desc: "Generates cryptographically signed certificates of erasure for every device, ensuring audit compliance.",
+                      desc: "Generates cryptographically signed regulatory documents of erasure for every device, ensuring audit compliance.",
                       img: "https://images.unsplash.com/photo-1605902711622-cfb43c4437b0?auto=format&fit=crop&w=800&q=80",
                     },
                     {
@@ -145,7 +145,7 @@ const MobileErasureSolutions: React.FC = () => {
                     },
                     {
                       step: "Data Erasure Process",
-                      desc: "Performs certified overwrite or Secure Erase commands via USB or Wi-Fi.",
+                      desc: "Performs regulated overwrite or Secure Erase commands via USB or Wi-Fi.",
                     },
                     {
                       step: "Verification & Reporting",
@@ -175,16 +175,16 @@ const MobileErasureSolutions: React.FC = () => {
             <Reveal>
               <div className="bg-white rounded-2xl shadow-lg p-8 border border-cyan-100 hover:shadow-xl transition-all duration-300">
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                  Compliance & Certification
+                  Compliance & Regulation
                 </h2>
                 <p className="text-slate-700 leading-relaxed mb-6">
                   D-Secure Mobile Erasure is aligned with leading international
-                  standards and certifications, ensuring globally recognized
+                  standards and regulations, ensuring globally recognized
                   compliance.
                 </p>
                 <ul className="list-disc ml-6 text-slate-700 space-y-2">
                   <li>NIST 800-88 Rev. 1 Clear & Purge Standards</li>
-                  <li>ADISA Certified Product for Mobile Devices</li>
+                  <li>ADISA regulated Product for Mobile Devices</li>
                   <li>GDPR and HIPAA Compliant Reporting Process</li>
                   <li>ISO 27001 Aligned Information Security Practices</li>
                 </ul>
@@ -198,7 +198,7 @@ const MobileErasureSolutions: React.FC = () => {
                   D-Secure Mobile Erasure – Securing Your Data Lifecycle
                 </h2>
                 <p className="text-center text-emerald-100 text-lg max-w-3xl mx-auto">
-                  With certified mobile data sanitization, verifiable audit
+                  With regulated mobile data sanitization, verifiable audit
                   trails, and seamless ITAD integration, D-Secure helps
                   organizations eliminate residual data risk across mobile
                   assets — securely, efficiently, and sustainably.

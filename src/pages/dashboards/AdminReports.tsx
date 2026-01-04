@@ -1,4 +1,5 @@
-﻿import { useMemo, useState, useRef } from "react";
+﻿import { ENV } from "@/config/env";
+import { useMemo, useState, useRef, useCallback } from "react";
 import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
@@ -10,11 +11,17 @@ import { useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { useNavigate } from "react-router-dom";
-import { isDemoMode, DEMO_AUDIT_REPORTS } from "@/data/demoData";
+import { isDemoMode, DEMO_AUDIT_REPORTS, DEMO_SUBUSERS } from "@/data/demoData";
+import { useSubusers } from "@/hooks/useSubusers";
 
 // Extended AdminReport interface to include raw data
 interface ExtendedAdminReport extends AdminReport {
   method?: string;
+  reportType?: string;
+  totalFiles?: number;
+  erasedFiles?: number;
+  failedFiles?: number;
+  successFiles?: number;
   _raw?: any;
   _details?: any;
 }
@@ -33,6 +40,10 @@ export default function AdminReports() {
   const [sortBy, setSortBy] = useState<keyof AdminReport>("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [eraserMethodFilter, setEraserMethodFilter] = useState("");
+  const [reportTypeFilter, setReportTypeFilter] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("");
+  const [groupFilter, setGroupFilter] = useState("");
+  const [subuserFilter, setSubuserFilter] = useState<string>(""); // "" = my reports, email = subuser's reports, "all" = all reports
 
   const navigate = useNavigate();
 
@@ -84,11 +95,11 @@ export default function AdminReports() {
   };
 
   // ✅ Custom DateInput Component with YYYY-MM-DD format
-  const CustomDateInput = ({ 
-    label, 
-    value, 
-    onChange, 
-    placeholder = "YYYY-MM-DD" 
+  const CustomDateInput = ({
+    label,
+    value,
+    onChange,
+    placeholder = "YYYY-MM-DD"
   }: {
     label: string;
     value: string;
@@ -101,7 +112,7 @@ export default function AdminReports() {
     const formatInputValue = (val: string) => {
       // Remove non-digits
       const digitsOnly = val.replace(/\D/g, '');
-      
+
       // Format as YYYY-MM-DD
       if (digitsOnly.length >= 8) {
         return `${digitsOnly.slice(0, 4)}-${digitsOnly.slice(4, 6)}-${digitsOnly.slice(6, 8)}`;
@@ -116,9 +127,9 @@ export default function AdminReports() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const rawValue = e.target.value;
       const formatted = formatInputValue(rawValue);
-      
+
       setDisplayValue(formatted);
-      
+
       // Only call onChange if we have a complete date or empty
       if (formatted === '' || formatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
         onChange(formatted);
@@ -128,15 +139,15 @@ export default function AdminReports() {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       // Allow backspace, delete, tab, escape, enter
       if ([8, 9, 27, 13, 46].includes(e.keyCode) ||
-          // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-          (e.keyCode === 65 && e.ctrlKey) ||
-          (e.keyCode === 67 && e.ctrlKey) ||
-          (e.keyCode === 86 && e.ctrlKey) ||
-          (e.keyCode === 88 && e.ctrlKey) ||
-          // Allow numbers and dash
-          (e.keyCode >= 48 && e.keyCode <= 57) || // 0-9
-          (e.keyCode >= 96 && e.keyCode <= 105) || // numpad 0-9
-          e.keyCode === 189 || e.keyCode === 109 // dash
+        // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+        (e.keyCode === 65 && e.ctrlKey) ||
+        (e.keyCode === 67 && e.ctrlKey) ||
+        (e.keyCode === 86 && e.ctrlKey) ||
+        (e.keyCode === 88 && e.ctrlKey) ||
+        // Allow numbers and dash
+        (e.keyCode >= 48 && e.keyCode <= 57) || // 0-9
+        (e.keyCode >= 96 && e.keyCode <= 105) || // numpad 0-9
+        e.keyCode === 189 || e.keyCode === 109 // dash
       ) {
         return;
       }
@@ -166,6 +177,38 @@ export default function AdminReports() {
     );
   };
 
+  // ✅ Get current user email for API calls
+  const getUserEmail = (): string => {
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
+
+    let storedUserData = null;
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {
+        console.error("Error parsing user_data:", e);
+      }
+    }
+
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {
+        console.error("Error parsing authUser:", e);
+      }
+    }
+
+    const jwtUser = authService.getUserFromToken();
+    return storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || "";
+  };
+
+  const currentUserEmail = getUserEmail();
+  const isDemo = isDemoMode();
+
+  // ✅ Fetch subusers for filter dropdown
+  const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
+
   const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(
     () => getCachedData("reports") || []
   );
@@ -173,7 +216,8 @@ export default function AdminReports() {
   const [selectedReportIds, setSelectedReportIds] = useState<Set<string>>(
     new Set()
   );
-  const pageSize = 5;
+  const [pageSize, setPageSize] = useState(5); // Default 10 rows per page
+  const pageSizeOptions = [5, 10, 25, 50, 100, 250];
 
   // Generate PDF Modal State
   const [showGenerateModal, setShowGenerateModal] = useState(false);
@@ -182,7 +226,9 @@ export default function AdminReports() {
     setSelectedReport,
   ] = useState<ExtendedAdminReport | null>(null);
 
-  // Bulk modal removed - now redirects to /admin/reports/generate
+  // Bulk Settings Modal State
+  const [showBulkSettingsModal, setShowBulkSettingsModal] = useState(false);
+  const [bulkSettingsLoading, setBulkSettingsLoading] = useState(false);
 
   // Scheduler Modal State
   const [showSchedulerModal, setShowSchedulerModal] = useState(false);
@@ -203,22 +249,195 @@ export default function AdminReports() {
     filterDepartment: "",
   });
 
-  const [pdfFormData, setPdfFormData] = useState({
+  // State for base64 images (for localStorage persistence)
+  const [imageBase64, setImageBase64] = useState<{
+    headerLeftLogo: string | null;
+    headerRightLogo: string | null;
+    watermarkImage: string | null;
+    technicianSignature: string | null;
+    validatorSignature: string | null;
+  }>(() => {
+    try {
+      const saved = localStorage.getItem("pdfImageSettings");
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.warn("Failed to load image settings from localStorage:", e);
+    }
+    return {
+      headerLeftLogo: null,
+      headerRightLogo: null,
+      watermarkImage: null,
+      technicianSignature: null,
+      validatorSignature: null,
+    };
+  });
+
+  // Default PDF settings (removed localStorage)
+  const defaultPdfSettings = {
     reportTitle: "Data Erasure Audit Report",
     headerText: "D-SecureTech",
     technicianName: "",
     technicianDept: "",
     validatorName: "",
     validatorDept: "",
-    headerLeftLogo: "",
-    headerRightLogo: "",
-    watermarkImage: "",
-    technicianSignature: "",
-    validatorSignature: "",
-  });
+    headerLeftLogo: null as File | null,
+    headerRightLogo: null as File | null,
+    watermarkImage: null as File | null,
+    technicianSignature: null as File | null,
+    validatorSignature: null as File | null,
+  };
 
-  // Handle image file upload and convert to base64
-  const handleImageUpload = async (
+  const [pdfFormData, setPdfFormData] = useState<{
+    reportTitle: string;
+    headerText: string;
+    technicianName: string;
+    technicianDept: string;
+    validatorName: string;
+    validatorDept: string;
+    headerLeftLogo: File | null;
+    headerRightLogo: File | null;
+    watermarkImage: File | null;
+    technicianSignature: File | null;
+    validatorSignature: File | null;
+  }>(defaultPdfSettings);
+
+  // Load saved PDF settings from API on component mount
+  React.useEffect(() => {
+    console.log('🟢 PDF Settings useEffect triggered');
+
+    const loadSavedSettings = async () => {
+      try {
+        const token = authService.getAccessToken();
+        console.log('🔵 Token available:', token ? 'Yes' : 'No');
+
+        const API_BASE = ENV.API_BASE_URL;
+        console.log('🔵 Fetching PDF settings from:', `${API_BASE}/api/EnhancedAuditReports/export-settings`);
+
+        const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/export-settings`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${authService.getAccessToken()}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        console.log('🔵 Response status:', response.status);
+
+        if (response.ok) {
+          const responseData = await response.json();
+          console.log('✅ Loaded PDF settings from server (raw):', JSON.stringify(responseData, null, 2));
+
+          // Handle nested response structure: { success, hasSettings, data: {...} }
+          const savedSettings = responseData.data || responseData;
+          const hasSettings = responseData.hasSettings || responseData.success || savedSettings.id;
+
+          if (hasSettings && savedSettings) {
+            console.log('✅ Settings found, populating form...');
+
+            // Handle different possible field name formats (camelCase or PascalCase)
+            const getField = (obj: any, ...keys: string[]) => {
+              for (const key of keys) {
+                if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') {
+                  return obj[key];
+                }
+              }
+              return '';
+            };
+
+            // Update form data with saved settings
+            setPdfFormData(prev => ({
+              ...prev,
+              reportTitle: getField(savedSettings, 'reportTitle', 'ReportTitle') || prev.reportTitle,
+              headerText: getField(savedSettings, 'headerText', 'HeaderText') || prev.headerText,
+              technicianName: getField(savedSettings, 'technicianName', 'TechnicianName') || prev.technicianName,
+              technicianDept: getField(savedSettings, 'technicianDept', 'TechnicianDept') || prev.technicianDept,
+              validatorName: getField(savedSettings, 'validatorName', 'ValidatorName') || prev.validatorName,
+              validatorDept: getField(savedSettings, 'validatorDept', 'ValidatorDept') || prev.validatorDept,
+            }));
+
+            // If API returns base64 images, update imageBase64 state
+            // Note: API returns hasHeaderLeftLogo (boolean) - actual images may need separate fetch
+            const headerLeftLogo = getField(savedSettings, 'headerLeftLogoBase64', 'HeaderLeftLogoBase64');
+            const headerRightLogo = getField(savedSettings, 'headerRightLogoBase64', 'HeaderRightLogoBase64');
+            const watermarkImage = getField(savedSettings, 'watermarkImageBase64', 'WatermarkImageBase64');
+            const technicianSignature = getField(savedSettings, 'technicianSignatureBase64', 'TechnicianSignatureBase64');
+            const validatorSignature = getField(savedSettings, 'validatorSignatureBase64', 'ValidatorSignatureBase64');
+
+            if (headerLeftLogo || headerRightLogo || watermarkImage || technicianSignature || validatorSignature) {
+              setImageBase64(prev => ({
+                ...prev,
+                headerLeftLogo: headerLeftLogo || prev.headerLeftLogo,
+                headerRightLogo: headerRightLogo || prev.headerRightLogo,
+                watermarkImage: watermarkImage || prev.watermarkImage,
+                technicianSignature: technicianSignature || prev.technicianSignature,
+                validatorSignature: validatorSignature || prev.validatorSignature,
+              }));
+            }
+
+            console.log('✅ PDF settings loaded into form');
+          } else {
+            console.log('ℹ️ No saved settings found - using defaults');
+          }
+        } else {
+          const errorText = await response.text();
+          console.warn('⚠️ Failed to load settings:', response.status, errorText);
+        }
+      } catch (error) {
+        console.warn('⚠️ Could not load saved PDF settings:', error);
+      }
+    };
+
+    loadSavedSettings();
+  }, []);
+
+
+  // Save PDF settings to API using JSON
+  const savePdfSettingsToServer = useCallback(async () => {
+    try {
+      const API_BASE = ENV.API_BASE_URL;
+
+      // Build settings object with text fields and base64 images
+      const settingsData = {
+        reportTitle: pdfFormData.reportTitle,
+        headerText: pdfFormData.headerText,
+        technicianName: pdfFormData.technicianName,
+        technicianDept: pdfFormData.technicianDept,
+        validatorName: pdfFormData.validatorName,
+        validatorDept: pdfFormData.validatorDept,
+        // Include base64 images if available
+        headerLeftLogoBase64: imageBase64.headerLeftLogo || null,
+        headerRightLogoBase64: imageBase64.headerRightLogo || null,
+        watermarkImageBase64: imageBase64.watermarkImage || null,
+        technicianSignatureBase64: imageBase64.technicianSignature || null,
+        validatorSignatureBase64: imageBase64.validatorSignature || null,
+      };
+
+      console.log('🔵 Saving PDF settings to server:', settingsData);
+
+      const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/save-export-settings-json`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authService.getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(settingsData),
+      });
+
+      if (response.ok) {
+        console.log('✅ PDF settings saved to server successfully');
+      } else {
+        const errorText = await response.text();
+        console.warn('⚠️ Failed to save PDF settings:', response.status, errorText);
+      }
+    } catch (e) {
+      console.warn("❌ Failed to save PDF settings:", e);
+    }
+  }, [pdfFormData.reportTitle, pdfFormData.headerText, pdfFormData.technicianName, pdfFormData.technicianDept, pdfFormData.validatorName, pdfFormData.validatorDept, imageBase64]);
+
+  // Handle image file upload - also convert to base64 for persistence
+  const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
     fieldName: string
   ) => {
@@ -231,29 +450,26 @@ export default function AdminReports() {
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      showError("File Too Large", "Image size should be less than 5MB");
+    // Validate file size (max 2MB for localStorage limits)
+    if (file.size > 2 * 1024 * 1024) {
+      showError("File Too Large", "Image size should be less than 2MB for persistence");
       return;
     }
 
-    try {
-      // Convert to base64
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        setPdfFormData({ ...pdfFormData, [fieldName]: base64String });
-        showSuccess(`${fieldName} uploaded successfully`);
-      };
-      reader.onerror = () => {
-        showError("Upload Failed", "Failed to read image file");
-      };
-      reader.readAsDataURL(file);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      showError("Upload Failed", "Failed to upload image");
-    }
+    // Set File object for current session
+    setPdfFormData((prev) => ({ ...prev, [fieldName]: file }));
+
+    // Convert to base64 for localStorage persistence
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setImageBase64((prev) => ({ ...prev, [fieldName]: base64String }));
+    };
+    reader.readAsDataURL(file);
+
+    showSuccess(`${fieldName.replace(/([A-Z])/g, " $1").trim()} selected`);
   };
+
 
   // Bulk functions removed - now redirects to /admin/reports/generate
 
@@ -507,10 +723,10 @@ export default function AdminReports() {
   //   }
   // };
 
-  // Load reports data on component mount
+  // Load reports data on component mount and when subuserFilter changes
   useEffect(() => {
     loadReportsData();
-  }, []);
+  }, [subuserFilter]);
 
   const loadReportsData = async () => {
     setLoading(true);
@@ -519,7 +735,7 @@ export default function AdminReports() {
     if (isDemoMode()) {
       // console.log('🎮 Demo Mode Active - Using static audit reports data')
       // Map DEMO_AUDIT_REPORTS to AdminReport format
-      const demoReports = DEMO_AUDIT_REPORTS.map(report => ({
+      let demoReports = DEMO_AUDIT_REPORTS.map(report => ({
         id: report.report_id,
         report_id: report.report_id,
         date: report.report_date,
@@ -536,17 +752,25 @@ export default function AdminReports() {
         _raw: report,
         _details: report
       }))
+
+      // Apply subuser filter in demo mode
+      if (subuserFilter && subuserFilter !== "all") {
+        demoReports = demoReports.filter((r: any) => r.user_email === subuserFilter)
+      }
+
       setAllRows(demoReports as any)
       setLoading(false)
       return
     }
 
-    // ✅ Check cache first for instant display
-    const cachedReports = getCachedData("reports");
-    if (cachedReports && cachedReports.length > 0) {
-      // console.log("⚡ Displaying cached reports data");
-      setAllRows(cachedReports);
-      setLoading(false); // Hide loader since we have cached data
+    // ✅ Check cache first for instant display (only if no subuser filter)
+    if (!subuserFilter) {
+      const cachedReports = getCachedData("reports");
+      if (cachedReports && cachedReports.length > 0) {
+        // console.log("⚡ Displaying cached reports data");
+        setAllRows(cachedReports);
+        setLoading(false); // Hide loader since we have cached data
+      }
     }
 
     try {
@@ -559,7 +783,7 @@ export default function AdminReports() {
       if (storedUser) {
         try {
           storedUserData = JSON.parse(storedUser);
-          // console.log("� Parsed user_data from localStorage:", storedUserData);
+          // console.log("💾 Parsed user_data from localStorage:", storedUserData);
         } catch (e) {
           console.error("Error parsing user_data:", e);
         }
@@ -568,7 +792,7 @@ export default function AdminReports() {
       if (!storedUserData && authUser) {
         try {
           storedUserData = JSON.parse(authUser);
-          // console.log("� Parsed authUser from localStorage:", storedUserData);
+          // console.log("💾 Parsed authUser from localStorage:", storedUserData);
         } catch (e) {
           console.error("Error parsing authUser:", e);
         }
@@ -576,7 +800,7 @@ export default function AdminReports() {
 
       // 2. Get user from JWT token
       const user = authService.getUserFromToken();
-      // console.log("� User from token:", user);
+      // console.log("👤 User from token:", user);
 
       // 3. PRIORITY: Use user_email from localStorage user_data, then from token
       const userEmail =
@@ -594,22 +818,49 @@ export default function AdminReports() {
         return;
       }
 
-      // console.log("📋 Fetching audit reports for email:", userEmail);
+      // ✅ Determine which email to use based on subuserFilter
+      // If subuserFilter is set, fetch reports for that subuser
+      // If subuserFilter is "all", we need to fetch for user + all subusers
+      let emailsToFetch: string[] = [];
 
-      // Call API: /api/AuditReports/by-email/{email}
-      const auditReportsRes = await apiClient.getAuditReportsByEmail(userEmail);
-      // console.log("📥 API Response:", auditReportsRes);
+      if (subuserFilter === "all") {
+        // Fetch reports for current user + all subusers
+        emailsToFetch = [userEmail, ...subusersData.map((s: any) => s.subuser_email)];
+      } else if (subuserFilter) {
+        // Fetch reports for specific subuser only
+        emailsToFetch = [subuserFilter];
+      } else {
+        // Default: fetch only current user's reports
+        emailsToFetch = [userEmail];
+      }
 
-      if (auditReportsRes.success && auditReportsRes.data) {
-        // console.log("✅ Audit reports fetched:", auditReportsRes.data.length);
+      // console.log("📋 Fetching audit reports for emails:", emailsToFetch);
 
-        // Ensure data is an array
-        const reportsArray = Array.isArray(auditReportsRes.data)
-          ? auditReportsRes.data
-          : [auditReportsRes.data];
+      // Fetch reports for all selected emails in parallel
+      const allReportsPromises = emailsToFetch.map(email =>
+        apiClient.getAuditReportsByEmail(email)
+      );
+
+      const allReportsResults = await Promise.all(allReportsPromises);
+
+      // Combine all reports
+      let combinedReports: any[] = [];
+      allReportsResults.forEach((auditReportsRes) => {
+        if (auditReportsRes.success && auditReportsRes.data) {
+          const reportsArray = Array.isArray(auditReportsRes.data)
+            ? auditReportsRes.data
+            : [auditReportsRes.data];
+          combinedReports = [...combinedReports, ...reportsArray];
+        }
+      });
+
+      // console.log("📥 Combined Reports:", combinedReports.length);
+
+      if (combinedReports.length > 0) {
+        // console.log("✅ Audit reports fetched:", combinedReports.length);
 
         // If no reports found
-        if (reportsArray.length === 0) {
+        if (combinedReports.length === 0) {
           // console.log("ℹ️ No audit reports found");
           showInfo("No Reports", "No audit reports found.");
           setAllRows([]);
@@ -620,7 +871,7 @@ export default function AdminReports() {
         // console.log("🔄 Processing reports with report_details_json...");
 
         // Process each report
-        const processedReports = reportsArray.map((report: any) => {
+        const processedReports = combinedReports.map((report: any) => {
           let reportDetails: any = {};
           let deviceCount = 1;
 
@@ -668,6 +919,38 @@ export default function AdminReports() {
               report.erasure_method ||
               "N/A",
 
+            // New fields from report_details_json
+            reportType:
+              reportDetails?.report_type ||
+              reportDetails?.reportType ||
+              report.report_type ||
+              reportDetails?.process_mode ||
+              "Erasure",
+
+            totalFiles:
+              reportDetails?.total_files ??
+              reportDetails?.totalFiles ??
+              reportDetails?.file_count ??
+              0,
+
+            erasedFiles:
+              reportDetails?.erased_files ??
+              reportDetails?.erasedFiles ??
+              reportDetails?.files_erased ??
+              0,
+
+            failedFiles:
+              reportDetails?.failed_files ??
+              reportDetails?.failedFiles ??
+              reportDetails?.files_failed ??
+              0,
+
+            successFiles:
+              reportDetails?.success_files ??
+              reportDetails?.successFiles ??
+              reportDetails?.files_success ??
+              0,
+
             _raw: report,
             _details: reportDetails,
           };
@@ -677,18 +960,12 @@ export default function AdminReports() {
         });
 
         setAllRows(processedReports);
-        setCachedData("reports", processedReports); // ✅ Cache API data
-      } else {
-        console.warn("⚠️ API failed:", auditReportsRes);
-
-        if (auditReportsRes.error?.includes("401")) {
-          showError("Session Expired", "Please login again.");
-        } else if (auditReportsRes.error?.includes("403")) {
-          showError("Access Denied", "No permission to view reports.");
-        } else {
-          showInfo("No Reports", "No audit reports found.");
+        // Only cache if not using subuser filter
+        if (!subuserFilter) {
+          setCachedData("reports", processedReports);
         }
-
+      } else {
+        showInfo("No Reports", "No audit reports found.");
         setAllRows([]);
       }
     } catch (error) {
@@ -708,6 +985,18 @@ export default function AdminReports() {
     () => [...new Set(allRows.map((r) => r.method).filter(Boolean))],
     [allRows]
   );
+  const uniqueReportTypes = useMemo(
+    () => [...new Set(allRows.map((r) => r.reportType).filter(Boolean))],
+    [allRows]
+  );
+  const uniqueDepartments = useMemo(
+    () => [...new Set(allRows.map((r) => r.department).filter(Boolean))],
+    [allRows]
+  );
+  const uniqueGroups = useMemo(
+    () => [...new Set(allRows.map((r) => r._details?.group || r._raw?.group).filter(Boolean))],
+    [allRows]
+  );
 
   const filtered = useMemo(() => {
     let result = allRows.filter((r) => {
@@ -719,12 +1008,12 @@ export default function AdminReports() {
           .toLowerCase()
           .includes(query.toLowerCase());
       const matchesStatus = !statusFilter || r.status === statusFilter;
-      
+
       // Date range filtering with format validation
       let matchesDateRange = true;
       if (fromDate || toDate) {
         const reportDate = new Date(r.date);
-        
+
         if (fromDate && toDate) {
           // Validate both dates
           if (isValidDateFormat(fromDate) && isValidDateFormat(toDate)) {
@@ -748,7 +1037,7 @@ export default function AdminReports() {
           }
         }
       }
-      
+
       const matchesEraserMethod =
         !eraserMethodFilter || r.method === eraserMethodFilter;
 
@@ -765,12 +1054,23 @@ export default function AdminReports() {
         }
       }
 
+      // New filters for Report Type, Department, and Group
+      const matchesReportType =
+        !reportTypeFilter || r.reportType === reportTypeFilter;
+      const matchesDepartment =
+        !departmentFilter || r.department === departmentFilter;
+      const matchesGroup =
+        !groupFilter || (r._details?.group || r._raw?.group) === groupFilter;
+
       return (
         matchesQuery &&
         matchesStatus &&
         matchesDateRange &&
         matchesEraserMethod &&
-        matchesDeviceRange
+        matchesDeviceRange &&
+        matchesReportType &&
+        matchesDepartment &&
+        matchesGroup
       );
     });
 
@@ -836,6 +1136,9 @@ export default function AdminReports() {
     toDate,
     eraserMethodFilter,
     deviceRangeFilter,
+    reportTypeFilter,
+    departmentFilter,
+    groupFilter,
     showUniqueOnly,
     sortBy,
     sortOrder,
@@ -851,8 +1154,12 @@ export default function AdminReports() {
     setToDate("");
     setEraserMethodFilter("");
     setDeviceRangeFilter("");
+    setReportTypeFilter("");
+    setDepartmentFilter("");
+    setGroupFilter("");
     setShowUniqueOnly(false);
     setDateValidationError("");
+    setSubuserFilter(""); // Reset subuser filter
     setPage(1);
   };
 
@@ -928,29 +1235,71 @@ export default function AdminReports() {
       };
 
       // console.log(
-        // "📤 Sending PDF payload:",
-        // JSON.stringify(pdfPayload, null, 2)
+      // "📤 Sending PDF payload:",
+      // JSON.stringify(pdfPayload, null, 2)
       // );
 
-      // Call the PDF export API endpoint with GET method and report_id as query param
+      // Call the PDF export API endpoint with POST method (to include images from settings)
       const reportId =
         reportDetails?.report_id?.toString() || rawReport.report_id || "";
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL ||
-          "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
-          reportId
-        )}/export-pdf`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authService.getAccessToken()}`,
-          },
-        }
+
+      // Create FormData for the request
+      const submitData = new FormData();
+
+      // Add text fields from pdfFormData (saved in settings modal)
+      submitData.append("reportTitle", pdfFormData.reportTitle);
+      submitData.append("headerText", pdfFormData.headerText);
+      submitData.append("technicianName", pdfFormData.technicianName);
+      submitData.append("technicianDept", pdfFormData.technicianDept);
+      submitData.append("validatorName", pdfFormData.validatorName);
+      submitData.append("validatorDept", pdfFormData.validatorDept);
+
+      // Add file fields if they exist, or use base64 from localStorage
+      if (pdfFormData.headerLeftLogo) {
+        submitData.append("headerLeftLogo", pdfFormData.headerLeftLogo);
+      } else if (imageBase64.headerLeftLogo) {
+        submitData.append("headerLeftLogoBase64", imageBase64.headerLeftLogo);
+      }
+
+      if (pdfFormData.headerRightLogo) {
+        submitData.append("headerRightLogo", pdfFormData.headerRightLogo);
+      } else if (imageBase64.headerRightLogo) {
+        submitData.append("headerRightLogoBase64", imageBase64.headerRightLogo);
+      }
+
+      if (pdfFormData.watermarkImage) {
+        submitData.append("watermarkImage", pdfFormData.watermarkImage);
+      } else if (imageBase64.watermarkImage) {
+        submitData.append("watermarkImageBase64", imageBase64.watermarkImage);
+      }
+
+      if (pdfFormData.technicianSignature) {
+        submitData.append("technicianSignature", pdfFormData.technicianSignature);
+      } else if (imageBase64.technicianSignature) {
+        submitData.append("technicianSignatureBase64", imageBase64.technicianSignature);
+      }
+
+      if (pdfFormData.validatorSignature) {
+        submitData.append("validatorSignature", pdfFormData.validatorSignature);
+      } else if (imageBase64.validatorSignature) {
+        submitData.append("validatorSignatureBase64", imageBase64.validatorSignature);
+      }
+
+      const downloadUrl = `${import.meta.env.VITE_API_BASE_URL ||
+        "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-settings`;
+
+      console.log('🔵 Download request:', downloadUrl);
+
+      const response = await fetch(downloadUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authService.getAccessToken()}`,
+        },
+      }
       );
 
-      // console.log("📥 Response status:", response.status);
-      // console.log("📥 Response headers:", response.headers);
+      console.log('🔵 Response status:', response.status, response.statusText);
+      console.log('🔵 Content-Type:', response.headers.get('content-type'));
 
       if (!response.ok) {
         // Try to get error message from response body
@@ -967,7 +1316,11 @@ export default function AdminReports() {
 
       // Get the PDF blob
       const blob = await response.blob();
-      // console.log("✅ PDF blob received, size:", blob.size);
+      console.log("✅ PDF blob received, size:", blob.size, "type:", blob.type);
+
+      if (blob.size === 0) {
+        throw new Error("Received empty PDF file");
+      }
 
       // Create download link
       const url = window.URL.createObjectURL(blob);
@@ -981,13 +1334,13 @@ export default function AdminReports() {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
+      console.log("✅ Download triggered for:", a.download);
       showSuccess(`Report ${report.id} downloaded successfully`);
     } catch (error) {
       console.error("Error downloading report:", error);
       showError(
         "Download Failed",
-        `Failed to download report. ${
-          error instanceof Error ? error.message : "Please try again."
+        `Failed to download report. ${error instanceof Error ? error.message : "Please try again."
         }`
       );
     }
@@ -1032,17 +1385,61 @@ export default function AdminReports() {
 
           const reportId =
             reportDetails?.report_id?.toString() || rawReport.report_id || "";
+
+          // Create FormData for the request
+          const submitData = new FormData();
+
+          // Add text fields
+          submitData.append("reportTitle", pdfFormData.reportTitle);
+          submitData.append("headerText", pdfFormData.headerText);
+          submitData.append("technicianName", pdfFormData.technicianName);
+          submitData.append("technicianDept", pdfFormData.technicianDept);
+          submitData.append("validatorName", pdfFormData.validatorName);
+          submitData.append("validatorDept", pdfFormData.validatorDept);
+
+          // Add file fields if they exist, or use base64 from localStorage
+          if (pdfFormData.headerLeftLogo) {
+            submitData.append("headerLeftLogo", pdfFormData.headerLeftLogo);
+          } else if (imageBase64.headerLeftLogo) {
+            submitData.append("headerLeftLogoBase64", imageBase64.headerLeftLogo);
+          }
+
+          if (pdfFormData.headerRightLogo) {
+            submitData.append("headerRightLogo", pdfFormData.headerRightLogo);
+          } else if (imageBase64.headerRightLogo) {
+            submitData.append("headerRightLogoBase64", imageBase64.headerRightLogo);
+          }
+
+          if (pdfFormData.watermarkImage) {
+            submitData.append("watermarkImage", pdfFormData.watermarkImage);
+          } else if (imageBase64.watermarkImage) {
+            submitData.append("watermarkImageBase64", imageBase64.watermarkImage);
+          }
+
+          if (pdfFormData.technicianSignature) {
+            submitData.append("technicianSignature", pdfFormData.technicianSignature);
+          } else if (imageBase64.technicianSignature) {
+            submitData.append("technicianSignatureBase64", imageBase64.technicianSignature);
+          }
+
+          if (pdfFormData.validatorSignature) {
+            submitData.append("validatorSignature", pdfFormData.validatorSignature);
+          } else if (imageBase64.validatorSignature) {
+            submitData.append("validatorSignatureBase64", imageBase64.validatorSignature);
+          }
+
           const response = await fetch(
             `${import.meta.env.VITE_API_BASE_URL ||
-              "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
+            "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
               reportId
-            )}/export-pdf`,
+            )}/export-pdf-with-files`,
             {
-              method: "GET",
+              method: "POST",
               headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${authService.getAccessToken()}`,
+                // Content-Type header is not needed for FormData, browser sets it automatically with boundary
               },
+              body: submitData,
             }
           );
 
@@ -1052,7 +1449,8 @@ export default function AdminReports() {
             zip.file(fileName, blob);
             successCount++;
           } else {
-            console.warn(`Failed to download report ${report.id}`);
+            console.warn(`Failed to download report ${report.id}: ${response.statusText}`);
+            // Fallback to regular export if custom fails? No, better to report error
             failedCount++;
           }
         } catch (error) {
@@ -1073,9 +1471,8 @@ export default function AdminReports() {
       const url = window.URL.createObjectURL(zipBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `audit-reports-${
-        new Date().toISOString().split("T")[0]
-      }.zip`;
+      a.download = `audit-reports-${new Date().toISOString().split("T")[0]
+        }.zip`;
       document.body.appendChild(a);
       a.click();
 
@@ -1083,8 +1480,9 @@ export default function AdminReports() {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      // Clear selection
+      // Clear selection and close modal
       setSelectedReportIds(new Set());
+      // setShowBulkSettingsModal(false); // Handled by caller
 
       if (failedCount > 0) {
         showWarning(
@@ -1132,9 +1530,9 @@ export default function AdminReports() {
       currentPageIds.forEach((id) => newSelection.add(id));
     }
     // console.log(
-      // "🔄 Select All updated:",
-      // newSelection.size,
-      // "reports selected"
+    // "🔄 Select All updated:",
+    // newSelection.size,
+    // "reports selected"
     // );
     setSelectedReportIds(newSelection);
   };
@@ -1373,38 +1771,43 @@ export default function AdminReports() {
             <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">
               Audit Reports
             </h1>
-            {selectedReportIds.size > 0 && (
+            {/* {selectedReportIds.size > 0 && (
               <p className="text-sm text-slate-600 mt-1">
                 {selectedReportIds.size} report
                 {selectedReportIds.size > 1 ? "s" : ""} selected
               </p>
-            )}
+            )} */}
           </div>
 
-          {/* Bulk Actions */}
-          {selectedReportIds.size > 0 && (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleBulkDownload}
-                className="btn-primary flex items-center gap-2"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                Download {selectedReportIds.size} as ZIP
-              </button>
-            </div>
-          )}
+          {/* PDF Settings Button - Always visible outside table */}
+          <button
+            onClick={() => setShowBulkSettingsModal(true)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700"
+            title="Configure PDF Report Settings"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            Settings
+          </button>
+
+          {/* Bulk Actions moved to between filter and table */}
 
           {/* <div className="flex items-center space-x-4">
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${
@@ -1467,7 +1870,34 @@ export default function AdminReports() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 xs:gap-4 sm:gap-4">
+          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-4">
+            {/* Subuser Filter - Show only if there are subusers */}
+            {subusersData && subusersData.length > 0 && (
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Report Owner
+                </label>
+                <select
+                  className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                  value={subuserFilter}
+                  onChange={(e) => {
+                    setSubuserFilter(e.target.value);
+                    setPage(1);
+                  }}
+                >
+                  <option value="">My Reports</option>
+                  <option value="all">All Reports (Me + Subusers)</option>
+                  <optgroup label="Subuser Reports">
+                    {subusersData.map((subuser: any) => (
+                      <option key={subuser.subuser_email} value={subuser.subuser_email}>
+                        {subuser.subuser_name || subuser.subuser_email}
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+              </div>
+            )}
+
             {/* Search */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -1513,7 +1943,7 @@ export default function AdminReports() {
               onChange={(value) => {
                 setFromDate(value);
                 setPage(1);
-                
+
                 // Validate date format and range
                 if (value && !isValidDateFormat(value)) {
                   setDateValidationError("Invalid date format. Please use YYYY-MM-DD.");
@@ -1532,7 +1962,7 @@ export default function AdminReports() {
               onChange={(value) => {
                 setToDate(value);
                 setPage(1);
-                
+
                 // Validate date format and range
                 if (value && !isValidDateFormat(value)) {
                   setDateValidationError("Invalid date format. Please use YYYY-MM-DD.");
@@ -1568,6 +1998,72 @@ export default function AdminReports() {
                 {uniqueEraserMethods.map((method) => (
                   <option key={method} value={method}>
                     {method}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Report Type Filter */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Report Type
+              </label>
+              <select
+                className="w-full border rounded px-3 py-2 text-sm"
+                value={reportTypeFilter}
+                onChange={(e) => {
+                  setReportTypeFilter(e.target.value);
+                  setPage(1);
+                }}
+              >
+                <option value="">All Types</option>
+                {uniqueReportTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Department Filter */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Department
+              </label>
+              <select
+                className="w-full border rounded px-3 py-2 text-sm"
+                value={departmentFilter}
+                onChange={(e) => {
+                  setDepartmentFilter(e.target.value);
+                  setPage(1);
+                }}
+              >
+                <option value="">All Departments</option>
+                {uniqueDepartments.map((dept) => (
+                  <option key={dept} value={dept}>
+                    {dept}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Group Filter */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Group
+              </label>
+              <select
+                className="w-full border rounded px-3 py-2 text-sm"
+                value={groupFilter}
+                onChange={(e) => {
+                  setGroupFilter(e.target.value);
+                  setPage(1);
+                }}
+              >
+                <option value="">All Groups</option>
+                {uniqueGroups.map((group) => (
+                  <option key={group} value={group}>
+                    {group}
                   </option>
                 ))}
               </select>
@@ -1650,7 +2146,8 @@ export default function AdminReports() {
               </svg>
               View Scheduled
             </button> */}
-            <button
+            {/* Export/Print buttons - Commented out */}
+            {/* <button
               className="btn-secondary"
               onClick={() =>
                 exportToCsv(
@@ -1689,41 +2186,16 @@ export default function AdminReports() {
               }}
             >
               Print All ({filtered.length})
-            </button>
+            </button> */}
           </div>
         </div>
 
-        {/* Table */}
+        {/* Table - scroll applied to table body only via inner container */}
         <div className="card-content card-table card overflow-x-auto">
           {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
-                <svg
-                  className="animate-spin h-8 w-8 text-slate-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">
-                Loading Reports...
-              </h3>
-              <p className="text-slate-600">
-                Please wait while we fetch your audit reports.
-              </p>
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
+              <p className="text-slate-600 text-sm">Loading reports...</p>
             </div>
           ) : allRows.length === 0 ? (
             <div className="text-center py-12">
@@ -1778,66 +2250,127 @@ export default function AdminReports() {
             </div>
           ) : (
             <>
-              <table className="w-full text-nowrap min-w-[800px]">
-                <thead>
-                  <tr className="text-left text-slate-500">
-                    <th className="py-3 px-2 w-10">
-                      <input
-                        type="checkbox"
-                        checked={
-                          rows.length > 0 &&
-                          rows.every((r) =>
-                            selectedReportIds.has(String(r.id || ""))
-                          )
-                        }
-                        onChange={() => toggleSelectAll(rows)}
-                        className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-                        title="Select all on this page"
-                      />
-                    </th>
-                    <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Report ID
-                    </th>
-                    <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Date
-                    </th>
-                    {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Devices
-                    </th> */}
-                    <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Status
-                    </th>
-                    <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Method
-                    </th>
-                    <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row, i) => (
-                    <tr
-                      key={`${row.id}-${i}`}
-                      className="border-t hover:bg-slate-50"
+              {/* Bulk Settings Button - shows when any report is selected */}
+              {selectedReportIds.size > 0 && (
+                <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-blue-800">
+                      {selectedReportIds.size} report{selectedReportIds.size > 1 ? 's' : ''} selected
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setSelectedReportIds(new Set())}
+                      className="text-sm px-3 py-1.5 rounded border font-medium transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100 border-slate-300"
+                      title="Clear selection"
                     >
-                      <td className="py-3 px-2">
+                      Clear
+                    </button>
+                    <button
+                      onClick={handleBulkDownload}
+                      className="text-sm px-4 py-1.5 rounded border font-medium transition-colors bg-green-600 text-white hover:bg-green-700 border-green-600 flex items-center gap-2"
+                      title={`Download ${selectedReportIds.size} reports as ZIP`}
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      Save
+                    </button>
+                  </div>
+                </div>
+              )}
+              {/* Scrollable table wrapper - only tbody scrolls, header stays fixed */}
+              <div className="max-h-[500px] overflow-y-auto scrollbar-hide">
+                <table className="w-full text-nowrap min-w-[800px]">
+                  <thead className="sticky top-0 bg-white shadow-sm z-10">
+                    <tr className="text-left text-slate-500 border-b">
+                      <th className="py-3 px-2 w-10">
                         <input
                           type="checkbox"
-                          checked={selectedReportIds.has(String(row.id || ""))}
-                          onChange={() =>
-                            toggleReportSelection(String(row.id || ""))
+                          checked={
+                            rows.length > 0 &&
+                            rows.every((r) =>
+                              selectedReportIds.has(String(r.id || ""))
+                            )
                           }
+                          onChange={() => toggleSelectAll(rows)}
                           className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                          title="Select all on this page"
                         />
-                      </td>
-                      <td className="py-3 px-2 font-medium font-mono text-xs xs:text-sm sm:text-sm">
-                        {row.id}
-                      </td>
-                      <td className="py-3 px-2 text-xs xs:text-sm sm:text-sm">
-                        {row.date}
-                      </td>
-                      {/* <td className="py-2">
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                        Report ID
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                        Date
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                        Report Type
+                      </th>
+                      {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                      Devices
+                    </th> */}
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                        Status
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                        Method
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                        Total Files
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                        Erased
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                        Failed
+                      </th>
+                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                        Success
+                      </th>
+                      {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                        Actions
+                      </th> */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((row, i) => (
+                      <tr
+                        key={`${row.id}-${i}`}
+                        className="border-t hover:bg-slate-50"
+                      >
+                        <td className="py-3 px-2">
+                          <input
+                            type="checkbox"
+                            checked={selectedReportIds.has(String(row.id || ""))}
+                            onChange={() =>
+                              toggleReportSelection(String(row.id || ""))
+                            }
+                            className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                          />
+                        </td>
+                        <td className="py-3 px-2 font-medium font-mono text-xs xs:text-sm sm:text-sm">
+                          {row.id}
+                        </td>
+                        <td className="py-3 px-2 text-xs xs:text-sm sm:text-sm">
+                          {row.date}
+                        </td>
+                        <td className="py-3 px-2 text-xs xs:text-sm sm:text-sm">
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                            {row.reportType || "Erasure"}
+                          </span>
+                        </td>
+                        {/* <td className="py-2">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             row.devices >= 200
@@ -1850,132 +2383,412 @@ export default function AdminReports() {
                           {row.devices}
                         </span>
                       </td> */}
-                      <td className="py-2">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                            row.status === "completed"
+                        <td className="py-2">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${row.status === "completed"
                               ? "bg-green-100 text-green-800"
                               : row.status === "pending"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : row.status === "failed"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-slate-100 text-slate-800"
-                          }`}
-                        >
-                          <span
-                            className={`w-2 h-2 rounded-full ${
-                              row.status === "completed"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : row.status === "failed"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-slate-100 text-slate-800"
+                              }`}
+                          >
+                            <span
+                              className={`w-2 h-2 rounded-full ${row.status === "completed"
                                 ? "bg-green-400"
                                 : row.status === "pending"
-                                ? "bg-yellow-400"
-                                : row.status === "failed"
-                                ? "bg-red-400"
-                                : "bg-slate-400"
-                            }`}
-                          ></span>
-                          {row.status}
-                        </span>
-                      </td>
-                      <td className="py-2 text-xs xs:text-sm sm:text-sm">
-                        {row.method}
-                      </td>
-                      <td className="py-2">
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => handleDownloadReport(row)}
-                            className="text-xs px-3 py-1.5 rounded border font-medium transition-colors text-green-600 hover:text-white hover:bg-green-600 border-green-600"
-                            title="Download PDF Report"
-                          >
-                            <svg
-                              className="w-4 h-4 inline-block mr-1"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                              />
-                            </svg>
-                            Save
-                          </button>
-                          <button
-                            onClick={() => {
-                              if (selectedReportIds.size > 0) {
-                                // Bulk settings - redirect to generate page with selected report IDs
-                                const selectedIds = Array.from(
-                                  selectedReportIds
-                                ).join(",");
-                                navigate(
-                                  `/admin/reports/generate?bulk=${selectedIds}`
-                                );
-                              } else {
-                                navigate(`/admin/reports/generate/${row.id}`);
-                              }
-                            }}
-                            className="text-xs px-3 py-1.5 rounded border font-medium transition-colors text-blue-600 hover:text-white hover:bg-blue-600 border-blue-600"
-                            title={
-                              selectedReportIds.size > 0
-                                ? `Customize ${selectedReportIds.size} Selected Reports`
-                                : "Generate Custom Report"
-                            }
-                          >
-                            <svg
-                              className="w-4 h-4 inline-block mr-1"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                            </svg>
-                            Settings
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                                  ? "bg-yellow-400"
+                                  : row.status === "failed"
+                                    ? "bg-red-400"
+                                    : "bg-slate-400"
+                                }`}
+                            ></span>
+                            {row.status}
+                          </span>
+                        </td>
+                        <td className="py-2 text-xs xs:text-sm sm:text-sm">
+                          {row.method}
+                        </td>
+                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            {row.totalFiles ?? 0}
+                          </span>
+                        </td>
+                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                            {row.erasedFiles ?? 0}
+                          </span>
+                        </td>
+                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${(row.failedFiles ?? 0) > 0 ? "bg-red-100 text-red-800" : "bg-slate-100 text-slate-800"}`}>
+                            {row.failedFiles ?? 0}
+                          </span>
+                        </td>
+                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            {row.successFiles ?? 0}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* End scrollable table wrapper */}
 
               {/* Pagination */}
-              <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                <div className="text-sm text-slate-600">
-                  Page {page} of {totalPages}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t">
+                {/* Left side - Rows per page selector */}
+                <div className="flex items-center gap-3">
+                  <label htmlFor="pageSize" className="text-sm text-slate-600">
+                    Rows per page:
+                  </label>
+                  <select
+                    id="pageSize"
+                    value={pageSize}
+                    onChange={(e) => {
+                      const newSize = parseInt(e.target.value, 10);
+                      setPageSize(newSize);
+                      setPage(1); // Reset to first page when changing page size
+                    }}
+                    className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
+                  >
+                    {pageSizeOptions.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="text-sm text-slate-500">
+                    Showing {Math.min((page - 1) * pageSize + 1, filtered.length)} to {Math.min(page * pageSize, filtered.length)} of {filtered.length} records
+                  </span>
                 </div>
-                <div className="flex gap-2">
-                  <button
-                    disabled={page <= 1}
-                    onClick={() => setPage(page - 1)}
-                    className="px-3 py-1 border rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    disabled={page >= totalPages}
-                    onClick={() => setPage(page + 1)}
-                    className="px-3 py-1 border rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50"
-                  >
-                    Next
-                  </button>
+
+                {/* Right side - Page navigation */}
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-slate-600">
+                    Page {page} of {totalPages}
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      disabled={page <= 1}
+                      onClick={() => setPage(page - 1)}
+                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      disabled={page >= totalPages}
+                      onClick={() => setPage(page + 1)}
+                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
             </>
           )}
         </div>
       </div>
+
+      {/* Bulk Settings Modal */}
+      {showBulkSettingsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10">
+              <h2 className="text-xl font-bold text-slate-900">
+                Settings
+              </h2>
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!pdfFormData.reportTitle.trim() || !pdfFormData.headerText.trim()) {
+                      showError("Validation Error", "Please fill in Report Title and Header Text");
+                      return;
+                    }
+                    // Save settings to API
+                    savePdfSettingsToServer();
+                    showSuccess("Settings saved successfully!");
+                    setShowBulkSettingsModal(false);
+                  }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setShowBulkSettingsModal(false)}
+                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-4">
+              {/* Report Title */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Report Title <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={pdfFormData.reportTitle}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        reportTitle: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Data Erasure Audit Report"
+                  />
+                </div>
+
+                {/* Header Text */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Header Text <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={pdfFormData.headerText}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        headerText: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="D-SecureTech"
+                  />
+                </div>
+              </div>
+              {/* Technician & Validator Details */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Technician Name
+                  </label>
+                  <input
+                    type="text"
+                    value={pdfFormData.technicianName}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        technicianName: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Technician Department
+                  </label>
+                  <input
+                    type="text"
+                    value={pdfFormData.technicianDept}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        technicianDept: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="IT Department"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Validator Name
+                  </label>
+                  <input
+                    type="text"
+                    value={pdfFormData.validatorName}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        validatorName: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Jane Smith"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Validator Department
+                  </label>
+                  <input
+                    type="text"
+                    value={pdfFormData.validatorDept}
+                    onChange={(e) =>
+                      setPdfFormData({
+                        ...pdfFormData,
+                        validatorDept: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="QA Department"
+                  />
+                </div>
+              </div>
+
+              {/* Logo Uploads */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Header Left Logo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, "headerLeftLogo")}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
+                  />
+                  {(pdfFormData.headerLeftLogo || imageBase64.headerLeftLogo) && (
+                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.headerLeftLogo ? "Image uploaded" : "Saved image"}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Header Right Logo
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, "headerRightLogo")}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
+                  />
+                  {(pdfFormData.headerRightLogo || imageBase64.headerRightLogo) && (
+                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.headerRightLogo ? "Image uploaded" : "Saved image"}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Watermark */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Watermark Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, "watermarkImage")}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
+                />
+                {(pdfFormData.watermarkImage || imageBase64.watermarkImage) && (
+                  <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.watermarkImage ? "Watermark uploaded" : "Saved watermark"}</p>
+                )}
+              </div>
+
+              {/* Signatures */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Technician Signature
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, "technicianSignature")}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
+                  />
+                  {(pdfFormData.technicianSignature || imageBase64.technicianSignature) && (
+                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.technicianSignature ? "Signature uploaded" : "Saved signature"}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Validator Signature
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e, "validatorSignature")}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
+                  />
+                  {(pdfFormData.validatorSignature || imageBase64.validatorSignature) && (
+                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.validatorSignature ? "Signature uploaded" : "Saved signature"}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Selected Reports Preview */}
+              {/* <div className="bg-slate-50 rounded-lg p-4">
+                <h4 className="text-sm font-medium text-slate-700 mb-2">
+                  Selected Report IDs:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {Array.from(selectedReportIds).map((id) => (
+                    <span
+                      key={id}
+                      className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium"
+                    >
+                      {id}
+                    </span>
+                  ))}
+                </div>
+              </div> */}
+            </div>
+
+            {/* Footer */}
+            {/* <div className="sticky bottom-0 bg-white border-t px-6 py-4 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowBulkSettingsModal(false)}
+                className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-50 transition-colors"
+                disabled={bulkSettingsLoading}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!pdfFormData.reportTitle.trim() || !pdfFormData.headerText.trim()) {
+                    showError("Validation Error", "Please fill in Report Title and Header Text");
+                    return;
+                  }
+                  setBulkSettingsLoading(true);
+                  try {
+                    // Call the existing bulk download function with custom settings
+                    await handleBulkDownload();
+                    setShowBulkSettingsModal(false);
+                  } catch (error) {
+                    showError("Error", "Failed to generate reports");
+                  } finally {
+                    setBulkSettingsLoading(false);
+                  }
+                }}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+                disabled={bulkSettingsLoading}
+              >
+                {bulkSettingsLoading ? (
+                  <>
+                    <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </>
+                ) : (
+                  <>Generate {selectedReportIds.size} Reports</>
+                )}
+              </button>
+            </div> */}
+          </div>
+        </div>
+      )}
 
       {/* Generate PDF Modal */}
       {showGenerateModal && selectedReport && (
@@ -2119,15 +2932,10 @@ export default function AdminReports() {
                   <div className="space-y-2">
                     <input
                       type="text"
-                      value={pdfFormData.headerLeftLogo}
-                      onChange={(e) =>
-                        setPdfFormData({
-                          ...pdfFormData,
-                          headerLeftLogo: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="https://example.com/logo-left.png or upload file"
+                      value={pdfFormData.headerLeftLogo?.name || ""}
+                      readOnly
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
+                      placeholder="Upload file"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -2163,7 +2971,7 @@ export default function AdminReports() {
                           onClick={() =>
                             setPdfFormData({
                               ...pdfFormData,
-                              headerLeftLogo: "",
+                              headerLeftLogo: null,
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
@@ -2194,15 +3002,10 @@ export default function AdminReports() {
                   <div className="space-y-2">
                     <input
                       type="text"
-                      value={pdfFormData.headerRightLogo}
-                      onChange={(e) =>
-                        setPdfFormData({
-                          ...pdfFormData,
-                          headerRightLogo: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="https://example.com/logo-right.png or upload file"
+                      value={pdfFormData.headerRightLogo?.name || ""}
+                      readOnly
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
+                      placeholder="Upload file"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -2238,7 +3041,7 @@ export default function AdminReports() {
                           onClick={() =>
                             setPdfFormData({
                               ...pdfFormData,
-                              headerRightLogo: "",
+                              headerRightLogo: null,
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
@@ -2272,15 +3075,10 @@ export default function AdminReports() {
                 <div className="space-y-2">
                   <input
                     type="text"
-                    value={pdfFormData.watermarkImage}
-                    onChange={(e) =>
-                      setPdfFormData({
-                        ...pdfFormData,
-                        watermarkImage: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="https://example.com/watermark.png or upload file"
+                    value={pdfFormData.watermarkImage?.name || ""}
+                    readOnly
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
+                    placeholder="Upload file"
                   />
                   <div className="flex items-center gap-2">
                     <label className="flex-1 cursor-pointer">
@@ -2312,7 +3110,7 @@ export default function AdminReports() {
                     {pdfFormData.watermarkImage && (
                       <button
                         onClick={() =>
-                          setPdfFormData({ ...pdfFormData, watermarkImage: "" })
+                          setPdfFormData({ ...pdfFormData, watermarkImage: null })
                         }
                         className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         title="Clear image"
@@ -2345,15 +3143,10 @@ export default function AdminReports() {
                   <div className="space-y-2">
                     <input
                       type="text"
-                      value={pdfFormData.technicianSignature}
-                      onChange={(e) =>
-                        setPdfFormData({
-                          ...pdfFormData,
-                          technicianSignature: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="https://example.com/tech-signature.png or upload"
+                      value={pdfFormData.technicianSignature?.name || ""}
+                      readOnly
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
+                      placeholder="Upload file"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -2389,7 +3182,7 @@ export default function AdminReports() {
                           onClick={() =>
                             setPdfFormData({
                               ...pdfFormData,
-                              technicianSignature: "",
+                              technicianSignature: null,
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
@@ -2420,15 +3213,10 @@ export default function AdminReports() {
                   <div className="space-y-2">
                     <input
                       type="text"
-                      value={pdfFormData.validatorSignature}
-                      onChange={(e) =>
-                        setPdfFormData({
-                          ...pdfFormData,
-                          validatorSignature: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="https://example.com/validator-signature.png or upload"
+                      value={pdfFormData.validatorSignature?.name || ""}
+                      readOnly
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
+                      placeholder="Upload file"
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -2464,7 +3252,7 @@ export default function AdminReports() {
                           onClick={() =>
                             setPdfFormData({
                               ...pdfFormData,
-                              validatorSignature: "",
+                              validatorSignature: null,
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"

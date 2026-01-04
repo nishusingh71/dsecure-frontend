@@ -1,0 +1,36 @@
+CONFIGURATION GUIDE
+
+ENVIRONMENT VARIABLES
+=====================
+
+We use a strict configuration pattern to manage environment variables. This ensures type safety, validation, and security across the application.
+
+RULES:
+1. Single Source of Truth: All environment variables must be accessed via 'src/config/env.ts'.
+   - CORRECT: ENV.API_BASE_URL
+   - INCORRECT: import.meta.env.VITE_API_BASE_URL
+   - INCORRECT: process.env.VITE_API_BASE_URL
+
+2. Naming Convention: All public environment variables in .env files must start with VITE_.
+
+3. Validation: Variables are validated at runtime in 'src/config/env.ts'. If a required variable is missing, the application will log an error or fail setup.
+
+4. Local Development:
+   - Create a .env file in the root directory.
+   - Copy keys from .env.example.
+   - Do not commit .env to version control.
+
+ADDING A NEW VARIABLE:
+1. Add the key to .env (local) and .env.example (committed).
+2. Update the EnvConfig interface in 'src/config/env.ts'.
+3. Add the key to the env object in 'src/config/env.ts' mapping it from import.meta.env.
+
+SEO MANAGEMENT
+==============
+
+SEO meta tags are managed centrally using the SEOHead component.
+
+RULES:
+1. Component Usage: Use <SEOHead /> on every page component.
+2. Configuration: Define page-specific metadata in 'src/utils/seo.ts' in the PAGE_SEO object.
+3. Dynamic Data: For dynamic pages (like blog posts), pass props directly to SEOHead (title, description, image).

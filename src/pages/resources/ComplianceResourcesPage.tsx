@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { downloadResource } from '../../utils/downloadUtils'
 import { useToast } from '@/components/Toast'
-import { 
-  CheckIcon, 
+import {
+  CheckIcon,
   ShieldIcon,
   GearIcon,
   ArrowRightIcon,
@@ -31,7 +31,7 @@ export default function ComplianceResourcesPage() {
         />
         <meta name="robots" content="index, follow" />
       </Helmet>
-      
+
       <ComplianceResourcesContent />
     </>
   );
@@ -120,7 +120,7 @@ function ComplianceResourcesContent() {
         'NIST SP 800-88 Rev. 1 standards',
         'Media sanitization procedures',
         'Clear, purge, and destroy methods',
-        'Verification and certification',
+        'Verification and regulation',
         'Government and federal requirements'
       ],
       industries: ['Government', 'Defense Contractors', 'Federal Agencies'],
@@ -172,7 +172,7 @@ function ComplianceResourcesContent() {
     {
       category: 'Audit & Documentation',
       items: [
-        'Maintain sanitization certificates',
+        'Maintain sanitization regulatory documents',
         'Document audit trails',
         'Regular compliance assessments',
         'Incident response procedures'
@@ -251,7 +251,7 @@ function ComplianceResourcesContent() {
               </Reveal>
               <Reveal delayMs={20}>
                 <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl mx-auto">
-                  Comprehensive compliance guides and resources to help you meet data protection 
+                  Comprehensive compliance guides and resources to help you meet data protection
                   standards and regulatory requirements across industries.
                 </p>
               </Reveal>
@@ -274,89 +274,89 @@ function ComplianceResourcesContent() {
       <section id="compliance-guides" className="py-16 md:py-24 bg-white">
         <div className="container-app">
           <div className="text-center mb-12">
-        <Reveal>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-            Industry Compliance Standards
-          </h2>
-        </Reveal>
-        <Reveal delayMs={10}>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-            Download comprehensive guides for major data protection and security standards.
-          </p>
-        </Reveal>
+            <Reveal>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+                Industry Compliance Standards
+              </h2>
+            </Reveal>
+            <Reveal delayMs={10}>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Download comprehensive guides for major data protection and security standards.
+              </p>
+            </Reveal>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {complianceStandards.map((standard, index) => (
-          <Reveal key={index} delayMs={index * 10}>
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-          <div className="p-6">
-            <div className="flex items-center gap-4 mb-4">
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${getColorClasses(standard.color)}`}>
-            {standard.icon}
-              </div>
-              <div>
-            <h3 className="text-lg font-semibold text-slate-900">{standard.title}</h3>
-            <div className={`inline-block px-2 py-1 rounded text-xs font-medium ${getColorClasses(standard.color)}`}>
-              {standard.standard}
-            </div>
-              </div>
-            </div>
+            {complianceStandards.map((standard, index) => (
+              <Reveal key={index} delayMs={index * 10}>
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${getColorClasses(standard.color)}`}>
+                        {standard.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-900">{standard.title}</h3>
+                        <div className={`inline-block px-2 py-1 rounded text-xs font-medium ${getColorClasses(standard.color)}`}>
+                          {standard.standard}
+                        </div>
+                      </div>
+                    </div>
 
-            <p className="text-slate-600 mb-4">{standard.description}</p>
+                    <p className="text-slate-600 mb-4">{standard.description}</p>
 
-            <div className="mb-4">
-              <h4 className="font-semibold text-slate-900 mb-2">Coverage</h4>
-              <ul className="space-y-1">
-            {standard.coverage.slice(0, 3).map((item, itemIndex) => (
-              <li key={itemIndex} className="flex items-start gap-2">
-                <CheckIcon className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" filled={true} />
-                <span className="text-sm text-slate-700">{item}</span>
-              </li>
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-slate-900 mb-2">Coverage</h4>
+                      <ul className="space-y-1">
+                        {standard.coverage.slice(0, 3).map((item, itemIndex) => (
+                          <li key={itemIndex} className="flex items-start gap-2">
+                            <CheckIcon className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" filled={true} />
+                            <span className="text-sm text-slate-700">{item}</span>
+                          </li>
+                        ))}
+                        {standard.coverage.length > 3 && (
+                          <li className="text-sm text-slate-500 ml-6">
+                            +{standard.coverage.length - 3} more topics
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-slate-900 mb-2">Key Industries</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {standard.industries.map((industry, industryIndex) => (
+                          <span key={industryIndex} className="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs">
+                            {industry}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="border-t border-slate-200 pt-4">
+                      <div className="flex justify-between items-center text-sm text-slate-600 mb-3">
+                        <span>{standard.pages} pages</span>
+                        <span>{standard.downloadSize}</span>
+                      </div>
+                      <div className="text-xs text-slate-500 mb-3">
+                        Last updated: {standard.lastUpdated}
+                      </div>
+                      <button
+                        onClick={() => {
+                          const ok = downloadResource({ title: standard.title, downloadSize: standard.downloadSize, pages: standard.pages, type: 'compliance-guide' })
+                          if (ok) toast.showToast(`Downloaded: ${standard.title}`, 'success')
+                          else toast.showToast('Download failed. Please try again.', 'error')
+                        }}
+                        className="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-800 transition-all duration-200 text-sm"
+                      >
+                        Download Guide
+                        <ArrowDownIcon className="w-4 h-4 ml-1" filled={true} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
             ))}
-            {standard.coverage.length > 3 && (
-              <li className="text-sm text-slate-500 ml-6">
-                +{standard.coverage.length - 3} more topics
-              </li>
-            )}
-              </ul>
-            </div>
-
-            <div className="mb-4">
-              <h4 className="font-semibold text-slate-900 mb-2">Key Industries</h4>
-              <div className="flex flex-wrap gap-1">
-            {standard.industries.map((industry, industryIndex) => (
-              <span key={industryIndex} className="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs">
-                {industry}
-              </span>
-            ))}
-              </div>
-            </div>
-
-            <div className="border-t border-slate-200 pt-4">
-              <div className="flex justify-between items-center text-sm text-slate-600 mb-3">
-            <span>{standard.pages} pages</span>
-            <span>{standard.downloadSize}</span>
-              </div>
-              <div className="text-xs text-slate-500 mb-3">
-            Last updated: {standard.lastUpdated}
-              </div>
-              <button 
-                onClick={() => {
-                  const ok = downloadResource({ title: standard.title, downloadSize: standard.downloadSize, pages: standard.pages, type: 'compliance-guide' })
-                  if (ok) toast.showToast(`Downloaded: ${standard.title}`, 'success')
-                  else toast.showToast('Download failed. Please try again.', 'error')
-                }}
-                className="w-full inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-800 transition-all duration-200 text-sm"
-              >
-            Download Guide
-            <ArrowDownIcon className="w-4 h-4 ml-1" filled={true} />
-              </button>
-            </div>
-          </div>
-            </div>
-          </Reveal>
-        ))}
           </div>
         </div>
       </section>
@@ -422,11 +422,10 @@ function ComplianceResourcesContent() {
                       <div className="flex items-center gap-4 mb-2">
                         <h3 className="text-lg font-semibold text-slate-900">{update.title}</h3>
                         <div className="flex gap-2">
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            update.impact === 'Critical' ? 'bg-red-100 text-red-800' :
-                            update.impact === 'High' ? 'bg-orange-100 text-orange-800' :
-                            'bg-yellow-100 text-yellow-800'
-                          }`}>
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${update.impact === 'Critical' ? 'bg-red-100 text-red-800' :
+                              update.impact === 'High' ? 'bg-orange-100 text-orange-800' :
+                                'bg-yellow-100 text-yellow-800'
+                            }`}>
                             {update.impact} Impact
                           </span>
                           <span className="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs">
@@ -467,7 +466,7 @@ function ComplianceResourcesContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Our compliance experts can help you navigate specific regulatory requirements 
+                Our compliance experts can help you navigate specific regulatory requirements
                 for your industry and organization.
               </p>
             </Reveal>

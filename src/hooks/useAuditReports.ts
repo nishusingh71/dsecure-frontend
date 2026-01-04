@@ -28,7 +28,7 @@ export function useAuditReports(userEmail?: string, enabled: boolean = true) {
       }
 
       const response = await apiClient.getAuditReportsByEmail(userEmail)
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch audit reports')
       }
@@ -53,7 +53,7 @@ export function useAllAuditReports(enabled: boolean = true) {
     queryKey: auditReportKeys.allReports(),
     queryFn: async () => {
       const response = await apiClient.getAuditReports()
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch all audit reports')
       }
@@ -84,7 +84,7 @@ export function useAuditReportsCount(userEmail?: string) {
  */
 export function useRefetchAuditReports() {
   const queryClient = useQueryClient()
-  
+
   return (userEmail?: string) => {
     if (userEmail) {
       queryClient.invalidateQueries({ queryKey: auditReportKeys.list(userEmail) })
@@ -111,7 +111,7 @@ export function useEnhancedAuditReports(userEmail?: string, enabled: boolean = t
       }
 
       const response = await apiClient.getAuditReportsByEmail(userEmail)
-      
+
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch audit reports')
       }
@@ -123,8 +123,8 @@ export function useEnhancedAuditReports(userEmail?: string, enabled: boolean = t
         reports.map(async (report: AuditReport) => {
           try {
             const machinesRes = await apiClient.getMachinesByEmail(report.user_email)
-            const deviceCount = machinesRes.success && machinesRes.data 
-              ? machinesRes.data.length 
+            const deviceCount = machinesRes.success && machinesRes.data
+              ? machinesRes.data.length
               : 0
 
             return {

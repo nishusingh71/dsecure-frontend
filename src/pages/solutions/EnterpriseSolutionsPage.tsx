@@ -58,8 +58,8 @@ const EnterpriseSolutionsPage: React.FC = () => {
                   Streamline Your IT Asset Management
                 </h2>
                 <p className="text-slate-700 text-lg leading-relaxed mb-6">
-                  Ease enterprise cloud migrations, IT asset decommissioning and end-of-life data erasure 
-                  with compliant and secure data erasure software. Get compliant erasure at scale for all 
+                  Ease enterprise cloud migrations, IT asset decommissioning and end-of-life data erasure
+                  with compliant and secure data erasure software. Get compliant erasure at scale for all
                   your IT data storage assets across workforce, operations, and data centers.
                 </p>
                 <img
@@ -80,7 +80,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                   {[
                     {
                       title: "Software-Based Sanitization",
-                      desc: "Safe and sustainable reuse of IT assets with certified data sanitization processes.",
+                      desc: "Safe and sustainable reuse of IT assets with regulated data sanitization processes.",
                       img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
                     },
                     {
@@ -223,7 +223,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                   Ready to Transform Your Enterprise IT Management?
                 </h2>
                 <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Let's discuss your specific requirements and design a solution that fits your 
+                  Let's discuss your specific requirements and design a solution that fits your
                   enterprise needs and compliance standards.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

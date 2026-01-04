@@ -43,8 +43,8 @@ const ReportsPage: React.FC = () => {
   const filteredReports = reports.filter(report => {
     const matchesTab = activeTab === 'all' || report.status === activeTab
     const matchesSearch = report.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         report.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         report.method.toLowerCase().includes(searchQuery.toLowerCase())
+      report.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      report.method.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesTab && matchesSearch
   })
 
@@ -117,9 +117,9 @@ const ReportsPage: React.FC = () => {
       <>
         <Helmet>
           <title>Reports | DSecure Dashboard</title>
-          <meta name="description" content="View and manage erasure reports and certificates" />
+          <meta name="description" content="View and manage erasure reports and regulatory documents" />
         </Helmet>
-        
+
         <div className="min-h-screen bg-slate-50">
           <div className="container-app py-8">
             <div className="animate-pulse">
@@ -167,7 +167,7 @@ const ReportsPage: React.FC = () => {
     <>
       <Helmet>
         <title>Reports | DSecure Dashboard</title>
-        <meta name="description" content="View and manage erasure reports and certificates" />
+        <meta name="description" content="View and manage erasure reports and regulatory documents" />
       </Helmet>
 
       <div className="min-h-screen bg-slate-50">
@@ -175,8 +175,8 @@ const ReportsPage: React.FC = () => {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-4 mb-6">
-              <Link 
-                to="/admin" 
+              <Link
+                to="/admin"
                 className="p-2 rounded-lg border border-slate-200 hover:bg-white transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,7 +185,7 @@ const ReportsPage: React.FC = () => {
               </Link>
               <div className="flex-1">
                 <h1 className="text-3xl font-bold text-slate-900">Erasure Reports</h1>
-                <p className="text-slate-600 mt-1">View and download your erasure certificates and reports</p>
+                <p className="text-slate-600 mt-1">View and download your erasure regulatory documents and reports</p>
               </div>
               <button
                 onClick={exportAllReports}
@@ -224,11 +224,10 @@ const ReportsPage: React.FC = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`px-4 py-2 text-sm font-medium transition-colors ${
-                      activeTab === tab.id
+                    className={`px-4 py-2 text-sm font-medium transition-colors ${activeTab === tab.id
                         ? 'bg-brand text-white'
                         : 'text-slate-600 hover:text-slate-900'
-                    } ${tab.id === 'all' ? 'rounded-l-lg' : ''} ${tab.id === 'failed' ? 'rounded-r-lg' : ''}`}
+                      } ${tab.id === 'all' ? 'rounded-l-lg' : ''} ${tab.id === 'failed' ? 'rounded-r-lg' : ''}`}
                   >
                     {tab.label}
                   </button>

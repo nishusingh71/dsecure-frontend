@@ -47,7 +47,7 @@ const ErrorCodesPage: React.FC = memo(() => {
       id: 3,
       code: "DSE-003",
       title: "Insufficient Disk Space",
-      description: "Not enough free space available for temporary files, logging, or certificate generation.",
+      description: "Not enough free space available for temporary files, logging, or regulatory document generation.",
       solution: "Step 1: Free up disk space on system drive (minimum 2GB recommended). Step 2: Clean temporary files using Disk Cleanup. Step 3: Check available space in D-Secure working directory. Step 4: Change temporary file location to drive with more space. Step 5: Clear old log files and reports. Step 6: Consider moving D-Secure installation to larger drive. Step 7: Monitor disk usage during operations.",
       category: "Storage",
       severity: "Warning",
@@ -112,13 +112,13 @@ const ErrorCodesPage: React.FC = memo(() => {
     {
       id: 9,
       code: "DSE-009",
-      title: "Certificate Generation Failed",
-      description: "Unable to generate certificate of destruction due to system, permission, or configuration issues.",
-      solution: "Step 1: Check output directory permissions (write access required). Step 2: Verify system date/time settings are correct. Step 3: Ensure adequate disk space (minimum 100MB). Step 4: Restart D-Secure certificate service. Step 5: Try different output directory location. Step 6: Disable antivirus real-time protection temporarily. Step 7: Check Windows Event Viewer for detailed errors. Step 8: Verify certificate template configuration.",
+      title: "Regulatory Document Generation Failed",
+      description: "Unable to generate regulatory document of destruction due to system, permission, or configuration issues.",
+      solution: "Step 1: Check output directory permissions (write access required). Step 2: Verify system date/time settings are correct. Step 3: Ensure adequate disk space (minimum 100MB). Step 4: Restart D-Secure regulatory document service. Step 5: Try different output directory location. Step 6: Disable antivirus real-time protection temporarily. Step 7: Check Windows Event Viewer for detailed errors. Step 8: Verify regulatory document template configuration.",
       category: "Reporting",
       severity: "Error",
       causes: ["Insufficient permissions", "Incorrect system time", "Low disk space", "Service failure", "Template corruption"],
-      prevention: "Ensure proper permissions, maintain accurate system time, and regularly test certificate generation."
+      prevention: "Ensure proper permissions, maintain accurate system time, and regularly test regulatory document generation."
     },
     {
       id: 10,
@@ -247,7 +247,7 @@ const ErrorCodesPage: React.FC = memo(() => {
 
   const filteredErrors = errorCodes.filter(error => {
     const matchesCategory = selectedCategory === "All" || error.category === selectedCategory;
-    const matchesSearch = !searchQuery || 
+    const matchesSearch = !searchQuery ||
       error.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
       error.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       error.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -386,11 +386,10 @@ const ErrorCodesPage: React.FC = memo(() => {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${
-                      selectedCategory === category
+                    className={`px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium transition-colors ${selectedCategory === category
                         ? "bg-emerald-500 text-white"
                         : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                    }`}
+                      }`}
                   >
                     {category}
                   </button>
@@ -444,9 +443,8 @@ const ErrorCodesPage: React.FC = memo(() => {
                           </div>
                         </div>
                         <svg
-                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${
-                            activeError === error.id ? "rotate-180" : ""
-                          }`}
+                          className={`w-4 h-4 sm:w-5 sm:h-5 text-slate-500 transform transition-transform ${activeError === error.id ? "rotate-180" : ""
+                            }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

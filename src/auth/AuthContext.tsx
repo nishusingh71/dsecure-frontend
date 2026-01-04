@@ -55,17 +55,17 @@ function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   // Safely extract user data with fallbacks
   // Priority: userRole (camelCase) > user_role (snake_case) > role > roles[0] > 'user'
   let primaryRole: Role = 'user';
-  
+
   // 1️⃣ FIRST PRIORITY: userRole field (camelCase from API response)
   if (jwtUser?.userRole && typeof jwtUser.userRole === 'string') {
     primaryRole = jwtUser.userRole.toLowerCase() as Role;
     // console.log('✅ Using userRole (camelCase) from API:', primaryRole);
-  } 
+  }
   // 2️⃣ SECOND PRIORITY: user_role field (snake_case)
   else if (jwtUser?.user_role && typeof jwtUser.user_role === 'string') {
     primaryRole = jwtUser.user_role.toLowerCase() as Role;
     // console.log('✅ Using user_role (snake_case) from API:', primaryRole);
-  } 
+  }
   // 3️⃣ THIRD PRIORITY: role field
   else if (jwtUser?.role && typeof jwtUser.role === 'string') {
     primaryRole = jwtUser.role.toLowerCase() as Role;
@@ -90,10 +90,10 @@ function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   else {
     // console.log('⚠️ No role found, using default: user');
   }
-  
+
   // console.log('🎯 Final role extracted:', primaryRole);
   // console.log('📦 Full API response data:', jwtUser);
-  
+
   return {
     id: jwtUser?.userId || jwtUser?.user_id || jwtUser?.sub || jwtUser?.id || 'unknown',
     email: jwtUser?.email || '',
@@ -120,17 +120,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const initializeAuth = () => {
       try {
         // //console.log('Initializing auth...')
-        
+
         // Check if in demo mode first
         const isDemoMode = localStorage.getItem('demo_mode') === 'true'
         // //console.log('Demo mode:', isDemoMode)
-        
+
         // Check for regular authentication (including demo tokens stored via authService)
         if (authService.isAuthenticated()) {
           // //console.log('AuthService says authenticated')
           const jwtUser = authService.getUserFromToken()
           const token = authService.getAccessToken()
-          
+
           if (jwtUser && token) {
             // //console.log('JWT user found:', jwtUser)
             const authUser = convertJWTUserToAuthUser(jwtUser, token)
@@ -165,7 +165,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (jwtUser) {
             const authUser = convertJWTUserToAuthUser(jwtUser, customEvent.detail.token)
             setUser(authUser)
-            
+
             // Dispatch auth state change event
             window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
           }
@@ -178,7 +178,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const handleAuthFailure = () => {
       setUser(null)
       setError('Authentication failed. Please login again.')
-      
+
       // Dispatch auth state change event
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
     }
@@ -188,7 +188,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const customEvent = event as CustomEvent
         // console.log('🔔 AuthContext received authStateChanged event:', customEvent.detail);
-        
+
         if (customEvent.detail?.authenticated && customEvent.detail?.token) {
           // User just logged in - update AuthContext
           const jwtUser = authService.getUserFromToken(customEvent.detail.token)
@@ -224,38 +224,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       const result = await apiClient.login({ email, password })
-      
+
       if (result.success && result.data) {
         const { user: apiUser, token } = result.data
-        
+
         // Validate that we have required data
         if (!token) {
           throw new Error('No authentication token received')
         }
-        
+
         if (!apiUser) {
           throw new Error('No user data received')
         }
-        
+
         const authUser = convertJWTUserToAuthUser(apiUser, token)
         setUser(authUser)
-        
+
         // Dispatch auth state change event
         window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
-        
+
         return
       } else {
         throw new Error(result.error || 'Login failed')
       }
-      
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Login failed'
       setError(errorMessage)
-      
+
       // Clear any partial authentication state
       authService.clearTokens()
       setUser(null)
-      
+
       throw err
     } finally {
       setLoading(false)
@@ -270,11 +270,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       // //console.log('Starting demo login...')
-      
+
       // Create a dummy JWT token with SUPERADMIN role for demo account
       const dummyJWTPayload = {
         sub: 'demo-superadmin-001',
-        id: 'demo-superadmin-001', 
+        id: 'demo-superadmin-001',
         email: 'demo@dsecuretech.com',
         user_name: 'Demo Super Administrator',
         role: 'superadmin',  // ✅ SUPERADMIN role
@@ -285,18 +285,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         iat: Math.floor(Date.now() / 1000),
         iss: 'dsecure-demo'
       }
-      
+
       // Create a fake JWT token (base64 encoded payload)
       const header = btoa(JSON.stringify({ typ: 'JWT', alg: 'HS256' }))
       const payload = btoa(JSON.stringify(dummyJWTPayload))
       const signature = btoa('demo-signature')
       const dummyToken = `${header}.${payload}.${signature}`
-      
+
       // //console.log('Generated demo token:', dummyToken)
-      
+
       // Use authService to store the demo token properly
       authService.setTokens(dummyToken, 'demo-refresh-token', false)
-      
+
       // Create AuthUser object with SUPERADMIN role
       const dummyAdminUser: AuthUser = {
         id: 'demo-superadmin-001',
@@ -325,24 +325,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         is_private_cloud: true,
         private_api: true
       }
-      
+
       // Save user data to authService
       authService.saveUserData(dummyAdminUser)
-      
+
       // ✅ Also save to localStorage directly for demo mode (getUserDataFromStorage reads from localStorage)
       localStorage.setItem('user_data', JSON.stringify(dummyAdminUser))
-      
+
       // Set the user in AuthContext
       setUser(dummyAdminUser)
-      
+
       // ✅ Mark as demo mode - this flag will be used to show static/dummy data
       localStorage.setItem('demo_mode', 'true')
-      
+
       // //console.log('Demo login completed successfully')
-      
+
       // Dispatch auth state change event
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: dummyAdminUser }))
-      
+
     } catch (err) {
       console.error('Demo login error:', err)
       const errorMessage = 'Demo login failed'
@@ -368,33 +368,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       const result = await apiClient.register(registrationData)
-      
+
       if (result.success && result.data) {
         const { user: apiUser, token } = result.data
-        
+
         // Validate that we have required data
         if (!token) {
           throw new Error('No authentication token received')
         }
-        
+
         if (!apiUser) {
           throw new Error('No user data received')
         }
-        
+
         const authUser = convertJWTUserToAuthUser(apiUser, token)
         setUser(authUser)
-        
+
         // Dispatch auth state change event
         window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
-        
+
         return
       } else {
         throw new Error(result.error || 'Registration failed')
       }
-      
+
     } catch (err) {
       let errorMessage = 'Registration failed'
-      
+
       if (err instanceof Error) {
         if (err.message.includes('409') || err.message.toLowerCase().includes('already exists')) {
           errorMessage = 'An account with this email already exists. Please try logging in instead.'
@@ -404,13 +404,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           errorMessage = err.message
         }
       }
-      
+
       setError(errorMessage)
-      
+
       // Clear any partial authentication state
       authService.clearTokens()
       setUser(null)
-      
+
       throw new Error(errorMessage)
     } finally {
       setLoading(false)
@@ -419,11 +419,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = useCallback(async () => {
     setLoading(true)
-    
+
     try {
       // Check if in demo mode
       const isDemoMode = localStorage.getItem('demo_mode') === 'true'
-      
+
       if (isDemoMode) {
         // Clear demo mode data
         localStorage.removeItem('demo_mode')
@@ -433,12 +433,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Call API logout for real users
         await apiClient.logout()
       }
-      
+
       // ✅ Clear all user-related data from localStorage
       localStorage.removeItem('user_data')
       localStorage.removeItem('authUser')
       localStorage.removeItem('userData')
-      
+
       // ✅ Clear all dashboard caches to prevent showing previous user's data
       const keysToRemove: string[] = []
       for (let i = 0; i < localStorage.length; i++) {
@@ -448,7 +448,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
       keysToRemove.forEach(key => localStorage.removeItem(key))
-      
+
       // console.log('✅ Logout successful - All user data and caches cleared')
     } catch (err) {
       console.error('Logout error:', err)
@@ -456,7 +456,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem('user_data')
       localStorage.removeItem('authUser')
       localStorage.removeItem('userData')
-      
+
       // Clear caches even on error
       const keysToRemove: string[] = []
       for (let i = 0; i < localStorage.length; i++) {
@@ -470,10 +470,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null)
       setError(null)
       setLoading(false)
-      
+
       // Dispatch auth state change event to update header immediately
       window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
-      
+
       // console.log('🔄 Auth state changed - All caches cleared, ready for new user login')
     }
   }, [])
@@ -481,20 +481,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const refreshToken = useCallback(async (): Promise<boolean> => {
     try {
       const success = await authService.manualRefreshToken()
-      
+
       if (success) {
         const jwtUser = authService.getUserFromToken()
         const token = authService.getAccessToken()
-        
+
         if (jwtUser && token) {
           const authUser = convertJWTUserToAuthUser(jwtUser, token)
           setUser(authUser)
-          
+
           // Dispatch auth state change event
           window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
         }
       }
-      
+
       return success
     } catch (error) {
       console.error('Token refresh failed:', error)
@@ -530,14 +530,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return authService.getRedirectPath(user)
   }, [user])
 
-  const value = useMemo(() => ({ 
-    user, 
-    login, 
+  const value = useMemo(() => ({
+    user,
+    login,
     demoLogin,
-    register, 
-    logout, 
-    isUsingApi, 
-    loading, 
+    register,
+    logout,
+    isUsingApi,
+    loading,
     error,
     isAuthenticated,
     hasRole,
@@ -558,4 +558,4 @@ export function useAuth() {
   return ctx
 }
 
-
+// @refresh reset

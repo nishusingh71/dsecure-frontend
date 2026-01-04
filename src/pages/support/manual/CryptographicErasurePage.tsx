@@ -55,7 +55,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
         {
           id: 22,
           title: "Step-by-Step Erasure Process",
-          description: "Complete workflow from boot to certificate generation",
+          description: "Complete workflow from boot to regulatory document generation",
           url: "/support/manual/erasure-process",
           pageCount: 3,
         },
@@ -99,7 +99,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
     },
     {
       id: 4,
-      title: "Compliance & Certification",
+      title: "Compliance & Regulation",
       description: "Regulatory standards and audit requirements",
       icon: "✅",
       subsections: [
@@ -112,8 +112,8 @@ const CryptographicErasurePage: React.FC = memo(() => {
         },
         {
           id: 42,
-          title: "Certificate Generation",
-          description: "Tamper-proof erasure certificates and audit trails",
+          title: "Regulatory Document Generation",
+          description: "Tamper-proof erasure regulatory documents and audit trails",
           url: "/support/manual/certificate-generation",
           pageCount: 2,
         },
@@ -239,7 +239,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
                 <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
                   Secure. Instant. Irreversible. Next-generation data sanitization through encryption key destruction.
                 </p>
-                
+
                 {/* Search Bar */}
                 <div className="max-w-xl mx-auto mb-8">
                   <div className="relative">
@@ -395,7 +395,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   {
                     feature: "Compliance Proof",
                     traditional: "Limited",
-                    crypto: "Verifiable certificate",
+                    crypto: "Verifiable regulatory document",
                   },
                   {
                     feature: "Encryption Requirement",
@@ -464,9 +464,8 @@ const CryptographicErasurePage: React.FC = memo(() => {
                             </div>
                           </div>
                           <svg
-                            className={`w-5 h-5 text-slate-500 transform transition-transform ${
-                              activeSection === section.id ? "rotate-180" : ""
-                            }`}
+                            className={`w-5 h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
+                              }`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -535,7 +534,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  Compliance & Certifications
+                  Compliance & Regulations
                 </h2>
                 <p className="text-xl text-slate-700 max-w-2xl mx-auto">
                   Meets global regulatory standards for data sanitization

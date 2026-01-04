@@ -129,7 +129,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
     },
     {
       id: 10,
-      title: "Compliance Standards and Certifications",
+      title: "Compliance Standards and Regulations",
       description: "Understanding NIST, DoD, and international standards for data erasure compliance requirements.",
       category: "compliance",
       difficulty: "Intermediate",
@@ -162,8 +162,8 @@ const KnowledgeBasePage: React.FC = memo(() => {
   const filteredArticles = articles.filter(article => {
     const matchesCategory = activeCategory === "all" || article.category === activeCategory;
     const matchesDifficulty = activeDifficulty === "all" || article.difficulty === activeDifficulty;
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         article.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesDifficulty && matchesSearch;
   });
 
@@ -254,11 +254,10 @@ const KnowledgeBasePage: React.FC = memo(() => {
                       <button
                         key={category.id}
                         onClick={() => setActiveCategory(category.id)}
-                        className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                          activeCategory === category.id
+                        className={`px-4 py-2 rounded-full font-medium transition-colors ${activeCategory === category.id
                             ? "bg-emerald-500 text-white"
                             : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                        }`}
+                          }`}
                       >
                         {category.name}
                       </button>
@@ -274,11 +273,10 @@ const KnowledgeBasePage: React.FC = memo(() => {
                       <button
                         key={difficulty.id}
                         onClick={() => setActiveDifficulty(difficulty.id)}
-                        className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                          activeDifficulty === difficulty.id
+                        className={`px-4 py-2 rounded-full font-medium transition-colors ${activeDifficulty === difficulty.id
                             ? "bg-emerald-500 text-white"
                             : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                        }`}
+                          }`}
                       >
                         {difficulty.name}
                       </button>

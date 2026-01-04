@@ -1,4 +1,5 @@
-﻿import React from "react";
+﻿import { ENV } from './config/env';
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
@@ -29,13 +30,13 @@ if (!ENABLE_CONSOLE) {
 preloadCriticalResources();
 
 // Optimized performance monitoring
-if ("performance" in window && process.env.NODE_ENV === 'production') {
+if ("performance" in window && ENV.IS_PROD) {
   // Defer performance monitoring to avoid blocking main thread
   setTimeout(() => {
     new PerformanceObserver((entryList) => {
       entryList.getEntries().forEach((entry) => {
         // Only log in development
-        if (process.env.NODE_ENV === 'development') {
+        if (ENV.IS_DEV) {
           // console.log(entry.name, entry.startTime);
         }
       });
@@ -44,7 +45,7 @@ if ("performance" in window && process.env.NODE_ENV === 'production') {
 }
 
 // Register service worker for caching (production only)
-if ("serviceWorker" in navigator && process.env.NODE_ENV === 'production') {
+if ("serviceWorker" in navigator && ENV.IS_PROD) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register("/sw.js")

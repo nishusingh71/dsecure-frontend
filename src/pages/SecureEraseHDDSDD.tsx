@@ -452,7 +452,7 @@ const SecureEraseHDDSDD: React.FC = () => {
                           "Verify successful erasure and generate compliance documentation for audit trails.",
                         details: [
                           "Perform post-erasure verification scan",
-                          "Generate erasure completion certificate",
+                          "Generate erasure completion regulatory document",
                           "Document process for compliance",
                           "Securely store erasure records",
                         ],
@@ -534,7 +534,7 @@ const SecureEraseHDDSDD: React.FC = () => {
                       </svg>
                     </div>
                     <h2 className="text-3xl font-bold mb-4">
-                      Compliance Standards & Certifications
+                      Compliance Standards & Regulations
                     </h2>
                   </div>
 

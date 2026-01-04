@@ -35,7 +35,7 @@ const ReadbackVerificationPage: React.FC = memo(() => {
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Read every sector after erasure</li>
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Compare with expected pattern</li>
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Report any discrepancies</li>
-                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Generate verification certificate</li>
+                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Generate verification regulatory document</li>
                 </ul>
               </div>
             </Reveal>

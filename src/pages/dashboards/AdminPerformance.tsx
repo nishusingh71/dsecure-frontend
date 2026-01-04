@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useAuth } from '@/auth/AuthContext'
-import {apiClient} from '@/utils/enhancedApiClient'
+import { apiClient } from '@/utils/enhancedApiClient'
 import { usePerformanceData } from '@/hooks/usePerformanceData'
 import { useAuditReports } from '@/hooks/useAuditReports'
 import { useUserMachines } from '@/hooks/useUserMachines'
@@ -21,15 +21,15 @@ interface PerformanceData {
 export default function AdminPerformance() {
   const { showError } = useNotification()
   const { user } = useAuth()
-  
+
   // ✅ Check demo mode
   const isDemo = isDemoMode()
-  
+
   // ✅ Get user email for React Query hooks
   const getUserEmail = (): string => {
     const storedUser = localStorage.getItem('user_data')
     const authUser = localStorage.getItem('authUser')
-    
+
     let storedUserData = null
     if (storedUser) {
       try {
@@ -38,7 +38,7 @@ export default function AdminPerformance() {
         console.error('Error parsing user_data:', e)
       }
     }
-    
+
     if (!storedUserData && authUser) {
       try {
         storedUserData = JSON.parse(authUser)
@@ -46,23 +46,23 @@ export default function AdminPerformance() {
         console.error('Error parsing authUser:', e)
       }
     }
-    
+
     return storedUserData?.user_email || user?.email || ''
   }
 
   const userEmail = getUserEmail()
-  
+
   // ✅ Use React Query hooks (disabled in demo mode)
   const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo)
   const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo)
   const performanceQuery = usePerformanceData(userEmail, !!userEmail && !isDemo)
-  
+
   const [performanceData, setPerformanceData] = useState<PerformanceData>({
     monthlyErasures: [],
     avgDuration: [],
     throughput: []
   })
-  
+
   // ✅ Use React Query loading state (demo mode is never loading)
   const loading = isDemo ? false : performanceQuery.isLoading
 
@@ -77,7 +77,7 @@ export default function AdminPerformance() {
   // ✅ Update performance data from React Query (same as AdminDashboard) - skip in demo mode
   useEffect(() => {
     if (isDemo) return;
-    
+
     if (performanceQuery.data) {
       // console.log('✅ Performance data loaded from React Query:', performanceQuery.data)
       setPerformanceData(performanceQuery.data)
@@ -145,8 +145,8 @@ export default function AdminPerformance() {
   const totalErasures = performanceData.monthlyErasures.reduce((sum, item) => sum + item.count, 0)
   const totalDuration = performanceData.avgDuration.reduce((sum, item) => sum + item.duration, 0)
   const validDurationCount = performanceData.avgDuration.filter(i => i.duration > 0).length
-  const avgSeconds = validDurationCount > 0 
-    ? totalDuration / validDurationCount 
+  const avgSeconds = validDurationCount > 0
+    ? totalDuration / validDurationCount
     : 0
   const minutes = Math.floor(avgSeconds / 60)
   const seconds = Math.floor(avgSeconds % 60)
@@ -155,6 +155,63 @@ export default function AdminPerformance() {
   // Calculate success rate based on erasures vs total operations
   const totalOperations = performanceData.monthlyErasures.reduce((sum, item) => sum + item.count, 0)
   const successRate = totalOperations > 0 ? '99.2%' : '0%'
+
+  // Check if there's no data available
+  const hasNoData = !isDemo &&
+    performanceData.monthlyErasures.length === 0 &&
+    performanceData.avgDuration.length === 0 &&
+    performanceData.throughput.length === 0
+
+  // Empty state when no data is available
+  if (hasNoData) {
+    return (
+      <>
+        <Helmet>
+          <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
+          <title>DSecureTech Performance | System Performance & Erasure Metrics</title>
+          <meta
+            name="description"
+            content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
+          />
+        </Helmet>
+        <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">Performance</h1>
+              <p className="text-sm text-slate-600 mt-1">Monitor system performance and erasure metrics</p>
+            </div>
+          </div>
+
+          {/* No Data Available Empty State */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12">
+            <div className="flex flex-col items-center justify-center text-center py-12">
+              {/* Chart Icon */}
+              <svg
+                className="w-16 h-16 text-slate-300 mb-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                />
+              </svg>
+
+              <h3 className="text-xl font-semibold text-slate-700 mb-2">
+                No Data Available
+              </h3>
+              <p className="text-slate-500 max-w-sm">
+                Performance data is not available from the server.
+              </p>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -196,12 +253,12 @@ export default function AdminPerformance() {
                     <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.05" />
                   </linearGradient>
                 </defs>
-                
+
                 {performanceData.monthlyErasures.length > 0 && (
                   <>
                     <path
                       d={`M 0 80 ${performanceData.monthlyErasures.map((item, index) => {
-                        const x = (index / (performanceData.monthlyErasures.length - 1)) * 300
+                        const x = (index / Math.max(performanceData.monthlyErasures.length - 1, 1)) * 300
                         const maxCount = Math.max(...performanceData.monthlyErasures.map(i => i.count), 1)
                         const y = 80 - (item.count / maxCount) * 60
                         return `L ${x} ${y}`
@@ -210,7 +267,7 @@ export default function AdminPerformance() {
                     />
                     <path
                       d={`${performanceData.monthlyErasures.map((item, index) => {
-                        const x = (index / (performanceData.monthlyErasures.length - 1)) * 300
+                        const x = (index / Math.max(performanceData.monthlyErasures.length - 1, 1)) * 300
                         const maxCount = Math.max(...performanceData.monthlyErasures.map(i => i.count), 1)
                         const y = 80 - (item.count / maxCount) * 60
                         return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
@@ -239,12 +296,12 @@ export default function AdminPerformance() {
                     <stop offset="100%" stopColor="#10B981" stopOpacity="0.05" />
                   </linearGradient>
                 </defs>
-                
+
                 {performanceData.avgDuration.length > 0 && (
                   <>
                     <path
                       d={`M 0 80 ${performanceData.avgDuration.map((item, index) => {
-                        const x = (index / (performanceData.avgDuration.length - 1)) * 300
+                        const x = (index / Math.max(performanceData.avgDuration.length - 1, 1)) * 300
                         const maxDuration = Math.max(...performanceData.avgDuration.map(i => i.duration), 1)
                         const y = 80 - (item.duration / maxDuration) * 60
                         return `L ${x} ${y}`
@@ -253,7 +310,7 @@ export default function AdminPerformance() {
                     />
                     <path
                       d={`${performanceData.avgDuration.map((item, index) => {
-                        const x = (index / (performanceData.avgDuration.length - 1)) * 300
+                        const x = (index / Math.max(performanceData.avgDuration.length - 1, 1)) * 300
                         const maxDuration = Math.max(...performanceData.avgDuration.map(i => i.duration), 1)
                         const y = 80 - (item.duration / maxDuration) * 60
                         return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
@@ -282,7 +339,7 @@ export default function AdminPerformance() {
                     <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.05" />
                   </linearGradient>
                 </defs>
-                
+
                 {/* Success rate visualization - showing consistent high performance */}
                 <path
                   d="M 0 20 L 25 18 L 50 19 L 75 17 L 100 18 L 125 16 L 150 17 L 175 15 L 200 16 L 225 15 L 250 14 L 275 15 L 300 14 L 300 80 L 0 80 Z"

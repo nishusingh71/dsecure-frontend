@@ -34,7 +34,7 @@ const StartErasurePage: React.FC = memo(() => {
             <Reveal>
               <div className="prose prose-lg max-w-none">
                 <h2 className="text-3xl font-bold text-slate-900 mb-6">Setup Steps</h2>
-                
+
                 <div className="space-y-6 mb-8">
                   <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-lg border border-emerald-200">
                     <h3 className="font-bold text-emerald-900 mb-3 flex items-center">
@@ -43,7 +43,7 @@ const StartErasurePage: React.FC = memo(() => {
                     </h3>
                     <p className="text-slate-700 ml-11">Choose the storage device for erasure from the device list</p>
                   </div>
-                  
+
                   <div className="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-lg border border-teal-200">
                     <h3 className="font-bold text-teal-900 mb-3 flex items-center">
                       <span className="bg-teal-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-3">2</span>
@@ -51,15 +51,15 @@ const StartErasurePage: React.FC = memo(() => {
                     </h3>
                     <p className="text-slate-700 ml-11">Select from DoD 5220.22-M, NIST 800-88, or custom patterns</p>
                   </div>
-                  
+
                   <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 p-6 rounded-lg border border-cyan-200">
                     <h3 className="font-bold text-cyan-900 mb-3 flex items-center">
                       <span className="bg-cyan-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-3">3</span>
                       Configure Verification
                     </h3>
-                    <p className="text-slate-700 ml-11">Enable post-erasure verification and certificate generation</p>
+                    <p className="text-slate-700 ml-11">Enable post-erasure verification and regulatory document generation</p>
                   </div>
-                  
+
                   <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-lg border border-emerald-200">
                     <h3 className="font-bold text-emerald-900 mb-3 flex items-center">
                       <span className="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center mr-3">4</span>

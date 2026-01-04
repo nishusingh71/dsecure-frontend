@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { downloadResource } from '../../utils/downloadUtils'
 import { useToast } from '@/components/Toast'
-import { 
-  CheckIcon, 
-  BriefcaseIcon, 
+import {
+  CheckIcon,
+  BriefcaseIcon,
   ShieldIcon,
   DatabaseIcon,
   GearIcon,
@@ -33,7 +33,7 @@ export default function CaseStudiesResourcesPage() {
         />
         <meta name="robots" content="index, follow" />
       </Helmet>
-      
+
       <CaseStudiesResourcesContent />
     </>
   );
@@ -168,7 +168,7 @@ function CaseStudiesResourcesContent() {
     {
       metric: 'Compliance Rate',
       value: '99.9%',
-      description: 'Successful compliance audits and certifications',
+      description: 'Successful compliance audits and regulations',
       icon: <CheckIcon className="w-5 h-5" filled={true} />
     },
     {
@@ -204,7 +204,7 @@ function CaseStudiesResourcesContent() {
               </Reveal>
               <Reveal delayMs={20}>
                 <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl mx-auto">
-                  Discover how organizations across industries have achieved remarkable results 
+                  Discover how organizations across industries have achieved remarkable results
                   with DSecure data erasure solutions. Real case studies with measurable ROI.
                 </p>
               </Reveal>
@@ -330,9 +330,9 @@ function CaseStudiesResourcesContent() {
                               <div className="text-sm text-slate-600">Return on Investment</div>
                             </div>
                           </div>
-                          
+
                           <div className="mt-6">
-                            <button 
+                            <button
                               onClick={() => {
                                 const ok = downloadResource({ title: study.title, downloadSize: study.downloadSize, pages: study.pages, type: 'case-study' })
                                 if (ok) toast.showToast(`Downloaded: ${study.title}`, 'success')
@@ -385,7 +385,7 @@ function CaseStudiesResourcesContent() {
                       <div className="text-xs text-slate-600">Avg ROI</div>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div>
                       <div className="text-lg font-semibold text-slate-900">{industry.organizations}</div>
@@ -426,7 +426,7 @@ function CaseStudiesResourcesContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Join hundreds of organizations that have achieved remarkable results 
+                Join hundreds of organizations that have achieved remarkable results
                 with DSecure data erasure solutions.
               </p>
             </Reveal>

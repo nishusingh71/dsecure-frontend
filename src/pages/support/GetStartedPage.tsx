@@ -57,7 +57,7 @@ const GetStartedPage: React.FC = memo(() => {
         "Authenticate with administrator credentials",
         "Select target drives and erasure parameters",
         "Configure T2/M1 security chip settings",
-        "Execute erasure and generate completion certificate"
+        "Execute erasure and generate completion regulatory document"
       ],
       tips: [
         "Disable System Integrity Protection (SIP) if needed",
@@ -81,7 +81,7 @@ const GetStartedPage: React.FC = memo(() => {
         "Configure parallel erasure jobs for multiple drives",
         "Set compliance standards (NIST 800-88, Common Criteria)",
         "Execute batch erasure with monitoring dashboard",
-        "Generate audit reports and compliance certificates"
+        "Generate audit reports and compliance regulatory documents"
       ],
       tips: [
         "Test erasure procedures in non-production environment first",
@@ -213,7 +213,7 @@ const GetStartedPage: React.FC = memo(() => {
                   </div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-4">Verify Success</h3>
                   <p className="text-slate-600 leading-relaxed">
-                    Confirm the erasure was successful and generate certificates for compliance and audit purposes.
+                    Confirm the erasure was successful and generate regulatory documents for compliance and audit purposes.
                   </p>
                 </div>
               </Reveal>
@@ -240,11 +240,10 @@ const GetStartedPage: React.FC = memo(() => {
                 <Reveal key={device.id} delayMs={index * 100}>
                   <button
                     onClick={() => setSelectedDevice(selectedDevice === device.id ? null : device.id)}
-                    className={`bg-white rounded-xl p-6 shadow-sm border-2 transition-all duration-300 text-left w-full ${
-                      selectedDevice === device.id
+                    className={`bg-white rounded-xl p-6 shadow-sm border-2 transition-all duration-300 text-left w-full ${selectedDevice === device.id
                         ? "border-emerald-500 shadow-lg"
                         : "border-slate-200 hover:border-emerald-300 hover:shadow-md"
-                    }`}
+                      }`}
                   >
                     <div className="text-center">
                       <div className="text-4xl mb-4">{device.icon}</div>
@@ -272,7 +271,7 @@ const GetStartedPage: React.FC = memo(() => {
                 {(() => {
                   const device = deviceGuides.find(d => d.id === selectedDevice);
                   if (!device) return null;
-                  
+
                   return (
                     <div className="bg-white rounded-xl shadow-lg border border-emerald-200 p-8">
                       <div className="text-center mb-8">

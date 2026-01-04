@@ -213,7 +213,7 @@ const WipeMacM1Guide: React.FC = () => {
                       <ul className="space-y-2 text-indigo-100">
                         <li>• Ensure macOS boots correctly</li>
                         <li>• Test for drive and security functionality</li>
-                        <li>• Review erasure certificates</li>
+                        <li>• Review erasure regulatory documents</li>
                         <li>• Prepare for new user setup</li>
                       </ul>
                     </div>

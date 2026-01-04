@@ -58,8 +58,8 @@ const FinancialSolutionsPage: React.FC = () => {
                   Ultra-Secure Data Sanitization
                 </h2>
                 <p className="text-slate-700 text-lg leading-relaxed mb-6">
-                  Ultra-secure data sanitization for financial institutions with stringent regulatory 
-                  requirements. Our solutions ensure complete data protection while meeting SOX, PCI DSS, 
+                  Ultra-secure data sanitization for financial institutions with stringent regulatory
+                  requirements. Our solutions ensure complete data protection while meeting SOX, PCI DSS,
                   GDPR, and other critical compliance standards that govern the financial services industry.
                 </p>
                 <img
@@ -80,7 +80,7 @@ const FinancialSolutionsPage: React.FC = () => {
                   {[
                     {
                       title: "SOX & PCI DSS Compliance",
-                      desc: "Meet Sarbanes-Oxley and Payment Card Industry Data Security Standard requirements with certified erasure.",
+                      desc: "Meet Sarbanes-Oxley and Payment Card Industry Data Security Standard requirements with regulated erasure.",
                       img: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80",
                     },
                     {
@@ -138,7 +138,7 @@ const FinancialSolutionsPage: React.FC = () => {
                     },
                     {
                       title: "Regulatory Compliance",
-                      desc: "Meet SOX, PCI DSS, and GDPR compliance requirements with certified erasure reports.",
+                      desc: "Meet SOX, PCI DSS, and GDPR compliance requirements with regulated erasure reports.",
                       icon: "✅",
                     },
                     {
@@ -223,7 +223,7 @@ const FinancialSolutionsPage: React.FC = () => {
                   Secure Your Financial Institution Today
                 </h2>
                 <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Partner with D-Secure to ensure complete data protection and regulatory 
+                  Partner with D-Secure to ensure complete data protection and regulatory
                   compliance for your financial services organization.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
