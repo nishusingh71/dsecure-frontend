@@ -8,25 +8,20 @@
  * - Removal of direct process.env / import.meta.env usage
  */
 
-const getEnvParam = (key: string, required: boolean = false, fallback: string = ''): string => {
-    const value = import.meta.env[key];
-
+const validateStr = (value: string | undefined, key: string, required: boolean, fallback: string): string => {
     if (!value && required) {
         throw new Error(`CRITICAL CONFIG ERROR: Missing required environment variable: ${key}`);
     }
-
     return value || fallback;
 };
 
-const getBoolParam = (key: string, defaultVal: boolean = false): boolean => {
-    const value = import.meta.env[key];
-    if (value === 'true') return true;
-    if (value === 'false') return false;
+const validateBool = (value: string | boolean | undefined, defaultVal: boolean): boolean => {
+    if (value === 'true' || value === true) return true;
+    if (value === 'false' || value === false) return false;
     return defaultVal;
 };
 
-const getIntParam = (key: string, defaultVal: number): number => {
-    const value = import.meta.env[key];
+const validateInt = (value: string | undefined, defaultVal: number): number => {
     if (!value) return defaultVal;
     const parsed = parseInt(value, 10);
     return isNaN(parsed) ? defaultVal : parsed;
@@ -34,8 +29,8 @@ const getIntParam = (key: string, defaultVal: number): number => {
 
 export const ENV = {
     // Core API
-    API_BASE_URL: getEnvParam('VITE_API_BASE_URL', true),
-    API_TIMEOUT: getIntParam('VITE_API_TIMEOUT', 60000),
+    API_BASE_URL: validateStr(import.meta.env.VITE_API_BASE_URL, 'VITE_API_BASE_URL', true, ''),
+    API_TIMEOUT: validateInt(import.meta.env.VITE_API_TIMEOUT, 60000),
 
     // Environment
     IS_DEV: import.meta.env.DEV,
@@ -43,18 +38,18 @@ export const ENV = {
     MODE: import.meta.env.MODE,
 
     // Feature Flags
-    ENABLE_ENCRYPTION: getBoolParam('VITE_ENABLE_ENCRYPTION', true),
-    DEBUG: getBoolParam('VITE_DEBUG', import.meta.env.DEV),
+    ENABLE_ENCRYPTION: validateBool(import.meta.env.VITE_ENABLE_ENCRYPTION, true),
+    DEBUG: validateBool(import.meta.env.VITE_DEBUG, import.meta.env.DEV),
 
     // Analytics
-    GA4_ID: getEnvParam('VITE_GA4_ID', false, 'G-6B20XY3K81'), // Fallback kept only if acceptable, but goal is to remove hardcoded. Set empty default if we must.
-    CLARITY_ID: getEnvParam('VITE_CLARITY_ID', false, 'tkbibktdah'), // Keeping fallbacks for now to avoid breaking if .env update fails, but typically should be empty. Assuming user wants strict removal, I will rely on .env presence.
+    GA4_ID: validateStr(import.meta.env.VITE_GA4_ID, 'VITE_GA4_ID', false, 'G-6B20XY3K81'),
+    CLARITY_ID: validateStr(import.meta.env.VITE_CLARITY_ID, 'VITE_CLARITY_ID', false, 'tkbibktdah'),
 
     // Third Party
-    CLOUDINARY_CLOUD_NAME: getEnvParam('VITE_CLOUDINARY_CLOUD_NAME', false, 'dsecure-tech'),
-    RES_KEY: getEnvParam('VITE_RES_KEY', false, '2b8A1Pv0ykhppFD28MV6ResponseKey!'),
-    REQ_KEY: getEnvParam('VITE_REQ_KEY', false, 'YourEncryptionKey32CharactersLong!'),
-    ENC_IV: getEnvParam('VITE_ENC_IV', false, '1234567890123456'),
+    CLOUDINARY_CLOUD_NAME: validateStr(import.meta.env.VITE_CLOUDINARY_CLOUD_NAME, 'VITE_CLOUDINARY_CLOUD_NAME', false, 'dsecure-tech'),
+    RES_KEY: validateStr(import.meta.env.VITE_RES_KEY, 'VITE_RES_KEY', false, '2b8A1Pv0ykhppFD28MV6ResponseKey!'),
+    REQ_KEY: validateStr(import.meta.env.VITE_REQ_KEY, 'VITE_REQ_KEY', false, 'YourEncryptionKey32CharactersLong!'),
+    ENC_IV: validateStr(import.meta.env.VITE_ENC_IV, 'VITE_ENC_IV', false, '1234567890123456'),
 };
 
 // Validate critical secrets don't map to defaults in Production if needed

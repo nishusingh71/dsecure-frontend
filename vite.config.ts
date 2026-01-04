@@ -19,7 +19,7 @@ export default defineConfig({
     include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', '@tanstack/react-query', 'react-helmet-async'],
     exclude: ['@vite/client', '@vite/env']
   },
-  
+
   // Server optimizations
   server: {
     hmr: {
@@ -51,7 +51,7 @@ export default defineConfig({
           }
           // Let Vite handle other splitting automatically
         },
-        
+
         // Optimize file names for caching
         chunkFileNames: 'js/[name]-[hash].js',
         entryFileNames: 'js/[name]-[hash].js',
@@ -74,9 +74,6 @@ export default defineConfig({
   css: {
     devSourcemap: false
   },
-  
-  // Enable compression - remove console logs in production
-  esbuild: {
-    drop: ['console', 'debugger']
-  }
+
+
 })
