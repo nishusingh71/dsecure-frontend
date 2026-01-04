@@ -43,19 +43,13 @@ export default defineConfig({
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // ✅ Simplified chunk splitting - bundle all vendor libs together to avoid initialization errors
+        // Simplified chunk splitting - only vendor to avoid initialization order issues
         manualChunks: (id) => {
-          // ALL node_modules go into vendor chunk to avoid initialization order issues
+          // ALL node_modules go into vendor chunk
           if (id.includes('node_modules')) {
             return 'vendor'
           }
-          // Split large dashboard pages for code splitting
-          if (id.includes('AdminDashboard')) {
-            return 'admin-dashboard'
-          }
-          if (id.includes('AdminLogs') || id.includes('AdminSubusers') || id.includes('AdminReports')) {
-            return 'admin-pages'
-          }
+          // Let Vite handle other splitting automatically
         },
         
         // Optimize file names for caching

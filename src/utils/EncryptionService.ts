@@ -367,13 +367,34 @@ class EncryptionServiceClass {
   }
 }
 
-// Export singleton instance
-export const EncryptionService = new EncryptionServiceClass();
+// Lazy-initialized singleton instance to avoid module loading order issues
+let encryptionServiceInstance: EncryptionServiceClass | null = null;
+
+/**
+ * Get the singleton instance of EncryptionService
+ * Uses lazy initialization to avoid module load-time execution
+ */
+function getEncryptionService(): EncryptionServiceClass {
+  if (!encryptionServiceInstance) {
+    encryptionServiceInstance = new EncryptionServiceClass();
+  }
+  return encryptionServiceInstance;
+}
+
+// Export the getter function as the main export
+export const EncryptionService = new Proxy({} as EncryptionServiceClass, {
+  get(_, prop) {
+    const instance = getEncryptionService();
+    const value = (instance as any)[prop];
+    return typeof value === 'function' ? value.bind(instance) : value;
+  }
+});
 
 // Export helper functions for testing
 export { getZeroPaddedKey, getZeroPaddedIV, extractIVAndCiphertext };
 
-// Export class for testing/extension
+// Export class for testing/extension  
 export { EncryptionServiceClass };
 
 export default EncryptionService;
+

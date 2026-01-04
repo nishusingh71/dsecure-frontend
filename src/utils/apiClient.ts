@@ -255,14 +255,41 @@ function createApiInstance(): AxiosInstance {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// EXPORT CONFIGURED INSTANCE
+// EXPORT CONFIGURED INSTANCE (Lazy-initialized to avoid module loading order issues)
 // ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Lazy-initialized API instance
+ */
+let apiInstance: AxiosInstance | null = null;
+
+/**
+ * Get the configured Axios instance (lazy initialization)
+ */
+function getApiInstance(): AxiosInstance {
+  if (!apiInstance) {
+    apiInstance = createApiInstance();
+  }
+  return apiInstance;
+}
 
 /**
  * Pre-configured Axios instance with encryption interceptor
  * Use this for all API calls to the .NET backend
+ * Uses Proxy for lazy initialization to avoid module load-time execution
  */
-export const api = createApiInstance();
+export const api = new Proxy({} as AxiosInstance, {
+  get(_, prop) {
+    const instance = getApiInstance();
+    const value = (instance as any)[prop];
+    return typeof value === 'function' ? value.bind(instance) : value;
+  },
+  set(_, prop, value) {
+    const instance = getApiInstance();
+    (instance as any)[prop] = value;
+    return true;
+  }
+});
 
 /**
  * Set JWT token for all future requests
@@ -272,7 +299,7 @@ export function setAuthToken(token: string, persist: boolean = false): void {
   if (persist) {
     localStorage.setItem('dsecure:jwt', token);
   }
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  getApiInstance().defaults.headers.common['Authorization'] = `Bearer ${token}`;
   // console.log('🔑 Auth token set');
 }
 
@@ -283,7 +310,7 @@ export function clearAuthToken(): void {
   sessionStorage.removeItem('dsecure:jwt');
   localStorage.removeItem('dsecure:jwt');
   localStorage.removeItem('jwt_token');
-  delete api.defaults.headers.common['Authorization'];
+  delete getApiInstance().defaults.headers.common['Authorization'];
   // console.log('🔑 Auth token cleared');
 }
 
@@ -298,3 +325,4 @@ export function getApiBaseUrl(): string {
 export type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig };
 
 export default api;
+
