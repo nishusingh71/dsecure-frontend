@@ -24,7 +24,8 @@ export default defineConfig({
   server: {
     hmr: {
       overlay: false
-    }
+    },
+    allowedHosts: true
   },
   build: {
     outDir: 'dist',

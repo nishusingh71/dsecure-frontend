@@ -651,128 +651,78 @@ const PricingAndPlanPage: React.FC = memo(() => {
     }
   };
 
-  const handleBuyNow = () => {
-    // SECURITY: Purchase functionality is strictly disabled.
-    // This check prevents execution even if the disabled attribute is removed from the DOM.
-    if (true) {
-      showToast("Purchasing is temporarily disabled for maintenance.", "error");
-      return;
-    }
-
+  const handleBuyNow = async () => {
     if (selectedLicenses === "custom" || selectedPlan === "custom") {
       setShowCustomModal(true);
       return;
     }
 
-    // Import Polar client dynamically
-    import('@/utils/polarClient').then(({ redirectToPolarCheckout, isCustomPlan, getPolarProductId, getDriveEraserCheckoutLink, getFileEraserStandardCheckoutLink, getFileEraserEnterpriseCheckoutLink, getFileEraserCorporateCheckoutLink, getFileEraserProfessionalCheckoutLink }) => {
-      // ... (rest of the logic remains reachable only if the guard above is removed in source) ...
+    // Product ID mapping for Dodo Payments
+    const PRODUCT_IDS = {
+      'drive-eraser': 'pdt_0NVH5wJYMX70syW3ioj9R',
+      'file-eraser': 'pdt_0NVHHRwPSypqgPTs3kuSu', // File Eraser Standard
+    };
 
-      // Check if plan is valid for Polar checkout
-      if (isCustomPlan(selectedPlan)) {
-        setShowCustomModal(true);
+    // Get the correct product ID based on selected category
+    const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
+
+    if (!productId) {
+      showToast('Invalid product selection. Please try again.', 'error');
+      return;
+    }
+
+    // Get quantity from selected licenses
+    const quantity = parseInt(selectedLicenses) || 1;
+
+    // Store order metadata for success page
+    const orderMetadata = {
+      category: selectedCategory,
+      planId: selectedPlan,
+      planName: getCurrentPlan().name,
+      productName: getCurrentProduct().title,
+      licenses: selectedLicenses,
+      years: selectedYears,
+      totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
+      taxEnabled: true
+    };
+    localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
+
+    try {
+      showToast('Creating checkout session...', 'info');
+
+      // Import API client
+      const { api } = await import('@/utils/apiClient');
+
+      // Call backend API to create guest checkout session
+      const response = await api.post('/api/Payments/dodo/checkout/guest', {
+        product_id: productId,
+        quantity: quantity,
+        TaxEnabled: true
+      });
+
+      // Debug: Log full response to see structure
+      console.log('📦 API Response:', response);
+      console.log('📦 Response Data:', response.data);
+
+      // Check for URL in different possible field names
+      const checkoutUrl = response.data?.url || response.data?.Url || response.data?.checkoutUrl || response.data?.checkout_url || response.data;
+
+      if (!checkoutUrl || typeof checkoutUrl !== 'string') {
+        console.error('❌ No checkout URL in response:', response.data);
+        showToast('Failed to create checkout session. Please try again.', 'error');
         return;
       }
 
-      // Store order metadata for success page
-      const orderMetadata = {
-        category: selectedCategory,
-        planId: selectedPlan,
-        planName: getCurrentPlan().name,
-        productName: getCurrentProduct().title,
-        licenses: selectedLicenses,
-        years: selectedYears,
-        totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
-      };
-      localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
+      console.log('🚀 Redirecting to checkout:', checkoutUrl);
 
-      // Drive Eraser uses license quantity-based checkout links
-      if (selectedCategory === 'drive-eraser') {
-        const checkoutUrl = getDriveEraserCheckoutLink(selectedLicenses);
-        if (!checkoutUrl) {
-          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
-          return;
-        }
-        console.log('🚀 Redirecting to Drive Eraser checkout:', checkoutUrl);
-        window.location.href = checkoutUrl;
-        return;
-      }
+      // Redirect to Dodo Payments checkout
+      window.location.href = checkoutUrl;
 
-      // File Eraser Standard plan (id='basic') uses license quantity-based checkout links
-      if (selectedCategory === 'file-eraser' && selectedPlan === 'basic') {
-        const checkoutUrl = getFileEraserStandardCheckoutLink(selectedLicenses);
-        if (!checkoutUrl) {
-          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
-          return;
-        }
-        console.log('🚀 Redirecting to File Eraser Standard checkout:', checkoutUrl);
-        window.location.href = checkoutUrl;
-        return;
-      }
-
-      // File Eraser Enterprise plan uses license quantity-based checkout links
-      if (selectedCategory === 'file-eraser' && selectedPlan === 'enterprise') {
-        const checkoutUrl = getFileEraserEnterpriseCheckoutLink(selectedLicenses);
-        if (!checkoutUrl) {
-          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
-          return;
-        }
-        console.log('🚀 Redirecting to File Eraser Enterprise checkout:', checkoutUrl);
-        window.location.href = checkoutUrl;
-        return;
-      }
-
-      // File Eraser Corporate plan (id='standard') uses license quantity-based checkout links
-      if (selectedCategory === 'file-eraser' && selectedPlan === 'standard') {
-        const checkoutUrl = getFileEraserCorporateCheckoutLink(selectedLicenses);
-        if (!checkoutUrl) {
-          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
-          return;
-        }
-        console.log('🚀 Redirecting to File Eraser Corporate checkout:', checkoutUrl);
-        window.location.href = checkoutUrl;
-        return;
-      }
-
-      // File Eraser Professional plan (id='pro') uses license quantity-based checkout links
-      if (selectedCategory === 'file-eraser' && selectedPlan === 'pro') {
-        const checkoutUrl = getFileEraserProfessionalCheckoutLink(selectedLicenses);
-        if (!checkoutUrl) {
-          showToast('Unable to process payment for this license quantity. Please try again.', 'error');
-          return;
-        }
-        console.log('🚀 Redirecting to File Eraser Professional checkout:', checkoutUrl);
-        window.location.href = checkoutUrl;
-        return;
-      }
-
-      // Other File Eraser plans use plan-based checkout
-      const productId = getPolarProductId(
-        selectedCategory as 'drive-eraser' | 'file-eraser',
-        selectedPlan as 'basic' | 'standard' | 'cloud' | 'network' | 'pro' | 'enterprise'
-      );
-
-      if (!productId) {
-        showToast('Unable to process payment. Please try again.', 'error');
-        return;
-      }
-
-      // Redirect to Polar.sh checkout
-      redirectToPolarCheckout(
-        selectedCategory as 'drive-eraser' | 'file-eraser',
-        selectedPlan as 'basic' | 'standard' | 'cloud' | 'network' | 'pro' | 'enterprise',
-        {
-          category: selectedCategory as 'drive-eraser' | 'file-eraser',
-          planId: selectedPlan as 'basic' | 'standard' | 'cloud' | 'network' | 'pro' | 'enterprise',
-          planName: getCurrentPlan().name,
-          licenses: parseInt(selectedLicenses) || 1,
-          years: parseInt(selectedYears) || 1,
-        }
-      );
-    }).catch((error) => {
-      console.error('Failed to load Polar client:', error);
-      showToast('Payment system unavailable. Please try again later.', 'error');
-    });
+    } catch (error: any) {
+      console.error('Checkout session creation failed:', error);
+      console.error('Error response:', error.response?.data);
+      showToast(error.response?.data?.message || error.message || 'Payment system unavailable. Please try again later.', 'error');
+    }
   };
 
   const faqs = [
@@ -1052,19 +1002,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
                 {/* Action Button */}
                 <button
-                  disabled={true}
                   onClick={handleBuyNow}
-                  // Added pointer-events-none, opacity, and gray background to visually and functionally disable it.
-                  className="w-full bg-gray-400 cursor-not-allowed text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg opacity-70 pointer-events-none select-none"
-                  style={{ backgroundImage: 'none', boxShadow: 'none', transform: 'none' }}
+                  className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                 >
                   {selectedLicenses === "custom" || selectedPlan === "custom"
                     ? " Request Custom Quote"
                     : " Buy Now"}
                 </button>
-                <p className="text-xs text-center text-gray-500">
-                  currently disabled for maintenance.
-                </p>
 
                 {/* Trust Indicators */}
                 <div className="space-y-3 text-center">
