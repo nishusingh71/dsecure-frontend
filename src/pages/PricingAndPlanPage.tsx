@@ -688,7 +688,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
 
     try {
-      showToast('Creating checkout session...', 'info');
+      // showToast('Creating checkout session...', 'info');
 
       // Import API client
       const { api } = await import('@/utils/apiClient');

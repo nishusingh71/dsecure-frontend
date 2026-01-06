@@ -143,46 +143,31 @@ export default function LoginPage() {
     try {
       // console.log("🔐 Step 1: Requesting OTP for:", forgotEmail);
 
-      // First, call the backend API to generate OTP and resetToken
+      // First, call the backend API to request OTP
       const backendResponse = await api.post(
-        "/api/forgot/request",
+        "/api/ForgotPassword/request-otp",
         { email: forgotEmail },
         { headers: { "Content-Type": "application/json" } }
       );
 
       // console.log("✅ Step 1 Backend Response:", backendResponse.data);
 
-      if (backendResponse.data && backendResponse.data.resetToken) {
-        // ✅ Store only resetToken from response
-        const generatedResetToken = backendResponse.data.resetToken;
-        setResetToken(generatedResetToken);
-        // console.log("💾 Stored Reset Token:", generatedResetToken);
+      if (backendResponse.data && backendResponse.data.success !== false) {
+        // Store resetToken if provided (optional)
+        if (backendResponse.data.resetToken) {
+          setResetToken(backendResponse.data.resetToken);
+        }
 
-        // ✅ Send OTP via FormSubmit.co with proper error handling
-        const emailResult = await sendEmailViaFormSubmit(
-          forgotEmail,
-          backendResponse.data.otp
+        showToast(
+          backendResponse.data.message || "OTP sent to your email successfully! Please check your inbox.",
+          "success"
         );
 
-        if (emailResult.success) {
-          showToast(
-            "OTP sent to your email successfully! Please check your inbox (may take 1-2 minutes).",
-            "success"
-          );
-          // ✅ Step 2: Validate reset link
-          await handleValidateResetLink(generatedResetToken);
-        } else {
-          // Show specific email service error
-          showToast(emailResult.error || "Failed to send email", "error");
-          // Still allow user to proceed since OTP was generated
-          showToast(
-            "Note: OTP was generated. If you don't receive email, contact support with your email address.",
-            "error"
-          );
-          setForgotPasswordLoading(false);
-        }
+        // Go directly to OTP verification step
+        setForgotPasswordStep("otp");
+        setForgotPasswordLoading(false);
       } else {
-        throw new Error("Invalid response: resetToken missing from server");
+        throw new Error(backendResponse.data?.message || "Failed to send OTP");
       }
     } catch (err: any) {
       console.error("❌ Step 1 Error:", err);
@@ -220,7 +205,7 @@ export default function LoginPage() {
       // console.log("🔐 Step 2: Validating reset link with token:", token);
 
       const response = await api.post(
-        "/api/forgot/validate-reset-link",
+        "/api/ForgotPassword/verify-otp",
         { resetToken: token }
       );
 
@@ -264,7 +249,7 @@ export default function LoginPage() {
       // console.log("  - OTP:", otp);
 
       const response = await api.post(
-        "/api/forgot/verify-otp",
+        "/api/ForgotPassword/verify-otp",
         {
           email: forgotEmail,
           otp: otp,
@@ -307,7 +292,7 @@ export default function LoginPage() {
       // console.log("🔄 Resending OTP for:", forgotEmail);
 
       const response = await api.post(
-        "/api/forgot/resend-otp",
+        "/api/ForgotPassword/resend-otp",
         { email: forgotEmail }
       );
 
@@ -380,7 +365,7 @@ export default function LoginPage() {
       // console.log("  - New Password: ******");
 
       const response = await api.post(
-        "/api/forgot/reset",
+        "/api/ForgotPassword/reset-password",
         {
           email: forgotEmail,
           otp: otp,
