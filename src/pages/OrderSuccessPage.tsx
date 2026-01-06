@@ -370,7 +370,7 @@ export default function OrderSuccessPage() {
             {/* Right Column - Payment & Invoice */}
             <div className="space-y-6">
               {/* Payment Summary Card */}
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden sticky top-4">
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -410,10 +410,10 @@ export default function OrderSuccessPage() {
                         </span>
                       </div>
                     )}
-                    <div className="flex justify-between text-sm">
+                    {/* <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Provider</span>
                       <span className="font-medium text-gray-900">{payment_info.provider}</span>
-                    </div>
+                    </div> */}
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Date</span>
                       <span className="font-medium text-gray-900">{formatDate(payment_info.payment_date)}</span>
@@ -461,19 +461,17 @@ export default function OrderSuccessPage() {
                       </div>
                     </div>
 
-                    {invoice_info.pdf_url && (
-                      <a
-                        href={invoice_info.pdf_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full bg-orange-50 hover:bg-orange-100 text-orange-700 font-semibold py-3 px-4 rounded-xl transition-colors border border-orange-200"
-                      >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                        Download Invoice PDF
-                      </a>
-                    )}
+                    <a
+                      href={`https://live.dodopayments.com/invoices/payments/${order_details.dodo_payment_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full bg-orange-50 hover:bg-orange-100 text-orange-700 font-semibold py-3 px-4 rounded-xl transition-colors border border-orange-200"
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                      Download Invoice PDF
+                    </a>
                   </div>
                 </div>
               )}
