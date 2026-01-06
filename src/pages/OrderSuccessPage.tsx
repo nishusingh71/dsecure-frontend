@@ -449,12 +449,12 @@ export default function OrderSuccessPage() {
                         <span className="text-gray-500">Date</span>
                         <span className="font-medium text-gray-900">{formatDate(invoice_info.date)}</span>
                       </div>
-                      <div className="flex justify-between text-sm">
+                      {/* <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Status</span>
                         <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getStatusColor(invoice_info.status)}`}>
                           {invoice_info.status.toUpperCase()}
                         </span>
-                      </div>
+                      </div> */}
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Total</span>
                         <span className="font-bold text-gray-900">{formatCurrency(invoice_info.total_amount, invoice_info.currency)}</span>
