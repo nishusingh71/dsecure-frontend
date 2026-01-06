@@ -628,37 +628,25 @@ export default function LoginPage() {
         const status = err.response.status;
         const serverMessage = err.response.data?.message || err.response.data?.error;
 
-        // Always prefer server message for exact error
-        if (serverMessage) {
-          errorMessage = `[${status}] ${serverMessage}`;
-        } else if (status === 401) {
-          errorMessage = `[401] Invalid email or password. Please check your credentials.`;
+        // Show clean, user-friendly error messages
+        if (status === 401 || status === 400) {
+          errorMessage = "Invalid email or password. Please check your credentials.";
         } else if (status === 404) {
-          errorMessage = `[404] User not found. Please register first.`;
+          errorMessage = "User not found. Please register first.";
         } else if (status === 403) {
-          errorMessage = `[403] Access denied. Your account may be suspended or inactive.`;
+          errorMessage = "Access denied. Your account may be suspended or inactive.";
         } else if (status >= 500) {
-          errorMessage = `[${status}] Server error. Please try again later.`;
+          errorMessage = "Server error. Please try again later.";
+        } else if (serverMessage) {
+          errorMessage = serverMessage;
         } else {
-          errorMessage = `[${status}] ${err.response.statusText || 'Request failed'}`;
+          errorMessage = "Login failed. Please try again.";
         }
       } else if (err.request) {
-        // Network error - extract exact details
-        const errorCode = err.code || 'NETWORK_ERROR';
-        const errorMsg = err.message || 'No response from server';
-        const targetUrl = err.config?.url || 'unknown URL';
-
-        errorMessage = `[${errorCode}] ${errorMsg} | URL: ${targetUrl}`;
-
-        console.error('❌ Network Error Details:', {
-          code: errorCode,
-          message: errorMsg,
-          url: targetUrl,
-          timeout: err.config?.timeout,
-          baseURL: err.config?.baseURL,
-        });
+        // Network error
+        errorMessage = "Cannot connect to server. Please check your internet connection.";
       } else {
-        errorMessage = `[Error] ${err.message || 'An unexpected error occurred.'}`;
+        errorMessage = "An unexpected error occurred. Please try again.";
       }
 
       // Display error to user

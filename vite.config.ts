@@ -75,6 +75,10 @@ export default defineConfig({
   css: {
     devSourcemap: false
   },
+  // Drop console logs in production build
+  esbuild: {
+    drop: ['console', 'debugger'],
+  },
 
 
 })
