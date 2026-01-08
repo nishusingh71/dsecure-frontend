@@ -95,8 +95,11 @@ function createApiInstance(): AxiosInstance {
         localStorage.getItem('dsecure:jwt') ||
         localStorage.getItem('jwt_token');
 
-      // Add Authorization header if token exists
-      if (token) {
+      // Add Authorization header if token exists AND request is not for a public endpoint
+      // Skip auth for ForgotPassword endpoints to prevent "IP mismatch" errors from stale tokens
+      const isPublicEndpoint = config.url?.includes('/api/ForgotPassword/');
+
+      if (token && !isPublicEndpoint) {
         config.headers.Authorization = `Bearer ${token}`;
       }
 

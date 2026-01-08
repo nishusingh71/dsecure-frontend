@@ -312,13 +312,13 @@ function ContactPageContent() {
   //     }
   //   };
 
-  const FORMSUBMIT_ENDPOINT =
-    "https://formsubmit.co/support@dsecuretech.com";
+  // FormSubmit.co AJAX endpoint
+  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/support@dsecuretech.com";
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Keep your validation logic (unchanged)
+    // Validation
     const errors: string[] = [];
 
     if (!formData.name?.trim()) errors.push("Name is required");
@@ -340,12 +340,6 @@ function ContactPageContent() {
 
     try {
       const now = new Date();
-
-      // Two timestamp formats:
-      // 1. ISO format for database storage (backend can parse this)
-      const timestampISO = now.toISOString();
-
-      // 2. User-friendly format for email display (user's local timezone)
       const timestampLocal = now.toLocaleString('en-IN', {
         weekday: 'long',
         year: 'numeric',
@@ -356,134 +350,43 @@ function ContactPageContent() {
         timeZoneName: 'short'
       });
 
-      const submissionData = {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        company: formData.company?.trim() || "",
-        phone: formData.phone
-          ? `${formData.countryCode} ${formData.phone}`.trim()
-          : "",
-        country: formData.country,
-        businessType: formData.businessType,
-        solutionType: formData.solutionType,
-        complianceRequirements: formData.complianceRequirements,
-        message: formData.message.trim(),
-        usageType,
-        source: "Contact Page",
-        timestamp: timestampISO, // ISO format for database
-      };
-
-      // 1. Store form data in database via API
-      const API_BASE = ENV.API_BASE_URL;
-      try {
-        const apiResponse = await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(submissionData),
-        });
-
-        // Check if API returned validation errors
-        if (!apiResponse.ok) {
-          const errorData = await apiResponse.json();
-
-          // Handle validation errors from backend
-          if (errorData.errors) {
-            const errorMessages = Object.values(errorData.errors)
-              .flat()
-              .join(', ');
-            showToast(errorMessages, 'error');
-            return; // Stop form submission
-          }
-
-          throw new Error('API submission failed');
-        }
-
-        console.log('📧 Form data stored in database');
-      } catch (dbError: any) {
-        // If it's a validation error, we already showed the toast and returned
-        if (dbError.message === 'API submission failed') {
-          showToast('Failed to submit form. Please try again.', 'error');
-          return;
-        }
-
-        console.warn('⚠️ DB storage failed, continuing with email:', dbError);
-        // Continue with email submission even if DB fails
-      }
-
-      /* ======================
-         FORM SUBMIT (EMAIL)
-      ======================= */
+      // Prepare form data for FormSubmit
       const formSubmitData = new FormData();
 
-      // Required fields
-      formSubmitData.append("name", submissionData.name);
-      formSubmitData.append("email", submissionData.email);
-      formSubmitData.append("message", submissionData.message);
-
-      // ⭐ REQUIRED for autoresponse (DO NOT REMOVE)
-      formSubmitData.append("_replyto", submissionData.email);
-
-      // Your additional fields (unchanged)
-      formSubmitData.append("company", submissionData.company);
-      formSubmitData.append("phone", submissionData.phone);
-      formSubmitData.append("country", submissionData.country);
-      formSubmitData.append("businessType", submissionData.businessType);
-      formSubmitData.append("solutionType", submissionData.solutionType);
-      formSubmitData.append(
-        "complianceRequirements",
-        submissionData.complianceRequirements
-      );
-      formSubmitData.append("usageType", submissionData.usageType);
-      formSubmitData.append("timestamp", timestampLocal);
-      formSubmitData.append("source", submissionData.source);
-
-      // FormSubmit configuration (safe)
+      // === MANDATORY HIDDEN FIELDS ===
+      // Webhook to notify backend - backend will send auto-response email
+      formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
+      // Disable captcha
       formSubmitData.append("_captcha", "false");
+      // Table template for email
       formSubmitData.append("_template", "table");
 
-      formSubmitData.append(
-        "_subject",
-        "New Contact Form Submission - D-Secure Tech"
-      );
-      formSubmitData.append(
-        "_cc",
-        "dhruv.rai@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com"
-      );
+      // === FORM FIELDS ===
+      formSubmitData.append("name", formData.name.trim());
+      formSubmitData.append("email", formData.email.trim());
+      formSubmitData.append("message", formData.message.trim());
 
-      // ✅ YOUR ORIGINAL CUSTOM AUTORESPONSE (UNCHANGED)
-      formSubmitData.append(
-        "_autoresponse",
-        `Dear ${submissionData.name},
+      // Required for autoresponse - tells FormSubmit where to send reply
+      formSubmitData.append("_replyto", formData.email.trim());
 
-Thank you for reaching out to D-Secure Technologies!
+      // Additional fields
+      formSubmitData.append("company", formData.company?.trim() || "");
+      formSubmitData.append("phone", formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "");
+      formSubmitData.append("country", formData.country);
+      formSubmitData.append("businessType", formData.businessType);
+      formSubmitData.append("solutionType", formData.solutionType);
+      formSubmitData.append("complianceRequirements", formData.complianceRequirements);
+      formSubmitData.append("usageType", usageType);
+      formSubmitData.append("timestamp", timestampLocal);
+      formSubmitData.append("source", "Contact Page");
 
-We have successfully received your enquiry and our team is reviewing your requirements. A dedicated specialist will contact you within the next 12 business hours to discuss your data security needs.
+      // Subject and CC
+      formSubmitData.append("_subject", "New Contact Form Submission - D-Secure Tech");
+      formSubmitData.append("_cc", "dhruv.rai@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com");
 
-📋 Your Enquiry Summary:
-• Company: ${submissionData.company || 'N/A'}
-• Solution Interest: ${submissionData.solutionType || 'General Enquiry'}
-• Submitted: ${timestampLocal}
+      // Auto-response handled by backend via webhook - no frontend autoresponse needed
 
-In the meantime, feel free to explore our resources:
-🔗 Product Documentation: https://docs.dsecuretech.com
-🔗 Knowledge Base: https://dsecuretech.com/resources
-
-If you have any urgent questions, please don't hesitate to reach out to our support team at support@dsecuretech.com.
-
-Best regards,
-The D-Secure Technologies Team
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-D-Secure Technologies | Enterprise Data Erasure Solutions
-🌐 https://dsecuretech.com
-📧 sales@dsecuretech.com
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-This is an automated response. Please do not reply to this email.`
-      );
-
+      // Submit to FormSubmit AJAX endpoint
       const response = await fetch(FORMSUBMIT_ENDPOINT, {
         method: "POST",
         body: formSubmitData,
@@ -492,25 +395,34 @@ This is an automated response. Please do not reply to this email.`
         },
       });
 
-      if (!response.ok) throw new Error("FormSubmit failed");
+      // Debug: log response to see what FormSubmit returns
+      console.log("FormSubmit response status:", response.status, response.ok);
 
-      showToast(
-        "Thank you! Your enquiry has been submitted successfully.",
-        "success"
-      );
+      // If HTTP status is 200-299, consider it success
+      if (response.ok) {
+        showToast(
+          "Thank you! Your enquiry has been submitted successfully.",
+          "success"
+        );
 
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        countryCode: "+1",
-        country: "United States",
-        businessType: "",
-        solutionType: "",
-        complianceRequirements: "",
-        message: "",
-      });
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          phone: "",
+          countryCode: "+1",
+          country: "United States",
+          businessType: "",
+          solutionType: "",
+          complianceRequirements: "",
+          message: "",
+        });
+      } else {
+        const errorText = await response.text();
+        console.error("FormSubmit error response:", errorText);
+        throw new Error("FormSubmit failed");
+      }
     } catch (error) {
       console.error("FormSubmit error:", error);
       showToast("Failed to send message. Please try again later.", "error");
@@ -1396,28 +1308,6 @@ This is an automated response. Please do not reply to this email.`
                         placeholder="Please let us know your requirements in detail."
                       />
                     </div>
-
-                    {/* reCAPTCHA Placeholder */}
-                    {/* <div className="flex items-center justify-center p-4 border-2 border-dashed border-slate-200 rounded-lg">
-                      <div className="text-center text-slate-500">
-                        <div className="w-20 h-12 bg-slate-100 rounded mx-auto mb-2 flex items-center justify-center">
-                          <CheckIcon className="w-6 h-6 text-slate-400" />
-                        </div>
-                        <span className="text-sm">I'm not a robot</span>
-                        <div className="text-xs text-slate-400 mt-1">reCAPTCHA</div>
-                      </div>
-                    </div> */}
-
-                    {/* Certification Logos */}
-                    {/* <div className="text-center">
-                      <div className="text-sm text-slate-600 mb-4">Tested & Compliant.</div>
-                      <div className="flex items-center justify-center gap-6 opacity-60">
-                        <div className="text-xs bg-slate-100 px-3 py-2 rounded">NIST</div>
-                        <div className="text-xs bg-slate-100 px-3 py-2 rounded">ADISA</div>
-                        <div className="text-xs bg-slate-100 px-3 py-2 rounded">Common Criteria</div>
-                      </div>
-                    </div> */}
-
                     {usageType === "personal" && (
                       <div className="text-sm text-slate-600">
                         I understand that the above information is protected by{" "}
@@ -1431,7 +1321,6 @@ This is an automated response. Please do not reply to this email.`
                       </div>
                     )}
 
-                    {/* Hidden field for recipient email */}
                     <input
                       type="hidden"
                       name="to_email"
@@ -1444,12 +1333,6 @@ This is an automated response. Please do not reply to this email.`
                     >
                       Submit Enquiry
                     </button>
-
-                    {/* {usageType === 'business' && (
-                      <div className="text-center text-sm text-slate-600">
-                        <span className="text-red-500">*</span>Required
-                      </div>
-                    )} */}
                   </form>
                 </div>
               </Reveal>

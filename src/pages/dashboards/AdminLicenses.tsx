@@ -2,7 +2,8 @@ import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/utils/enhancedApiClient';
 import { authService } from '@/utils/authService';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
@@ -224,29 +225,53 @@ export default function AdminLicenses() {
             }
 
             try {
-                const excelData = dataToExport.map((license, index) => ({
-                    'S.No': index + 1,
-                    'License Key': license.license_key || 'N/A',
-                    'User Email': license.user_email || 'N/A',
-                    'License Type': license.license_type || 'N/A',
-                    'Status': license.status || 'N/A',
-                    'Created At': license.created_at ? new Date(license.created_at).toLocaleDateString() : 'N/A',
-                    'Expires At': license.expires_at ? new Date(license.expires_at).toLocaleDateString() : 'N/A',
-                    'Machines': license.machine_count || 0
-                }));
+                // Create workbook and worksheet
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('Licenses');
 
-                const worksheet = XLSX.utils.json_to_sheet(excelData);
-                const workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'Licenses');
-
-                worksheet['!cols'] = [
-                    { wch: 6 }, { wch: 25 }, { wch: 30 }, { wch: 15 },
-                    { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 10 }
+                // Define columns
+                worksheet.columns = [
+                    { header: 'S.No', key: 'sno', width: 6 },
+                    { header: 'License Key', key: 'license_key', width: 25 },
+                    { header: 'User Email', key: 'user_email', width: 30 },
+                    { header: 'License Type', key: 'license_type', width: 15 },
+                    { header: 'Status', key: 'status', width: 10 },
+                    { header: 'Created At', key: 'created_at', width: 12 },
+                    { header: 'Expires At', key: 'expires_at', width: 12 },
+                    { header: 'Machines', key: 'machines', width: 10 }
                 ];
+
+                // Add data rows
+                dataToExport.forEach((license, index) => {
+                    worksheet.addRow({
+                        sno: index + 1,
+                        license_key: license.license_key || 'N/A',
+                        user_email: license.user_email || 'N/A',
+                        license_type: license.license_type || 'N/A',
+                        status: license.status || 'N/A',
+                        created_at: license.created_at ? new Date(license.created_at).toLocaleDateString() : 'N/A',
+                        expires_at: license.expires_at ? new Date(license.expires_at).toLocaleDateString() : 'N/A',
+                        machines: license.machine_count || 0
+                    });
+                });
+
+                // Style the header row
+                const headerRow = worksheet.getRow(1);
+                headerRow.font = { bold: true };
+                headerRow.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FFE0E0E0' }
+                };
 
                 const typeSuffix = typeFilter !== 'all' ? `_${typeFilter}` : '';
                 const fileName = `licenses_report${typeSuffix}_${new Date().toISOString().split('T')[0]}.xlsx`;
-                XLSX.writeFile(workbook, fileName);
+
+                // Write to buffer and save
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                saveAs(blob, fileName);
+
             } catch (clientErr) {
                 console.error('Client-side export failed:', clientErr);
                 alert('Failed to export to Excel. Please try again.');
