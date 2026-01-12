@@ -3,12 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- React Scan - Debug React Renders (auto-detect) -->
+    <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script>
     <meta name="description" content="DSecure - Secure data erasure and device sanitization platform for enterprises" />
     
     <!-- Critical performance optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="//res.cloudinary.com">
+    <link rel="dns-prefetch" href="//images.unsplash.com">
     
     <!-- Favicon -->
     <link rel="icon" href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg">
@@ -17,7 +21,22 @@
     
     <title>D-Secure - Secure Data Erasure Solutions</title>
     
-    <!-- Defer non-critical scripts -->
+    <!-- Inline Critical CSS for above-the-fold content -->
+    <style>
+      /* Critical CSS - Prevents FOUC and reduces LCP */
+      body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+      #root{min-height:100vh}
+      .hero-section{min-height:70vh;contain:layout style paint}
+      /* Loading skeleton */
+      .skeleton{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite;background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%}
+      @keyframes pulse{0%{background-position:200% 0}100%{background-position:-200% 0}}
+      /* Prevent layout shift */
+      img{max-width:100%;height:auto}
+      /* Reduced motion */
+      @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    </style>
+    
+    <!-- Defer non-critical scripts using requestIdleCallback -->
     <script>
       // Inline critical redirect script
       (function() {
@@ -28,18 +47,32 @@
         }
       })();
       
-      // Defer Google Analytics
-      window.addEventListener('load', function() {
-        var script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81';
-        document.head.appendChild(script);
+      // Defer Analytics using requestIdleCallback for better performance
+      function loadAnalytics() {
+        // Google Analytics
+        var ga = document.createElement('script');
+        ga.async = true;
+        ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81';
+        document.head.appendChild(ga);
         
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
         gtag('js', new Date());
-        gtag('config', 'G-6B20XY3K81');
-      });
+        gtag('config', 'G-6B20XY3K81', { 'send_page_view': true });
+        
+        // Microsoft Clarity (if needed)
+        // Uncomment if you use Clarity
+        // (function(c,l,a,r,i,t,y){...})(window, document, "clarity", "script", "YOUR_ID");
+      }
+      
+      // Use requestIdleCallback for non-blocking analytics load
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadAnalytics, { timeout: 3000 });
+      } else {
+        // Fallback for Safari
+        setTimeout(loadAnalytics, 2000);
+      }
     </script>
   </head>
   <body>

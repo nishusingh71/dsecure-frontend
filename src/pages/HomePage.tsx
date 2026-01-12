@@ -129,14 +129,14 @@ const HomePage = memo(function HomePage() {
             </div>
             <div className="relative lg:order-last">
               <Reveal delayMs={40}>
-                <div className="relative">
+                <div className="relative -translate-y-2 xs:-translate-y-3 sm:-translate-y-4 md:-translate-y-6 lg:-translate-y-8 xl:-translate-y-10 xxl:-translate-y-12">
                   <div className="aspect-[16/10] xs:aspect-[16/10] sm:aspect-[16/10] md:aspect-[16/10] lg:aspect-[4/3] xl:aspect-[4/3] xxl:aspect-[4/3] bg-white rounded-xl xs:rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl xl:rounded-2xl xxl:rounded-3xl shadow-lg xs:shadow-xl sm:shadow-2xl md:shadow-2xl lg:shadow-2xl xl:shadow-2xl xxl:shadow-2xl border border-slate-200/60 overflow-hidden relative">
                     <OptimizedImage
-                      src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-                      alt="Digital data security and secure erasure technology with cybersecurity systems"
+                      src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+                      alt="Hard drive and data storage devices for secure data erasure and file management"
                       className="w-full h-full object-cover"
                       width={2070}
-                      height={1380}
+                      height={1180}
                       priority={true}
                     />
                     <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/50 via-transparent to-emerald-900/30">
@@ -249,47 +249,41 @@ const HomePage = memo(function HomePage() {
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <Reveal delayMs={10}>
-                  <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
-                    {/* 🛡️ → ShieldIcon */}
-                    <div className="text-2xl mb-3 text-white">
-                      <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
-                    </div>
-                    <h3 className="font-semibold mb-2">
-                      {t('home.enterpriseFeature1')}
-                    </h3>
-                    <p className="text-sm opacity-80">
-                      {t('home.enterpriseFeature1Desc')}
-                    </p>
+                <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
+                  {/* 🛡️ → ShieldIcon */}
+                  <div className="text-2xl mb-3 text-white">
+                    <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
-                </Reveal>
-                <Reveal delayMs={20}>
-                  <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
-                    {/* ⚡ → LightningIcon */}
-                    <div className="text-2xl mb-3 text-white">
-                      <LightningIcon
-                        className="w-8 h-8 mx-auto"
-                        filled={true}
-                      />
-                    </div>
-                    <h3 className="font-semibold mb-2">{t('home.enterpriseFeature2')}</h3>
-                    <p className="text-sm opacity-80">
-                      {t('home.enterpriseFeature2Desc')}
-                    </p>
+                  <h3 className="font-semibold mb-2">
+                    {t('home.enterpriseFeature1')}
+                  </h3>
+                  <p className="text-sm opacity-80">
+                    {t('home.enterpriseFeature1Desc')}
+                  </p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
+                  {/* ⚡ → LightningIcon */}
+                  <div className="text-2xl mb-3 text-white">
+                    <LightningIcon
+                      className="w-8 h-8 mx-auto"
+                      filled={true}
+                    />
                   </div>
-                </Reveal>
-                <Reveal delayMs={30}>
-                  <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
-                    {/* 🎯 → StarIcon */}
-                    <div className="text-2xl mb-3 text-white">
-                      <StarIcon className="w-8 h-8 mx-auto" filled={true} />
-                    </div>
-                    <h3 className="font-semibold mb-2">{t('home.enterpriseFeature3')}</h3>
-                    <p className="text-sm opacity-80">
-                      {t('home.enterpriseFeature3Desc')}
-                    </p>
+                  <h3 className="font-semibold mb-2">{t('home.enterpriseFeature2')}</h3>
+                  <p className="text-sm opacity-80">
+                    {t('home.enterpriseFeature2Desc')}
+                  </p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-6 backdrop-blur">
+                  {/* 🎯 → StarIcon */}
+                  <div className="text-2xl mb-3 text-white">
+                    <StarIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
-                </Reveal>
+                  <h3 className="font-semibold mb-2">{t('home.enterpriseFeature3')}</h3>
+                  <p className="text-sm opacity-80">
+                    {t('home.enterpriseFeature3Desc')}
+                  </p>
+                </div>
               </div>
             </div>
           </Reveal>
@@ -297,7 +291,7 @@ const HomePage = memo(function HomePage() {
       </section>
 
       {/* Compliance Standards Section — EMOJIS REPLACED */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/30">
+      <section className="lazy-section-tall py-16 md:py-24 bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/30">
         <div className="container-app">
           <div className="text-center mb-16">
             <Reveal>
@@ -317,187 +311,168 @@ const HomePage = memo(function HomePage() {
 
           {/* Standards Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6 mb-12">
-            <Reveal delayMs={200}>
-              <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-blue-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 🇺🇸 → ShieldIcon */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
-                    <ShieldIcon className="w-10 h-10 mx-auto" filled={true} />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    {t('home.nist80088')}
-                  </h3>
-                  <p className="text-xs text-slate-500">{t('home.nist80088Desc')}</p>
+            <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-blue-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 🇺🇸 → ShieldIcon */}
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
+                  <ShieldIcon className="w-10 h-10 mx-auto" filled={true} />
                 </div>
+                <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  {t('home.nist80088')}
+                </h3>
+                <p className="text-xs text-slate-500">{t('home.nist80088Desc')}</p>
               </div>
-            </Reveal>
-            <Reveal delayMs={250}>
-              <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 🇪🇺 → GlobeIcon */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-600">
-                    <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                    {t('home.gdpr')}
-                  </h3>
-                  <p className="text-xs text-slate-500">{t('home.gdprDesc')}</p>
+            </div>
+            <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 🇪🇺 → GlobeIcon */}
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-600">
+                  <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                 </div>
+                <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                  {t('home.gdpr')}
+                </h3>
+                <p className="text-xs text-slate-500">{t('home.gdprDesc')}</p>
               </div>
-            </Reveal>
-            <Reveal delayMs={300}>
-              <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-blue-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 🏥 → HeartIcon */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
-                    <HeartIcon className="w-10 h-10 mx-auto" filled={true} />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    {t('home.hipaa')}
-                  </h3>
-                  <p className="text-xs text-slate-500">{t('home.hipaaDesc')}</p>
+            </div>
+            <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-blue-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 🏥 → HeartIcon */}
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
+                  <HeartIcon className="w-10 h-10 mx-auto" filled={true} />
                 </div>
+                <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  {t('home.hipaa')}
+                </h3>
+                <p className="text-xs text-slate-500">{t('home.hipaaDesc')}</p>
               </div>
-            </Reveal>
-            <Reveal delayMs={350}>
-              <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-purple-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 📊 → Financial Chart SVG */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-purple-600">
-                    <svg
-                      className="w-10 h-10 mx-auto"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors">
-                    {t('home.sox')}
-                  </h3>
-                  <p className="text-xs text-slate-500">{t('home.soxDesc')}</p>
+            </div>
+            <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-purple-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 📊 → Financial Chart SVG */}
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-purple-600">
+                  <svg
+                    className="w-10 h-10 mx-auto"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                    />
+                  </svg>
                 </div>
+                <h3 className="font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors">
+                  {t('home.sox')}
+                </h3>
+                <p className="text-xs text-slate-500">{t('home.soxDesc')}</p>
               </div>
-            </Reveal>
-            <Reveal delayMs={400}>
-              <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 🌍 → GlobeIcon */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-600">
-                    <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                    {t('home.iso27001')}
-                  </h3>
-                  <p className="text-xs text-slate-500">{t('home.iso27001Desc')}</p>
+            </div>
+            <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 🌍 → GlobeIcon */}
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-600">
+                  <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                 </div>
+                <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                  {t('home.iso27001')}
+                </h3>
+                <p className="text-xs text-slate-500">{t('home.iso27001Desc')}</p>
               </div>
-            </Reveal>
-            <Reveal delayMs={450}>
-              <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-red-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 💳 → Cart/Credit Card SVG */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-red-600">
-                    <svg
-                      className="w-10 h-10 mx-auto"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 5M7 13v5a2 2 0 002 2h6.5M17 17a2 2 0 11-4 0 2 2 0 014 0zM9 17a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-red-600 transition-colors">
-                    {t('home.pciDss')}
-                  </h3>
-                  <p className="text-xs text-slate-500">{t('home.pciDssDesc')}</p>
+            </div>
+            <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-red-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 💳 → Cart/Credit Card SVG */}
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-red-600">
+                  <svg
+                    className="w-10 h-10 mx-auto"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 5M7 13v5a2 2 0 002 2h6.5M17 17a2 2 0 11-4 0 2 2 0 014 0zM9 17a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
                 </div>
+                <h3 className="font-bold text-slate-900 mb-2 group-hover:text-red-600 transition-colors">
+                  {t('home.pciDss')}
+                </h3>
+                <p className="text-xs text-slate-500">{t('home.pciDssDesc')}</p>
               </div>
-            </Reveal>
+            </div>
           </div>
 
           {/* Certifications Row */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
-            <Reveal delayMs={500}>
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-blue-300 hover:-translate-y-1 relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 🛡️ → ShieldIcon */}
-                  <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
-                    <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                    {t('home.commonCriteria')}
-                  </h3>
-                  <p className="text-sm text-emerald-600 font-medium mb-2">
-                    {t('home.commonCriteriaLevel')}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    {t('home.commonCriteriaDesc')}
-                  </p>
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-blue-300 hover:-translate-y-1 relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 🛡️ → ShieldIcon */}
+                <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
+                  <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
                 </div>
+                <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
+                  {t('home.commonCriteria')}
+                </h3>
+                <p className="text-sm text-emerald-600 font-medium mb-2">
+                  {t('home.commonCriteriaLevel')}
+                </p>
+                <p className="text-xs text-slate-500">
+                  {t('home.commonCriteriaDesc')}
+                </p>
               </div>
-            </Reveal>
-            <Reveal delayMs={550}>
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-blue-300 hover:-translate-y-1 relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 🔒 → Lock Icon */}
-                  <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
-                    <svg
-                      className="w-8 h-8 mx-auto"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                      <path d="M7 11V7a5 5 0 0110 0v4" />
-                    </svg>
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                    {t('home.fips1402')}
-                  </h3>
-                  <p className="text-sm text-blue-600 font-medium mb-2">
-                    {t('home.fips1402Level')}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    {t('home.fips1402Desc')}
-                  </p>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-blue-300 hover:-translate-y-1 relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 🔒 → Lock Icon */}
+                <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-blue-600">
+                  <svg
+                    className="w-8 h-8 mx-auto"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg>
                 </div>
+                <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
+                  {t('home.fips1402')}
+                </h3>
+                <p className="text-sm text-blue-600 font-medium mb-2">
+                  {t('home.fips1402Level')}
+                </p>
+                <p className="text-xs text-slate-500">
+                  {t('home.fips1402Desc')}
+                </p>
               </div>
-            </Reveal>
-            <Reveal delayMs={600}>
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-purple-300 hover:-translate-y-1 relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* 🏛️ → BuildingIcon */}
-                  <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-purple-600">
-                    <BuildingIcon className="w-8 h-8 mx-auto" filled={true} />
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">
-                    NSA/CSS
-                  </h3>
-                  <p className="text-sm text-purple-600 font-medium mb-2">
-                    Approved
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    Evaluated Products List
-                  </p>
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-purple-300 hover:-translate-y-1 relative overflow-hidden">
+              <div className="relative z-10">
+                {/* 🏛️ → BuildingIcon */}
+                <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-purple-600">
+                  <BuildingIcon className="w-8 h-8 mx-auto" filled={true} />
                 </div>
+                <h3 className="font-bold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">
+                  NSA/CSS
+                </h3>
+                <p className="text-sm text-purple-600 font-medium mb-2">
+                  Approved
+                </p>
+                <p className="text-xs text-slate-500">
+                  Evaluated Products List
+                </p>
               </div>
-            </Reveal>
-            <Reveal delayMs={650}>
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-yellow-300 hover:-translate-y-1 relative overflow-hidden">
-                <div className="relative z-10">
-                  {/* ⭐ → StarIcon */}
+            </div>
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-yellow-300 hover:-translate-y-1 relative overflow-hidden">
+              <div className="relative z-10">
+                {/* ⭐ → StarIcon */}
                   <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-yellow-600">
                     <StarIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
@@ -512,11 +487,10 @@ const HomePage = memo(function HomePage() {
                   </p>
                 </div>
               </div>
-            </Reveal>
           </div>
 
           {/* Key Features */}
-          <Reveal delayMs={700}>
+          <Reveal>
             <div className="bg-white rounded-2xl p-8 lg:p-12 shadow-xl border border-slate-200/60">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 <div className="text-center">
@@ -576,21 +550,19 @@ const HomePage = memo(function HomePage() {
               </div>
             </div>
           </Reveal>
-          <Reveal delayMs={750}>
-            <div className="text-center mt-12">
-              <Link
-                to="/compliance"
-                className="btn-primary inline-flex items-center justify-center"
-              >
-                <span>{t('home.exploreComplianceStandards')}</span>
-                <HoverIcon>
-                  {(filled) => (
-                    <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
-                  )}
-                </HoverIcon>
-              </Link>
-            </div>
-          </Reveal>
+          <div className="text-center mt-12">
+            <Link
+              to="/compliance"
+              className="btn-primary inline-flex items-center justify-center"
+            >
+              <span>{t('home.exploreComplianceStandards')}</span>
+              <HoverIcon>
+                {(filled) => (
+                  <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
+                )}
+              </HoverIcon>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -600,7 +572,7 @@ const HomePage = memo(function HomePage() {
       {/* Why Choose Section */}
       <section
         id="why-choose"
-        className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-slate-50/50 to-white"
+        className="lazy-section-medium py-16 md:py-20 lg:py-24 bg-gradient-to-b from-slate-50/50 to-white"
       >
         <div className="container-responsive">
           <div className="text-center mb-12 lg:mb-16">
@@ -705,87 +677,77 @@ const HomePage = memo(function HomePage() {
                 ),
                 bgColor: "bg-gradient-to-br from-rose-500 to-rose-600",
               },
-            ].map((feature, i) => (
-              <Reveal key={feature.titleKey} delayMs={i * 100}>
-                <div className="group card hover:shadow-lg hover:-translate-y-1 transition-transform duration-200 ease-out h-full flex flex-col relative overflow-hidden">
+            ].map((feature) => (
+              <div key={feature.titleKey} className="group card hover:shadow-lg hover:-translate-y-1 transition-transform duration-200 ease-out h-full flex flex-col relative overflow-hidden">
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${feature.bgColor.includes("blue")
+                    ? "from-blue-50 to-transparent"
+                    : feature.bgColor.includes("emerald")
+                      ? "from-emerald-50 to-transparent"
+                      : feature.bgColor.includes("purple")
+                        ? "from-purple-50 to-transparent"
+                        : feature.bgColor.includes("orange")
+                          ? "from-orange-50 to-transparent"
+                          : feature.bgColor.includes("teal")
+                            ? "from-teal-50 to-transparent"
+                            : "from-rose-50 to-transparent"
+                    } opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                ></div>
+                <div className="relative z-10">
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${feature.bgColor.includes("blue")
-                      ? "from-blue-50 to-transparent"
-                      : feature.bgColor.includes("emerald")
-                        ? "from-emerald-50 to-transparent"
-                        : feature.bgColor.includes("purple")
-                          ? "from-purple-50 to-transparent"
-                          : feature.bgColor.includes("orange")
-                            ? "from-orange-50 to-transparent"
-                            : feature.bgColor.includes("teal")
-                              ? "from-teal-50 to-transparent"
-                              : "from-rose-50 to-transparent"
-                      } opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                  ></div>
-                  <div className="relative z-10">
-                    <div
-                      className={`w-16 h-16 rounded-2xl ${feature.bgColor} flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-200 will-change-transform`}
-                    >
-                      {feature.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-brand transition-colors duration-200">
-                        {t(feature.titleKey)}
-                      </h3>
-                      <p className="text-slate-600 leading-relaxed">
-                        {t(feature.descKey)}
-                      </p>
-                    </div>
+                    className={`w-16 h-16 rounded-2xl ${feature.bgColor} flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-200 will-change-transform`}
+                  >
+                    {feature.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-brand transition-colors duration-200">
+                      {t(feature.titleKey)}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      {t(feature.descKey)}
+                    </p>
                   </div>
                 </div>
-              </Reveal>
+              </div>
             ))}
           </div>
-          <Reveal delayMs={60}>
+          <Reveal>
             <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-6 sm:p-8 lg:p-12 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/50 to-blue-50/50 opacity-60"></div>
               <div className="relative z-10">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 text-center">
-                  <Reveal delayMs={20}>
-                    <div className="group">
-                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.devicesCount')}
-                      </div>
-                      <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.devices')}
-                      </div>
+                  <div className="group">
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform duration-300">
+                      {t('home.devicesCount')}
                     </div>
-                  </Reveal>
-                  <Reveal delayMs={30}>
-                    <div className="group">
-                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.complianceRate')}
-                      </div>
-                      <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.compliance')}
-                      </div>
+                    <div className="text-slate-600 text-sm sm:text-base font-medium">
+                      {t('home.devices')}
                     </div>
-                  </Reveal>
-                  <Reveal delayMs={40}>
-                    <div className="group">
-                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.encryptionStrength')}
-                      </div>
-                      <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.encryption')}
-                      </div>
+                  </div>
+                  <div className="group">
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600 mb-2 group-hover:scale-105 transition-transform duration-300">
+                      {t('home.complianceRate')}
                     </div>
-                  </Reveal>
-                  <Reveal delayMs={50}>
-                    <div className="group">
-                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-orange-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.supportAvailability')}
-                      </div>
-                      <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.support')}
-                      </div>
+                    <div className="text-slate-600 text-sm sm:text-base font-medium">
+                      {t('home.compliance')}
                     </div>
-                  </Reveal>
+                  </div>
+                  <div className="group">
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-600 mb-2 group-hover:scale-105 transition-transform duration-300">
+                      {t('home.encryptionStrength')}
+                    </div>
+                    <div className="text-slate-600 text-sm sm:text-base font-medium">
+                      {t('home.encryption')}
+                    </div>
+                  </div>
+                  <div className="group">
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-orange-600 mb-2 group-hover:scale-105 transition-transform duration-300">
+                      {t('home.supportAvailability')}
+                    </div>
+                    <div className="text-slate-600 text-sm sm:text-base font-medium">
+                      {t('home.support')}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -796,7 +758,7 @@ const HomePage = memo(function HomePage() {
       {/* Industry Solutions Section */}
       <section
         id="industries"
-        className="py-16 md:py-24 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30"
+        className="lazy-section-tall py-16 md:py-24 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30"
       >
         <div className="container-responsive">
           <div className="text-center mb-16">
@@ -815,255 +777,241 @@ const HomePage = memo(function HomePage() {
             </Reveal>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            <Reveal delayMs={200}>
-              <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-blue-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <HoverIcon>
-                        {(filled) => (
-                          <HeartIcon
-                            className="w-6 h-6 text-white"
-                            filled={filled}
-                          />
-                        )}
-                      </HoverIcon>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.healthcare')}
-                      </h3>
-                      <p className="text-sm text-slate-500">{t('home.healthcareCompliance')}</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 mb-4">
-                    {t('home.healthcareDesc')}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                      Medical Devices
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                      PHI Protection
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-            <Reveal delayMs={250}>
-              <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg
-                        className="w-6 h-6 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+            <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-blue-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <HoverIcon>
+                      {(filled) => (
+                        <HeartIcon
+                          className="w-6 h-6 text-white"
+                          filled={filled}
                         />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.financial')}
-                      </h3>
-                      <p className="text-sm text-slate-500">{t('home.financialCompliance')}</p>
-                    </div>
+                      )}
+                    </HoverIcon>
                   </div>
-                  <p className="text-slate-600 mb-4">
-                    {t('home.financialDesc')}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
-                      Trading Systems
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
-                      Customer Data
-                    </span>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      {t('home.healthcare')}
+                    </h3>
+                    <p className="text-sm text-slate-500">{t('home.healthcareCompliance')}</p>
                   </div>
                 </div>
-              </div>
-            </Reveal>
-            <Reveal delayMs={300}>
-              <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-purple-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <HoverIcon>
-                        {(filled) => (
-                          <GlobeIcon
-                            className="w-6 h-6 text-white"
-                            filled={filled}
-                          />
-                        )}
-                      </HoverIcon>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.government')}
-                      </h3>
-                      <p className="text-sm text-slate-500">{t('home.governmentCompliance')}</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 mb-4">
-                    {t('home.governmentDesc')}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
-                      {t('home.dodStandards')}
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
-                      {t('home.federalAgencies')}
-                    </span>
-                  </div>
+                <p className="text-slate-600 mb-4">
+                  {t('home.healthcareDesc')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+                    Medical Devices
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+                    PHI Protection
+                  </span>
                 </div>
               </div>
-            </Reveal>
-            <Reveal delayMs={350}>
-              <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <HoverIcon>
-                        {(filled) => (
-                          <BuildingIcon
-                            className="w-6 h-6 text-white"
-                            filled={filled}
-                          />
-                        )}
-                      </HoverIcon>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.enterprise')}
-                      </h3>
-                      <p className="text-sm text-slate-500">{t('home.enterpriseCompliance')}</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 mb-4">
-                    {t('home.enterpriseDesc')}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
-                      Data Centers
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
-                      Cloud Migration
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-            <Reveal delayMs={400}>
-              <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-orange-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <HoverIcon>
-                        {(filled) => (
-                          <GearIcon
-                            className="w-6 h-6 text-white"
-                            filled={filled}
-                          />
-                        )}
-                      </HoverIcon>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.itadServices')}
-                      </h3>
-                      <p className="text-sm text-slate-500">
-                        {t('home.itadCompliance')}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 mb-4">
-                    {t('home.itadDesc')}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
-                      Asset Recovery
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
-                      Multi-Client
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-            <Reveal delayMs={450}>
-              <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-teal-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg
-                        className="w-6 h-6 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.serviceProviders')}
-                      </h3>
-                      <p className="text-sm text-slate-500">{t('home.serviceProvidersCompliance')}</p>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 mb-4">
-                    {t('home.serviceProvidersDesc')}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
-                      MSP Solutions
-                    </span>
-                    <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
-                      Revenue Share
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-          <Reveal delayMs={500}>
-            <div className="text-center mt-12">
-              <Link
-                to="/solutions"
-                className="btn-primary inline-flex items-center justify-center"
-              >
-                <span>{t('home.exploreAllIndustrySolutions')}</span>
-                <HoverIcon>
-                  {(filled) => (
-                    <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
-                  )}
-                </HoverIcon>
-              </Link>
             </div>
-          </Reveal>
+            <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-green-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      {t('home.financial')}
+                    </h3>
+                    <p className="text-sm text-slate-500">{t('home.financialCompliance')}</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 mb-4">
+                  {t('home.financialDesc')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                    Trading Systems
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                    Customer Data
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-purple-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <HoverIcon>
+                      {(filled) => (
+                        <GlobeIcon
+                          className="w-6 h-6 text-white"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      {t('home.government')}
+                    </h3>
+                    <p className="text-sm text-slate-500">{t('home.governmentCompliance')}</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 mb-4">
+                  {t('home.governmentDesc')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
+                    {t('home.dodStandards')}
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
+                    {t('home.federalAgencies')}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <HoverIcon>
+                      {(filled) => (
+                        <BuildingIcon
+                          className="w-6 h-6 text-white"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      {t('home.enterprise')}
+                    </h3>
+                    <p className="text-sm text-slate-500">{t('home.enterpriseCompliance')}</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 mb-4">
+                  {t('home.enterpriseDesc')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
+                    Data Centers
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
+                    Cloud Migration
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-orange-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <HoverIcon>
+                      {(filled) => (
+                        <GearIcon
+                          className="w-6 h-6 text-white"
+                          filled={filled}
+                        />
+                      )}
+                    </HoverIcon>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      {t('home.itadServices')}
+                    </h3>
+                    <p className="text-sm text-slate-500">
+                      {t('home.itadCompliance')}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-slate-600 mb-4">
+                  {t('home.itadDesc')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
+                    Asset Recovery
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
+                    Multi-Client
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="group bg-white rounded-2xl p-6 shadow-lg border border-slate-200/60 hover:border-teal-300 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      {t('home.serviceProviders')}
+                    </h3>
+                    <p className="text-sm text-slate-500">{t('home.serviceProvidersCompliance')}</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 mb-4">
+                  {t('home.serviceProvidersDesc')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
+                    MSP Solutions
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
+                    Revenue Share
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="text-center mt-12">
+            <Link
+              to="/solutions"
+              className="btn-primary inline-flex items-center justify-center"
+            >
+              <span>{t('home.exploreAllIndustrySolutions')}</span>
+              <HoverIcon>
+                {(filled) => (
+                  <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
+                )}
+              </HoverIcon>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Services Overview Section */}
-      <section id="services" className="py-16 md:py-24 bg-white">
+      <section id="services" className="lazy-section-tall py-16 md:py-24 bg-white">
         <div className="container-app">
           <div className="text-center mb-16">
             <Reveal>
@@ -1073,8 +1021,6 @@ const HomePage = memo(function HomePage() {
                   {t('home.servicesTitle').split(' ').slice(1).join(' ')}
                 </span>
               </h2>
-            </Reveal>
-            <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
                 {t('home.servicesSubtitle')}
               </p>
@@ -1082,7 +1028,7 @@ const HomePage = memo(function HomePage() {
           </div>
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
             {/* D-Secure Drive Eraser */}
-            <Reveal delayMs={200}>
+            <Reveal>
               <div className="group relative bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-8 border border-emerald-200/60 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
                 <div className="absolute top-6 right-6">
                   <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
@@ -1210,7 +1156,7 @@ const HomePage = memo(function HomePage() {
             </Reveal>
 
             {/* D-Secure File Eraser */}
-            <Reveal delayMs={250}>
+            <Reveal>
               <div className="group relative bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-8 border border-blue-200/60 hover:border-blue-300 transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
                 <div className="absolute top-6 right-6">
                   <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
@@ -1337,26 +1283,24 @@ const HomePage = memo(function HomePage() {
               </div>
             </Reveal>
           </div>
-          <Reveal delayMs={300}>
-            <div className="text-center mt-12">
-              <Link
-                to="/products"
-                className="btn-primary inline-flex items-center justify-center"
-              >
-                <span>{t('home.viewAllProducts')}</span>
-                <HoverIcon>
-                  {(filled) => (
-                    <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
-                  )}
-                </HoverIcon>
-              </Link>
-            </div>
-          </Reveal>
+          <div className="text-center mt-12">
+            <Link
+              to="/products"
+              className="btn-primary inline-flex items-center justify-center"
+            >
+              <span>{t('home.viewAllProducts')}</span>
+              <HoverIcon>
+                {(filled) => (
+                  <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
+                )}
+              </HoverIcon>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Key Statistics Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-600 text-white relative overflow-hidden">
+      <section className="lazy-section-medium py-16 md:py-24 bg-gradient-to-br from-emerald-600 via-teal-600 to-blue-600 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20"></div>
           <div className="absolute top-0 left-1/4 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
@@ -1369,89 +1313,81 @@ const HomePage = memo(function HomePage() {
                 {t('home.trustedTitle').split(' ').slice(0, 3).join(' ')}{" "}
                 <span className="text-yellow-300">{t('home.trustedTitle').split(' ').slice(3).join(' ')}</span>
               </h2>
-            </Reveal>
-            <Reveal delayMs={100}>
               <p className="text-lg text-white/90 max-w-3xl mx-auto">
                 {t('home.trustedSubtitle')}
               </p>
             </Reveal>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            <Reveal delayMs={400}>
-              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-slate-900"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold">{t('home.militaryGradeSecurity')}</h3>
+            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-slate-900"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
                 </div>
-                <p className="text-white/90">
-                  {t('home.militaryGradeDesc')}
-                </p>
+                <h3 className="text-xl font-bold">{t('home.militaryGradeSecurity')}</h3>
               </div>
-            </Reveal>
-            <Reveal delayMs={450}>
-              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-slate-900"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold">{t('home.enterpriseScale')}</h3>
+              <p className="text-white/90">
+                {t('home.militaryGradeDesc')}
+              </p>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-slate-900"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
                 </div>
-                <p className="text-white/90">
-                  {t('home.enterpriseScaleDesc')}
-                </p>
+                <h3 className="text-xl font-bold">{t('home.enterpriseScale')}</h3>
               </div>
-            </Reveal>
-            <Reveal delayMs={500}>
-              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20 md:col-span-2 lg:col-span-1">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-slate-900"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold">{t('home.globalCompliance')}</h3>
+              <p className="text-white/90">
+                {t('home.enterpriseScaleDesc')}
+              </p>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20 md:col-span-2 lg:col-span-1">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-slate-900"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
                 </div>
-                <p className="text-white/90">
-                  {t('home.globalComplianceDesc')}
-                </p>
+                <h3 className="text-xl font-bold">{t('home.globalCompliance')}</h3>
               </div>
-            </Reveal>
+              <p className="text-white/90">
+                {t('home.globalComplianceDesc')}
+              </p>
+            </div>
           </div>
         </div>
       </section>

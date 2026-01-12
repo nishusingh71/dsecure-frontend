@@ -9,6 +9,36 @@ interface OptimizedImageProps {
   priority?: boolean
   placeholder?: string
   fallback?: string
+  sizes?: string
+}
+
+// Generate responsive srcset for Unsplash images
+const generateResponsiveSrcSet = (src: string): { srcset: string; sizes: string } | null => {
+  if (!src.includes('unsplash.com')) return null
+  
+  // Remove existing width/quality params
+  const baseUrl = src.replace(/[?&](w|q|fit|crop|auto|ixlib|ixid)=[^&]*/g, '').replace(/\?$/, '')
+  const separator = baseUrl.includes('?') ? '&' : '?'
+  
+  // Responsive widths for different devices
+  const widths = [400, 640, 768, 1024, 1280, 1920]
+  const srcset = widths
+    .map(w => `${baseUrl}${separator}w=${w}&q=75&auto=format&fit=crop ${w}w`)
+    .join(', ')
+  
+  const sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
+  
+  return { srcset, sizes }
+}
+
+// Get mobile-optimized URL
+const getMobileOptimizedUrl = (src: string, targetWidth: number = 640): string => {
+  if (src.includes('unsplash.com')) {
+    const baseUrl = src.replace(/[?&](w|q|fit|crop|auto|ixlib|ixid)=[^&]*/g, '').replace(/\?$/, '')
+    const separator = baseUrl.includes('?') ? '&' : '?'
+    return `${baseUrl}${separator}w=${targetWidth}&q=75&auto=format&fit=crop`
+  }
+  return src
 }
 
 export default function OptimizedImage({
@@ -19,13 +49,18 @@ export default function OptimizedImage({
   height,
   priority = false,
   placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB2aWV3Qm94PSIwIDAgMSAxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmM2Y0ZjYiLz48L3N2Zz4=',
-  fallback
+  fallback,
+  sizes: customSizes
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isInView, setIsInView] = useState(priority)
   const [hasError, setHasError] = useState(false)
   const [currentSrc, setCurrentSrc] = useState(src)
   const imgRef = useRef<HTMLImageElement>(null)
+  
+  // Generate responsive srcset
+  const responsiveData = generateResponsiveSrcSet(src)
+  const optimizedSrc = getMobileOptimizedUrl(src)
 
   // Handle image errors with fallback
   useEffect(() => {
@@ -100,7 +135,9 @@ export default function OptimizedImage({
       )}
       <img
         ref={imgRef}
-        src={isInView ? currentSrc : placeholder}
+        src={isInView ? optimizedSrc : placeholder}
+        srcSet={isInView && responsiveData ? responsiveData.srcset : undefined}
+        sizes={customSizes || (responsiveData ? responsiveData.sizes : undefined)}
         alt={alt}
         className={`transition-opacity duration-300 ${
           isLoaded ? 'opacity-100' : 'opacity-0'
@@ -109,6 +146,7 @@ export default function OptimizedImage({
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
+        fetchPriority={priority ? 'high' : 'auto'}
         onLoad={() => setIsLoaded(true)}
         onError={handleError}
         style={{

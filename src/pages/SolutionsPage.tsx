@@ -1,5 +1,4 @@
-import Reveal from "@/components/Reveal";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
@@ -68,7 +67,7 @@ function SolutionsPageContent() {
     }
   }, [searchParams]);
 
-  const solutions = {
+  const solutions = useMemo(() => ({
     enterprise: {
       title: t('solutions.enterprise'),
       subtitle: t('solutions.enterpriseSubtitle'),
@@ -300,9 +299,9 @@ function SolutionsPageContent() {
         },
       ],
     },
-  };
+  }), [t]);
 
-  const caseStudies = [
+  const caseStudies = useMemo(() => [
     {
       company: t('solutions.caseStudy1Company'),
       industry: t('solutions.caseStudy1Industry'),
@@ -354,7 +353,7 @@ function SolutionsPageContent() {
         </div>
       ),
     },
-  ];
+  ], [t]);
 
   // Helper function to get the sub-page link for each industry
   const getIndustryLink = (industry: IndustryKey): string => {
@@ -389,8 +388,7 @@ function SolutionsPageContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Content */}
             <div className="text-center lg:text-left">
-              <Reveal>
-                <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
                   <svg
                     className="w-4 h-4"
                     fill="currentColor"
@@ -404,22 +402,16 @@ function SolutionsPageContent() {
                   </svg>
                   {t('solutions.heroTag')}
                 </div>
-              </Reveal>
-              <Reveal delayMs={10}>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-6">
                   {t('solutions.heroTitle')}{" "}
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
                     {t('solutions.heroTitleHighlight')}
                   </span>
                 </h1>
-              </Reveal>
-              <Reveal delayMs={20}>
-                <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
                   {t('solutions.heroSubtitle')}
                 </p>
-              </Reveal>
-              <Reveal delayMs={30}>
-                <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
                   <a href="/contact" className="btn-primary group">
                     <HoverIcon>
                       {(filled) => (
@@ -443,9 +435,7 @@ function SolutionsPageContent() {
                     {t('solutions.exploreSolutions')}
                   </a>
                 </div>
-              </Reveal>
-              <Reveal delayMs={40}>
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-slate-500">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-slate-500">
                   <div className="flex items-center gap-2">
                     <svg
                       className="w-4 h-4 text-emerald-500"
@@ -489,12 +479,10 @@ function SolutionsPageContent() {
                     <span>{t('solutions.expertSupport')}</span>
                   </div>
                 </div>
-              </Reveal>
             </div>
             {/* Right Content - Visual Elements */}
             <div className="relative">
-              <Reveal delayMs={50}>
-                <div className="relative mx-auto max-w-lg">
+              <div className="relative mx-auto max-w-lg">
                   {/* Main Image Container */}
                   <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/50 overflow-hidden">
                     {/* Data Security Illustration */}
@@ -708,20 +696,15 @@ function SolutionsPageContent() {
                     </div>
                   </div>
                   {/* Floating Stats Cards */}
-                  <Reveal delayMs={70}>
-                    <div className="absolute -top-4 -right-4 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-xl shadow-lg">
+                  <div className="absolute -top-4 -right-4 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-xl shadow-lg">
                       <div className="text-2xl font-bold">100k+</div>
                       <div className="text-xs opacity-90">Devices Secured</div>
                     </div>
-                  </Reveal>
-                  <Reveal delayMs={80}>
-                    <div className="absolute -bottom-4 -left-4 bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-xl shadow-lg">
+                  <div className="absolute -bottom-4 -left-4 bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-xl shadow-lg">
                       <div className="text-2xl font-bold">99.9%</div>
                       <div className="text-xs opacity-90">Success Rate</div>
                     </div>
-                  </Reveal>
                 </div>
-              </Reveal>
             </div>
           </div>
         </div>
@@ -730,7 +713,7 @@ function SolutionsPageContent() {
       {/* Solutions Grid */}
       <section
         id="solutions"
-        className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50/50"
+        className="lazy-section-tall py-16 md:py-20 lg:py-24 bg-gradient-to-b from-white to-slate-50/50"
       >
         <div className="container-responsive">
           <div className="text-center mb-12">
@@ -767,8 +750,7 @@ function SolutionsPageContent() {
             ))}
           </div>
           {/* Active Solution Details */}
-          <Reveal key={activeIndustry}>
-            <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden">
               {/* Solution Header */}
               <div className="text-center p-4 md:p-6 border-b border-slate-200/60 bg-slate-50/50">
                 <div className="text-sm text-slate-500 mb-1">Solution</div>
@@ -1034,12 +1016,11 @@ function SolutionsPageContent() {
                 </button>
               </div>
             </div>
-          </Reveal>
         </div>
       </section>
 
       {/* Case Studies — EMOJIS REPLACED */}
-      <section className="py-16 md:py-24 bg-slate-50">
+      <section className="lazy-section py-16 md:py-24 bg-slate-50">
         <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -1052,8 +1033,7 @@ function SolutionsPageContent() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {caseStudies.map((study, i) => (
-              <Reveal key={i} delayMs={i * 100}>
-                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
+              <div key={i} className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
                   <div className="mb-4 flex justify-center">{study.logo}</div>
                   <h3 className="font-bold text-slate-900 mb-2">
                     {study.company}
@@ -1084,17 +1064,15 @@ function SolutionsPageContent() {
                     </div>
                   </div>
                 </div>
-              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24">
+      <section className="lazy-section-small py-16 md:py-24">
         <div className="container-responsive">
-          <Reveal>
-            <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-8 md:p-12 text-center text-white">
+          <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-8 md:p-12 text-center text-white">
               <h2 className="text-3xl font-bold mb-4">
                 Ready to Transform Your Data Erasure Process?
               </h2>
@@ -1117,7 +1095,6 @@ function SolutionsPageContent() {
                 </a>
               </div>
             </div>
-          </Reveal>
         </div>
       </section>
     </>

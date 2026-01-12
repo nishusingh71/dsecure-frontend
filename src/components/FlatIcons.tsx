@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 
 interface IconProps {
   className?: string;
@@ -10,25 +10,28 @@ interface HoverIconProps extends IconProps {
   hoverFilled?: boolean;
 }
 
-// Wrapper component for hover effects
-export const HoverIcon: React.FC<HoverIconProps> = ({ 
+// Wrapper component for hover effects - Memoized for performance
+export const HoverIcon = memo(function HoverIcon({ 
   children, 
   className = "", 
   filled = false, 
   hoverFilled = true 
-}) => {
+}: HoverIconProps) {
   const [isHovered, setIsHovered] = useState(false);
+  
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
   
   return (
     <div 
       className={`inline-flex items-center justify-center transition-all duration-200 ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {children(filled || (hoverFilled && isHovered))}
     </div>
   );
-};
+});
 
 interface IconProps {
   className?: string;

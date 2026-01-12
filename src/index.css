@@ -1,7 +1,17 @@
-/* Import performance optimizations */
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CONSOLIDATED CSS BUNDLE
+   All styles merged for single-file optimization
+   Order: Imports → Tailwind → Layers
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* 1. All @imports MUST come first (before @tailwind directives) */
+@import './critical.css';
 @import './performance.css';
+@import './mobile-responsive.css';
+@import './tablet-responsive.css';
 @import './responsive.css';
 
+/* 2. Tailwind Base, Components, Utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

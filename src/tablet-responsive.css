@@ -1,0 +1,865 @@
+/* ==========================================
+   TABLET-SPECIFIC RESPONSIVE STYLES
+   Optimized for iPad, Android tablets, and tablet devices
+   ========================================== */
+
+/* ==========================================
+   TABLET BREAKPOINTS
+   sm: 640px+ (Tablet Portrait)
+   md: 768px+ (Tablet Landscape)
+   ========================================== */
+
+/* ==========================================
+   TABLET LAYOUT OPTIMIZATIONS
+   ========================================== */
+
+/* Tablet Portrait (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+  /* 2-column grid for tablet portrait */
+  .tablet-grid-portrait {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* Sidebar layout for tablet */
+  .tablet-sidebar-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+  }
+
+  /* Card padding */
+  .card-tablet {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  /* Container max-width */
+  .container-tablet {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+}
+
+/* Tablet Landscape (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* 3-column grid for tablet landscape */
+  .tablet-grid-landscape {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  /* Sidebar layout */
+  .tablet-sidebar-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+  }
+
+  /* Card padding */
+  .card-tablet {
+    padding: 2rem;
+    border-radius: 1rem;
+  }
+
+  /* Container max-width */
+  .container-tablet {
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+}
+
+/* All Tablets (640px - 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Touch-friendly spacing */
+  .tablet-spacing {
+    padding: 1.25rem;
+  }
+
+  .tablet-gap {
+    gap: 1.5rem;
+  }
+
+  /* Tablet-specific typography */
+  .tablet-text-sm {
+    font-size: 0.9375rem; /* 15px */
+    line-height: 1.5;
+  }
+
+  .tablet-text-base {
+    font-size: 1rem; /* 16px */
+    line-height: 1.6;
+  }
+
+  .tablet-text-lg {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.6;
+  }
+
+  .tablet-text-xl {
+    font-size: 1.5rem; /* 24px */
+    line-height: 1.4;
+  }
+
+  .tablet-text-2xl {
+    font-size: 2rem; /* 32px */
+    line-height: 1.3;
+  }
+}
+
+/* ==========================================
+   TABLET NAVIGATION
+   ========================================== */
+
+/* Tablet navigation bar */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .tablet-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .tablet-nav-menu {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  /* Tablet drawer menu */
+  .tablet-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 100vh;
+    background: white;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .tablet-drawer.open {
+    transform: translateX(0);
+  }
+
+  .tablet-drawer-content {
+    padding: 2rem;
+  }
+
+  /* Tablet bottom tab bar */
+  .tablet-tab-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .tablet-tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #64748b;
+    transition: color 0.2s ease;
+  }
+
+  .tablet-tab-item.active {
+    color: #10b981;
+  }
+}
+
+/* ==========================================
+   TABLET GRID SYSTEMS
+   ========================================== */
+
+/* Auto-responsive grid for tablets */
+.tablet-auto-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .tablet-auto-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-auto-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablet masonry grid */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .tablet-masonry {
+    column-count: 2;
+    column-gap: 1.5rem;
+  }
+
+  .tablet-masonry > * {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-masonry {
+    column-count: 3;
+  }
+}
+
+/* ==========================================
+   TABLET CARDS & COMPONENTS
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet card */
+  .card-tablet-enhanced {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-tablet-enhanced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Tablet hero section */
+  .hero-tablet {
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .hero-tablet h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-tablet p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  /* Tablet modal */
+  .modal-tablet {
+    max-width: 600px;
+    max-height: 80vh;
+    margin: 10vh auto;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  /* Tablet image gallery */
+  .gallery-tablet {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .gallery-tablet img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+}
+
+/* ==========================================
+   TABLET FORMS
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet form layout */
+  .form-tablet {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .form-tablet-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-tablet-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  /* Tablet input styling */
+  .input-tablet {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .input-tablet:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  }
+
+  /* Tablet button sizing */
+  .btn-tablet {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    min-height: 48px;
+  }
+
+  .btn-tablet-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    border-radius: 0.75rem;
+    min-height: 56px;
+  }
+}
+
+/* ==========================================
+   TABLET TABLES
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet table wrapper */
+  .table-tablet-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Tablet table styling */
+  .table-tablet {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .table-tablet th {
+    padding: 1rem;
+    background: #f8fafc;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .table-tablet td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .table-tablet tr:last-child td {
+    border-bottom: none;
+  }
+
+  .table-tablet tr:hover {
+    background: #f8fafc;
+  }
+
+  /* Compact table for tablets */
+  .table-tablet-compact {
+    font-size: 0.875rem;
+  }
+
+  .table-tablet-compact th,
+  .table-tablet-compact td {
+    padding: 0.75rem;
+  }
+}
+
+/* ==========================================
+   TABLET IMAGES & MEDIA
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet image optimization */
+  .img-tablet-responsive {
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    object-fit: cover;
+  }
+
+  /* Tablet image grid */
+  .img-grid-tablet {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  /* Tablet video player */
+  .video-tablet {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  /* Tablet carousel */
+  .carousel-tablet {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .carousel-tablet::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-tablet-item {
+    flex: 0 0 80%;
+    scroll-snap-align: center;
+  }
+}
+
+/* ==========================================
+   TABLET SIDEBAR LAYOUTS
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet split view */
+  .split-view-tablet {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    height: 100%;
+  }
+
+  /* Tablet master-detail layout */
+  .master-detail-tablet {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+    height: 100vh;
+  }
+
+  .master-detail-tablet .master {
+    border-right: 1px solid #e5e7eb;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+
+  .master-detail-tablet .detail {
+    overflow-y: auto;
+    padding: 2rem;
+  }
+
+  /* Tablet collapsible sidebar */
+  .sidebar-tablet {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 900;
+    overflow-y: auto;
+  }
+
+  .sidebar-tablet.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-tablet-content {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* ==========================================
+   TABLET UTILITIES
+   ========================================== */
+
+/* Show only on tablets */
+@media (max-width: 639px) {
+  .show-tablet {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .show-tablet {
+    display: none !important;
+  }
+}
+
+/* Hide on tablets */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+/* Tablet-specific visibility */
+.show-tablet-portrait {
+  display: none;
+}
+
+.show-tablet-landscape {
+  display: none;
+}
+
+@media (min-width: 640px) and (max-width: 767px) {
+  .show-tablet-portrait {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .show-tablet-landscape {
+    display: block;
+  }
+}
+
+/* ==========================================
+   TABLET SPACING UTILITIES
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet padding */
+  .p-tablet-xs { padding: 0.5rem; }
+  .p-tablet-sm { padding: 1rem; }
+  .p-tablet-md { padding: 1.5rem; }
+  .p-tablet-lg { padding: 2rem; }
+  .p-tablet-xl { padding: 3rem; }
+
+  /* Tablet margin */
+  .m-tablet-xs { margin: 0.5rem; }
+  .m-tablet-sm { margin: 1rem; }
+  .m-tablet-md { margin: 1.5rem; }
+  .m-tablet-lg { margin: 2rem; }
+  .m-tablet-xl { margin: 3rem; }
+
+  /* Tablet gap */
+  .gap-tablet-xs { gap: 0.5rem; }
+  .gap-tablet-sm { gap: 1rem; }
+  .gap-tablet-md { gap: 1.5rem; }
+  .gap-tablet-lg { gap: 2rem; }
+  .gap-tablet-xl { gap: 3rem; }
+}
+
+/* ==========================================
+   TABLET ORIENTATION SUPPORT
+   ========================================== */
+
+/* Tablet Portrait Orientation */
+@media (min-width: 640px) and (max-width: 1023px) and (orientation: portrait) {
+  .tablet-portrait-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tablet-portrait-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tablet-portrait-text {
+    text-align: center;
+  }
+}
+
+/* Tablet Landscape Orientation */
+@media (min-width: 640px) and (max-width: 1023px) and (orientation: landscape) {
+  .tablet-landscape-layout {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .tablet-landscape-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tablet-landscape-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* ==========================================
+   TABLET SCROLLING
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Smooth scrolling for tablets */
+  .scroll-tablet {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Horizontal scroll containers */
+  .scroll-tablet-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    scrollbar-width: thin;
+  }
+
+  .scroll-tablet-x::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scroll-tablet-x::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+  }
+
+  .scroll-tablet-x::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+
+  .scroll-tablet-x::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+/* ==========================================
+   TABLET PERFORMANCE
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* GPU acceleration for tablets */
+  .tablet-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Contain layout for performance */
+  .tablet-contain {
+    contain: layout style paint;
+  }
+
+  /* Lazy loading optimization */
+  .tablet-lazy-container {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+}
+
+/* ==========================================
+   TABLET TOUCH INTERACTIONS
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Larger touch targets */
+  .touch-target-tablet {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.75rem;
+  }
+
+  /* Swipeable cards */
+  .swipeable-tablet {
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  /* Pull to refresh indicator */
+  .pull-refresh-tablet {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: top 0.3s ease;
+  }
+
+  .pull-refresh-tablet.active {
+    top: 20px;
+  }
+}
+
+/* ==========================================
+   TABLET SPECIFIC COMPONENTS
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet toolbar */
+  .toolbar-tablet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  /* Tablet search bar */
+  .searchbar-tablet {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .searchbar-tablet input {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+  }
+
+  /* Tablet breadcrumb */
+  .breadcrumb-tablet {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #64748b;
+    padding: 1rem 0;
+  }
+
+  .breadcrumb-tablet-item::after {
+    content: '/';
+    margin-left: 0.5rem;
+    color: #cbd5e1;
+  }
+
+  .breadcrumb-tablet-item:last-child::after {
+    content: '';
+  }
+
+  /* Tablet pagination */
+  .pagination-tablet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 0;
+  }
+
+  .pagination-tablet-item {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+  }
+
+  .pagination-tablet-item.active {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+  }
+
+  .pagination-tablet-item:hover:not(.active) {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
+}
+
+/* ==========================================
+   TABLET DARK MODE
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) and (prefers-color-scheme: dark) {
+  .tablet-drawer,
+  .tablet-tab-bar,
+  .sidebar-tablet,
+  .toolbar-tablet {
+    background: #1e293b;
+    color: #f1f5f9;
+    border-color: #334155;
+  }
+
+  .card-tablet-enhanced {
+    background: #1e293b;
+    color: #f1f5f9;
+  }
+
+  .table-tablet th {
+    background: #0f172a;
+  }
+
+  .table-tablet tr:hover {
+    background: #334155;
+  }
+
+  .input-tablet {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f1f5f9;
+  }
+
+  .input-tablet:focus {
+    border-color: #10b981;
+  }
+}
+
+/* ==========================================
+   TABLET ACCESSIBILITY
+   ========================================== */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Focus indicators for tablets */
+  *:focus-visible {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+  }
+
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    .card-tablet-enhanced,
+    .btn-tablet {
+      border: 2px solid currentColor;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .tablet-drawer,
+    .sidebar-tablet,
+    .carousel-tablet {
+      transition: none;
+      scroll-behavior: auto;
+    }
+  }
+}

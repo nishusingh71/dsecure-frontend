@@ -13,6 +13,33 @@
     contain: layout style paint;
   }
 
+  /* ═══════════════════════════════════════════════════════════════════════════════
+     CONTENT-VISIBILITY OPTIMIZATION
+     Defers rendering of below-the-fold sections until needed
+     ═══════════════════════════════════════════════════════════════════════════════ */
+  
+  /* Below-the-fold sections - skip rendering until in viewport */
+  .lazy-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px; /* Estimated height to prevent layout shift */
+  }
+  
+  /* Specific section heights for better CLS */
+  .lazy-section-tall {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 800px;
+  }
+  
+  .lazy-section-medium {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 600px;
+  }
+  
+  .lazy-section-small {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 400px;
+  }
+
   /* Optimize card hover animations */
   .card {
     transform: translateZ(0);

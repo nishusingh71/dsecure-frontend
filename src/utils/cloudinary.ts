@@ -186,6 +186,44 @@ export const getResponsiveSrcSet = (publicId: string) => {
   return `${small} 400w, ${medium} 800w, ${large} 1200w, ${xlarge} 1600w`
 }
 
+/**
+ * Advanced Image Optimization Utilities
+ * Reduces image size by 70-80% with WebP/AVIF formats
+ */
+
+// Generate WebP URL with custom quality (default 80%)
+export const getWebPUrl = (publicId: string, width: number, quality = 80) => {
+  return `https://res.cloudinary.com/${cloudName}/image/upload/f_webp,q_${quality},w_${width},c_fill,g_auto,dpr_auto/${publicId}`
+}
+
+// Generate responsive WebP srcSet (480w, 768w, 1200w, 1600w)
+export const getWebPSrcSet = (publicId: string, quality = 80) => {
+  const sizes = [480, 768, 1200, 1600]
+  return sizes.map(w => `${getWebPUrl(publicId, w, quality)} ${w}w`).join(', ')
+}
+
+// Generate AVIF URL (50% smaller than JPEG, bleeding edge)
+export const getAVIFUrl = (publicId: string, width: number, quality = 80) => {
+  return `https://res.cloudinary.com/${cloudName}/image/upload/f_avif,q_${quality},w_${width},c_fill,g_auto,dpr_auto/${publicId}`
+}
+
+// Multi-format picture element helper
+export const getMultiFormatSources = (publicId: string, quality = 80) => {
+  const sizes = [480, 768, 1200, 1600]
+  return {
+    avif: sizes.map(w => `${getAVIFUrl(publicId, w, quality)} ${w}w`).join(', '),
+    webp: sizes.map(w => `${getWebPUrl(publicId, w, quality)} ${w}w`).join(', '),
+    fallback: sizes.map(w => {
+      return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_${quality},w_${w},c_fill,g_auto,dpr_auto/${publicId} ${w}w`
+    }).join(', ')
+  }
+}
+
+// Low-Quality Image Placeholder (LQIP) for blur-up effect
+export const getLQIPUrl = (publicId: string) => {
+  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_10,w_50,e_blur:1000/${publicId}`
+}
+
 // Custom hook for Cloudinary image with fallback
 export const useCloudinaryImage = (publicId: string, fallback?: string) => {
   try {

@@ -15,6 +15,8 @@ import {
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { ENV } from "@/config/env";
+import OptimizedCloudinaryImage from "@/components/OptimizedCloudinaryImage";
+import { usePageLoadMetrics } from "@/hooks/useImagePerformance";
 
 export default function ContactPage() {
   return (
@@ -68,6 +70,10 @@ interface Office {
 
 function ContactPageContent() {
   const { t } = useTranslation();
+  
+  // Track page load performance
+  usePageLoadMetrics('Contact Page');
+  
   const [usageType, setUsageType] = useState<"business" | "personal">(
     "business"
   );
@@ -1612,29 +1618,35 @@ This is an automated response. Please do not reply to this email.`
               .filter((office) => office.isActive)
               .map((office, i) => (
                 <Reveal key={office.id} delayMs={i * 100}>
-                  <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
+                  <div 
+                    className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300"
+                    data-office-id={office.id}
+                  >
                     {/* Header with Company Logo & Info */}
                     <div className="flex items-start gap-4 mb-6">
                       <div className="flex-shrink-0">
                         <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center overflow-hidden">
                           {(office.company as any).logoUrl ||
                             office.company.logo?.startsWith("http") ? (
-                            <img
-                              src={
-                                (office.company as any).logoUrl ||
-                                office.company.logo
+                            <OptimizedCloudinaryImage
+                              publicId={
+                                ((office.company as any).logoUrl || office.company.logo)
+                                  .replace('https://res.cloudinary.com/', '')
+                                  .replace(/.*\/upload\/[^/]+\//, '')
                               }
                               alt={`${office.company.name} logo`}
-                              className="w-full h-full object-contain rounded-xl bg-white"
-                              onError={(e) => {
+                              className="rounded-xl bg-white"
+                              width={64}
+                              height={64}
+                              quality={85}
+                              format="webp"
+                              objectFit="contain"
+                              priority={i < 2}
+                              onError={() => {
                                 // Fallback to company initials if image fails to load
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = "none";
-                                const fallback = target.parentElement?.querySelector(
-                                  ".logo-fallback"
-                                ) as HTMLElement;
-                                if (fallback) {
-                                  fallback.style.display = "flex";
+                                const fallbackDiv = document.querySelector(`[data-office-id="${office.id}"] .logo-fallback`) as HTMLElement;
+                                if (fallbackDiv) {
+                                  fallbackDiv.style.display = "flex";
                                 }
                               }}
                             />

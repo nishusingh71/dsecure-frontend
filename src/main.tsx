@@ -3,13 +3,24 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+// Single consolidated CSS import - all styles bundled via index.css
 import "./index.css";
-import "./critical.css";
-import "./responsive.css";
 import { HelmetProvider } from "react-helmet-async";
 import { ToastProvider } from './components/Toast';
 import { preloadCriticalResources } from './utils/performanceOptimizer';
 import './utils/internationalization'; // Initialize i18n
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 🔍 REACT-SCAN - Debug React Renders (Development Only)
+// ═══════════════════════════════════════════════════════════════════════════════
+import { scan } from 'react-scan';
+
+if (typeof window !== 'undefined' && ENV.IS_DEV) {
+  scan({
+    enabled: true,
+    log: true, // Log render details to browser console
+  });
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 🔇 GLOBAL CONSOLE SUPPRESSOR - Keeps browser console clean

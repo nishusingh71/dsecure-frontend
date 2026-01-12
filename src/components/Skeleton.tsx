@@ -1,21 +1,41 @@
-import { ReactNode } from 'react'
+import { ReactNode, memo, useMemo } from 'react'
 
-// Base skeleton component with animation
+// Pre-computed arrays to avoid recreation on every render
+const SKELETON_ARRAYS = {
+  1: [0],
+  2: [0, 1],
+  3: [0, 1, 2],
+  4: [0, 1, 2, 3],
+  5: [0, 1, 2, 3, 4],
+  6: [0, 1, 2, 3, 4, 5],
+  7: [0, 1, 2, 3, 4, 5, 6],
+  8: [0, 1, 2, 3, 4, 5, 6, 7],
+  9: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  10: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+} as const;
+
+// Helper to get pre-computed array or create one for larger sizes
+const getArray = (length: number): number[] => {
+  if (length <= 10) return SKELETON_ARRAYS[length as keyof typeof SKELETON_ARRAYS] || [];
+  return Array.from({ length }, (_, i) => i);
+};
+
+// Base skeleton component with animation - Memoized
 interface SkeletonProps {
   className?: string
   children?: ReactNode
 }
 
-export function Skeleton({ className = '', children }: SkeletonProps) {
+export const Skeleton = memo(function Skeleton({ className = '', children }: SkeletonProps) {
   return (
     <div className={`animate-pulse bg-slate-200 rounded ${className}`}>
       {children}
     </div>
   )
-}
+})
 
-// Text skeleton for different text sizes
-export function SkeletonText({ 
+// Text skeleton for different text sizes - Memoized
+export const SkeletonText = memo(function SkeletonText({ 
   lines = 1, 
   className = '',
   lineHeight = 'h-4'
@@ -24,9 +44,11 @@ export function SkeletonText({
   className?: string
   lineHeight?: string
 }) {
+  const lineArray = useMemo(() => getArray(lines), [lines]);
+  
   return (
     <div className={`space-y-2 ${className}`}>
-      {Array.from({ length: lines }).map((_, i) => (
+      {lineArray.map((i) => (
         <Skeleton 
           key={i} 
           className={`${lineHeight} ${i === lines - 1 ? 'w-3/4' : 'w-full'}`} 
@@ -34,10 +56,10 @@ export function SkeletonText({
       ))}
     </div>
   )
-}
+})
 
-// Card skeleton for dashboard cards
-export function SkeletonCard({ 
+// Card skeleton for dashboard cards - Memoized with stable content
+export const SkeletonCard = memo(function SkeletonCard({ 
   className = 'p-6',
   hasHeader = true,
   hasFooter = false,
@@ -48,6 +70,8 @@ export function SkeletonCard({
   hasFooter?: boolean
   contentLines?: number
 }) {
+  const contentArray = useMemo(() => getArray(contentLines), [contentLines]);
+  
   return (
     <div className={`bg-white rounded-lg border border-slate-200 ${className}`}>
       {hasHeader && (
@@ -58,7 +82,7 @@ export function SkeletonCard({
       )}
       
       <div className="space-y-3">
-        {Array.from({ length: contentLines }).map((_, i) => (
+        {contentArray.map((i) => (
           <SkeletonText key={i} lines={1} />
         ))}
       </div>
@@ -73,10 +97,10 @@ export function SkeletonCard({
       )}
     </div>
   )
-}
+})
 
-// Table skeleton for admin dashboards
-export function SkeletonTable({ 
+// Table skeleton for admin dashboards - Memoized
+export const SkeletonTable = memo(function SkeletonTable({ 
   rows = 5, 
   columns = 4,
   hasHeader = true,
@@ -87,12 +111,16 @@ export function SkeletonTable({
   hasHeader?: boolean
   className?: string
 }) {
+  const rowArray = useMemo(() => getArray(rows), [rows]);
+  const colArray = useMemo(() => getArray(columns), [columns]);
+  const gridStyle = useMemo(() => ({ gridTemplateColumns: `repeat(${columns}, 1fr)` }), [columns]);
+  
   return (
     <div className={`bg-white rounded-lg border border-slate-200 overflow-hidden ${className}`}>
       {hasHeader && (
         <div className="border-b border-slate-200 p-4">
-          <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
-            {Array.from({ length: columns }).map((_, i) => (
+          <div className="grid gap-4" style={gridStyle}>
+            {colArray.map((i) => (
               <Skeleton key={i} className="h-5 w-full" />
             ))}
           </div>
@@ -100,10 +128,10 @@ export function SkeletonTable({
       )}
       
       <div className="divide-y divide-slate-200">
-        {Array.from({ length: rows }).map((_, rowIndex) => (
+        {rowArray.map((rowIndex) => (
           <div key={rowIndex} className="p-4">
-            <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
-              {Array.from({ length: columns }).map((_, colIndex) => (
+            <div className="grid gap-4" style={gridStyle}>
+              {colArray.map((colIndex) => (
                 <Skeleton key={colIndex} className="h-4 w-full" />
               ))}
             </div>
@@ -112,10 +140,10 @@ export function SkeletonTable({
       </div>
     </div>
   )
-}
+})
 
-// Form skeleton for auth and input forms
-export function SkeletonForm({ 
+// Form skeleton for auth and input forms - Memoized
+export const SkeletonForm = memo(function SkeletonForm({ 
   fields = 3,
   hasTitle = true,
   hasSubmitButton = true,
@@ -126,6 +154,8 @@ export function SkeletonForm({
   hasSubmitButton?: boolean
   className?: string
 }) {
+  const fieldArray = useMemo(() => getArray(fields), [fields]);
+  
   return (
     <div className={`bg-white rounded-lg border border-slate-200 ${className}`}>
       {hasTitle && (
@@ -136,7 +166,7 @@ export function SkeletonForm({
       )}
       
       <div className="space-y-4">
-        {Array.from({ length: fields }).map((_, i) => (
+        {fieldArray.map((i) => (
           <div key={i}>
             <Skeleton className="h-4 w-20 mb-2" />
             <Skeleton className="h-10 w-full" />
@@ -151,19 +181,21 @@ export function SkeletonForm({
       )}
     </div>
   )
-}
+})
 
-// Navigation skeleton
-export function SkeletonNav({ 
+// Navigation skeleton - Memoized
+export const SkeletonNav = memo(function SkeletonNav({ 
   items = 5,
   className = ''
 }: {
   items?: number
   className?: string
 }) {
+  const itemArray = useMemo(() => getArray(items), [items]);
+  
   return (
     <nav className={`space-y-2 ${className}`}>
-      {Array.from({ length: items }).map((_, i) => (
+      {itemArray.map((i) => (
         <div key={i} className="flex items-center space-x-3 p-2">
           <Skeleton className="h-5 w-5" />
           <Skeleton className="h-4 w-24" />
@@ -171,19 +203,21 @@ export function SkeletonNav({
       ))}
     </nav>
   )
-}
+})
 
-// Stats/metrics skeleton for dashboards
-export function SkeletonStats({ 
+// Stats/metrics skeleton for dashboards - Memoized
+export const SkeletonStats = memo(function SkeletonStats({ 
   items = 4,
   className = ''
 }: {
   items?: number
   className?: string
 }) {
+  const itemArray = useMemo(() => getArray(items), [items]);
+  
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ${className}`}>
-      {Array.from({ length: items }).map((_, i) => (
+      {itemArray.map((i) => (
         <div key={i} className="bg-white p-6 rounded-lg border border-slate-200">
           <div className="flex items-center justify-between mb-4">
             <Skeleton className="h-8 w-8 rounded-full" />
@@ -195,10 +229,13 @@ export function SkeletonStats({
       ))}
     </div>
   )
-}
+})
 
-// Chart skeleton for analytics
-export function SkeletonChart({ 
+// Pre-computed chart heights to avoid random on every render
+const CHART_HEIGHTS = ['h-full', 'h-3/4', 'h-1/2', 'h-2/3', 'h-5/6', 'h-1/3', 'h-4/5', 'h-3/5', 'h-2/5', 'h-full', 'h-3/4', 'h-1/2'];
+
+// Chart skeleton for analytics - Memoized
+export const SkeletonChart = memo(function SkeletonChart({ 
   height = 'h-64',
   className = ''
 }: {
@@ -213,22 +250,16 @@ export function SkeletonChart({
       </div>
       
       <div className={`${height} flex items-end justify-between space-x-2`}>
-        {Array.from({ length: 12 }).map((_, i) => (
-          <Skeleton 
-            key={i} 
-            className={`w-full ${
-              Math.random() > 0.5 ? 'h-full' : 
-              Math.random() > 0.5 ? 'h-3/4' : 'h-1/2'
-            }`} 
-          />
+        {CHART_HEIGHTS.map((h, i) => (
+          <Skeleton key={i} className={`w-full ${h}`} />
         ))}
       </div>
     </div>
   )
-}
+})
 
-// Button skeleton
-export function SkeletonButton({ 
+// Button skeleton - Memoized
+export const SkeletonButton = memo(function SkeletonButton({ 
   size = 'medium',
   className = ''
 }: {
@@ -242,10 +273,10 @@ export function SkeletonButton({
   }
   
   return <Skeleton className={`${sizeClasses[size]} ${className}`} />
-}
+})
 
-// Image skeleton
-export function SkeletonImage({ 
+// Image skeleton - Memoized
+export const SkeletonImage = memo(function SkeletonImage({ 
   aspect = 'aspect-video',
   className = ''
 }: {
@@ -269,10 +300,10 @@ export function SkeletonImage({
       </div>
     </Skeleton>
   )
-}
+})
 
-// Page skeleton for full page loading
-export function SkeletonPage({ 
+// Page skeleton for full page loading - Memoized
+export const SkeletonPage = memo(function SkeletonPage({ 
   hasHeader = true,
   hasSidebar = false,
   hasFooter = false,
@@ -326,4 +357,4 @@ export function SkeletonPage({
       )}
     </div>
   )
-}
+})
