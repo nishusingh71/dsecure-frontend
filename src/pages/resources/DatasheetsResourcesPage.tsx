@@ -17,10 +17,11 @@ import {
 } from '@/components/FlatIcons'
 
 export default function DatasheetsResourcesPage() {
-  const toast = useToast();
+  const { showToast } = useToast();
 
-  const handleDownload = (filename: string, url: string) => {
-    downloadResource(filename, url, toast);
+  const handleDownload = (resource: { title: string; downloadSize: string; pages: number; type: string }) => {
+    downloadResource(resource);
+    showToast('Download started!', 'success');
   };
 
   const datasheets = [
@@ -93,7 +94,12 @@ export default function DatasheetsResourcesPage() {
                       </div>
                     </div>
                     <button
-                      onClick={() => handleDownload(datasheet.filename, datasheet.url)}
+                      onClick={() => handleDownload({
+                        title: datasheet.title,
+                        downloadSize: '1.5 MB',
+                        pages: 4,
+                        type: 'PDF'
+                      })}
                       className="w-full px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 inline-flex items-center justify-center gap-2"
                     >
                       <ArrowDownIcon className="w-5 h-5" filled={true} />

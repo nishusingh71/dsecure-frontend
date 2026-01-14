@@ -10,7 +10,7 @@ import {
 import { useToast } from '@/components/Toast';
 
 export default function RequestDemoPage() {
-  const toast = useToast();
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,7 +21,7 @@ export default function RequestDemoPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast('Demo request submitted successfully!', 'success');
+    showToast('Demo request submitted successfully!', 'success');
   };
 
   return (

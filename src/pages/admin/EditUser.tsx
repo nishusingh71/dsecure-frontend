@@ -1,6 +1,7 @@
 ﻿import { useAuth } from '@/auth/AuthContext'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 interface UserFormData {
   name: string

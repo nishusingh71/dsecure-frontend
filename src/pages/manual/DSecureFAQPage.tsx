@@ -2,6 +2,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, ChevronRight, HelpCircle, Search, Settings, Download, Shield, Cloud, FileText, AlertCircle, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 
 const DSecureFAQPage: React.FC = () => {
   return (

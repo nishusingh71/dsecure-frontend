@@ -5,7 +5,6 @@ import { getSEOForPage } from '@/utils/seo';
 import Reveal from '@/components/Reveal';
 import {
   ArrowRightIcon,
-  CalendarIcon,
   StarIcon
 } from '@/components/FlatIcons';
 

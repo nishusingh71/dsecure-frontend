@@ -17,10 +17,11 @@ import {
 } from '@/components/FlatIcons'
 
 export default function EbooksResourcesPage() {
-  const toast = useToast();
+  const { showToast } = useToast();
 
-  const handleDownload = (filename: string, url: string) => {
-    downloadResource(filename, url, toast);
+  const handleDownload = (resource: { title: string; downloadSize: string; pages: number; type: string }) => {
+    downloadResource(resource);
+    showToast('Download started!', 'success');
   };
 
   const ebooks = [
@@ -86,7 +87,12 @@ export default function EbooksResourcesPage() {
                       </div>
                     </div>
                     <button
-                      onClick={() => handleDownload(ebook.filename, ebook.url)}
+                      onClick={() => handleDownload({
+                        title: ebook.title,
+                        downloadSize: '5 MB',
+                        pages: 20,
+                        type: 'PDF'
+                      })}
                       className="w-full px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 inline-flex items-center justify-center gap-2"
                     >
                       <ArrowDownIcon className="w-5 h-5" filled={true} />
