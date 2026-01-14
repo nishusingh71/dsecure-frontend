@@ -1,5 +1,4 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
@@ -8,13 +7,6 @@ const CloudConsoleGuide: React.FC = () => {
   return (
     <>
       <SEOHead seo={getSEOForPage("cloud-console-guide")} />
-      <Helmet>
-        <title>Cloud Console Guide | DSecure - Cloud Data Security Management</title>
-        <meta
-          name="description"
-          content="Complete guide to securely managing cloud data through DSecure Cloud Console including access controls, encryption, and compliance monitoring."
-        />
-      </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Hero Section */}

@@ -1,6 +1,7 @@
 import Reveal from '@/components/Reveal'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import SEOHead from '@/components/SEOHead'
+import { getSEOForPage } from '@/utils/seo'
 import { downloadResource } from '../../utils/downloadUtils'
 import { useToast } from '@/components/Toast'
 import {
@@ -16,21 +17,7 @@ import {
 export default function ComplianceResourcesPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/resources/compliance" />
-        <title>
-          Compliance Guides & Standards | DSecure Data Protection Compliance
-        </title>
-        <meta
-          name="description"
-          content="Comprehensive compliance guides for data protection standards including GDPR, HIPAA, PCI DSS, SOX, and NIST. Download free compliance resources."
-        />
-        <meta
-          name="keywords"
-          content="data protection compliance, GDPR compliance, HIPAA data security, PCI DSS requirements, SOX compliance, NIST 800-88, compliance guides"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('compliance-resources')} />
 
       <ComplianceResourcesContent />
     </>

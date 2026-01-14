@@ -6,11 +6,7 @@ import { Link } from 'react-router-dom';
 const DSecureFAQPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Helmet>
-        <title>DSecure FAQ - Frequently Asked Questions | Complete User Guide</title>
-        <meta name="description" content="Get answers to frequently asked questions about DSecure File Eraser. Comprehensive FAQ covering software features, usage, troubleshooting, and best practices." />
-        <meta name="keywords" content="DSecure FAQ, file eraser questions, data erasure help, secure deletion support, DSecure troubleshooting" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('faqs')} />
 
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">

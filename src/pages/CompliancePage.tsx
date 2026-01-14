@@ -11,7 +11,6 @@ import {
   ArrowRightIcon,
   HoverIcon
 } from '@/components/FlatIcons'
-import { Helmet } from 'react-helmet-async';
 import SEOHead from '../components/SEOHead'
 import { getSEOForPage } from '../utils/seo'
 type Standard = {

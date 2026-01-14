@@ -1,6 +1,5 @@
 ﻿import Sparkline from '@/components/Sparkline'
 import BarChart from '@/components/BarChart'
-import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useAuth } from '@/auth/AuthContext'
@@ -9,6 +8,7 @@ import { usePerformanceData } from '@/hooks/usePerformanceData'
 import { useAuditReports } from '@/hooks/useAuditReports'
 import { useUserMachines } from '@/hooks/useUserMachines'
 import { isDemoMode, DEMO_PERFORMANCE_DATA } from '@/data/demoData'
+import { Helmet } from 'react-helmet-async'
 
 interface PerformanceData {
   monthlyErasures: { month: string; count: number }[]
@@ -104,7 +104,7 @@ export default function AdminPerformance() {
             name="keywords"
             content="performance monitoring, erasure metrics, system analytics, data erasure performance"
           />
-          <meta name="robots" content="index, follow" />
+          <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
           <div className="flex items-center justify-between mb-6">
@@ -173,6 +173,7 @@ export default function AdminPerformance() {
             name="description"
             content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
           />
+          <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
           <div className="flex items-center justify-between mb-6">
@@ -226,7 +227,7 @@ export default function AdminPerformance() {
           name="keywords"
           content="performance monitoring, erasure metrics, system analytics, data erasure performance"
         />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
         {/* Header */}

@@ -1,16 +1,13 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 import { ArrowLeft, ChevronRight, Download, Play, Book, HelpCircle, FileText, Calendar, Settings, Mouse, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const HelpManualIndexPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Helmet>
-        <title>DSecure Help Manual - Complete User Guide & Documentation</title>
-        <meta name="description" content="Access the complete DSecure Help Manual with visual guides, FAQs, tutorials, and comprehensive documentation for all product features." />
-        <meta name="keywords" content="DSecure manual, help guide, user documentation, installation guide, FAQ, tutorials" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">

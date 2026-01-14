@@ -1,6 +1,7 @@
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import { downloadResource } from "../../utils/downloadUtils";
 import { useToast } from "@/components/Toast";
 import {
@@ -17,22 +18,7 @@ import {
 export default function DocumentationResourcesPage() {
   return (
     <>
-      <Helmet>
-        <link
-          rel="canonical"
-          href="https://dsecuretech.com/resources/documentation"
-        />
-        <title>Technical Documentation | DSecure Data Erasure Solutions</title>
-        <meta
-          name="description"
-          content="Comprehensive technical documentation for DSecure data erasure solutions. Integration guides, tutorials, and developer resources."
-        />
-        <meta
-          name="keywords"
-          content="DSecure documentation, integration guide, developer resources, technical documentation, data erasure integration"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('documentation')} />
 
       <DocumentationResourcesContent />
     </>

@@ -1,7 +1,6 @@
 ﻿import { useAuth } from '@/auth/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
 import Reveal from '@/components/Reveal'
-import { Helmet } from 'react-helmet-async'
 import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apiClient } from '@/utils/enhancedApiClient'

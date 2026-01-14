@@ -1,17 +1,12 @@
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const CertificateGenerationPage: React.FC = memo(() => {
   return (
     <>
-      <Helmet>
-        <title>Regulatory Document Generation | D-Secure Manual</title>
-        <meta
-          name="description"
-          content="D-Secure regulatory document generation guide for creating tamper-proof regulatory documents of data destruction and compliance documentation."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">

@@ -1,17 +1,12 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const DataSanitizationComplianceBlog: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-cyan-50/30 to-emerald-50">
-      <Helmet>
-        <title>Data Sanitization & Compliance | D-Secure Blog</title>
-        <meta
-          name="description"
-          content="Explore regulations and standards for data sanitization and secure erasure of sensitive information."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('blog')} />
 
       {/* Hero Section */}
       <section className="py-16 bg-white shadow-lg rounded-xl mx-4 md:mx-12 lg:mx-24 text-center">

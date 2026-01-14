@@ -1,17 +1,12 @@
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const RemoteManagementPage: React.FC = memo(() => {
     return (
         <>
-            <Helmet>
-                <title>Remote Management | D-Secure Manual</title>
-                <meta
-                    name="description"
-                    content="D-Secure remote management guide for cloud console and remote deployment capabilities across distributed environments."
-                />
-            </Helmet>
+            <SEOHead seo={getSEOForPage('help-manual')} />
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}

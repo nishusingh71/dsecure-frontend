@@ -1,5 +1,6 @@
 import React, { useState, memo } from "react";
-import { Helmet } from 'react-helmet-async'
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -128,19 +129,7 @@ const GetStartedPage: React.FC = memo(() => {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/get-started" />
-        <title>Get Started | DSecure Data Erasure - Device Wiping Guides</title>
-        <meta
-          name="description"
-          content="Learn how to securely wipe data from PC, Mac, Server & Mobile devices with DSecure. Step-by-step guides for all device types and skill levels."
-        />
-        <meta
-          name="keywords"
-          content="DSecure get started, device wiping guide, data erasure tutorial, secure deletion steps"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('get-started')} />
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

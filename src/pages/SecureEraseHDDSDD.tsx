@@ -1,19 +1,12 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const SecureEraseHDDSDD: React.FC = () => {
   return (
     <>
-      <Helmet>
-        <title>
-          Secure Erase HDD/SSD Guide | DSecure - Complete Drive Erasure Methods
-        </title>
-        <meta
-          name="description"
-          content="Comprehensive guide to securely erase hard disk drives (HDD) and solid-state drives (SSD) using DSecure tools with industry-standard methods and verification."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Hero Section */}

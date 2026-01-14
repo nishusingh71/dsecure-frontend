@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useAuth } from '@/auth/AuthContext'
 import { apiClient } from '@/utils/enhancedApiClient'
-import { Helmet } from 'react-helmet-async'
 
 // Helper function to get user_email from localStorage (RoleBasedAuth)
 function getUserEmailFromStorage(): string | null {

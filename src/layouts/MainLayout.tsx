@@ -3,7 +3,8 @@ import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect, useCallback, memo } from "react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import OptimizedImage from "@/components/OptimizedImage";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
 import ScrollToTop from "@/components/ScrollToTop";
 import BlogPage from "@/components/BlogPage";
@@ -47,21 +48,7 @@ export default function MainLayout() {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/" />
-        <title>
-          D-SecureTech Compliance | Data Erasure Standards & Regulations
-        </title>
-        <meta
-          name="description"
-          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('home')} />
       <div className="min-h-dvh flex flex-col">
         <header
           className={`border-b sticky top-0 z-50 transition-all duration-300 ${isScrolled

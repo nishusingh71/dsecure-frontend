@@ -1,7 +1,8 @@
 import React, { useState, memo, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getProductIcon } from "@/utils/productIcons";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 
 const DownloadPage: React.FC = memo(() => {
     const navigate = useNavigate();
@@ -125,17 +126,7 @@ const DownloadPage: React.FC = memo(() => {
 
     return (
         <>
-            <Helmet>
-                <title>Download - D-Secure Data Erasure Software | Windows, macOS, Linux</title>
-                <meta
-                    name="description"
-                    content="Download D-Secure data erasure software for Windows, macOS, and Linux. Secure, NIST compliant data wiping for enterprise and personal use."
-                />
-                <meta
-                    name="keywords"
-                    content="download data erasure software, secure delete Windows, Mac data wipe, Linux disk eraser"
-                />
-            </Helmet>
+            <SEOHead seo={getSEOForPage('download')} />
 
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
                 <div className="container mx-auto px-4 xs:px-6 sm:px-6 md:px-8 py-8 xs:py-10 sm:py-12 md:py-12 max-w-7xl">

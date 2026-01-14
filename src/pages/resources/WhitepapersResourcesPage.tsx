@@ -1,6 +1,7 @@
 import Reveal from '@/components/Reveal'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import SEOHead from '@/components/SEOHead'
+import { getSEOForPage } from '@/utils/seo'
 import { downloadResource } from '../../utils/downloadUtils'
 import { useToast } from '@/components/Toast'
 import { 
@@ -17,21 +18,7 @@ import {
 export default function WhitepapersResourcesPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/resources/whitepapers" />
-        <title>
-          Technical Whitepapers | DSecure Data Security Research & Analysis
-        </title>
-        <meta
-          name="description"
-          content="Download technical whitepapers on data security, compliance, and erasure technologies. Expert research and analysis from DSecure security professionals."
-        />
-        <meta
-          name="keywords"
-          content="data security whitepapers, cybersecurity research, data erasure technology, security analysis, compliance whitepapers, technical documentation"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('whitepapers')} />
       
       <WhitepapersResourcesContent />
     </>

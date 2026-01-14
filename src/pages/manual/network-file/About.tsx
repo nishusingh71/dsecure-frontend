@@ -1,17 +1,12 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import { Building, Globe, Award, Users, Zap, Shield } from "lucide-react";
 
 const About: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Helmet>
-        <title>About DSecureTech - DSecure Network File Manual</title>
-        <meta
-          name="description"
-          content="Learn about DSecureTech, a global leader in Data Care solutions including data recovery, email repair, file repair, and data erasure."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

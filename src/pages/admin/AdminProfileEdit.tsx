@@ -1,6 +1,5 @@
 import { useAuth } from '@/auth/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
-import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AdminDashboardAPI, type ProfileData } from '@/services/adminDashboardAPI'

@@ -1,17 +1,12 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const OverwriteGuideBlog: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
-      <Helmet>
-        <title>Overwrite Guide | D-Secure Blog</title>
-        <meta
-          name="description"
-          content="Learn how many overwrites are needed for secure data erasure following NIST 800-88 and DoD 5220.22-M standards."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('blog')} />
 
       {/* Hero Section */}
       <section className="py-16 bg-white shadow-lg rounded-xl mx-4 md:mx-12 lg:mx-24 text-center">

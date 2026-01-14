@@ -1,6 +1,7 @@
 import Reveal from '@/components/Reveal'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import SEOHead from '@/components/SEOHead'
+import { getSEOForPage } from '@/utils/seo'
 import { downloadResource } from '../../utils/downloadUtils'
 import { useToast } from '@/components/Toast'
 import {
@@ -18,21 +19,7 @@ import {
 export default function CaseStudiesResourcesPage() {
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/resources/case-studies" />
-        <title>
-          Customer Case Studies | DSecure Success Stories & ROI Analysis
-        </title>
-        <meta
-          name="description"
-          content="Real-world case studies showcasing successful DSecure implementations. Learn how organizations achieved compliance and ROI with our data erasure solutions."
-        />
-        <meta
-          name="keywords"
-          content="DSecure case studies, customer success stories, data erasure ROI, compliance success, implementation case studies"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('case-studies')} />
 
       <CaseStudiesResourcesContent />
     </>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";

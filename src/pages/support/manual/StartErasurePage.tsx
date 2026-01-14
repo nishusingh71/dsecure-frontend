@@ -1,15 +1,13 @@
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
 const StartErasurePage: React.FC = memo(() => {
   return (
     <>
-      <Helmet>
-        <title>Erasure Operation Setup | D-Secure</title>
-        <meta name="description" content="Configure erasure parameters, select methods, and initiate secure data destruction." />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">

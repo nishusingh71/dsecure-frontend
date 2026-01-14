@@ -93,17 +93,17 @@ export default function EnhancedUserDashboard() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/userdashboard" />
-        <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
+        <link rel="canonical" href="https://dsecuretech.com/user/dashboard" />
+        <title>User Dashboard - DSecure Tech | Data Erasure Management</title>
         <meta
           name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+          content="Access your DSecure Tech user dashboard to manage data erasure tasks, view certificates, and monitor system performance."
         />
         <meta
           name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
+          content="user dashboard, data erasure management, erasure certificates, user portal"
         />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="container-app py-12">
         {/* Header with JWT-based user info */}

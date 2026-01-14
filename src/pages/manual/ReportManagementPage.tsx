@@ -1,5 +1,6 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 import {
   ArrowLeft,
   ChevronRight,
@@ -16,22 +17,7 @@ import { Link } from 'react-router-dom';
 const ReportManagementPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Helmet>
-        <title>
-          DSecure Report Management - Preview, Save & Cloud Sync | Complete
-          Guide
-        </title>
-        <meta
-          name="description"
-          content="Learn how to manage DSecure erasure reports - preview, save, customize, and sync to cloud. Complete guide to report features and settings."
-        />
-        <meta
-          name="keywords"
-          content="DSecure reports, erasure reports, save reports, preview reports, cloud sync, report management"
-        />
-        {/* Force Light Mode */}
-        <meta name="color-scheme" content="light" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">

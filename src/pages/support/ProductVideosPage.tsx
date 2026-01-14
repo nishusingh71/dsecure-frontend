@@ -1,5 +1,6 @@
 import React, { useState, memo } from "react";
-import { Helmet } from 'react-helmet-async'
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
@@ -196,19 +197,7 @@ const ProductVideosPage: React.FC = memo(() => {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/product-videos" />
-        <title>Product Videos | DSecure Tutorials & Walkthroughs</title>
-        <meta
-          name="description"
-          content="Watch comprehensive video tutorials and walkthroughs for DSecure data erasure solutions. Learn through visual guides and step-by-step demonstrations."
-        />
-        <meta
-          name="keywords"
-          content="DSecure videos, tutorials, walkthroughs, video guides, data erasure tutorials, product demonstrations"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('product-videos')} />
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}

@@ -3,216 +3,582 @@
   <!-- Main Pages -->
   <url>
     <loc>https://dsecuretech.com/</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/about</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/contact</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Core Service Pages -->
   <url>
     <loc>https://dsecuretech.com/services</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/features</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/services/device-erasure</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/services/network-erasure</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/services/cloud-erasure</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Solutions Pages -->
   <url>
     <loc>https://dsecuretech.com/solutions</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/solutions/enterprise</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/solutions/healthcare</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/solutions/financial</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Compliance and Resources -->
   <url>
     <loc>https://dsecuretech.com/compliance</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/resources</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/resources/documentation</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/resources/case-studies</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/resources/compliance</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/resources/whitepapers</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Business Pages -->
   <url>
     <loc>https://dsecuretech.com/pricing</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/partners</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Support Pages -->
   <url>
     <loc>https://dsecuretech.com/support</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/support/faqs</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/support/knowledge-base</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/support/get-started</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/support/help-manual</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/support/product-videos</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Legal and Policy Pages -->
   <url>
     <loc>https://dsecuretech.com/privacy-policy</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/terms-of-service</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/cookie-policy</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/legal-policy</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Security and Status -->
   <url>
     <loc>https://dsecuretech.com/security</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dsecuretech.com/status</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.5</priority>
+    <priority>1.0</priority>
   </url>
   
   <!-- Diagnostics (for internal use - lower priority) -->
   <url>
     <loc>https://dsecuretech.com/diagnostics</loc>
-    <lastmod>2025-10-07</lastmod>
+    <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Products and Downloads -->
+  <url>
+    <loc>https://dsecuretech.com/products</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/products/mobile-erasure</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/download</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/pricing-and-plan</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Additional Resource Pages -->
+  <url>
+    <loc>https://dsecuretech.com/resources/datasheets</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/resources/brochures</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/resources/ebooks</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/technical-documentation</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Blog -->
+  <url>
+    <loc>https://dsecuretech.com/blog</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Company Pages -->
+  <url>
+    <loc>https://dsecuretech.com/news</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/press</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/careers</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/team</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/leadership</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Trial and Demo Pages -->
+  <url>
+    <loc>https://dsecuretech.com/free-trial</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/request-demo</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/live-demo</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Certifications and Standards -->
+  <url>
+    <loc>https://dsecuretech.com/certifications</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/standards</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Use Cases and Comparisons -->
+  <url>
+    <loc>https://dsecuretech.com/use-cases</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/comparison</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Training and Learning -->
+  <url>
+    <loc>https://dsecuretech.com/training</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/academy</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/webinars</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/events</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Integration and API -->
+  <url>
+    <loc>https://dsecuretech.com/integrations</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/api-documentation</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Tools and Calculators -->
+  <url>
+    <loc>https://dsecuretech.com/roi-calculator</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/assessment</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Additional Resources -->
+  <url>
+    <loc>https://dsecuretech.com/changelog</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/release-notes</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Community -->
+  <url>
+    <loc>https://dsecuretech.com/community</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/forum</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Customer Success -->
+  <url>
+    <loc>https://dsecuretech.com/testimonials</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/customer-stories</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/reviews</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Partner Pages -->
+  <url>
+    <loc>https://dsecuretech.com/partner-program</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/resellers</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/affiliates</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Additional Service Pages -->
+  <url>
+    <loc>https://dsecuretech.com/consulting</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/professional-services</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/implementation</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Guide Pages -->
+  <url>
+    <loc>https://dsecuretech.com/crypto-erase-ssd</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/wipe-mac-m1</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/wipe-sas-drive</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/cloud-console-guide</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/support/manual/cryptographic-erasure</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Additional Solutions Pages -->
+  <url>
+    <loc>https://dsecuretech.com/solutions/service-providers</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/solutions/financial-services</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/solutions/itad</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/solutions/education</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/solutions/government</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Industry Specific Pages -->
+  <url>
+    <loc>https://dsecuretech.com/enterprise</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/healthcare-services</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dsecuretech.com/itad-solution</loc>
+    <lastmod>2026-01-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>
 </urlset>

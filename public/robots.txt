@@ -1,47 +1,140 @@
 User-agent: *
 Allow: /
 
-# Important pages for crawling
-Allow: /services
-Allow: /solutions
-Allow: /compliance
-Allow: /pricing
-Allow: /resources
+# Main Pages
 Allow: /about
 Allow: /contact
-Allow: /diagnostics
-Allow: /partners
-Allow: /support
 Allow: /features
 Allow: /security
 Allow: /status
-Allow: /privacy-policy
-Allow: /terms-of-service
-Allow: /cookie-policy
-Allow: /legal-policy
+Allow: /diagnostics
+Allow:/products
+Allow:/Pricing-and-plan
 
-# Allow specific service pages
+# Core Service Pages
+Allow: /services
 Allow: /services/device-erasure
 Allow: /services/network-erasure
 Allow: /services/cloud-erasure
 
-# Allow specific solution pages
+# Products
+Allow: /products
+Allow: /products/mobile-erasure
+
+# Solutions Pages
+Allow: /solutions
 Allow: /solutions/enterprise
 Allow: /solutions/healthcare
 Allow: /solutions/financial
+Allow: /solutions/financial-services
+Allow: /solutions/itad
+Allow: /solutions/education
+Allow: /solutions/government
+Allow: /solutions/service-providers
 
-# Allow specific resource pages
+# Industry Specific Pages
+Allow: /enterprise
+Allow: /healthcare-services
+Allow: /itad-solution
+
+# Compliance and Resources
+Allow: /compliance
+Allow: /resources
 Allow: /resources/documentation
 Allow: /resources/case-studies
 Allow: /resources/compliance
 Allow: /resources/whitepapers
+Allow: /resources/datasheets
+Allow: /resources/brochures
+Allow: /resources/ebooks
+Allow: /technical-documentation
 
-# Allow support pages
+# Business Pages
+Allow: /pricing
+Allow: /pricing-and-plan
+Allow: /partners
+Allow: /download
+
+# Support Pages
+Allow: /support
 Allow: /support/faqs
 Allow: /support/knowledge-base
 Allow: /support/get-started
 Allow: /support/help-manual
 Allow: /support/product-videos
+
+# Legal and Policy Pages
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /cookie-policy
+Allow: /legal-policy
+
+# Company Pages
+Allow: /news
+Allow: /press
+Allow: /careers
+Allow: /team
+Allow: /leadership
+
+# Trial and Demo Pages
+Allow: /free-trial
+Allow: /request-demo
+Allow: /live-demo
+
+# Certifications and Standards
+Allow: /certifications
+Allow: /standards
+
+# Use Cases and Comparisons
+Allow: /use-cases
+Allow: /comparison
+
+# Training and Learning
+Allow: /training
+Allow: /academy
+Allow: /webinars
+Allow: /events
+
+# Integration and API
+Allow: /integrations
+Allow: /api-documentation
+
+# Tools and Calculators
+Allow: /roi-calculator
+Allow: /assessment
+
+# Additional Resources
+Allow: /changelog
+Allow: /release-notes
+
+# Blog and Content
+Allow: /blog
+
+# Community
+Allow: /community
+Allow: /forum
+
+# Customer Success
+Allow: /testimonials
+Allow: /customer-stories
+Allow: /reviews
+
+# Partner Pages
+Allow: /partner-program
+Allow: /resellers
+Allow: /affiliates
+
+# Additional Service Pages
+Allow: /consulting
+Allow: /professional-services
+Allow: /implementation
+
+# Guide Pages
+Allow: /crypto-erase-ssd
+Allow: /wipe-mac-m1
+Allow: /wipe-sas-drive
+Allow: /cloud-console-guide
+Allow: /support/manual/cryptographic-erasure
 
 # Block admin and auth pages from search engines
 Disallow: /admin
@@ -58,7 +151,8 @@ Disallow: /*.tsx
 Disallow: /_redirects
 Disallow: /vercel.json
 
-# Block API routes if any
+# Block API routes (but allow documentation)
+Allow: /api-documentation
 Disallow: /api/
 
 # Sitemap location for search engines
@@ -77,4 +171,9 @@ Allow: /
 User-agent: Slurp
 Allow: /
 
-# Last updated: 2025-10-07
+# Block user-specific and internal pages
+Disallow: /user/
+Disallow: /checkout
+Disallow: /search-demo
+
+# Last updated: 2026-01-14

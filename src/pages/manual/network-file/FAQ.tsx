@@ -1,5 +1,6 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import { HelpCircle, ChevronRight } from "lucide-react";
 
 const FAQ: React.FC = () => {

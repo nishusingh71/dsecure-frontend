@@ -1,7 +1,6 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async';
 
 import {
   CheckIcon,

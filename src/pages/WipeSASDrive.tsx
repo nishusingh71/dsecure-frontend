@@ -1,14 +1,12 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const WipeSASDrive: React.FC = () => {
   return (
     <>
-      <Helmet>
-        <title>WipeSASDrive | DSecure - Professional Data Erasure Guide</title>
-        <meta name="description" content="Professional guide for secure data erasure using DSecure tools and methods." />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('wipe-sas-drive')} />
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         <section className="py-16 md:py-24">

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/auth/AuthContext';
-import { Helmet } from 'react-helmet-async';
+import SEOHead from '@/components/SEOHead';
+import { getSEOForPage } from '@/utils/seo';
 
 interface PlanDetails {
   title: string;
@@ -118,21 +119,7 @@ export default function PaymentPage() {
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/payment" />
-        <title>
-          Payment | DSecure Data Erasure Service Purchase
-        </title>
-        <meta
-          name="description"
-          content="Secure payment gateway for DSecure data erasure services. Complete your purchase with our trusted payment system for enterprise data destruction solutions."
-        />
-        <meta
-          name="keywords"
-          content="secure payment, data erasure purchase, enterprise payment, DSecure billing, payment gateway"
-        />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('payment')} />
 
       <div className="container-app py-12">
         <div className="max-w-4xl mx-auto">

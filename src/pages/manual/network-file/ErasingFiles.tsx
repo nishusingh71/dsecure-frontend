@@ -1,17 +1,12 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import { Trash2, HardDrive, FolderOpen, CheckCircle, AlertCircle, Play, Eye, Shield, Database } from "lucide-react";
 
 const ErasingFiles: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Helmet>
-        <title>Erasing Files and Folders - DSecure Network File Manual</title>
-        <meta
-          name="description"
-          content="Learn how to securely erase files and folders from network computers using DSecure File Eraser Network."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

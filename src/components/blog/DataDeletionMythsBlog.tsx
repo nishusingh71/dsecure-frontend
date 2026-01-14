@@ -1,5 +1,6 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const DataDeletionMythsBlog: React.FC = () => {
@@ -13,13 +14,7 @@ const DataDeletionMythsBlog: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
-      <Helmet>
-        <title>Top 5 Myths About Secure Data Deletion | D-Secure Blog</title>
-        <meta
-          name="description"
-          content="Debunk common misconceptions about secure data deletion and learn what actually keeps data safe."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('blog')} />
 
       {/* Hero Section */}
       <section className="py-16 bg-white shadow-lg rounded-xl mx-4 md:mx-12 lg:mx-24 text-center">

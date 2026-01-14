@@ -29,6 +29,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const [showCustomModal, setShowCustomModal] = useState(false);
   const [showSpecialPricingModal, setShowSpecialPricingModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("basic");
+  const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
 
   // Read URL parameters and set initial state
   useEffect(() => {
@@ -652,8 +653,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
   };
 
   const handleBuyNow = async () => {
+    // Set loading state immediately
+    setIsBuyNowLoading(true);
+
     if (selectedLicenses === "custom" || selectedPlan === "custom") {
       setShowCustomModal(true);
+      setIsBuyNowLoading(false); // Reset loading for custom modal
       return;
     }
 
@@ -668,6 +673,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     if (!productId) {
       showToast('Invalid product selection. Please try again.', 'error');
+      setIsBuyNowLoading(false); // Reset loading on error
       return;
     }
 
@@ -710,18 +716,20 @@ const PricingAndPlanPage: React.FC = memo(() => {
       if (!checkoutUrl || typeof checkoutUrl !== 'string') {
         console.error('❌ No checkout URL in response:', response.data);
         showToast('Failed to create checkout session. Please try again.', 'error');
+        setIsBuyNowLoading(false); // Reset loading on error
         return;
       }
 
       console.log('🚀 Redirecting to checkout:', checkoutUrl);
 
-      // Redirect to Dodo Payments checkout
+      // Redirect to Dodo Payments checkout (loading will stop naturally when page redirects)
       window.location.href = checkoutUrl;
 
     } catch (error: any) {
       console.error('Checkout session creation failed:', error);
       console.error('Error response:', error.response?.data);
       showToast(error.response?.data?.message || error.message || 'Payment system unavailable. Please try again later.', 'error');
+      setIsBuyNowLoading(false); // Reset loading on error
     }
   };
 
@@ -1003,11 +1011,42 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 {/* Action Button */}
                 <button
                   onClick={handleBuyNow}
-                  className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  disabled={isBuyNowLoading}
+                  className={`w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 ${
+                    isBuyNowLoading ? 'opacity-70 cursor-not-allowed hover:scale-100' : ''
+                  }`}
                 >
-                  {selectedLicenses === "custom" || selectedPlan === "custom"
-                    ? " Request Custom Quote"
-                    : " Buy Now"}
+                  {isBuyNowLoading ? (
+                    <>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      {selectedLicenses === "custom" || selectedPlan === "custom"
+                        ? " Request Custom Quote"
+                        : " Buy Now"}
+                    </>
+                  )}
                 </button>
 
                 {/* Trust Indicators */}

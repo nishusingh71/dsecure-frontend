@@ -1,17 +1,12 @@
 import React from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import { Layout, Menu, Settings, FileText, Cloud, HelpCircle, Monitor, MousePointer, Keyboard, Eye } from "lucide-react";
 
 const UserInterface: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Helmet>
-        <title>User Interface Overview - DSecure Network File Manual</title>
-        <meta
-          name="description"
-          content="Comprehensive guide to navigating the DSecure File Eraser Network user interface."
-        />
-      </Helmet>
+      <SEOHead seo={getSEOForPage('help-manual')} />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

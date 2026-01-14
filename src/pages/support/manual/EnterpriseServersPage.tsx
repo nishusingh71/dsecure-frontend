@@ -1,17 +1,12 @@
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const EnterpriseServersPage: React.FC = memo(() => {
     return (
         <>
-            <Helmet>
-                <title>Enterprise Servers | D-Secure Manual</title>
-                <meta
-                    name="description"
-                    content="D-Secure enterprise server erasure guide for data centers, virtualization platforms, and server hardware management."
-                />
-            </Helmet>
+            <SEOHead seo={getSEOForPage('help-manual')} />
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}

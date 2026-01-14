@@ -1,17 +1,12 @@
 import React, { memo } from "react";
-import { Helmet } from "react-helmet-async";
+import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const ComplianceStandardsPage: React.FC = memo(() => {
     return (
         <>
-            <Helmet>
-                <title>Compliance Standards | D-Secure Manual</title>
-                <meta
-                    name="description"
-                    content="D-Secure compliance standards guide covering NIST 800-88, DoD 5220.22-M, and international data erasure standards."
-                />
-            </Helmet>
+            <SEOHead seo={getSEOForPage('help-manual')} />
 
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}

@@ -920,6 +920,935 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'license activation'
     ]),
     canonicalUrl: getCanonicalUrl('/payment'),
+  },
+
+  'crypto-erase-ssd': {
+    title: 'CryptoEraseSSD | DSecure - Secure SSD Data Erasure',
+    description: 'Professional guide to cryptographic erase (CryptoErase) for SSDs: when to use it, how it works, and best practices for secure disposal in 2025.',
+    keywords: generateKeywords([
+      'crypto erase SSD',
+      'cryptographic erase',
+      'SSD secure erase',
+      'ATA secure erase',
+      'SSD data erasure',
+      'crypto erase guide',
+      'SSD sanitization',
+      'secure SSD disposal'
+    ]),
+    canonicalUrl: getCanonicalUrl('/crypto-erase-ssd'),
+  },
+
+  'wipe-mac-m1': {
+    title: 'WipeMacM1 Guide | DSecure - Securely Erase Your M1 Mac',
+    description: 'Learn how to securely wipe your Apple M1 Mac using professional data erasure methods without compromising security.',
+    keywords: generateKeywords([
+      'wipe Mac M1',
+      'erase M1 Mac',
+      'Apple Silicon erasure',
+      'Mac data erasure',
+      'M1 Mac secure wipe',
+      'Mac data destruction',
+      'Apple Silicon sanitization'
+    ]),
+    canonicalUrl: getCanonicalUrl('/wipe-mac-m1'),
+  },
+
+  'wipe-sas-drive': {
+    title: 'WipeSASDrive | DSecure - Professional Data Erasure Guide',
+    description: 'Professional guide for secure data erasure using DSecure tools and methods.',
+    keywords: generateKeywords([
+      'wipe SAS drive',
+      'SAS drive erasure',
+      'SAS drive sanitization',
+      'enterprise drive erasure',
+      'SAS data destruction',
+      'server drive wiping'
+    ]),
+    canonicalUrl: getCanonicalUrl('/wipe-sas-drive'),
+  },
+
+  'retain-os-guide': {
+    title: 'Retain OS Guide | DSecure - Selective Data Erasure',
+    description: 'Learn how to wipe everything and retain your operating system using DSecure selective erasure methods.',
+    keywords: generateKeywords([
+      'retain OS erasure',
+      'selective data erasure',
+      'OS preservation',
+      'partial drive wipe',
+      'selective wipe',
+      'OS retention erasure'
+    ]),
+    canonicalUrl: getCanonicalUrl('/retain-os-guide'),
+  },
+
+  'admin-performance': {
+    title: 'DSecureTech Performance | System Performance & Erasure Metrics',
+    description: 'Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time.',
+    keywords: generateKeywords([
+      'performance monitoring',
+      'erasure metrics',
+      'system analytics',
+      'data erasure performance',
+      'admin performance dashboard',
+      'system throughput',
+      'erasure statistics'
+    ]),
+    canonicalUrl: getCanonicalUrl('/admin/performance'),
+  },
+
+  // Help and Support Pages
+  'help-manual': {
+    title: 'Help Manual - DSecure Tech User Guide & Documentation',
+    description: 'Comprehensive help manual and user guide for DSecure Tech data erasure software. Step-by-step instructions and troubleshooting.',
+    keywords: generateKeywords([
+      'help manual',
+      'user guide',
+      'software documentation',
+      'erasure software manual',
+      'data destruction guide',
+      'user instructions',
+      'software help',
+      'tutorial guide',
+      'how to use erasure software',
+      'software manual'
+    ]),
+    canonicalUrl: getCanonicalUrl('/support/help-manual'),
+  },
+
+  'faqs': {
+    title: 'FAQs - Frequently Asked Questions | DSecure Tech',
+    description: 'Find answers to frequently asked questions about DSecure Tech data erasure software, licensing, compliance, and technical support.',
+    keywords: generateKeywords([
+      'frequently asked questions',
+      'FAQ data erasure',
+      'erasure software questions',
+      'data destruction FAQ',
+      'software support FAQ',
+      'common questions',
+      'help FAQ',
+      'technical FAQ',
+      'erasure FAQ',
+      'data security FAQ'
+    ]),
+    canonicalUrl: getCanonicalUrl('/support/faqs'),
+  },
+
+  'knowledge-base': {
+    title: 'Knowledge Base - Data Erasure Resources & Guides | DSecure Tech',
+    description: 'Comprehensive knowledge base with articles, guides, and resources for DSecure Tech data erasure software and best practices.',
+    keywords: generateKeywords([
+      'knowledge base',
+      'erasure articles',
+      'data destruction guides',
+      'technical resources',
+      'help articles',
+      'documentation library',
+      'erasure knowledge base',
+      'support articles',
+      'technical guides',
+      'resource library'
+    ]),
+    canonicalUrl: getCanonicalUrl('/support/knowledge-base'),
+  },
+
+  'get-started': {
+    title: 'Get Started - Quick Start Guide | DSecure Tech',
+    description: 'Get started with DSecure Tech data erasure software. Quick start guide, installation instructions, and first steps for new users.',
+    keywords: generateKeywords([
+      'get started',
+      'quick start guide',
+      'beginner guide',
+      'first steps',
+      'installation guide',
+      'setup guide',
+      'getting started',
+      'new user guide',
+      'onboarding guide',
+      'start guide'
+    ]),
+    canonicalUrl: getCanonicalUrl('/support/get-started'),
+  },
+
+  'product-videos': {
+    title: 'Product Videos - Tutorials & Demos | DSecure Tech',
+    description: 'Watch product videos, tutorials, and demonstrations for DSecure Tech data erasure software. Learn how to use features effectively.',
+    keywords: generateKeywords([
+      'product videos',
+      'tutorial videos',
+      'software demos',
+      'how-to videos',
+      'erasure tutorials',
+      'video guides',
+      'software demonstrations',
+      'training videos',
+      'instructional videos',
+      'product demonstrations'
+    ]),
+    canonicalUrl: getCanonicalUrl('/support/product-videos'),
+  },
+
+  'download': {
+    title: 'Download - DSecure Tech Data Erasure Software',
+    description: 'Download DSecure Tech data erasure software. Free trial available. Enterprise-grade data destruction and sanitization tools.',
+    keywords: generateKeywords([
+      'download data erasure',
+      'software download',
+      'free trial download',
+      'erasure software download',
+      'data destruction download',
+      'secure download',
+      'software installer',
+      'download trial',
+      'enterprise download',
+      'data wiping software download'
+    ]),
+    canonicalUrl: getCanonicalUrl('/download'),
+  },
+
+  // Resource Pages
+  'case-studies': {
+    title: 'Case Studies - Data Erasure Success Stories | DSecure Tech',
+    description: 'Read case studies and success stories from organizations using DSecure Tech data erasure solutions. Real-world implementations and results.',
+    keywords: generateKeywords([
+      'case studies',
+      'success stories',
+      'customer case studies',
+      'implementation stories',
+      'erasure case studies',
+      'real-world examples',
+      'customer success',
+      'use case examples',
+      'implementation examples',
+      'success examples'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resources/case-studies'),
+  },
+
+  'compliance-resources': {
+    title: 'Compliance Resources - Regulatory Guides | DSecure Tech',
+    description: 'Comprehensive compliance resources including GDPR, HIPAA, NIST, and ISO standards. Regulatory guides and compliance documentation.',
+    keywords: generateKeywords([
+      'compliance resources',
+      'regulatory guides',
+      'GDPR compliance',
+      'HIPAA compliance',
+      'NIST compliance',
+      'ISO compliance',
+      'compliance documentation',
+      'regulatory resources',
+      'compliance guides',
+      'standards compliance'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resources/compliance'),
+  },
+
+  'documentation': {
+    title: 'Documentation - Technical Documentation | DSecure Tech',
+    description: 'Complete technical documentation for DSecure Tech data erasure software. API documentation, user guides, and technical references.',
+    keywords: generateKeywords([
+      'technical documentation',
+      'software documentation',
+      'API documentation',
+      'user documentation',
+      'technical guides',
+      'documentation library',
+      'software manuals',
+      'technical reference',
+      'developer documentation',
+      'product documentation'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resources/documentation'),
+  },
+
+  'whitepapers': {
+    title: 'Whitepapers - Data Erasure Research & Insights | DSecure Tech',
+    description: 'Download whitepapers on data erasure, compliance, security best practices, and industry insights from DSecure Tech experts.',
+    keywords: generateKeywords([
+      'whitepapers',
+      'data erasure research',
+      'security whitepapers',
+      'compliance whitepapers',
+      'industry insights',
+      'research papers',
+      'technical whitepapers',
+      'security research',
+      'best practices papers',
+      'industry reports'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resources/whitepapers'),
+  },
+
+  'datasheets': {
+    title: 'Datasheets - Product Specifications | DSecure Tech',
+    description: 'Download product datasheets and specifications for DSecure Tech data erasure software. Technical details and feature overviews.',
+    keywords: generateKeywords([
+      'datasheets',
+      'product specifications',
+      'technical datasheets',
+      'product sheets',
+      'specification sheets',
+      'product information',
+      'technical specs',
+      'product details',
+      'feature sheets',
+      'specification documents'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resources/datasheets'),
+  },
+
+  'ebooks': {
+    title: 'eBooks - Data Erasure Guides & Resources | DSecure Tech',
+    description: 'Download free eBooks on data erasure, compliance, security best practices, and data destruction strategies.',
+    keywords: generateKeywords([
+      'ebooks',
+      'data erasure books',
+      'security ebooks',
+      'compliance ebooks',
+      'free ebooks',
+      'digital books',
+      'guide books',
+      'security guides',
+      'compliance guides',
+      'educational ebooks'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resources/ebooks'),
+  },
+
+  'brochures': {
+    title: 'Brochures - Product Information | DSecure Tech',
+    description: 'Download product brochures and marketing materials for DSecure Tech data erasure solutions and services.',
+    keywords: generateKeywords([
+      'brochures',
+      'product brochures',
+      'marketing materials',
+      'product information',
+      'solution brochures',
+      'service brochures',
+      'company brochures',
+      'product flyers',
+      'information brochures',
+      'solution sheets'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resources/brochures'),
+  },
+
+  // Blog
+  'blog': {
+    title: 'Blog - Data Erasure News & Insights | DSecure Tech',
+    description: 'Read the latest blog posts about data erasure, security best practices, compliance updates, and industry news from DSecure Tech.',
+    keywords: generateKeywords([
+      'data erasure blog',
+      'security blog',
+      'compliance blog',
+      'data security news',
+      'erasure insights',
+      'security articles',
+      'compliance articles',
+      'data destruction blog',
+      'security updates',
+      'industry news'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog'),
+  },
+
+  // Products
+  'products': {
+    title: 'Products - Data Erasure Software Solutions | DSecure Tech',
+    description: 'Explore DSecure Tech data erasure products including Drive Eraser, Mobile Eraser, File Eraser, and Admin Console solutions.',
+    keywords: generateKeywords([
+      'data erasure products',
+      'erasure software products',
+      'drive eraser',
+      'mobile eraser',
+      'file eraser',
+      'admin console',
+      'erasure solutions',
+      'data destruction products',
+      'software products',
+      'erasure tools'
+    ]),
+    canonicalUrl: getCanonicalUrl('/products'),
+  },
+
+  // Services and Solutions
+  'implementation': {
+    title: 'Implementation Services - Data Erasure Deployment | DSecure Tech',
+    description: 'Professional implementation services for DSecure Tech data erasure solutions. Expert deployment, configuration, and integration support.',
+    keywords: generateKeywords([
+      'implementation services',
+      'deployment services',
+      'software implementation',
+      'erasure deployment',
+      'integration services',
+      'setup services',
+      'configuration services',
+      'deployment support',
+      'implementation support',
+      'professional services'
+    ]),
+    canonicalUrl: getCanonicalUrl('/implementation'),
+  },
+
+  'partner-program': {
+    title: 'Partner Program - Join Our Partner Network | DSecure Tech',
+    description: 'Join the DSecure Tech partner program. Reseller opportunities, technology partnerships, and channel partner benefits.',
+    keywords: generateKeywords([
+      'partner program',
+      'reseller program',
+      'channel partners',
+      'technology partners',
+      'partner opportunities',
+      'reseller opportunities',
+      'partner benefits',
+      'channel program',
+      'technology alliance',
+      'partner network'
+    ]),
+    canonicalUrl: getCanonicalUrl('/partner-program'),
+  },
+
+  'professional-services': {
+    title: 'Professional Services - Data Erasure Consulting | DSecure Tech',
+    description: 'Professional services for data erasure including consulting, implementation, training, and ongoing support for enterprise clients.',
+    keywords: generateKeywords([
+      'professional services',
+      'erasure consulting',
+      'data security consulting',
+      'implementation services',
+      'training services',
+      'consulting services',
+      'enterprise services',
+      'professional support',
+      'expert services',
+      'consulting support'
+    ]),
+    canonicalUrl: getCanonicalUrl('/professional-services'),
+  },
+
+  'resellers': {
+    title: 'Resellers - Become a DSecure Tech Reseller',
+    description: 'Become a DSecure Tech reseller. Reseller program benefits, partner support, and opportunities to sell data erasure solutions.',
+    keywords: generateKeywords([
+      'resellers',
+      'reseller program',
+      'become a reseller',
+      'reseller opportunities',
+      'channel resellers',
+      'reseller benefits',
+      'reseller support',
+      'reseller network',
+      'authorized resellers',
+      'reseller partnership'
+    ]),
+    canonicalUrl: getCanonicalUrl('/resellers'),
+  },
+
+  // Customer Success
+  'reviews': {
+    title: 'Reviews - Customer Reviews & Testimonials | DSecure Tech',
+    description: 'Read customer reviews and testimonials for DSecure Tech data erasure software. See what our customers say about our solutions.',
+    keywords: generateKeywords([
+      'customer reviews',
+      'software reviews',
+      'erasure software reviews',
+      'user reviews',
+      'product reviews',
+      'customer testimonials',
+      'user feedback',
+      'customer feedback',
+      'software ratings',
+      'product ratings'
+    ]),
+    canonicalUrl: getCanonicalUrl('/reviews'),
+  },
+
+  'customer-stories': {
+    title: 'Customer Stories - Success Stories | DSecure Tech',
+    description: 'Read customer success stories and case studies from organizations using DSecure Tech data erasure solutions.',
+    keywords: generateKeywords([
+      'customer stories',
+      'success stories',
+      'customer success',
+      'case studies',
+      'customer testimonials',
+      'user stories',
+      'implementation stories',
+      'success examples',
+      'customer experiences',
+      'real-world stories'
+    ]),
+    canonicalUrl: getCanonicalUrl('/customer-stories'),
+  },
+
+  'testimonials': {
+    title: 'Testimonials - Customer Testimonials | DSecure Tech',
+    description: 'Read testimonials from DSecure Tech customers. See how organizations benefit from our data erasure solutions.',
+    keywords: generateKeywords([
+      'testimonials',
+      'customer testimonials',
+      'user testimonials',
+      'customer feedback',
+      'client testimonials',
+      'customer quotes',
+      'user feedback',
+      'customer reviews',
+      'testimonial quotes',
+      'customer experiences'
+    ]),
+    canonicalUrl: getCanonicalUrl('/testimonials'),
+  },
+
+  // Community and Learning
+  'forum': {
+    title: 'Forum - Community Discussion | DSecure Tech',
+    description: 'Join the DSecure Tech community forum. Discuss data erasure, ask questions, share experiences, and get help from experts.',
+    keywords: generateKeywords([
+      'community forum',
+      'discussion forum',
+      'user forum',
+      'support forum',
+      'erasure forum',
+      'community discussion',
+      'user community',
+      'discussion board',
+      'community support',
+      'user discussions'
+    ]),
+    canonicalUrl: getCanonicalUrl('/forum'),
+  },
+
+  'release-notes': {
+    title: 'Release Notes - Software Updates | DSecure Tech',
+    description: 'View release notes and changelog for DSecure Tech data erasure software updates, new features, and bug fixes.',
+    keywords: generateKeywords([
+      'release notes',
+      'changelog',
+      'software updates',
+      'version updates',
+      'update notes',
+      'what\'s new',
+      'software changelog',
+      'version history',
+      'update history',
+      'release history'
+    ]),
+    canonicalUrl: getCanonicalUrl('/release-notes'),
+  },
+
+  'roi-calculator': {
+    title: 'ROI Calculator - Calculate Your Savings | DSecure Tech',
+    description: 'Calculate the return on investment for DSecure Tech data erasure solutions. Estimate cost savings and efficiency gains.',
+    keywords: generateKeywords([
+      'ROI calculator',
+      'return on investment',
+      'cost calculator',
+      'savings calculator',
+      'investment calculator',
+      'cost savings',
+      'ROI analysis',
+      'cost benefit calculator',
+      'investment analysis',
+      'savings analysis'
+    ]),
+    canonicalUrl: getCanonicalUrl('/roi-calculator'),
+  },
+
+  'integrations': {
+    title: 'Integrations - Third-Party Integrations | DSecure Tech',
+    description: 'Integrate DSecure Tech data erasure software with your existing IT infrastructure. API integrations and third-party connectors.',
+    keywords: generateKeywords([
+      'integrations',
+      'API integrations',
+      'third-party integrations',
+      'software integrations',
+      'system integrations',
+      'integration partners',
+      'API connectors',
+      'integration solutions',
+      'enterprise integrations',
+      'software connectors'
+    ]),
+    canonicalUrl: getCanonicalUrl('/integrations'),
+  },
+
+  'use-cases': {
+    title: 'Use Cases - Data Erasure Applications | DSecure Tech',
+    description: 'Explore use cases and applications for DSecure Tech data erasure solutions across industries and scenarios.',
+    keywords: generateKeywords([
+      'use cases',
+      'erasure use cases',
+      'data destruction use cases',
+      'application scenarios',
+      'use case examples',
+      'industry use cases',
+      'scenario examples',
+      'application examples',
+      'use case scenarios',
+      'practical applications'
+    ]),
+    canonicalUrl: getCanonicalUrl('/use-cases'),
+  },
+
+  'events': {
+    title: 'Events - Conferences & Webinars | DSecure Tech',
+    description: 'Upcoming events, conferences, webinars, and workshops from DSecure Tech. Learn about data erasure and security best practices.',
+    keywords: generateKeywords([
+      'events',
+      'conferences',
+      'webinars',
+      'workshops',
+      'data security events',
+      'erasure conferences',
+      'security conferences',
+      'industry events',
+      'training events',
+      'educational events'
+    ]),
+    canonicalUrl: getCanonicalUrl('/events'),
+  },
+
+  'standards': {
+    title: 'Standards - Data Erasure Standards & Compliance | DSecure Tech',
+    description: 'Learn about data erasure standards including NIST, ISO, DoD, and industry-specific compliance requirements.',
+    keywords: generateKeywords([
+      'data erasure standards',
+      'NIST standards',
+      'ISO standards',
+      'DoD standards',
+      'compliance standards',
+      'regulatory standards',
+      'industry standards',
+      'erasure standards',
+      'security standards',
+      'compliance requirements'
+    ]),
+    canonicalUrl: getCanonicalUrl('/standards'),
+  },
+
+  'training': {
+    title: 'Training - Data Erasure Training Programs | DSecure Tech',
+    description: 'Professional training programs for DSecure Tech data erasure software. Certification courses and skill development programs.',
+    keywords: generateKeywords([
+      'training programs',
+      'erasure training',
+      'software training',
+      'certification training',
+      'professional training',
+      'skill development',
+      'training courses',
+      'educational training',
+      'technical training',
+      'user training'
+    ]),
+    canonicalUrl: getCanonicalUrl('/training'),
+  },
+
+  'webinars': {
+    title: 'Webinars - Data Erasure Webinars | DSecure Tech',
+    description: 'Join DSecure Tech webinars on data erasure, security, compliance, and best practices. Free educational webinars.',
+    keywords: generateKeywords([
+      'webinars',
+      'online webinars',
+      'data erasure webinars',
+      'security webinars',
+      'compliance webinars',
+      'educational webinars',
+      'free webinars',
+      'training webinars',
+      'expert webinars',
+      'industry webinars'
+    ]),
+    canonicalUrl: getCanonicalUrl('/webinars'),
+  },
+
+  // Company Pages
+  'leadership': {
+    title: 'Leadership - Executive Team | DSecure Tech',
+    description: 'Meet the leadership team at DSecure Tech. Learn about our executives and their vision for data security and erasure.',
+    keywords: generateKeywords([
+      'leadership team',
+      'executive team',
+      'company leadership',
+      'management team',
+      'executives',
+      'leadership',
+      'company executives',
+      'management',
+      'executive leadership',
+      'company management'
+    ]),
+    canonicalUrl: getCanonicalUrl('/leadership'),
+  },
+
+  'live-demo': {
+    title: 'Live Demo - See DSecure Tech in Action',
+    description: 'Schedule a live demo of DSecure Tech data erasure software. See how our solutions work in real-time.',
+    keywords: generateKeywords([
+      'live demo',
+      'software demo',
+      'product demonstration',
+      'live demonstration',
+      'interactive demo',
+      'real-time demo',
+      'demo session',
+      'product demo',
+      'software demonstration',
+      'demo request'
+    ]),
+    canonicalUrl: getCanonicalUrl('/live-demo'),
+  },
+
+  'request-demo': {
+    title: 'Request Demo - Schedule a Demo | DSecure Tech',
+    description: 'Request a personalized demo of DSecure Tech data erasure solutions. See how our software can meet your needs.',
+    keywords: generateKeywords([
+      'request demo',
+      'schedule demo',
+      'demo request',
+      'product demo',
+      'software demo',
+      'personalized demo',
+      'demo scheduling',
+      'request demonstration',
+      'demo booking',
+      'schedule demonstration'
+    ]),
+    canonicalUrl: getCanonicalUrl('/request-demo'),
+  },
+
+  'team': {
+    title: 'Team - Meet Our Team | DSecure Tech',
+    description: 'Meet the DSecure Tech team. Learn about our experts in data security, software development, and customer support.',
+    keywords: generateKeywords([
+      'team',
+      'company team',
+      'our team',
+      'team members',
+      'staff',
+      'employees',
+      'company staff',
+      'team profiles',
+      'company employees',
+      'team information'
+    ]),
+    canonicalUrl: getCanonicalUrl('/team'),
+  },
+
+  'free-trial': {
+    title: 'Free Trial - Try DSecure Tech Free | Data Erasure Software',
+    description: 'Start your free trial of DSecure Tech data erasure software. No credit card required. Experience enterprise-grade data destruction.',
+    keywords: generateKeywords([
+      'free trial',
+      'trial version',
+      'free software trial',
+      'try free',
+      'no credit card trial',
+      'free erasure trial',
+      'trial download',
+      'free trial download',
+      'software trial',
+      'free trial period'
+    ]),
+    canonicalUrl: getCanonicalUrl('/free-trial'),
+  },
+
+  'news': {
+    title: 'News - Latest Updates & Announcements | DSecure Tech',
+    description: 'Stay updated with the latest news, announcements, and updates from DSecure Tech on data erasure and security.',
+    keywords: generateKeywords([
+      'news',
+      'latest news',
+      'company news',
+      'announcements',
+      'updates',
+      'news updates',
+      'industry news',
+      'security news',
+      'company announcements',
+      'latest updates'
+    ]),
+    canonicalUrl: getCanonicalUrl('/news'),
+  },
+
+  'press': {
+    title: 'Press - Press Releases & Media | DSecure Tech',
+    description: 'Press releases, media coverage, and press kit from DSecure Tech. Latest company news and media resources.',
+    keywords: generateKeywords([
+      'press',
+      'press releases',
+      'media coverage',
+      'press kit',
+      'media resources',
+      'company press',
+      'press information',
+      'media information',
+      'press materials',
+      'media kit'
+    ]),
+    canonicalUrl: getCanonicalUrl('/press'),
+  },
+
+  // Solutions Pages
+  'service-providers-solutions': {
+    title: 'Service Provider Solutions - Data Erasure for MSPs | DSecure Tech',
+    description: 'Data erasure solutions for managed service providers (MSPs) and IT service providers. Scalable, multi-tenant erasure platform.',
+    keywords: generateKeywords([
+      'service provider solutions',
+      'MSP solutions',
+      'managed service providers',
+      'IT service providers',
+      'multi-tenant erasure',
+      'service provider platform',
+      'MSP data erasure',
+      'service provider tools',
+      'provider solutions',
+      'MSP platform'
+    ]),
+    canonicalUrl: getCanonicalUrl('/solutions/service-providers'),
+  },
+
+  'financial-services': {
+    title: 'Financial Services Solutions - Banking Data Erasure | DSecure Tech',
+    description: 'Data erasure solutions for financial services, banks, and financial institutions. SOX, PCI DSS, and regulatory compliance.',
+    keywords: generateKeywords([
+      'financial services solutions',
+      'banking data erasure',
+      'financial data security',
+      'SOX compliance',
+      'PCI DSS compliance',
+      'bank data erasure',
+      'financial institution security',
+      'banking compliance',
+      'financial data destruction',
+      'bank data security'
+    ]),
+    canonicalUrl: getCanonicalUrl('/solutions/financial'),
+  },
+
+  'healthcare-services': {
+    title: 'Healthcare Solutions - HIPAA Compliant Data Erasure | DSecure Tech',
+    description: 'HIPAA-compliant data erasure solutions for healthcare organizations. Secure patient data destruction and medical device sanitization.',
+    keywords: generateKeywords([
+      'healthcare solutions',
+      'HIPAA compliant erasure',
+      'medical data destruction',
+      'patient data security',
+      'healthcare data erasure',
+      'medical device sanitization',
+      'PHI data destruction',
+      'healthcare compliance',
+      'medical data wiping',
+      'hospital data security'
+    ]),
+    canonicalUrl: getCanonicalUrl('/healthcare-services'),
+  },
+
+  'mobile-erasure-solutions': {
+    title: 'Mobile Erasure Solutions - Mobile Device Data Destruction | DSecure Tech',
+    description: 'Mobile device data erasure solutions for smartphones, tablets, and mobile devices. Secure mobile data destruction.',
+    keywords: generateKeywords([
+      'mobile erasure solutions',
+      'mobile device erasure',
+      'smartphone data erasure',
+      'tablet data erasure',
+      'mobile data destruction',
+      'phone data wiping',
+      'mobile device wiping',
+      'mobile data security',
+      'device erasure',
+      'mobile sanitization'
+    ]),
+    canonicalUrl: getCanonicalUrl('/products/mobile-erasure'),
+  },
+
+  'cryptographic-erasure': {
+    title: 'Cryptographic Erasure - CryptoErase Guide | DSecure Tech',
+    description: 'Learn about cryptographic erasure (CryptoErase) for SSDs and modern storage devices. Fast, secure data destruction method.',
+    keywords: generateKeywords([
+      'cryptographic erasure',
+      'crypto erase',
+      'SSD crypto erase',
+      'cryptographic sanitization',
+      'crypto erase guide',
+      'secure erase SSD',
+      'ATA secure erase',
+      'cryptographic destruction',
+      'crypto wipe',
+      'secure crypto erase'
+    ]),
+    canonicalUrl: getCanonicalUrl('/support/manual/cryptographic-erasure'),
+  },
+
+  'technical-documentation': {
+    title: 'Technical Documentation - API & Developer Docs | DSecure Tech',
+    description: 'Complete technical documentation for DSecure Tech including API references, developer guides, and integration documentation.',
+    keywords: generateKeywords([
+      'technical documentation',
+      'API documentation',
+      'developer documentation',
+      'API reference',
+      'developer guides',
+      'integration docs',
+      'technical reference',
+      'API guides',
+      'developer resources',
+      'technical guides'
+    ]),
+    canonicalUrl: getCanonicalUrl('/technical-documentation'),
+  },
+
+  'enterprise-solutions': {
+    title: 'Enterprise Solutions - Large-Scale Data Erasure | DSecure Tech',
+    description: 'Enterprise-grade data erasure solutions for large organizations. Scalable, centralized management, and compliance reporting.',
+    keywords: generateKeywords([
+      'enterprise solutions',
+      'enterprise data erasure',
+      'large-scale erasure',
+      'enterprise management',
+      'centralized erasure',
+      'enterprise platform',
+      'corporate solutions',
+      'enterprise tools',
+      'large organization solutions',
+      'enterprise deployment'
+    ]),
+    canonicalUrl: getCanonicalUrl('/solutions/enterprise'),
+  },
+
+  'financial-solutions': {
+    title: 'Financial Solutions - Banking & Finance Data Erasure | DSecure Tech',
+    description: 'Data erasure solutions for financial institutions, banks, and finance companies. SOX and PCI DSS compliant.',
+    keywords: generateKeywords([
+      'financial solutions',
+      'banking solutions',
+      'finance data erasure',
+      'financial institution security',
+      'bank data erasure',
+      'SOX compliance',
+      'PCI DSS compliance',
+      'financial data destruction',
+      'banking security',
+      'finance compliance'
+    ]),
+    canonicalUrl: getCanonicalUrl('/solutions/financial'),
+  },
+
+  'digital-protection-solutions': {
+    title: 'Digital Protection Solutions - Education Sector | DSecure Tech',
+    description: 'Data erasure and digital protection solutions for educational institutions. Secure student and institutional data destruction.',
+    keywords: generateKeywords([
+      'digital protection solutions',
+      'education solutions',
+      'school data erasure',
+      'university data security',
+      'educational institution security',
+      'student data protection',
+      'education data erasure',
+      'school data security',
+      'educational compliance',
+      'institutional data security'
+    ]),
+    canonicalUrl: getCanonicalUrl('/solutions/education'),
   }
 };
 
