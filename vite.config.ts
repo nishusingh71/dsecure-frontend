@@ -32,7 +32,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     // Increase chunk size limit to suppress warnings
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 3000,
     // Enhanced minification
     minify: 'esbuild',
     // Target modern browsers for better performance
