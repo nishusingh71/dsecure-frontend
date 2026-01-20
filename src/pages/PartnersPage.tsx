@@ -533,7 +533,7 @@ const PartnersPage: React.FC = () => {
                 {/* Main Heading */}
                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
                   <span className="block text-slate-900">
-                    <span>D</span>Secure{" "}
+                    <span>D-</span>Secure{" "}
                   </span>
                   {/* <span className="block text-slate-900">Erasure for</span> */}
                   <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">

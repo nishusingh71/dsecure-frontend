@@ -86,7 +86,7 @@ export default function EditUser() {
     
     // Validation
     if (!formData.name || !formData.email) {
-      alert('Please fill in all required fields')
+      console.log('Please fill in all required fields')
       return
     }
     
@@ -105,15 +105,12 @@ export default function EditUser() {
       
       // console.log('Updating user:', updatedUser)
       
-      // Success message
-      alert(`User "${formData.name}" has been updated successfully!`)
-      
-      // Navigate back to users list
+      // Success - Navigate back to users list
+      console.log(`User "${formData.name}" has been updated successfully!`)
       navigate('/admin/users')
       
     } catch (error) {
       console.error('Error updating user:', error)
-      alert('Failed to update user. Please try again.')
     } finally {
       setIsLoading(false)
     }

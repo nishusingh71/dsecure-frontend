@@ -9,6 +9,8 @@ import { apiClient } from '@/utils/enhancedApiClient'
 import { authService } from '@/utils/authService'
 import { isDemoMode, DEMO_MACHINES, DEMO_SUBUSERS } from '@/data/demoData'
 import { useSubusers } from '@/hooks/useSubusers'
+import { Group } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 
 // UI Machine interface for table display
 interface UIMachine {
@@ -23,6 +25,8 @@ interface UIMachine {
   vmStatus?: string
   totalLicenses?: number  // Total licenses available for this machine
   fingerprintHash?: string  // Machine fingerprint hash
+  group?: string  // ✅ Group name for filtering
+  groupName?: string  // ✅ Alternative group name field
 }
 
 export default function AdminMachines() {
@@ -32,6 +36,7 @@ export default function AdminMachines() {
   const [eraseFilter, setEraseFilter] = useState('')
   const [licenseFilter, setLicenseFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
+  const [groupFilter, setGroupFilter] = useState('')
   const [showUniqueOnly, setShowUniqueOnly] = useState(false)
   const [sortBy, setSortBy] = useState<keyof UIMachine>('hostname')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
@@ -66,8 +71,98 @@ export default function AdminMachines() {
   const currentUserEmail = getUserEmail();
   const isDemo = isDemoMode();
 
+  // ✅ Get user role for RBAC filtering
+  const getUserRole = (): string => {
+    const storedUser = localStorage.getItem('user_data');
+    const authUser = localStorage.getItem('authUser');
+
+    let storedUserData = null;
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {
+        console.error('Error parsing user_data:', e);
+      }
+    }
+
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {
+        console.error('Error parsing authUser:', e);
+      }
+    }
+
+    const jwtUser = authService.getUserFromToken();
+    return storedUserData?.role || storedUserData?.user_role || jwtUser?.role || 'user';
+  };
+
+  // ✅ Get user's groupId for GroupAdmin filtering
+  const getUserGroupId = (): string | null => {
+    const storedUser = localStorage.getItem('user_data');
+    const authUser = localStorage.getItem('authUser');
+
+    let storedUserData = null;
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {
+        console.error('Error parsing user_data:', e);
+      }
+    }
+
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {
+        console.error('Error parsing authUser:', e);
+      }
+    }
+
+    return storedUserData?.user_group || storedUserData?.groupId || null;
+  };
+
+  const currentUserRole = getUserRole().toLowerCase();
+  const currentUserGroupId = getUserGroupId();
+  const isSuperAdmin = currentUserRole === 'superadmin';
+  const isGroupAdmin = currentUserRole === 'admin' || currentUserRole === 'administrator' || currentUserRole === 'groupadmin';
+  const isSubUser = currentUserRole === 'user';
+
   // ✅ Fetch subusers for filter dropdown
   const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
+
+  // ✅ Fetch groups for filter dropdown - using same endpoint as AdminGroups
+  const [groupsData, setGroupsData] = useState<any[]>([]);
+  const [groupsLoading, setGroupsLoading] = useState(false);
+
+  // Fetch groups from API on mount
+  useEffect(() => {
+    const fetchGroupsForFilter = async () => {
+      if (isDemo) {
+        setGroupsData([
+          { groupId: 1, groupName: 'Engineering Team' },
+          { groupId: 2, groupName: 'Marketing Team' },
+          { groupId: 3, groupName: 'Sales Team' }
+        ]);
+        return;
+      }
+
+      try {
+        setGroupsLoading(true);
+        const response = await apiClient.getGroupsWithUsers();
+        
+        if (response.success && response.data?.groups?.data) {
+          setGroupsData(response.data.groups.data);
+        }
+      } catch (error) {
+        console.error('Error fetching groups for filter:', error);
+      } finally {
+        setGroupsLoading(false);
+      }
+    };
+
+    fetchGroupsForFilter();
+  }, [isDemo]);
 
   // ✅ Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -101,135 +196,98 @@ export default function AdminMachines() {
     }
   };
 
-  // Initialize with cached data if available
-  const [allRows, setAllRows] = useState<UIMachine[]>(() => getCachedData('machines') || [])
-  const [loading, setLoading] = useState(true)
-  const [selectedMachineIds, setSelectedMachineIds] = useState<Set<string>>(new Set())
-  const [selectedMachineForModal, setSelectedMachineForModal] = useState<UIMachine | null>(null)
-  const [selectedMachinesForModal, setSelectedMachinesForModal] = useState<UIMachine[]>([])
-  const [showModal, setShowModal] = useState(false)
-  const [isBulkView, setIsBulkView] = useState(false)
-  const [showTransferModal, setShowTransferModal] = useState(false)
-  const [selectedSubuserForTransfer, setSelectedSubuserForTransfer] = useState<string>("")
-  const [transferLoading, setTransferLoading] = useState(false)
-  const [pageSize, setPageSize] = useState(5) // Default 10 rows per page
-  const pageSizeOptions = [5, 10, 25, 50, 100, 250]
-
-  // Load machines data on component mount and when subuserFilter changes
-  useEffect(() => {
-    loadMachinesData()
-  }, [subuserFilter])
-
-  const loadMachinesData = async () => {
-    setLoading(true)
-
-    // 🎮 Demo Mode Check - Show static data only
-    if (isDemoMode()) {
-      // console.log('🎮 Demo Mode Active - Using static machines data')
-      let demoMachines = DEMO_MACHINES
-
-      // Apply subuser filter in demo mode
-      if (subuserFilter && subuserFilter !== "all") {
-        demoMachines = DEMO_MACHINES.filter((m: any) => m.userEmail === subuserFilter)
+  // ✅ Use React Query for machines data with automatic caching
+  const { data: machinesData, isLoading: loading, refetch: refetchMachines } = useQuery({
+    queryKey: ['machines', subuserFilter, groupFilter, query, licenseFilter],
+    queryFn: async () => {
+      // 🎮 Demo Mode Check
+      if (isDemoMode()) {
+        let demoMachines = DEMO_MACHINES
+        if (subuserFilter && subuserFilter !== "all") {
+          demoMachines = DEMO_MACHINES.filter((m: any) => m.userEmail === subuserFilter)
+        }
+        return demoMachines
       }
 
-      setAllRows(demoMachines)
-      setLoading(false)
-      return
-    }
-
-    // ✅ Check cache first for instant display (only if no subuser filter)
-    if (!subuserFilter) {
-      const cachedMachines = getCachedData('machines');
-      if (cachedMachines && cachedMachines.length > 0) {
-        // console.log('⚡ Displaying cached machines data');
-        setAllRows(cachedMachines);
-        setLoading(false); // Hide loader since we have cached data
-      }
-    }
-
-    try {
-      // Get user email - already computed above
       const userEmail = currentUserEmail;
-      // console.log('📧 Final userEmail for machines:', userEmail)
-
       if (!userEmail) {
-        console.error('❌ No user email found')
-        showError('Authentication Error', 'No user email found. Please login again.')
-        setAllRows([])
-        setLoading(false)
-        return
+        throw new Error('No user email found');
       }
 
-      // ✅ Determine which email(s) to fetch based on subuserFilter
-      let emailsToFetch: string[] = [];
-
-      if (subuserFilter === "all") {
-        // Fetch machines for current user + all subusers
-        emailsToFetch = [userEmail, ...subusersData.map((s: any) => s.subuser_email)];
-      } else if (subuserFilter) {
-        // Fetch machines for specific subuser only
-        emailsToFetch = [subuserFilter];
-      } else {
-        // Default: fetch only current user's machines
-        emailsToFetch = [userEmail];
+      let targetEmail = userEmail;
+      if (subuserFilter && subuserFilter !== "all") {
+        targetEmail = subuserFilter;
       }
 
-      // console.log('🖥️ Fetching machines for emails:', emailsToFetch)
+      const filters: any = { userEmail: targetEmail };
+      if (query) filters.search = query;
+      if (groupFilter) filters.groupName = groupFilter;
+      if (licenseFilter) filters.licenseStatus = licenseFilter;
 
-      // Fetch machines for all selected emails in parallel
-      const allMachinesPromises = emailsToFetch.map(email =>
-        apiClient.getMachinesByEmail(email)
-      );
+      console.log('🖥️ Fetching filtered machines with:', filters)
 
-      const allMachinesResults = await Promise.all(allMachinesPromises);
+      const response = await apiClient.getFilteredMachines(filters);
 
-      // Combine all machines
-      let combinedMachines: Machine[] = [];
-      allMachinesResults.forEach((machinesRes) => {
-        if (machinesRes.success && machinesRes.data) {
-          combinedMachines = [...combinedMachines, ...machinesRes.data];
+      let uniqueMachines: any[] = [];
+      if (response.success && response.data) {
+        const responseData = response.data as any;
+        if (responseData.machines && Array.isArray(responseData.machines)) {
+          uniqueMachines = responseData.machines;
+          console.log(`📊 Total Machines: ${responseData.totalMachines}, Pages: ${responseData.totalPages}`);
+        } else {
+          uniqueMachines = Array.isArray(response.data) ? response.data : [response.data];
         }
-      });
+      }
 
-      // Try to fetch machines by email first
-      let machinesRes = { success: combinedMachines.length > 0, data: combinedMachines }
-      // console.log('📥 Machines API Response:', machinesRes)
-      // console.log('📥 Full Response Object:', JSON.stringify(machinesRes, null, 2))
+      if (subuserFilter === "all" && subusersData.length > 0) {
+        const subuserPromises = subusersData.map((s: any) =>
+          apiClient.getFilteredMachines({ ...filters, userEmail: s.subuser_email })
+        );
+        const subuserResults = await Promise.all(subuserPromises);
+        
+        subuserResults.forEach((res) => {
+          if (res.success && res.data) {
+            const resData = res.data as any;
+            const machinesArray = resData.machines && Array.isArray(resData.machines)
+              ? resData.machines
+              : (Array.isArray(res.data) ? res.data : [res.data]);
+            uniqueMachines = [...uniqueMachines, ...machinesArray];
+          }
+        });
 
-      // console.log('📥 Combined Machines:', combinedMachines.length)
+        uniqueMachines = Array.from(
+          new Map(uniqueMachines.map(machine => [machine.fingerprintHash || machine.fingerprint_hash, machine])).values()
+        );
+      }
 
-      if (machinesRes.success && machinesRes.data) {
-        // console.log('✅ Final Machines fetched:', machinesRes.data.length)
-        // console.log('✅ Machines data:', machinesRes.data)
+      const machinesRes = { success: uniqueMachines.length > 0, data: uniqueMachines }
 
-        // If no machines found, set empty array
-        if (machinesRes.data.length === 0) {
-          // console.log('ℹ️ No machines found for this user')
-          showInfo('No Machines', 'No machines found for your account')
-          setAllRows([])
-          setLoading(false)
-          return
+      if (machinesRes.success && machinesRes.data && machinesRes.data.length > 0) {
+        let filteredMachines = machinesRes.data;
+
+        if (isGroupAdmin && currentUserGroupId && !subuserFilter) {
+          filteredMachines = filteredMachines.filter((machine: any) => {
+            const machineGroupId = machine.group_id || machine.groupId;
+            return machineGroupId === currentUserGroupId || machine.user_email === currentUserEmail || machine.userEmail === currentUserEmail;
+          });
         }
 
-        // Map API data to UI format
-        const uiMachines: UIMachine[] = machinesRes.data.map((machine: Machine) => {
-          // Generate hostname from available data
+        const uiMachines: UIMachine[] = filteredMachines.map((machine: any) => {
           const hostname = machine.hostname ||
-            machine.mac_address ||
-            machine.fingerprint_hash?.substring(0, 12) ||
+            machine.macAddress || machine.mac_address ||
+            machine.fingerprintHash || machine.fingerprint_hash?.substring(0, 12) ||
             'Unknown Device'
 
-          // Parse license_details_json to extract detailed information
           let licenseDetails: any = null
           let eraseOption = 'Standard Erase'
 
-          if (machine.license_details_json) {
+          const licenseDetailsJson = machine.license_details_json || machine.licenseDetailsJson;
+          if (licenseDetailsJson) {
             try {
-              licenseDetails = JSON.parse(machine.license_details_json)
-              // console.log('📄 Parsed license_details_json for machine:', machine.machine_id, licenseDetails)
+              licenseDetails = typeof licenseDetailsJson === 'string' 
+                ? JSON.parse(licenseDetailsJson) 
+                : licenseDetailsJson
 
-              // Extract erase option from license details
               if (licenseDetails.erase_option) {
                 eraseOption = licenseDetails.erase_option
               } else if (licenseDetails.features?.includes('advanced')) {
@@ -244,21 +302,19 @@ export default function AdminMachines() {
             }
           }
 
-          // Determine license status from license_details_json or machine fields
           let license = 'No License'
-          let licenseLength = 0 // License validity in days
+          let licenseLength = 0
 
-          if (machine.license_activated) {
-            // Calculate license length/validity
+          const isLicenseActivated = machine.licenseActivated ?? machine.license_activated;
+          if (isLicenseActivated) {
             if (licenseDetails?.valid_until) {
               const validUntil = new Date(licenseDetails.valid_until)
               const now = new Date()
               licenseLength = Math.ceil((validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-            } else if (machine.license_days_valid) {
-              licenseLength = machine.license_days_valid
+            } else if (machine.licenseDaysValid ?? machine.license_days_valid) {
+              licenseLength = machine.licenseDaysValid ?? machine.license_days_valid
             }
 
-            // Set license display text with length
             if (licenseDetails?.license_key) {
               license = licenseLength > 0
                 ? `Licensed (${licenseLength}d) - ${licenseDetails.license_key.substring(0, 8)}...`
@@ -276,10 +332,9 @@ export default function AdminMachines() {
             license = licenseDetails.status
           }
 
-          // Determine status from license_details_json or machine fields
           let status = 'Inactive'
-          if (machine.license_activated) {
-            // Check license validity from license_details_json first
+          const licenseDays = machine.licenseDaysValid ?? machine.license_days_valid;
+          if (isLicenseActivated) {
             if (licenseDetails?.valid_until) {
               const validUntil = new Date(licenseDetails.valid_until)
               const now = new Date()
@@ -289,9 +344,9 @@ export default function AdminMachines() {
               } else {
                 status = 'Expired'
               }
-            } else if (machine.license_days_valid && machine.license_days_valid > 0) {
-              status = `Active (${machine.license_days_valid}d left)`
-            } else if (machine.license_days_valid === 0) {
+            } else if (licenseDays && licenseDays > 0) {
+              status = `Active (${licenseDays}d left)`
+            } else if (licenseDays === 0) {
               status = 'Expired'
             } else {
               status = 'Active'
@@ -300,13 +355,12 @@ export default function AdminMachines() {
             status = 'Inactive'
           }
 
-          // Add VM status to status if available
-          if (machine.vm_status) {
-            status = `${status} (VM: ${machine.vm_status})`
+          const vmStatus = machine.vmStatus || machine.vm_status;
+          if (vmStatus) {
+            status = `${status} (VM: ${vmStatus})`
           }
 
-          // Extract total licenses from license_details_json
-          let totalLicenses = 1 // Default to 1 license per machine
+          let totalLicenses = 1
           if (licenseDetails?.total_licenses) {
             totalLicenses = licenseDetails.total_licenses
           } else if (licenseDetails?.license_count) {
@@ -318,39 +372,82 @@ export default function AdminMachines() {
             eraseOption,
             license,
             status,
-            machineId: machine.machine_id || machine.id,
-            userEmail: machine.user_email || machine.subuser_email,
-            licenseActivated: machine.license_activated,
-            osVersion: machine.os_version,
-            vmStatus: machine.vm_status,
+            machineId: machine.machineId || machine.machine_id || machine.id,
+            userEmail: machine.userEmail || machine.user_email || machine.subuserEmail || machine.subuser_email,
+            licenseActivated: machine.licenseActivated ?? machine.license_activated,
+            osVersion: machine.osVersion || machine.os_version,
+            vmStatus: machine.vmStatus || machine.vm_status,
             totalLicenses,
-            fingerprintHash: machine.fingerprint_hash
+            fingerprintHash: machine.fingerprintHash || machine.fingerprint_hash,
+            group: machine.groupName || machine.group || machine.group_name,
+            groupName: machine.groupName || machine.group || machine.group_name
           }
         })
 
-        // console.log('✅ Mapped machines:', uiMachines)
-        setAllRows(uiMachines)
-        // Only cache if not using subuser filter
-        if (!subuserFilter) {
-          setCachedData('machines', uiMachines)
-        }
-      } else {
-        showInfo('No Machines', 'No machines found')
-        setAllRows([])
+        return uiMachines
       }
-    } catch (error) {
-      console.error('❌ Error loading machines:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
-      showError('Data Loading Error', `Failed to load machine data: ${errorMessage}`)
-      setAllRows([])
-    } finally {
-      setLoading(false)
-    }
-  }
 
-  const uniqueEraseOptions = useMemo(() => [...new Set(allRows.map(r => r.eraseOption))], [allRows])
-  const uniqueLicenses = useMemo(() => [...new Set(allRows.map(r => r.license))], [allRows])
-  const uniqueStatuses = useMemo(() => [...new Set(allRows.map(r => r.status))], [allRows])
+      return []
+    },
+    staleTime: 30 * 60 * 1000, // 30 minutes
+    gcTime: 60 * 60 * 1000, // 1 hour (formerly cacheTime)
+    enabled: !!currentUserEmail && !isDemoMode() || isDemoMode()
+  })
+
+  const [allRows, setAllRows] = useState<UIMachine[]>([])
+  
+  // Update allRows when machinesData changes
+  useEffect(() => {
+    if (machinesData) {
+      setAllRows(machinesData)
+    }
+  }, [machinesData])
+  const [selectedMachineIds, setSelectedMachineIds] = useState<Set<string>>(new Set())
+  const [selectedMachineForModal, setSelectedMachineForModal] = useState<UIMachine | null>(null)
+  const [selectedMachinesForModal, setSelectedMachinesForModal] = useState<UIMachine[]>([])
+  const [showModal, setShowModal] = useState(false)
+  const [isBulkView, setIsBulkView] = useState(false)
+  const [showTransferModal, setShowTransferModal] = useState(false)
+  const [selectedSubuserForTransfer, setSelectedSubuserForTransfer] = useState<string>("")
+  const [transferLoading, setTransferLoading] = useState(false)
+  const [pageSize, setPageSize] = useState(5) // Default 10 rows per page
+  const pageSizeOptions = [5, 10, 25, 50, 100, 250]
+
+  // Update allRows when machinesData changes
+  useEffect(() => {
+    if (machinesData) {
+      setAllRows(machinesData)
+    }
+  }, [machinesData])
+
+  // OLD: Manual data fetching replaced with React Query
+  // Load machines data on component mount and when filters change
+  // useEffect(() => {
+  //   loadMachinesData()
+  // }, [subuserFilter, groupFilter, query, licenseFilter])
+
+  // OLD loadMachinesData function removed - now using React Query above
+
+  const uniqueEraseOptions = useMemo(() => [...new Set(allRows.map((r: UIMachine) => r.eraseOption))], [allRows])
+  const uniqueLicenses = useMemo(() => [...new Set(allRows.map((r: UIMachine) => r.license))], [allRows])
+  const uniqueStatuses = useMemo(() => [...new Set(allRows.map((r: UIMachine) => r.status))], [allRows])
+  
+  // ✅ Use groups from API (same as AdminReports and AdminGroups) instead of extracting from machines
+  // Sort groups alphabetically for better UX
+  const uniqueGroups = useMemo(
+    () => {
+      if (!groupsData || groupsData.length === 0) return [];
+      
+      // Extract groupName from API response (same structure as AdminGroups)
+      const groups = groupsData
+        .map((g: any) => g.groupName || g.name)
+        .filter(Boolean);
+      
+      // Sort alphabetically
+      return groups.sort((a: string, b: string) => a.localeCompare(b));
+    },
+    [groupsData]
+  );
 
   const filtered = useMemo(() => {
     let result = allRows.filter(r => {
@@ -362,7 +459,12 @@ export default function AdminMachines() {
       const matchesErase = !eraseFilter || r.eraseOption === eraseFilter
       const matchesLicense = !licenseFilter || r.license === licenseFilter
       const matchesStatus = !statusFilter || r.status === statusFilter
-      return matchesQuery && matchesErase && matchesLicense && matchesStatus
+      
+      // ✅ Check top-level group fields first (stored during mapping)
+      const machineGroup = r.group || r.groupName || (r as any).group_name;
+      const matchesGroup = !groupFilter || machineGroup === groupFilter;
+      
+      return matchesQuery && matchesErase && matchesLicense && matchesStatus && matchesGroup
     })
 
     // Remove duplicates if requested
@@ -395,6 +497,7 @@ export default function AdminMachines() {
     setEraseFilter('')
     setLicenseFilter('')
     setStatusFilter('')
+    setGroupFilter('') // Reset group filter
     setShowUniqueOnly(false)
     setSubuserFilter('') // Reset subuser filter
     setPage(1)
@@ -579,8 +682,8 @@ export default function AdminMachines() {
         showSuccess(`Bulk Erase Complete`, `Successfully initiated erase on ${successCount} machines`)
       }
 
-      // Refresh the list
-      await loadMachinesData()
+      // Refresh the list with React Query
+      await refetchMachines()
     } catch (error) {
       console.error('Error in bulk erase:', error)
       showError('Bulk Erase Failed', 'Failed to initiate bulk erase. Please try again.')
@@ -777,8 +880,8 @@ export default function AdminMachines() {
         setShowTransferModal(false)
         setSelectedSubuserForTransfer("")
 
-        // Refresh data
-        await loadMachinesData()
+        // Refresh data with React Query
+        await refetchMachines()
       } else {
         showError("Transfer Failed", response.error || response.message || "Failed to transfer machines. Please try again.")
       }
@@ -1036,10 +1139,10 @@ export default function AdminMachines() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 xs:gap-4 sm:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Machine Owner Filter - Show only if there are subusers */}
             {subusersData && subusersData.length > 0 && (
-              <div>
+              <div className="flex-1">
                 <label className="block text-sm font-medium text-slate-700 mb-1">Machine Owner</label>
                 <select
                   className="w-full border rounded px-3 py-2 text-sm"
@@ -1059,8 +1162,23 @@ export default function AdminMachines() {
               </div>
             )}
 
+            {/* Group Filter */}
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">Group</label>
+              <select
+                className="w-full border rounded px-3 py-2 text-sm"
+                value={groupFilter}
+                onChange={(e) => { setGroupFilter(e.target.value); setPage(1) }}
+              >
+                <option value="">All Groups</option>
+                {uniqueGroups.map((group: string) => (
+                  <option key={group} value={group}>{group}</option>
+                ))}
+              </select>
+            </div>
+
             {/* Search */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Search</label>
               <input
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1068,10 +1186,10 @@ export default function AdminMachines() {
                 value={query}
                 onChange={(e) => { setQuery(e.target.value); setPage(1) }}
               />
-            </div>
+            </div> */}
 
             {/* Erase Option Filter */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Erase Option</label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1083,10 +1201,10 @@ export default function AdminMachines() {
                   <option key={option} value={option}>{option}</option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             {/* License Filter */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">License</label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1098,10 +1216,10 @@ export default function AdminMachines() {
                   <option key={license} value={license}>{license}</option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             {/* Status Filter */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1110,15 +1228,15 @@ export default function AdminMachines() {
               >
                 <option value="">All Statuses</option>
                 {uniqueStatuses.map(status => (
-                  <option key={status} value={status}>{status}</option>
+                  <option key={status} value={status}>{option}</option>
                 ))}
               </select>
-            </div>
+            </div> */}
           </div>
 
           {/* Additional Options */}
           <div className="flex flex-col md:flex-row md:items-center gap-4">
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <input
                 type="checkbox"
                 id="uniqueOnly"
@@ -1129,7 +1247,7 @@ export default function AdminMachines() {
               <label htmlFor="uniqueOnly" className="text-sm font-medium text-slate-700">
                 Show unique records only
               </label>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-slate-700">Sort by:</label>
@@ -1151,9 +1269,9 @@ export default function AdminMachines() {
               </button>
             </div>
 
-            <div className="text-sm text-slate-600">
+            {/* <div className="text-sm text-slate-600">
               Showing {filtered.length} of {allRows.length} records
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -1238,16 +1356,19 @@ export default function AdminMachines() {
                     </button>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setShowTransferModal(true)}
-                      className="text-sm px-4 py-1.5 rounded border font-medium transition-colors bg-green-600 text-white hover:bg-green-700 border-green-600 flex items-center gap-2"
-                      title={`Transfer ${selectedMachineIds.size} Selected Machines to Subuser`}
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                      </svg>
-                      Transfer
-                    </button>
+                    {/* ✅ RBAC: Only SuperAdmin and GroupAdmin can Transfer machines */}
+                    {!isSubUser && (
+                      <button
+                        onClick={() => setShowTransferModal(true)}
+                        className="text-sm px-4 py-1.5 rounded border font-medium transition-colors bg-green-600 text-white hover:bg-green-700 border-green-600 flex items-center gap-2"
+                        title={`Transfer ${selectedMachineIds.size} Selected Machines to Subuser`}
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                        Transfer
+                      </button>
+                    )}
                     <button
                       onClick={handleBulkViewDetails}
                       className="text-sm px-4 py-1.5 rounded border font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 border-blue-600 flex items-center gap-2"

@@ -98,7 +98,7 @@ const DownloadAgentPage: React.FC = () => {
 
   const downloadAgent = (agent: Agent) => {
     // Simulate download
-    alert(`Downloading ${agent.name} v${agent.version}...`)
+    console.log(`Downloading ${agent.name} v${agent.version}...`)
   }
 
   const getInstallationInstructions = (platform: string) => {
@@ -228,7 +228,7 @@ const DownloadAgentPage: React.FC = () => {
                       Download
                     </button>
                     <button
-                      onClick={() => alert(`Viewing documentation for ${agent.name}...`)}
+                      onClick={() => console.log(`Viewing documentation for ${agent.name}...`)}
                       className="px-3 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
                       title="View Documentation"
                     >

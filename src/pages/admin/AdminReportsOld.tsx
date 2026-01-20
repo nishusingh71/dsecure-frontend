@@ -309,7 +309,7 @@ export default function AdminReports() {
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => alert(`Viewing report: ${report.title}`)}
+                          onClick={() => console.log(`Viewing report: ${report.title}`)}
                           className="text-blue-600 hover:text-blue-700 text-sm font-medium px-2 py-1 rounded hover:bg-blue-50 transition-colors"
                         >
                           View

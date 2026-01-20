@@ -155,13 +155,56 @@ export interface Command {
 
 // Sessions interface
 export interface Session {
-  session_id: number
+  session_id: number | string
   user_email: string
   login_time: string
   logout_time?: string
   ip_address: string
   device_info?: string
   session_status: string
+}
+
+// Group interface
+export interface GroupUser {
+  userId: string
+  name: string
+  email: string
+  role: string
+  department: string
+  license: number
+}
+
+export interface Group {
+  groupId: string
+  groupName: string
+  groupDescription: string
+  users: GroupUser[]
+}
+
+export interface GroupsResponse {
+  groups: {
+    totalGroups: number
+    totalUsers: number
+    avgUsers: number
+    licenseSummary?: {
+      totalAllocated: number
+      totalDistributed: number
+      totalAvailable: number
+      overallUsagePercent: number
+    }
+    data: Group[]
+  }
+}
+
+export interface CreateGroupPayload {
+  groupId: number
+  groupName: string
+  groupDescription: string
+  groupLicenseAllocation: number
+  groupPermission: string
+  status: string
+  createdAt: string
+  updatedAt: string
 }
 
 // Request retry configuration
@@ -850,16 +893,61 @@ class EnhancedApiClient {
   // async getSubusers(): Promise<ApiResponse<Subuser[]>> {
   //   return this.request<Subuser[]>('/api/Subuser')
   // }
-  async getSubusersBySuperuser(email: string): Promise<ApiResponse<Subuser[]>> {
-    return this.request<Subuser[]>(`/api/Subuser/by-superuser/${encodeEmail(email)}`)
+  async getSubusersBySuperuser(email: string, filters?: {
+    parentUserEmail?: string;
+    subuserEmail?: string;
+    department?: string;
+    role?: string;
+    group?: string;
+    search?: string;
+  }): Promise<ApiResponse<Subuser[]>> {
+    const params = new URLSearchParams();
+    
+    if (filters?.parentUserEmail) params.append('ParentUserEmail', filters.parentUserEmail);
+    if (filters?.subuserEmail) params.append('SubuserEmail', filters.subuserEmail);
+    if (filters?.department) params.append('Department', filters.department);
+    if (filters?.role) params.append('Role', filters.role);
+    if (filters?.group) params.append('Group', filters.group);
+    if (filters?.search) params.append('Search', filters.search);
+
+    const queryString = params.toString();
+    const url = `/api/Subuser/by-superuser/${encodeEmail(email)}${queryString ? `?${queryString}` : ''}`;
+    
+    console.log('🔍 Subuser/by-superuser API Call:', { url, filters });
+    
+    return this.request<Subuser[]>(url);
   }
 
   async getEnhancedSubuser(email: string): Promise<ApiResponse<EnhancedSubuser>> {
-    return this.request<EnhancedSubuser>(`/api/EnhancedSubuser/${encodeEmail(email)}`)
+    const encodedEmail = encodeEmail(email);
+    const url = `/api/EnhancedSubuser/${encodedEmail}`;
+    console.log('🔍 Get EnhancedSubuser API Call:', { email, encodedEmail, url });
+    return this.request<EnhancedSubuser>(url)
   }
 
-  async getEnhancedSubusersByParent(email: string): Promise<ApiResponse<EnhancedSubuser[]>> {
-    return this.request<EnhancedSubuser[]>(`/api/EnhancedSubusers/by-parent/${encodeEmail(email)}`)
+  async getEnhancedSubusersByParent(email: string, filters?: {
+    parentUserEmail?: string;
+    subuserEmail?: string;
+    department?: string;
+    role?: string;
+    group?: string;
+    search?: string;
+  }): Promise<ApiResponse<EnhancedSubuser[]>> {
+    const params = new URLSearchParams();
+    
+    if (filters?.parentUserEmail) params.append('ParentUserEmail', filters.parentUserEmail);
+    if (filters?.subuserEmail) params.append('SubuserEmail', filters.subuserEmail);
+    if (filters?.department) params.append('Department', filters.department);
+    if (filters?.role) params.append('Role', filters.role);
+    if (filters?.group) params.append('Group', filters.group);
+    if (filters?.search) params.append('Search', filters.search);
+
+    const queryString = params.toString();
+    const url = `/api/EnhancedSubusers/by-parent/${encodeEmail(email)}${queryString ? `?${queryString}` : ''}`;
+    
+    console.log('🔍 EnhancedSubusers API Call:', { url, filters });
+    
+    return this.request<EnhancedSubuser[]>(url);
   }
 
   // async getDynamicUserSubusers(): Promise<ApiResponse<Subuser[]>> {
@@ -871,9 +959,17 @@ class EnhancedApiClient {
   // }
 
   // 🔄 Master method to fetch subusers with fallback across all available endpoints
-  async getAllSubusersWithFallback(userEmail?: string): Promise<ApiResponse<Subuser[]>> {
+  async getAllSubusersWithFallback(userEmail?: string, filters?: {
+    parentUserEmail?: string;
+    subuserEmail?: string;
+    department?: string;
+    role?: string;
+    group?: string;
+    search?: string;
+  }): Promise<ApiResponse<Subuser[]>> {
     // console.log('🔄 Starting getAllSubusersWithFallback...')
     // console.log('📧 User email provided:', userEmail || 'None')
+    console.log('🔍 Filters:', filters);
 
     // ✅ Define endpoint strategies with PRIORITY ORDER
     // Priority 1: User-specific endpoints (by-superuser, by-parent) - returns only current user's subusers
@@ -882,12 +978,12 @@ class EnhancedApiClient {
       // ✅ PRIORITY 1: Subuser by superuser (if email provided) - MOST SPECIFIC
       ...(userEmail ? [{
         name: 'Subuser/by-superuser',
-        execute: () => this.getSubusersBySuperuser(userEmail),
+        execute: () => this.getSubusersBySuperuser(userEmail, filters),
       }] : []),
       // ✅ PRIORITY 2: EnhancedSubusers by parent (if email provided)
       ...(userEmail ? [{
         name: 'EnhancedSubusers/by-parent',
-        execute: () => this.getEnhancedSubusersByParent(userEmail),
+        execute: () => this.getEnhancedSubusersByParent(userEmail, filters),
       }] : []),
       // ⚠️ FALLBACK: Generic endpoints (only if user-specific endpoints fail)
       // Strategy 3: DynamicUser endpoint
@@ -959,7 +1055,10 @@ class EnhancedApiClient {
   }
 
   async deleteSubuser(email: string): Promise<ApiResponse<void>> {
-    return this.request<void>(`/api/EnhancedSubuser/${encodeEmail(email)}`, {
+    const encodedEmail = encodeEmail(email);
+    const url = `/api/EnhancedSubuser/${encodedEmail}`;
+    console.log('🗑️ Delete Subuser API Call:', { email, encodedEmail, url });
+    return this.request<void>(url, {
       method: 'DELETE'
     });
   }
@@ -1001,6 +1100,33 @@ class EnhancedApiClient {
     });
   }
 
+  // ✅ PATCH method with correct backend field mapping
+  async patchSubuser(email: string, userData: {
+    subuserName?: string;
+    department?: string;
+    role?: string;
+    phone?: string;
+    subuserGroup?: string;
+    licenceAllocation?: number;
+    status?: string;
+    newPassword?: string;
+  }): Promise<ApiResponse<EnhancedSubuser>> {
+    const encodedEmail = encodeEmail(email);
+    const url = `/api/EnhancedSubuser/${encodedEmail}`;
+    
+    console.log('📤 PATCH Subuser API Call:', { 
+      email, 
+      encodedEmail, 
+      url,
+      payload: userData 
+    });
+
+    return this.request<EnhancedSubuser>(url, {
+      method: 'PATCH',
+      body: JSON.stringify(userData)
+    });
+  }
+
   async updateEnhancedSubuserByParent(parentEmail: string, subuserEmail: string, userData: {
     subuser_name?: string
     name?: string
@@ -1030,17 +1156,68 @@ class EnhancedApiClient {
       mappedData.status = userData.status
     }
 
-    // console.log('📤 UpdateEnhancedSubuserByParent - Parent:', parentEmail, 'Subuser:', subuserEmail, 'Data:', mappedData)
+    const url = `/api/EnhancedSubusers/by-parent/${encodeEmail(parentEmail)}/subuser/${encodeEmail(subuserEmail)}`;
+    console.log('📤 UpdateEnhancedSubuserByParent API Call:', { 
+      parentEmail, 
+      subuserEmail, 
+      url,
+      mappedData 
+    });
 
-    return this.request<EnhancedSubuser>(
-      `/api/EnhancedSubusers/by-parent/${encodeEmail(parentEmail)}/subuser/${encodeEmail(subuserEmail)}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify(mappedData)
-      }
-    );
+    return this.request<EnhancedSubuser>(url, {
+      method: 'PATCH',
+      body: JSON.stringify(mappedData)
+    });
   }
 
+
+  // Group endpoints
+  async getGroupsWithUsers(): Promise<ApiResponse<GroupsResponse>> {
+    return this.request<GroupsResponse>('/api/Group/with-users')
+  }
+
+  async createGroup(payload: CreateGroupPayload): Promise<ApiResponse<any>> {
+    return this.request<any>('/api/Group', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+  }
+
+  async addUserToGroupByEmail(groupId: string, email: string): Promise<ApiResponse<any>> {
+    // Remove "group-" prefix if present
+    const cleanGroupId = groupId.toString().replace(/^group-/, '');
+    return this.request<any>(`/api/Group/${cleanGroupId}/members/by-email`, {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    })
+  }
+
+  async updateGroup(groupId: string, payload: CreateGroupPayload): Promise<ApiResponse<any>> {
+    // Remove "group-" prefix if present
+    const cleanGroupId = groupId.toString().replace(/^group-/, '');
+    return this.request<any>(`/api/Group/${cleanGroupId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload)
+    })
+  }
+
+  async deleteGroup(groupId: string): Promise<ApiResponse<any>> {
+    // Remove "group-" prefix if present
+    const cleanGroupId = groupId.toString().replace(/^group-/, '');
+    return this.request<any>(`/api/Group/${cleanGroupId}`, {
+      method: 'DELETE'
+    })
+  }
+
+  async removeUserFromGroupByEmail(groupId: string, email: string): Promise<ApiResponse<any>> {
+    // Remove "group-" prefix if present
+    const cleanGroupId = groupId.toString().replace(/^group-/, '');
+    // Base64 encode the email address
+    const encodedEmail = btoa(email);
+    return this.request<any>(`/api/Group/${cleanGroupId}/members/by-email/${encodedEmail}`, {
+      method: 'DELETE'
+    })
+  }
 
   async getMachines(): Promise<ApiResponse<Machine[]>> {
     return this.request<Machine[]>('/api/Machines')
@@ -1052,6 +1229,26 @@ class EnhancedApiClient {
 
   async getMachinesByEmail(email: string): Promise<ApiResponse<Machine[]>> {
     return this.request<Machine[]>(`/api/Machines/by-email/${encodeEmail(email)}`)
+  }
+
+  // ✅ Get filtered machines with query parameters
+  async getFilteredMachines(filters: {
+    userEmail?: string;
+    groupName?: string;
+    search?: string;
+    licenseStatus?: string;
+  }): Promise<ApiResponse<Machine[]>> {
+    const params = new URLSearchParams();
+    
+    if (filters.userEmail) params.append('userEmail', filters.userEmail);
+    if (filters.groupName) params.append('groupName', filters.groupName);
+    if (filters.search) params.append('search', filters.search);
+    if (filters.licenseStatus) params.append('licenseStatus', filters.licenseStatus);
+
+    const queryString = params.toString();
+    const url = `/api/EnhancedMachines/all-filtered-machines${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<Machine[]>(url);
   }
 
   /**
@@ -1079,6 +1276,36 @@ class EnhancedApiClient {
 
   async getAuditReportsByEmail(email: string): Promise<ApiResponse<AuditReport[]>> {
     return this.request<AuditReport[]>(`/api/EnhancedAuditReports/by-email/${encodeEmail(email)}`)
+  }
+
+  async getAuditReportsByMacAddress(macAddress: string): Promise<ApiResponse<AuditReport[]>> {
+    return this.request<AuditReport[]>(`/api/EnhancedAuditReports/by-mac-address/${encodeURIComponent(macAddress)}`)
+  }
+
+  // ✅ Get filtered audit reports with query parameters
+  async getFilteredAuditReports(filters: {
+    userEmail?: string;
+    search?: string;
+    status?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    reportType?: string;
+    groupName?: string;
+  }): Promise<ApiResponse<AuditReport[]>> {
+    const params = new URLSearchParams();
+    
+    if (filters.userEmail) params.append('userEmail', filters.userEmail);
+    if (filters.search) params.append('search', filters.search);
+    if (filters.status) params.append('status', filters.status);
+    if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+    if (filters.dateTo) params.append('dateTo', filters.dateTo);
+    if (filters.reportType) params.append('reportType', filters.reportType);
+    if (filters.groupName) params.append('groupName', filters.groupName);
+
+    const queryString = params.toString();
+    const url = `/api/EnhancedAuditReports/all-filtered-reports${queryString ? `?${queryString}` : ''}`;
+    
+    return this.request<AuditReport[]>(url);
   }
 
   async getAuditReports(): Promise<ApiResponse<AuditReport[]>> {
@@ -1199,6 +1426,30 @@ class EnhancedApiClient {
   }
   async getSessions(): Promise<ApiResponse<Session[]>> {
     return this.request<Session[]>(`/api/Sessions`)
+  }
+
+  // ✅ Get filtered sessions timeline with query parameters
+  async getSessionsTimeline(filters: {
+    userEmail?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    sessionStatus?: string;
+    ipAddress?: string;
+  }): Promise<ApiResponse<any>> {
+    const params = new URLSearchParams();
+    
+    if (filters.userEmail) params.append('userEmail', filters.userEmail);
+    if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+    if (filters.dateTo) params.append('dateTo', filters.dateTo);
+    if (filters.sessionStatus) params.append('sessionStatus', filters.sessionStatus);
+    if (filters.ipAddress) params.append('ipAddress', filters.ipAddress);
+
+    const queryString = params.toString();
+    const url = `/api/EnhancedSessions/timeline${queryString ? `?${queryString}` : ''}`;
+    
+    console.log('🔍 Timeline API Call:', { url, filters });
+    
+    return this.request<any>(url);
   }
 
   // Time API methods

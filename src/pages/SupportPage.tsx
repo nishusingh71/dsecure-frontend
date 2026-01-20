@@ -871,7 +871,7 @@ const SupportPage: React.FC = () => {
                   Self Help & Support
                 </h2>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
-                  Access Support Information For Your DSecure Products
+                  Access Support Information For Your D-Secure Products
                 </p>
               </div>
             </Reveal>
@@ -971,7 +971,7 @@ const SupportPage: React.FC = () => {
                     Help Manual
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Complete Visual Guide To Learn More About DSecure Products, Installation, FAQs, Report Management & Advanced Settings Configuration.
+                    Complete Visual Guide To Learn More About D-Secure Products, Installation, FAQs, Report Management & Advanced Settings Configuration.
                   </p>
                   <Link to="/support/help-manual" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
                     View Help Manual →
@@ -1187,7 +1187,7 @@ const SupportPage: React.FC = () => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                  <span className="text-brand">DSecure</span>
+                  <span className="text-brand">D-Secure</span>
                   <sup className="text-brand text-lg"></sup> Is An Innovation
                   FROM D-Secure
                 </h2>

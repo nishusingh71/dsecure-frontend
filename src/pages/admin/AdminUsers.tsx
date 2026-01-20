@@ -89,7 +89,7 @@ export default function AdminUsers() {
   const handleAssignLicense = (userId: string) => {
     const user = users.find(u => u.id === userId)
     if (!user) {
-      alert('User not found')
+      console.log('User not found')
       return
     }
     
@@ -103,7 +103,7 @@ export default function AdminUsers() {
     
     const newCount = Number(licenseCount)
     if (isNaN(newCount) || newCount < 0) {
-      alert('Please enter a valid license count (0 or greater)')
+      console.log('Please enter a valid license count (0 or greater)')
       return
     }
     
@@ -121,12 +121,12 @@ export default function AdminUsers() {
         users[userIndex].licenses = newCount
       }
       
-      alert(`Successfully assigned ${newCount} license(s) to ${selectedUser.name}`)
+      console.log(`Successfully assigned ${newCount} license(s) to ${selectedUser.name}`)
       setIsLicenseModalOpen(false)
       setSelectedUser(null)
       setLicenseCount('')
     } catch (error) {
-      alert('Failed to assign licenses. Please try again.')
+      console.error('Failed to assign licenses. Please try again.')
     } finally {
       setIsLoading(false)
     }

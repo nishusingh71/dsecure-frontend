@@ -52,12 +52,12 @@ export default function AddGroup() {
     
     // Validation
     if (!formData.name || !formData.description) {
-      alert('Please fill in all required fields')
+      console.log('Validation failed: Please fill in all required fields')
       return
     }
     
     if (formData.permissions.length === 0) {
-      alert('Please select at least one permission')
+      console.log('Validation failed: Please select at least one permission')
       return
     }
     
@@ -85,15 +85,12 @@ export default function AddGroup() {
       
       // console.log('Creating group:', newGroup)
       
-      // Success message
-      alert(`Group "${formData.name}" has been created successfully!`)
-      
-      // Navigate back to admin dashboard
+      // Success - Navigate back to admin dashboard
+      console.log(`Group "${formData.name}" has been created successfully!`)
       navigate('/admin')
       
     } catch (error) {
       console.error('Error creating group:', error)
-      alert('Failed to create group. Please try again.')
     } finally {
       setIsLoading(false)
     }

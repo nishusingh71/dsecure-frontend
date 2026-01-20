@@ -81,8 +81,8 @@ const NewErasurePage: React.FC = () => {
 
   const handleStartErasure = () => {
     // Here you would typically make an API call to start the erasure process
-    // console.log('Starting erasure with config:', config)
-    alert('Erasure process started successfully!')
+    console.log('Starting erasure with config:', config)
+    console.log('Erasure process started successfully!')
   }
 
   return (

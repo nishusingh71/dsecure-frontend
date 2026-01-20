@@ -42,7 +42,7 @@ export default function TermsOfServicePage() {
                   1. Agreement to Terms
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  By accessing or using DSecure's website and services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services.
+                  By accessing or using D-Secure's website and services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services.
                 </p>
               </section>
 
@@ -52,7 +52,7 @@ export default function TermsOfServicePage() {
                 </h2>
                 <div className="space-y-4 text-slate-700 dark:text-slate-300">
                   <p className="leading-relaxed">
-                    Permission is granted to temporarily download one copy of DSecure materials for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+                    Permission is granted to temporarily download one copy of D-Secure materials for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>modify or copy the materials</li>
@@ -69,7 +69,7 @@ export default function TermsOfServicePage() {
                 </h2>
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-6">
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                    The materials on DSecure's website are provided on an 'as is' basis. DSecure makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+                    The materials on D-Secure's website are provided on an 'as is' basis. D-Secure makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
                   </p>
                 </div>
               </section>
@@ -79,7 +79,7 @@ export default function TermsOfServicePage() {
                   4. Limitations
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  In no event shall DSecure or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on DSecure's website, even if DSecure or a DSecure authorized representative has been notified orally or in writing of the possibility of such damage.
+                  In no event shall D-Secure or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on D-Secure's website, even if D-Secure or a D-Secure authorized representative has been notified orally or in writing of the possibility of such damage.
                 </p>
               </section>
 
@@ -88,7 +88,7 @@ export default function TermsOfServicePage() {
                   5. Accuracy of Materials
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  The materials appearing on DSecure's website could include technical, typographical, or photographic errors. DSecure does not warrant that any of the materials on its website are accurate, complete, or current. DSecure may make changes to the materials contained on its website at any time without notice.
+                  The materials appearing on D-Secure's website could include technical, typographical, or photographic errors. D-Secure does not warrant that any of the materials on its website are accurate, complete, or current. D-Secure may make changes to the materials contained on its website at any time without notice.
                 </p>
               </section>
 
@@ -97,7 +97,7 @@ export default function TermsOfServicePage() {
                   6. Links
                 </h2>
                 <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  DSecure has not reviewed all of the sites linked to our website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by DSecure of the site. Use of any such linked website is at the user's own risk.
+                  D-Secure has not reviewed all of the sites linked to our website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by D-Secure of the site. Use of any such linked website is at the user's own risk.
                 </p>
               </section>
 
@@ -107,7 +107,7 @@ export default function TermsOfServicePage() {
                 </h2>
                 <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
                   <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                    DSecure may revise these terms of service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
+                    D-Secure may revise these terms of service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these terms of service.
                   </p>
                 </div>
               </section>

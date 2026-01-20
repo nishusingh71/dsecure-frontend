@@ -271,7 +271,7 @@ const ReportsPage: React.FC = () => {
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => alert(`Viewing details for ${report.id}`)}
+                          onClick={() => console.log(`Viewing details for ${report.id}`)}
                           className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
                           title="View Details"
                         >

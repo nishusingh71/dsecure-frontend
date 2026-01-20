@@ -120,7 +120,7 @@ const DownloadPage: React.FC = memo(() => {
         if (osDownload && osDownload.url !== "#") {
             window.open(osDownload.url, "_blank");
         } else {
-            alert("Download link coming soon!");
+            console.log("Download link coming soon!");
         }
     };
 

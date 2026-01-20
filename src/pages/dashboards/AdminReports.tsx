@@ -7,6 +7,8 @@ import { useNotification } from "@/contexts/NotificationContext";
 import { useAuth } from "@/auth/AuthContext";
 
 import { AdminDashboardAPI, AdminReport } from "@/services/adminDashboardAPI";
+import { useUserMachines } from "@/hooks/useUserMachines";
+import { useGroups } from "@/hooks/useDashboardData";
 import { useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
@@ -22,6 +24,10 @@ interface ExtendedAdminReport extends AdminReport {
   erasedFiles?: number;
   failedFiles?: number;
   successFiles?: number;
+  email?: string;
+  user?: string;
+  group?: string;
+  groupName?: string;
   _raw?: any;
   _details?: any;
 }
@@ -41,7 +47,6 @@ export default function AdminReports() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [eraserMethodFilter, setEraserMethodFilter] = useState("");
   const [reportTypeFilter, setReportTypeFilter] = useState("");
-  const [departmentFilter, setDepartmentFilter] = useState("");
   const [groupFilter, setGroupFilter] = useState("");
   const [subuserFilter, setSubuserFilter] = useState<string>(""); // "" = my reports, email = subuser's reports, "all" = all reports
 
@@ -206,8 +211,97 @@ export default function AdminReports() {
   const currentUserEmail = getUserEmail();
   const isDemo = isDemoMode();
 
+  // ✅ RBAC: Role detection functions
+  const getUserRole = (): string => {
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    let storedUserData = null
+    
+    if (storedUser) {
+      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+    }
+    if (!storedUserData && authUser) {
+      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+    }
+    
+    return storedUserData?.userRole || storedUserData?.role || storedUserData?.user_role || 
+           user?.role || 'user'
+  }
+
+  const getUserGroupId = (): string | null => {
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    let storedUserData = null
+    
+    if (storedUser) {
+      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+    }
+    if (!storedUserData && authUser) {
+      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+    }
+    
+    return storedUserData?.user_group || storedUserData?.groupId || storedUserData?.group_id || null
+  }
+
+  // ✅ RBAC: Determine user's role and capabilities
+  const currentUserRole = getUserRole().toLowerCase()
+  const currentUserGroupId = getUserGroupId()
+  const isSuperAdmin = currentUserRole === 'superadmin'
+  const isGroupAdmin = currentUserRole === 'admin' || currentUserRole === 'administrator' || currentUserRole === 'groupadmin'
+  const isSubUser = currentUserRole === 'user'
+
+  // console.log('🔐 RBAC Info (AdminReports):', { role: currentUserRole, groupId: currentUserGroupId, email: currentUserEmail })
+
   // ✅ Fetch subusers for filter dropdown
   const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
+
+  // ✅ Fetch groups for filter dropdown - using same endpoint as AdminGroups
+  const [groupsData, setGroupsData] = useState<any[]>([]);
+  const [groupsLoading, setGroupsLoading] = useState(false);
+
+  // Fetch groups from API on mount
+  useEffect(() => {
+    const fetchGroupsForFilter = async () => {
+      if (isDemo) {
+        setGroupsData([
+          { groupId: 1, groupName: 'Engineering Team' },
+          { groupId: 2, groupName: 'Marketing Team' },
+          { groupId: 3, groupName: 'Sales Team' }
+        ]);
+        return;
+      }
+
+      try {
+        setGroupsLoading(true);
+        const response = await apiClient.getGroupsWithUsers();
+        
+        if (response.success && response.data?.groups?.data) {
+          setGroupsData(response.data.groups.data);
+        }
+      } catch (error) {
+        console.error('Error fetching groups for filter:', error);
+      } finally {
+        setGroupsLoading(false);
+      }
+    };
+
+    fetchGroupsForFilter();
+  }, [isDemo]);
+
+  // ✅ Fetch user machines to get MAC addresses for filtering
+  // This includes machines transferred to this user via AdminMachines transfer button
+  // When a machine is transferred, all reports with matching MAC address become visible to new owner
+  const { data: userMachines = [] } = useUserMachines(currentUserEmail, !!currentUserEmail && !isDemo);
+  
+  // Extract MAC addresses from user's machines (normalized and trimmed)
+  // These MAC addresses will be used to fetch and filter reports
+  const userMacAddresses = useMemo(() => {
+    return userMachines
+      .map((machine: any) => machine.mac_address?.toLowerCase().trim())
+      .filter(Boolean);
+  }, [userMachines]);
+
+  // console.log('🔍 User MAC Addresses for filtering:', userMacAddresses);
 
   const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(
     () => getCachedData("reports") || []
@@ -723,10 +817,10 @@ export default function AdminReports() {
   //   }
   // };
 
-  // Load reports data on component mount and when subuserFilter changes
+  // Load reports data on component mount and when filters change
   useEffect(() => {
     loadReportsData();
-  }, [subuserFilter]);
+  }, [subuserFilter, query, statusFilter, fromDate, toDate, reportTypeFilter, groupFilter]);
 
   const loadReportsData = async () => {
     setLoading(true);
@@ -763,14 +857,23 @@ export default function AdminReports() {
       return
     }
 
-    // ✅ Check cache first for instant display (only if no subuser filter)
-    if (!subuserFilter) {
-      const cachedReports = getCachedData("reports");
-      if (cachedReports && cachedReports.length > 0) {
-        // console.log("⚡ Displaying cached reports data");
-        setAllRows(cachedReports);
-        setLoading(false); // Hide loader since we have cached data
-      }
+    // ✅ Generate cache key based on filters
+    const cacheKey = `reports_${JSON.stringify({
+      subuser: subuserFilter,
+      query,
+      status: statusFilter,
+      from: fromDate,
+      to: toDate,
+      type: reportTypeFilter,
+      group: groupFilter
+    })}`;
+
+    // ✅ Check cache first for instant display with filter-specific key
+    const cachedReports = getCachedData(cacheKey);
+    if (cachedReports && cachedReports.length > 0) {
+      console.log("⚡ Displaying cached reports data for filters:", cacheKey);
+      setAllRows(cachedReports);
+      setLoading(false); // Hide loader since we have cached data
     }
 
     try {
@@ -819,48 +922,85 @@ export default function AdminReports() {
       }
 
       // ✅ Determine which email to use based on subuserFilter
-      // If subuserFilter is set, fetch reports for that subuser
-      // If subuserFilter is "all", we need to fetch for user + all subusers
-      let emailsToFetch: string[] = [];
-
-      if (subuserFilter === "all") {
-        // Fetch reports for current user + all subusers
-        emailsToFetch = [userEmail, ...subusersData.map((s: any) => s.subuser_email)];
-      } else if (subuserFilter) {
-        // Fetch reports for specific subuser only
-        emailsToFetch = [subuserFilter];
-      } else {
-        // Default: fetch only current user's reports
-        emailsToFetch = [userEmail];
+      let targetEmail = userEmail;
+      if (subuserFilter && subuserFilter !== "all") {
+        targetEmail = subuserFilter;
       }
 
-      // console.log("📋 Fetching audit reports for emails:", emailsToFetch);
+      // ✅ Build filters object for new API endpoint
+      const filters: any = {
+        userEmail: targetEmail,
+      };
 
-      // Fetch reports for all selected emails in parallel
-      const allReportsPromises = emailsToFetch.map(email =>
-        apiClient.getAuditReportsByEmail(email)
-      );
+      // Apply all active filters
+      if (query) filters.search = query;
+      if (statusFilter) filters.status = statusFilter;
+      if (fromDate) filters.dateFrom = fromDate;
+      if (toDate) filters.dateTo = toDate;
+      if (reportTypeFilter) filters.reportType = reportTypeFilter;
+      if (groupFilter) filters.groupName = groupFilter;
 
-      const allReportsResults = await Promise.all(allReportsPromises);
+      // ✅ Generate cache key based on filters
+      const cacheKey = `reports_${JSON.stringify({
+        email: targetEmail,
+        subuser: subuserFilter,
+        query,
+        status: statusFilter,
+        from: fromDate,
+        to: toDate,
+        type: reportTypeFilter,
+        group: groupFilter
+      })}`;
 
-      // Combine all reports
-      let combinedReports: any[] = [];
-      allReportsResults.forEach((auditReportsRes) => {
-        if (auditReportsRes.success && auditReportsRes.data) {
-          const reportsArray = Array.isArray(auditReportsRes.data)
-            ? auditReportsRes.data
-            : [auditReportsRes.data];
-          combinedReports = [...combinedReports, ...reportsArray];
+      console.log("📋 Fetching filtered reports with:", filters);
+
+      // ✅ Use new filtered endpoint (single API call instead of multiple)
+      const response = await apiClient.getFilteredAuditReports(filters);
+
+      let uniqueReports: any[] = [];
+      if (response.success && response.data) {
+        // ✅ Handle new response format: { filters, totalReports, reports: [...] }
+        const responseData = response.data as any;
+        if (responseData.reports && Array.isArray(responseData.reports)) {
+          uniqueReports = responseData.reports;
+          console.log(`📊 Total Reports: ${responseData.totalReports}, Pages: ${responseData.totalPages}`);
+        } else {
+          // Fallback for old format (direct array)
+          uniqueReports = Array.isArray(response.data) ? response.data : [response.data];
         }
-      });
+      }
 
-      // console.log("📥 Combined Reports:", combinedReports.length);
+      // Handle "all" subusers - fetch for all subusers and combine
+      if (subuserFilter === "all" && subusersData.length > 0) {
+        const subuserPromises = subusersData.map((s: any) =>
+          apiClient.getFilteredAuditReports({ ...filters, userEmail: s.subuser_email })
+        );
+        const subuserResults = await Promise.all(subuserPromises);
+        
+        subuserResults.forEach((res) => {
+          if (res.success && res.data) {
+            // Handle new response format
+            const resData = res.data as any;
+            const reportsArray = resData.reports && Array.isArray(resData.reports)
+              ? resData.reports
+              : (Array.isArray(res.data) ? res.data : [res.data]);
+            uniqueReports = [...uniqueReports, ...reportsArray];
+          }
+        });
 
-      if (combinedReports.length > 0) {
-        // console.log("✅ Audit reports fetched:", combinedReports.length);
+        // Remove duplicates based on report_id
+        uniqueReports = Array.from(
+          new Map(uniqueReports.map(report => [report.report_id || report.id, report])).values()
+        );
+      }
+
+      console.log("📥 Filtered Reports:", uniqueReports.length);
+
+      if (uniqueReports.length > 0) {
+        // console.log("✅ Audit reports fetched:", uniqueReports.length);
 
         // If no reports found
-        if (combinedReports.length === 0) {
+        if (uniqueReports.length === 0) {
           // console.log("ℹ️ No audit reports found");
           showInfo("No Reports", "No audit reports found.");
           setAllRows([]);
@@ -871,7 +1011,7 @@ export default function AdminReports() {
         // console.log("🔄 Processing reports with report_details_json...");
 
         // Process each report
-        const processedReports = combinedReports.map((report: any) => {
+        const processedReports = uniqueReports.map((report: any) => {
           let reportDetails: any = {};
           let deviceCount = 1;
 
@@ -879,6 +1019,19 @@ export default function AdminReports() {
           if (report.report_details_json) {
             try {
               reportDetails = JSON.parse(report.report_details_json);
+              // Debug: Log group information from report
+              if (groupFilter) {
+                console.log('🔍 Report Group Info:', {
+                  reportId: report.report_id,
+                  rawGroup: report.group,
+                  rawGroupName: report.groupName,
+                  rawGroupId: report.group_id,
+                  detailsGroup: reportDetails.group,
+                  detailsGroupName: reportDetails.groupName,
+                  detailsGroupId: reportDetails.group_id,
+                  selectedFilter: groupFilter
+                });
+              }
               // console.log("📄 Parsed report_details_json:", reportDetails);
 
               // Get device count from erasure_log array
@@ -901,11 +1054,13 @@ export default function AdminReports() {
 
             date: reportDetails?.datetime
               ? new Date(reportDetails.datetime).toISOString().split("T")[0]
+              : report.report_datetime
+              ? new Date(report.report_datetime).toISOString().split("T")[0]
               : new Date().toISOString().split("T")[0],
 
             devices: deviceCount,
 
-            status: reportDetails?.status?.toLowerCase() || "completed",
+            status: reportDetails?.status?.toLowerCase() || report.status?.toLowerCase() || "completed",
 
             department:
               reportDetails?.department ||
@@ -918,6 +1073,14 @@ export default function AdminReports() {
               reportDetails?.erasure_method ||
               report.erasure_method ||
               "N/A",
+            
+            // ✅ Add email field for filtering (API uses client_email)
+            email: report.client_email || report.user_email || reportDetails?.user_email,
+            user: report.client_email || report.user_email || reportDetails?.user_email,
+
+            // ✅ Store group information from report for filtering
+            group: report.groupName || report.group || reportDetails?.groupName || reportDetails?.group,
+            groupName: report.groupName || report.group || reportDetails?.groupName || reportDetails?.group,
 
             // New fields from report_details_json
             reportType:
@@ -959,11 +1122,57 @@ export default function AdminReports() {
           return mappedReport;
         });
 
-        setAllRows(processedReports);
-        // Only cache if not using subuser filter
-        if (!subuserFilter) {
-          setCachedData("reports", processedReports);
+        // ✅ RBAC FILTERING: Apply role-based filtering BEFORE setting state
+        // MACHINE TRANSFER LOGIC:
+        // - When a machine is transferred via AdminMachines, it's reassigned to new user/subuser
+        // - All reports with matching MAC address (from report_details_json or mac_address column)
+        //   automatically become visible to the new machine owner
+        // - This ensures report ownership follows machine ownership
+        let filteredReports = processedReports
+        
+        // SubUser: Show reports if email matches OR machine MAC address matches
+        if (isSubUser) {
+          filteredReports = processedReports.filter((report: ExtendedAdminReport) => {
+            // Check email match (original report creator)
+            const emailMatch = (report as any).email === currentUserEmail || (report as any).user === currentUserEmail;
+            
+            // Check MAC address match from report_details_json or mac_address column
+            // This allows transferred machines' reports to appear
+            const reportMacAddress = report._details?.mac_address?.toLowerCase().trim() || 
+                                   report._raw?.mac_address?.toLowerCase().trim();
+            const macMatch = reportMacAddress && userMacAddresses.some(userMac => 
+              userMac === reportMacAddress
+            );
+            
+            return emailMatch || macMatch;
+          })
+          // console.log(`🔒 SubUser Filter: ${processedReports.length} → ${filteredReports.length} reports (Email or MAC match)`)
         }
+        // GroupAdmin: Show reports if group matches OR email matches OR machine MAC address matches
+        else if (isGroupAdmin && currentUserGroupId) {
+          filteredReports = processedReports.filter((report: ExtendedAdminReport) => {
+            const reportGroupId = report._details?.group_id || report._details?.groupId || report._raw?.group_id
+            const groupMatch = reportGroupId === currentUserGroupId;
+            const emailMatch = (report as any).email === currentUserEmail;
+            
+            // Check MAC address match from report_details_json or mac_address column
+            // This allows transferred machines' reports to appear
+            const reportMacAddress = report._details?.mac_address?.toLowerCase().trim() || 
+                                   report._raw?.mac_address?.toLowerCase().trim();
+            const macMatch = reportMacAddress && userMacAddresses.some(userMac => 
+              userMac === reportMacAddress
+            );
+            
+            return groupMatch || emailMatch || macMatch;
+          })
+          // console.log(`🔒 GroupAdmin Filter: ${processedReports.length} → ${filteredReports.length} reports (Group, Email, or MAC match)`)
+        }
+        // SuperAdmin: No filtering - sees all reports
+
+        setAllRows(filteredReports);
+        // ✅ Cache all filtered data with filter-specific key
+        console.log("💾 Caching filtered reports with key:", cacheKey);
+        setCachedData(cacheKey, filteredReports);
       } else {
         showInfo("No Reports", "No audit reports found.");
         setAllRows([]);
@@ -989,13 +1198,22 @@ export default function AdminReports() {
     () => [...new Set(allRows.map((r) => r.reportType).filter(Boolean))],
     [allRows]
   );
-  const uniqueDepartments = useMemo(
-    () => [...new Set(allRows.map((r) => r.department).filter(Boolean))],
-    [allRows]
-  );
+  
+  // ✅ Use groups from API (same as AdminGroups) instead of extracting from reports
+  // Sort groups alphabetically for better UX
   const uniqueGroups = useMemo(
-    () => [...new Set(allRows.map((r) => r._details?.group || r._raw?.group).filter(Boolean))],
-    [allRows]
+    () => {
+      if (!groupsData || groupsData.length === 0) return [];
+      
+      // Extract groupName from API response (same structure as AdminGroups)
+      const groups = groupsData
+        .map((g: any) => g.groupName || g.name)
+        .filter(Boolean);
+      
+      // Sort alphabetically
+      return groups.sort((a: string, b: string) => a.localeCompare(b));
+    },
+    [groupsData]
   );
 
   const filtered = useMemo(() => {
@@ -1054,13 +1272,29 @@ export default function AdminReports() {
         }
       }
 
-      // New filters for Report Type, Department, and Group
+      // New filters for Report Type and Group
       const matchesReportType =
         !reportTypeFilter || r.reportType === reportTypeFilter;
-      const matchesDepartment =
-        !departmentFilter || r.department === departmentFilter;
-      const matchesGroup =
-        !groupFilter || (r._details?.group || r._raw?.group) === groupFilter;
+      
+      // ✅ Check top-level group fields first (stored during mapping), then fallback to nested fields
+      const reportGroup = r.group || r.groupName ||
+                         r._details?.group || r._raw?.group || 
+                         r._details?.groupName || r._raw?.groupName ||
+                         r._details?.group_name || r._raw?.group_name ||
+                         r._details?.groupId || r._raw?.groupId ||
+                         r._details?.group_id || r._raw?.group_id;
+      
+      const matchesGroup = !groupFilter || reportGroup === groupFilter;
+      
+      // Debug logging for group filter
+      if (groupFilter && reportGroup) {
+        console.log('🔍 Group Filter Check:', {
+          reportId: r.id,
+          reportGroup: reportGroup,
+          groupFilter: groupFilter,
+          matches: matchesGroup
+        });
+      }
 
       return (
         matchesQuery &&
@@ -1069,7 +1303,6 @@ export default function AdminReports() {
         matchesEraserMethod &&
         matchesDeviceRange &&
         matchesReportType &&
-        matchesDepartment &&
         matchesGroup
       );
     });
@@ -1137,7 +1370,6 @@ export default function AdminReports() {
     eraserMethodFilter,
     deviceRangeFilter,
     reportTypeFilter,
-    departmentFilter,
     groupFilter,
     showUniqueOnly,
     sortBy,
@@ -1155,7 +1387,6 @@ export default function AdminReports() {
     setEraserMethodFilter("");
     setDeviceRangeFilter("");
     setReportTypeFilter("");
-    setDepartmentFilter("");
     setGroupFilter("");
     setShowUniqueOnly(false);
     setDateValidationError("");
@@ -1915,7 +2146,7 @@ export default function AdminReports() {
             </div>
 
             {/* Status Filter */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Status
               </label>
@@ -1934,7 +2165,7 @@ export default function AdminReports() {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             {/* Date Range Filter */}
             <CustomDateInput
@@ -1982,7 +2213,7 @@ export default function AdminReports() {
             )}
 
             {/* Eraser Method Filter */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Eraser Method
               </label>
@@ -2001,7 +2232,7 @@ export default function AdminReports() {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             {/* Report Type Filter */}
             <div>
@@ -2025,32 +2256,10 @@ export default function AdminReports() {
               </select>
             </div>
 
-            {/* Department Filter */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Department
-              </label>
-              <select
-                className="w-full border rounded px-3 py-2 text-sm"
-                value={departmentFilter}
-                onChange={(e) => {
-                  setDepartmentFilter(e.target.value);
-                  setPage(1);
-                }}
-              >
-                <option value="">All Departments</option>
-                {uniqueDepartments.map((dept) => (
-                  <option key={dept} value={dept}>
-                    {dept}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             {/* Group Filter */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Group
+                Group {uniqueGroups.length > 0 && <span className="text-xs text-slate-500">({uniqueGroups.length})</span>}
               </label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -2061,6 +2270,7 @@ export default function AdminReports() {
                 }}
               >
                 <option value="">All Groups</option>
+                {/* <option value="Dotnet">Dotnet</option> */}
                 {uniqueGroups.map((group) => (
                   <option key={group} value={group}>
                     {group}
@@ -2072,7 +2282,7 @@ export default function AdminReports() {
 
           {/* Additional Options */}
           <div className="flex flex-col md:flex-row md:items-center gap-4">
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <input
                 type="checkbox"
                 id="uniqueOnly"
@@ -2089,7 +2299,7 @@ export default function AdminReports() {
               >
                 Show unique records only
               </label>
-            </div>
+            </div> */}
 
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-slate-700">
@@ -2116,9 +2326,9 @@ export default function AdminReports() {
               </button>
             </div>
 
-            <div className="text-sm text-slate-600">
+            {/* <div className="text-sm text-slate-600">
               Showing {filtered.length} of {allRows.length} users
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -2294,20 +2504,23 @@ export default function AdminReports() {
                 <table className="w-full text-nowrap min-w-[800px]">
                   <thead className="sticky top-0 bg-white shadow-sm z-10">
                     <tr className="text-left text-slate-500 border-b">
-                      <th className="py-3 px-2 w-10">
-                        <input
-                          type="checkbox"
-                          checked={
-                            rows.length > 0 &&
-                            rows.every((r) =>
-                              selectedReportIds.has(String(r.id || ""))
-                            )
-                          }
-                          onChange={() => toggleSelectAll(rows)}
-                          className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-                          title="Select all on this page"
-                        />
-                      </th>
+                      {/* ✅ RBAC: Only show checkbox for SuperAdmin and GroupAdmin */}
+                      {!isSubUser && (
+                        <th className="py-3 px-2 w-10">
+                          <input
+                            type="checkbox"
+                            checked={
+                              rows.length > 0 &&
+                              rows.every((r) =>
+                                selectedReportIds.has(String(r.id || ""))
+                              )
+                            }
+                            onChange={() => toggleSelectAll(rows)}
+                            className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                            title="Select all on this page"
+                          />
+                        </th>
+                      )}
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                         Report ID
                       </th>
@@ -2349,16 +2562,19 @@ export default function AdminReports() {
                         key={`${row.id}-${i}`}
                         className="border-t hover:bg-slate-50"
                       >
-                        <td className="py-3 px-2">
-                          <input
-                            type="checkbox"
-                            checked={selectedReportIds.has(String(row.id || ""))}
-                            onChange={() =>
-                              toggleReportSelection(String(row.id || ""))
-                            }
-                            className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-                          />
-                        </td>
+                        {/* ✅ RBAC: Only show checkbox for SuperAdmin and GroupAdmin */}
+                        {!isSubUser && (
+                          <td className="py-3 px-2">
+                            <input
+                              type="checkbox"
+                              checked={selectedReportIds.has(String(row.id || ""))}
+                              onChange={() =>
+                                toggleReportSelection(String(row.id || ""))
+                              }
+                              className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                            />
+                          </td>
+                        )}
                         <td className="py-3 px-2 font-medium font-mono text-xs xs:text-sm sm:text-sm">
                           {row.id}
                         </td>

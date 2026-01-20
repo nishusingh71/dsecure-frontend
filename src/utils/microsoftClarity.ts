@@ -1,4 +1,4 @@
-// Microsoft Clarity Analytics utility for DSecure
+// Microsoft Clarity Analytics utility for D-Secure
 // Provides user behavior tracking, heatmaps, and session recordings
 
 interface ClarityConfig {
@@ -99,7 +99,7 @@ class MicrosoftClarity {
     }
   }
 
-  // Track business-specific events for DSecure
+  // Track business-specific events for D-Secure
   trackBusinessEvent(eventType: 'page_view' | 'form_interaction' | 'product_interest' | 'pricing_view' | 'demo_request' | 'download', details?: any): void {
     const eventMap = {
       page_view: {

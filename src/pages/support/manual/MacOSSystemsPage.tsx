@@ -197,7 +197,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 61,
           title: "Third-Party Erasure Software",
           description:
-            "DSecure Mac Eraser, Blancco, Permanent Eraser comparison",
+            "D-Secure Mac Eraser, Blancco, Permanent Eraser comparison",
           url: "/support/manual/macos-third-party",
           pageCount: 2,
         },

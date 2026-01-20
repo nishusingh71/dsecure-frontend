@@ -1,10 +1,10 @@
 ﻿/**
- * SEO Utility - Centralized SEO metadata management for DSecure Tech
+ * SEO Utility - Centralized SEO metadata management for D-Secure Tech
  * Provides consistent, optimized meta tags and structured data across all pages
  */
 
 /**
- * SEO Utility - Centralized SEO metadata management for DSecure Tech
+ * SEO Utility - Centralized SEO metadata management for D-Secure Tech
  * Provides consistent, optimized meta tags and structured data across all pages
  */
 
@@ -27,12 +27,12 @@ export interface SEOMetadata {
 // Base configuration
 export const SEO_CONFIG = {
   siteName: 'D-Secure Tech',
-  baseUrl: 'https://dsecuretech.com',
-  defaultImage: 'https://dsecuretech.com/logo-white.svg',
+  baseUrl: 'https://D-Securetech.com',
+  defaultImage: 'https://D-Securetech.com/logo-white.svg',
   author: 'D-Secure Tech',
   language: 'en',
   locale: 'en_US',
-  twitterHandle: '@dsecuretech',
+  twitterHandle: '@D-Securetech',
 };
 
 // Comprehensive keywords for data erasure and security - EXTENSIVELY EXPANDED
@@ -200,11 +200,11 @@ export const BASE_KEYWORDS = [
   'information protection',
 
   // Brand Variations
-  'dsecure',
+  'D-Secure',
   'D-secure',
-  'idsecure',
+  'iD-Secure',
   'dsecur',
-  'dsecured',
+  'D-Secured',
   ' erase',
 
   // Industry-Specific Solutions
@@ -889,11 +889,11 @@ export const BASE_KEYWORDS = [
   'secure erase utility',
       'data cleaner software',
       'privacy protection tool',
-      'file eraser dsecure',
+      'file eraser D-Secure',
       'heady eraser',
       'remap ssd partition',
       'audit data sanitization',
-      'dsecure technology',
+      'D-Secure technology',
       'device sanitization',
   'System Optimization Tool',
   'Disk Space Reclaim Tool',
@@ -915,13 +915,13 @@ export const generateKeywords = (pageSpecificKeywords: string[] = []): string =>
 export const generateOrganizationSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "DSecure Tech",
+  "name": "D-Secure Tech",
   "url": SEO_CONFIG.baseUrl,
   "logo": `${SEO_CONFIG.baseUrl}/logo-white.svg`,
   "description": "Leading provider of enterprise data erasure and sanitization solutions for GDPR, HIPAA, and compliance requirements.",
   "sameAs": [
-    "https://linkedin.com/company/dsecuretech",
-    "https://twitter.com/dsecuretech"
+    "https://linkedin.com/company/D-Securetech",
+    "https://twitter.com/D-Securetech"
   ],
   "contactPoint": {
     "@type": "ContactPoint",
@@ -946,7 +946,7 @@ export const generateSoftwareProductSchema = (productName: string, description: 
   },
   "publisher": {
     "@type": "Organization",
-    "name": "DSecure Tech"
+    "name": "D-Secure Tech"
   }
 });
 
@@ -978,7 +978,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'enterprise data wiping',
       'technology',
       'technologies',
-      'dsecure technology',
+      'D-Secure technology',
       'D-secure technology',
       'compliance data erasure',
       'secure data erasure download',
@@ -997,7 +997,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'professional data destruction tool',
       'enterprise grade erasure software',
       'business data erasure solution',
-      'DSecure Tech',
+      'D-Secure Tech',
       'D-Secure Tech',
       'data sanitization',
       'secure data deletion',
@@ -1015,18 +1015,18 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'secure erase utility',
       'data cleaner software',
       'privacy protection tool',
-      'file eraser dsecure',
+      'file eraser D-Secure',
       'heady eraser',
       'remap ssd partition',
       'audit data sanitization',
-      'dsecure technology',
+      'D-Secure technology',
       'device sanitization'
     ]),
     canonicalUrl: getCanonicalUrl('/'),
   },
 
   services: {
-    title: 'Data Erasure Services - Secure Data Destruction | DSecure Tech',
+    title: 'Data Erasure Services - Secure Data Destruction | D-Secure Tech',
     description: 'Comprehensive data erasure services including hard drive wiping, SSD sanitization, and regulated data destruction for enterprise compliance.',
     keywords: generateKeywords([
       'data erasure services',
@@ -1075,7 +1075,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   solutions: {
-    title: 'Enterprise Data Erasure Solutions - GDPR & HIPAA Compliance | DSecure',
+    title: 'Enterprise Data Erasure Solutions - GDPR & HIPAA Compliance | D-Secure',
     description: 'Complete data sanitization solutions for enterprises. GDPR, HIPAA, and ISO 27001 compliant data erasure software and services.',
     keywords: generateKeywords([
       'enterprise data solutions',
@@ -1117,8 +1117,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   about: {
-    title: 'About DSecure Tech - Data Erasure & Security Experts',
-    description: 'Learn about DSecure Tech, industry leaders in data erasure and sanitization solutions. Our mission to secure enterprise data worldwide.',
+    title: 'About D-Secure Tech - Data Erasure & Security Experts',
+    description: 'Learn about D-Secure Tech, industry leaders in data erasure and sanitization solutions. Our mission to secure enterprise data worldwide.',
     keywords: generateKeywords([
       'data security company',
       'data erasure experts',
@@ -1130,7 +1130,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'data protection company',
       'erasure software developer',
       'security technology firm',
-      'about DSecure',
+      'about D-Secure',
       'company information',
       'who we are',
       'our mission',
@@ -1138,7 +1138,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'company profile',
       'about us',
       'company overview',
-      'DSecure Tech company',
+      'D-Secure Tech company',
       'data security leader',
       'industry leader erasure',
       'trusted data erasure',
@@ -1168,7 +1168,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'technical assistance wiping',
       'sales consultation erasure',
       'support team data destruction',
-      'contact DSecure',
+      'contact D-Secure',
       'get in touch',
       'contact us',
       'reach out',
@@ -1193,8 +1193,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   support: {
-    title: 'Support Center - Data Erasure Help & Resources | DSecure Tech',
-    description: 'Comprehensive support for DSecure data erasure software. Find guides, documentation, and get technical assistance.',
+    title: 'Support Center - Data Erasure Help & Resources | D-Secure Tech',
+    description: 'Comprehensive support for D-Secure data erasure software. Find guides, documentation, and get technical assistance.',
     keywords: generateKeywords([
       'data erasure support',
       'technical documentation',
@@ -1282,7 +1282,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'enterprise license cost',
       'software subscription pricing',
       'business plan pricing',
-      'DSecure pricing',
+      'D-Secure pricing',
       'software price',
       'license cost',
       'pricing plans',
@@ -1441,7 +1441,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   features: {
     title: 'Features - Data Erasure Software Capabilities | D-Secure Tech',
-    description: 'Advanced features of DSecure data erasure software including multi-platform support, compliance reporting, and enterprise management.',
+    description: 'Advanced features of D-Secure data erasure software including multi-platform support, compliance reporting, and enterprise management.',
     keywords: generateKeywords([
       'data erasure features',
       'software capabilities',
@@ -1632,7 +1632,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   'cloud-console-guide': {
     title: 'Cloud Console Guide - Remote Data Erasure Management',
-    description: 'Learn to use DSecure cloud console for remote data erasure management and enterprise deployment.',
+    description: 'Learn to use D-Secure cloud console for remote data erasure management and enterprise deployment.',
     keywords: generateKeywords([
       'cloud console guide',
       'remote data erasure',
@@ -1709,7 +1709,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   // Legal and policy pages
   'privacy-policy': {
     title: 'Privacy Policy - D-Secure Tech Data Protection Commitment',
-    description: 'DSecure Tech privacy policy outlining our commitment to protecting your personal data and privacy rights.',
+    description: 'D-Secure Tech privacy policy outlining our commitment to protecting your personal data and privacy rights.',
     keywords: generateKeywords([
       'privacy policy',
       'data protection',
@@ -2010,10 +2010,10 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'login': {
-    title: 'Login - DSecure Tech | Data Erasure Management Platform',
-    description: 'Login to your DSecure Tech account to manage data erasure tasks, view compliance reports, and ensure enterprise security.',
+    title: 'Login - D-Secure Tech | Data Erasure Management Platform',
+    description: 'Login to your D-Secure Tech account to manage data erasure tasks, view compliance reports, and ensure enterprise security.',
     keywords: generateKeywords([
-      'DSecure login',
+      'D-Secure login',
       'account login',
       'user dashboard',
       'erasure management',
@@ -2023,7 +2023,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'client portal',
       'erasure reports login',
       'management console',
-      'sign in DSecure',
+      'sign in D-Secure',
       'user login',
       'customer portal login',
       'account access',
@@ -2048,10 +2048,10 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'register': {
-    title: 'Create Account | DSecure Tech - Secure Data Erasure Solutions',
-    description: 'Create your DSecure Tech account to access professional data erasure solutions. Join thousands of enterprises securing their data with compliant erasure.',
+    title: 'Create Account | D-Secure Tech - Secure Data Erasure Solutions',
+    description: 'Create your D-Secure Tech account to access professional data erasure solutions. Join thousands of enterprises securing their data with compliant erasure.',
     keywords: generateKeywords([
-      'DSecure register',
+      'D-Secure register',
       'create account',
       'data erasure signup',
       'enterprise data security',
@@ -2061,15 +2061,15 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'get started',
       'enterprise account',
       'compliance platform signup',
-      'sign up DSecure',
+      'sign up D-Secure',
       'register account',
-      'join DSecure',
-      'create DSecure account',
+      'join D-Secure',
+      'create D-Secure account',
       'new account registration',
       'account signup',
       'register now',
       'free account creation',
-      'DSecure signup',
+      'D-Secure signup',
       'register for free',
       'account creation form',
       'sign up now',
@@ -2120,10 +2120,10 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'payment-setup': {
-    title: 'Payment & License Setup | DSecure Tech - Complete Your Setup',
-    description: 'Complete your DSecure Tech payment and license setup. Configure billing details and license requirements to access all data erasure features.',
+    title: 'Payment & License Setup | D-Secure Tech - Complete Your Setup',
+    description: 'Complete your D-Secure Tech payment and license setup. Configure billing details and license requirements to access all data erasure features.',
     keywords: generateKeywords([
-      'DSecure payment setup',
+      'D-Secure payment setup',
       'license configuration',
       'billing setup',
       'enterprise license',
@@ -2188,7 +2188,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'enterprise erasure software',
       'professional erasure tools',
       'certified erasure products',
-      'DSecure products',
+      'D-Secure products',
       'data destruction products',
       'sanitization software',
       'disk wipe products',
@@ -2710,7 +2710,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'free download',
       'software trial',
       'erasure software download',
-      'download DSecure',
+      'download D-Secure',
       'download data eraser',
       'free software download',
       'trial version download',
@@ -2924,7 +2924,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'company announcements',
       'product news',
       'industry news',
-      'DSecure news',
+      'D-Secure news',
       'news feed',
       'breaking news',
       'recent news',
@@ -3002,8 +3002,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'hiring',
       'open positions',
       'job listings',
-      'jobs at DSecure',
-      'DSecure careers',
+      'jobs at D-Secure',
+      'D-Secure careers',
       'current openings',
       'job vacancies',
       'career page',
@@ -3041,7 +3041,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'our people',
       'company staff',
       'team introduction',
-      'DSecure team',
+      'D-Secure team',
       'about our team',
       'team profiles',
       'employee profiles',

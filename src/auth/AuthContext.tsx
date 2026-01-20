@@ -340,8 +340,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // //console.log('Demo login completed successfully')
 
-      // Dispatch auth state change event
-      window.dispatchEvent(new CustomEvent('authStateChanged', { detail: dummyAdminUser }))
+      // ✅ Dispatch auth state change event to update header
+      window.dispatchEvent(new CustomEvent('authStateChanged', { 
+        detail: { 
+          user: dummyAdminUser,
+          isDemo: true 
+        } 
+      }))
 
     } catch (err) {
       console.error('Demo login error:', err)

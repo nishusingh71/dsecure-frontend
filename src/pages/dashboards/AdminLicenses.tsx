@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/utils/enhancedApiClient';
 import { authService } from '@/utils/authService';
+import { isDemoMode } from '@/data/demoData';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { jsPDF } from 'jspdf';
@@ -39,6 +40,94 @@ interface LicenseDistribution {
 }
 
 export default function AdminLicenses() {
+    const isDemo = isDemoMode();
+    
+    // ✅ Get user role for RBAC
+    const getUserRole = (): string => {
+        const storedUser = localStorage.getItem('user_data');
+        const authUser = localStorage.getItem('authUser');
+
+        let storedUserData = null;
+        if (storedUser) {
+            try {
+                storedUserData = JSON.parse(storedUser);
+            } catch (e) {
+                console.error('Error parsing user_data:', e);
+            }
+        }
+
+        if (!storedUserData && authUser) {
+            try {
+                storedUserData = JSON.parse(authUser);
+            } catch (e) {
+                console.error('Error parsing authUser:', e);
+            }
+        }
+
+        const jwtUser = authService.getUserFromToken();
+        return storedUserData?.role || storedUserData?.user_role || jwtUser?.role || 'user';
+    };
+
+    // ✅ Get user's groupId for GroupAdmin filtering
+    const getUserGroupId = (): string | null => {
+        const storedUser = localStorage.getItem('user_data');
+        const authUser = localStorage.getItem('authUser');
+
+        let storedUserData = null;
+        if (storedUser) {
+            try {
+                storedUserData = JSON.parse(storedUser);
+            } catch (e) {
+                console.error('Error parsing user_data:', e);
+            }
+        }
+
+        if (!storedUserData && authUser) {
+            try {
+                storedUserData = JSON.parse(authUser);
+            } catch (e) {
+                console.error('Error parsing authUser:', e);
+            }
+        }
+
+        return storedUserData?.user_group || storedUserData?.groupId || null;
+    };
+
+    // ✅ Get current user email
+    const getUserEmail = (): string => {
+        const storedUser = localStorage.getItem('user_data');
+        const authUser = localStorage.getItem('authUser');
+
+        let storedUserData = null;
+        if (storedUser) {
+            try {
+                storedUserData = JSON.parse(storedUser);
+            } catch (e) {
+                console.error('Error parsing user_data:', e);
+            }
+        }
+
+        if (!storedUserData && authUser) {
+            try {
+                storedUserData = JSON.parse(authUser);
+            } catch (e) {
+                console.error('Error parsing authUser:', e);
+            }
+        }
+
+        const jwtUser = authService.getUserFromToken();
+        return storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || '';
+    };
+
+    const currentUserRole = getUserRole().toLowerCase();
+    const currentUserGroupId = getUserGroupId();
+    const currentUserEmail = getUserEmail();
+    const isSuperAdmin = currentUserRole === 'superadmin';
+    const isGroupAdmin = currentUserRole === 'admin' || currentUserRole === 'administrator' || currentUserRole === 'groupadmin';
+    const isSubUser = currentUserRole === 'user';
+
+    // console.log('🔐 RBAC Info:', { role: currentUserRole, groupId: currentUserGroupId, email: currentUserEmail });
+
     // State for API data
     const [licenses, setLicenses] = useState<LicenseStats>({
         total: 0,
@@ -77,6 +166,82 @@ export default function AdminLicenses() {
     }, []);
 
     const fetchLicenseData = async () => {
+        // Skip API calls for demo mode - use dummy data
+        if (isDemo) {
+            setLoading(false);
+            setError(null);
+            setLicenses({
+                total: 2450,
+                active: 1840,
+                inactive: 410,
+                expired: 150,
+                revoked: 50
+            });
+            setLicenseList([
+                {
+                    license_id: '1',
+                    license_key: 'ENT-XXXX-XXXX-XXXX-0001',
+                    user_email: 'john.doe@demo.com',
+                    license_type: 'Enterprise',
+                    status: 'Active',
+                    created_at: '2024-01-15T09:00:00Z',
+                    expires_at: '2027-01-15T09:00:00Z',
+                    activated_at: '2024-01-15T10:30:00Z',
+                    machine_count: 3
+                },
+                {
+                    license_id: '2',
+                    license_key: 'PRO-XXXX-XXXX-XXXX-0002',
+                    user_email: 'jane.smith@demo.com',
+                    license_type: 'Professional',
+                    status: 'Active',
+                    created_at: '2024-02-20T14:00:00Z',
+                    expires_at: '2026-02-20T14:00:00Z',
+                    activated_at: '2024-02-20T15:00:00Z',
+                    machine_count: 2
+                },
+                {
+                    license_id: '3',
+                    license_key: 'STD-XXXX-XXXX-XXXX-0003',
+                    user_email: 'mike.wilson@demo.com',
+                    license_type: 'Standard',
+                    status: 'Active',
+                    created_at: '2024-03-10T11:00:00Z',
+                    expires_at: '2025-03-10T11:00:00Z',
+                    activated_at: '2024-03-10T12:00:00Z',
+                    machine_count: 1
+                },
+                {
+                    license_id: '4',
+                    license_key: 'ENT-XXXX-XXXX-XXXX-0004',
+                    user_email: 'sarah.jones@demo.com',
+                    license_type: 'Enterprise',
+                    status: 'Inactive',
+                    created_at: '2024-01-25T08:00:00Z',
+                    expires_at: '2027-01-25T08:00:00Z',
+                    machine_count: 0
+                },
+                {
+                    license_id: '5',
+                    license_key: 'TRIAL-XXXX-XXXX-XXXX-0005',
+                    user_email: 'demo.user@demo.com',
+                    license_type: 'Trial',
+                    status: 'Expired',
+                    created_at: '2023-11-01T10:00:00Z',
+                    expires_at: '2023-12-01T10:00:00Z',
+                    activated_at: '2023-11-01T11:00:00Z',
+                    machine_count: 1
+                }
+            ]);
+            setLicenseDetails([
+                { id: 1, type: 'Enterprise', count: 1200, percentage: 49, color: 'emerald' },
+                { id: 2, type: 'Professional', count: 850, percentage: 35, color: 'blue' },
+                { id: 3, type: 'Standard', count: 300, percentage: 12, color: 'purple' },
+                { id: 4, type: 'Trial', count: 100, percentage: 4, color: 'orange' }
+            ]);
+            return;
+        }
+        
         setLoading(true);
         setError(null);
 
@@ -120,7 +285,30 @@ export default function AdminLicenses() {
                     machine_count: item.machine_count || item.machineCount || 0
                 }));
 
-                setLicenseList(mappedList);
+                // ✅ RBAC FILTERING: Apply role-based filtering BEFORE setting state
+                let filteredList = mappedList;
+
+                // SubUser: Only see own licenses
+                if (isSubUser) {
+                    filteredList = mappedList.filter((license: License) => 
+                        license.user_email === currentUserEmail
+                    );
+                    // console.log(`🔒 SubUser Filter: ${mappedList.length} → ${filteredList.length} licenses`);
+                }
+                // GroupAdmin: Filter by groupId if available (check user_email belongs to same group)
+                else if (isGroupAdmin && currentUserGroupId) {
+                    // Note: Backend should handle this via WHERE clause
+                    // Frontend filtering as additional safety layer
+                    filteredList = mappedList.filter((license: License) => {
+                        // Check if license user belongs to same group
+                        const licenseGroupId = (license as any).group_id || (license as any).groupId;
+                        return licenseGroupId === currentUserGroupId || license.user_email === currentUserEmail;
+                    });
+                    // console.log(`🔒 GroupAdmin Filter: ${mappedList.length} → ${filteredList.length} licenses`);
+                }
+                // SuperAdmin: No filtering - sees everything
+
+                setLicenseList(filteredList);
             }
 
             // Update distribution data for pie chart
@@ -219,7 +407,7 @@ export default function AdminLicenses() {
             const dataToExport = filteredLicenses.length > 0 ? filteredLicenses : licenseList;
 
             if (dataToExport.length === 0) {
-                alert('No license data to export');
+                console.log('No license data to export');
                 setExporting(null);
                 return;
             }
@@ -274,7 +462,7 @@ export default function AdminLicenses() {
 
             } catch (clientErr) {
                 console.error('Client-side export failed:', clientErr);
-                alert('Failed to export to Excel. Please try again.');
+                console.error('Failed to export to Excel. Please try again.');
             }
         } finally {
             setExporting(null);
@@ -320,7 +508,7 @@ export default function AdminLicenses() {
             const dataToExport = filteredLicenses.length > 0 ? filteredLicenses : licenseList;
 
             if (dataToExport.length === 0) {
-                alert('No license data to export');
+                console.log('No license data to export');
                 setExporting(null);
                 return;
             }
@@ -368,7 +556,7 @@ export default function AdminLicenses() {
                 doc.save(fileName);
             } catch (clientErr) {
                 console.error('Client-side export failed:', clientErr);
-                alert('Failed to export to PDF. Please try again.');
+                console.error('Failed to export to PDF. Please try again.');
             }
         } finally {
             setExporting(null);
@@ -488,8 +676,9 @@ export default function AdminLicenses() {
                     </div >
                     {/* Export Buttons */}
                     < div className="flex items-center gap-3" >
+                        {/* ✅ RBAC: Only SuperAdmin and GroupAdmin can bulk revoke */}
                         {
-                            selectedLicenses.size > 0 && (
+                            !isSubUser && selectedLicenses.size > 0 && (
                                 <button
                                     onClick={() => handleRevoke(Array.from(selectedLicenses))}
                                     className="btn-danger flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-rose-600 text-white hover:bg-rose-700 transition-colors mr-2"
@@ -856,14 +1045,17 @@ export default function AdminLicenses() {
                     <table className="w-full relative">
                         <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
                             <tr>
-                                <th className="px-4 py-3 text-left">
-                                    <input
-                                        type="checkbox"
-                                        checked={filteredLicenses.length > 0 && selectedLicenses.size === filteredLicenses.length}
-                                        onChange={toggleSelectAll}
-                                        className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                                    />
-                                </th>
+                                {/* ✅ RBAC: Only show checkbox column for SuperAdmin and GroupAdmin */}
+                                {!isSubUser && (
+                                    <th className="px-4 py-3 text-left">
+                                        <input
+                                            type="checkbox"
+                                            checked={filteredLicenses.length > 0 && selectedLicenses.size === filteredLicenses.length}
+                                            onChange={toggleSelectAll}
+                                            className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                                        />
+                                    </th>
+                                )}
                                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                                     License Key
                                 </th>
@@ -888,14 +1080,17 @@ export default function AdminLicenses() {
                             {displayedLicenses.length > 0 ? (
                                 displayedLicenses.map((license, index) => (
                                     <tr key={license.license_id || index} className={`hover:bg-slate-50 ${selectedLicenses.has(license.license_id) ? 'bg-emerald-50' : ''}`}>
-                                        <td className="px-4 py-3">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedLicenses.has(license.license_id)}
-                                                onChange={() => toggleSelectOne(license.license_id)}
-                                                className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                                            />
-                                        </td>
+                                        {/* ✅ RBAC: Only show checkbox column for SuperAdmin and GroupAdmin */}
+                                        {!isSubUser && (
+                                            <td className="px-4 py-3">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedLicenses.has(license.license_id)}
+                                                    onChange={() => toggleSelectOne(license.license_id)}
+                                                    className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                                                />
+                                            </td>
+                                        )}
                                         <td className="px-4 py-3 whitespace-nowrap text-sm font-mono text-slate-900 max-w-xs overflow-x-auto custom-scrollbar">
                                             {license.license_key}
                                         </td>
@@ -923,13 +1118,29 @@ export default function AdminLicenses() {
                                             {license.expires_at ? new Date(license.expires_at).toLocaleDateString() : 'N/A'}
                                         </td>
                                         <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
-                                            <button
-                                                onClick={() => handleRevoke([license.license_id])}
-                                                className="text-rose-600 hover:text-rose-900 disabled:opacity-50"
-                                                disabled={license.status?.toLowerCase() === 'revoked'}
-                                            >
-                                                Revoke
-                                            </button>
+                                            {/* ✅ RBAC: Only SuperAdmin and GroupAdmin can Revoke licenses */}
+                                            {!isSubUser && (
+                                                <button
+                                                    onClick={() => handleRevoke([license.license_id])}
+                                                    className="text-rose-600 hover:text-rose-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    disabled={
+                                                        license.status?.toLowerCase() === 'revoked' || 
+                                                        license.status?.toLowerCase() === 'expired'
+                                                    }
+                                                    title={
+                                                        license.status?.toLowerCase() === 'revoked' 
+                                                            ? 'License already revoked' 
+                                                            : license.status?.toLowerCase() === 'expired'
+                                                            ? 'Cannot revoke expired license'
+                                                            : 'Revoke this license'
+                                                    }
+                                                >
+                                                    Revoke
+                                                </button>
+                                            )}
+                                            {isSubUser && (
+                                                <span className="text-slate-400 text-xs">View Only</span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))

@@ -128,17 +128,17 @@ export default function AddUser() {
     
     // Validation
     if (!formData.name || !formData.email || !formData.password) {
-      alert('Please fill in all required fields')
+      console.log('Please fill in all required fields')
       return
     }
     
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match')
+      console.log('Passwords do not match')
       return
     }
     
     if (formData.password.length < 8) {
-      alert('Password must be at least 8 characters long')
+      console.log('Password must be at least 8 characters long')
       return
     }
     
@@ -158,15 +158,12 @@ export default function AddUser() {
       
       // console.log('Creating user:', newUser)
       
-      // Success message
-      alert(`User "${formData.name}" has been created successfully!`)
-      
-      // Navigate back to users list
+      // Success - Navigate back to users list
+      console.log(`User "${formData.name}" has been created successfully!`)
       navigate('/admin/users')
       
     } catch (error) {
       console.error('Error creating user:', error)
-      alert('Failed to create user. Please try again.')
     } finally {
       setIsLoading(false)
     }

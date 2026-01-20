@@ -15,6 +15,7 @@ import {
   useFormSubmission,
   formDataTransformers,
 } from "@/hooks/useFormSubmission";
+import { api } from "@/utils/apiClient"; // ✅ Pre-load API client for instant access
 
 const PricingAndPlanPage: React.FC = memo(() => {
   const { toast, showToast, hideToast } = useToast();
@@ -30,6 +31,23 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const [showSpecialPricingModal, setShowSpecialPricingModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("basic");
   const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
+
+  // Reset loading state when component mounts (handles back navigation)
+  useEffect(() => {
+    setIsBuyNowLoading(false);
+  }, []);
+
+  // ✅ Preload API client on component mount for instant checkout
+  useEffect(() => {
+    // Warm up API client connection (non-blocking)
+    if (typeof window !== 'undefined') {
+      // Prefetch DNS for payment domain
+      const link = document.createElement('link');
+      link.rel = 'dns-prefetch';
+      link.href = 'https://checkout.dodopayments.com';
+      document.head.appendChild(link);
+    }
+  }, []);
 
   // Read URL parameters and set initial state
   useEffect(() => {
@@ -653,34 +671,33 @@ const PricingAndPlanPage: React.FC = memo(() => {
   };
 
   const handleBuyNow = async () => {
-    // Set loading state immediately
+    // Prevent double clicks but don't show loading UI for instant feel
+    if (isBuyNowLoading) return;
     setIsBuyNowLoading(true);
 
     if (selectedLicenses === "custom" || selectedPlan === "custom") {
       setShowCustomModal(true);
-      setIsBuyNowLoading(false); // Reset loading for custom modal
+      setIsBuyNowLoading(false);
       return;
     }
 
     // Product ID mapping for Dodo Payments
     const PRODUCT_IDS = {
       'drive-eraser': 'pdt_0NVH5wJYMX70syW3ioj9R',
-      'file-eraser': 'pdt_0NVHHRwPSypqgPTs3kuSu', // File Eraser Standard
+      'file-eraser': 'pdt_0NVHHRwPSypqgPTs3kuSu',
     };
 
-    // Get the correct product ID based on selected category
     const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
 
     if (!productId) {
       showToast('Invalid product selection. Please try again.', 'error');
-      setIsBuyNowLoading(false); // Reset loading on error
+      setIsBuyNowLoading(false);
       return;
     }
 
-    // Get quantity from selected licenses
     const quantity = parseInt(selectedLicenses) || 1;
 
-    // Store order metadata for success page
+    // Store order metadata for success page (async, non-blocking)
     const orderMetadata = {
       category: selectedCategory,
       planId: selectedPlan,
@@ -693,43 +710,107 @@ const PricingAndPlanPage: React.FC = memo(() => {
     };
     localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
 
-    try {
-      // showToast('Creating checkout session...', 'info');
+    // ✅ Show instant redirect page for better perceived performance
+    const redirectOverlay = document.createElement('div');
+    redirectOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.2s ease-out;
+    `;
+    redirectOverlay.innerHTML = `
+      <style>
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.6; }
+        }
+      </style>
+      <div style="
+        width: 80px;
+        height: 80px;
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 24px;
+      "></div>
+      <h2 style="
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0 0 12px 0;
+        animation: pulse 1.5s ease-in-out infinite;
+      ">Redirecting to Checkout...</h2>
+      <p style="
+        color: rgba(255,255,255,0.9);
+        font-size: 16px;
+        margin: 0;
+      ">Please wait while we prepare your order</p>
+    `;
+    document.body.appendChild(redirectOverlay);
+    document.body.style.overflow = 'hidden';
 
-      // Import API client
-      const { api } = await import('@/utils/apiClient');
+    try {
+      // ✅ API client already imported at top - no dynamic import delay
+      // ✅ Set aggressive timeout for faster perceived performance
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
       // Call backend API to create guest checkout session
       const response = await api.post('/api/Payments/dodo/checkout/guest', {
         product_id: productId,
         quantity: quantity,
         TaxEnabled: true
+      }, {
+        signal: controller.signal,
+        headers: {
+          'X-Request-Priority': 'high' // Priority hint for backend
+        }
       });
 
-      // Debug: Log full response to see structure
-      console.log('📦 API Response:', response);
-      console.log('📦 Response Data:', response.data);
+      clearTimeout(timeoutId);
 
-      // Check for URL in different possible field names
+      // Extract checkout URL
       const checkoutUrl = response.data?.url || response.data?.Url || response.data?.checkoutUrl || response.data?.checkout_url || response.data;
 
       if (!checkoutUrl || typeof checkoutUrl !== 'string') {
         console.error('❌ No checkout URL in response:', response.data);
+        document.body.removeChild(redirectOverlay);
+        document.body.style.overflow = '';
         showToast('Failed to create checkout session. Please try again.', 'error');
-        setIsBuyNowLoading(false); // Reset loading on error
+        setIsBuyNowLoading(false);
         return;
       }
 
-      console.log('🚀 Redirecting to checkout:', checkoutUrl);
-
-      // Redirect to Dodo Payments checkout (loading will stop naturally when page redirects)
+      // ✅ Instant redirect - browser handles loading indicator
       window.location.href = checkoutUrl;
 
     } catch (error: any) {
       console.error('Checkout session creation failed:', error);
-      console.error('Error response:', error.response?.data);
-      showToast(error.response?.data?.message || error.message || 'Payment system unavailable. Please try again later.', 'error');
-      setIsBuyNowLoading(false); // Reset loading on error
+      document.body.removeChild(redirectOverlay);
+      document.body.style.overflow = '';
+      
+      if (error.name === 'AbortError') {
+        showToast('Request timeout. Please check your connection and try again.', 'error');
+      } else {
+        showToast(error.response?.data?.message || error.message || 'Payment system unavailable. Please try again later.', 'error');
+      }
+      setIsBuyNowLoading(false);
     }
   };
 
@@ -1012,41 +1093,19 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 <button
                   onClick={handleBuyNow}
                   disabled={isBuyNowLoading}
-                  className={`w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2 ${
-                    isBuyNowLoading ? 'opacity-70 cursor-not-allowed hover:scale-100' : ''
-                  }`}
+                  onMouseEnter={() => {
+                    // ✅ Prefetch on hover for even faster response
+                    if (selectedLicenses !== "custom" && selectedPlan !== "custom") {
+                      // Prefetch checkout domain connection
+                      const img = new Image();
+                      img.src = 'https://checkout.dodopayments.com/favicon.ico';
+                    }
+                  }}
+                  className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
                 >
-                  {isBuyNowLoading ? (
-                    <>
-                      <svg
-                        className="animate-spin h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      <span>Processing...</span>
-                    </>
-                  ) : (
-                    <>
-                      {selectedLicenses === "custom" || selectedPlan === "custom"
-                        ? " Request Custom Quote"
-                        : " Buy Now"}
-                    </>
-                  )}
+                  {selectedLicenses === "custom" || selectedPlan === "custom"
+                    ? "Request Custom Quote"
+                    : "Buy Now"}
                 </button>
 
                 {/* Trust Indicators */}

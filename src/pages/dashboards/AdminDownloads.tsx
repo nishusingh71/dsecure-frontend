@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient } from '../../utils/enhancedApiClient';
+import { isDemoMode } from '@/data/demoData';
 
 interface DownloadStats {
     totalDownloads: number;
@@ -14,6 +15,8 @@ interface DownloadStats {
 }
 
 export default function AdminDownloads() {
+    const isDemo = isDemoMode();
+    
     // Aggregated product stats
     const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -29,6 +32,47 @@ export default function AdminDownloads() {
 
     useEffect(() => {
         const fetchData = async () => {
+            // Skip API calls for demo mode - use dummy data
+            if (isDemo) {
+                setLoading(false);
+                setStats({
+                    totalDownloads: 1247,
+                    windowsDownloads: 845,
+                    macOsDownloads: 312,
+                    linuxDownloads: 90,
+                    todayDownloads: 23,
+                    thisWeekDownloads: 156,
+                    thisMonthDownloads: 687
+                });
+                setProducts([
+                    {
+                        id: 1,
+                        name: 'D-Secure Pro',
+                        version: '2.5.1',
+                        downloads: 523,
+                        lastDownload: new Date().toISOString(),
+                        platforms: { windows: 345, macos: 145, linux: 33 }
+                    },
+                    {
+                        id: 2,
+                        name: 'D-Secure Enterprise',
+                        version: '3.2.0',
+                        downloads: 412,
+                        lastDownload: new Date().toISOString(),
+                        platforms: { windows: 280, macos: 98, linux: 34 }
+                    },
+                    {
+                        id: 3,
+                        name: 'D-Secure Mobile',
+                        version: '1.8.5',
+                        downloads: 312,
+                        lastDownload: new Date().toISOString(),
+                        platforms: { windows: 220, macos: 69, linux: 23 }
+                    }
+                ]);
+                return;
+            }
+            
             setLoading(true);
             try {
                 // Fetch Global Stats
@@ -89,7 +133,7 @@ export default function AdminDownloads() {
         };
 
         fetchData();
-    }, []);
+    }, [isDemo]);
 
     // Use API stats if available, otherwise 0 (initial state)
     const totalDownloads = stats.totalDownloads;
@@ -129,7 +173,7 @@ export default function AdminDownloads() {
                 </div>
 
                 {/* Stats Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                {/* <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <div className="card !p-6">
                         <div className="flex items-center justify-between">
                             <div>
@@ -185,10 +229,10 @@ export default function AdminDownloads() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Period Stats Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="card !p-6">
                         <div className="flex items-center justify-between">
                             <div>
@@ -228,7 +272,7 @@ export default function AdminDownloads() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Product Downloads */}
                 <div className="card !p-0 overflow-hidden">

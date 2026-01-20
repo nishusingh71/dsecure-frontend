@@ -165,7 +165,7 @@ const WindowsSystemsPage: React.FC = memo(() => {
       subsections: [
         {
           id: 51,
-          title: "DSecure Windows Eraser",
+          title: "D-Secure Windows Eraser",
           description: "Specialized tool for comprehensive Windows erasure",
           url: "/support/manual/windows-dsecure-eraser",
           pageCount: 2,

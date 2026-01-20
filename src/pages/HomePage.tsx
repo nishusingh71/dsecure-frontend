@@ -129,65 +129,158 @@ const HomePage = memo(function HomePage() {
             </div>
             <div className="relative lg:order-last">
               <Reveal delayMs={40}>
-                <div className="relative">
-                  <div className="aspect-[16/10] xs:aspect-[16/10] sm:aspect-[16/10] md:aspect-[16/10] lg:aspect-[4/3] xl:aspect-[4/3] xxl:aspect-[4/3] bg-white rounded-xl xs:rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl xl:rounded-2xl xxl:rounded-3xl shadow-lg xs:shadow-xl sm:shadow-2xl md:shadow-2xl lg:shadow-2xl xl:shadow-2xl xxl:shadow-2xl border border-slate-200/60 overflow-hidden relative">
-                    <OptimizedImage
-                      src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-                      alt="Digital data security and secure erasure technology with cybersecurity systems"
-                      className="w-full h-full object-cover"
-                      width={2070}
-                      height={1380}
-                      priority={true}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/50 via-transparent to-emerald-900/30">
-                      <div className="absolute bottom-6 left-6 flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2">
-                        <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
-                        <span className="text-sm text-slate-700 font-medium">
-                          {t('home.secureErasureActive')}
-                        </span>
-                      </div>
-                      <div className="absolute top-6 right-6 bg-emerald-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
-                        {t('home.encryptionBadge')}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute -top-4 -right-4 w-20 h-20 bg-white rounded-xl shadow-lg border border-slate-200/60 flex items-center justify-center">
-                    <HoverIcon>
-                      {(filled) => (
-                        <ShieldIcon
-                          className="w-8 h-8 text-emerald-600"
-                          filled={filled}
-                        />
-                      )}
-                    </HoverIcon>
-                  </div>
-                  <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-white rounded-xl shadow-lg border border-slate-200/60 flex items-center justify-center">
-                    <HoverIcon>
-                      {(filled) => (
-                        <LightningIcon
-                          className="w-6 h-6 text-blue-600"
-                          filled={filled}
-                        />
-                      )}
-                    </HoverIcon>
-                  </div>
-                  <div className="absolute -z-10 -right-8 top-1/2 transform -translate-y-1/2 grid grid-cols-1 gap-4 opacity-20">
-                    <div className="w-24 h-24 bg-white rounded-lg shadow-lg overflow-hidden">
-                      <img
-                        src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                        alt="Network Security"
-                        className="w-full h-full object-cover"
-                        loading="lazy"
+                <div className="relative flex items-center justify-center min-h-[380px] lg:min-h-[520px]">
+                  {/* Hero Illustration Container */}
+                  <div className="relative w-[380px] h-[380px] lg:w-[480px] lg:h-[480px]">
+
+                    {/* Outer Dashed Circle */}
+                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 480 480">
+                      <circle
+                        cx="240"
+                        cy="240"
+                        r="220"
+                        fill="none"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        strokeDasharray="10 8"
+                        opacity="0.35"
                       />
-                    </div>
-                    <div className="w-24 h-24 bg-white rounded-lg shadow-lg overflow-hidden">
-                      <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
-                        alt="Data Protection"
-                        className="w-full h-full object-cover"
-                        loading="lazy"
+                    </svg>
+
+                    {/* Inner Dashed Circle (around monitor) */}
+                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 480 480">
+                      <circle
+                        cx="240"
+                        cy="240"
+                        r="130"
+                        fill="none"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        strokeDasharray="8 6"
+                        opacity="0.5"
                       />
+                    </svg>
+
+                    {/* Connecting Lines from Icons to Inner Circle */}
+                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 480 480">
+                      {/* Line from top (shield) to inner circle */}
+                      <line x1="240" y1="45" x2="240" y2="110" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
+                      {/* Line from top-left (server) to inner circle */}
+                      <line x1="55" y1="140" x2="135" y2="175" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
+                      {/* Line from top-right (cloud) to inner circle */}
+                      <line x1="425" y1="140" x2="345" y2="175" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
+                      {/* Line from bottom-left (clipboard) to inner circle */}
+                      <line x1="55" y1="380" x2="135" y2="320" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
+                      {/* Line from bottom-right (database) to inner circle */}
+                      <line x1="425" y1="380" x2="345" y2="320" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
+                    </svg>
+
+                    {/* Central Computer Monitor */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                      {/* Monitor Screen */}
+                      <div className="w-[160px] h-[120px] lg:w-[200px] lg:h-[140px] bg-white rounded-xl shadow-2xl border border-slate-200 relative overflow-hidden">
+                        {/* Screen Inner Content */}
+                        <div className="absolute inset-[8px] bg-gradient-to-b from-slate-50 to-slate-100/80 rounded-lg flex">
+                          {/* Left side - Code Lines */}
+                          <div className="flex-1 p-3 space-y-[6px]">
+                            <div className="flex gap-2">
+                              <div className="h-[5px] bg-slate-400 rounded-full w-12"></div>
+                              <div className="h-[5px] bg-emerald-400 rounded-full w-8"></div>
+                            </div>
+                            <div className="flex gap-2">
+                              <div className="h-[5px] bg-slate-300 rounded-full w-8"></div>
+                              <div className="h-[5px] bg-slate-400 rounded-full w-10"></div>
+                            </div>
+                            <div className="flex gap-2">
+                              <div className="h-[5px] bg-emerald-400 rounded-full w-6"></div>
+                              <div className="h-[5px] bg-slate-300 rounded-full w-12"></div>
+                            </div>
+                            <div className="flex gap-2">
+                              <div className="h-[5px] bg-slate-400 rounded-full w-10"></div>
+                              <div className="h-[5px] bg-emerald-300 rounded-full w-6"></div>
+                            </div>
+                            <div className="flex gap-2">
+                              <div className="h-[5px] bg-slate-300 rounded-full w-8"></div>
+                              <div className="h-[5px] bg-slate-400 rounded-full w-8"></div>
+                            </div>
+                            <div className="flex gap-2">
+                              <div className="h-[5px] bg-emerald-400 rounded-full w-10"></div>
+                              <div className="h-[5px] bg-slate-300 rounded-full w-6"></div>
+                            </div>
+                            <div className="flex gap-2">
+                              <div className="h-[5px] bg-slate-400 rounded-full w-12"></div>
+                              <div className="h-[5px] bg-emerald-300 rounded-full w-4"></div>
+                            </div>
+                          </div>
+                          {/* Right side - Asterisk Logo */}
+                          <div className="w-16 lg:w-20 flex items-center justify-center border-l border-slate-200/50">
+                            <svg className="w-10 h-10 lg:w-12 lg:h-12 text-teal-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                              <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Monitor Neck */}
+                      <div className="w-5 h-8 lg:w-6 lg:h-10 bg-gradient-to-b from-slate-500 to-slate-600 mx-auto rounded-b-sm"></div>
+                      {/* Monitor Base */}
+                      <div className="w-20 h-3 lg:w-24 lg:h-4 bg-gradient-to-b from-slate-500 to-slate-700 mx-auto rounded-full shadow-md"></div>
                     </div>
+
+                    {/* Orbiting Icons - Outline style with white backgrounds */}
+
+                    {/* Top Center - Shield with Checkmark */}
+                    <div className="absolute top-[8px] left-1/2 -translate-x-1/2 lg:top-[10px]">
+                      <div className="w-14 h-14 lg:w-16 lg:h-16 bg-emerald-500 rounded-t-2xl rounded-b-[40%] shadow-lg flex items-center justify-center" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}>
+                        <svg className="w-7 h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Top Left - Server Icon (outline style) */}
+                    <div className="absolute top-[85px] left-[15px] lg:top-[100px] lg:left-[20px]">
+                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
+                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <rect x="4" y="4" width="16" height="6" rx="1" />
+                          <rect x="4" y="14" width="16" height="6" rx="1" />
+                          <circle cx="8" cy="7" r="1" fill="currentColor" />
+                          <circle cx="8" cy="17" r="1" fill="currentColor" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Top Right - Cloud Icon (outline style with fill) */}
+                    <div className="absolute top-[85px] right-[15px] lg:top-[100px] lg:right-[20px]">
+                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
+                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M6.5 18a4.5 4.5 0 01-.5-8.98 5.5 5.5 0 0110.8.62A4 4 0 0118 18H6.5z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Bottom Left - Clipboard/Document Icon (outline style) */}
+                    <div className="absolute bottom-[85px] left-[15px] lg:bottom-[100px] lg:left-[20px]">
+                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
+                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <rect x="5" y="3" width="14" height="18" rx="2" />
+                          <line x1="9" y1="8" x2="15" y2="8" />
+                          <line x1="9" y1="12" x2="15" y2="12" />
+                          <line x1="9" y1="16" x2="12" y2="16" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Bottom Right - Database Icon (outline style with fill) */}
+                    <div className="absolute bottom-[85px] right-[15px] lg:bottom-[100px] lg:right-[20px]">
+                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
+                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
+                          <ellipse cx="12" cy="5" rx="8" ry="3" />
+                          <path d="M4 5v6c0 1.657 3.582 3 8 3s8-1.343 8-3V5" />
+                          <path d="M4 11v6c0 1.657 3.582 3 8 3s8-1.343 8-3v-6" />
+                        </svg>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </Reveal>

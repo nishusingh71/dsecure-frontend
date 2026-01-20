@@ -50,8 +50,8 @@ export default function AdminSettings() {
 
   const handleSaveSettings = () => {
     // Handle settings save
-    // console.log('Saving settings:', settings)
-    alert('Settings saved successfully!')
+    console.log('Saving settings:', settings)
+    console.log('Settings saved successfully!')
   }
 
   const tabs = [

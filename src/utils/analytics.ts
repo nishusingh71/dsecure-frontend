@@ -1,4 +1,4 @@
-// Enhanced Google Analytics utility for DSecure
+// Enhanced Google Analytics utility for D-Secure
 // Provides better tracking and event management
 
 // Extend Window interface for Google Analytics

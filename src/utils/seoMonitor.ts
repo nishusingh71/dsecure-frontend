@@ -1,4 +1,4 @@
-// SEO Monitoring and Analytics Integration for DSecure
+// SEO Monitoring and Analytics Integration for D-Secure
 // Comprehensive tracking and monitoring system
 
 import { ga } from './analytics';

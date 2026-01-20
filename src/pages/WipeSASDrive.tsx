@@ -33,7 +33,7 @@ const WipeSASDrive: React.FC = () => {
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100">
                   <h2 className="text-2xl font-bold text-slate-900 mb-4">Guide Content</h2>
                   <p className="text-slate-700 leading-relaxed">
-                    This is a professional guide for WipeSASDrive using DSecure technologies.
+                    This is a professional guide for WipeSASDrive using D-Secure technologies.
                     Content will be updated with specific instructions and procedures.
                   </p>
                 </div>

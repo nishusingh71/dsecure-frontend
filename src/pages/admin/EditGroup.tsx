@@ -91,12 +91,12 @@ export default function EditGroup() {
     
     // Validation
     if (!formData.name || !formData.description) {
-      alert('Please fill in all required fields')
+      console.log('Please fill in all required fields')
       return
     }
     
     if (formData.permissions.length === 0) {
-      alert('Please select at least one permission')
+      console.log('Please select at least one permission')
       return
     }
     
@@ -115,15 +115,12 @@ export default function EditGroup() {
       
       // console.log('Updating group:', updatedGroup)
       
-      // Success message
-      alert(`Group "${formData.name}" has been updated successfully!`)
-      
-      // Navigate back to admin dashboard
+      // Success - Navigate back to admin dashboard
+      console.log(`Group "${formData.name}" has been updated successfully!`)
       navigate('/admin')
       
     } catch (error) {
       console.error('Error updating group:', error)
-      alert('Failed to update group. Please try again.')
     } finally {
       setIsLoading(false)
     }

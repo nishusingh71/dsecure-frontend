@@ -19,16 +19,29 @@ export const subuserKeys = {
  * - Error handling
  * - Loading states
  * - Enhanced with user details (subuser_group, last_login, department, etc.)
+ * - Supports filtering by parentUserEmail, subuserEmail, department, role, group, search
  * 
  * @param userEmail - Optional user email for email-based endpoints
  * @param enabled - Whether to enable the query (default: true)
+ * @param filters - Optional filters for the API call
  */
-export function useSubusers(userEmail?: string, enabled: boolean = true) {
+export function useSubusers(
+  userEmail?: string, 
+  enabled: boolean = true,
+  filters?: {
+    parentUserEmail?: string;
+    subuserEmail?: string;
+    department?: string;
+    role?: string;
+    group?: string;
+    search?: string;
+  }
+) {
   return useQuery({
-    queryKey: subuserKeys.list(userEmail),
+    queryKey: subuserKeys.list(userEmail ? `${userEmail}-${JSON.stringify(filters)}` : undefined),
     queryFn: async () => {
       // console.log('🔄 React Query: Fetching subusers...')
-      const response = await apiClient.getAllSubusersWithFallback(userEmail)
+      const response = await apiClient.getAllSubusersWithFallback(userEmail, filters)
 
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch subusers')

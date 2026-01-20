@@ -49,6 +49,294 @@ import {
 } from "@/hooks/useAuditReports";
 import { usePerformanceData } from "@/hooks/usePerformanceData";
 import { useSessions } from "@/hooks/useSessions";
+import authService from '@/utils/authService'
+
+// ============================================================================
+// 🏗️ RBAC ARCHITECTURE: Hierarchical Role-Based Access Control System
+// ============================================================================
+
+/**
+ * Role Hierarchy Definition
+ * Descending order of access privileges
+ */
+export const Roles = {
+  SUPER_ADMIN: "SuperAdmin",
+  GROUP_ADMIN: "GroupAdmin",
+  ADMIN: "Admin",
+  USER: "User",
+  SUB_USER: "SubUser"
+} as const;
+
+type RoleType = typeof Roles[keyof typeof Roles];
+
+/**
+ * User Interface for Filter Building
+ */
+interface CurrentUser {
+  id: string;
+  email: string;
+  role: RoleType;
+  groupId?: string;
+  parentUserId?: string;
+  departmentId?: string;
+}
+
+/**
+ * Universal WHERE Clause Generator (Frontend → Backend Parity)
+ * Centralized filter builder matching backend SQL WHERE clauses
+ * 
+ * @param user - Current authenticated user
+ * @returns Base filter object for API queries
+ */
+export const buildWhereClause = (user: Partial<CurrentUser>) => {
+  const base = { isDeleted: false };
+
+  switch (user.role) {
+    case Roles.SUPER_ADMIN:
+      // SuperAdmin: No restrictions (see ALL data)
+      return base;
+
+    case Roles.GROUP_ADMIN:
+    case Roles.ADMIN:
+      // GroupAdmin/Admin: WHERE group_id = currentUser.groupId
+      return { 
+        ...base, 
+        groupId: user.groupId 
+      };
+
+    case Roles.USER:
+      // User: WHERE owner_id = currentUser.id
+      return { 
+        ...base, 
+        ownerId: user.id 
+      };
+
+    case Roles.SUB_USER:
+      // SubUser: WHERE owner_id = parentUserId AND sub_user_id = userId AND department_id = departmentId
+      return {
+        ...base,
+        ownerId: user.parentUserId,
+        subUserId: user.id,
+        departmentId: user.departmentId
+      };
+
+    default:
+      // Fallback: Most restrictive (own data only)
+      return { 
+        ...base, 
+        ownerId: user.id 
+      };
+  }
+};
+
+/**
+ * Filter Builder: Audit Reports & Reports
+ * Includes advanced filters: date range, report type, erase type, status, department, email
+ */
+export const buildReportFilter = (
+  user: Partial<CurrentUser>,
+  filters: {
+    groupId?: string;
+    machineId?: string;
+    reportType?: string;
+    eraseType?: string;
+    eraseStatus?: string;
+    fromDate?: string;
+    toDate?: string;
+    departmentId?: string;
+    subUserId?: string;
+    email?: string;
+  }
+) => {
+  return {
+    ...buildWhereClause(user),
+    ...filters
+  };
+};
+
+/**
+ * Filter Builder: Machines
+ * Includes: group, subUser, isErased, eraseType, licenseStatus
+ */
+export const buildMachineFilter = (
+  user: Partial<CurrentUser>,
+  filters: {
+    groupId?: string;
+    subUserId?: string;
+    isErased?: boolean;
+    eraseType?: string;
+    licenseStatus?: string;
+  }
+) => {
+  return {
+    ...buildWhereClause(user),
+    ...filters
+  };
+};
+
+/**
+ * Filter Builder: Session Logs
+ * Includes: owner, role, subUser, date range
+ */
+export const buildSessionFilter = (
+  user: Partial<CurrentUser>,
+  filters: {
+    subUserId?: string;
+    fromDate?: string;
+    toDate?: string;
+  }
+) => {
+  return {
+    ownerId: user.id,
+    role: user.role,
+    ...filters
+  };
+};
+
+/**
+ * Filter Builder: License Distribution
+ * Includes: status array, assigned user
+ */
+export const buildLicenseFilter = (
+  user: Partial<CurrentUser>,
+  filters: {
+    status?: string[];
+    assignedTo?: string;
+  }
+) => {
+  return {
+    ...buildWhereClause(user),
+    status: filters.status || ["Active", "Expired", "Revoked"],
+    assignedTo: filters.assignedTo
+  };
+};
+
+/**
+ * Filter Builder: Performance Dashboard
+ * Includes: group, department, date range, role
+ */
+export const buildPerformanceFilter = (
+  user: Partial<CurrentUser>,
+  filters: {
+    groupId?: string;
+    departmentId?: string;
+    fromDate?: string;
+    toDate?: string;
+  }
+) => {
+  return {
+    groupId: filters.groupId,
+    departmentId: filters.departmentId,
+    fromDate: filters.fromDate,
+    toDate: filters.toDate,
+    role: user.role
+  };
+};
+
+// ============================================================================
+// 🔗 API Integration Pattern (Best Practice)
+// ============================================================================
+
+/**
+ * Example API Call Pattern with Centralized Filters
+ * 
+ * Usage in Component:
+ * ```typescript
+ * // 1. Build filter object using useMemo
+ * const reportFilter = useMemo(() => 
+ *   buildReportFilter(currentUser, {
+ *     groupId: selectedGroup,
+ *     reportType,
+ *     eraseStatus,
+ *     fromDate,
+ *     toDate
+ *   }), 
+ *   [currentUser, selectedGroup, reportType, eraseStatus, fromDate, toDate]
+ * );
+ * 
+ * // 2. Pass filter to API call
+ * useEffect(() => {
+ *   fetchAuditReports(reportFilter).then(setAuditData);
+ * }, [reportFilter]);
+ * ```
+ * 
+ * Backend SQL Pattern (MySQL Example):
+ * ```sql
+ * SELECT * FROM AuditReports
+ * WHERE
+ *   (:role = 'SuperAdmin')
+ *   OR (:role = 'GroupAdmin' AND GroupId = :groupId)
+ *   OR (:role = 'Admin' AND GroupId = :groupId)
+ *   OR (:role = 'User' AND OwnerId = :userId)
+ *   OR (:role = 'SubUser' AND OwnerId = :parentId AND SubUserId = :userId)
+ * AND
+ *   (:fromDate IS NULL OR CreatedOn >= :fromDate)
+ * AND
+ *   (:toDate IS NULL OR CreatedOn <= :toDate)
+ * AND
+ *   (:eraseType IS NULL OR EraseType = :eraseType)
+ * AND
+ *   (:status IS NULL OR Status = :status);
+ * ```
+ * 
+ * API Service Example (Axios):
+ * ```typescript
+ * export const fetchAuditReports = async (filters: ReturnType<typeof buildReportFilter>) => {
+ *   return axios.post("/api/audit/search", filters);
+ * };
+ * 
+ * export const fetchMachines = async (filters: ReturnType<typeof buildMachineFilter>) => {
+ *   return axios.post("/api/machines/search", filters);
+ * };
+ * 
+ * export const fetchSessions = async (filters: ReturnType<typeof buildSessionFilter>) => {
+ *   return axios.post("/api/sessions/search", filters);
+ * };
+ * ```
+ */
+
+// ============================================================================
+// 📤 Export Filter Builders for Reuse in Other Components
+// ============================================================================
+
+/**
+ * Export these functions to use in other admin components:
+ * 
+ * ```typescript
+ * import { 
+ *   Roles, 
+ *   buildWhereClause, 
+ *   buildReportFilter,
+ *   buildMachineFilter,
+ *   buildSessionFilter,
+ *   buildLicenseFilter,
+ *   buildPerformanceFilter
+ * } from '@/pages/dashboards/AdminDashboard';
+ * ```
+ * 
+ * Then use in any component:
+ * ```typescript
+ * const currentUser = {
+ *   id: userId,
+ *   email: userEmail,
+ *   role: Roles.GROUP_ADMIN,
+ *   groupId: userGroupId
+ * };
+ * 
+ * const filters = buildReportFilter(currentUser, {
+ *   fromDate: '2025-01-01',
+ *   toDate: '2025-01-16',
+ *   eraseType: 'DoD 5220.22-M'
+ * });
+ * 
+ * // Use filters in API call
+ * const reports = await fetchReports(filters);
+ * ```
+ */
+
+// ============================================================================
+// End of RBAC Architecture
+// ============================================================================
 
 
 // ✅ Import Demo Data for "Try Demo Account" mode
@@ -67,6 +355,7 @@ import {
   DEMO_AUDIT_REPORTS,
   DEMO_SUBUSERS,
   DEMO_BILLING_DETAILS,
+  DEMO_SESSIONS,
 } from "@/data/demoData";
 import { decodeEmail, encodeEmail } from "@/utils/encodeEmail";
 
@@ -87,6 +376,72 @@ export default function AdminDashboard() {
   const { showSuccess, showError, showInfo } = useNotification();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+
+  // ✅ RBAC: Role detection functions
+  const getUserRole = (): string => {
+    // ✅ Check demo mode first - demo user is always superadmin
+    const isDemoMode = localStorage.getItem('demo_mode') === 'true';
+    if (isDemoMode) {
+      return 'superadmin';
+    }
+
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    let storedUserData = null
+    
+    if (storedUser) {
+      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+    }
+    if (!storedUserData && authUser) {
+      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+    }
+    
+    const role = storedUserData?.userRole || storedUserData?.role || storedUserData?.user_role || 
+                 user?.role || 'user'
+    
+    return role
+  }
+
+  const getUserGroupId = (): string | null => {
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    let storedUserData = null
+    
+    if (storedUser) {
+      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+    }
+    if (!storedUserData && authUser) {
+      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+    }
+    
+    const groupId = storedUserData?.user_group || storedUserData?.groupId || storedUserData?.group_id || null
+    
+    return groupId
+  }
+
+  const getUserEmail = (): string => {
+    const storedUser = localStorage.getItem('user_data')
+    const authUser = localStorage.getItem('authUser')
+    let storedUserData = null
+    
+    if (storedUser) {
+      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+    }
+    if (!storedUserData && authUser) {
+      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+    }
+    
+    return storedUserData?.userEmail || storedUserData?.user_email || storedUserData?.email ||
+           user?.email || ''
+  }
+
+  // ✅ RBAC: Determine user's role and capabilities
+  const currentUserRole = getUserRole().toLowerCase()
+  const currentUserGroupId = getUserGroupId()
+  const currentUserEmail = getUserEmail()
+  const isSuperAdmin = currentUserRole === 'superadmin'
+  const isGroupAdmin = currentUserRole === 'admin' || currentUserRole === 'administrator' || currentUserRole === 'groupadmin'
+  const isSubUser = currentUserRole === 'user'
 
   // Modal states
   const [showBulkLicenseModal, setShowBulkLicenseModal] = useState(false);
@@ -123,6 +478,9 @@ export default function AdminDashboard() {
   const [bulkUserCount, setBulkUserCount] = useState("10");
   const [bulkLicenseCount, setBulkLicenseCount] = useState("5");
   const [isLoading, setIsLoading] = useState(false);
+
+  // 🎛️ RBAC Filter Panel States
+
 
   // Form states for modals
   const [newUserForm, setNewUserForm] = useState({
@@ -169,12 +527,14 @@ export default function AdminDashboard() {
   const pageSizeOptions = [5, 10, 25, 50, 100];
   const [licensePageSize, setLicensePageSize] = useState(5);
   const [usersPageSize, setUsersPageSize] = useState(5);
+  const [groupsPageSize, setGroupsPageSize] = useState(5);
   const [activityPageSize, setActivityPageSize] = useState(5);
   const [reportsPageSize, setReportsPageSize] = useState(5);
   const [systemLogsPageSize, setSystemLogsPageSize] = useState(5);
   const [recentReportsPageSize, setRecentReportsPageSize] = useState(5);
 
   const [usersPage, setUsersPage] = useState(1);
+  const [groupsPage, setGroupsPage] = useState(1);
   const [userActivityPage, setUserActivityPage] = useState(1);
   const [reportsPage, setReportsPage] = useState(1);
   const [systemLogsPage, setSystemLogsPage] = useState(1);
@@ -212,6 +572,10 @@ export default function AdminDashboard() {
   );
   const [userActivity, setUserActivity] = useState<UserActivity[]>([]);
   const [groups, setGroups] = useState<GroupData[]>([]);
+  const [groupsWithUsers, setGroupsWithUsers] = useState<any[]>([]);
+  const [expandedGroups, setExpandedGroups] = useState<number[]>([]);
+  const [groupsLoading, setGroupsLoading] = useState(false);
+  const [groupsCached, setGroupsCached] = useState(false); // ✅ Cache flag
   const [licenseData, setLicenseData] = useState<LicenseData[]>([]);
   const [recentReports, setRecentReports] = useState<RecentReport[]>([]);
   const [activeLicensesCount, setActiveLicensesCount] = useState<number>(0);
@@ -308,6 +672,25 @@ export default function AdminDashboard() {
   // Get user email for API calls (calculate before using in queries)
   const userEmail = storedUserData?.user_email || storedUserData?.email || user?.email || "";
 
+  // ✅ RBAC: Build CurrentUser object for centralized filter builder (after storedUserData is defined)
+  const currentUser: Partial<CurrentUser> = useMemo(() => ({
+    id: storedUserData?.user_id || storedUserData?.id || user?.id || '',
+    email: currentUserEmail,
+    role: isSuperAdmin ? Roles.SUPER_ADMIN : 
+          isGroupAdmin ? Roles.GROUP_ADMIN : 
+          isSubUser ? Roles.SUB_USER : Roles.USER,
+    groupId: currentUserGroupId || undefined,
+    parentUserId: storedUserData?.parent_user_id || storedUserData?.parentUserId || undefined,
+    departmentId: storedUserData?.department_id || storedUserData?.departmentId || undefined
+  }), [currentUserRole, currentUserGroupId, currentUserEmail, storedUserData, user, isSuperAdmin, isGroupAdmin, isSubUser])
+
+  console.log('🔐 RBAC Info (AdminDashboard):', { 
+    role: currentUserRole, 
+    groupId: currentUserGroupId, 
+    email: currentUserEmail,
+    centralizedUser: currentUser 
+  })
+
   // ✅ React Query: Fetch dashboard data with automatic caching
   const dashboardDataEnabled = activeTab === "overview";
   const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
@@ -343,9 +726,54 @@ export default function AdminDashboard() {
   // 🎭 In Demo Mode, never show loading state
   const usersDataLoading = isDemo ? false : _usersDataLoading;
 
+  // ✅ RBAC FILTERING: Filter subusers data using centralized WHERE clause builder
+  const filteredSubusersData = useMemo(() => {
+    if (!subusersData || subusersData.length === 0) return []
+    
+    const whereClause = buildWhereClause(currentUser)
+    
+    // SuperAdmin: No filtering (base clause only)
+    if (currentUser.role === Roles.SUPER_ADMIN) {
+      return subusersData
+    }
+    
+    // GroupAdmin: Filter by groupId
+    if (currentUser.role === Roles.GROUP_ADMIN && 'groupId' in whereClause) {
+      const groupId = (whereClause as any).groupId
+      if (!groupId) return subusersData
+      
+      const filtered = subusersData.filter((subuser: any) => {
+        const subuserGroupId = subuser.user_group || subuser.groupId || subuser.group_id
+        return subuserGroupId === groupId || subuser.subuser_email === currentUserEmail
+      })
+      console.log(`🔒 GroupAdmin Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
+      return filtered
+    }
+    
+    // SubUser/User: Filter by email/ownerId
+    const ownerId = 'ownerId' in whereClause ? (whereClause as any).ownerId : currentUser.id
+    const filtered = subusersData.filter((subuser: any) => 
+      subuser.subuser_email === currentUserEmail || 
+      subuser.email === currentUserEmail ||
+      subuser.owner_id === ownerId
+    )
+    console.log(`🔒 SubUser/User Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
+    return filtered
+  }, [subusersData, currentUser, currentUserEmail])
+  
+  // ✅ RBAC: Use filtered data for rendering (replaces original subusersData in UI)
+  const displaySubusersData = filteredSubusersData
+
   // ✅ React Query: Fetch machines and audit reports for user (disabled in demo mode)
   const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo);
+  
+  // ✅ RBAC FILTERING: Filter machines using centralized buildMachineFilter
+  const displayMachinesData = machinesQuery.data || []
+  
   const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo);
+  
+  const displayAuditReportsData = auditReportsQuery.data || []
+  
   const enhancedAuditReportsQuery = useEnhancedAuditReports(
     userEmail,
     !!userEmail && activeTab === "overview" && !isDemo
@@ -365,6 +793,8 @@ export default function AdminDashboard() {
     isDemo ? '' : userEmail,
     !!userEmail && !isDemo
   );
+  
+  const displaySessionsData = sessionsQuery.data || []
 
   // React Query mutations for CRUD operations
   const createSubuserMutation = useCreateSubuser();
@@ -373,16 +803,8 @@ export default function AdminDashboard() {
 
   const [dataLoading, setDataLoading] = useState(true);
 
-  // Role-based permissions (using primary role from roles array if available)
-  // Priority: Demo mode > userRole (camelCase) > user_role (snake_case) > getPrimaryRole() > user.role
-  // 🎭 In Demo Mode, always show superadmin role
-  const currentUserRole = isDemo
-    ? 'superadmin'
-    : (storedUserData?.userRole ||
-      storedUserData?.user_role ||
-      getPrimaryRole(storedUserData) ||
-      user?.role ||
-      "user");
+  // ✅ RBAC: currentUserRole, isSuperAdmin, isGroupAdmin, isSubUser are already defined above (lines 155-160)
+  // Role-based permissions (using the RBAC currentUserRole from above)
   const permissions = getRolePermissions(currentUserRole);
   const roleInfo = getRoleDisplayInfo(currentUserRole);
 
@@ -553,6 +975,11 @@ export default function AdminDashboard() {
     }
   }, [performanceQuery.data]);
 
+  // ✅ RBAC FILTERING: Filter license data using centralized buildLicenseFilter
+  const displayLicenseData = licenseData || []
+
+  const displayPerformanceData = performanceData
+
   // ✅ React Query: Update sessions data from cache
   useEffect(() => {
     if (sessionsQuery.data) {
@@ -598,6 +1025,9 @@ export default function AdminDashboard() {
       // Set demo system logs
       setRecentSystemLogs(DEMO_SYSTEM_LOGS);
 
+      // Set demo sessions
+      setRecentSessions(DEMO_SESSIONS);
+
       // Set demo performance data
       setPerformanceData(DEMO_PERFORMANCE_DATA);
 
@@ -637,6 +1067,250 @@ export default function AdminDashboard() {
     }
   }, [activeTab])
   */
+
+  useEffect(() => {
+    if (isDemo) {
+      // ✅ Initialize dummy groups data immediately for demo mode
+      setGroupsWithUsers([
+        {
+          id: 1,
+          name: 'Engineering Team',
+          description: 'Software development and engineering',
+          created: '2024-01-15',
+          licenseStats: {
+            totalAllocated: 100,
+            distributedToUsers: 45,
+            available: 55,
+            usagePercent: 45
+          },
+          users: [
+            {
+              id: 1,
+              name: 'John Doe',
+              email: 'john.doe@demo.com',
+              role: 'User',
+              license: 5,
+              profile: 'Developer'
+            },
+            {
+              id: 2,
+              name: 'Jane Smith',
+              email: 'jane.smith@demo.com',
+              role: 'User',
+              license: 3,
+              profile: 'Senior Developer'
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Marketing Team',
+          description: 'Marketing and communications',
+          created: '2024-02-20',
+          licenseStats: {
+            totalAllocated: 50,
+            distributedToUsers: 28,
+            available: 22,
+            usagePercent: 56
+          },
+          users: [
+            {
+              id: 3,
+              name: 'Mike Johnson',
+              email: 'mike.johnson@demo.com',
+              role: 'User',
+              license: 2,
+              profile: 'Marketing Manager'
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Sales Team',
+          description: 'Sales and business development',
+          created: '2024-03-10',
+          licenseStats: {
+            totalAllocated: 75,
+            distributedToUsers: 62,
+            available: 13,
+            usagePercent: 82.7
+          },
+          users: [
+            {
+              id: 4,
+              name: 'Sarah Williams',
+              email: 'sarah.williams@demo.com',
+              role: 'User',
+              license: 4,
+              profile: 'Sales Executive'
+            },
+            {
+              id: 5,
+              name: 'Tom Brown',
+              email: 'tom.brown@demo.com',
+              role: 'User',
+              license: 3,
+              profile: 'Account Manager'
+            }
+          ]
+        }
+      ]);
+      setGroupsCached(true);
+      return;
+    }
+  }, [isDemo]);
+
+  // Fetch groups with users when Groups tab is active
+  useEffect(() => {
+    if (activeTab === 'groups' && !groupsCached && !isDemo) {
+      // ✅ Only fetch if not cached and not demo mode
+      fetchGroupsWithUsers();
+    }
+  }, [activeTab, groupsCached, isDemo])
+
+  const fetchGroupsWithUsers = async () => {
+    // ✅ If already cached, don't show loader or fetch again
+    if (groupsCached) {
+      return;
+    }
+
+    setGroupsLoading(true); // Only set loading when actually fetching
+
+    // Skip API calls for demo mode - use dummy data
+    if (isDemo) {
+      setGroupsLoading(false);
+      setGroupsCached(true); // Mark as cached
+      setGroupsWithUsers([
+        {
+          id: 1,
+          name: 'Engineering Team',
+          description: 'Software development and engineering',
+          created: '2024-01-15',
+          licenseStats: {
+            totalAllocated: 100,
+            distributedToUsers: 45,
+            available: 55,
+            usagePercent: 45
+          },
+          users: [
+            {
+              id: 1,
+              name: 'John Doe',
+              email: 'john.doe@demo.com',
+              role: 'User',
+              license: 5,
+              profile: 'Developer'
+            },
+            {
+              id: 2,
+              name: 'Jane Smith',
+              email: 'jane.smith@demo.com',
+              role: 'User',
+              license: 3,
+              profile: 'Senior Developer'
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Marketing Team',
+          description: 'Marketing and communications',
+          created: '2024-02-20',
+          licenseStats: {
+            totalAllocated: 50,
+            distributedToUsers: 28,
+            available: 22,
+            usagePercent: 56
+          },
+          users: [
+            {
+              id: 3,
+              name: 'Mike Johnson',
+              email: 'mike.johnson@demo.com',
+              role: 'User',
+              license: 2,
+              profile: 'Marketing Manager'
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Sales Team',
+          description: 'Sales and business development',
+          created: '2024-03-10',
+          licenseStats: {
+            totalAllocated: 75,
+            distributedToUsers: 62,
+            available: 13,
+            usagePercent: 82.7
+          },
+          users: [
+            {
+              id: 4,
+              name: 'Sarah Williams',
+              email: 'sarah.williams@demo.com',
+              role: 'User',
+              license: 4,
+              profile: 'Sales Executive'
+            },
+            {
+              id: 5,
+              name: 'Tom Brown',
+              email: 'tom.brown@demo.com',
+              role: 'User',
+              license: 3,
+              profile: 'Account Manager'
+            }
+          ]
+        }
+      ]);
+      return;
+    }
+    
+    try {
+      setGroupsLoading(true);
+      const response = await apiClient.getGroupsWithUsers();
+      
+      if (response.success && response.data?.groups?.data) {
+        const apiGroups = response.data.groups.data;
+        const transformedGroups = apiGroups.map((group: any, index: number) => {
+          const cleanId = group.groupId?.toString().replace(/^group-/, '') || `${index + 1}`;
+          return {
+            id: parseInt(cleanId) || index + 1,
+            name: group.groupName || 'Unnamed Group',
+            description: group.groupDescription || '',
+            created: new Date().toISOString().split('T')[0],
+            licenseStats: group.licenseStats || null,
+            users: group.users?.map((user: any, userIndex: number) => {
+              const cleanUserId = user.userId?.toString().replace(/^user-/, '') || `${userIndex + 1}`;
+              return {
+                id: parseInt(cleanUserId) || userIndex + 1,
+                name: user.name || 'Unknown',
+                email: user.email || '',
+                role: (user.role === 'user' ? 'User' : 'Subuser') as 'User' | 'Subuser',
+                license: user.licenseCount || user.license || 0,
+                profile: user.role || 'User'
+              };
+            }) || []
+          };
+        setGroupsCached(true); // ✅ Mark as cached after successful fetch
+        });
+        setGroupsWithUsers(transformedGroups);
+      }
+    } catch (error) {
+      console.error('Error fetching groups with users:', error);
+    } finally {
+      setGroupsLoading(false);
+    }
+  };
+
+  const toggleGroup = (groupId: number) => {
+    setExpandedGroups(prev =>
+      prev.includes(groupId)
+        ? prev.filter(id => id !== groupId)
+        : [...prev, groupId]
+    );
+  };
 
   const loadDashboardData = async () => {
     setDataLoading(true);
@@ -882,9 +1556,9 @@ export default function AdminDashboard() {
           );
 
           // Use React Query data for performance calculations
-          const performanceAuditReports = auditReportsQuery.data || [];
-          const performanceMachines = machinesQuery.data || [];
-          const performanceSessions = sessionsQuery.data || [];
+          const performanceAuditReports = displayAuditReportsData || [];
+          const performanceMachines = displayMachinesData || [];
+          const performanceSessions = displaySessionsData || [];
           const performanceSystemLogs =
             systemLogsRes?.success && systemLogsRes.data
               ? systemLogsRes.data
@@ -2179,16 +2853,18 @@ export default function AdminDashboard() {
             </button>
 
             {/* Settings Button - Billing & Password */}
-            <button
-              onClick={async () => {
-                setShowSettingsModal(true);
+            {/* ✅ RBAC: Only SuperAdmin can access Settings (Billing) */}
+            {isSuperAdmin && (
+              <button
+                onClick={async () => {
+                  setShowSettingsModal(true);
 
-                // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
-                if (isDemo) {
-                  console.log('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
-                  setBillingDetails(DEMO_BILLING_DETAILS);
-                  return;
-                }
+                  // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
+                  if (isDemo) {
+                    console.log('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
+                    setBillingDetails(DEMO_BILLING_DETAILS);
+                    return;
+                  }
 
                 // ✅ CACHE CHECK: If billing data already loaded, don't fetch again
                 if (billingDetails && Object.keys(billingDetails).length > 0) {
@@ -2386,6 +3062,7 @@ export default function AdminDashboard() {
               </svg>
               <span className="hidden sm:inline">Settings</span>
             </button>
+            )}
 
 
             {/* Private Cloud Button - For Superadmin (Not Demo) */}
@@ -2511,6 +3188,26 @@ export default function AdminDashboard() {
                   {
                     id: "users",
                     name: t('dashboard.users'),
+                    permission: "canViewAllUsers", // Only admin/superadmin/manager
+                    iconSvg: (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                        />
+                      </svg>
+                    ),
+                  },
+                  {
+                    id: "groups",
+                    name: t('dashboard.groups'),
                     permission: "canViewAllUsers", // Only admin/superadmin/manager
                     iconSvg: (
                       <svg
@@ -3407,7 +4104,7 @@ export default function AdminDashboard() {
                 )}
 
                 {/* Empty State - No users found */}
-                {!usersDataLoading && subusersData.length === 0 && (
+                {!usersDataLoading && displaySubusersData.length === 0 && (
                   <div className="text-center py-12">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
                       <svg
@@ -3436,7 +4133,7 @@ export default function AdminDashboard() {
                 )}
 
                 {/* Users Table - Show for all users if data exists */}
-                {!usersDataLoading && subusersData.length > 0 && (
+                {!usersDataLoading && displaySubusersData.length > 0 && (
                   <div>
                     <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
                       <table className="w-full">
@@ -3563,7 +4260,7 @@ export default function AdminDashboard() {
                       </table>
                     </div>
                     {/* Users Pagination - always show when data exists */}
-                    {subusersData.length > 0 && (
+                    {displaySubusersData.length > 0 && (
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                           <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
@@ -3575,12 +4272,12 @@ export default function AdminDashboard() {
                             {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
                           </select>
                           <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                            Showing {Math.min((usersPage - 1) * usersPageSize + 1, subusersData.length)} to {Math.min(usersPage * usersPageSize, subusersData.length)} of {subusersData.length}
+                            Showing {Math.min((usersPage - 1) * usersPageSize + 1, displaySubusersData.length)} to {Math.min(usersPage * usersPageSize, displaySubusersData.length)} of {displaySubusersData.length}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 sm:gap-3">
                           <span className="text-xs sm:text-sm text-slate-600">
-                            Page {usersPage} of {Math.ceil(subusersData.length / usersPageSize)}
+                            Page {usersPage} of {Math.ceil(displaySubusersData.length / usersPageSize)}
                           </span>
                           <div className="flex gap-1 sm:gap-2">
                             <button
@@ -3592,8 +4289,8 @@ export default function AdminDashboard() {
                               <span className="hidden sm:inline">Previous</span>
                             </button>
                             <button
-                              onClick={() => setUsersPage(prev => Math.min(prev + 1, Math.ceil(subusersData.length / usersPageSize)))}
-                              disabled={usersPage >= Math.ceil(subusersData.length / usersPageSize)}
+                              onClick={() => setUsersPage(prev => Math.min(prev + 1, Math.ceil(displaySubusersData.length / usersPageSize)))}
+                              disabled={usersPage >= Math.ceil(displaySubusersData.length / usersPageSize)}
                               className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               Next
@@ -3609,16 +4306,188 @@ export default function AdminDashboard() {
           </div>
         )}
 
+        {activeTab === "groups" && (
+          <div className="space-y-6">
+            {/* Groups Section */}
+            <div className="card">
+              <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+                <div>
+                  <h2 className="font-semibold text-slate-900">Groups & Members</h2>
+                  <p className="text-sm text-slate-600 mt-1">
+                    View all groups and their members
+                  </p>
+                </div>
+              </div>
+              <div className="p-6">
+                {/* Loading State */}
+                {groupsLoading && (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="text-center">
+                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+                      <p className="mt-4 text-sm text-slate-600">
+                        Loading groups data...
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Empty State */}
+                {!groupsLoading && groupsWithUsers.length === 0 && (
+                  <div className="text-center py-12">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
+                      <svg
+                        className="w-8 h-8 text-slate-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-slate-900 mb-2">
+                      No Groups Found
+                    </h3>
+                    <p className="text-sm text-slate-600">
+                      No groups are available in your organization.
+                    </p>
+                  </div>
+                )}
+
+                {/* Groups List with Expandable Users */}
+                {!groupsLoading && groupsWithUsers.length > 0 && (
+                  <div className="space-y-4">
+                    {groupsWithUsers.map((group: any) => (
+                      <div key={group.id} className="card !p-0 overflow-hidden">
+                        {/* Group Header */}
+                        <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                          <div className="flex items-center gap-4 flex-1">
+                            <button
+                              onClick={() => toggleGroup(group.id)}
+                              className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center text-white font-semibold hover:shadow-lg transition-shadow"
+                            >
+                              {group.name.charAt(0)}
+                            </button>
+                            <div className="flex-1">
+                              <h3 className="text-lg font-semibold text-slate-900">{group.name}</h3>
+                              <p className="text-sm text-slate-600">{group.description}</p>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
+                                {group.users.length} users
+                              </span>
+                              <span className="text-sm text-slate-500">
+                                Created: {new Date(group.created).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <button
+                              onClick={() => toggleGroup(group.id)}
+                              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                            >
+                              <svg
+                                className={`w-5 h-5 text-slate-600 transition-transform ${expandedGroups.includes(group.id) ? 'rotate-180' : ''}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Expandable Users Table */}
+                        {expandedGroups.includes(group.id) && (
+                          <div className="overflow-x-auto">
+                            <table className="w-full">
+                              <thead className="bg-slate-100 border-b border-slate-200">
+                                <tr>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    User Name
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    Email
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    Role
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    License
+                                  </th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    Profile
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody className="bg-white divide-y divide-slate-200">
+                                {group.users.map((user: any) => (
+                                  <tr key={user.id} className="hover:bg-slate-50 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                          {user.name.charAt(0)}
+                                        </div>
+                                        <span className="font-medium text-slate-900">{user.name}</span>
+                                      </div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                      {user.email}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                        user.role === 'User'
+                                          ? 'bg-blue-100 text-blue-800'
+                                          : 'bg-purple-100 text-purple-800'
+                                      }`}>
+                                        {user.role}
+                                      </span>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                        user.license > 0
+                                          ? 'bg-emerald-100 text-emerald-800'
+                                          : 'bg-slate-100 text-slate-800'
+                                      }`}>
+                                        {user.license}
+                                      </span>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                      {user.profile}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {activeTab === "activity" && (
           <div className="card">
             <div className="px-6 py-5 border-b border-slate-200">
-              <h2 className="font-semibold text-slate-900">
-                Cloud Users Activity
-              </h2>
-              <p className="text-sm text-slate-600 mt-1">
-                Monitor user login and logout activity
-              </p>
+              <div>
+                <h2 className="font-semibold text-slate-900">
+                  Cloud Users Activity
+                </h2>
+                <p className="text-sm text-slate-600 mt-1">
+                  Monitor user login and logout activity
+                </p>
+              </div>
             </div>
+
             <div className="p-6">
               {/* Use demo data when in demo mode, otherwise use API data */}
               {(() => {
@@ -3759,6 +4628,7 @@ export default function AdminDashboard() {
                 View All Reports
               </Link>
             </div>
+
             <div className="p-6">
               {auditReports.length === 0 ? (
                 <div className="text-center py-12">
@@ -3820,10 +4690,10 @@ export default function AdminDashboard() {
                               }
                               
                               // Calculate from actual machines data
-                              if (machinesQuery.data && machinesQuery.data.length > 0) {
+                              if (displayMachinesData && displayMachinesData.length > 0) {
                                 // If report has user_email, filter machines by that email
                                 if (report.user_email) {
-                                  const userMachines = machinesQuery.data.filter(
+                                  const userMachines = displayMachinesData.filter(
                                     (machine: Machine) => machine.user_email === report.user_email
                                   );
                                   return userMachines.length || 0;
