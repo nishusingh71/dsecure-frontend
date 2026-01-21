@@ -1,7 +1,8 @@
 import React, { useState, memo } from "react";
-import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { getFallbackImage } from '@/utils/imagePlaceholders';
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 
 const CDN_IMAGES = {
  hero: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80",
@@ -118,11 +119,7 @@ const MobileDevicesPage: React.FC = memo(() => {
 
  return (
  <>
- <Helmet>
- <title>D-Secure Mobile Devices | iOS & Android Erasure Guide</title>
- <meta name="description" content="Complete guide to secure data erasure on mobile devices with D-Secure. Procedures for iOS, Android, and enterprise mobile management." />
- <meta name="keywords" content="D-Secure mobile erasure, iOS data wipe, Android secure delete, mobile device management, enterprise mobile security" />
- </Helmet>
+  <SEOHead seo={getSEOForPage("mobile-erasure")} />
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-8 sm:py-12 md:py-16 lg:py-24">

@@ -970,7 +970,7 @@ export const getDefaultSEO = (): SEOMetadata => ({
 // Page-specific SEO configurations with EXTENSIVE additional keywords
 export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   home: {
-    title: 'D-Secure Tech - Enterprise Data Erasure & Sanitization Software',
+    title: 'Eraser – Secure Erase Files from Hard Drives',
     description: 'Professional data erasure solutions for GDPR, HIPAA & compliance. Secure data destruction with NIST 800-88 regulation. Download free trial.',
     keywords: generateKeywords([
       'data erasure software download',

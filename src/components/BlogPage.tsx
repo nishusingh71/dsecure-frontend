@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Reveal from "./Reveal";
+import { getSEOForPage } from "@/utils/seo";
+import { SEOHead } from "@/components/SEOHead";
 
 const blogs = [
   {
@@ -37,7 +39,9 @@ const blogs = [
 
 const BlogPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+    <>
+      <SEOHead seo={getSEOForPage('blog')} />
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
       {/* Hero Section */}
       <section className="py-16 text-center">
         <Reveal>
@@ -103,6 +107,7 @@ const BlogPage: React.FC = () => {
         </Reveal>
       </section>
     </div>
+    </>
   );
 };
 

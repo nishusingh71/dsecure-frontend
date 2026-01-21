@@ -6,7 +6,7 @@ import Reveal from "@/components/Reveal";
 const CertificateGenerationPage: React.FC = memo(() => {
   return (
     <>
-      <SEOHead seo={getSEOForPage('help-manual')} />
+      <SEOHead seo={getSEOForPage('certifications')} />
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">
