@@ -1,7 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
+import fs from 'node:fs'
 import viteCompression from 'vite-plugin-compression'
+import { createHtmlPlugin } from 'vite-plugin-html'
+
+// Read critical CSS for inlining
+const criticalCSS = fs.existsSync('./src/critical.css')
+  ? fs.readFileSync('./src/critical.css', 'utf-8')
+  : ''
 
 export default defineConfig({
   plugins: [
@@ -22,6 +29,15 @@ export default defineConfig({
       ext: '.br',
       threshold: 1024,
       deleteOriginFile: false
+    }),
+    // HTML plugin for critical CSS inlining and minification
+    createHtmlPlugin({
+      minify: true,
+      inject: {
+        data: {
+          criticalCSS: criticalCSS
+        }
+      }
     })
   ],
   resolve: {
