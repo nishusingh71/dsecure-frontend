@@ -958,7 +958,6 @@ class EnhancedApiClient {
   //   return this.request<Subuser[]>('/api/SubuserManagement')
   // }
 
-<<<<<<< HEAD
   // 🔄 Master method to fetch subusers with fallback across all available endpoints
   async getAllSubusersWithFallback(userEmail?: string, filters?: {
     parentUserEmail?: string;
@@ -971,14 +970,8 @@ class EnhancedApiClient {
     // console.log('🔄 Starting getAllSubusersWithFallback...')
     // console.log('📧 User email provided:', userEmail || 'None')
     console.log('🔍 Filters:', filters);
-=======
-  // ?? Master method to fetch subusers with fallback across all available endpoints
-  async getAllSubusersWithFallback(userEmail?: string): Promise<ApiResponse<Subuser[]>> {
-    // console.log('?? Starting getAllSubusersWithFallback...')
-    // console.log('?? User email provided:', userEmail || 'None')
->>>>>>> origin/feature/seo-integration-and-branding
 
-    // ? Define endpoint strategies with PRIORITY ORDER
+    // ✅ Define endpoint strategies with PRIORITY ORDER
     // Priority 1: User-specific endpoints (by-superuser, by-parent) - returns only current user's subusers
     // Priority 2: Generic endpoints - returns all subusers from database (fallback only)
     const endpointStrategies = [

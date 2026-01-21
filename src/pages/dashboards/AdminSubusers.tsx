@@ -1,5 +1,6 @@
-<<<<<<< HEAD
 ﻿import { useMemo, useState } from "react";
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { exportToCsv, openPrintView } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
@@ -9,20 +10,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSubusers } from "@/hooks/useSubusers";
 import { isDemoMode, DEMO_SUBUSERS } from "@/data/demoData";
-=======
-﻿import { useMemo, useState } from 'react'
-import SEOHead from "../../components/SEOHead";
-import { getSEOForPage } from "../../utils/seo";
-import { exportToCsv, openPrintView } from '@/utils/csv'
-import { Helmet } from 'react-helmet-async'
-import { useNotification } from '@/contexts/NotificationContext'
-import { apiClient, Subuser, Session } from '@/utils/enhancedApiClient'
-import { useAuth } from '@/auth/AuthContext'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSubusers } from '@/hooks/useSubusers'
-import { isDemoMode, DEMO_SUBUSERS } from '@/data/demoData'
->>>>>>> origin/feature/seo-integration-and-branding
 
 // Extended interface for table display
 interface SubuserTableRow {
