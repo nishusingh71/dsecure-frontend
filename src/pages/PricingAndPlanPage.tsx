@@ -699,69 +699,69 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     // Store order metadata for success page (async, non-blocking)
     const orderMetadata = {
-      category: selectedCategory,
-      planId: selectedPlan,
-      planName: getCurrentPlan().name,
+      // category: selectedCategory,
+      // planId: selectedPlan,
+      // planName: getCurrentPlan().name,
       productName: getCurrentProduct().title,
       licenses: selectedLicenses,
-      years: selectedYears,
-      totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
-      taxEnabled: true
+      // years: selectedYears,
+      // totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
+      // taxEnabled: true
     };
     localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
 
     // Show instant redirect page for better perceived performance
-    const redirectOverlay = document.createElement('div');
-    redirectOverlay.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      animation: fadeIn 0.2s ease-out;
-    `;
-    redirectOverlay.innerHTML = `
-      <style>
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.6; }
-        }
-      </style>
-      <div style="
-        width: 80px;
-        height: 80px;
-        border: 4px solid rgba(255,255,255,0.3);
-        border-top-color: white;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        margin-bottom: 24px;
-      "></div>
-      <h2 style="
-        color: white;
-        font-size: 28px;
-        font-weight: bold;
-        margin: 0 0 12px 0;
-        animation: pulse 1.5s ease-in-out infinite;
-      ">Redirecting to Checkout...</h2>
-      <p style="
-        color: rgba(255,255,255,0.9);
-        font-size: 16px;
-        margin: 0;
-      ">Please wait while we prepare your order</p>
-    `;
+    // const redirectOverlay = document.createElement('div');
+    // redirectOverlay.style.cssText = `
+    //   position: fixed;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100%;
+    //   height: 100%;
+    //   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+    //   display: flex;
+    //   flex-direction: column;
+    //   align-items: center;
+    //   justify-content: center;
+    //   z-index: 9999;
+    //   animation: fadeIn 0.2s ease-out;
+    // `;
+    // redirectOverlay.innerHTML = `
+    //   <style>
+    //     @keyframes fadeIn {
+    //       from { opacity: 0; }
+    //       to { opacity: 1; }
+    //     }
+    //     @keyframes spin {
+    //       to { transform: rotate(360deg); }
+    //     }
+    //     @keyframes pulse {
+    //       0%, 100% { opacity: 1; }
+    //       50% { opacity: 0.6; }
+    //     }
+    //   </style>
+    //   <div style="
+    //     width: 80px;
+    //     height: 80px;
+    //     border: 4px solid rgba(255,255,255,0.3);
+    //     border-top-color: white;
+    //     border-radius: 50%;
+    //     animation: spin 0.8s linear infinite;
+    //     margin-bottom: 24px;
+    //   "></div>
+    //   <h2 style="
+    //     color: white;
+    //     font-size: 28px;
+    //     font-weight: bold;
+    //     margin: 0 0 12px 0;
+    //     animation: pulse 1.5s ease-in-out infinite;
+    //   ">Redirecting to Checkout...</h2>
+    //   <p style="
+    //     color: rgba(255,255,255,0.9);
+    //     font-size: 16px;
+    //     margin: 0;
+    //   ">Please wait while we prepare your order</p>
+    // `;
     // document.body.appendChild(redirectOverlay);
     // document.body.style.overflow = 'hidden';
 
@@ -789,19 +789,19 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
       if (!checkoutUrl || typeof checkoutUrl !== 'string') {
         console.error('No checkout URL in response:', response.data);
-        document.body.removeChild(redirectOverlay);
+        // document.body.removeChild(redirectOverlay);
         document.body.style.overflow = '';
         showToast('Checkout link unavailable at the moment. Please try again.', 'error');
         setIsBuyNowLoading(false);
         return;
       }
-
+      setIsBuyNowLoading(false);
       // Instant redirect - browser handles loading indicator
       window.location.href = checkoutUrl;
 
     } catch (error: any) {
       console.error('Error fetching checkout link:', error);
-      document.body.removeChild(redirectOverlay);
+      // document.body.removeChild(redirectOverlay);
       document.body.style.overflow = '';
       
       if (error.name === 'AbortError') {
