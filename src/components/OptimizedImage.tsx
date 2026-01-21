@@ -9,6 +9,8 @@ interface OptimizedImageProps {
   priority?: boolean
   placeholder?: string
   fallback?: string
+  srcSet?: string
+  sizes?: string
 }
 
 export default function OptimizedImage({
@@ -19,7 +21,9 @@ export default function OptimizedImage({
   height,
   priority = false,
   placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB2aWV3Qm94PSIwIDAgMSAxIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmM2Y0ZjYiLz48L3N2Zz4=',
-  fallback
+  fallback,
+  srcSet,
+  sizes
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isInView, setIsInView] = useState(priority)
@@ -75,7 +79,7 @@ export default function OptimizedImage({
   // If error and no fallback, show placeholder
   if (hasError && !fallback) {
     return (
-      <div 
+      <div
         className={`bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center ${className}`}
         style={{
           width: width ? `${width}px` : '100%',
@@ -102,13 +106,14 @@ export default function OptimizedImage({
         ref={imgRef}
         src={isInView ? currentSrc : placeholder}
         alt={alt}
-        className={`transition-opacity duration-300 ${
-          isLoaded ? 'opacity-100' : 'opacity-0'
-        } ${className}`}
+        className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'
+          } ${className}`}
         width={width}
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding="async"
+        srcSet={isInView && srcSet ? srcSet : undefined}
+        sizes={sizes}
         onLoad={() => setIsLoaded(true)}
         onError={handleError}
         style={{

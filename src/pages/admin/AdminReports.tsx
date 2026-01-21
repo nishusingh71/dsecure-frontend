@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
@@ -149,6 +151,8 @@ export default function AdminReports() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-reports")} />
       <Helmet>
         <title>Data Erasure Reports - Admin Dashboard | DSecureTech</title>
         <meta name="description" content="View and manage all data erasure reports in DSecureTech admin dashboard." />

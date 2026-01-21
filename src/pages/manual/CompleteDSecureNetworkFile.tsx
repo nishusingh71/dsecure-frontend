@@ -1,4 +1,6 @@
 // src/pages/CompleteDSecureManual.tsx
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import {
@@ -26,7 +28,7 @@ import {
  * - Sections & subsections mapped from all content you shared
  * - Clean, print-friendly blocks
  *
- * NOTE: All wording normalized to "DSecure File Eraser Network".
+ * NOTE: All wording normalized to "D-Secure File Eraser Network".
  * If you must keep "BitRaser" strings, we can toggle a flag and swap labels.
  */
 
@@ -66,6 +68,8 @@ const BlockView: React.FC<{ block: Block }> = ({ block }) => {
       // Extract leading number if present; otherwise auto dot
       return (
         <div className="flex items-start gap-3">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("complete-dsecure-network-file")} />
           <div className="mt-1 shrink-0 w-7 h-7 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold flex items-center justify-center">
             ✓
           </div>
@@ -125,7 +129,7 @@ const sections: Section[] = [
     icon: BookOpen,
     title: "Quick Overview",
     summary:
-      "What this guide covers and how to navigate it efficiently in DSecure File Eraser Network.",
+      "What this guide covers and how to navigate it efficiently in D-Secure File Eraser Network.",
     subsections: [
       {
         id: "qo-about-guide",
@@ -139,12 +143,12 @@ const sections: Section[] = [
           {
             type: "bullets",
             items: [
-              "About DSecure File Eraser Network",
+              "About D-Secure File Eraser Network",
               "Quick Overview",
               "First Steps",
               "How To",
               "Frequently Asked Questions (FAQs)",
-              "About DSecureTech",
+              "about D-SecureTech",
             ],
           },
           {
@@ -444,7 +448,7 @@ const sections: Section[] = [
           {
             type: "p",
             text:
-              "Only domain administrators can access and run erasures. DSecure aligns with AD and lists OUs and computers.",
+              "Only domain administrators can access and run erasures. D-Secure aligns with AD and lists OUs and computers.",
           },
           {
             type: "note",
@@ -455,7 +459,7 @@ const sections: Section[] = [
       },
       {
         id: "login-cloud",
-        title: "Login to DSecure Cloud",
+        title: "Login to D-Secure Cloud",
         blocks: [
           {
             type: "step",
@@ -666,12 +670,12 @@ const sections: Section[] = [
       },
       {
         id: "send-report-cloud",
-        title: "Send a Report to DSecure Cloud",
+        title: "Send a Report to D-Secure Cloud",
         blocks: [
           {
             type: "note",
             text:
-              "Ensure you are logged into DSecure Cloud before sending.",
+              "Ensure you are logged into D-Secure Cloud before sending.",
           },
           {
             type: "step",
@@ -708,25 +712,25 @@ const sections: Section[] = [
     id: "faqs",
     icon: HelpCircle,
     title: "Frequently Asked Questions (FAQs)",
-    summary: "Top 20 FAQs for DSecure File Eraser Network.",
+    summary: "Top 20 FAQs for D-Secure File Eraser Network.",
     subsections: [
       {
         id: "faq-1",
-        title: "What does DSecure File Eraser Network do?",
+        title: "What does D-Secure File Eraser Network do?",
         blocks: [
           {
             type: "p",
-            text: "DSecure File Eraser Network is a comprehensive data erasure solution for network environments. It allows IT administrators to permanently erase files, folders, and digital traces from multiple networked computers simultaneously from a central console. The software uses advanced overwriting algorithms to ensure that deleted data cannot be recovered, even with sophisticated data recovery tools."
+            text: "D-Secure File Eraser Network is a comprehensive data erasure solution for network environments. It allows IT administrators to permanently erase files, folders, and digital traces from multiple networked computers simultaneously from a central console. The software uses advanced overwriting algorithms to ensure that deleted data cannot be recovered, even with sophisticated data recovery tools."
           }
         ]
       },
       {
         id: "faq-2",
-        title: "Does DSecure really remove data beyond recovery?",
+        title: "Does D-Secure really remove data beyond recovery?",
         blocks: [
           {
             type: "p",
-            text: "Yes, absolutely. When you use DSecure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
+            text: "Yes, absolutely. When you use D-Secure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
           }
         ]
       },
@@ -746,7 +750,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Administrator credentials are necessary because DSecure File Eraser Network needs elevated permissions to access remote computers on the network, read their file systems, and perform permanent erasure operations. Only domain administrators have the necessary rights to execute these operations across multiple computers. This security measure prevents unauthorized users from erasing data on network computers."
+            text: "Administrator credentials are necessary because D-Secure File Eraser Network needs elevated permissions to access remote computers on the network, read their file systems, and perform permanent erasure operations. Only domain administrators have the necessary rights to execute these operations across multiple computers. This security measure prevents unauthorized users from erasing data on network computers."
           }
         ]
       },
@@ -776,7 +780,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "DSecure File Eraser Network is specifically designed for domain environments and requires Active Directory integration. For standalone computers not joined to a domain, you would need to use the standalone version of DSecure File Eraser. The network version relies on domain infrastructure for authentication, computer discovery, and remote access."
+            text: "D-Secure File Eraser Network is specifically designed for domain environments and requires Active Directory integration. For standalone computers not joined to a domain, you would need to use the standalone version of D-Secure File Eraser. The network version relies on domain infrastructure for authentication, computer discovery, and remote access."
           }
         ]
       },
@@ -896,7 +900,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Currently, reports must be saved individually—you cannot batch-export multiple reports in one operation. To save multiple reports, select and save each one separately. Alternatively, you can send reports to DSecure Cloud in batch, which provides centralized storage and management of all your erasure reports."
+            text: "Currently, reports must be saved individually—you cannot batch-export multiple reports in one operation. To save multiple reports, select and save each one separately. Alternatively, you can send reports to D-Secure Cloud in batch, which provides centralized storage and management of all your erasure reports."
           }
         ]
       },
@@ -906,29 +910,29 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "If you've been uploading reports to DSecure Cloud, you can access them from the Cloud Console at any time. If you haven't been using Cloud integration, local reports lost due to database corruption or system failure cannot be recovered. To prevent data loss: regularly back up your MariaDB database, enable DSecure Cloud integration and upload reports regularly, export critical reports to PDF and store in a separate location, and configure automated database backups as part of your IT maintenance routine."
+            text: "If you've been uploading reports to D-Secure Cloud, you can access them from the Cloud Console at any time. If you haven't been using Cloud integration, local reports lost due to database corruption or system failure cannot be recovered. To prevent data loss: regularly back up your MariaDB database, enable D-Secure Cloud integration and upload reports regularly, export critical reports to PDF and store in a separate location, and configure automated database backups as part of your IT maintenance routine."
           }
         ]
       }
     ],
   },
 
-  // About DSecureTech
+  // about D-SecureTech
   {
     id: "about-D-Secure",
     icon: Building,
-    title: "About DSecureTech",
+    title: "about D-SecureTech",
     summary:
-      "DSecure is a global Data Care organization: Recovery, Email Repair & Conversion, File/DB Repair, and Data Erasure.",
+      "D-Secure is a global Data Care organization: Recovery, Email Repair & Conversion, File/DB Repair, and Data Erasure.",
     subsections: [
       {
         id: "D-Secure-overview",
-        title: "DSecure Overview",
+        title: "D-Secure Overview",
         blocks: [
           {
             type: "p",
             text:
-              "DSecure provides 100+ proprietary tools used by enterprises, IT service providers, and individuals in 190+ countries, with presence in USA, Europe, and Asia.",
+              "D-Secure provides 100+ proprietary tools used by enterprises, IT service providers, and individuals in 190+ countries, with presence in USA, Europe, and Asia.",
           },
         ],
       },
@@ -1033,10 +1037,10 @@ const CompleteDSecureNetworkFile: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Complete DSecure Manual</title>
+        <title>Complete D-Secure Manual</title>
         <meta
           name="description"
-          content="All DSecure File Eraser Network help content consolidated on a single page with navigation, search, and printable sections."
+          content="All D-Secure File Eraser Network help content consolidated on a single page with navigation, search, and printable sections."
         />
       </Helmet>
 
@@ -1152,7 +1156,7 @@ const CompleteDSecureNetworkFile: React.FC = () => {
             {/* Welcome Banner */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-8 text-white">
               <h1 className="text-3xl font-bold mb-2">
-                DSecure File Eraser Network Manual
+                D-Secure File Eraser Network Manual
               </h1>
               <p className="text-blue-100 text-lg">
                 Complete guide to installation, configuration, and secure data erasure operations

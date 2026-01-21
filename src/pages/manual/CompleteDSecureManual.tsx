@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -32,23 +34,23 @@ const navigationTree: NavItem[] = [
   {
     id: "about",
     number: "1",
-    title: "About DSecure File Eraser",
+    title: "About D-Secure File Eraser",
     content: (
       <>
         <p className="text-slate-700 leading-relaxed mb-4">
-          <strong>DSecure File Eraser</strong> is a complete solution to maintain your computer privacy by erasing unwanted information from the computer. Erased data is beyond recovery. <strong>DSecure File Eraser</strong> can be used to erase files/folders, Unused space, and System traces.
+          <strong>D-Secure File Eraser</strong> is a complete solution to maintain your computer privacy by erasing unwanted information from the computer. Erased data is beyond recovery. <strong>D-Secure File Eraser</strong> can be used to erase files/folders, Unused space, and System traces.
         </p>
         <p className="text-slate-700 leading-relaxed mb-4">
-          <strong>DSecure File Eraser</strong> erases files & folders completely from the hard drive. You can select multiple files/folders at a time for erasure. Once files/folders from the drive are erased using <strong>DSecure File Eraser</strong> data can't be recovered back. The software allows you to generate and save the reports of the completed erasure process.
+          <strong>D-Secure File Eraser</strong> erases files & folders completely from the hard drive. You can select multiple files/folders at a time for erasure. Once files/folders from the drive are erased using <strong>D-Secure File Eraser</strong> data can't be recovered back. The software allows you to generate and save the reports of the completed erasure process.
         </p>
         <p className="text-slate-700 leading-relaxed mb-4">
           In addition, it can erase unused space completely such that all the traces of previously stored data are completely removed. When you delete data from a hard drive, the data content is not deleted entirely, instead the space occupied by the data is marked as unused space and the new data is written on that unused space.
         </p>
         <p className="text-slate-700 leading-relaxed mb-4">
-          <strong>DSecure File Eraser</strong> also erases all the system traces. Operating systems store records of all activities such as browsing Internet and opening documents constantly.
+          <strong>D-Secure File Eraser</strong> also erases all the system traces. Operating systems store records of all activities such as browsing Internet and opening documents constantly.
         </p>
         <p className="text-slate-700 leading-relaxed mb-6">
-          <strong>DSecure File Eraser</strong> has a set of 20+ different erasure algorithms, that are accepted globally, to ensure permanent data deletion. You can choose any of the algorithms for erasure process. The software is menu driven, simple to use with an intuitive interface, and requires no prior technical skill.
+          <strong>D-Secure File Eraser</strong> has a set of 20+ different erasure algorithms, that are accepted globally, to ensure permanent data deletion. You can choose any of the algorithms for erasure process. The software is menu driven, simple to use with an intuitive interface, and requires no prior technical skill.
         </p>
 
         <h3 className="text-lg font-semibold text-slate-800 mb-3">Key Features:</h3>
@@ -64,7 +66,7 @@ const navigationTree: NavItem[] = [
           <li><strong>Report Settings</strong>- Option to customise the reports before saving the report.</li>
           <li><strong>Search Report</strong>- Option to search reports by selecting the appropriate date range or erasure type.</li>
           <li><strong>Preview Report</strong>- Option to preview the report before saving.</li>
-          <li><strong>Save Report to DSecure Cloud</strong>- Automatic report uploaded to DSecure Cloud Console.</li>
+          <li><strong>Save Report to D-Secure Cloud</strong>- Automatic report uploaded to D-Secure Cloud Console.</li>
           <li><strong>Supported Erasure Standards and Verification Methods</strong>- Provides 20+ different erasing algorithms with 3 verification methods to erase the data permanently.</li>
           <li><strong>Search and Erase</strong>- Option to search specific files using name or extension on the system and erase them using a suitable algorithm.</li>
           <li><strong>Supports Multiple Themes</strong>- Option to switch between light and dark modes.</li>
@@ -82,12 +84,12 @@ const navigationTree: NavItem[] = [
           This user guide contains steps to assist you in various functions of <strong>DSecure File Eraser</strong>. Each function is explained in detail, in the corresponding sections. This guide covers the following major topics:
         </p>
         <ol className="list-decimal list-inside space-y-2 text-slate-700 ml-4 mb-6">
-          <li><strong>About DSecure File Eraser</strong></li>
+          <li><strong>About D-Secure File Eraser</strong></li>
           <li><strong>About the Guide</strong></li>
           <li><strong>Getting Started</strong></li>
-          <li><strong>Working with DSecure File Eraser</strong></li>
+          <li><strong>Working with D-Secure File Eraser</strong></li>
           <li><strong>Frequently Asked Questions (FAQs)</strong></li>
-          <li><strong>About DSecure</strong></li>
+          <li><strong>About D-Secure</strong></li>
         </ol>
 
         <p className="text-slate-700 leading-relaxed mb-4">
@@ -112,11 +114,11 @@ const navigationTree: NavItem[] = [
       {
         id: "installation",
         number: "3.1",
-        title: "Installation DSecure File Eraser",
+        title: "Installation D-Secure File Eraser",
         content: (
           <>
             <p className="text-slate-700 leading-relaxed mb-6">
-              Follow these comprehensive steps to successfully install DSecure File Eraser on your system:
+              Follow these comprehensive steps to successfully install D-Secure File Eraser on your system:
             </p>
             <div className="space-y-6">
               <div>
@@ -212,7 +214,7 @@ const navigationTree: NavItem[] = [
             content: (
               <>
                 <p className="text-slate-700 leading-relaxed mb-4">
-                  The DSecure interface includes tabs for different erasure modes, buttons for actions like 'Erase Now', 'Add Items', and 'Settings'. Familiarize yourself with each element for efficient operation.
+                  The D-Secure interface includes tabs for different erasure modes, buttons for actions like 'Erase Now', 'Add Items', and 'Settings'. Familiarize yourself with each element for efficient operation.
                 </p>
                 <div className="space-y-4">
                   <div className="border border-gray-200 rounded overflow-hidden w-1/4">
@@ -246,7 +248,7 @@ const navigationTree: NavItem[] = [
         content: (
           <>
             <p className="text-slate-700 leading-relaxed mb-4">
-              To know more about DSecure File Eraser, click <Link to="/products" className="text-blue-600 hover:underline">here</Link>.
+              To know more about D-Secure File Eraser, click <Link to="/products" className="text-blue-600 hover:underline">here</Link>.
             </p>
             <p className="text-slate-700 leading-relaxed mb-4">
               To purchase the software online, click <Link to="/pricing-and-plan?product=file-eraser" className="text-blue-600 hover:underline">here</Link>.
@@ -270,7 +272,7 @@ const navigationTree: NavItem[] = [
         content: (
           <>
             <p className="text-slate-700 leading-relaxed mb-4">
-              Activate DSecure with your license key:
+              Activate D-Secure with your license key:
             </p>
             <ol className="list-decimal list-inside space-y-4 text-slate-700 ml-4">
               <li className="mb-4">
@@ -316,7 +318,7 @@ const navigationTree: NavItem[] = [
         title: "Updating the Software",
         content: (
           <p className="text-slate-700 leading-relaxed">
-            DSecure automatically checks for updates. You can also manually check via Settings → Check for Updates. Always keep your software updated for the latest features and security patches.
+            D-Secure automatically checks for updates. You can also manually check via Settings → Check for Updates. Always keep your software updated for the latest features and security patches.
           </p>
         )
       },
@@ -337,7 +339,7 @@ const navigationTree: NavItem[] = [
   {
     id: "working",
     number: "4",
-    title: "Working with DSecure File Eraser",
+    title: "Working with D-Secure File Eraser",
     children: [
       {
         id: "erase-files",
@@ -475,7 +477,7 @@ const navigationTree: NavItem[] = [
         content: (
           <>
             <p className="text-slate-700 leading-relaxed mb-6">
-              DSecure File Eraser allows you to securely erase files stored in your Google Drive cloud storage without needing to open your account manually. This feature ensures complete privacy by permanently removing cloud-stored data.
+              D-Secure File Eraser allows you to securely erase files stored in your Google Drive cloud storage without needing to open your account manually. This feature ensures complete privacy by permanently removing cloud-stored data.
             </p>
             <div className="space-y-6">
               <div>
@@ -765,11 +767,11 @@ const navigationTree: NavItem[] = [
           {
             id: "cloud-report",
             number: "4.5.3",
-            title: "Send Report to DSecure Cloud",
+            title: "Send Report to D-Secure Cloud",
             content: (
               <>
                 <p className="text-slate-700 leading-relaxed mb-6">
-                  DSecure Cloud provides secure, encrypted cloud storage for your erasure reports, enabling remote access, centralized management, and automatic synchronization across multiple installations.
+                  D-Secure Cloud provides secure, encrypted cloud storage for your erasure reports, enabling remote access, centralized management, and automatic synchronization across multiple installations.
                 </p>
                 <div className="space-y-6">
                   <div>
@@ -859,7 +861,7 @@ const navigationTree: NavItem[] = [
                 content: (
                   <>
                     <p className="text-slate-700 leading-relaxed mb-6">
-                      DSecure File Eraser supports multiple visual themes to enhance user comfort and reduce eye strain during extended use. Choose from Light Mode, Dark Mode, or System Default settings.
+                      D-Secure File Eraser supports multiple visual themes to enhance user comfort and reduce eye strain during extended use. Choose from Light Mode, Dark Mode, or System Default settings.
                     </p>
                     <div className="space-y-6">
                       <div>
@@ -963,11 +965,11 @@ const navigationTree: NavItem[] = [
       {
         id: "cloud-login",
         number: "4.7",
-        title: "Login to DSecure Cloud",
+        title: "Login to D-Secure Cloud",
         content: (
           <>
             <p className="text-slate-700 leading-relaxed mb-6">
-              Login to DSecure Cloud to access cloud-based report management, synchronization, and remote access features. Follow these steps to authenticate your account:
+              Login to D-Secure Cloud to access cloud-based report management, synchronization, and remote access features. Follow these steps to authenticate your account:
             </p>
             <div className="space-y-6">
               <div>
@@ -1128,10 +1130,10 @@ const navigationTree: NavItem[] = [
   {
     id: "about-dsecure",
     number: "6",
-    title: "About DSecure",
+    title: "About D-Secure",
     content: (
       <p className="text-slate-700 leading-relaxed">
-        DSecure is a leading provider of data sanitization and security solutions. Our mission is to provide robust, reliable, and user-friendly data erasure solutions that empower organizations to manage their data lifecycle securely and meet stringent regulatory requirements with confidence.
+        D-Secure is a leading provider of data sanitization and security solutions. Our mission is to provide robust, reliable, and user-friendly data erasure solutions that empower organizations to manage their data lifecycle securely and meet stringent regulatory requirements with confidence.
       </p>
     )
   }
@@ -1163,6 +1165,8 @@ const SidebarItem: React.FC<{ item: NavItem; activeSection: string; onJump: (id:
 
   return (
     <div className="text-sm">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("complete-dsecure-manual")} />
       <div className={`flex items-center gap-2 py-1.5 px-3 rounded-md transition-colors cursor-pointer ${isActive ? "bg-blue-100 text-blue-700 font-semibold" : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
         }`}
         style={{ paddingLeft: `${(level * 12) + 12}px` }}
@@ -1270,8 +1274,8 @@ const CompleteDSecureManual: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Complete DSecure Manual</title>
-        <meta name="description" content="Complete DSecure File Eraser Network Manual" />
+        <title>Complete D-Secure Manual</title>
+        <meta name="description" content="Complete D-Secure File Eraser Network Manual" />
       </Helmet>
 
       <style>{`
@@ -1305,7 +1309,7 @@ const CompleteDSecureManual: React.FC = () => {
           <main className="flex-1 min-w-0 bg-white rounded-xl shadow-sm border border-gray-200 p-8 lg:p-12">
             <div className="mb-12 pb-8 border-b border-gray-200">
               <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl mb-4">
-                DSecure File Eraser
+                D-Secure File Eraser
               </h1>
               <p className="text-xl text-gray-500">
                 Complete User Guide & Documentation

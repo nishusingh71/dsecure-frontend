@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
@@ -134,6 +136,8 @@ export default function AdminUsers() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-users")} />
       <Helmet>
         <title>Manage Users - Admin Dashboard | DSecureTech</title>
         <meta name="description" content="Manage user accounts, roles, and permissions in DSecureTech admin dashboard." />

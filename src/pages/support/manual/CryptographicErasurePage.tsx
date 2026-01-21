@@ -62,7 +62,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
         {
           id: 23,
           title: "D-SecureIntegration",
-          description: "DSecure tools and drive eraser USB workflow",
+          description: "D-Secure tools and drive eraser USB workflow",
           url: "/support/manual/bitraser-integration",
           pageCount: 2,
         },
@@ -148,7 +148,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
         },
         {
           id: 53,
-          title: "DSecure Cloud Console",
+          title: "D-Secure Cloud Console",
           description: "Centralized management and reporting dashboard",
           url: "/support/manual/cloud-console",
           pageCount: 2,

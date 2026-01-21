@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from "@/auth/AuthContext";
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from "react";
@@ -360,6 +362,8 @@ export default function GenerateReport() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("generate-report")} />
       <Helmet>
         <title>Generate Report - Admin Dashboard | DSecureTech</title>
         <meta

@@ -176,7 +176,7 @@ const MacEraseGuide: React.FC = () => {
                     <h2 className="text-2xl font-bold">Success!</h2>
                   </div>
                   <p className="text-emerald-50 text-lg leading-relaxed">
-                    You have successfully erased your Mac device using DSecureTech Drive Eraser via Terminal.
+                    You have successfully erased your Mac device Using D-SecureTech Drive Eraser via Terminal.
                     To make your Mac functional again, reinstall macOS using Internet Recovery or a bootable
                     USB installer.
                   </p>

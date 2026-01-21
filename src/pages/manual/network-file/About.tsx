@@ -24,7 +24,7 @@ const About: React.FC = () => {
         <section className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-8 text-white">
           <h2 className="text-3xl font-bold mb-4">DSecure Overview</h2>
           <p className="text-xl text-blue-100 leading-relaxed">
-            DSecure is a global Data Care organization providing comprehensive solutions for data recovery, email repair & conversion, file and database repair, and secure data erasure. Our proprietary tools are used by enterprises, IT service providers, and individuals in over 190 countries.
+            D-Secure is a global Data Care organization providing comprehensive solutions for data recovery, email repair & conversion, file and database repair, and secure data erasure. Our proprietary tools are used by enterprises, IT service providers, and individuals in over 190 countries.
           </p>
         </section>
 

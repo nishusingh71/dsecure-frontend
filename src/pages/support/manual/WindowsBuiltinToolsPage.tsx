@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const WindowsBuiltinToolsPage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-windows-builtin-tools")} />
       <Helmet>
         <title>Windows Built-in Erasure Tools | D-Secure Manual</title>
         <meta name="description" content="Guide to Windows built-in data erasure tools including Reset this PC and BitLocker removal procedures." />

@@ -24,7 +24,7 @@ export const DEMO_DASHBOARD_STATS = {
 // Demo Profile Data - Complete profile for demo mode
 export const DEMO_PROFILE = {
   name: 'Demo Super Administrator',
-  email: 'demo@dsecuretech.com',
+  email: 'demo@D-Securetech.com',
   timezone: 'Asia/Kolkata',
   role: 'superadmin',
   userRole: 'superadmin',
@@ -63,7 +63,7 @@ export const DEMO_BILLING_DETAILS = {
   paymentMethod: 'Credit Card ****4242',
   status: 'Active',
   autoRenew: true,
-  userEmail: 'demo@dsecure.com',
+  userEmail: 'demo@D-Secure.com',
   // Features as readable string, not array
   features: 'Super Admin Access, Admin Dashboard, User Management, Reports, Audit Logs, System Settings'
 }
@@ -108,24 +108,24 @@ export const DEMO_REPORTS = [
 export const DEMO_SYSTEM_LOGS = [
   { id: 'LOG-001', log_id: 'LOG-001', timestamp: '2024-11-28 14:45:30', created_at: '2024-11-28T14:45:30', level: 'info' as const, log_level: 'info', category: 'Authentication', message: 'User alice@demo.com logged in successfully from Chrome browser', log_message: 'User alice@demo.com logged in successfully from Chrome browser', user: 'alice@demo.com', user_email: 'alice@demo.com', source: 'Auth Service' },
   { id: 'LOG-002', log_id: 'LOG-002', timestamp: '2024-11-28 14:30:15', created_at: '2024-11-28T14:30:15', level: 'success' as const, log_level: 'success', category: 'Erasure', message: 'Erasure completed on device LAPTOP-DELL-001 with DoD 5220.22-M standard', log_message: 'Erasure completed on device LAPTOP-DELL-001 with DoD 5220.22-M standard', user: 'bob@demo.com', user_email: 'bob@demo.com', source: 'Erasure Engine' },
-  { id: 'LOG-003', log_id: 'LOG-003', timestamp: '2024-11-28 14:15:00', created_at: '2024-11-28T14:15:00', level: 'warning' as const, log_level: 'warning', category: 'License', message: 'License pool running low - 15% remaining in Enterprise tier', log_message: 'License pool running low - 15% remaining in Enterprise tier', user: 'system', user_email: 'system@dsecure.com', source: 'License Manager' },
-  { id: 'LOG-004', log_id: 'LOG-004', timestamp: '2024-11-28 13:45:22', created_at: '2024-11-28T13:45:22', level: 'error' as const, log_level: 'error', category: 'Network', message: 'Connection timeout to backup server - retrying in 60 seconds', log_message: 'Connection timeout to backup server - retrying in 60 seconds', user: 'system', user_email: 'system@dsecure.com', source: 'Network Monitor' },
+  { id: 'LOG-003', log_id: 'LOG-003', timestamp: '2024-11-28 14:15:00', created_at: '2024-11-28T14:15:00', level: 'warning' as const, log_level: 'warning', category: 'License', message: 'License pool running low - 15% remaining in Enterprise tier', log_message: 'License pool running low - 15% remaining in Enterprise tier', user: 'system', user_email: 'system@D-Secure.com', source: 'License Manager' },
+  { id: 'LOG-004', log_id: 'LOG-004', timestamp: '2024-11-28 13:45:22', created_at: '2024-11-28T13:45:22', level: 'error' as const, log_level: 'error', category: 'Network', message: 'Connection timeout to backup server - retrying in 60 seconds', log_message: 'Connection timeout to backup server - retrying in 60 seconds', user: 'system', user_email: 'system@D-Secure.com', source: 'Network Monitor' },
   { id: 'LOG-005', log_id: 'LOG-005', timestamp: '2024-11-28 13:30:00', created_at: '2024-11-28T13:30:00', level: 'info' as const, log_level: 'info', category: 'Report', message: 'Monthly audit report generated successfully - 145 records processed', log_message: 'Monthly audit report generated successfully - 145 records processed', user: 'admin@demo.com', user_email: 'admin@demo.com', source: 'Report Generator' },
-  { id: 'LOG-006', log_id: 'LOG-006', timestamp: '2024-11-28 13:00:45', created_at: '2024-11-28T13:00:45', level: 'debug' as const, log_level: 'debug', category: 'System', message: 'Cache cleared for dashboard stats - 24MB freed', log_message: 'Cache cleared for dashboard stats - 24MB freed', user: 'system', user_email: 'system@dsecure.com', source: 'Cache Manager' },
+  { id: 'LOG-006', log_id: 'LOG-006', timestamp: '2024-11-28 13:00:45', created_at: '2024-11-28T13:00:45', level: 'debug' as const, log_level: 'debug', category: 'System', message: 'Cache cleared for dashboard stats - 24MB freed', log_message: 'Cache cleared for dashboard stats - 24MB freed', user: 'system', user_email: 'system@D-Secure.com', source: 'Cache Manager' },
   { id: 'LOG-007', log_id: 'LOG-007', timestamp: '2024-11-28 12:45:30', created_at: '2024-11-28T12:45:30', level: 'success' as const, log_level: 'success', category: 'User', message: 'New user hannah@demo.com created with User role', log_message: 'New user hannah@demo.com created with User role', user: 'admin@demo.com', user_email: 'admin@demo.com', source: 'User Service' },
-  { id: 'LOG-008', log_id: 'LOG-008', timestamp: '2024-11-28 12:30:00', created_at: '2024-11-28T12:30:00', level: 'info' as const, log_level: 'info', category: 'Backup', message: 'Daily backup completed - 2.4 GB uploaded to cloud storage', log_message: 'Daily backup completed - 2.4 GB uploaded to cloud storage', user: 'system', user_email: 'system@dsecure.com', source: 'Backup Service' },
+  { id: 'LOG-008', log_id: 'LOG-008', timestamp: '2024-11-28 12:30:00', created_at: '2024-11-28T12:30:00', level: 'info' as const, log_level: 'info', category: 'Backup', message: 'Daily backup completed - 2.4 GB uploaded to cloud storage', log_message: 'Daily backup completed - 2.4 GB uploaded to cloud storage', user: 'system', user_email: 'system@D-Secure.com', source: 'Backup Service' },
   { id: 'LOG-009', log_id: 'LOG-009', timestamp: '2024-11-28 12:15:45', created_at: '2024-11-28T12:15:45', level: 'success' as const, log_level: 'success', category: 'Erasure', message: 'Erasure verified on DESKTOP-HP-002 - Certificate generated', log_message: 'Erasure verified on DESKTOP-HP-002 - Certificate generated', user: 'charlie@demo.com', user_email: 'charlie@demo.com', source: 'Erasure Engine' },
-  { id: 'LOG-010', log_id: 'LOG-010', timestamp: '2024-11-28 12:00:30', created_at: '2024-11-28T12:00:30', level: 'warning' as const, log_level: 'warning', category: 'Security', message: 'Multiple failed login attempts detected from IP 192.168.1.150', log_message: 'Multiple failed login attempts detected from IP 192.168.1.150', user: 'system', user_email: 'system@dsecure.com', source: 'Security Monitor' },
+  { id: 'LOG-010', log_id: 'LOG-010', timestamp: '2024-11-28 12:00:30', created_at: '2024-11-28T12:00:30', level: 'warning' as const, log_level: 'warning', category: 'Security', message: 'Multiple failed login attempts detected from IP 192.168.1.150', log_message: 'Multiple failed login attempts detected from IP 192.168.1.150', user: 'system', user_email: 'system@D-Secure.com', source: 'Security Monitor' },
   { id: 'LOG-011', log_id: 'LOG-011', timestamp: '2024-11-28 11:45:15', created_at: '2024-11-28T11:45:15', level: 'info' as const, log_level: 'info', category: 'License', message: 'License ENT-078 activated for machine LAPTOP-LENOVO-004', log_message: 'License ENT-078 activated for machine LAPTOP-LENOVO-004', user: 'diana@demo.com', user_email: 'diana@demo.com', source: 'License Manager' },
   { id: 'LOG-012', log_id: 'LOG-012', timestamp: '2024-11-28 11:30:00', created_at: '2024-11-28T11:30:00', level: 'error' as const, log_level: 'error', category: 'Erasure', message: 'Erasure failed on SERVER-003 - Disk read error at sector 45892', log_message: 'Erasure failed on SERVER-003 - Disk read error at sector 45892', user: 'bob@demo.com', user_email: 'bob@demo.com', source: 'Erasure Engine' },
   { id: 'LOG-013', log_id: 'LOG-013', timestamp: '2024-11-28 11:15:22', created_at: '2024-11-28T11:15:22', level: 'info' as const, log_level: 'info', category: 'User', message: 'User role updated: edward@demo.com changed from User to Manager', log_message: 'User role updated: edward@demo.com changed from User to Manager', user: 'alice@demo.com', user_email: 'alice@demo.com', source: 'User Service' },
   { id: 'LOG-014', log_id: 'LOG-014', timestamp: '2024-11-28 11:00:45', created_at: '2024-11-28T11:00:45', level: 'success' as const, log_level: 'success', category: 'Authentication', message: 'Two-factor authentication enabled for fiona@demo.com', log_message: 'Two-factor authentication enabled for fiona@demo.com', user: 'fiona@demo.com', user_email: 'fiona@demo.com', source: 'Auth Service' },
-  { id: 'LOG-015', log_id: 'LOG-015', timestamp: '2024-11-28 10:45:30', created_at: '2024-11-28T10:45:30', level: 'debug' as const, log_level: 'debug', category: 'System', message: 'Database connection pool optimized - 8 active connections', log_message: 'Database connection pool optimized - 8 active connections', user: 'system', user_email: 'system@dsecure.com', source: 'Database Monitor' },
+  { id: 'LOG-015', log_id: 'LOG-015', timestamp: '2024-11-28 10:45:30', created_at: '2024-11-28T10:45:30', level: 'debug' as const, log_level: 'debug', category: 'System', message: 'Database connection pool optimized - 8 active connections', log_message: 'Database connection pool optimized - 8 active connections', user: 'system', user_email: 'system@D-Secure.com', source: 'Database Monitor' },
   { id: 'LOG-016', log_id: 'LOG-016', timestamp: '2024-11-28 10:30:15', created_at: '2024-11-28T10:30:15', level: 'info' as const, log_level: 'info', category: 'Report', message: 'Export completed - 45 audit records saved to CSV format', log_message: 'Export completed - 45 audit records saved to CSV format', user: 'george@demo.com', user_email: 'george@demo.com', source: 'Report Generator' },
   { id: 'LOG-017', log_id: 'LOG-017', timestamp: '2024-11-28 10:15:00', created_at: '2024-11-28T10:15:00', level: 'success' as const, log_level: 'success', category: 'Erasure', message: 'Batch erasure started on 5 devices in IT Department group', log_message: 'Batch erasure started on 5 devices in IT Department group', user: 'alice@demo.com', user_email: 'alice@demo.com', source: 'Erasure Engine' },
-  { id: 'LOG-018', log_id: 'LOG-018', timestamp: '2024-11-28 10:00:45', created_at: '2024-11-28T10:00:45', level: 'warning' as const, log_level: 'warning', category: 'System', message: 'Disk usage at 78% on primary storage - cleanup recommended', log_message: 'Disk usage at 78% on primary storage - cleanup recommended', user: 'system', user_email: 'system@dsecure.com', source: 'System Monitor' },
+  { id: 'LOG-018', log_id: 'LOG-018', timestamp: '2024-11-28 10:00:45', created_at: '2024-11-28T10:00:45', level: 'warning' as const, log_level: 'warning', category: 'System', message: 'Disk usage at 78% on primary storage - cleanup recommended', log_message: 'Disk usage at 78% on primary storage - cleanup recommended', user: 'system', user_email: 'system@D-Secure.com', source: 'System Monitor' },
   { id: 'LOG-019', log_id: 'LOG-019', timestamp: '2024-11-28 09:45:30', created_at: '2024-11-28T09:45:30', level: 'info' as const, log_level: 'info', category: 'License', message: 'License allocation updated - Marketing department now has 30 licenses', log_message: 'License allocation updated - Marketing department now has 30 licenses', user: 'admin@demo.com', user_email: 'admin@demo.com', source: 'License Manager' },
-  { id: 'LOG-020', log_id: 'LOG-020', timestamp: '2024-11-28 09:30:00', created_at: '2024-11-28T09:30:00', level: 'success' as const, log_level: 'success', category: 'Backup', message: 'Weekly full backup initiated - estimated completion 4 hours', log_message: 'Weekly full backup initiated - estimated completion 4 hours', user: 'system', user_email: 'system@dsecure.com', source: 'Backup Service' },
+  { id: 'LOG-020', log_id: 'LOG-020', timestamp: '2024-11-28 09:30:00', created_at: '2024-11-28T09:30:00', level: 'success' as const, log_level: 'success', category: 'Backup', message: 'Weekly full backup initiated - estimated completion 4 hours', log_message: 'Weekly full backup initiated - estimated completion 4 hours', user: 'system', user_email: 'system@D-Secure.com', source: 'Backup Service' },
 ]
 
 // Demo License Details
@@ -618,7 +618,7 @@ export const DEMO_SUBUSERS = [
 export const DEMO_COMMANDS = [
   { 
     command_id: 1, 
-    command_text: 'dsecure-erase --method DoD5220 --drive /dev/sda --verify true', 
+    command_text: 'D-Secure-erase --method DoD5220 --drive /dev/sda --verify true', 
     command_status: 'Completed', 
     issued_at: '2024-11-28T12:30:00',
     command_json: JSON.stringify({ method: 'DoD 5220.22-M', drive: '/dev/sda', verify: true, passes: 3 }),
@@ -626,7 +626,7 @@ export const DEMO_COMMANDS = [
   },
   { 
     command_id: 2, 
-    command_text: 'dsecure-verify --report-id AUD-001 --generate-certificate true', 
+    command_text: 'D-Secure-verify --report-id AUD-001 --generate-certificate true', 
     command_status: 'Completed', 
     issued_at: '2024-11-28T12:45:00',
     command_json: JSON.stringify({ reportId: 'AUD-001', certificate: true, format: 'PDF' }),
@@ -634,7 +634,7 @@ export const DEMO_COMMANDS = [
   },
   { 
     command_id: 3, 
-    command_text: 'dsecure-batch --target IT-Department --method NIST800-88 --schedule immediate', 
+    command_text: 'D-Secure-batch --target IT-Department --method NIST800-88 --schedule immediate', 
     command_status: 'Running', 
     issued_at: '2024-11-28T13:00:00',
     command_json: JSON.stringify({ target: 'IT-Department', method: 'NIST 800-88', devices: 15, progress: '45%' }),
@@ -642,7 +642,7 @@ export const DEMO_COMMANDS = [
   },
   { 
     command_id: 4, 
-    command_text: 'dsecure-erase --method Gutmann35 --drive /dev/nvme0n1 --priority high', 
+    command_text: 'D-Secure-erase --method Gutmann35 --drive /dev/nvme0n1 --priority high', 
     command_status: 'Pending', 
     issued_at: '2024-11-28T13:15:00',
     command_json: JSON.stringify({ method: 'Gutmann 35-Pass', drive: '/dev/nvme0n1', priority: 'high', estimatedTime: '4h' }),
@@ -650,7 +650,7 @@ export const DEMO_COMMANDS = [
   },
   { 
     command_id: 5, 
-    command_text: 'dsecure-report --type audit --date-range 30d --export csv', 
+    command_text: 'D-Secure-report --type audit --date-range 30d --export csv', 
     command_status: 'Completed', 
     issued_at: '2024-11-28T11:00:00',
     command_json: JSON.stringify({ type: 'audit', range: '30 days', format: 'CSV', records: 156 }),
@@ -658,7 +658,7 @@ export const DEMO_COMMANDS = [
   },
   { 
     command_id: 6, 
-    command_text: 'dsecure-license --action activate --key ENT-2024-XYZ --machines 50', 
+    command_text: 'D-Secure-license --action activate --key ENT-2024-XYZ --machines 50', 
     command_status: 'Completed', 
     issued_at: '2024-11-28T10:30:00',
     command_json: JSON.stringify({ action: 'activate', licenseKey: 'ENT-2024-XYZ', machines: 50, type: 'Enterprise' }),

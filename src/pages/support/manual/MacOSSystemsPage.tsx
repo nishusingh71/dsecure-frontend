@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -197,7 +199,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
           id: 61,
           title: "Third-Party Erasure Software",
           description:
-            "DSecure Mac Eraser, Blancco, Permanent Eraser comparison",
+            "D-Secure Mac Eraser, Blancco, Permanent Eraser comparison",
           url: "/support/manual/macos-third-party",
           pageCount: 2,
         },
@@ -316,6 +318,8 @@ const MacOSSystemsPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("mac-ossystems")} />
       <Helmet>
         <link
           rel="canonical"

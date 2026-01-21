@@ -1,5 +1,5 @@
-﻿/**
- * 🌐 Axios API Client with AES-256-CBC Decryption Interceptor
+/**
+ * ?? Axios API Client with AES-256-CBC Decryption Interceptor
  * 
  * Features:
  * - Automatic JWT token injection
@@ -85,14 +85,14 @@ function createApiInstance(): AxiosInstance {
     transformResponse: [(data) => data],
   });
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------------------
   // REQUEST INTERCEPTOR - Add JWT Token, Email Header & Logging
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------------------
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       // Get JWT token from storage
-      const token = sessionStorage.getItem('dsecure:jwt') ||
-        localStorage.getItem('dsecure:jwt') ||
+      const token = sessionStorage.getItem('D-Secure:jwt') ||
+        localStorage.getItem('D-Secure:jwt') ||
         localStorage.getItem('jwt_token');
 
       // Add Authorization header if token exists AND request is not for a public endpoint
@@ -103,10 +103,10 @@ function createApiInstance(): AxiosInstance {
         config.headers.Authorization = `Bearer ${token}`;
       }
 
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       // FRONTEND PII-SAFE REFACTOR:
       // Add user email to headers (Base64 encoded) instead of URL parameters
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       const storedUserData = localStorage.getItem('user_data');
       const authUser = localStorage.getItem('authUser');
 
@@ -133,7 +133,7 @@ function createApiInstance(): AxiosInstance {
       }
 
       // Development logging
-      debugLog('API', `📤 ${config.method?.toUpperCase()} ${config.url}`);
+      debugLog('API', `?? ${config.method?.toUpperCase()} ${config.url}`);
 
       return config;
     },
@@ -143,25 +143,25 @@ function createApiInstance(): AxiosInstance {
     }
   );
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------------------
   // RESPONSE INTERCEPTOR - Smart Decryption Logic
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ---------------------------------------------------------------------------
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
       const contentType = response.headers['content-type'];
       const requestUrl = response.config.url;
 
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       // RULE 1: BINARY SAFETY - Skip decryption for binary content
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       if (isBinaryContentType(contentType) || isBinaryUrl(requestUrl)) {
-        debugLog('API', `📦 Binary response, skipping decryption: ${requestUrl}`);
+        debugLog('API', `?? Binary response, skipping decryption: ${requestUrl}`);
         return response;
       }
 
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       // Parse JSON response if it's a string
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       let responseData = response.data;
 
       // If response data is string, try to parse as JSON
@@ -170,17 +170,17 @@ function createApiInstance(): AxiosInstance {
           responseData = JSON.parse(responseData);
         } catch {
           // Not JSON, return as-is
-          debugLog('API', `📄 Non-JSON response: ${requestUrl}`);
+          debugLog('API', `?? Non-JSON response: ${requestUrl}`);
           return response;
         }
       }
 
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       // RULE 2: ENCRYPTION CHECK - Decrypt if encrypted flag is true
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       if (isEncryptedResponse(responseData)) {
         try {
-          debugLog('ENCRYPT', `🔐 Encrypted response detected: ${requestUrl}`);
+          debugLog('ENCRYPT', `?? Encrypted response detected: ${requestUrl}`);
 
           // Check if data is compressed
           const isCompressed = responseData.compressed !== false;
@@ -192,7 +192,7 @@ function createApiInstance(): AxiosInstance {
           // Replace response data with decrypted data
           response.data = decryptedData;
 
-          debugLog('ENCRYPT', `✅ Decryption successful: ${requestUrl}`, decryptedData);
+          debugLog('ENCRYPT', `? Decryption successful: ${requestUrl}`, decryptedData);
 
           return response;
         } catch (decryptError) {
@@ -208,12 +208,12 @@ function createApiInstance(): AxiosInstance {
         }
       }
 
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       // RULE 3: FALLBACK - Return parsed JSON as-is
-      // ─────────────────────────────────────────────────────────────────────────
+      // -------------------------------------------------------------------------
       response.data = responseData;
 
-      debugLog('API', `📥 Response: ${response.config.url} [${response.status}]`);
+      debugLog('API', `?? Response: ${response.config.url} [${response.status}]`);
 
       return response;
     },
@@ -230,8 +230,8 @@ function createApiInstance(): AxiosInstance {
         // Handle 401 Unauthorized - Token expired or invalid
         if (status === 401) {
           debugWarn('AUTH', 'Session expired - clearing tokens');
-          sessionStorage.removeItem('dsecure:jwt');
-          localStorage.removeItem('dsecure:jwt');
+          sessionStorage.removeItem('D-Secure:jwt');
+          localStorage.removeItem('D-Secure:jwt');
           localStorage.removeItem('jwt_token');
 
           // Dispatch custom event for auth handling
@@ -257,9 +257,9 @@ function createApiInstance(): AxiosInstance {
   return instance;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
+// ---------------------------------------------------------------------------
 // EXPORT CONFIGURED INSTANCE (Lazy-initialized to avoid module loading order issues)
-// ═══════════════════════════════════════════════════════════════════════════
+// ---------------------------------------------------------------------------
 
 /**
  * Lazy-initialized API instance
@@ -298,23 +298,23 @@ export const api = new Proxy({} as AxiosInstance, {
  * Set JWT token for all future requests
  */
 export function setAuthToken(token: string, persist: boolean = false): void {
-  sessionStorage.setItem('dsecure:jwt', token);
+  sessionStorage.setItem('D-Secure:jwt', token);
   if (persist) {
-    localStorage.setItem('dsecure:jwt', token);
+    localStorage.setItem('D-Secure:jwt', token);
   }
   getApiInstance().defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  // console.log('🔑 Auth token set');
+  // console.log('?? Auth token set');
 }
 
 /**
  * Clear JWT token
  */
 export function clearAuthToken(): void {
-  sessionStorage.removeItem('dsecure:jwt');
-  localStorage.removeItem('dsecure:jwt');
+  sessionStorage.removeItem('D-Secure:jwt');
+  localStorage.removeItem('D-Secure:jwt');
   localStorage.removeItem('jwt_token');
   delete getApiInstance().defaults.headers.common['Authorization'];
-  // console.log('🔑 Auth token cleared');
+  // console.log('?? Auth token cleared');
 }
 
 /**

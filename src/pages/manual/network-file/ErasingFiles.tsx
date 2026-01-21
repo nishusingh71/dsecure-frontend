@@ -103,7 +103,7 @@ const ErasingFiles: React.FC = () => {
               <div className="flex-1">
                 <p className="text-gray-900 font-bold mb-2 text-lg">Confirm Active Domain Connection</p>
                 <p className="text-gray-700 mb-2">
-                  DSecure requires an active connection to your Active Directory domain to access network computers. Verify you're connected and authenticated with administrator credentials that have sufficient permissions on target machines.
+                  D-Secure requires an active connection to your Active Directory domain to access network computers. Verify you're connected and authenticated with administrator credentials that have sufficient permissions on target machines.
                 </p>
                 <p className="text-gray-600 text-sm">
                   <strong>Check:</strong> Look for the green connection indicator in the status bar. If disconnected, click <strong>Home → Connect Domain</strong> and re-authenticate before proceeding.
@@ -227,7 +227,7 @@ const ErasingFiles: React.FC = () => {
                 Before selecting files, optionally customize erasure settings for this specific operation by clicking <strong>Settings</strong> button in the file browser interface. This opens algorithm and verification options.
               </p>
               <p className="text-gray-700 mb-3">
-                Choose your preferred <strong>Erasure Algorithm</strong> (DoD 5220.22-M, Gutmann, NIST 800-88, etc.) and <strong>Verification Method</strong> (None, Random, Total). If you don't change settings, DSecure uses your default configuration from General Settings.
+                Choose your preferred <strong>Erasure Algorithm</strong> (DoD 5220.22-M, Gutmann, NIST 800-88, etc.) and <strong>Verification Method</strong> (None, Random, Total). If you don't change settings, D-Secure uses your default configuration from General Settings.
               </p>
               <div className="bg-white rounded-lg p-4 border border-green-300">
                 <p className="font-medium text-gray-900 mb-2">Algorithm Selection Guide:</p>
@@ -305,7 +305,7 @@ const ErasingFiles: React.FC = () => {
                   POINT OF NO RETURN
                 </p>
                 <p className="text-red-800 mb-2">
-                  Once you click <strong>Confirm Erasure</strong> or <strong>Yes, Proceed</strong>, the process begins immediately. Data will be permanently overwritten and cannot be recovered by any means—not by DSecure, not by data recovery services, not by forensic labs.
+                  Once you click <strong>Confirm Erasure</strong> or <strong>Yes, Proceed</strong>, the process begins immediately. Data will be permanently overwritten and cannot be recovered by any means—not by D-Secure, not by data recovery services, not by forensic labs.
                 </p>
                 <p className="text-red-800 text-sm">
                   If you have ANY doubt about your selections, click <strong>Cancel</strong> and review again. It's better to take an extra 5 minutes to verify than to lose critical data forever.
@@ -322,7 +322,7 @@ const ErasingFiles: React.FC = () => {
                 </div>
               </div>
               <p className="text-gray-700 mb-4">
-                Progress screen appears showing real-time status. Watch as DSecure processes each file through the selected algorithm's overwrite passes. Progress indicators include current file path, percentage complete, files processed, estimated time remaining, and any errors.
+                Progress screen appears showing real-time status. Watch as D-Secure processes each file through the selected algorithm's overwrite passes. Progress indicators include current file path, percentage complete, files processed, estimated time remaining, and any errors.
               </p>
               <div className="grid md:grid-cols-3 gap-2 mb-4">
                 <div className="bg-white rounded p-3 border border-teal-300 text-center">

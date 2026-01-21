@@ -5,7 +5,7 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/((?!api|site\\.webmanifest|sw\\.js|favicon\\.svg|dsecure-logo-black\\.svg).*)",
+      "source": "/((?!api|site\\.webmanifest|sw\\.js|favicon\\.svg|D-Secure-logo-black\\.svg).*)",
       "destination": "/index.html"
     }
   ],

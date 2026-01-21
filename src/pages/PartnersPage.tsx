@@ -36,7 +36,7 @@ const partnerTypes = {
   "ITAD Partner": {
     title: "ITAD Partner Program",
     description:
-      "The DSecure ITAD Partner Program is designed for IT asset disposition companies looking to accelerate their data erasure solutions and protocols. Join our ITAD Partner program to offer secure data erasure service using globally tested & approved erasure solutions to your customers and help them meet global data privacy compliance.",
+      "The D-Secure ITAD Partner Program is designed for IT asset disposition companies looking to accelerate their data erasure solutions and protocols. Join our ITAD Partner program to offer secure data erasure service using globally tested & approved erasure solutions to your customers and help them meet global data privacy compliance.",
     benefits: [
       "Scalable & Automated Data Erasure & Diagnostics Software",
       "Free Assisted Remote Deployment & Training",
@@ -49,17 +49,17 @@ const partnerTypes = {
       {
         title: "Scalable & Automated Data Erasure & Diagnostics Software",
         description:
-          "DSecure secure data erasure & diagnostics software allows you to start wiping up to 64 drives simultaneously. The software focus can consolidate the ITAD's data wiping capabilities across all types of storage media, including hard drives, SSDs, built-in drives in computers & Mac systems, servers, and OS & Android devices.",
+          "D-Secure secure data erasure & diagnostics software allows you to start wiping up to 64 drives simultaneously. The software focus can consolidate the ITAD's data wiping capabilities across all types of storage media, including hard drives, SSDs, built-in drives in computers & Mac systems, servers, and OS & Android devices.",
       },
       {
         title: "Price Lock in During Contract Term",
         description:
-          "By selecting DSecure solution as a part of the benefit of purchasing bulk licenses of DSecure at a special discounted pricing, the special price lock in for the term of the contract ensures that there is no change in price if you order a data erasure volumes over time.",
+          "By selecting D-Secure solution as a part of the benefit of purchasing bulk licenses of D-Secure at a special discounted pricing, the special price lock in for the term of the contract ensures that there is no change in price if you order a data erasure volumes over time.",
       },
       {
         title: "FREE Premium Technical Support - 24*5",
         description:
-          "DSecure provides free technical support for DSecure on offering assistance from our experts. Whether it is technical assistance or help with deployment and understanding our dedicated support team is here to help DSecure achieve exceptional service to their clients.",
+          "D-Secure provides free technical support for D-Secure on offering assistance from our experts. Whether it is technical assistance or help with deployment and understanding our dedicated support team is here to help D-Secure achieve exceptional service to their clients.",
       },
       {
         title: "Customized Solution For ITADs",
@@ -71,7 +71,7 @@ const partnerTypes = {
   "MSP Partner": {
     title: "MSP Partner Program",
     description:
-      "The DSecure MSP Partner Program empowers IT Managed Service Providers to efficiently incorporate data erasure services into their offerings, expanding their portfolio and adding value to their customers by ensuring the risk of data breach is significantly reduced ensuring relevant laws and regulations such as CCPA, HIPAA, SOX, and ISO 27001.",
+      "The D-Secure MSP Partner Program empowers IT Managed Service Providers to efficiently incorporate data erasure services into their offerings, expanding their portfolio and adding value to their customers by ensuring the risk of data breach is significantly reduced ensuring relevant laws and regulations such as CCPA, HIPAA, SOX, and ISO 27001.",
     benefits: [
       "Expand Your Portfolio",
       "Comprehensive Training",
@@ -79,7 +79,7 @@ const partnerTypes = {
       "Free Product Updates",
       "Special MSP Pricing",
       "Effortless Data Erasure Software",
-      "Get Listed On DSecure Partner Section",
+      "Get Listed On D-Secure Partner Section",
       "Free Technical Support",
     ],
     detailedBenefits: [
@@ -91,15 +91,15 @@ const partnerTypes = {
       {
         title: "Special MSP Pricing",
         description:
-          "Enrolling in our MSP Partner Program offers pricing as an MSP partner. With DSecure - Purchase licenses at a special price to offer software as a service to your clients. With the special pricing only available to MSPs who are partners with us in the market. Further, partners can get cost reduced erasure solutions ensuring accessibility for MSPs.",
+          "Enrolling in our MSP Partner Program offers pricing as an MSP partner. With D-Secure - Purchase licenses at a special price to offer software as a service to your clients. With the special pricing only available to MSPs who are partners with us in the market. Further, partners can get cost reduced erasure solutions ensuring accessibility for MSPs.",
       },
       {
         title: "Effortless Data Erasure Software",
         description:
-          "DSecure's secure data erasure software enables MSPs to initiate fast and effortless data erasure. The software brings automation, quick identification and erasure for your clients across over 65,000 drives. As part of our Partner Program, you'll receive the same experience at all voluntary programs they call how you operate. This includes services accomplished by user-friendly manual for seamless operations support across all types of drives to provide services to your clients.",
+          "D-Secure's secure data erasure software enables MSPs to initiate fast and effortless data erasure. The software brings automation, quick identification and erasure for your clients across over 65,000 drives. As part of our Partner Program, you'll receive the same experience at all voluntary programs they call how you operate. This includes services accomplished by user-friendly manual for seamless operations support across all types of drives to provide services to your clients.",
       },
       {
-        title: "Get Listed On DSecure Partner Section",
+        title: "Get Listed On D-Secure Partner Section",
         description:
           "By becoming our valuable MSP Partner, you get listed in the partner section of our website. B2B Customers can look out for partners who are experts in their compliance requirements to visit their team that can convert to revenue. Also, your customers gain trust that you are an expert from Authorized MSP Partner.",
       },
@@ -108,7 +108,7 @@ const partnerTypes = {
   "Distributor Partner": {
     title: "Distributor Partner Program",
     description:
-      "DSecure Distributor Program for DSecure is meant for all those software distributors that have global partnerships. partner reach in order to sell data erasure products for wiping and asset service. that financial data compliance and software for wiping data permanently from HDDs, SSDs, Tablets, Desktop, service & mobile devices including OS & Android devices.",
+      "D-Secure Distributor Program for D-Secure is meant for all those software distributors that have global partnerships. partner reach in order to sell data erasure products for wiping and asset service. that financial data compliance and software for wiping data permanently from HDDs, SSDs, Tablets, Desktop, service & mobile devices including OS & Android devices.",
     benefits: [
       "Go-To-Market Support",
       "Free 24*7 Technical Support",
@@ -121,7 +121,7 @@ const partnerTypes = {
       {
         title: "Go-To-Market Support",
         description:
-          "Distributors are required to increase the generation and reach of DSecure products by fixing business processes and developing solutions for data erasure software with comprehensive go-to-market strategy. Includes DSecure brochures, technical fact sheets, product videos, demo materials to support the distributors business.",
+          "Distributors are required to increase the generation and reach of D-Secure products by fixing business processes and developing solutions for data erasure software with comprehensive go-to-market strategy. Includes D-Secure brochures, technical fact sheets, product videos, demo materials to support the distributors business.",
       },
       {
         title: "Product Sales Training",
@@ -131,7 +131,7 @@ const partnerTypes = {
       {
         title: "Trusted Brand",
         description:
-          "DSecure is a growing brand in the data erasure industry built on technical excellence and best practices. Our solutions follow international standards and provide reliable global service.",
+          "D-Secure is a growing brand in the data erasure industry built on technical excellence and best practices. Our solutions follow international standards and provide reliable global service.",
       },
       {
         title: "Deal Registration Benefits",
@@ -156,29 +156,29 @@ const partnerTypes = {
       {
         title: "Product Sales Training",
         description:
-          "The program provides you with simple training on the complete DSecure product lineup and functionality understanding of all features and technical aspects that benefits in advanced knowledge transfer sessions remotely equip you with the level of readiness you need to market the best product in the market.",
+          "The program provides you with simple training on the complete D-Secure product lineup and functionality understanding of all features and technical aspects that benefits in advanced knowledge transfer sessions remotely equip you with the level of readiness you need to market the best product in the market.",
       },
       {
         title: "Co-To-Market Enablement",
         description:
-          "You get all the necessary sales and marketing collaterals when you join the DSecure Reseller Partner Program. We provide campaign brochures, product one-pagers, technical data sheets, prospects, and more to support and roll out your go-to-market strategy for the region that you operate.",
+          "You get all the necessary sales and marketing collaterals when you join the D-Secure Reseller Partner Program. We provide campaign brochures, product one-pagers, technical data sheets, prospects, and more to support and roll out your go-to-market strategy for the region that you operate.",
       },
       {
         title: "Deal Registration Benefits",
         description:
-          "Reseller program allows you look in benefit when you register for a deal through a deal registration, you can look the deal for a given duration such that the DSecure sales team does not directly approach the same prospect. Deal registration also ensures that you do get a lead protection for you totally.",
+          "Reseller program allows you look in benefit when you register for a deal through a deal registration, you can look the deal for a given duration such that the D-Secure sales team does not directly approach the same prospect. Deal registration also ensures that you do get a lead protection for you totally.",
       },
       {
         title: "Quality Supplier",
         description:
-          "DSecure is a growing brand renowned for its data erasure solutions. We work to satisfy customers across the world in 190 countries. Our company focuses on innovative software development and providing quality in-lab services.",
+          "D-Secure is a growing brand renowned for its data erasure solutions. We work to satisfy customers across the world in 190 countries. Our company focuses on innovative software development and providing quality in-lab services.",
       },
     ],
   },
   "OEM Partner": {
     title: "OEM Partner Program",
     description:
-      "DSecure OEM Partnership Program helps you to implement and channel your existing product portfolio by offering data erasure solutions to your customers in order to safeguard their from liability.",
+      "D-Secure OEM Partnership Program helps you to implement and channel your existing product portfolio by offering data erasure solutions to your customers in order to safeguard their from liability.",
     benefits: [
       "Best-Selling Software",
       "High Conversion Rate",
@@ -191,22 +191,22 @@ const partnerTypes = {
       {
         title: "Best-Selling Software",
         description:
-          "DSecure software is renowned for its reliability, trustworthiness, and ease of use. We enjoy a vast customer base of more users in need of high quality data erasure solutions. Being an OEM partner, you can bundle our in-house professional data erasure software, largely unparalleled in the data erasure software industry.",
+          "D-Secure software is renowned for its reliability, trustworthiness, and ease of use. We enjoy a vast customer base of more users in need of high quality data erasure solutions. Being an OEM partner, you can bundle our in-house professional data erasure software, largely unparalleled in the data erasure software industry.",
       },
       {
         title: "Comprehensive Solution",
         description:
-          "DSecure software OEM partnership is successfully sync across all the storage drive and devices segments, including the actively operating drive hardware and those being for end-of-lifecycle. Our OEM partnership covers innovative data sanitization solutions for individual Mac, computer and mobile devices, and hybrid cloud drives, and mobile devices.",
+          "D-Secure software OEM partnership is successfully sync across all the storage drive and devices segments, including the actively operating drive hardware and those being for end-of-lifecycle. Our OEM partnership covers innovative data sanitization solutions for individual Mac, computer and mobile devices, and hybrid cloud drives, and mobile devices.",
       },
       {
         title: "Standards Compliant",
         description:
-          "DSecure software follows international standards and best practices from leading bodies such as NIST, ADISA, and Common Criteria. Our solutions provide compliance with NIST FIPS 140-2, ADISA standards, and Common Criteria compliant data erasure methods.",
+          "D-Secure software follows international standards and best practices from leading bodies such as NIST, ADISA, and Common Criteria. Our solutions provide compliance with NIST FIPS 140-2, ADISA standards, and Common Criteria compliant data erasure methods.",
       },
       {
         title: "Trusted Brand Quality",
         description:
-          "DSecure is a product from DSecure - one of the growing global data tech brands, trusted by companies worldwide. Our quality-focused R&D processes ensure compliance with the highest product standards and the success of our Partner business.",
+          "D-Secure is a product from D-Secure - one of the growing global data tech brands, trusted by companies worldwide. Our quality-focused R&D processes ensure compliance with the highest product standards and the success of our Partner business.",
       },
     ],
   },
@@ -495,7 +495,7 @@ const PartnersPage: React.FC = () => {
                       onClick={() =>
                         downloadPDF(
                           "partner-catalog.pdf",
-                          "DSecure_Partner_Catalog.pdf"
+                          "D-Secure_Partner_Catalog.pdf"
                         )
                       }
                       className="w-full sm:w-auto group border-2 sm:border-3 border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50 text-emerald-700 hover:text-emerald-800 font-bold px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3"
@@ -533,7 +533,7 @@ const PartnersPage: React.FC = () => {
                 {/* Main Heading */}
                 <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
                   <span className="block text-slate-900">
-                    <span>D</span>Secure{" "}
+                    <span>D-</span>Secure{" "}
                   </span>
                   {/* <span className="block text-slate-900">Erasure for</span> */}
                   <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
@@ -621,7 +621,7 @@ const PartnersPage: React.FC = () => {
                     onClick={() =>
                       downloadPDF(
                         "partnership-brochure.pdf",
-                        "DSecure_Partnership_Brochure.pdf"
+                        "D-Secure_Partnership_Brochure.pdf"
                       )
                     }
                     className="group bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3"
@@ -1360,7 +1360,7 @@ const PartnersPage: React.FC = () => {
                         onClick={() =>
                           downloadPDF(
                             "partnership-brochure.pdf",
-                            "DSecure_Partnership_Brochure.pdf"
+                            "D-Secure_Partnership_Brochure.pdf"
                           )
                         }
                         className="w-full bg-white border-2 border-slate-200/60 hover:border-brand hover:bg-gradient-to-r hover:from-brand/5 hover:to-brand/10 text-slate-700 hover:text-brand font-semibold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg group flex items-center justify-center gap-2"
@@ -1424,7 +1424,7 @@ const PartnersPage: React.FC = () => {
                   </h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
                     Get to know about our global partners and easily locate
-                    them. Connect with qualified DSecure partners in your region
+                    them. Connect with qualified D-Secure partners in your region
                     for seamless collaboration.
                   </p>
                   {/* Feature Pills */}
@@ -1593,7 +1593,7 @@ const PartnersPage: React.FC = () => {
                 {
                   title: "Free 24×7 Technical Support",
                   description:
-                    "Get the best pre-sales & after sales support for all DSecure solutions. Our staff provides regular training and extended deployments with dedicated expertise.",
+                    "Get the best pre-sales & after sales support for all D-Secure solutions. Our staff provides regular training and extended deployments with dedicated expertise.",
                   icon: (
                     <HoverIcon>
                       {(filled) => (

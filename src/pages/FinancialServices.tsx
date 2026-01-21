@@ -39,7 +39,7 @@ const FinancialServices: React.FC = () => {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    DSecure Financial Services Solutions
+                    D-Secure Financial Services Solutions
                   </span>
                 </h1>
                 <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
@@ -67,7 +67,7 @@ const FinancialServices: React.FC = () => {
                   </h2>
                   <p className="text-slate-700 text-lg leading-relaxed">
                     The financial sector handles some of the most sensitive data
-                    in the world. DSecure ensures that every byte of customer
+                    in the world. D-Secure ensures that every byte of customer
                     data, transaction log, and audit file is securely erased,
                     compliant with financial and international data protection
                     regulations such as PCI DSS, GDPR, and ISO 27001.
@@ -187,7 +187,7 @@ const FinancialServices: React.FC = () => {
               <Reveal>
                 <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 rounded-2xl p-8 text-white shadow-lg">
                   <h2 className="text-3xl font-bold mb-4 text-center">
-                    Get Started with DSecure Financial Services
+                    Get Started with D-Secure Financial Services
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                     {[
@@ -200,7 +200,7 @@ const FinancialServices: React.FC = () => {
                         desc: "Get personalized guidance from our financial security specialists.",
                       },
                       {
-                        title: "Partner with DSecure",
+                        title: "Partner with D-Secure",
                         desc: "Collaborate to enhance your organization’s data integrity strategy.",
                       },
                     ].map((item, i) => (

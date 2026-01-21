@@ -1,4 +1,6 @@
 ﻿import { useMemo, useState } from 'react'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { exportToCsv, openPrintView } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -429,6 +431,8 @@ export default function AdminSubusers() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-subusers")} />
       {/* Edit Subuser Modal */}
       {editModal.show && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -628,7 +632,7 @@ export default function AdminSubusers() {
         <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
         <meta
           name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
         />
         <meta
           name="keywords"

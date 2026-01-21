@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -118,6 +120,8 @@ const MobileDevicesPage: React.FC = memo(() => {
 
  return (
  <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("mobile-devices")} />
  <Helmet>
  <title>D-Secure Mobile Devices | iOS & Android Erasure Guide</title>
  <meta name="description" content="Complete guide to secure data erasure on mobile devices with D-Secure. Procedures for iOS, Android, and enterprise mobile management." />

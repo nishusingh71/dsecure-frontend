@@ -1,4 +1,4 @@
-// Enhanced Google Analytics utility for DSecure
+// Enhanced Google Analytics utility for D-Secure
 // Provides better tracking and event management
 
 // Extend Window interface for Google Analytics
@@ -52,7 +52,7 @@ class GoogleAnalytics {
     gtag('config', this.trackingId, {
       page_title: document.title,
       page_location: window.location.href,
-      custom_parameter: 'dsecure_website'
+      custom_parameter: 'D-Secure_website'
     });
 
     this.isInitialized = true;

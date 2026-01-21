@@ -1,4 +1,6 @@
 ﻿import { useMemo, useState } from 'react'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { exportToCsv } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -896,6 +898,8 @@ export default function AdminMachines() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-machines")} />
       {/* Machine Details Modal */}
       <MachineDetailsModal />
 

@@ -1,3 +1,5 @@
+import SEOHead from "../components/SEOHead";
+import { getSEOForPage } from "../utils/seo";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -5,6 +7,9 @@ const EnterprisePage: React.FC = () => {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-white">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("solutions-enterprise")} />
+
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-emerald-50 via-white to-teal-50 py-16 md:py-24">
@@ -14,7 +19,7 @@ const EnterprisePage: React.FC = () => {
               Secure Compliant
             </h1>
             <p className="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
-              Safeguard sensitive data with DSecure's enterprise-grade data erasure platform. Ensure compliance with global data security standards and protect your organization from data breaches with regulated, permanent data erasure.
+              Safeguard sensitive data with D-Secure's enterprise-grade data erasure platform. Ensure compliance with global data security standards and protect your organization from data breaches with regulated, permanent data erasure.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button

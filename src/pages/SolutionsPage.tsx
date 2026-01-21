@@ -1047,7 +1047,7 @@ function SolutionsPageContent() {
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               See how organizations across industries have transformed their
-              data erasure processes with DSecure.
+              data erasure processes with D-Secure.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

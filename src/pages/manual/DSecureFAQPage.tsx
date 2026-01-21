@@ -42,7 +42,7 @@ const DSecureFAQPage: React.FC = () => {
                   Frequently Asked Questions (FAQs)
                 </h1>
                 <p className="text-gray-600 mt-2">
-                  Find answers to common questions about DSecure File Eraser
+                  Find answers to common questions about D-Secure File Eraser
                 </p>
               </div>
             </div>
@@ -64,7 +64,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">1</span>
-                      What does the demo version of DSecure File Eraser do?
+                      What does the demo version of D-Secure File Eraser do?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       The demo version of the software only allows you to select and list traces of files, folders, web browsers, applications or system files. 
@@ -76,7 +76,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">2</span>
-                      Why do I need to use DSecure File Eraser?
+                      Why do I need to use D-Secure File Eraser?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       When you delete a file in your computer, it is not actually erased. It is just marked as deleted and the space it was using is 
@@ -92,7 +92,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">3</span>
-                      Does DSecure File Eraser remove data beyond recovery?
+                      Does D-Secure File Eraser remove data beyond recovery?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       Yes, <span className="font-semibold text-blue-600">DSecure File Eraser</span> removes data beyond recovery.
@@ -114,7 +114,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">5</span>
-                      Can I erase a specific file using DSecure File Eraser?
+                      Can I erase a specific file using D-Secure File Eraser?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       Yes, you can erase specific files by adding them to the erasure list or dragging the items and dropping them to the software or you 
@@ -206,7 +206,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-purple-100 text-purple-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">12</span>
-                      Which types of files cannot be erased using DSecure File Eraser?
+                      Which types of files cannot be erased using D-Secure File Eraser?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       System files are critical files that are used by operating systems to run your computer. So it is not possible to erase system files.
@@ -228,7 +228,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-purple-100 text-purple-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">17</span>
-                      Can I use DSecure File Eraser to erase the free space on the primary partition of my hard drive?
+                      Can I use D-Secure File Eraser to erase the free space on the primary partition of my hard drive?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       Yes, it is secure to use <span className="font-semibold text-blue-600">DSecure File Eraser</span> to erase data in the 
@@ -421,7 +421,7 @@ const DSecureFAQPage: React.FC = () => {
                       System Setup
                     </Link>
                     <Link to="/support/help-manual/working-guide" className="block text-blue-600 hover:underline">
-                      Working with DSecure
+                      Working with D-Secure
                     </Link>
                   </div>
                 </div>

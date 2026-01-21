@@ -57,7 +57,7 @@ const BlogPage: React.FC = () => {
       <section className="py-16 text-center">
         <Reveal>
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            DSecure Technical Blog
+            D-Secure Technical Blog
           </h1>
           <p className="text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
             Expert insights and practical guides on data erasure, cybersecurity,
@@ -106,7 +106,7 @@ const BlogPage: React.FC = () => {
       <section className="py-16 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-center">
         <Reveal>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Stay Informed with DSecure
+            Stay Informed with D-Secure
           </h2>
           <p className="text-lg md:text-xl text-emerald-100 mb-6 max-w-2xl mx-auto">
             Subscribe to get updates on secure data erasure best practices,

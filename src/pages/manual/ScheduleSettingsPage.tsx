@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import {
@@ -17,17 +19,19 @@ import { Link } from "react-router-dom";
 const ScheduleSettingsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("schedule-settings")} />
       <Helmet>
         <title>
-          DSecure Scheduling & Settings - Complete Configuration Guide
+          D-Secure Scheduling & Settings - Complete Configuration Guide
         </title>
         <meta
           name="description"
-          content="Master DSecure scheduling and settings - configure erasure tasks, customize themes, manage general settings, and set up automated operations."
+          content="Master D-Secure scheduling and settings - configure erasure tasks, customize themes, manage general settings, and set up automated operations."
         />
         <meta
           name="keywords"
-          content="DSecure schedule, erasure scheduling, settings configuration, themes, general settings, automation"
+          content="D-Secure schedule, erasure scheduling, settings configuration, themes, general settings, automation"
         />
       </Helmet>
 
@@ -65,7 +69,7 @@ const ScheduleSettingsPage: React.FC = () => {
                   Scheduling & Configuration Settings
                 </h1>
                 <p className="text-gray-600 mt-2">
-                  Complete guide to DSecure scheduling, themes, and general
+                  Complete guide to D-Secure scheduling, themes, and general
                   settings configuration
                 </p>
               </div>
@@ -108,7 +112,7 @@ const ScheduleSettingsPage: React.FC = () => {
                         <p className="text-gray-700">
                           Run{" "}
                           <span className="font-semibold text-green-600">
-                            DSecure File Eraser
+                            D-Secure File Eraser
                           </span>
                           .
                         </p>
@@ -358,7 +362,7 @@ const ScheduleSettingsPage: React.FC = () => {
                       <p className="text-gray-700">
                         Run{" "}
                         <span className="font-semibold text-blue-600">
-                          DSecure File Eraser
+                          D-Secure File Eraser
                         </span>
                         .
                       </p>
@@ -452,7 +456,7 @@ const ScheduleSettingsPage: React.FC = () => {
                 <div className="bg-gray-50 rounded-lg p-6">
                   <p className="text-gray-700 mb-4">
                     <span className="font-semibold text-indigo-600">
-                      DSecure File Eraser
+                      D-Secure File Eraser
                     </span>{" "}
                     allows you to select a theme for your application, you can
                     select between light and dark mode.
@@ -508,7 +512,7 @@ const ScheduleSettingsPage: React.FC = () => {
                       <p className="text-gray-700">
                         Run{" "}
                         <span className="font-semibold text-indigo-600">
-                          DSecure File Eraser
+                          D-Secure File Eraser
                         </span>
                         .
                       </p>

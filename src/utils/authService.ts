@@ -1,12 +1,12 @@
-﻿// JWT Authentication Service - Enhanced
+// JWT Authentication Service - Enhanced
 import { jwtDecode } from 'jwt-decode'
 
 // Storage keys for different data types
 const STORAGE_KEYS = {
-  ACCESS_TOKEN: 'dsecure_access_token',
-  REFRESH_TOKEN: 'dsecure_refresh_token',
-  USER_DATA: 'dsecure_user_data',
-  REMEMBER_ME: 'dsecure_remember_me'
+  ACCESS_TOKEN: 'D-Secure_access_token',
+  REFRESH_TOKEN: 'D-Secure_refresh_token',
+  USER_DATA: 'D-Secure_user_data',
+  REMEMBER_ME: 'D-Secure_remember_me'
 } as const
 
 // Enhanced JWT payload interface
@@ -135,14 +135,14 @@ class AuthService {
       this.refreshTimeoutId = null
     }
 
-    // console.log('✅ All authentication data cleared from storage')
+    // console.log('? All authentication data cleared from storage')
   }
 
   isAuthenticated(): boolean {
-    // ✅ Check for demo mode first - demo users are always authenticated
+    // ? Check for demo mode first - demo users are always authenticated
     const isDemoMode = localStorage.getItem('demo_mode') === 'true'
     if (isDemoMode) {
-      // console.log('🎭 Demo mode detected - user is authenticated')
+      // console.log('?? Demo mode detected - user is authenticated')
       return true
     }
 
@@ -191,7 +191,7 @@ class AuthService {
     try {
       // First, try to get user_email from stored user_data in localStorage
       const storedUserData = this.getStoredUserData()
-      // console.log('💾 Stored user_data from localStorage:', storedUserData)
+      // console.log('?? Stored user_data from localStorage:', storedUserData)
 
       const accessToken = token || this.getAccessToken()
       if (!accessToken) return null
@@ -207,8 +207,8 @@ class AuthService {
       // PRIORITY: Use user_email from stored user_data, then JWT, then fallback
       const email = storedUserData?.user_email || payload.user_email || payload.email || 'unknown@example.com'
 
-      // console.log('🔍 JWT Payload:', { user_email: payload.user_email, email: payload.email })
-      // console.log('✅ Final extracted email:', email)
+      // console.log('?? JWT Payload:', { user_email: payload.user_email, email: payload.email })
+      // console.log('? Final extracted email:', email)
 
       return {
         id: String(userId),
@@ -512,7 +512,7 @@ class AuthService {
     return token ? { Authorization: `Bearer ${token}` } : {}
   }
 
-  // ✅ Get current user's email from token or stored data
+  // ? Get current user's email from token or stored data
   getUserEmail(): string | null {
     try {
       // Try from stored user data first

@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -242,6 +244,8 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-performance-optimization")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/support/manual/performance-optimization" />
         <title>Performance Optimization | D-Secure Speed & Efficiency Guide</title>

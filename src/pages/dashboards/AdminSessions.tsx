@@ -1,4 +1,6 @@
 ﻿import { useMemo, useState, useEffect } from 'react'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
 import { exportToCsv } from '@/utils/csv'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -444,6 +446,8 @@ export default function AdminSessions() {
   }
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-sessions")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/admin/sessions" />
         <title>DSecureTech Admin Logs | System Activity & Security Monitoring</title>

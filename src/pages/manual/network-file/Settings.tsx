@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Settings as SettingsIcon, AlertCircle, CheckCircle, Shield, Zap, FileX, Sliders } from "lucide-react";
@@ -5,11 +7,13 @@ import { Settings as SettingsIcon, AlertCircle, CheckCircle, Shield, Zap, FileX,
 const Settings: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("settings")} />
       <Helmet>
-        <title>Settings and Customization - DSecure Network File Manual</title>
+        <title>Settings and Customization - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Configure DSecure File Eraser Network settings including general preferences, erasure algorithms, trace settings, and ignore file lists."
+          content="Configure D-Secure File Eraser Network settings including general preferences, erasure algorithms, trace settings, and ignore file lists."
         />
       </Helmet>
 
@@ -21,7 +25,7 @@ const Settings: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Application Settings and Customization</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Customize DSecure File Eraser Network to align with your organization's security policies, compliance requirements, and operational workflows. Fine-tune erasure methods, configure trace removal preferences, and protect critical files from accidental deletion.
+            Customize D-Secure File Eraser Network to align with your organization's security policies, compliance requirements, and operational workflows. Fine-tune erasure methods, configure trace removal preferences, and protect critical files from accidental deletion.
           </p>
         </div>
 
@@ -29,10 +33,10 @@ const Settings: React.FC = () => {
         <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm border border-blue-200 p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Sliders className="w-6 h-6 text-blue-600" />
-            Understanding DSecure Settings
+            Understanding D-Secure Settings
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            DSecure File Eraser Network provides comprehensive configuration options that let you tailor the software's behavior to match your specific security requirements and operational needs. Proper configuration ensures that erasure operations meet compliance standards (GDPR, HIPAA, DoD regulations) while maintaining efficient workflows for your IT team.
+            D-Secure File Eraser Network provides comprehensive configuration options that let you tailor the software's behavior to match your specific security requirements and operational needs. Proper configuration ensures that erasure operations meet compliance standards (GDPR, HIPAA, DoD regulations) while maintaining efficient workflows for your IT team.
           </p>
           <p className="text-gray-700 leading-relaxed mb-4">
             Settings are organized into four main categories: General Settings control overall application behavior, Erasure Algorithms determine how data is overwritten, Erase Traces Settings specify what digital footprints to remove, and Ignore File Lists protect important files from accidental erasure. All settings are saved automatically and apply globally across the application unless overridden for specific tasks.
@@ -53,7 +57,7 @@ const Settings: React.FC = () => {
           </h2>
           
           <p className="text-gray-700 leading-relaxed mb-6">
-            General Settings control the core operational behavior of DSecure File Eraser Network. These settings affect how the application interacts with your network, performs erasure operations, and presents information to users. Navigate to <strong>Home → Settings → General</strong> tab to configure these options.
+            General Settings control the core operational behavior of D-Secure File Eraser Network. These settings affect how the application interacts with your network, performs erasure operations, and presents information to users. Navigate to <strong>Home → Settings → General</strong> tab to configure these options.
           </p>
 
           <div className="space-y-5">
@@ -66,7 +70,7 @@ const Settings: React.FC = () => {
                 <strong>Purpose:</strong> Automatically verify network connectivity to target computers before attempting erasure operations.
               </p>
               <p className="text-gray-700 mb-2">
-                <strong>How it works:</strong> When enabled, DSecure pings each selected computer to confirm it's online and accessible before initiating file scans or erasure. This prevents wasted time attempting operations on offline machines.
+                <strong>How it works:</strong> When enabled, D-Secure pings each selected computer to confirm it's online and accessible before initiating file scans or erasure. This prevents wasted time attempting operations on offline machines.
               </p>
               <p className="text-gray-600 text-sm">
                 <strong>Recommendation:</strong> Enable this for large networks where computers may be offline. Disable if you're working on a small network where all computers are reliably connected, as it saves a few seconds per operation.
@@ -163,7 +167,7 @@ const Settings: React.FC = () => {
           </h2>
           
           <p className="text-gray-700 leading-relaxed mb-6">
-            DSecure File Eraser Network includes 17+ industry-standard erasure algorithms developed by government agencies, military organizations, and security researchers worldwide. Each algorithm uses different overwriting patterns and pass counts to ensure data cannot be recovered. Choosing the right algorithm balances security needs with time constraints—more passes provide higher security but take proportionally longer.
+            D-Secure File Eraser Network includes 17+ industry-standard erasure algorithms developed by government agencies, military organizations, and security researchers worldwide. Each algorithm uses different overwriting patterns and pass counts to ensure data cannot be recovered. Choosing the right algorithm balances security needs with time constraints—more passes provide higher security but take proportionally longer.
           </p>
 
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 p-6 mb-6">
@@ -321,7 +325,7 @@ const Settings: React.FC = () => {
                 </div>
               </div>
               <p className="text-gray-700 mb-3">
-                After erasure completes, DSecure randomly samples sectors across the erased area and reads them to verify they contain the expected overwrite pattern. Typically checks 5-10% of total sectors, which catches most potential issues while adding minimal time.
+                After erasure completes, D-Secure randomly samples sectors across the erased area and reads them to verify they contain the expected overwrite pattern. Typically checks 5-10% of total sectors, which catches most potential issues while adding minimal time.
               </p>
               <div className="bg-white rounded-lg p-3 border border-purple-300">
                 <p className="text-sm font-medium text-gray-900 mb-1">When to use:</p>
@@ -368,7 +372,7 @@ const Settings: React.FC = () => {
           </h2>
           
           <p className="text-gray-700 leading-relaxed mb-6">
-            Digital traces are the footprints left behind by your operating system, applications, and internet browsing. These traces can reveal what files you accessed, websites you visited, applications you used, and searches you performed—even after the original files are deleted. DSecure's Erase Traces feature removes these digital breadcrumbs to protect privacy and comply with data protection regulations. Configure which traces to remove by navigating to <strong>Settings → Erase Traces</strong>.
+            Digital traces are the footprints left behind by your operating system, applications, and internet browsing. These traces can reveal what files you accessed, websites you visited, applications you used, and searches you performed—even after the original files are deleted. D-Secure's Erase Traces feature removes these digital breadcrumbs to protect privacy and comply with data protection regulations. Configure which traces to remove by navigating to <strong>Settings → Erase Traces</strong>.
           </p>
 
           <div className="space-y-5">
@@ -378,7 +382,7 @@ const Settings: React.FC = () => {
                 Internet Activity Traces
               </h3>
               <p className="text-gray-700 mb-4">
-                Modern web browsers store extensive records of your online activity. Each browser has independent trace storage, so you must configure settings separately for each installed browser. DSecure detects and supports all major browsers automatically.
+                Modern web browsers store extensive records of your online activity. Each browser has independent trace storage, so you must configure settings separately for each installed browser. D-Secure detects and supports all major browsers automatically.
               </p>
               <div className="grid md:grid-cols-2 gap-4 mb-4">
                 <div className="bg-white rounded-lg p-4 border border-red-300">

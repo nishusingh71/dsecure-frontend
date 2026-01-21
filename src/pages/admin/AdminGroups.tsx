@@ -1,4 +1,6 @@
 ﻿import { useAuth } from '@/auth/AuthContext'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -144,6 +146,8 @@ export default function AdminGroups() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-groups")} />
       <Helmet>
         <title>Manage Groups - Admin Dashboard | DSecureTech</title>
         <meta name="description" content="Manage user groups and permissions in the DSecureTech admin dashboard." />

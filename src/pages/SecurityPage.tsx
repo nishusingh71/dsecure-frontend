@@ -33,7 +33,7 @@ export default function SecurityPage() {
                   Security-First Approach
                 </h2>
                 <p className="text-base xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-xl xxl:text-2xl text-slate-700 light:text-slate-300 leading-relaxed mb-6 xs:mb-7 sm:mb-8 md:mb-8 lg:mb-9 xl:mb-10 xxl:mb-11">
-                  At DSecure, security isn't an afterthought—it's the foundation
+                  At D-Secure, security isn't an afterthought—it's the foundation
                   of everything we do. Our comprehensive security framework
                   ensures your data is protected at every stage.
                 </p>

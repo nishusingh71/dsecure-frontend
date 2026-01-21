@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -8,11 +10,13 @@ const WorkingWithDSecurePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("working-with-dsecure")} />
       <Helmet>
-        <title>Working with DSecure File Eraser - Complete User Guide</title>
+        <title>Working with D-Secure File Eraser - Complete User Guide</title>
         <meta 
           name="description" 
-          content="Complete guide to working with DSecure File Eraser including file erasure, free space cleaning, traces cleanup, and software activation."
+          content="Complete guide to working with D-Secure File Eraser including file erasure, free space cleaning, traces cleanup, and software activation."
         />
       </Helmet>
 
@@ -25,7 +29,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                 🚀 User Operations
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Working with DSecure File Eraser
+                Working with D-Secure File Eraser
               </h1>
               <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
                 Complete operational guide covering file erasure, free space cleaning, trace removal, and software activation.
@@ -59,7 +63,7 @@ const WorkingWithDSecurePage: React.FC = () => {
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">DSecure User Interface</h2>
                 <p className="text-slate-600 max-w-2xl mx-auto">
-                  The main user interface of <strong>DSecure File Eraser</strong> provides access to all erasure functions through intuitive tabs and buttons.
+                  The main user interface of <strong>D-Secure File Eraser</strong> provides access to all erasure functions through intuitive tabs and buttons.
                 </p>
               </div>
               
@@ -277,7 +281,7 @@ const WorkingWithDSecurePage: React.FC = () => {
               
               <div className="mb-6">
                 <p className="text-slate-600 mb-4">
-                  DSecure File Eraser is a powerful software designed to securely erase files/folders from your hard drive. You can select and delete 
+                  D-Secure File Eraser is a powerful software designed to securely erase files/folders from your hard drive. You can select and delete 
                   multiple files/folders simultaneously using a range of algorithms to achieve maximum security.
                 </p>
                 <div className="bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded">
@@ -489,7 +493,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 mb-3">Activation Success</h3>
                     <p className="text-slate-600 mb-4">
-                      A message <strong>"DSecure File Eraser Activated Successfully"</strong> is displayed after the process is completed successfully.
+                      A message <strong>"D-Secure File Eraser Activated Successfully"</strong> is displayed after the process is completed successfully.
                     </p>
                     <div className="space-y-2">
                       <p className="text-slate-700 font-medium">After successful activation:</p>
@@ -568,7 +572,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Ready to Start Erasing!</h3>
                 <p className="text-blue-100 mb-6">
-                  You're now ready to use DSecure File Eraser for secure data deletion operations.
+                  You're now ready to use D-Secure File Eraser for secure data deletion operations.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link

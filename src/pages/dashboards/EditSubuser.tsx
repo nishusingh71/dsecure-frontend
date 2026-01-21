@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -189,6 +191,8 @@ export default function EditSubuser() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("edit-subuser")} />
       <Helmet>
         <title>Edit Subuser - D-SecureTech Admin</title>
       </Helmet>

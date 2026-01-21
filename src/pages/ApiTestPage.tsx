@@ -35,8 +35,8 @@ export default function ApiTestPage() {
       <SEOHead seo={getSEOForPage('api-test')} />
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
         <Helmet>
-          <title>API Integration Test | DSecure Tech - Development Tools</title>
-          <meta name="description" content="DSecure Tech API integration testing page for developers and system administrators." />
+          <title>API Integration Test | D-Secure Tech - Development Tools</title>
+          <meta name="description" content="D-Secure Tech API integration testing page for developers and system administrators." />
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
         <div className="max-w-4xl mx-auto space-y-6">

@@ -192,7 +192,7 @@ function CaseStudiesResourcesContent() {
               <Reveal delayMs={20}>
                 <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl mx-auto">
                   Discover how organizations across industries have achieved remarkable results
-                  with DSecure data erasure solutions. Real case studies with measurable ROI.
+                  with D-Secure data erasure solutions. Real case studies with measurable ROI.
                 </p>
               </Reveal>
               <Reveal delayMs={30}>
@@ -221,7 +221,7 @@ function CaseStudiesResourcesContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Real results from organizations that have implemented DSecure solutions.
+                Real results from organizations that have implemented D-Secure solutions.
               </p>
             </Reveal>
           </div>
@@ -356,7 +356,7 @@ function CaseStudiesResourcesContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                See how organizations in different industries have achieved success with DSecure.
+                See how organizations in different industries have achieved success with D-Secure.
               </p>
             </Reveal>
           </div>
@@ -414,7 +414,7 @@ function CaseStudiesResourcesContent() {
             <Reveal delayMs={10}>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
                 Join hundreds of organizations that have achieved remarkable results
-                with DSecure data erasure solutions.
+                with D-Secure data erasure solutions.
               </p>
             </Reveal>
             <Reveal delayMs={20}>

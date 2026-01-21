@@ -234,6 +234,8 @@ const LinuxSystemsPage: React.FC = memo(() => {
 
     return (
         <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("linux-systems")} />
             <Helmet>
                 <title>D-Secure Linux Systems Data Erasure | Linux Secure Wipe Guide</title>
                 <meta name="description" content="Complete guide to secure data erasure on Linux systems with D-Secure. Procedures for all major distributions, file systems, and enterprise environments." />

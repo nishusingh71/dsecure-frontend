@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { BookOpen, ChevronRight, Search, FileText } from "lucide-react";
@@ -5,11 +7,13 @@ import { BookOpen, ChevronRight, Search, FileText } from "lucide-react";
 const QuickOverview: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("quick-overview")} />
       <Helmet>
-        <title>Quick Overview - DSecure Network File Manual</title>
+        <title>Quick Overview - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Learn how to navigate and use the DSecure File Eraser Network documentation effectively."
+          content="Learn how to navigate and use the D-Secure File Eraser Network documentation effectively."
         />
       </Helmet>
 
@@ -21,7 +25,7 @@ const QuickOverview: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Quick Overview</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Everything you need to know about navigating this guide and getting started with DSecure File Eraser Network.
+            Everything you need to know about navigating this guide and getting started with D-Secure File Eraser Network.
           </p>
         </div>
 
@@ -34,7 +38,7 @@ const QuickOverview: React.FC = () => {
             </h2>
             <div className="space-y-4">
               <p className="text-gray-700 leading-relaxed">
-                Welcome to the comprehensive user guide for DSecure File Eraser Network. This documentation is designed to help you understand and effectively use all features of the software, from basic setup to advanced erasure operations.
+                Welcome to the comprehensive user guide for D-Secure File Eraser Network. This documentation is designed to help you understand and effectively use all features of the software, from basic setup to advanced erasure operations.
               </p>
               <p className="text-gray-700 leading-relaxed">
                 Whether you're a first-time user looking to install the software or an experienced administrator managing network-wide erasure operations, this guide provides detailed instructions and best practices for every aspect of the application.
@@ -48,7 +52,7 @@ const QuickOverview: React.FC = () => {
               What's Covered in This Guide
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              This documentation is organized into logical sections that cover different aspects of DSecure File Eraser Network:
+              This documentation is organized into logical sections that cover different aspects of D-Secure File Eraser Network:
             </p>
             
             <div className="grid gap-4 md:grid-cols-2">

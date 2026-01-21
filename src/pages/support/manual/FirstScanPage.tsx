@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const FirstScanPage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-first-scan")} />
       <Helmet>
         <title>First System Scan | D-Secure Initial Security Baseline</title>
         <meta name="description" content="Run initial full system scan to establish baseline security and identify existing threats with D-Secure." />

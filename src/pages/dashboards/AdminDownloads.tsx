@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
@@ -99,6 +101,8 @@ export default function AdminDownloads() {
 
     return (
         <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-downloads")} />
             <Helmet>
                 <title>Downloads - Admin Dashboard | D-Secure</title>
             </Helmet>

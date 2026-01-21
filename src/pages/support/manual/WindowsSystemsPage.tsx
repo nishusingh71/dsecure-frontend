@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -165,7 +167,7 @@ const WindowsSystemsPage: React.FC = memo(() => {
       subsections: [
         {
           id: 51,
-          title: "DSecure Windows Eraser",
+          title: "D-Secure Windows Eraser",
           description: "Specialized tool for comprehensive Windows erasure",
           url: "/support/manual/windows-dsecure-eraser",
           pageCount: 2,
@@ -306,6 +308,8 @@ const WindowsSystemsPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("windows-systems")} />
       <Helmet>
         <link
           rel="canonical"

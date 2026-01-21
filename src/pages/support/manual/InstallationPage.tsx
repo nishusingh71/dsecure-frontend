@@ -209,6 +209,8 @@ const InstallationPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("installation")} />
       <Helmet>
         <link
           rel="canonical"

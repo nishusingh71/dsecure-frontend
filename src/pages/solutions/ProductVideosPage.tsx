@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import React, { useState, memo } from "react";
 import { Helmet } from 'react-helmet-async'
 import Reveal from "@/components/Reveal";
@@ -41,8 +43,8 @@ const ProductVideosPage: React.FC = memo(() => {
   const videos: Video[] = [
     {
       id: 1,
-      title: "DSecure Quick Start Guide",
-      description: "Get started with DSecure in under 10 minutes. Learn the basics of installation, setup, and your first data erasure.",
+      title: "D-Secure Quick Start Guide",
+      description: "Get started with D-Secure in under 10 minutes. Learn the basics of installation, setup, and your first data erasure.",
       duration: "9:42",
       category: "getting-started",
       difficulty: "Beginner",
@@ -66,7 +68,7 @@ const ProductVideosPage: React.FC = memo(() => {
     {
       id: 3,
       title: "Mac M1 and Apple Silicon Erasure",
-      description: "Learn how to securely wipe modern Mac computers with M1, M2, and M3 chips using DSecure's advanced features.",
+      description: "Learn how to securely wipe modern Mac computers with M1, M2, and M3 chips using D-Secure's advanced features.",
       duration: "12:15",
       category: "tutorials",
       difficulty: "Intermediate",
@@ -78,7 +80,7 @@ const ProductVideosPage: React.FC = memo(() => {
     {
       id: 4,
       title: "Enterprise Cloud Console Overview",
-      description: "Comprehensive guide to managing remote erasure operations through DSecure's cloud-based management console.",
+      description: "Comprehensive guide to managing remote erasure operations through D-Secure's cloud-based management console.",
       duration: "22:47",
       category: "enterprise",
       difficulty: "Advanced",
@@ -126,7 +128,7 @@ const ProductVideosPage: React.FC = memo(() => {
     {
       id: 8,
       title: "Batch Operations and Automation",
-      description: "Learn how to automate large-scale erasure operations using DSecure's batch processing and scripting capabilities.",
+      description: "Learn how to automate large-scale erasure operations using D-Secure's batch processing and scripting capabilities.",
       duration: "25:12",
       category: "advanced",
       difficulty: "Advanced",
@@ -196,16 +198,19 @@ const ProductVideosPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-product-videos")} />
+
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/support/product-videos" />
-        <title>Product Videos | DSecure Tutorials & Walkthroughs</title>
+        <title>Product Videos | D-Secure Tutorials & Walkthroughs</title>
         <meta
           name="description"
-          content="Watch comprehensive video tutorials and walkthroughs for DSecure data erasure solutions. Learn through visual guides and step-by-step demonstrations."
+          content="Watch comprehensive video tutorials and walkthroughs for D-Secure data erasure solutions. Learn through visual guides and step-by-step demonstrations."
         />
         <meta
           name="keywords"
-          content="DSecure videos, tutorials, walkthroughs, video guides, data erasure tutorials, product demonstrations"
+          content="D-Secure videos, tutorials, walkthroughs, video guides, data erasure tutorials, product demonstrations"
         />
         <meta name="robots" content="index, follow" />
       </Helmet>
@@ -227,7 +232,7 @@ const ProductVideosPage: React.FC = memo(() => {
                     Product <span className="text-brand">Videos</span>
                   </h1>
                   <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
-                    Watch comprehensive tutorials and walkthroughs to master DSecure data erasure solutions
+                    Watch comprehensive tutorials and walkthroughs to master D-Secure data erasure solutions
                   </p>
 
                   {/* Search Bar */}
@@ -436,7 +441,7 @@ const ProductVideosPage: React.FC = memo(() => {
               {[
                 {
                   title: "Complete Beginner Course",
-                  description: "Everything you need to know to get started with DSecure",
+                  description: "Everything you need to know to get started with D-Secure",
                   videoCount: 5,
                   duration: "45 min",
                   thumbnail: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=225&fit=crop"

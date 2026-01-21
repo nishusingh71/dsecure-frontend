@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -5,6 +7,8 @@ import Reveal from "@/components/Reveal";
 const RecoveryProceduresPage: React.FC = memo(() => {
  return (
  <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("recovery-procedures")} />
  <Helmet>
  <title>Recovery Procedures | D-Secure Manual</title>
  <meta

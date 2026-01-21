@@ -1,0 +1,114 @@
+# Website Route Analysis
+
+## Total Pages: 300+
+
+### Public Pages (Sitemap eligible): ~250
+
+#### Main Pages (10)
+/ (home)
+/services
+/products
+/solutions
+/resources
+/compliance
+/contact
+/about
+/pricing
+/pricing-and-plan
+
+#### Solutions Pages (8)
+/solutions/enterprise
+/solutions/itad
+/solutions/education
+/solutions/financial
+/solutions/financial-services
+/solutions/government
+/solutions/healthcare
+/solutions/service-providers
+
+#### Resources Pages (5)
+/resources/documentation
+/resources/case-studies
+/resources/compliance
+/resources/whitepapers
+/technical-documentation
+
+#### Support Pages (15)
+/support
+/support/faqs
+/support/knowledge-base
+/support/get-started
+/support/help-manual
+/support/product-videos
+/support/overwrite-guide
+/support/wipe-guide
+/support/sas-wipe-guide
+/support/mac-wipe-guide
+/support/mac-eraser-guide
+/support/file-eraser-guide
+/support/secure-erase-hddssd
+/support/cloud-console-guide
+/support/ssd-cryptographic-erasure-guide
+/support/retain-os-guide
+
+#### Blog Pages (6)
+/blog
+/blog/overwrite-guide
+/blog/ssd-wipe-guide
+/blog/erasure-vs-destruction
+/blog/data-deletion-myths
+/blog/data-sanitization-compliance
+
+#### Manual Pages (180+)
+/support/manual/* (180+ detailed manual pages)
+/support/help-manual/*
+
+#### Other Public Pages (10)
+/download
+/checkout
+/order-success
+/payment
+/diagnostics
+/privacy-policy
+/legal-policy
+/terms-of-service
+/cookie-policy
+/security
+/status
+/partners
+/enterprise
+/healthcare-services
+/itad-solution
+/products/mobile-erasure
+/search-demo
+
+### Protected Pages (NOT for sitemap): ~50
+- /login
+- /register
+- /dashboard/* (5 pages)
+- /admin/* (20+ pages)
+- /payment/setup
+- /api-test
+
+## Sitemap Recommendations:
+
+✅ Add to Sitemap (Priority):
+1. Main pages (High priority: 1.0)
+2. Solutions pages (Priority: 0.9)
+3. Support guides (Priority: 0.8)
+4. Blog pages (Priority: 0.7)
+5. Manual pages (Priority: 0.6)
+6. Resources (Priority: 0.8)
+
+❌ Exclude from Sitemap:
+- All /admin/* routes
+- All /dashboard/* routes
+- /login, /register
+- /payment/setup
+- /api-test
+- Dynamic routes with parameters (:userId, :groupId, etc.)
+
+## Total Count:
+- Total Routes: ~300
+- Public Routes (Sitemap): ~250
+- Protected Routes: ~50

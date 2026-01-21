@@ -1,49 +1,58 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="DSecure - Secure data erasure and device sanitization platform for enterprises" />
-    
-    <!-- Critical performance optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="//res.cloudinary.com">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg">
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#059669" />
-    
-    <title>D-Secure - Secure Data Erasure Solutions</title>
-    
-    <!-- Defer non-critical scripts -->
-    <script>
-      // Inline critical redirect script
-      (function() {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-      
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="D-Secure - Secure data erasure and device sanitization platform for enterprises" />
+
+  <!-- Critical performance optimizations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="dns-prefetch" href="//res.cloudinary.com">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://www.google-analytics.com">
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg">
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#059669" />
+
+  <title>D-Secure - Secure Data Erasure Solutions</title>
+
+  <!-- Defer non-critical scripts -->
+  <script>
+    // Inline critical redirect script
+    (function () {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect !== location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+
+    // Only load analytics in production (not on localhost)
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
       // Defer Google Analytics
-      window.addEventListener('load', function() {
+      window.addEventListener('load', function () {
         var script = document.createElement('script');
         script.async = true;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81';
         document.head.appendChild(script);
-        
+
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-6B20XY3K81');
       });
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    }
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

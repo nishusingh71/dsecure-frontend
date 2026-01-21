@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Reveal from '@/components/Reveal'
@@ -115,8 +117,10 @@ const ReportsPage: React.FC = () => {
   if (loading) {
     return (
       <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("reports")} />
         <Helmet>
-          <title>Reports | DSecure Dashboard</title>
+          <title>Reports | D-Secure Dashboard</title>
           <meta name="description" content="View and manage erasure reports and regulatory documents" />
         </Helmet>
 
@@ -166,7 +170,7 @@ const ReportsPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Reports | DSecure Dashboard</title>
+        <title>Reports | D-Secure Dashboard</title>
         <meta name="description" content="View and manage erasure reports and regulatory documents" />
       </Helmet>
 

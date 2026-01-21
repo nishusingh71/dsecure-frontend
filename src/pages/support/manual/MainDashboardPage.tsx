@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const MainDashboardPage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-main-dashboard")} />
       <Helmet>
         <title>Main Dashboard | D-Secure User Interface Guide</title>
         <meta name="description" content="Master the D-Secure main dashboard interface for efficient data erasure operations and system monitoring." />

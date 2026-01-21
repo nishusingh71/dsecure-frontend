@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useState, useEffect } from 'react'
@@ -139,6 +141,8 @@ export default function AdminProfileEdit() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-profile-edit")} />
       <Helmet>
         <title>Edit Profile - Admin Dashboard | DSecureTech</title>
         <meta name="description" content="Edit admin profile information and settings." />

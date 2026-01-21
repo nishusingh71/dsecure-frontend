@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Key, Globe, Shield, Calendar, CheckCircle, AlertCircle, CreditCard, Users, Lock } from "lucide-react";
@@ -5,11 +7,13 @@ import { Key, Globe, Shield, Calendar, CheckCircle, AlertCircle, CreditCard, Use
 const Licensing: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("licensing")} />
       <Helmet>
-        <title>Licensing and Activation - DSecure Network File Manual</title>
+        <title>Licensing and Activation - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Complete guide to purchasing, activating, and managing licenses for DSecure File Eraser Network."
+          content="Complete guide to purchasing, activating, and managing licenses for D-Secure File Eraser Network."
         />
       </Helmet>
 
@@ -21,7 +25,7 @@ const Licensing: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Software Licensing and Activation</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Comprehensive guide to purchasing, activating, and managing your DSecure File Eraser Network licenses. Learn how to maximize your investment with proper license management across your organization.
+            Comprehensive guide to purchasing, activating, and managing your D-Secure File Eraser Network licenses. Learn how to maximize your investment with proper license management across your organization.
           </p>
         </div>
 
@@ -29,11 +33,11 @@ const Licensing: React.FC = () => {
         <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm border border-blue-200 p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Users className="w-6 h-6 text-blue-600" />
-            Understanding DSecure Licensing Model
+            Understanding D-Secure Licensing Model
           </h2>
           <div className="space-y-4">
             <p className="text-gray-700 leading-relaxed">
-              DSecure File Eraser Network uses a per-computer licensing model, which means each computer you manage and perform erasure operations on requires one license. This model provides flexibility and scalability for organizations of all sizes, from small businesses managing a dozen computers to large enterprises overseeing thousands of endpoints across global networks.
+              D-Secure File Eraser Network uses a per-computer licensing model, which means each computer you manage and perform erasure operations on requires one license. This model provides flexibility and scalability for organizations of all sizes, from small businesses managing a dozen computers to large enterprises overseeing thousands of endpoints across global networks.
             </p>
             <p className="text-gray-700 leading-relaxed">
               Licenses are typically sold on an annual subscription basis, though perpetual licenses are available for certain enterprise agreements. Your license allows you to install the management console on the administrator's computer and connect to as many network computers as your license count permits. For example, if you purchase a 50-license pool, you can manage erasure operations across up to 50 different computers simultaneously.
@@ -58,7 +62,7 @@ const Licensing: React.FC = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
-                  <span>DSecure Cloud integration for centralized management</span>
+                  <span>D-Secure Cloud integration for centralized management</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
@@ -80,7 +84,7 @@ const Licensing: React.FC = () => {
             How to Purchase Licenses
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            Purchasing DSecure File Eraser Network licenses is a straightforward process designed to get you up and running quickly. You can purchase directly through the application or visit our online store. The entire process takes just a few minutes, and you'll receive your activation credentials immediately after payment confirmation.
+            Purchasing D-Secure File Eraser Network licenses is a straightforward process designed to get you up and running quickly. You can purchase directly through the application or visit our online store. The entire process takes just a few minutes, and you'll receive your activation credentials immediately after payment confirmation.
           </p>
 
           <div className="space-y-5">
@@ -91,7 +95,7 @@ const Licensing: React.FC = () => {
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-2">Access the Online Store</h3>
                 <p className="text-gray-700 mb-2">
-                  Open DSecure File Eraser Network and click the <strong>Buy Now</strong> ribbon tab at the top of the interface. Then click the <strong>Buy Online</strong> button, which will launch your default web browser and navigate to our secure online store.
+                  Open D-Secure File Eraser Network and click the <strong>Buy Now</strong> ribbon tab at the top of the interface. Then click the <strong>Buy Online</strong> button, which will launch your default web browser and navigate to our secure online store.
                 </p>
                 <p className="text-gray-600 text-sm">
                   Alternatively, you can visit <strong>https://www.dsecuretech.com/store</strong> directly if you prefer to purchase before installing the software. You'll be able to download the installer after purchase.
@@ -209,7 +213,7 @@ const Licensing: React.FC = () => {
             Software Activation Methods
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            DSecure File Eraser Network supports two activation methods to accommodate different network environments and security policies. Choose the method that best fits your infrastructure: online activation for internet-connected servers (quickest and easiest), or offline activation for air-gapped or highly secured environments where direct internet access is restricted.
+            D-Secure File Eraser Network supports two activation methods to accommodate different network environments and security policies. Choose the method that best fits your infrastructure: online activation for internet-connected servers (quickest and easiest), or offline activation for air-gapped or highly secured environments where direct internet access is restricted.
           </p>
 
           {/* Online Activation */}
@@ -225,7 +229,7 @@ const Licensing: React.FC = () => {
             </div>
             
             <p className="text-gray-700 mb-5 leading-relaxed">
-              Online activation is the quickest and most convenient method. The entire process completes in seconds as the application communicates directly with our secure activation servers to validate your key and create your license pool. This method is ideal for most environments where the server running DSecure has internet access, even if it's through a corporate proxy or firewall.
+              Online activation is the quickest and most convenient method. The entire process completes in seconds as the application communicates directly with our secure activation servers to validate your key and create your license pool. This method is ideal for most environments where the server running D-Secure has internet access, even if it's through a corporate proxy or firewall.
             </p>
 
             <div className="bg-white rounded-lg border-2 border-green-200 p-5 mb-4">
@@ -235,7 +239,7 @@ const Licensing: React.FC = () => {
                   <div className="shrink-0 w-8 h-8 rounded-full bg-green-600 text-white text-sm font-bold flex items-center justify-center">1</div>
                   <div>
                     <p className="text-gray-700 mb-1">
-                      <strong>Open Activation Dialog:</strong> Launch DSecure File Eraser Network and click the <strong>Activation</strong> ribbon tab, then click <strong>Add  Licenses</strong>
+                      <strong>Open Activation Dialog:</strong> Launch D-Secure File Eraser Network and click the <strong>Activation</strong> ribbon tab, then click <strong>Add  Licenses</strong>
                     </p>
                     <p className="text-gray-600 text-sm">A dialog window will appear with fields for your activation key and activation method options.</p>
                   </div>
@@ -321,7 +325,7 @@ const Licensing: React.FC = () => {
                       Navigate to <strong>Activation → Add Licenses</strong>. Enter your Activation Key in the field provided, then select <strong>"Offline Activation"</strong> as the activation method.
                     </p>
                     <p className="text-gray-700 mb-2">
-                      Click the <strong>"Generate Registration ID"</strong> button. The application will create a unique Registration ID based on your system's hardware fingerprint and the Activation Key. This ID is specific to the computer where you're installing DSecure.
+                      Click the <strong>"Generate Registration ID"</strong> button. The application will create a unique Registration ID based on your system's hardware fingerprint and the Activation Key. This ID is specific to the computer where you're installing D-Secure.
                     </p>
                     <p className="text-gray-600 text-sm">
                       Save this Registration ID by copying it to clipboard or saving to a text file. You'll need to transfer this to a computer with internet access to email to support.
@@ -361,7 +365,7 @@ const Licensing: React.FC = () => {
                       Our support team will process your request and email you a <strong>License Key file</strong> (usually with a <code className="bg-gray-100 px-2 py-1 rounded">.lic</code> or <code className="bg-gray-100 px-2 py-1 rounded">.key</code> extension). This typically arrives within <strong>4-8 business hours</strong> during weekdays, though urgent requests can often be processed faster if you mention the urgency in your email.
                     </p>
                     <p className="text-gray-600 text-sm">
-                      Save the License Key file to a USB drive or network share accessible from your DSecure server. Do not modify or open the file—it's encrypted and must remain intact.
+                      Save the License Key file to a USB drive or network share accessible from your D-Secure server. Do not modify or open the file—it's encrypted and must remain intact.
                     </p>
                   </div>
                 </div>
@@ -371,7 +375,7 @@ const Licensing: React.FC = () => {
                   <div className="flex-1">
                     <h4 className="font-semibold text-gray-900 mb-2">Complete Activation</h4>
                     <p className="text-gray-700 mb-2">
-                      Transfer the License Key file to your DSecure server. In the application, go back to <strong>Activation → Add Licenses → Offline Activation</strong>.
+                      Transfer the License Key file to your D-Secure server. In the application, go back to <strong>Activation → Add Licenses → Offline Activation</strong>.
                     </p>
                     <p className="text-gray-700 mb-2">
                       Click <strong>"Browse"</strong> or <strong>"Select License Key File"</strong>, navigate to where you saved the file, select it, and click <strong>"Activate"</strong>. The application will validate the file and complete activation immediately.

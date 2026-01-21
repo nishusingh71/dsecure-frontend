@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const WindowsCommandLinePage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-windows-command-line")} />
       <Helmet>
         <title>Windows Command Line Erasure | Cipher, Diskpart, PowerShell</title>
         <meta name="description" content="Command line erasure methods for Windows using Cipher, Diskpart, and PowerShell scripting techniques." />
