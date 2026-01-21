@@ -1,4 +1,6 @@
 ﻿import Sparkline from '@/components/Sparkline'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import BarChart from '@/components/BarChart'
 import { useState, useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -93,6 +95,8 @@ export default function AdminPerformance() {
   if (loading) {
     return (
       <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-performance")} />
         <Helmet>
           <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
           <title>DSecureTech Performance | System Performance & Erasure Metrics</title>

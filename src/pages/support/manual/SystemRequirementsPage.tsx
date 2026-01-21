@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const SystemRequirementsPage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-system-requirements")} />
       <Helmet>
         <title>System Requirements | D-Secure Hardware & Software Specifications</title>
         <meta name="description" content="Verify your device meets minimum OS and hardware specifications for D-Secure data erasure software." />

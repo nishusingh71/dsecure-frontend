@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const FirewallSetupPage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-firewall-setup")} />
       <Helmet>
         <title>Firewall Setup | D-Secure Network Protection Configuration</title>
         <meta name="description" content="Customize network traffic permissions and firewall settings for optimal D-Secure protection." />

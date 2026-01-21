@@ -250,6 +250,8 @@ const OverwritePatternsPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-overwrite-patterns")} />
       <Helmet>
         <link
           rel="canonical"

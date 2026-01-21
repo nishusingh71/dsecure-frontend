@@ -282,6 +282,8 @@ const ErrorCodesPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-error-codes")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/support/manual/error-codes" />
         <title>D-Secure Error Codes | Complete Reference Guide & Solutions</title>

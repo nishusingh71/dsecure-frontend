@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/utils/enhancedApiClient';
@@ -663,6 +665,8 @@ export default function AdminLicenses() {
 
     return (
         <div className="space-y-6">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-licenses")} />
             <Helmet>
                 <title>Licenses - Admin Dashboard | D-Secure</title>
             </Helmet>

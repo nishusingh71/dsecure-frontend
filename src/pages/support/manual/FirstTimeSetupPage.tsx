@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -265,6 +267,8 @@ const FirstTimeSetupPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-first-time-setup")} />
       <Helmet>
         <link
           rel="canonical"

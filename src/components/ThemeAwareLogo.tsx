@@ -45,7 +45,7 @@ const ThemeAwareLogo = memo(
     }, []);
 
     const logoSrc = "/logo-dark.svg";
-    const altText = "DSecure - Advanced Data Security Solutions";
+    const altText = "D-Secure - Advanced Data Security Solutions";
 
     // Responsive size mappings
     const sizeClasses = {

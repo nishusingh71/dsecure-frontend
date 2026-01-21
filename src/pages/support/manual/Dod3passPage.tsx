@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const Dod3passPage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("dod3pass")} />
       <Helmet>
         <title>Dod 3pass | D-Secure</title>
       </Helmet>

@@ -1,4 +1,4 @@
-﻿// Download utility functions
+// Download utility functions
 export const generateDummyPDF = (title: string, pages: number = 1): Blob => {
   // Create a simple PDF-like content
   const pdfContent = `%PDF-1.4
@@ -94,7 +94,7 @@ export const downloadResource = (resource: {
     // Create temporary link and trigger download
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${resource.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_dsecure.pdf`;
+    link.download = `${resource.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_D-Secure.pdf`;
     document.body.appendChild(link);
     link.click();
     

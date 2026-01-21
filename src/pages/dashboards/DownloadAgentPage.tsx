@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Reveal from '@/components/Reveal'
@@ -22,7 +24,7 @@ const DownloadAgentPage: React.FC = () => {
   const agents: Agent[] = [
     {
       id: 'windows-agent',
-      name: 'DSecure Windows Agent',
+      name: 'D-Secure Windows Agent',
       version: '3.2.1',
       size: '45.2 MB',
       platform: 'windows',
@@ -32,7 +34,7 @@ const DownloadAgentPage: React.FC = () => {
     },
     {
       id: 'mac-agent',
-      name: 'DSecure Mac Agent',
+      name: 'D-Secure Mac Agent',
       version: '3.1.8',
       size: '52.1 MB',
       platform: 'mac',
@@ -42,7 +44,7 @@ const DownloadAgentPage: React.FC = () => {
     },
     {
       id: 'linux-agent',
-      name: 'DSecure Linux Agent',
+      name: 'D-Secure Linux Agent',
       version: '3.2.0',
       size: '38.7 MB',
       platform: 'linux',
@@ -52,7 +54,7 @@ const DownloadAgentPage: React.FC = () => {
     },
     {
       id: 'server-agent',
-      name: 'DSecure Server Agent',
+      name: 'D-Secure Server Agent',
       version: '3.2.1',
       size: '67.3 MB',
       platform: 'server',
@@ -62,7 +64,7 @@ const DownloadAgentPage: React.FC = () => {
     },
     {
       id: 'mobile-agent',
-      name: 'DSecure Mobile Diagnostics',
+      name: 'D-Secure Mobile Diagnostics',
       version: '2.8.4',
       size: '23.9 MB',
       platform: 'mobile',
@@ -72,7 +74,7 @@ const DownloadAgentPage: React.FC = () => {
     },
     {
       id: 'network-agent',
-      name: 'DSecure Network Agent',
+      name: 'D-Secure Network Agent',
       version: '3.1.5',
       size: '41.8 MB',
       platform: 'network',
@@ -108,13 +110,13 @@ const DownloadAgentPage: React.FC = () => {
           'Download the installer file',
           'Right-click and "Run as Administrator"',
           'Follow the installation wizard',
-          'Launch DSecure Agent from Start Menu'
+          'Launch D-Secure Agent from Start Menu'
         ]
       case 'mac':
         return [
           'Download the .dmg file',
           'Double-click to mount the disk image',
-          'Drag DSecure to Applications folder',
+          'Drag D-Secure to Applications folder',
           'Allow installation in System Preferences > Security'
         ]
       case 'linux':
@@ -136,9 +138,11 @@ const DownloadAgentPage: React.FC = () => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("download-agent")} />
       <Helmet>
-        <title>Download Agent | DSecure Dashboard</title>
-        <meta name="description" content="Download DSecure agents for various platforms" />
+        <title>Download Agent | D-Secure Dashboard</title>
+        <meta name="description" content="Download D-Secure agents for various platforms" />
       </Helmet>
 
       <div className="min-h-screen bg-slate-50">

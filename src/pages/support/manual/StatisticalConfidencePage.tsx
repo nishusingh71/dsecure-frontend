@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const StatisticalConfidencePage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-statistical-confidence")} />
       <Helmet>
         <title>Statistical Confidence | D-Secure</title>
       </Helmet>

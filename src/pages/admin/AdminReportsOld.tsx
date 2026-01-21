@@ -1,4 +1,6 @@
 ﻿import { useAuth } from '@/auth/AuthContext'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
@@ -127,6 +129,8 @@ export default function AdminReports() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-reports-old")} />
       <Helmet>
         <title>Admin Reports - Dashboard | DSecureTech</title>
         <meta name="description" content="View and manage all erasure reports and certificates in DSecureTech admin dashboard." />

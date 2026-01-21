@@ -1,4 +1,6 @@
 ﻿import { ENV } from "@/config/env";
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
@@ -319,6 +321,8 @@ export default function PrivateCloudSetup() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("private-cloud-setup")} />
       <Helmet>
         <title>Private Cloud Setup - D-SecureTech</title>
         <meta

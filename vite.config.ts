@@ -1,12 +1,27 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path'
+import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
   plugins: [
     react({
       // Optimize React runtime
       jsxRuntime: 'automatic'
+    }),
+    // Gzip compression
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 1024,
+      deleteOriginFile: false
+    }),
+    // Brotli compression (better compression ratio)
+    viteCompression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 1024,
+      deleteOriginFile: false
     })
   ],
   resolve: {
@@ -25,33 +40,45 @@ export default defineConfig({
     hmr: {
       overlay: false
     },
-    // allowedHosts: true
   },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    // Increase chunk size limit to suppress warnings
-    chunkSizeWarningLimit: 3000,
+    // Reduce chunk size warning limit
+    chunkSizeWarningLimit: 500,
     // Enhanced minification
     minify: 'esbuild',
     // Target modern browsers for better performance
     target: ['es2020', 'chrome80', 'firefox78', 'safari14'],
-    // Enable compression
+    // Disable compressed size reporting for faster builds
     reportCompressedSize: false,
     // Enhanced performance settings
     cssCodeSplit: true,
+    cssMinify: true,
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // Simplified chunk splitting - only vendor to avoid initialization order issues
-        manualChunks: (id) => {
-          // ALL node_modules go into vendor chunk
-          if (id.includes('node_modules')) {
-            return 'vendor'
-          }
-          // Let Vite handle other splitting automatically
-        },
+        // Disabled manual chunking - using Vite's default automatic chunking to avoid dependency issues
+        // manualChunks: (id) => {
+        //   if (id.includes('node_modules')) {
+        //     // Core UI dependencies (React + UI libraries) - must be together to avoid initialization errors
+        //     if (id.includes('react') || id.includes('react-dom') || id.includes('react-router') ||
+        //       id.includes('lucide-react') || id.includes('framer-motion') || id.includes('@tanstack')) {
+        //       return 'vendor-ui'
+        //     }
+        //     // Heavy charting libraries - split out for dashboards only
+        //     if (id.includes('recharts') || id.includes('d3')) {
+        //       return 'vendor-charts'
+        //     }
+        //     // PDF/Excel generation - split out for export functionality only
+        //     if (id.includes('jspdf') || id.includes('exceljs') || id.includes('jszip') || id.includes('file-saver') || id.includes('pako')) {
+        //       return 'vendor-export'
+        //     }
+        //     // Everything else together
+        //     return 'vendor-other'
+        //   }
+        // },
 
         // Optimize file names for caching
         chunkFileNames: 'js/[name]-[hash].js',
@@ -77,8 +104,9 @@ export default defineConfig({
   },
   // Drop console logs in production build
   esbuild: {
-    drop: ['console', 'debugger'],
+    // Temporarily disabled to debug blank page issue
+    // drop: ['console', 'debugger'],
+    legalComments: 'none',
+    treeShaking: true
   },
-
-
 })

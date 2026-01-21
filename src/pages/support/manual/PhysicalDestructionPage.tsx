@@ -270,6 +270,8 @@ const PhysicalDestructionPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-physical-destruction")} />
       <Helmet>
         <link
           rel="canonical"

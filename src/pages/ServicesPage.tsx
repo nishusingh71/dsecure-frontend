@@ -865,7 +865,7 @@ function ServicesPageContent() {
               <div className="bg-gradient-to-r from-brand to-brand/80 rounded-2xl p-8 md:p-12 text-center text-white">
                 <h2 className="text-3xl font-bold mb-4">Ready to Secure Your Data?</h2>
                 <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Join thousands of organizations who trust DSecure for their data erasure needs.
+                  Join thousands of organizations who trust D-Secure for their data erasure needs.
                   Start with a free demo today.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

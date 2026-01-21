@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -171,6 +173,8 @@ export default function AddUser() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("add-user")} />
       <Helmet>
         <title>Add New User - Admin Dashboard | DSecureTech</title>
         <meta name="description" content="Add a new user to the DSecureTech admin dashboard." />

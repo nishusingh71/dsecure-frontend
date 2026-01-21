@@ -163,6 +163,8 @@ const CommonIssuesPage: React.FC = memo(() => {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-common-issues")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/support/manual/common-issues" />
         <title>D-Secure Common Issues | Comprehensive Troubleshooting Guide</title>

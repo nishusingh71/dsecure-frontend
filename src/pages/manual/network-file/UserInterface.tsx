@@ -16,7 +16,7 @@ const UserInterface: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">User Interface Overview</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Master the DSecure File Eraser Network interface with this comprehensive guide. Learn how to navigate ribbons, tabs, buttons, and panels efficiently to perform data erasure operations across your network with confidence and ease.
+            Master the D-Secure File Eraser Network interface with this comprehensive guide. Learn how to navigate ribbons, tabs, buttons, and panels efficiently to perform data erasure operations across your network with confidence and ease.
           </p>
         </div>
 
@@ -26,7 +26,7 @@ const UserInterface: React.FC = () => {
             Understanding the Interface Design
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            DSecure File Eraser Network features a modern, intuitive interface inspired by Microsoft Office's ribbon design pattern. This familiar layout minimizes the learning curve for users accustomed to Windows applications while providing quick access to powerful erasure features. Whether you're a first-time user or an experienced IT administrator, the interface is designed to make complex network-wide data erasure operations straightforward and manageable.
+            D-Secure File Eraser Network features a modern, intuitive interface inspired by Microsoft Office's ribbon design pattern. This familiar layout minimizes the learning curve for users accustomed to Windows applications while providing quick access to powerful erasure features. Whether you're a first-time user or an experienced IT administrator, the interface is designed to make complex network-wide data erasure operations straightforward and manageable.
           </p>
           <p className="text-gray-700 leading-relaxed">
             The interface prioritizes clarity and efficiency. All major functions are organized logically into ribbon tabs, with the most frequently used operations prominently displayed on the Home ribbon. Context-sensitive panels adapt to your current task, showing relevant options and information without cluttering the screen. This thoughtful design allows you to focus on your erasure operations rather than searching for features, making your workflow smoother and more productive across daily tasks ranging from simple file deletions to complex scheduled erasure operations spanning multiple computers.
@@ -40,7 +40,7 @@ const UserInterface: React.FC = () => {
             Main Interface Layout
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            The DSecure interface consists of four primary areas, each serving a specific purpose in your workflow. Understanding how these areas work together helps you navigate the application efficiently and complete tasks faster.
+            The D-Secure interface consists of four primary areas, each serving a specific purpose in your workflow. Understanding how these areas work together helps you navigate the application efficiently and complete tasks faster.
           </p>
 
           <div className="space-y-4">
@@ -152,7 +152,7 @@ const UserInterface: React.FC = () => {
                     Access comprehensive erasure reports for audit trails and compliance documentation.
                   </p>
                   <p className="text-xs text-gray-600">
-                    Filter reports by date, type, or computer. Preview reports before exporting to PDF or XML. Send reports to DSecure Cloud for centralized management.
+                    Filter reports by date, type, or computer. Preview reports before exporting to PDF or XML. Send reports to D-Secure Cloud for centralized management.
                   </p>
                 </div>
 
@@ -188,7 +188,7 @@ const UserInterface: React.FC = () => {
                     Connect To Cloud
                   </p>
                   <p className="text-sm text-gray-700 mb-2">
-                    Sign in to DSecure Cloud for centralized report management and remote monitoring capabilities.
+                    Sign in to D-Secure Cloud for centralized report management and remote monitoring capabilities.
                   </p>
                   <p className="text-xs text-gray-600">
                     Upload reports automatically, monitor multiple installations from a webportal, and access reports from anywhere securely.
@@ -259,7 +259,7 @@ const UserInterface: React.FC = () => {
                 <div className="bg-white rounded-lg shadow-sm p-4 border border-green-200">
                   <p className="font-semibold text-gray-900 mb-1">Knowledgebase</p>
                   <p className="text-sm text-gray-600">
-                    Access online articles, video tutorials, troubleshooting guides, and best practices from DSecure's support portal.
+                    Access online articles, video tutorials, troubleshooting guides, and best practices from D-Secure's support portal.
                   </p>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm p-4 border border-green-200">
@@ -325,7 +325,7 @@ const UserInterface: React.FC = () => {
             Common Buttons and Their Actions
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            Throughout DSecure File Eraser Network, you'll encounter these standard action buttons. They appear in various contexts but maintain consistent behavior and appearance, making the interface predictable and easy to learn. Understanding these common buttons helps you work more efficiently and confidently.
+            Throughout D-Secure File Eraser Network, you'll encounter these standard action buttons. They appear in various contexts but maintain consistent behavior and appearance, making the interface predictable and easy to learn. Understanding these common buttons helps you work more efficiently and confidently.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4">
@@ -398,7 +398,7 @@ const UserInterface: React.FC = () => {
             Interface Navigation Best Practices
           </h2>
           <p className="text-gray-700 mb-4 leading-relaxed">
-            Follow these tips to navigate the DSecure interface efficiently and make the most of its features. These practices come from experienced users and IT administrators who manage large-scale deployments.
+            Follow these tips to navigate the D-Secure interface efficiently and make the most of its features. These practices come from experienced users and IT administrators who manage large-scale deployments.
           </p>
           <div className="grid md:grid-cols-2 gap-3">
             <div className="bg-white rounded-lg p-4 border border-indigo-200">

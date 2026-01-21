@@ -1,4 +1,6 @@
 ﻿import { useAuth } from "@/auth/AuthContext";
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useNotification } from "@/contexts/NotificationContext";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Helmet } from "react-helmet-async";
@@ -2778,6 +2780,8 @@ export default function AdminDashboard() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-dashboard")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/admin" />
         <title>
@@ -7664,7 +7668,7 @@ export default function AdminDashboard() {
                     <input
                       type="text"
                       id="systemName"
-                      defaultValue="DSecure Admin System"
+                      defaultValue="D-Secure Admin System"
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                     />
                   </div>
@@ -7781,7 +7785,7 @@ export default function AdminDashboard() {
                   Software Downloads
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">
-                  Download DSecure software installers for your platform
+                  Download D-Secure software installers for your platform
                 </p>
               </div>
               <div className="p-6">

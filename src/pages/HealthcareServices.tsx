@@ -283,7 +283,7 @@ const HealthcareServices: React.FC = () => {
             <Reveal>
               <div className="text-center text-white max-w-4xl mx-auto">
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Protect Patient Data with DSecure
+                  Protect Patient Data with D-Secure
                 </h2>
                 <p className="text-xl text-emerald-50 mb-8">
                   Schedule a consultation with our healthcare data security experts

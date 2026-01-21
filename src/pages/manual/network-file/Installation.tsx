@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Download, Server, HardDrive, Cpu, Globe, AlertCircle, CheckCircle, Shield, Package, Wrench } from "lucide-react";
@@ -5,11 +7,13 @@ import { Download, Server, HardDrive, Cpu, Globe, AlertCircle, CheckCircle, Shie
 const Installation: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("installation")} />
       <Helmet>
-        <title>Installation and Setup - DSecure Network File Manual</title>
+        <title>Installation and Setup - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Complete guide to installing and setting up DSecure File Eraser Network on your system."
+          content="Complete guide to installing and setting up D-Secure File Eraser Network on your system."
         />
       </Helmet>
 
@@ -21,7 +25,7 @@ const Installation: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Installation and Setup Guide</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Follow this comprehensive installation guide to set up DSecure File Eraser Network on your system. This step-by-step process ensures proper configuration for secure, network-wide data erasure operations across your organization.
+            Follow this comprehensive installation guide to set up D-Secure File Eraser Network on your system. This step-by-step process ensures proper configuration for secure, network-wide data erasure operations across your organization.
           </p>
         </div>
 
@@ -32,7 +36,7 @@ const Installation: React.FC = () => {
           </h2>
           <div className="space-y-3">
             <p className="text-gray-700 leading-relaxed">
-              DSecure File Eraser Network is a powerful enterprise-grade solution designed for IT administrators who need to permanently erase sensitive data from multiple computers across a network. Before starting the installation process, it's important to understand what you'll need and what to expect during setup.
+              D-Secure File Eraser Network is a powerful enterprise-grade solution designed for IT administrators who need to permanently erase sensitive data from multiple computers across a network. Before starting the installation process, it's important to understand what you'll need and what to expect during setup.
             </p>
             <p className="text-gray-700 leading-relaxed">
               The installation includes both the main application and MariaDB database server, which stores erasure logs, reports, and configuration settings. The entire process typically takes 10-15 minutes, depending on your system speed and whether you need to install MariaDB separately. Make sure you have administrator rights on the computer where you're installing the software, as elevated privileges are required for proper installation and configuration.
@@ -43,7 +47,7 @@ const Installation: React.FC = () => {
                 What Gets Installed
               </h3>
               <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
-                <li>DSecure File Eraser Network application (main software)</li>
+                <li>D-Secure File Eraser Network application (main software)</li>
                 <li>MariaDB database server (for storing logs and reports)</li>
                 <li>Required .NET Framework components</li>
                 <li>Desktop shortcuts and Start Menu entries</li>
@@ -59,7 +63,7 @@ const Installation: React.FC = () => {
             System Requirements
           </h2>
           <p className="text-gray-700 mb-6 leading-relaxed">
-            Before installing DSecure File Eraser Network, verify that your system meets these minimum requirements. Meeting or exceeding these specifications ensures optimal performance and reliability during erasure operations. These requirements apply to the computer where you'll install the management console, not the target computers you'll be erasing.
+            Before installing D-Secure File Eraser Network, verify that your system meets these minimum requirements. Meeting or exceeding these specifications ensures optimal performance and reliability during erasure operations. These requirements apply to the computer where you'll install the management console, not the target computers you'll be erasing.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4">
@@ -143,7 +147,7 @@ const Installation: React.FC = () => {
               </p>
               <ul className="text-gray-600 text-sm space-y-1 list-disc list-inside mb-3">
                 <li><strong>Network Operations:</strong> Connecting to domain computers on your local network or across VPN</li>
-                <li><strong>Cloud Integration:</strong> DSecure Cloud connectivity for remote report uploads and management</li>
+                <li><strong>Cloud Integration:</strong> D-Secure Cloud connectivity for remote report uploads and management</li>
                 <li><strong>Software Activation:</strong> Online activation or offline activation via support portal</li>
                 <li><strong>License Management:</strong> Managing license pools and extending validity periods</li>
                 <li><strong>Updates & Patches:</strong> Downloading software updates and security patches</li>
@@ -193,7 +197,7 @@ const Installation: React.FC = () => {
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-3 text-lg">Review and Accept License Agreement</h3>
                 <p className="text-gray-700 leading-relaxed mb-3">
-                  The installation wizard will display the End User License Agreement (EULA). This is a legal document that outlines your rights and responsibilities when using DSecure File Eraser Network. Take a moment to read through the key terms, which cover permitted usage, liability limitations, and data handling policies.
+                  The installation wizard will display the End User License Agreement (EULA). This is a legal document that outlines your rights and responsibilities when using D-Secure File Eraser Network. Take a moment to read through the key terms, which cover permitted usage, liability limitations, and data handling policies.
                 </p>
                 <p className="text-gray-600 text-sm mb-3">
                   The license agreement specifies that you may install the software on as many computers as your purchased licenses allow. It also clarifies that while the software permanently erases data, DSecureTech is not liable for any data loss resulting from incorrect usage or configuration. By checking the "I accept the terms" checkbox and clicking Next, you agree to these terms and can proceed with installation.
@@ -269,7 +273,7 @@ const Installation: React.FC = () => {
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 mb-3 text-lg">MariaDB Database Installation</h3>
                 <p className="text-gray-700 leading-relaxed mb-3">
-                  DSecure File Eraser Network requires MariaDB, a robust open-source database server, to store erasure logs, detailed reports, scheduled task information, and configuration data. The installer will automatically detect whether MariaDB is already installed on your system. If not found, it will prompt you to install it as part of the setup process.
+                  D-Secure File Eraser Network requires MariaDB, a robust open-source database server, to store erasure logs, detailed reports, scheduled task information, and configuration data. The installer will automatically detect whether MariaDB is already installed on your system. If not found, it will prompt you to install it as part of the setup process.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   During MariaDB installation, you'll be guided through a separate wizard that configures the database server. This is a critical step that requires attention to detail, particularly when setting the root password.
@@ -284,7 +288,7 @@ const Installation: React.FC = () => {
                         During MariaDB installation, you must set a <strong>root password</strong> for the database. This password is extremely important—choose a strong password and store it securely (in a password manager or secure documentation).
                       </p>
                       <p className="text-amber-800 text-sm">
-                        You'll need this password later when configuring DSecure File Eraser Network to connect to the database. Without it, you won't be able to access stored erasure logs and reports. If you forget this password, recovering it requires complex database recovery procedures.
+                        You'll need this password later when configuring D-Secure File Eraser Network to connect to the database. Without it, you won't be able to access stored erasure logs and reports. If you forget this password, recovering it requires complex database recovery procedures.
                       </p>
                     </div>
                   </div>
@@ -293,7 +297,7 @@ const Installation: React.FC = () => {
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-blue-900 font-medium text-sm mb-2">Already Have MariaDB Installed?</p>
                   <p className="text-blue-800 text-sm">
-                    If you already have MariaDB installed on your system (perhaps for other applications), you can click the "Skip" button during this step. DSecure will use your existing MariaDB installation. Make sure you know the root password for your existing installation, as you'll need it during the initial configuration of DSecure File Eraser Network.
+                    If you already have MariaDB installed on your system (perhaps for other applications), you can click the "Skip" button during this step. D-Secure will use your existing MariaDB installation. Make sure you know the root password for your existing installation, as you'll need it during the initial configuration of D-Secure File Eraser Network.
                   </p>
                 </div>
               </div>
@@ -310,10 +314,10 @@ const Installation: React.FC = () => {
                   After all components are installed, the wizard will display a completion screen. Review the summary to ensure everything installed successfully. If you see any error messages, note them down—they'll be helpful if you need to contact support.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-3">
-                  Click the "Finish" button to close the installation wizard. If you checked the "Launch application after installation" option earlier, DSecure File Eraser Network will start automatically within a few seconds. You'll see the main application window where you can begin the activation process.
+                  Click the "Finish" button to close the installation wizard. If you checked the "Launch application after installation" option earlier, D-Secure File Eraser Network will start automatically within a few seconds. You'll see the main application window where you can begin the activation process.
                 </p>
                 <p className="text-gray-600 text-sm">
-                  If you didn't select auto-launch, you can start the application anytime by clicking the desktop shortcut or finding it in the Start Menu under "DSecure File Eraser Network." The first time you launch the application, it may take a few extra seconds as it initializes the database connection and creates necessary configuration files.
+                  If you didn't select auto-launch, you can start the application anytime by clicking the desktop shortcut or finding it in the Start Menu under "D-Secure File Eraser Network." The first time you launch the application, it may take a few extra seconds as it initializes the database connection and creates necessary configuration files.
                 </p>
               </div>
             </div>
@@ -326,7 +330,7 @@ const Installation: React.FC = () => {
             What To Do After Installation
           </h2>
           <p className="text-gray-700 mb-5 leading-relaxed">
-            Installation is complete, but you're not quite ready to start erasing data yet. Follow these essential next steps to properly configure DSecure File Eraser Network for your organization. Completing these steps ensures the software works correctly and that you can take full advantage of all features.
+            Installation is complete, but you're not quite ready to start erasing data yet. Follow these essential next steps to properly configure D-Secure File Eraser Network for your organization. Completing these steps ensures the software works correctly and that you can take full advantage of all features.
           </p>
 
           <div className="space-y-4">
@@ -385,7 +389,7 @@ const Installation: React.FC = () => {
                   Before performing your first erasure, visit the Settings section to configure your preferences. Choose your preferred erasure algorithm (DoD 5220.22-M is recommended for most users), verification method, and other operational preferences.
                 </p>
                 <p className="text-gray-600 text-sm">
-                  You can also configure which file types or folders to ignore, set up custom report branding with your company logo, and configure cloud integration if you have a DSecure Cloud account.
+                  You can also configure which file types or folders to ignore, set up custom report branding with your company logo, and configure cloud integration if you have a D-Secure Cloud account.
                 </p>
               </div>
             </div>
@@ -416,20 +420,20 @@ const Installation: React.FC = () => {
             <div className="bg-white rounded-lg p-4 border border-red-200">
               <p className="text-gray-900 font-semibold text-sm mb-2">❌ MariaDB installation errors or database connection failures</p>
               <p className="text-gray-700 text-sm mb-2">
-                <strong>Solution:</strong> If MariaDB fails to install automatically, download the latest stable version manually from the official MariaDB website (mariadb.org) and install it separately before running DSecure installer again.
+                <strong>Solution:</strong> If MariaDB fails to install automatically, download the latest stable version manually from the official MariaDB website (mariadb.org) and install it separately before running D-Secure installer again.
               </p>
               <p className="text-gray-600 text-sm">
-                If MariaDB installed but DSecure can't connect, verify that the MariaDB service is running in Windows Services (services.msc). Also double-check your root password—it's case-sensitive.
+                If MariaDB installed but D-Secure can't connect, verify that the MariaDB service is running in Windows Services (services.msc). Also double-check your root password—it's case-sensitive.
               </p>
             </div>
 
             <div className="bg-white rounded-lg p-4 border border-red-200">
               <p className="text-gray-900 font-semibold text-sm mb-2">❌ Application won't launch after installation completes</p>
               <p className="text-gray-700 text-sm mb-2">
-                <strong>Solution:</strong> Check if all required .NET Framework components are installed. DSecure requires .NET Framework 4.7.2 or later. The installer normally handles this, but on older systems you may need to install it manually.
+                <strong>Solution:</strong> Check if all required .NET Framework components are installed. D-Secure requires .NET Framework 4.7.2 or later. The installer normally handles this, but on older systems you may need to install it manually.
               </p>
               <p className="text-gray-600 text-sm">
-                Download the latest .NET Framework from Microsoft's official website. After installing, restart your computer and try launching DSecure again.
+                Download the latest .NET Framework from Microsoft's official website. After installing, restart your computer and try launching D-Secure again.
               </p>
             </div>
 
@@ -447,7 +451,7 @@ const Installation: React.FC = () => {
           <div className="mt-5 bg-blue-100 border border-blue-300 rounded-lg p-4">
             <p className="text-blue-900 font-medium text-sm mb-1">Still Having Issues?</p>
             <p className="text-blue-800 text-sm">
-              If you continue to experience installation problems after trying these solutions, contact DSecure technical support at <a href="mailto:techsupport@dsecuretech.com" className="underline font-medium">techsupport@dsecuretech.com</a> with details about the error messages you're seeing. Include screenshots if possible, along with your Windows version and system specifications.
+              If you continue to experience installation problems after trying these solutions, contact D-Secure technical support at <a href="mailto:techsupport@dsecuretech.com" className="underline font-medium">techsupport@dsecuretech.com</a> with details about the error messages you're seeing. Include screenshots if possible, along with your Windows version and system specifications.
             </p>
           </div>
         </section>

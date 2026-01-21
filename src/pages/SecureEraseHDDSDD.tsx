@@ -432,7 +432,7 @@ const SecureEraseHDDSDD: React.FC = () => {
                         content:
                           "Perform the selected erasure method appropriate for the drive technology and security requirements.",
                         details: [
-                          "Launch DSecure Drive Eraser tool",
+                          "Launch D-Secure Drive Eraser tool",
                           "Select appropriate erasure method",
                           "Configure verification settings",
                           "Monitor progress and completion",

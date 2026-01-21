@@ -165,7 +165,7 @@ const GetStartedPage: React.FC = memo(() => {
                   Quick Start in 3 Steps
                 </h2>
                 <p className="text-xl text-slate-700 max-w-2xl mx-auto">
-                  Get up and running with DSecure in minutes
+                  Get up and running with D-Secure in minutes
                 </p>
               </div>
             </Reveal>
@@ -357,8 +357,8 @@ const GetStartedPage: React.FC = memo(() => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: "Download DSecure",
-                  description: "Get the latest version of DSecure for your operating system",
+                  title: "Download D-Secure",
+                  description: "Get the latest version of D-Secure for your operating system",
                   icon: "⬇️",
                   url: "/download",
                   color: "bg-blue-500"

@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { useState, memo } from "react";
 import Reveal from "@/components/Reveal";
 import { getFallbackImage } from '@/utils/imagePlaceholders';
@@ -119,9 +121,13 @@ const MobileDevicesPage: React.FC = memo(() => {
 
  return (
  <>
-  <SEOHead seo={getSEOForPage("mobile-erasure")} />
-
- <div className="min-h-screen bg-slate-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("mobile-devices")} />
+  <Helmet>
+  <title>D-Secure Mobile Devices | iOS & Android Erasure Guide</title>
+  <meta name="description" content="Complete guide to secure data erasure on mobile devices with D-Secure. Procedures for iOS, Android, and enterprise mobile management." />
+  <meta name="keywords" content="D-Secure mobile erasure, iOS data wipe, Android secure delete, mobile device management, enterprise mobile security" />
+  </Helmet>
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-8 sm:py-12 md:py-16 lg:py-24">
  <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
  <Reveal>

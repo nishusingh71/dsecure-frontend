@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React, { memo } from "react";
 import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
@@ -6,6 +8,8 @@ import { Link } from "react-router-dom";
 const ProgressMonitoringPage: React.FC = memo(() => {
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support-manual-progress-monitoring")} />
       <Helmet>
         <title>Real-Time Progress Monitoring | D-Secure</title>
         <meta name="description" content="Track erasure progress, performance metrics, and estimated completion times." />

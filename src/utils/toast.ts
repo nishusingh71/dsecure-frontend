@@ -1,4 +1,4 @@
-﻿// Toast notification utility for the entire application
+// Toast notification utility for the entire application
 
 export interface ToastNotification {
   message: string;

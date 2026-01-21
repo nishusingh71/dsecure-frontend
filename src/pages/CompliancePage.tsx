@@ -90,7 +90,7 @@ function CompliancePageContent() {
         'Destroy: Render media unusable and data unrecoverable',
         'Documentation: Maintain records of sanitization activities'
       ],
-      implementation: 'DSecure implements all NIST 800-88 Rev. 1 sanitization categories with automated verification and regulatory document generation.'
+      implementation: 'D-Secure implements all NIST 800-88 Rev. 1 sanitization categories with automated verification and regulatory document generation.'
     },
     iso27001: {
       title: 'ISO 27001',
@@ -104,7 +104,7 @@ function CompliancePageContent() {
         'Access control and authentication',
         'Incident management and reporting'
       ],
-      implementation: 'DSecure supports ISO 27001 compliance through comprehensive asset tracking, access controls, and audit trail generation.'
+      implementation: 'D-Secure supports ISO 27001 compliance through comprehensive asset tracking, access controls, and audit trail generation.'
     },
     gdpr: {
       title: 'GDPR',
@@ -118,7 +118,7 @@ function CompliancePageContent() {
         'Demonstration of compliance',
         'Breach notification requirements'
       ],
-      implementation: 'DSecure ensures GDPR compliance with verifiable data erasure, detailed logging, and automated reporting capabilities.'
+      implementation: 'D-Secure ensures GDPR compliance with verifiable data erasure, detailed logging, and automated reporting capabilities.'
     },
     hipaa: {
       title: 'HIPAA',
@@ -132,7 +132,7 @@ function CompliancePageContent() {
         'Technical safeguards for data transmission',
         'Secure disposal of PHI-containing media'
       ],
-      implementation: 'DSecure provides HIPAA-compliant sanitization with PHI-specific protocols and comprehensive audit documentation.'
+      implementation: 'D-Secure provides HIPAA-compliant sanitization with PHI-specific protocols and comprehensive audit documentation.'
     },
     sox: {
       title: 'SOX',
@@ -146,7 +146,7 @@ function CompliancePageContent() {
         'Audit trail requirements',
         'Management regulation of controls'
       ],
-      implementation: 'DSecure supports SOX compliance through tamper-proof audit trails, secure data handling, and management reporting.'
+      implementation: 'D-Secure supports SOX compliance through tamper-proof audit trails, secure data handling, and management reporting.'
     },
     pci: {
       title: 'PCI DSS',
@@ -160,7 +160,7 @@ function CompliancePageContent() {
         'Regularly monitor and test networks',
         'Secure disposal of cardholder data'
       ],
-      implementation: 'DSecure ensures PCI DSS compliance with Compliant sanitization methods and detailed compliance reporting.'
+      implementation: 'D-Secure ensures PCI DSS compliance with Compliant sanitization methods and detailed compliance reporting.'
     }
   }
 
@@ -237,7 +237,7 @@ function CompliancePageContent() {
         <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
         <meta
           name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
         />
         <meta
           name="keywords"
@@ -280,7 +280,7 @@ function CompliancePageContent() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Supported Standards & Regulations</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              DSecure is Compliant and compliant with major international standards and regulations.
+              D-Secure is Compliant and compliant with major international standards and regulations.
             </p>
           </div>
 
@@ -438,7 +438,7 @@ function CompliancePageContent() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">Third-Party Certifications</h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              DSecure holds the highest level certifications from leading security organizations worldwide.
+              D-Secure holds the highest level certifications from leading security organizations worldwide.
             </p>
           </div>
 

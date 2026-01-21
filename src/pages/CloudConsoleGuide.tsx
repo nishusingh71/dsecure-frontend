@@ -50,7 +50,7 @@ const CloudConsoleGuide: React.FC = () => {
                   </div>
                   <div className="space-y-4 text-slate-700 text-lg leading-relaxed">
                     <p>
-                      The DSecure Cloud Console provides a centralized platform for managing data security across
+                      The D-Secure Cloud Console provides a centralized platform for managing data security across
                       multiple cloud environments. From data discovery and classification to encryption and
                       compliance monitoring, our console ensures your cloud data remains protected.
                     </p>
@@ -221,7 +221,7 @@ const CloudConsoleGuide: React.FC = () => {
                       {
                         step: 1,
                         title: "Initial Setup & Configuration",
-                        content: "Log into the DSecure Cloud Console and complete the initial setup wizard. Connect your cloud accounts (AWS, Azure, GCP) using secure API keys or service principals.",
+                        content: "Log into the D-Secure Cloud Console and complete the initial setup wizard. Connect your cloud accounts (AWS, Azure, GCP) using secure API keys or service principals.",
                         details: [
                           "Create organization and user accounts",
                           "Configure cloud provider integrations",

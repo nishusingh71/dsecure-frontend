@@ -1,4 +1,6 @@
 ﻿import { useAuth } from '@/auth/AuthContext'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
@@ -145,6 +147,8 @@ export default function EditGroup() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("edit-group")} />
       <Helmet>
         <title>Edit Group - Admin Dashboard | DSecureTech</title>
         <meta name="description" content="Edit group details in the DSecureTech admin dashboard." />

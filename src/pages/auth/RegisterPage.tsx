@@ -124,7 +124,7 @@ export default function RegisterPage() {
                 Create Account
               </h1>
               <p className="mt-3 text-sm text-slate-600">
-                Join DSecure to secure your data management
+                Join D-Secure to secure your data management
               </p>
 
               {/* Error and Success Messages */}

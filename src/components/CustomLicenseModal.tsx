@@ -1,4 +1,4 @@
-﻿import React, { useState, memo, useMemo, useCallback } from 'react';
+import React, { useState, memo, useMemo, useCallback } from 'react';
 
 interface CustomLicenseModalProps {
   isOpen: boolean;

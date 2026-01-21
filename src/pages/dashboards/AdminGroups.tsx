@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient, type Group as APIGroup, type GroupUser, type CreateGroupPayload } from '@/utils/enhancedApiClient';
@@ -874,6 +876,8 @@ export default function AdminGroups() {
 
     return (
         <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-groups")} />
             <Helmet>
                 <title>Groups - Admin Dashboard | D-Secure</title>
             </Helmet>

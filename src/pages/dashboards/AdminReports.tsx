@@ -1,4 +1,6 @@
 ﻿import { ENV } from "@/config/env";
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useMemo, useState, useRef, useCallback } from "react";
 import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
@@ -1981,6 +1983,8 @@ export default function AdminReports() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-reports")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/admin/reports" />
         <title>
@@ -1988,7 +1992,7 @@ export default function AdminReports() {
         </title>
         <meta
           name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
         />
         <meta
           name="keywords"

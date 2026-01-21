@@ -53,60 +53,65 @@ const StatusPage = lazy(() => import("./pages/StatusPage"));
 const DownloadPage = lazy(() => import("./pages/DownloadPage"));
 const PartnersPage = lazy(() => import("./pages/PartnersPage"));
 const SupportPage = lazy(() => import("./pages/SupportPage"));
-import LoginPage from "./pages/auth/LoginPage";
-import RegisterPage from "./pages/auth/RegisterPage";
-import PaymentSetupPage from "./pages/PaymentSetupPage";
-import UserDashboard from "./pages/dashboards/UserDashboard";
-import AdminDashboard from "./pages/dashboards/AdminDashboard";
-import AdminShell from "./pages/dashboards/AdminShell";
-import AdminPerformance from "./pages/dashboards/AdminPerformance";
-import AdminReports from "./pages/dashboards/AdminReports";
-import AdminMachines from "./pages/dashboards/AdminMachines";
-import AdminSessions from "./pages/dashboards/AdminSessions";
-import AdminSubusers from "./pages/dashboards/AdminSubusers";
-import EditSubuser from "./pages/dashboards/EditSubuser";
-import AdminGroupsDashboard from "./pages/dashboards/AdminGroups";
-import AdminLicenses from "./pages/dashboards/AdminLicenses";
-import AdminDownloads from "./pages/dashboards/AdminDownloads";
-import NewErasurePage from "./pages/dashboards/NewErasurePage";
-import ReportsPage from "./pages/dashboards/ReportsPage";
-import DownloadAgentPage from "./pages/dashboards/DownloadAgentPage";
-import PrivateCloudSetup from "./pages/dashboards/PrivateCloudSetup";
+// Auth pages - lazy loaded
+const LoginPage = lazy(() => import("./pages/auth/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/auth/RegisterPage"));
+const PaymentSetupPage = lazy(() => import("./pages/PaymentSetupPage"));
 
-// Admin pages
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminGroups from "./pages/admin/AdminGroups";
-import AdminReportsAdmin from "./pages/admin/AdminReports";
-import AdminSettings from "./pages/admin/AdminSettings";
-import AddUser from "./pages/admin/AddUser";
-import AddGroup from "./pages/admin/AddGroup";
-import GenerateReport from "./pages/admin/GenerateReport";
-import EditUser from "./pages/admin/EditUser";
-import EditGroup from "./pages/admin/EditGroup";
-import LegalPolicy from "./pages/LegalPolicy";
-import OverwriteGuide from "./pages/OverwriteGuide";
-import WipeSASDrives from "./pages/WipeSASDrive";
-import WipeMacM1 from "./pages/WipeMacM1";
-import MacEraseGuide from "./pages/MacEraseGuide";
-import FileEraserGuide from "./pages/FileEraserGuide";
-import SecureEraseHDDSSD from "./pages/SecureEraseHDDSDD";
-import CloudConsoleGuide from "./pages/CloudConsoleGuide";
-import CryptoEraseSSD from "./pages/CryptoEraseSSD";
-import RetainOSGuide from "./pages/RetainOSGuide";
-import MobileErasureSolutions from "./pages/MobileErasureSolutions";
-import NotFoundPage from "./pages/NotFoundPage";
-import EducationPage from "./pages/EducationPage";
-import FinancialServices from "./pages/FinancialServices";
-import GovernmentPage from "./pages/GovernmentPage";
-import ApiTestPage from "./pages/ApiTestPage";
-import EnterprisePage from "./pages/EnterprisePage";
-import HealthcareServices from "./pages/HealthcareServices";
-import ITADSolution from "./pages/ITADSolution";
-import AdminProfileEdit from "./pages/admin/AdminProfileEdit";
-import EnhancedUserDashboard from "./pages/dashboards/EnhancedUserDashboard";
-import CompleteDSecureNetworkFile from "./pages/manual/CompleteDSecureNetworkFile";
-import NetworkFileManualLayout from "./pages/manual/NetworkFileManualLayout";
+// Dashboard pages - lazy loaded
+const UserDashboard = lazy(() => import("./pages/dashboards/UserDashboard"));
+const AdminDashboard = lazy(() => import("./pages/dashboards/AdminDashboard"));
+const AdminShell = lazy(() => import("./pages/dashboards/AdminShell"));
+const AdminPerformance = lazy(() => import("./pages/dashboards/AdminPerformance"));
+const AdminReports = lazy(() => import("./pages/dashboards/AdminReports"));
+const AdminMachines = lazy(() => import("./pages/dashboards/AdminMachines"));
+const AdminSessions = lazy(() => import("./pages/dashboards/AdminSessions"));
+const AdminSubusers = lazy(() => import("./pages/dashboards/AdminSubusers"));
+const EditSubuser = lazy(() => import("./pages/dashboards/EditSubuser"));
+const AdminGroupsDashboard = lazy(() => import("./pages/dashboards/AdminGroups"));
+const AdminLicenses = lazy(() => import("./pages/dashboards/AdminLicenses"));
+const AdminDownloads = lazy(() => import("./pages/dashboards/AdminDownloads"));
+const NewErasurePage = lazy(() => import("./pages/dashboards/NewErasurePage"));
+const ReportsPage = lazy(() => import("./pages/dashboards/ReportsPage"));
+const DownloadAgentPage = lazy(() => import("./pages/dashboards/DownloadAgentPage"));
+const PrivateCloudSetup = lazy(() => import("./pages/dashboards/PrivateCloudSetup"));
+
+// Admin pages - lazy loaded
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminGroups = lazy(() => import("./pages/admin/AdminGroups"));
+const AdminReportsAdmin = lazy(() => import("./pages/admin/AdminReports"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AddUser = lazy(() => import("./pages/admin/AddUser"));
+const AddGroup = lazy(() => import("./pages/admin/AddGroup"));
+const GenerateReport = lazy(() => import("./pages/admin/GenerateReport"));
+const EditUser = lazy(() => import("./pages/admin/EditUser"));
+const EditGroup = lazy(() => import("./pages/admin/EditGroup"));
+const LegalPolicy = lazy(() => import("./pages/LegalPolicy"));
+const OverwriteGuide = lazy(() => import("./pages/OverwriteGuide"));
+const WipeSASDrives = lazy(() => import("./pages/WipeSASDrive"));
+const WipeMacM1 = lazy(() => import("./pages/WipeMacM1"));
+const MacEraseGuide = lazy(() => import("./pages/MacEraseGuide"));
+const FileEraserGuide = lazy(() => import("./pages/FileEraserGuide"));
+const SecureEraseHDDSSD = lazy(() => import("./pages/SecureEraseHDDSDD"));
+const CloudConsoleGuide = lazy(() => import("./pages/CloudConsoleGuide"));
+const CryptoEraseSSD = lazy(() => import("./pages/CryptoEraseSSD"));
+const RetainOSGuide = lazy(() => import("./pages/RetainOSGuide"));
+const MobileErasureSolutions = lazy(() => import("./pages/MobileErasureSolutions"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const EducationPage = lazy(() => import("./pages/EducationPage"));
+const FinancialServices = lazy(() => import("./pages/FinancialServices"));
+const GovernmentPage = lazy(() => import("./pages/GovernmentPage"));
+const ApiTestPage = lazy(() => import("./pages/ApiTestPage"));
+const EnterprisePage = lazy(() => import("./pages/EnterprisePage"));
+const HealthcareServices = lazy(() => import("./pages/HealthcareServices"));
+const ITADSolution = lazy(() => import("./pages/ITADSolution"));
+const AdminProfileEdit = lazy(() => import("./pages/admin/AdminProfileEdit"));
+const EnhancedUserDashboard = lazy(() => import("./pages/dashboards/EnhancedUserDashboard"));
+const CompleteDSecureNetworkFile = lazy(() => import("./pages/manual/CompleteDSecureNetworkFile"));
+const NetworkFileManualLayout = lazy(() => import("./pages/manual/NetworkFileManualLayout"));
+// Network file pages - keep as namespace import since components are accessed via NetworkFilePages.ComponentName
 import * as NetworkFilePages from "./pages/manual/network-file";
+
 const HealthcareSolutionsPage = lazy(() => import("./pages/solutions/HealthcareSolutionsPage"));
 const EnterpriseSolutionsPage = lazy(() => import("./pages/solutions/EnterpriseSolutionsPage"));
 const FinancialSolutionsPage = lazy(() => import("./pages/solutions/FinancialSolutionsPage"));
@@ -839,7 +844,7 @@ export default function App() {
                       element={<SystemSetupPage />}
                     />
                     <Route
-                      path="/support/manual/working-with-dsecure"
+                      path="/support/manual/working-with-D-Secure"
                       element={<WorkingWithDSecurePage />}
                     />
                     <Route
@@ -1329,7 +1334,7 @@ export default function App() {
                     <Route path="/support/manual/windows-bitlocker" element={<WindowsBitlockerPage />} />
                     <Route path="/support/manual/windows-bootable-usb" element={<WindowsBootableUsbPage />} />
                     <Route path="/support/manual/windows-compliance" element={<WindowsCompliancePage />} />
-                    <Route path="/support/manual/windows-dsecure-eraser" element={<WindowsDsecureEraserPage />} />
+                    <Route path="/support/manual/windows-D-Secure-eraser" element={<WindowsDsecureEraserPage />} />
                     <Route path="/support/manual/windows-faq" element={<WindowsFaqPage />} />
                     <Route path="/support/manual/windows-resources" element={<WindowsResourcesPage />} />
                     <Route path="/support/manual/windows-sed-drives" element={<WindowsSedDrivesPage />} />

@@ -50,7 +50,7 @@ const RetainOSGuide: React.FC = () => {
                   </div>
                   <div className="space-y-4 text-slate-700 text-lg leading-relaxed">
                     <p>
-                      DSecure's selective erasure technology allows you to permanently delete sensitive data,
+                      D-Secure's selective erasure technology allows you to permanently delete sensitive data,
                       applications, and files while preserving your operating system and essential system files.
                       This approach is ideal for device redeployment, selling, or transferring ownership without
                       the need to reinstall the operating system.
@@ -203,7 +203,7 @@ const RetainOSGuide: React.FC = () => {
                       <div>
                         <h3 className="text-lg font-semibold text-slate-900 mb-2">Launch DSecure</h3>
                         <p className="text-slate-700">
-                          Start the DSecure application and select "Selective Erasure" or "Retain OS" mode from the main menu.
+                          Start the D-Secure application and select "Selective Erasure" or "Retain OS" mode from the main menu.
                         </p>
                       </div>
                     </div>
@@ -215,7 +215,7 @@ const RetainOSGuide: React.FC = () => {
                       <div>
                         <h3 className="text-lg font-semibold text-slate-900 mb-2">Select Target Drive</h3>
                         <p className="text-slate-700">
-                          Choose the drive containing your operating system. DSecure will automatically detect and protect system partitions.
+                          Choose the drive containing your operating system. D-Secure will automatically detect and protect system partitions.
                         </p>
                       </div>
                     </div>

@@ -29,8 +29,8 @@ const FAQsPage: React.FC = memo(() => {
   const faqs: FAQ[] = [
     {
       id: 1,
-      question: "What is DSecure and what does it do?",
-      answer: "DSecure is a comprehensive data erasure solution that provides secure deletion of sensitive data from various storage devices including HDDs, SSDs, smartphones, and enterprise servers. It ensures data cannot be recovered using advanced overwriting techniques that comply with international standards like NIST 800-88 and DoD 5220.22-M.",
+      question: "What is D-Secure and what does it do?",
+      answer: "D-Secure is a comprehensive data erasure solution that provides secure deletion of sensitive data from various storage devices including HDDs, SSDs, smartphones, and enterprise servers. It ensures data cannot be recovered using advanced overwriting techniques that comply with international standards like NIST 800-88 and DoD 5220.22-M.",
       category: "general"
     },
     {
@@ -42,61 +42,61 @@ const FAQsPage: React.FC = memo(() => {
     {
       id: 3,
       question: "Can I wipe SSDs the same way as HDDs?",
-      answer: "No, SSDs require different erasure methods due to their NAND flash memory architecture. Traditional overwriting is less effective on SSDs. Instead, use ATA Secure Erase commands, cryptographic erasure, or manufacturer-specific tools. DSecure automatically detects drive types and applies appropriate methods.",
+      answer: "No, SSDs require different erasure methods due to their NAND flash memory architecture. Traditional overwriting is less effective on SSDs. Instead, use ATA Secure Erase commands, cryptographic erasure, or manufacturer-specific tools. D-Secure automatically detects drive types and applies appropriate methods.",
       category: "technical"
     },
     {
       id: 4,
-      question: "Is data really unrecoverable after using DSecure?",
-      answer: "Yes, when DSecure's erasure process completes successfully, the data is cryptographically and forensically unrecoverable. Our methods exceed international standards and have been validated by forensic experts. We provide detailed regulatory documents of destruction for compliance purposes.",
+      question: "Is data really unrecoverable after using D-Secure?",
+      answer: "Yes, when D-Secure's erasure process completes successfully, the data is cryptographically and forensically unrecoverable. Our methods exceed international standards and have been validated by forensic experts. We provide detailed regulatory documents of destruction for compliance purposes.",
       category: "security"
     },
     {
       id: 5,
       question: "How can I wipe a MacOS with M1 Chip?",
-      answer: "For Mac M1 devices, DSecure supports Apple's built-in secure erase features through our Mac edition. The process includes FileVault encryption verification, T2/M1 security chip integration, and firmware-level erasure commands. Remote deployment is available for enterprise environments.",
+      answer: "For Mac M1 devices, D-Secure supports Apple's built-in secure erase features through our Mac edition. The process includes FileVault encryption verification, T2/M1 security chip integration, and firmware-level erasure commands. Remote deployment is available for enterprise environments.",
       category: "devices"
     },
     {
       id: 6,
-      question: "What devices does DSecure support?",
-      answer: "DSecure supports Windows PCs, Mac computers (Intel and Apple Silicon), Linux systems, iOS and Android smartphones, tablets, enterprise servers, and various storage devices including HDDs, SSDs, NVMe drives, and USB storage devices.",
+      question: "What devices does D-Secure support?",
+      answer: "D-Secure supports Windows PCs, Mac computers (Intel and Apple Silicon), Linux systems, iOS and Android smartphones, tablets, enterprise servers, and various storage devices including HDDs, SSDs, NVMe drives, and USB storage devices.",
       category: "devices"
     },
     {
       id: 7,
       question: "Do I need a license for personal use?",
-      answer: "DSecure offers different licensing options. For personal use, we provide a free version with basic features. For advanced features, enterprise deployment, or commercial use, paid licenses are required. Students and educational institutions may qualify for discounted licensing.",
+      answer: "D-Secure offers different licensing options. For personal use, we provide a free version with basic features. For advanced features, enterprise deployment, or commercial use, paid licenses are required. Students and educational institutions may qualify for discounted licensing.",
       category: "licensing"
     },
     {
       id: 8,
       question: "How do I perform cryptographic erasure on SSD?",
-      answer: "Cryptographic erasure on SSDs involves destroying the encryption keys that protect the data, making it instantly unrecoverable. DSecure automates this process by detecting self-encrypting drives (SEDs), executing secure erase commands, and generating new encryption keys.",
+      answer: "Cryptographic erasure on SSDs involves destroying the encryption keys that protect the data, making it instantly unrecoverable. D-Secure automates this process by detecting self-encrypting drives (SEDs), executing secure erase commands, and generating new encryption keys.",
       category: "data-erasure"
     },
     {
       id: 9,
       question: "Can I schedule automatic erasure tasks?",
-      answer: "Yes, DSecure Enterprise includes task scheduling functionality. You can set up automated erasure tasks for specific times, recurring schedules, or triggered events. This is particularly useful for managing multiple devices in corporate environments.",
+      answer: "Yes, D-Secure Enterprise includes task scheduling functionality. You can set up automated erasure tasks for specific times, recurring schedules, or triggered events. This is particularly useful for managing multiple devices in corporate environments.",
       category: "technical"
     },
     {
       id: 10,
       question: "What happens if the erasure process is interrupted?",
-      answer: "If an erasure process is interrupted due to power failure or system crash, DSecure can resume from the last checkpoint on most devices. For critical operations, we recommend using UPS backup power and ensuring stable system conditions before starting large erasure tasks.",
+      answer: "If an erasure process is interrupted due to power failure or system crash, D-Secure can resume from the last checkpoint on most devices. For critical operations, we recommend using UPS backup power and ensuring stable system conditions before starting large erasure tasks.",
       category: "technical"
     },
     {
       id: 11,
       question: "How do I get a regulatory document of data destruction?",
-      answer: "DSecure automatically generates tamper-proof regulatory documents upon successful completion of erasure operations. These regulatory documents include device details, erasure methods used, timestamps, and digital signatures for legal compliance and audit purposes.",
+      answer: "D-Secure automatically generates tamper-proof regulatory documents upon successful completion of erasure operations. These regulatory documents include device details, erasure methods used, timestamps, and digital signatures for legal compliance and audit purposes.",
       category: "security"
     },
     {
       id: 12,
       question: "Can I wipe data while keeping the operating system?",
-      answer: "Yes, DSecure offers selective erasure options that allow you to wipe user data, applications, and specific folders while preserving the operating system. This is useful for device redeployment or when selling computers that need to remain functional.",
+      answer: "Yes, D-Secure offers selective erasure options that allow you to wipe user data, applications, and specific folders while preserving the operating system. This is useful for device redeployment or when selling computers that need to remain functional.",
       category: "general"
     }
   ];
@@ -133,7 +133,7 @@ const FAQsPage: React.FC = memo(() => {
                     Frequently Asked <span className="text-brand">Questions</span>
                   </h1>
                   <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
-                    Find quick answers to common questions about DSecure data erasure solutions
+                    Find quick answers to common questions about D-Secure data erasure solutions
                   </p>
 
                   {/* Search Bar */}
@@ -248,7 +248,7 @@ const FAQsPage: React.FC = memo(() => {
                   Didn't find what you're looking for?
                 </h2>
                 <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                  Our support team is here to help you with any questions about DSecure
+                  Our support team is here to help you with any questions about D-Secure
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link

@@ -239,7 +239,7 @@ const OverwriteGuide: React.FC = () => {
                 </div>
               </Reveal>
 
-              {/* DSecure Recommendations */}
+              {/* D-Secure Recommendations */}
               <Reveal>
                 <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 rounded-2xl p-8 text-white">
                   <div className="text-center">
@@ -331,7 +331,7 @@ const OverwriteGuide: React.FC = () => {
                     </p>
                     <p className="text-slate-300 leading-relaxed max-w-2xl mx-auto">
                       Choose additional passes only when required by specific compliance mandates or when dealing with extraordinarily sensitive data.
-                      DSecure's intelligent algorithms automatically select the optimal number of passes based on your security requirements and device type.
+                      D-Secure's intelligent algorithms automatically select the optimal number of passes based on your security requirements and device type.
                     </p>
                   </div>
                 </div>

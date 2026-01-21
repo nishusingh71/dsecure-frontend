@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -118,6 +120,8 @@ export default function GroupDetailPage() {
 
     return (
         <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("group-detail")} />
             <Helmet>
                 <title>{resources?.groupName || 'Group'} Resources - Admin Dashboard | DSecureTech</title>
             </Helmet>

@@ -28,7 +28,7 @@ const HelpManualPage: React.FC = memo(() => {
     {
       id: 1,
       title: "Getting Started",
-      description: "Essential information for new users to get up and running with DSecure",
+      description: "Essential information for new users to get up and running with D-Secure",
       icon: "🚀",
       subsections: [
         {
@@ -48,7 +48,7 @@ const HelpManualPage: React.FC = memo(() => {
         {
           id: 13,
           title: "User Interface Overview",
-          description: "Navigate the DSecure interface and understand key features",
+          description: "Navigate the D-Secure interface and understand key features",
           url: "/support/manual/interface",
           pageCount: 12
         },
@@ -273,14 +273,14 @@ const HelpManualPage: React.FC = memo(() => {
     <>
       {/* <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/support/help-manual" />
-        <title>Help Manual | DSecure Documentation & User Guide</title>
+        <title>Help Manual | D-Secure Documentation & User Guide</title>
         <meta
           name="description"
-          content="Comprehensive DSecure help manual with detailed documentation, user guides, troubleshooting, and advanced features for data erasure solutions."
+          content="Comprehensive D-Secure help manual with detailed documentation, user guides, troubleshooting, and advanced features for data erasure solutions."
         />
         <meta
           name="keywords"
-          content="DSecure help manual, documentation, user guide, data erasure manual, technical documentation"
+          content="D-Secure help manual, documentation, user guide, data erasure manual, technical documentation"
         />
         <meta name="robots" content="index, follow" />
       </Helmet> */}
@@ -303,7 +303,7 @@ const HelpManualPage: React.FC = memo(() => {
                     Help <span className="text-brand">Manual</span>
                   </h1>
                   <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
-                    Comprehensive documentation and user guide for DSecure data erasure solutions
+                    Comprehensive documentation and user guide for D-Secure data erasure solutions
                   </p>
 
                   {/* Search Bar */}
@@ -524,7 +524,7 @@ const HelpManualPage: React.FC = memo(() => {
                   Download PDF Manual
                 </h2>
                 <p className="text-xl text-slate-700 mb-8 max-w-2xl mx-auto">
-                  Get the complete DSecure manual as a downloadable PDF for offline reference
+                  Get the complete D-Secure manual as a downloadable PDF for offline reference
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-2">

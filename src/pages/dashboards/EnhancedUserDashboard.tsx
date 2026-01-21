@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
 import { useCurrentUser, RoleGuard, PermissionGuard } from '@/components/ProtectedRoute'
 import { authService } from '@/utils/authService'
@@ -92,12 +94,14 @@ export default function EnhancedUserDashboard() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("enhanced-user-dashboard")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/user/dashboard" />
-        <title>User Dashboard - DSecure Tech | Data Erasure Management</title>
+        <title>User Dashboard - D-Secure Tech | Data Erasure Management</title>
         <meta
           name="description"
-          content="Access your DSecure Tech user dashboard to manage data erasure tasks, view certificates, and monitor system performance."
+          content="Access your D-Secure Tech user dashboard to manage data erasure tasks, view certificates, and monitor system performance."
         />
         <meta
           name="keywords"

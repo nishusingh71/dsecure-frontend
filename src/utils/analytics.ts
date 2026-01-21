@@ -52,7 +52,7 @@ class GoogleAnalytics {
     gtag('config', this.trackingId, {
       page_title: document.title,
       page_location: window.location.href,
-      custom_parameter: 'dsecure_website'
+      custom_parameter: 'D-Secure_website'
     });
 
     this.isInitialized = true;

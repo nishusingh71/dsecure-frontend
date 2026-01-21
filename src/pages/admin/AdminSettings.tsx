@@ -1,3 +1,5 @@
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
@@ -9,7 +11,7 @@ export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState('general')
   const [settings, setSettings] = useState({
     general: {
-      siteName: 'DSecureTech',
+      siteName: 'D-SecureTech',
       siteDescription: 'Professional Data Erasure Solutions',
       defaultLanguage: 'en',
       timezone: 'UTC',
@@ -63,6 +65,8 @@ export default function AdminSettings() {
 
   return (
     <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-settings")} />
       <Helmet>
         <title>System Settings - Admin Dashboard | DSecureTech</title>
         <meta name="description" content="Configure system settings and preferences for DSecureTech admin dashboard." />

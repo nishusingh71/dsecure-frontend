@@ -1,4 +1,7 @@
 ﻿import { useState, useEffect, useMemo } from 'react'
+import SEOHead from "../../components/SEOHead";
+import { getSEOForPage } from "../../utils/seo";
+import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
 import { apiClient } from '@/utils/enhancedApiClient'
 import { authService } from '@/utils/authService'
@@ -183,8 +186,47 @@ export default function AdminSessions() {
   const renderActivityDetails = (details: any) => {
     if (!details || details === 'No details') return <span className="text-slate-400 italic">No details</span>;
 
+<<<<<<< HEAD
     // If Array
     if (Array.isArray(details)) return <span>{details.join(', ')}</span>;
+=======
+    return (
+      <div className="mt-3 overflow-hidden rounded-lg border border-slate-200">
+        <table className="min-w-full divide-y divide-slate-200">
+          <tbody className="bg-white divide-y divide-slate-200">
+            {Object.entries(data).map(([key, value], idx) => (
+              <tr key={idx} className="hover:bg-slate-50">
+                <td className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-50 w-1/3">
+                  {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                </td>
+                <td className="px-4 py-2 text-sm text-slate-900">
+                  {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+  return (
+    <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-sessions")} />
+      <Helmet>
+        <link rel="canonical" href="https://dsecuretech.com/admin/sessions" />
+        <title>DSecureTech Admin Logs | System Activity & Security Monitoring</title>
+        <meta
+          name="description"
+          content="Monitor system activity, commands, and user sessions with comprehensive logging and filtering capabilities."
+        />
+        <meta
+          name="keywords"
+          content="system logs, activity monitoring, commands, sessions, security monitoring, admin dashboard"
+        />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+>>>>>>> origin/feature/seo-integration-and-branding
 
     // If Object (The fix you requested)
     if (typeof details === 'object') {
@@ -205,7 +247,23 @@ export default function AdminSessions() {
   }
 
   return (
-    <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
+    <>
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("admin-sessions")} />
+      <Helmet>
+        <link rel="canonical" href="https://dsecuretech.com/admin/sessions" />
+        <title>DSecureTech Admin Logs | System Activity & Security Monitoring</title>
+        <meta
+          name="description"
+          content="Monitor system activity, commands, and user sessions with comprehensive logging and filtering capabilities."
+        />
+        <meta
+          name="keywords"
+          content="system logs, activity monitoring, commands, sessions, security monitoring, admin dashboard"
+        />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
+      <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
       
       {/* Header */}
       <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
@@ -402,5 +460,6 @@ export default function AdminSessions() {
         </div>
       </div>
     </div>
+    </>
   )
 }

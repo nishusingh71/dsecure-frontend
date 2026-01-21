@@ -1,4 +1,4 @@
-﻿import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect, useCallback, memo } from "react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
@@ -39,7 +39,7 @@ export default function MainLayout() {
   useEffect(() => {
     const handleAuthStateChange = () => {
       setAuthKey((prev) => prev + 1);
-      // console.log('🔄 Header updated - Auth state changed');
+      // console.log('?? Header updated - Auth state changed');
     };
 
     window.addEventListener('authStateChanged', handleAuthStateChange);
@@ -548,7 +548,7 @@ export default function MainLayout() {
                   {/* Social Links */}
                   <div className="flex items-center gap-4">
                     <a
-                      href="https://twitter.com/dsecuretech"
+                      href="https://twitter.com/D-Securetech"
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="Follow D-Secure on Twitter"
                       target="_blank"
@@ -563,7 +563,7 @@ export default function MainLayout() {
                       </svg>
                     </a>
                     <a
-                      href="https://linkedin.com/company/dsecuretech"
+                      href="https://linkedin.com/company/D-Securetech"
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="Connect with D-Secure on LinkedIn"
                       target="_blank"
@@ -578,7 +578,7 @@ export default function MainLayout() {
                       </svg>
                     </a>
                     <a
-                      href="https://github.com/dsecuretech"
+                      href="https://github.com/D-Securetech"
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="View D-Secure projects on GitHub"
                       target="_blank"
@@ -597,7 +597,7 @@ export default function MainLayout() {
                       </svg>
                     </a>
                     <a
-                      href="https://youtube.com/dsecuretech"
+                      href="https://youtube.com/D-Securetech"
                       className="text-slate-400 hover:text-brand transition-colors group"
                       aria-label="Subscribe to D-Secure YouTube channel"
                       target="_blank"
@@ -828,7 +828,7 @@ export default function MainLayout() {
               <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
                 <div className="flex flex-col sm:flex-row gap-6 items-center text-slate-400 text-sm">
                   <p>
-                    © {new Date().getFullYear()} {t('footer.copyright')}
+                    � {new Date().getFullYear()} {t('footer.copyright')}
                   </p>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-green-400">

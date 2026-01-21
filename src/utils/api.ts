@@ -73,17 +73,17 @@ class ApiClient {
   constructor(baseURL?: string) {
     this.baseURL = baseURL || ENV.API_BASE_URL
     this.timeout = ENV.API_TIMEOUT
-    this.token = sessionStorage.getItem('dsecure:jwt') // Changed to sessionStorage
+    this.token = sessionStorage.getItem('D-Secure:jwt') // Changed to sessionStorage
   }
 
   setToken(token: string) {
     this.token = token
-    sessionStorage.setItem('dsecure:jwt', token) // Changed to sessionStorage
+    sessionStorage.setItem('D-Secure:jwt', token) // Changed to sessionStorage
   }
 
   clearToken() {
     this.token = null
-    sessionStorage.removeItem('dsecure:jwt') // Changed to sessionStorage
+    sessionStorage.removeItem('D-Secure:jwt') // Changed to sessionStorage
   }
 
   private async request<T>(

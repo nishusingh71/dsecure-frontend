@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Calendar, Clock, Repeat, CheckCircle, AlertCircle, Edit, Trash2 } from "lucide-react";
@@ -5,11 +7,13 @@ import { Calendar, Clock, Repeat, CheckCircle, AlertCircle, Edit, Trash2 } from 
 const SchedulingTasks: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("scheduling-tasks")} />
       <Helmet>
-        <title>Scheduling Tasks - DSecure Network File Manual</title>
+        <title>Scheduling Tasks - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Learn how to schedule automatic erasure tasks in DSecure File Eraser Network for files, folders, and traces."
+          content="Learn how to schedule automatic erasure tasks in D-Secure File Eraser Network for files, folders, and traces."
         />
       </Helmet>
 

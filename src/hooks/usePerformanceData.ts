@@ -1,4 +1,4 @@
-﻿import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useAuditReports } from './useAuditReports'
 import { useUserMachines } from './useUserMachines'
 import { AdminDashboardAPI } from '@/services/adminDashboardAPI'
@@ -23,7 +23,7 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
     queryKey: performanceKeys.data(userEmail),
     queryFn: async (): Promise<PerformanceData> => {
       try {
-        // console.log('🔄 Calculating performance metrics from cached data...')
+        // console.log('?? Calculating performance metrics from cached data...')
         
         // Use existing data from React Query cache and calculate performance
         const monthsData: Record<string, {
@@ -103,7 +103,7 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
           throughput
         }
 
-        // console.log('✅ Performance metrics calculated successfully:', {
+        // console.log('? Performance metrics calculated successfully:', {
         //   monthlyErasures: monthlyErasures.length,
         //   avgDuration: avgDuration.length,
         //   throughput: throughput.length,
@@ -114,7 +114,7 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
         return result
 
       } catch (error) {
-        console.error('❌ Error calculating performance data:', error)
+        console.error('? Error calculating performance data:', error)
         
         // Return empty data structure on error
         return {

@@ -304,9 +304,9 @@ const HelpManualPage: React.FC = memo(() => {
         },
         // {
         //   id: 79,
-        //   title: "DSecure File Eraser Network Manual",
+        //   title: "D-Secure File Eraser Network Manual",
         //   description:
-        //     "Comprehensive single-page manual with all DSecure network features and functionality",
+        //     "Comprehensive single-page manual with all D-Secure network features and functionality",
         //   url: "/support/help-manual/complete-network-manual",
         //   pageCount: 1,
         // },

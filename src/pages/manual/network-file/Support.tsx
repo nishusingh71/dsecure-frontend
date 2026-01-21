@@ -1,3 +1,5 @@
+import SEOHead from "../../../components/SEOHead";
+import { getSEOForPage } from "../../../utils/seo";
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { HelpCircle, Mail, MessageCircle, Book, Download, AlertCircle, CheckCircle, Globe } from "lucide-react";
@@ -5,11 +7,13 @@ import { HelpCircle, Mail, MessageCircle, Book, Download, AlertCircle, CheckCirc
 const Support: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO Meta Tags */}
+      <SEOHead seo={getSEOForPage("support")} />
       <Helmet>
-        <title>Support & Updates - DSecure Network File Manual</title>
+        <title>Support & Updates - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Get technical support, access resources, and learn how to update DSecure File Eraser Network."
+          content="Get technical support, access resources, and learn how to update D-Secure File Eraser Network."
         />
       </Helmet>
 
@@ -144,7 +148,7 @@ const Support: React.FC = () => {
           
           <div className="space-y-5 text-lg">
             <p className="text-gray-700 leading-relaxed">
-              Keep DSecure File Eraser Network up-to-date with the latest features, security patches, and performance improvements.
+              Keep D-Secure File Eraser Network up-to-date with the latest features, security patches, and performance improvements.
             </p>
 
             {/* Update Wizard */}
@@ -201,7 +205,7 @@ const Support: React.FC = () => {
                 Automatic Update Check
               </h3>
               <p className="text-gray-700 mb-3">
-                By default, DSecure checks for updates automatically when you start the application.
+                By default, D-Secure checks for updates automatically when you start the application.
               </p>
               <div className="bg-white rounded p-4 border border-indigo-200">
                 <strong className="text-gray-900">To disable auto-check:</strong>
