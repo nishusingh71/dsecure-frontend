@@ -40,11 +40,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
   // ✅ Preload API client on component mount for instant checkout
   useEffect(() => {
     // Warm up API client connection (non-blocking)
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Prefetch DNS for payment domain
-      const link = document.createElement('link');
-      link.rel = 'dns-prefetch';
-      link.href = 'https://checkout.dodopayments.com';
+      const link = document.createElement("link");
+      link.rel = "dns-prefetch";
+      link.href = "https://checkout.dodopayments.com";
       document.head.appendChild(link);
     }
   }, []);
@@ -54,17 +54,17 @@ const PricingAndPlanPage: React.FC = memo(() => {
     const searchParams = new URLSearchParams(location.search);
 
     // Read plan parameter from URL
-    const planFromUrl = searchParams.get('plan');
+    const planFromUrl = searchParams.get("plan");
     if (planFromUrl) {
       // Map plan names from URL to plan IDs (supports both old names and new IDs)
       const planMapping: { [key: string]: string } = {
-        'base': 'basic',
-        'basic': 'basic',  // Direct ID support
-        'standard': 'standard',
-        'cloud': 'cloud',
-        'network': 'network',
-        'pro': 'pro',
-        'enterprise': 'enterprise'
+        base: "basic",
+        basic: "basic", // Direct ID support
+        standard: "standard",
+        cloud: "cloud",
+        network: "network",
+        pro: "pro",
+        enterprise: "enterprise",
       };
 
       const mappedPlan = planMapping[planFromUrl.toLowerCase()];
@@ -74,15 +74,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
     }
 
     // Read product parameter from URL
-    const productFromUrl = searchParams.get('product');
+    const productFromUrl = searchParams.get("product");
     if (productFromUrl) {
       setSelectedCategory(productFromUrl);
     }
 
     // Read section parameter to expand File Eraser section if needed
-    const sectionFromUrl = searchParams.get('section');
-    if (sectionFromUrl === 'file-eraser') {
-      setSelectedCategory('file-eraser');
+    const sectionFromUrl = searchParams.get("section");
+    if (sectionFromUrl === "file-eraser") {
+      setSelectedCategory("file-eraser");
     }
   }, [location.search]);
 
@@ -160,12 +160,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
       };
 
       const existingEnquiries = JSON.parse(
-        localStorage.getItem("customLicenseEnquiries") || "[]"
+        localStorage.getItem("customLicenseEnquiries") || "[]",
       );
       existingEnquiries.push(enquiryRecord);
       localStorage.setItem(
         "customLicenseEnquiries",
-        JSON.stringify(existingEnquiries)
+        JSON.stringify(existingEnquiries),
       );
     },
     onError: (error: Error) => {
@@ -175,13 +175,18 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   // Initialize form submission hook
   const { isSubmitting, submitForm } = useFormSubmission(
-    customLicenseFormConfig
+    customLicenseFormConfig,
   );
 
   // FIXED: Special Pricing Form Configuration
   const specialPricingFormConfig = {
     endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com", // FIXED: Correct endpoint
-    requiredFields: ["contactName", "email", "organizationType", "organizationName"],
+    requiredFields: [
+      "contactName",
+      "email",
+      "organizationType",
+      "organizationName",
+    ],
     successMessage:
       "Thank you! Your special pricing request has been submitted successfully. Our team will contact you within 24 hours with customized pricing for your organization.",
     errorMessage:
@@ -234,9 +239,10 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
   };
 
-  const { isSubmitting: isSpecialPricingSubmitting, submitForm: submitSpecialPricingForm } = useFormSubmission(
-    specialPricingFormConfig
-  );
+  const {
+    isSubmitting: isSpecialPricingSubmitting,
+    submitForm: submitSpecialPricingForm,
+  } = useFormSubmission(specialPricingFormConfig);
 
   const categories = [
     {
@@ -489,7 +495,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     category: string,
     licenses: string,
     years: string,
-    plan: string
+    plan: string,
   ) => {
     const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
 
@@ -503,7 +509,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
     const yearCount = parseInt(years);
 
     // File Eraser is sold annually, so multiply by years
-    const baseTotal = Math.round(basePrice * licenseCount * yearCount * 100) / 100;
+    const baseTotal =
+      Math.round(basePrice * licenseCount * yearCount * 100) / 100;
     return baseTotal;
   };
 
@@ -604,7 +611,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
       selectedCategory,
       selectedLicenses,
       selectedYears,
-      selectedPlan
+      selectedPlan,
     );
     return `$${totalPrice.toFixed(2)}`;
   };
@@ -619,7 +626,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     // File Eraser plan-based subtitle
     let subtitle = `File Eraser Professional - ${selectedLicenses} licenses`;
-    subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? 's' : ''}`;
+    subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? "s" : ""}`;
 
     return subtitle;
   };
@@ -653,19 +660,18 @@ const PricingAndPlanPage: React.FC = memo(() => {
       // Show success toast
       showToast(
         "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours.",
-        "success"
+        "success",
       );
 
       // Close modal after successful submission
       setShowCustomModal(false);
-
     } catch (error) {
       console.error("Custom license submission error:", error);
 
       // Show error toast
       showToast(
         "Failed to send your custom license request. Please try again or contact our sales team directly.",
-        "error"
+        "error",
       );
     }
   };
@@ -681,16 +687,16 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return;
     }
 
-    // Product ID mapping for Dodo Payments
+    // Product ID mapping - Dodo Payment Product IDs
     const PRODUCT_IDS = {
-      'drive-eraser': 'pdt_0NVH5wJYMX70syW3ioj9R',
-      'file-eraser': 'pdt_0NVHHRwPSypqgPTs3kuSu',
+      "drive-eraser": "pdt_0NVH5wJYMX70syW3ioj9R",
+      "file-eraser": "pdt_0NVHHRwPSypqgPTs3kuSu",
     };
 
     const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
 
     if (!productId) {
-      showToast('Invalid product selection. Please try again.', 'error');
+      showToast("Invalid product selection. Please try again.", "error");
       setIsBuyNowLoading(false);
       return;
     }
@@ -705,13 +711,18 @@ const PricingAndPlanPage: React.FC = memo(() => {
       productName: getCurrentProduct().title,
       licenses: selectedLicenses,
       years: selectedYears,
-      totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
-      taxEnabled: true
+      totalPrice: calculatePrice(
+        selectedCategory,
+        selectedLicenses,
+        selectedYears,
+        selectedPlan,
+      ),
+      taxEnabled: true,
     };
-    localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
+    localStorage.setItem("pendingOrder", JSON.stringify(orderMetadata));
 
-    // ✅ Show instant redirect page for better perceived performance
-    const redirectOverlay = document.createElement('div');
+    // Show instant redirect page for better perceived performance
+    const redirectOverlay = document.createElement("div");
     redirectOverlay.style.cssText = `
       position: fixed;
       top: 0;
@@ -762,53 +773,63 @@ const PricingAndPlanPage: React.FC = memo(() => {
         margin: 0;
       ">Please wait while we prepare your order</p>
     `;
-    document.body.appendChild(redirectOverlay);
-    document.body.style.overflow = 'hidden';
+    // document.body.appendChild(redirectOverlay);
+    // document.body.style.overflow = 'hidden';
 
     try {
-      // ✅ API client already imported at top - no dynamic import delay
-      // ✅ Set aggressive timeout for faster perceived performance
+      // Set aggressive timeout for faster perceived performance
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
-      // Call backend API to create guest checkout session
-      const response = await api.post('/api/Payments/dodo/checkout/guest', {
-        product_id: productId,
-        quantity: quantity,
-        TaxEnabled: true
-      }, {
+      // Fetch pre-generated checkout link from backend
+      const response = await api.get("/api/CheckoutLinks/get-link", {
+        params: {
+          productId: productId,
+          quantity: quantity,
+        },
         signal: controller.signal,
         headers: {
-          'X-Request-Priority': 'high' // Priority hint for backend
-        }
+          "X-Request-Priority": "high",
+        },
       });
 
       clearTimeout(timeoutId);
 
-      // Extract checkout URL
-      const checkoutUrl = response.data?.url || response.data?.Url || response.data?.checkoutUrl || response.data?.checkout_url || response.data;
+      // Extract checkout URL from response
+      const checkoutUrl =
+        response.data?.url || response.data?.Url || response.data?.checkoutUrl;
 
-      if (!checkoutUrl || typeof checkoutUrl !== 'string') {
-        console.error('❌ No checkout URL in response:', response.data);
+      if (!checkoutUrl || typeof checkoutUrl !== "string") {
+        console.error("No checkout URL in response:", response.data);
         document.body.removeChild(redirectOverlay);
-        document.body.style.overflow = '';
-        showToast('Failed to create checkout session. Please try again.', 'error');
+        document.body.style.overflow = "";
+        showToast(
+          "Checkout link unavailable at the moment. Please try again.",
+          "error",
+        );
         setIsBuyNowLoading(false);
         return;
       }
 
-      // ✅ Instant redirect - browser handles loading indicator
+      // Instant redirect - browser handles loading indicator
       window.location.href = checkoutUrl;
-
     } catch (error: any) {
-      console.error('Checkout session creation failed:', error);
+      console.error("Error fetching checkout link:", error);
       document.body.removeChild(redirectOverlay);
-      document.body.style.overflow = '';
-      
-      if (error.name === 'AbortError') {
-        showToast('Request timeout. Please check your connection and try again.', 'error');
+      document.body.style.overflow = "";
+
+      if (error.name === "AbortError") {
+        showToast(
+          "Request timeout. Please check your connection and try again.",
+          "error",
+        );
       } else {
-        showToast(error.response?.data?.message || error.message || 'Payment system unavailable. Please try again later.', 'error');
+        showToast(
+          error.response?.data?.error ||
+            error.message ||
+            "Something went wrong while fetching checkout link.",
+          "error",
+        );
       }
       setIsBuyNowLoading(false);
     }
@@ -849,7 +870,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   return (
     <>
-      <SEOHead seo={getSEOForPage('pricing-and-plan')} />
+      <SEOHead seo={getSEOForPage("pricing-and-plan")} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
         <div className="container mx-auto px-4 xs:px-6 sm:px-6 md:px-8 py-8 xs:py-10 sm:py-12 md:py-12 max-w-7xl">
@@ -881,17 +902,22 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   onClick={() => {
                     setSelectedCategory(category.id);
                     // Update URL with product parameter
-                    navigate(`/pricing-and-plan?product=${category.id}`, { replace: true });
+                    navigate(`/pricing-and-plan?product=${category.id}`, {
+                      replace: true,
+                    });
                   }}
-                  className={`p-4 xs:p-5 sm:p-6 rounded-xl text-left transition-all duration-300 border-2 ${selectedCategory === category.id
-                    ? "bg-gradient-to-br from-teal-500 to-teal-600 text-white border-teal-500 shadow-xl transform scale-105"
-                    : "bg-white text-gray-700 border-gray-200 hover:border-teal-300 hover:shadow-lg hover:scale-102"
-                    }`}
+                  className={`p-4 xs:p-5 sm:p-6 rounded-xl text-left transition-all duration-300 border-2 ${
+                    selectedCategory === category.id
+                      ? "bg-gradient-to-br from-teal-500 to-teal-600 text-white border-teal-500 shadow-xl transform scale-105"
+                      : "bg-white text-gray-700 border-gray-200 hover:border-teal-300 hover:shadow-lg hover:scale-102"
+                  }`}
                 >
                   <h3 className="font-semibold text-xs xs:text-sm sm:text-sm mb-1">
                     {category.name}
                   </h3>
-                  <p className="text-xs xs:text-xs sm:text-xs opacity-90">{category.subtitle}</p>
+                  <p className="text-xs xs:text-xs sm:text-xs opacity-90">
+                    {category.subtitle}
+                  </p>
                 </button>
               ))}
             </div>
@@ -954,7 +980,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                               {feature}
                             </span>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
 
@@ -963,8 +989,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
                       <h3 className="text-base xs:text-lg sm:text-lg font-semibold text-gray-900 mb-3 xs:mb-4 sm:mb-4">
                         Configure Your License
                       </h3>
-                      <div className={`grid gap-3 xs:gap-4 sm:gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2"}`}>
-                        {/* Plan Selection - Only show for File Eraser */}{/* Plans hidden as per request */}
+                      <div
+                        className={`grid gap-3 xs:gap-4 sm:gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1"}`}
+                      >
+                        {/* Plan Selection - Only show for File Eraser */}
+                        {/* Plans hidden as per request */}
                         {false && selectedCategory === "file-eraser" && (
                           <div className="space-y-2">
                             <label className="block text-xs xs:text-sm font-semibold text-gray-700">
@@ -1014,34 +1043,35 @@ const PricingAndPlanPage: React.FC = memo(() => {
                               </option>
                             ))}
                           </select>
+                          {selectedCategory === "drive-eraser" && (
+                            <p className="text-xs text-gray-600 mt-2 italic">
+                              One-time purchase
+                            </p>
+                          )}
                         </div>
 
-                        {/* License Duration */}
-                        <div className="space-y-2">
-                          <label className="block text-sm font-semibold text-gray-700">
-                            {selectedCategory === "file-eraser" ? "License Duration:" : "License Type:"}
-                          </label>
-                          <p className="text-xs text-gray-500">
-                            {selectedCategory === "file-eraser"
-                              ? "File Eraser licenses are sold annually ($40/year)"
-                              : "Drive Eraser is a one-time purchase"}
-                          </p>
-                          <select
-                            value={selectedCategory === "file-eraser" ? selectedYears : "1"}
-                            onChange={(e) => selectedCategory === "file-eraser" && setSelectedYears(e.target.value)}
-                            disabled={selectedCategory !== "file-eraser"}
-                            className={`w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400 ${selectedCategory !== "file-eraser" ? "bg-gray-100 cursor-not-allowed" : ""
-                              }`}
-                          >
-                            {selectedCategory === "file-eraser" ? (
-                              <>
-                                <option value="1">1 Year</option>
-                              </>
-                            ) : (
-                              <option value="1">One-time Purchase</option>
-                            )}
-                          </select>
-                        </div>
+                        {/* License Duration - Only show for File Eraser */}
+                        {/* {selectedCategory === "file-eraser" && (
+                          <div className="space-y-2">
+                            <label className="block text-sm font-semibold text-gray-700">
+                              License Duration:
+                            </label>
+                            <p className="text-xs text-gray-500">
+                              File Eraser licenses are sold annually ($40/year)
+                            </p>
+                            <select
+                              value={selectedYears}
+                              onChange={(e) => setSelectedYears(e.target.value)}
+                              className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400"
+                            >
+                              <option value="1">1 Year</option>
+                            </select>
+                          </div>
+                        )} */}
+                        {/* <div>
+                          <p>License 1 year</p>
+                          <p>License Usage:- {selectedLicenses} per machine</p>
+                        </div> */}
                       </div>
                     </div>
 
@@ -1049,7 +1079,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
                       <div className="text-center">
                         <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                          Are You An MSP, Academic Institute or Non-Profit Organization?
+                          Are You An MSP, Academic Institute or Non-Profit
+                          Organization?
                         </h4>
                         <button
                           onClick={() => setShowSpecialPricingModal(true)}
@@ -1078,11 +1109,16 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   <div className="text-xs text-gray-500">{getPriceNote()}</div>
                 </div>
 
-                {/* Plan Summary - Only show for File Eraser */}{/* Hidden for single-tier pricing */}
+                {/* Plan Summary - Only show for File Eraser */}
+                {/* Hidden for single-tier pricing */}
                 {false && selectedCategory === "file-eraser" && (
                   <div className="mb-6 p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl border border-teal-100">
-                    <h4 className="font-semibold text-gray-900 mb-2">{getCurrentPlan().name}</h4>
-                    <p className="text-xs text-gray-600 mb-2">{getCurrentPlan().description}</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">
+                      {getCurrentPlan().name}
+                    </h4>
+                    <p className="text-xs text-gray-600 mb-2">
+                      {getCurrentPlan().description}
+                    </p>
                     <div className="text-xs text-teal-600 font-medium">
                       Category: {getCurrentPlan().category}
                     </div>
@@ -1095,10 +1131,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   disabled={isBuyNowLoading}
                   onMouseEnter={() => {
                     // ✅ Prefetch on hover for even faster response
-                    if (selectedLicenses !== "custom" && selectedPlan !== "custom") {
+                    if (
+                      selectedLicenses !== "custom" &&
+                      selectedPlan !== "custom"
+                    ) {
                       // Prefetch checkout domain connection
                       const img = new Image();
-                      img.src = 'https://checkout.dodopayments.com/favicon.ico';
+                      img.src = "https://checkout.dodopayments.com/favicon.ico";
                     }
                   }}
                   className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
@@ -1187,8 +1226,9 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   >
                     <span>{faq.question}</span>
                     <svg
-                      className={`w-5 h-5 transform transition-transform ${expandedFaq === index ? "rotate-180" : ""
-                        }`}
+                      className={`w-5 h-5 transform transition-transform ${
+                        expandedFaq === index ? "rotate-180" : ""
+                      }`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
