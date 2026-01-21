@@ -19,8 +19,8 @@ export const POLAR_CHECKOUT_LINKS = {
 
 // Drive Eraser license quantity-based checkout links
 export const DRIVE_ERASER_LICENSE_LINKS: Record<string, string> = {
-    // '1': 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity=1',
-    '1': 'https://dodo.pe/bnw3roxrnvj',
+    '1': 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity=1',
+    // '1': 'https://dodo.pe/bnw3roxrnvj',
     '10': 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity=10',
     '25': 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity=25',
     '50': 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity=50',
