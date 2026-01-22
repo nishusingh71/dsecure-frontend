@@ -168,6 +168,39 @@ export default function AdminSubusers() {
   // console.log('👤 User Type:', currentUserType, '| Is Subuser:', isSubuser)
   // console.log('📧 Current User Email:', userEmail)
 
+  // ✅ Fetch groups for filter dropdown - using same endpoint as AdminGroups
+  const [groupsData, setGroupsData] = useState<any[]>([]);
+  const [groupsLoading, setGroupsLoading] = useState(false);
+
+  // Fetch groups from API on mount
+  useEffect(() => {
+    const fetchGroupsForFilter = async () => {
+      if (isDemo) {
+        setGroupsData([
+          { groupId: 1, groupName: 'Engineering Team' },
+          { groupId: 2, groupName: 'Marketing Team' },
+          { groupId: 3, groupName: 'Sales Team' }
+        ]);
+        return;
+      }
+
+      try {
+        setGroupsLoading(true);
+        const response = await apiClient.getGroupsWithUsers();
+        
+        if (response.success && response.data?.groups?.data) {
+          setGroupsData(response.data.groups.data);
+        }
+      } catch (error) {
+        console.error('Error fetching groups for filter:', error);
+      } finally {
+        setGroupsLoading(false);
+      }
+    };
+
+    fetchGroupsForFilter();
+  }, [isDemo]);
+
   // ✅ Fetch subusers filtered by current user's email (works for both regular users and subusers)
   // If subuser has sub-subusers, they will be shown; if not, empty state will appear
   // 🎭 In demo mode, disable React Query and use static data
@@ -286,12 +319,20 @@ export default function AdminSubusers() {
   );
 
   // Extract unique groups from subusers data
-  const uniqueGroups = useMemo(() => {
-    const groups = subusersData
-      .map((s: any) => s.subuser_group || s.group)
-      .filter((g: any) => g && g !== "N/A");
-    return [...new Set(groups)].sort();
-  }, [subusersData]);
+  const uniqueGroups = useMemo(
+    () => {
+      if (!groupsData || groupsData.length === 0) return [];
+      
+      // Extract groupName from API response (same structure as AdminGroups)
+      const groups = groupsData
+        .map((g: any) => g.groupName || g.name)
+        .filter(Boolean);
+      
+      // Sort alphabetically
+      return groups.sort((a: string, b: string) => a.localeCompare(b));
+    },
+    [groupsData]
+  );
 
   const filtered = useMemo(() => {
     let result = allRows.filter((r) => {
@@ -419,7 +460,7 @@ export default function AdminSubusers() {
       const enhanced = res.data;
       setEditFormData({
         subuser_email: enhanced.subuser_email,
-        subuser_name: enhanced.subuser_name || enhanced.name || "",
+        subuser_name: enhanced.name || enhanced.subuser_name || "",
         role:
           enhanced.role ||
           enhanced.subuser_role ||
@@ -427,7 +468,7 @@ export default function AdminSubusers() {
           user.roles ||
           "user",
         department: enhanced.department || user.department || "",
-        phone: enhanced.subuser_phone || enhanced.phone || "",
+        phone: enhanced.phone || enhanced.subuser_phone || "",
         status: enhanced.status || "active",
         password: "",
         subuser_group: enhanced.subuser_group || "",

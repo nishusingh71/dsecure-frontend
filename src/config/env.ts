@@ -50,6 +50,8 @@ export const ENV = {
     RES_KEY: validateStr(import.meta.env.VITE_RES_KEY, 'VITE_RES_KEY', false, '2b8A1Pv0ykhppFD28MV6ResponseKey!'),
     REQ_KEY: validateStr(import.meta.env.VITE_REQ_KEY, 'VITE_REQ_KEY', false, 'YourEncryptionKey32CharactersLong!'),
     ENC_IV: validateStr(import.meta.env.VITE_ENC_IV, 'VITE_ENC_IV', false, '1234567890123456'),
+    FILE_ERASER: validateStr(import.meta.env.FileEraser, 'FileEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVHHRwPSypqgPTs3kuSu?quantity='),
+    DRIVE_ERASER: validateStr(import.meta.env.DriveEraser, 'DriveEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity='),
 };
 
 // Validate critical secrets don't map to defaults in Production if needed

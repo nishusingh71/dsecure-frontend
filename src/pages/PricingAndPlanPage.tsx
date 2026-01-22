@@ -1,4 +1,5 @@
 ﻿import React, { useState, memo, useEffect } from "react";
+import { ENV } from '../config/env'
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
@@ -670,145 +671,55 @@ const PricingAndPlanPage: React.FC = memo(() => {
     }
   };
 
+ // ... inside PricingAndPlanPage component ...
+
   const handleBuyNow = async () => {
-    // Prevent double clicks but don't show loading UI for instant feel
+    // 1. Prevent double clicks
     if (isBuyNowLoading) return;
     setIsBuyNowLoading(true);
 
+    // 2. Custom Quote logic (Same as before)
     if (selectedLicenses === "custom" || selectedPlan === "custom") {
       setShowCustomModal(true);
       setIsBuyNowLoading(false);
       return;
     }
 
-    // Product ID mapping - Dodo Payment Product IDs
-    const PRODUCT_IDS = {
-      'drive-eraser': 'pdt_0NVH5wJYMX70syW3ioj9R',
-      'file-eraser': 'pdt_0NVHHRwPSypqgPTs3kuSu',
+    // =========================================================
+    // CONFIGURATION: Sirf yahan apne 2 Main Product Links dalein
+    // =========================================================
+    const BASE_LINKS: Record<string, string> = {
+      'drive-eraser': `${ENV.DRIVE_ERASER}`, // Yahan apna Drive Eraser ka link dalein
+      'file-eraser':  `${ENV.FILE_ERASER}`,  // Yahan apna File Eraser ka link dalein
     };
-
-    const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
-
-    if (!productId) {
-      showToast('Invalid product selection. Please try again.', 'error');
-      setIsBuyNowLoading(false);
-      return;
-    }
-
-    const quantity = parseInt(selectedLicenses) || 1;
-
-    // Store order metadata for success page (async, non-blocking)
-    const orderMetadata = {
-      // category: selectedCategory,
-      // planId: selectedPlan,
-      // planName: getCurrentPlan().name,
-      productName: getCurrentProduct().title,
-      licenses: selectedLicenses,
-      // years: selectedYears,
-      // totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
-      // taxEnabled: true
-    };
-    localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
-
-    // Show instant redirect page for better perceived performance
-    // const redirectOverlay = document.createElement('div');
-    // redirectOverlay.style.cssText = `
-    //   position: fixed;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100%;
-    //   height: 100%;
-    //   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-    //   display: flex;
-    //   flex-direction: column;
-    //   align-items: center;
-    //   justify-content: center;
-    //   z-index: 9999;
-    //   animation: fadeIn 0.2s ease-out;
-    // `;
-    // redirectOverlay.innerHTML = `
-    //   <style>
-    //     @keyframes fadeIn {
-    //       from { opacity: 0; }
-    //       to { opacity: 1; }
-    //     }
-    //     @keyframes spin {
-    //       to { transform: rotate(360deg); }
-    //     }
-    //     @keyframes pulse {
-    //       0%, 100% { opacity: 1; }
-    //       50% { opacity: 0.6; }
-    //     }
-    //   </style>
-    //   <div style="
-    //     width: 80px;
-    //     height: 80px;
-    //     border: 4px solid rgba(255,255,255,0.3);
-    //     border-top-color: white;
-    //     border-radius: 50%;
-    //     animation: spin 0.8s linear infinite;
-    //     margin-bottom: 24px;
-    //   "></div>
-    //   <h2 style="
-    //     color: white;
-    //     font-size: 28px;
-    //     font-weight: bold;
-    //     margin: 0 0 12px 0;
-    //     animation: pulse 1.5s ease-in-out infinite;
-    //   ">Redirecting to Checkout...</h2>
-    //   <p style="
-    //     color: rgba(255,255,255,0.9);
-    //     font-size: 16px;
-    //     margin: 0;
-    //   ">Please wait while we prepare your order</p>
-    // `;
-    // document.body.appendChild(redirectOverlay);
-    // document.body.style.overflow = 'hidden';
 
     try {
-      // Set aggressive timeout for faster perceived performance
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+      // 3. Category ke hisab se sahi link uthao
+      const baseLink = BASE_LINKS[selectedCategory];
 
-      // Fetch pre-generated checkout link from backend
-      const response = await api.get('/api/CheckoutLinks/get-link', {
-        params: {
-          productId: productId,
-          quantity: quantity
-        },
-        signal: controller.signal,
-        headers: {
-          'X-Request-Priority': 'high'
-        }
-      });
-
-      clearTimeout(timeoutId);
-
-      // Extract checkout URL from response
-      const checkoutUrl = response.data?.url || response.data?.Url || response.data?.checkoutUrl;
-
-      if (!checkoutUrl || typeof checkoutUrl !== 'string') {
-        console.error('No checkout URL in response:', response.data);
-        // document.body.removeChild(redirectOverlay);
-        document.body.style.overflow = '';
-        showToast('Checkout link unavailable at the moment. Please try again.', 'error');
+      if (!baseLink) {
+        showToast('Product link not found.', 'error');
         setIsBuyNowLoading(false);
         return;
       }
       setIsBuyNowLoading(false);
-      // Instant redirect - browser handles loading indicator
-      window.location.href = checkoutUrl;
 
-    } catch (error: any) {
-      console.error('Error fetching checkout link:', error);
-      // document.body.removeChild(redirectOverlay);
-      document.body.style.overflow = '';
+      // 4. Quantity nikalo (Dropdown se)
+      const quantity = parseInt(selectedLicenses) || 1;
+
+      // 5. Link mein dynamically quantity add karo
+      // Logic: Agar link mein pehle se '?' hai toh '&' lagao, nahi toh '?' lagao
+      // const separator = baseLink.includes('?') ? '&' : '?';
       
-      if (error.name === 'AbortError') {
-        showToast('Request timeout. Please check your connection and try again.', 'error');
-      } else {
-        showToast(error.response?.data?.error || error.message || 'Something went wrong while fetching checkout link.', 'error');
-      }
+      // Final URL banega: https://.../pdt_ID?quantity=10
+      const finalUrl = `${baseLink}${quantity}`;
+
+      // 6. Redirect User
+      window.location.href = finalUrl;
+
+    } catch (error) {
+      console.error('Navigation error:', error);
+      showToast('Something went wrong. Please try again.', 'error');
       setIsBuyNowLoading(false);
     }
   };

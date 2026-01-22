@@ -971,7 +971,7 @@ export const getDefaultSEO = (): SEOMetadata => ({
 export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   home: {
     title: 'Eraser – Secure Erase Files from Hard Drives',
-    description: 'Professional data erasure solutions for GDPR, HIPAA & compliance. Secure data destruction with NIST 800-88 regulation. Download free trial.',
+    description: 'Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times',
     keywords: generateKeywords([
       'data erasure software download',
       'free data destruction tool',

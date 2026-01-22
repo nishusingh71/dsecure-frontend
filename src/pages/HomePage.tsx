@@ -20,10 +20,10 @@ import { useEffect, memo, useMemo, useCallback } from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { usePerformanceMonitor } from "@/utils/performanceUtils";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const HomePage = memo(function HomePage() {
-  usePerformanceMonitor('HomePage');
+  usePerformanceMonitor("HomePage");
   const { t } = useTranslation();
 
   const scrollToHash = useCallback(() => {
@@ -55,13 +55,13 @@ const HomePage = memo(function HomePage() {
               <Reveal>
                 <div className="space-y-6">
                   <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl xxl:text-7xl font-bold tracking-tight text-slate-900 leading-tight xs:leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-tight xxl:leading-tight">
-                    {t('hero.title')}{" "}
+                    {t("hero.title")}{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      {t('hero.titleHighlight')}
+                      {t("hero.titleHighlight")}
                     </span>
                   </h1>
                   <p className="text-base xs:text-lg sm:text-lg md:text-xl lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 leading-relaxed xs:leading-relaxed sm:leading-relaxed md:leading-relaxed lg:leading-relaxed xl:leading-relaxed xxl:leading-relaxed">
-                    {t('hero.subtitle')}
+                    {t("hero.subtitle")}
                   </p>
                 </div>
               </Reveal>
@@ -79,7 +79,7 @@ const HomePage = memo(function HomePage() {
                         />
                       )}
                     </HoverIcon>
-                    {t('home.exploreProducts')}
+                    {t("home.exploreProducts")}
                   </Link>
                   <Link
                     to="/pricing-and-plan"
@@ -128,159 +128,296 @@ const HomePage = memo(function HomePage() {
               </Reveal>
             </div>
             <div className="relative lg:order-last">
-              <Reveal delayMs={40}>
+              <Reveal delayMs={0}>
                 <div className="relative flex items-center justify-center min-h-[380px] lg:min-h-[520px]">
-                  {/* Hero Illustration Container */}
+                  {/* Hero Illustration Container - Professional Design */}
                   <div className="relative w-[380px] h-[380px] lg:w-[480px] lg:h-[480px]">
+                    {/* Outer Glow Ring */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-100/40 via-transparent to-teal-100/40 blur-xl"></div>
 
                     {/* Outer Dashed Circle */}
-                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 480 480">
+                    <svg
+                      className="absolute inset-0 w-full h-full animate-[spin_60s_linear_infinite]"
+                      viewBox="0 0 480 480"
+                    >
                       <circle
                         cx="240"
                         cy="240"
-                        r="220"
+                        r="225"
                         fill="none"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="10 8"
-                        opacity="0.35"
-                      />
-                    </svg>
-
-                    {/* Inner Dashed Circle (around monitor) */}
-                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 480 480">
-                      <circle
-                        cx="240"
-                        cy="240"
-                        r="130"
-                        fill="none"
-                        stroke="#10b981"
-                        strokeWidth="2"
-                        strokeDasharray="8 6"
+                        stroke="url(#gradientOuter)"
+                        strokeWidth="1.5"
+                        strokeDasharray="12 8"
                         opacity="0.5"
                       />
+                      <defs>
+                        <linearGradient
+                          id="gradientOuter"
+                          x1="0%"
+                          y1="0%"
+                          x2="100%"
+                          y2="100%"
+                        >
+                          <stop offset="0%" stopColor="#10b981" />
+                          <stop offset="100%" stopColor="#14b8a6" />
+                        </linearGradient>
+                      </defs>
                     </svg>
 
-                    {/* Connecting Lines from Icons to Inner Circle */}
-                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 480 480">
-                      {/* Line from top (shield) to inner circle */}
-                      <line x1="240" y1="45" x2="240" y2="110" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
-                      {/* Line from top-left (server) to inner circle */}
-                      <line x1="55" y1="140" x2="135" y2="175" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
-                      {/* Line from top-right (cloud) to inner circle */}
-                      <line x1="425" y1="140" x2="345" y2="175" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
-                      {/* Line from bottom-left (clipboard) to inner circle */}
-                      <line x1="55" y1="380" x2="135" y2="320" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
-                      {/* Line from bottom-right (database) to inner circle */}
-                      <line x1="425" y1="380" x2="345" y2="320" stroke="#10b981" strokeWidth="2" strokeDasharray="6 4" opacity="0.4" />
+                    {/* Inner Dashed Circle */}
+                    <svg
+                      className="absolute inset-0 w-full h-full animate-[spin_45s_linear_infinite_reverse]"
+                      viewBox="0 0 480 480"
+                    >
+                      <circle
+                        cx="240"
+                        cy="240"
+                        r="145"
+                        fill="none"
+                        stroke="url(#gradientInner)"
+                        strokeWidth="1.5"
+                        strokeDasharray="8 6"
+                        opacity="0.6"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="gradientInner"
+                          x1="0%"
+                          y1="0%"
+                          x2="100%"
+                          y2="100%"
+                        >
+                          <stop offset="0%" stopColor="#14b8a6" />
+                          <stop offset="100%" stopColor="#10b981" />
+                        </linearGradient>
+                      </defs>
                     </svg>
 
-                    {/* Central Computer Monitor */}
+                    {/* Central Element - Shield with Data Protection Theme */}
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                      {/* Monitor Screen */}
-                      <div className="w-[160px] h-[120px] lg:w-[200px] lg:h-[140px] bg-white rounded-xl shadow-2xl border border-slate-200 relative overflow-hidden">
-                        {/* Screen Inner Content */}
-                        <div className="absolute inset-[8px] bg-gradient-to-b from-slate-50 to-slate-100/80 rounded-lg flex">
-                          {/* Left side - Code Lines */}
-                          <div className="flex-1 p-3 space-y-[6px]">
-                            <div className="flex gap-2">
-                              <div className="h-[5px] bg-slate-400 rounded-full w-12"></div>
-                              <div className="h-[5px] bg-emerald-400 rounded-full w-8"></div>
+                      <div className="relative">
+                        {/* Shield Background */}
+                        <div className="w-[140px] h-[160px] lg:w-[180px] lg:h-[200px] relative">
+                          {/* Shield Shape */}
+                          <svg
+                            viewBox="0 0 100 120"
+                            className="w-full h-full drop-shadow-xl"
+                          >
+                            <defs>
+                              <linearGradient
+                                id="shieldGradient"
+                                x1="0%"
+                                y1="0%"
+                                x2="100%"
+                                y2="100%"
+                              >
+                                <stop offset="0%" stopColor="#10b981" />
+                                <stop offset="50%" stopColor="#059669" />
+                                <stop offset="100%" stopColor="#047857" />
+                              </linearGradient>
+                              <filter
+                                id="shieldShadow"
+                                x="-20%"
+                                y="-20%"
+                                width="140%"
+                                height="140%"
+                              >
+                                <feDropShadow
+                                  dx="0"
+                                  dy="4"
+                                  stdDeviation="6"
+                                  floodColor="#10b981"
+                                  floodOpacity="0.3"
+                                />
+                              </filter>
+                            </defs>
+                            <path
+                              d="M50 5 L95 25 L95 55 C95 85 75 105 50 115 C25 105 5 85 5 55 L5 25 Z"
+                              fill="url(#shieldGradient)"
+                              filter="url(#shieldShadow)"
+                            />
+                            {/* Shield Inner Border */}
+                            <path
+                              d="M50 12 L88 29 L88 55 C88 80 71 97 50 106 C29 97 12 80 12 55 L12 29 Z"
+                              fill="none"
+                              stroke="white"
+                              strokeWidth="1"
+                              opacity="0.3"
+                            />
+                          </svg>
+
+                          {/* Shield Content - Checkmark + Data Icon */}
+                          <div className="absolute inset-0 flex flex-col items-center justify-center pt-2">
+                            {/* Checkmark Circle */}
+                            <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                              <svg
+                                className="w-7 h-7 lg:w-10 lg:h-10 text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
                             </div>
-                            <div className="flex gap-2">
-                              <div className="h-[5px] bg-slate-300 rounded-full w-8"></div>
-                              <div className="h-[5px] bg-slate-400 rounded-full w-10"></div>
-                            </div>
-                            <div className="flex gap-2">
-                              <div className="h-[5px] bg-emerald-400 rounded-full w-6"></div>
-                              <div className="h-[5px] bg-slate-300 rounded-full w-12"></div>
-                            </div>
-                            <div className="flex gap-2">
-                              <div className="h-[5px] bg-slate-400 rounded-full w-10"></div>
-                              <div className="h-[5px] bg-emerald-300 rounded-full w-6"></div>
-                            </div>
-                            <div className="flex gap-2">
-                              <div className="h-[5px] bg-slate-300 rounded-full w-8"></div>
-                              <div className="h-[5px] bg-slate-400 rounded-full w-8"></div>
-                            </div>
-                            <div className="flex gap-2">
-                              <div className="h-[5px] bg-emerald-400 rounded-full w-10"></div>
-                              <div className="h-[5px] bg-slate-300 rounded-full w-6"></div>
-                            </div>
-                            <div className="flex gap-2">
-                              <div className="h-[5px] bg-slate-400 rounded-full w-12"></div>
-                              <div className="h-[5px] bg-emerald-300 rounded-full w-4"></div>
-                            </div>
-                          </div>
-                          {/* Right side - Asterisk Logo */}
-                          <div className="w-16 lg:w-20 flex items-center justify-center border-l border-slate-200/50">
-                            <svg className="w-10 h-10 lg:w-12 lg:h-12 text-teal-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                              <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07" />
-                            </svg>
+                            {/* Text */}
+                            <span className="text-white text-[10px] lg:text-xs font-bold tracking-wider mt-2 uppercase">
+                              Secured
+                            </span>
                           </div>
                         </div>
-                      </div>
-                      {/* Monitor Neck */}
-                      <div className="w-5 h-8 lg:w-6 lg:h-10 bg-gradient-to-b from-slate-500 to-slate-600 mx-auto rounded-b-sm"></div>
-                      {/* Monitor Base */}
-                      <div className="w-20 h-3 lg:w-24 lg:h-4 bg-gradient-to-b from-slate-500 to-slate-700 mx-auto rounded-full shadow-md"></div>
-                    </div>
 
-                    {/* Orbiting Icons - Outline style with white backgrounds */}
-
-                    {/* Top Center - Shield with Checkmark */}
-                    <div className="absolute top-[8px] left-1/2 -translate-x-1/2 lg:top-[10px]">
-                      <div className="w-14 h-14 lg:w-16 lg:h-16 bg-emerald-500 rounded-t-2xl rounded-b-[40%] shadow-lg flex items-center justify-center" style={{ clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)' }}>
-                        <svg className="w-7 h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
+                        {/* Floating Badge - Removed NIST Certified */}
                       </div>
                     </div>
 
-                    {/* Top Left - Server Icon (outline style) */}
-                    <div className="absolute top-[85px] left-[15px] lg:top-[100px] lg:left-[20px]">
-                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
-                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                          <rect x="4" y="4" width="16" height="6" rx="1" />
-                          <rect x="4" y="14" width="16" height="6" rx="1" />
-                          <circle cx="8" cy="7" r="1" fill="currentColor" />
-                          <circle cx="8" cy="17" r="1" fill="currentColor" />
-                        </svg>
+                    {/* Product Icons - 6 icons evenly around the Shield */}
+
+                    {/* Top - Data Erasure (Main Product) */}
+                    <div className="absolute top-[-20px] left-1/2 -translate-x-1/2">
+                      <div className="group relative">
+                        <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Trash/Delete Icon - Clear Data Erasure Symbol */}
+                          <svg
+                            className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] lg:text-[10px] font-semibold text-emerald-700 whitespace-nowrap bg-white/80 px-2 py-0.5 rounded">
+                          Data Erasure
+                        </span>
                       </div>
                     </div>
 
-                    {/* Top Right - Cloud Icon (outline style with fill) */}
-                    <div className="absolute top-[85px] right-[15px] lg:top-[100px] lg:right-[20px]">
-                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
-                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M6.5 18a4.5 4.5 0 01-.5-8.98 5.5 5.5 0 0110.8.62A4 4 0 0118 18H6.5z" />
-                        </svg>
+                    {/* Top Left - Desktop/Laptop */}
+                    <div className="absolute top-[90px] left-[12px] lg:top-[110px] lg:left-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Desktop/Monitor Icon */}
+                          <svg
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <path d="M8 21h8M12 17v4" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
+                          Desktop
+                        </span>
                       </div>
                     </div>
 
-                    {/* Bottom Left - Clipboard/Document Icon (outline style) */}
-                    <div className="absolute bottom-[85px] left-[15px] lg:bottom-[100px] lg:left-[20px]">
-                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
-                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                          <rect x="5" y="3" width="14" height="18" rx="2" />
-                          <line x1="9" y1="8" x2="15" y2="8" />
-                          <line x1="9" y1="12" x2="15" y2="12" />
-                          <line x1="9" y1="16" x2="12" y2="16" />
-                        </svg>
+                    {/* Top Right - Cloud */}
+                    <div className="absolute top-[90px] right-[12px] lg:top-[110px] lg:right-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Cloud Icon */}
+                          <svg
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
+                          Cloud
+                        </span>
                       </div>
                     </div>
 
-                    {/* Bottom Right - Database Icon (outline style with fill) */}
-                    <div className="absolute bottom-[85px] right-[15px] lg:bottom-[100px] lg:right-[20px]">
-                      <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-full shadow-lg flex items-center justify-center ring-2 ring-emerald-500">
-                        <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
-                          <ellipse cx="12" cy="5" rx="8" ry="3" />
-                          <path d="M4 5v6c0 1.657 3.582 3 8 3s8-1.343 8-3V5" />
-                          <path d="M4 11v6c0 1.657 3.582 3 8 3s8-1.343 8-3v-6" />
-                        </svg>
+                    {/* Bottom Left - Files/Folders */}
+                    <div className="absolute bottom-[80px] left-[12px] lg:bottom-[95px] lg:left-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Folder Icon */}
+                          <svg
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
+                          Files/Folder
+                        </span>
                       </div>
                     </div>
 
+                    {/* Bottom Right - HDD/SSD Drives */}
+                    <div className="absolute bottom-[80px] right-[12px] lg:bottom-[95px] lg:right-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* HDD/Drive Icon - Disk with center */}
+                          <svg
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                            <circle cx="12" cy="12" r="4" />
+                            <circle
+                              cx="12"
+                              cy="12"
+                              r="1.5"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
+                          HDD/SSD/NVMe
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom - Compliance/Certification */}
+                    <div className="absolute bottom-[-20px] left-1/2 -translate-x-1/2">
+                      <div className="group relative">
+                        <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Shield with Checkmark - Compliance */}
+                          <svg
+                            className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                            />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] lg:text-[10px] font-semibold text-emerald-700 whitespace-nowrap bg-white/80 px-2 py-0.5 rounded">
+                          Compliance
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Reveal>
@@ -303,13 +440,13 @@ const HomePage = memo(function HomePage() {
                 />
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                {t('home.enterpriseTrialTitle')}
+                {t("home.enterpriseTrialTitle")}
               </h2>
               <p className="text-xl md:text-2xl mb-2 opacity-90">
-                {t('home.enterpriseTrialSubtitle')}
+                {t("home.enterpriseTrialSubtitle")}
               </p>
               <p className="text-lg mb-8 opacity-80">
-                {t('home.enterpriseTrialNote')}
+                {t("home.enterpriseTrialNote")}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Link
@@ -318,7 +455,7 @@ const HomePage = memo(function HomePage() {
                 >
                   {/* 🚀 → LightningIcon */}
                   <LightningIcon className="w-5 h-5 mr-2" filled={true} />
-                  {t('home.enterpriseTrialButton')}
+                  {t("home.enterpriseTrialButton")}
                 </Link>
                 <Link
                   to="/contact"
@@ -338,7 +475,7 @@ const HomePage = memo(function HomePage() {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.74 21 5 16.26 5 10.5V5z"
                     />
                   </svg>
-                  {t('home.enterpriseTrialContact')}
+                  {t("home.enterpriseTrialContact")}
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -349,10 +486,10 @@ const HomePage = memo(function HomePage() {
                       <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
                     </div>
                     <h3 className="font-semibold mb-2">
-                      {t('home.enterpriseFeature1')}
+                      {t("home.enterpriseFeature1")}
                     </h3>
                     <p className="text-sm opacity-80">
-                      {t('home.enterpriseFeature1Desc')}
+                      {t("home.enterpriseFeature1Desc")}
                     </p>
                   </div>
                 </Reveal>
@@ -365,9 +502,11 @@ const HomePage = memo(function HomePage() {
                         filled={true}
                       />
                     </div>
-                    <h3 className="font-semibold mb-2">{t('home.enterpriseFeature2')}</h3>
+                    <h3 className="font-semibold mb-2">
+                      {t("home.enterpriseFeature2")}
+                    </h3>
                     <p className="text-sm opacity-80">
-                      {t('home.enterpriseFeature2Desc')}
+                      {t("home.enterpriseFeature2Desc")}
                     </p>
                   </div>
                 </Reveal>
@@ -377,9 +516,11 @@ const HomePage = memo(function HomePage() {
                     <div className="text-2xl mb-3 text-white">
                       <StarIcon className="w-8 h-8 mx-auto" filled={true} />
                     </div>
-                    <h3 className="font-semibold mb-2">{t('home.enterpriseFeature3')}</h3>
+                    <h3 className="font-semibold mb-2">
+                      {t("home.enterpriseFeature3")}
+                    </h3>
                     <p className="text-sm opacity-80">
-                      {t('home.enterpriseFeature3Desc')}
+                      {t("home.enterpriseFeature3Desc")}
                     </p>
                   </div>
                 </Reveal>
@@ -395,15 +536,15 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                {t('home.featuresTitle')}{" "}
+                {t("home.featuresTitle")}{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-emerald-600">
-                  {t('home.standards')}
+                  {t("home.standards")}
                 </span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                {t('home.featuresSubtitle')}
+                {t("home.featuresSubtitle")}
               </p>
             </Reveal>
           </div>
@@ -418,9 +559,11 @@ const HomePage = memo(function HomePage() {
                     <ShieldIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    {t('home.nist80088')}
+                    {t("home.nist80088")}
                   </h3>
-                  <p className="text-xs text-slate-500">{t('home.nist80088Desc')}</p>
+                  <p className="text-xs text-slate-500">
+                    {t("home.nist80088Desc")}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -432,9 +575,9 @@ const HomePage = memo(function HomePage() {
                     <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                    {t('home.gdpr')}
+                    {t("home.gdpr")}
                   </h3>
-                  <p className="text-xs text-slate-500">{t('home.gdprDesc')}</p>
+                  <p className="text-xs text-slate-500">{t("home.gdprDesc")}</p>
                 </div>
               </div>
             </Reveal>
@@ -446,9 +589,11 @@ const HomePage = memo(function HomePage() {
                     <HeartIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    {t('home.hipaa')}
+                    {t("home.hipaa")}
                   </h3>
-                  <p className="text-xs text-slate-500">{t('home.hipaaDesc')}</p>
+                  <p className="text-xs text-slate-500">
+                    {t("home.hipaaDesc")}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -472,9 +617,9 @@ const HomePage = memo(function HomePage() {
                     </svg>
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors">
-                    {t('home.sox')}
+                    {t("home.sox")}
                   </h3>
-                  <p className="text-xs text-slate-500">{t('home.soxDesc')}</p>
+                  <p className="text-xs text-slate-500">{t("home.soxDesc")}</p>
                 </div>
               </div>
             </Reveal>
@@ -486,9 +631,11 @@ const HomePage = memo(function HomePage() {
                     <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
-                    {t('home.iso27001')}
+                    {t("home.iso27001")}
                   </h3>
-                  <p className="text-xs text-slate-500">{t('home.iso27001Desc')}</p>
+                  <p className="text-xs text-slate-500">
+                    {t("home.iso27001Desc")}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -512,9 +659,11 @@ const HomePage = memo(function HomePage() {
                     </svg>
                   </div>
                   <h3 className="font-bold text-slate-900 mb-2 group-hover:text-red-600 transition-colors">
-                    {t('home.pciDss')}
+                    {t("home.pciDss")}
                   </h3>
-                  <p className="text-xs text-slate-500">{t('home.pciDssDesc')}</p>
+                  <p className="text-xs text-slate-500">
+                    {t("home.pciDssDesc")}
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -530,13 +679,13 @@ const HomePage = memo(function HomePage() {
                     <ShieldIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                    {t('home.commonCriteria')}
+                    {t("home.commonCriteria")}
                   </h3>
                   <p className="text-sm text-emerald-600 font-medium mb-2">
-                    {t('home.commonCriteriaLevel')}
+                    {t("home.commonCriteriaLevel")}
                   </p>
                   <p className="text-xs text-slate-500">
-                    {t('home.commonCriteriaDesc')}
+                    {t("home.commonCriteriaDesc")}
                   </p>
                 </div>
               </div>
@@ -557,13 +706,13 @@ const HomePage = memo(function HomePage() {
                     </svg>
                   </div>
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
-                    {t('home.fips1402')}
+                    {t("home.fips1402")}
                   </h3>
                   <p className="text-sm text-blue-600 font-medium mb-2">
-                    {t('home.fips1402Level')}
+                    {t("home.fips1402Level")}
                   </p>
                   <p className="text-xs text-slate-500">
-                    {t('home.fips1402Desc')}
+                    {t("home.fips1402Desc")}
                   </p>
                 </div>
               </div>
@@ -624,10 +773,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">
-                    {t('home.verifiableErasure')}
+                    {t("home.verifiableErasure")}
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    {t('home.verifiableErasureDesc')}
+                    {t("home.verifiableErasureDesc")}
                   </p>
                 </div>
                 <div className="text-center">
@@ -642,10 +791,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">
-                    {t('home.auditReadyReports')}
+                    {t("home.auditReadyReports")}
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    {t('home.auditReadyReportsDesc')}
+                    {t("home.auditReadyReportsDesc")}
                   </p>
                 </div>
                 <div className="text-center md:col-span-2 lg:col-span-1">
@@ -660,10 +809,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 mb-2">
-                    {t('home.globalStandards')}
+                    {t("home.globalStandards")}
                   </h3>
                   <p className="text-slate-600 text-sm">
-                    {t('home.globalStandardsDesc')}
+                    {t("home.globalStandardsDesc")}
                   </p>
                 </div>
               </div>
@@ -675,7 +824,7 @@ const HomePage = memo(function HomePage() {
                 to="/compliance"
                 className="btn-primary inline-flex items-center justify-center"
               >
-                <span>{t('home.exploreComplianceStandards')}</span>
+                <span>{t("home.exploreComplianceStandards")}</span>
                 <HoverIcon>
                   {(filled) => (
                     <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
@@ -699,10 +848,10 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-12 lg:mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
-                {t('home.whyChooseTitle')}
+                {t("home.whyChooseTitle")}
               </h2>
               <p className="text-lg md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
-                {t('home.whyChooseSubtitle')}
+                {t("home.whyChooseSubtitle")}
               </p>
             </Reveal>
           </div>
@@ -802,18 +951,19 @@ const HomePage = memo(function HomePage() {
               <Reveal key={feature.titleKey} delayMs={i * 100}>
                 <div className="group card hover:shadow-lg hover:-translate-y-1 transition-transform duration-200 ease-out h-full flex flex-col relative overflow-hidden">
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${feature.bgColor.includes("blue")
-                      ? "from-blue-50 to-transparent"
-                      : feature.bgColor.includes("emerald")
-                        ? "from-emerald-50 to-transparent"
-                        : feature.bgColor.includes("purple")
-                          ? "from-purple-50 to-transparent"
-                          : feature.bgColor.includes("orange")
-                            ? "from-orange-50 to-transparent"
-                            : feature.bgColor.includes("teal")
-                              ? "from-teal-50 to-transparent"
-                              : "from-rose-50 to-transparent"
-                      } opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                    className={`absolute inset-0 bg-gradient-to-br ${
+                      feature.bgColor.includes("blue")
+                        ? "from-blue-50 to-transparent"
+                        : feature.bgColor.includes("emerald")
+                          ? "from-emerald-50 to-transparent"
+                          : feature.bgColor.includes("purple")
+                            ? "from-purple-50 to-transparent"
+                            : feature.bgColor.includes("orange")
+                              ? "from-orange-50 to-transparent"
+                              : feature.bgColor.includes("teal")
+                                ? "from-teal-50 to-transparent"
+                                : "from-rose-50 to-transparent"
+                    } opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
                   ></div>
                   <div className="relative z-10">
                     <div
@@ -842,40 +992,40 @@ const HomePage = memo(function HomePage() {
                   <Reveal delayMs={20}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.devicesCount')}
+                        {t("home.devicesCount")}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.devices')}
+                        {t("home.devices")}
                       </div>
                     </div>
                   </Reveal>
                   <Reveal delayMs={30}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.complianceRate')}
+                        {t("home.complianceRate")}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.compliance')}
+                        {t("home.compliance")}
                       </div>
                     </div>
                   </Reveal>
                   <Reveal delayMs={40}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-purple-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.encryptionStrength')}
+                        {t("home.encryptionStrength")}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.encryption')}
+                        {t("home.encryption")}
                       </div>
                     </div>
                   </Reveal>
                   <Reveal delayMs={50}>
                     <div className="group">
                       <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-orange-600 mb-2 group-hover:scale-105 transition-transform duration-300">
-                        {t('home.supportAvailability')}
+                        {t("home.supportAvailability")}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
-                        {t('home.support')}
+                        {t("home.support")}
                       </div>
                     </div>
                   </Reveal>
@@ -895,15 +1045,15 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                {t('home.industriesTitle').split(' ').slice(0, 2).join(' ')}{" "}
+                {t("home.industriesTitle").split(" ").slice(0, 2).join(" ")}{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-                  {t('home.industriesTitle').split(' ').slice(2).join(' ')}
+                  {t("home.industriesTitle").split(" ").slice(2).join(" ")}
                 </span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                {t('home.industriesSubtitle')}
+                {t("home.industriesSubtitle")}
               </p>
             </Reveal>
           </div>
@@ -925,13 +1075,15 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.healthcare')}
+                        {t("home.healthcare")}
                       </h3>
-                      <p className="text-sm text-slate-500">{t('home.healthcareCompliance')}</p>
+                      <p className="text-sm text-slate-500">
+                        {t("home.healthcareCompliance")}
+                      </p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    {t('home.healthcareDesc')}
+                    {t("home.healthcareDesc")}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
@@ -966,13 +1118,15 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.financial')}
+                        {t("home.financial")}
                       </h3>
-                      <p className="text-sm text-slate-500">{t('home.financialCompliance')}</p>
+                      <p className="text-sm text-slate-500">
+                        {t("home.financialCompliance")}
+                      </p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    {t('home.financialDesc')}
+                    {t("home.financialDesc")}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
@@ -1002,20 +1156,22 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.government')}
+                        {t("home.government")}
                       </h3>
-                      <p className="text-sm text-slate-500">{t('home.governmentCompliance')}</p>
+                      <p className="text-sm text-slate-500">
+                        {t("home.governmentCompliance")}
+                      </p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    {t('home.governmentDesc')}
+                    {t("home.governmentDesc")}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
-                      {t('home.dodStandards')}
+                      {t("home.dodStandards")}
                     </span>
                     <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
-                      {t('home.federalAgencies')}
+                      {t("home.federalAgencies")}
                     </span>
                   </div>
                 </div>
@@ -1038,13 +1194,15 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.enterprise')}
+                        {t("home.enterprise")}
                       </h3>
-                      <p className="text-sm text-slate-500">{t('home.enterpriseCompliance')}</p>
+                      <p className="text-sm text-slate-500">
+                        {t("home.enterpriseCompliance")}
+                      </p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    {t('home.enterpriseDesc')}
+                    {t("home.enterpriseDesc")}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
@@ -1074,16 +1232,14 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.itadServices')}
+                        {t("home.itadServices")}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        {t('home.itadCompliance')}
+                        {t("home.itadCompliance")}
                       </p>
                     </div>
                   </div>
-                  <p className="text-slate-600 mb-4">
-                    {t('home.itadDesc')}
-                  </p>
+                  <p className="text-slate-600 mb-4">{t("home.itadDesc")}</p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
                       Asset Recovery
@@ -1117,13 +1273,15 @@ const HomePage = memo(function HomePage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                        {t('home.serviceProviders')}
+                        {t("home.serviceProviders")}
                       </h3>
-                      <p className="text-sm text-slate-500">{t('home.serviceProvidersCompliance')}</p>
+                      <p className="text-sm text-slate-500">
+                        {t("home.serviceProvidersCompliance")}
+                      </p>
                     </div>
                   </div>
                   <p className="text-slate-600 mb-4">
-                    {t('home.serviceProvidersDesc')}
+                    {t("home.serviceProvidersDesc")}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
@@ -1143,7 +1301,7 @@ const HomePage = memo(function HomePage() {
                 to="/solutions"
                 className="btn-primary inline-flex items-center justify-center"
               >
-                <span>{t('home.exploreAllIndustrySolutions')}</span>
+                <span>{t("home.exploreAllIndustrySolutions")}</span>
                 <HoverIcon>
                   {(filled) => (
                     <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
@@ -1161,15 +1319,15 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                {t('home.servicesTitle').split(' ').slice(0, 1).join(' ')}{" "}
+                {t("home.servicesTitle").split(" ").slice(0, 1).join(" ")}{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                  {t('home.servicesTitle').split(' ').slice(1).join(' ')}
+                  {t("home.servicesTitle").split(" ").slice(1).join(" ")}
                 </span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                {t('home.servicesSubtitle')}
+                {t("home.servicesSubtitle")}
               </p>
             </Reveal>
           </div>
@@ -1192,10 +1350,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    {t('home.driveEraserTitle')}
+                    {t("home.driveEraserTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6">
-                    {t('home.driveEraserDesc')}
+                    {t("home.driveEraserDesc")}
                   </p>
                 </div>
                 <div className="space-y-3 mb-6">
@@ -1214,7 +1372,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.driveEraserFeature1')}
+                      {t("home.driveEraserFeature1")}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1232,7 +1390,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.driveEraserFeature2')}
+                      {t("home.driveEraserFeature2")}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1250,7 +1408,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.driveEraserFeature3')}
+                      {t("home.driveEraserFeature3")}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1268,23 +1426,23 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.driveEraserFeature4')}
+                      {t("home.driveEraserFeature4")}
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
                   <div className="text-xl font-bold text-slate-900 mb-2">
-                    {t('home.driveEraserPrice')}
+                    {t("home.driveEraserPrice")}
                   </div>
                   <div className="text-slate-600 text-sm">
-                    {t('home.driveEraserPriceNote')}
+                    {t("home.driveEraserPriceNote")}
                   </div>
                 </div>
                 <Link
                   to="/products?focus=drive-eraser"
                   className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium group"
                 >
-                  <span>{t('home.viewProductDetails')}</span>
+                  <span>{t("home.viewProductDetails")}</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
                     fill="none"
@@ -1320,10 +1478,10 @@ const HomePage = memo(function HomePage() {
                     </HoverIcon>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">
-                    {t('home.fileEraserTitle')}
+                    {t("home.fileEraserTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6">
-                    {t('home.fileEraserDesc')}
+                    {t("home.fileEraserDesc")}
                   </p>
                 </div>
                 <div className="space-y-3 mb-6">
@@ -1342,7 +1500,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.fileEraserFeature1')}
+                      {t("home.fileEraserFeature1")}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1360,7 +1518,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.fileEraserFeature2')}
+                      {t("home.fileEraserFeature2")}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1378,7 +1536,7 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.fileEraserFeature3')}
+                      {t("home.fileEraserFeature3")}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1396,23 +1554,23 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                     <span className="text-sm text-slate-700">
-                      {t('home.fileEraserFeature4')}
+                      {t("home.fileEraserFeature4")}
                     </span>
                   </div>
                 </div>
                 <div className="mb-4">
                   <div className="text-xl font-bold text-slate-900 mb-2">
-                    {t('home.fileEraserPrice')}
+                    {t("home.fileEraserPrice")}
                   </div>
                   <div className="text-slate-600 text-sm">
-                    {t('home.fileEraserPriceNote')}
+                    {t("home.fileEraserPriceNote")}
                   </div>
                 </div>
                 <Link
                   to="/products?focus=file-eraser"
                   className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium group"
                 >
-                  <span>{t('home.viewProductDetails')}</span>
+                  <span>{t("home.viewProductDetails")}</span>
                   <svg
                     className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
                     fill="none"
@@ -1436,7 +1594,7 @@ const HomePage = memo(function HomePage() {
                 to="/products"
                 className="btn-primary inline-flex items-center justify-center"
               >
-                <span>{t('home.viewAllProducts')}</span>
+                <span>{t("home.viewAllProducts")}</span>
                 <HoverIcon>
                   {(filled) => (
                     <ArrowRightIcon className="w-5 h-5 ml-2" filled={filled} />
@@ -1459,13 +1617,15 @@ const HomePage = memo(function HomePage() {
           <div className="text-center mb-16">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                {t('home.trustedTitle').split(' ').slice(0, 3).join(' ')}{" "}
-                <span className="text-yellow-300">{t('home.trustedTitle').split(' ').slice(3).join(' ')}</span>
+                {t("home.trustedTitle").split(" ").slice(0, 3).join(" ")}{" "}
+                <span className="text-yellow-300">
+                  {t("home.trustedTitle").split(" ").slice(3).join(" ")}
+                </span>
               </h2>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="text-lg text-white/90 max-w-3xl mx-auto">
-                {t('home.trustedSubtitle')}
+                {t("home.trustedSubtitle")}
               </p>
             </Reveal>
           </div>
@@ -1488,11 +1648,11 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold">{t('home.militaryGradeSecurity')}</h3>
+                  <h3 className="text-xl font-bold">
+                    {t("home.militaryGradeSecurity")}
+                  </h3>
                 </div>
-                <p className="text-white/90">
-                  {t('home.militaryGradeDesc')}
-                </p>
+                <p className="text-white/90">{t("home.militaryGradeDesc")}</p>
               </div>
             </Reveal>
             <Reveal delayMs={450}>
@@ -1513,11 +1673,11 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold">{t('home.enterpriseScale')}</h3>
+                  <h3 className="text-xl font-bold">
+                    {t("home.enterpriseScale")}
+                  </h3>
                 </div>
-                <p className="text-white/90">
-                  {t('home.enterpriseScaleDesc')}
-                </p>
+                <p className="text-white/90">{t("home.enterpriseScaleDesc")}</p>
               </div>
             </Reveal>
             <Reveal delayMs={500}>
@@ -1538,10 +1698,12 @@ const HomePage = memo(function HomePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold">{t('home.globalCompliance')}</h3>
+                  <h3 className="text-xl font-bold">
+                    {t("home.globalCompliance")}
+                  </h3>
                 </div>
                 <p className="text-white/90">
-                  {t('home.globalComplianceDesc')}
+                  {t("home.globalComplianceDesc")}
                 </p>
               </div>
             </Reveal>
