@@ -139,7 +139,7 @@ function ContactPageContent() {
   };
 
   // FormSubmit configuration - Primary recipient
-  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@dsecuretech.com";
+  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/support@dsecuretech.com";
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -205,7 +205,7 @@ function ContactPageContent() {
 
       // Subject and CC
       formSubmitData.append("_subject", "New Contact Form Submission - D-Secure Tech");
-      formSubmitData.append("_cc", "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,support@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com");
+      formSubmitData.append("_cc", "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com");
 
       // === 1. SUBMIT TO BACKEND API (DATABASE) ===
       const timestampISO = now.toISOString(); // Format for backend
