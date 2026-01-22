@@ -15,8 +15,8 @@ import {
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { ENV } from "@/config/env";
-
 export default function ContactPage() {
+
   return (
     <>
       {/* SEO Meta Tags */}
@@ -25,7 +25,9 @@ export default function ContactPage() {
       <ContactPageContent />
     </>
   );
+  
 }
+ 
 
 // Office Data Structure Interface for type safety and easy expansion
 interface OfficeContact {
@@ -71,6 +73,7 @@ function ContactPageContent() {
   const [usageType, setUsageType] = useState<"business" | "personal">(
     "business"
   );
+   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -136,303 +139,13 @@ function ContactPageContent() {
   };
 
   // FormSubmit configuration - Primary recipient
-  // const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@dsecuretech.com";
-
-  //   const sendEmail = async (e: React.FormEvent) => {
-  //     e.preventDefault();
-
-  //     // Enhanced validation with better error messages
-  //     const errors: string[] = [];
-
-  //     if (!formData.name?.trim()) {
-  //       errors.push("Name is required");
-  //     }
-
-  //     if (!formData.email?.trim()) {
-  //       errors.push("Email is required");
-  //     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-  //       errors.push("Please enter a valid email address");
-  //     }
-
-  //     if (!formData.message?.trim()) {
-  //       errors.push("Message is required");
-  //     }
-
-  //     if (errors.length > 0) {
-  //       showToast(errors.join(", "), "error");
-  //       return;
-  //     }
-
-  //     try {
-  //       // Timestamps: ISO for DB, Local for email display
-  //       const nowDate = new Date();
-  //       const timestampISO = nowDate.toISOString(); // For DB storage
-  //       const timestampLocal = nowDate.toLocaleString(undefined, { 
-  //         weekday: 'long', 
-  //         year: 'numeric', 
-  //         month: 'long', 
-  //         day: 'numeric', 
-  //         hour: '2-digit', 
-  //         minute: '2-digit',
-  //         timeZoneName: 'short'
-  //       }); // For email display (user's local timezone)
-
-  //       // Prepare form data for both API and FormSubmit
-  //       const submissionData = {
-  //         name: formData.name.trim(),
-  //         email: formData.email.trim(),
-  //         company: formData.company.trim(),
-  //         phone: formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "",
-  //         country: formData.country,
-  //         businessType: formData.businessType,
-  //         solutionType: formData.solutionType,
-  //         complianceRequirements: formData.complianceRequirements,
-  //         message: formData.message.trim(),
-  //         usageType: usageType,
-  //         source: "Contact Page",
-  //         timestamp: new Date().toLocaleString('en-IN', {
-  //           weekday: 'long',
-  //           year: 'numeric',
-  //           month: 'long',
-  //           day: 'numeric',
-  //           hour: '2-digit',
-  //           minute: '2-digit',
-  //           timeZoneName: 'short'
-  //         }),
-  //       };
-
-  //       // 1. Store form data in database via API
-  //       const API_BASE = ENV.API_BASE_URL;
-  //       try {
-  //         await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
-  //           method: 'POST',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify(submissionData),
-  //         });
-  //         console.log('📧 Form data stored in database');
-  //       } catch (dbError) {
-  //         console.warn('⚠️ DB storage failed, continuing with email:', dbError);
-  //         // Continue with email submission even if DB fails
-  //       }
-
-  //       // 2. Send email via FormSubmit
-  //       const formSubmitData = new FormData();
-
-  //       // Add form fields with proper formatting
-  //       formSubmitData.append("name", submissionData.name);
-  //       formSubmitData.append("email", submissionData.email);
-  //       formSubmitData.append("company", submissionData.company);
-  //       formSubmitData.append("phone", submissionData.phone);
-  //       formSubmitData.append("country", submissionData.country);
-  //       formSubmitData.append("businessType", submissionData.businessType);
-  //       formSubmitData.append("solutionType", submissionData.solutionType);
-  //       formSubmitData.append("complianceRequirements", submissionData.complianceRequirements);
-  //       formSubmitData.append("message", submissionData.message);
-  //       formSubmitData.append("usageType", submissionData.usageType);
-  //       formSubmitData.append("timestamp", submissionData.timestamp);
-  //       formSubmitData.append("source", submissionData.source);
-
-  //       // FormSubmit configuration for better delivery
-  //       formSubmitData.append("_next", window.location.href);
-  //       formSubmitData.append("_captcha", "false");
-  //       formSubmitData.append("_template", "table");
-  //       formSubmitData.append("_cc", "nishus877@gmail.com,spsingh8477@gmail.com"); // CC additional emails
-  //       formSubmitData.append(
-  //         "_subject",
-  //         "New Contact Form Submission - D-Secure Tech"
-  //       );
-
-  //       // Professional autoresponse message
-  //       formSubmitData.append(
-  //         "_autoresponse",
-  //         `Dear ${submissionData.name},
-
-  // Thank you for reaching out to D-Secure Technologies!
-
-  // We have successfully received your enquiry and our team is reviewing your requirements. A dedicated specialist will contact you within the next 12 business hours to discuss your data security needs.
-
-  // 📋 Your Enquiry Summary:
-  // • Company: ${submissionData.company || 'N/A'}
-  // • Solution Interest: ${submissionData.solutionType || 'General Enquiry'}
-  // • Submitted: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-
-  // In the meantime, feel free to explore our resources:
-  // 🔗 Product Documentation: https://docs.dsecuretech.com
-  // 🔗 Knowledge Base: https://dsecuretech.com/resources
-
-  // If you have any urgent questions, please don't hesitate to reach out to our support team at support@dsecuretech.com.
-
-  // Best regards,
-  // The D-Secure Technologies Team
-
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // D-Secure Technologies | Enterprise Data Erasure Solutions
-  // 🌐 https://dsecuretech.com
-  // 📧 sales@dsecuretech.com
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  // This is an automated response. Please do not reply to this email.`
-  //       );
-
-  //       const response = await fetch(FORMSUBMIT_ENDPOINT, {
-  //         method: "POST",
-  //         body: formSubmitData,
-  //         headers: {
-  //           'Accept': 'application/json',
-  //         },
-  //       });
-
-  //       if (response.ok) {
-  //         showToast(
-  //           "Your query has been sent successfully! Our sales and tech team will resolve your query within 12 hours.",
-  //           "success"
-  //         );
-
-  //         // Reset form after successful submission
-  //         setFormData({
-  //           name: "",
-  //           email: "",
-  //           company: "",
-  //           phone: "",
-  //           countryCode: "+1",
-  //           country: "United States",
-  //           businessType: "",
-  //           solutionType: "",
-  //           complianceRequirements: "",
-  //           message: "",
-  //         });
-  //       } else {
-  //         throw new Error("Form submission failed");
-  //       }
-  //     } catch (error) {
-  //       console.error("Form submission error:", error);
-  //       showToast("Failed to send message. Please try again later.", "error");
-  //     }
-  //   };
-
-  // FormSubmit.co AJAX endpoint
-  // const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/support@dsecuretech.com";
-
-  // const sendEmail = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   // Validation
-  //   const errors: string[] = [];
-
-  //   if (!formData.name?.trim()) errors.push("Name is required");
-
-  //   if (!formData.email?.trim()) {
-  //     errors.push("Email is required");
-  //   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-  //     errors.push("Please enter a valid email address");
-  //   }
-
-  //   if (!formData.message?.trim()) {
-  //     errors.push("Message is required");
-  //   }
-
-  //   if (errors.length > 0) {
-  //     showToast(errors.join(", "), "error");
-  //     return;
-  //   }
-
-  //   try {
-  //     const now = new Date();
-  //     const timestampLocal = now.toLocaleString('en-IN', {
-  //       weekday: 'long',
-  //       year: 'numeric',
-  //       month: 'long',
-  //       day: 'numeric',
-  //       hour: '2-digit',
-  //       minute: '2-digit',
-  //       timeZoneName: 'short'
-  //     });
-
-  //     // Prepare form data for FormSubmit
-  //     const formSubmitData = new FormData();
-
-  //     // === MANDATORY HIDDEN FIELDS ===
-  //     // Webhook to notify backend - backend will send auto-response email
-  //     formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
-  //     // Disable captcha
-  //     formSubmitData.append("_captcha", "false");
-  //     // Table template for email
-  //     formSubmitData.append("_template", "table");
-
-  //     // === FORM FIELDS ===
-  //     formSubmitData.append("name", formData.name.trim());
-  //     formSubmitData.append("email", formData.email.trim());
-  //     formSubmitData.append("message", formData.message.trim());
-
-  //     // Required for autoresponse - tells FormSubmit where to send reply
-  //     formSubmitData.append("_replyto", formData.email.trim());
-
-  //     // Additional fields
-  //     formSubmitData.append("company", formData.company?.trim() || "");
-  //     formSubmitData.append("phone", formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "");
-  //     formSubmitData.append("country", formData.country);
-  //     formSubmitData.append("businessType", formData.businessType);
-  //     formSubmitData.append("solutionType", formData.solutionType);
-  //     formSubmitData.append("complianceRequirements", formData.complianceRequirements);
-  //     formSubmitData.append("usageType", usageType);
-  //     formSubmitData.append("timestamp", timestampLocal);
-  //     formSubmitData.append("source", "Contact Page");
-
-  //     // Subject and CC
-  //     formSubmitData.append("_subject", "New Contact Form Submission - D-Secure Tech");
-  //     formSubmitData.append("_cc", "dhruv.rai@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com");
-
-  //     // Auto-response handled by backend via webhook - no frontend autoresponse needed
-
-  //     // Submit to FormSubmit AJAX endpoint
-  //     const response = await fetch(FORMSUBMIT_ENDPOINT, {
-  //       method: "POST",
-  //       body: formSubmitData,
-  //       headers: {
-  //         Accept: "application/json",
-  //       },
-  //     });
-
-  //     // Debug: log response to see what FormSubmit returns
-  //     console.log("FormSubmit response status:", response.status, response.ok);
-
-  //     // If HTTP status is 200-299, consider it success
-  //     if (response.ok) {
-  //       showToast(
-  //         "Thank you! Your enquiry has been submitted successfully.",
-  //         "success"
-  //       );
-
-  //       // Reset form
-  //       setFormData({
-  //         name: "",
-  //         email: "",
-  //         company: "",
-  //         phone: "",
-  //         countryCode: "+1",
-  //         country: "United States",
-  //         businessType: "",
-  //         solutionType: "",
-  //         complianceRequirements: "",
-  //         message: "",
-  //       });
-  //     } else {
-  //       const errorText = await response.text();
-  //       console.error("FormSubmit error response:", errorText);
-  //       throw new Error("FormSubmit failed");
-  //     }
-  //   } catch (error) {
-  //     console.error("FormSubmit error:", error);
-  //     showToast("Failed to send message. Please try again later.", "error");
-  //   }
-  // };
-
-  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/support@dsecuretech.com";
+  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@dsecuretech.com";
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    setIsLoading(true);
+
 
     // Validation
     const errors: string[] = [];
@@ -463,6 +176,36 @@ function ContactPageContent() {
 
       // Prepare form data for FormSubmit
       const formSubmitData = new FormData();
+            // === MANDATORY HIDDEN FIELDS ===
+      // Webhook to notify backend - backend will send auto-response email
+      formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
+      // Disable captcha
+      formSubmitData.append("_captcha", "false");
+      // Table template for email
+      formSubmitData.append("_template", "table");
+
+      // === FORM FIELDS ===
+      formSubmitData.append("name", formData.name.trim());
+      formSubmitData.append("email", formData.email.trim());
+      formSubmitData.append("message", formData.message.trim());
+
+      // Required for autoresponse - tells FormSubmit where to send reply
+      formSubmitData.append("_replyto", formData.email.trim());
+
+      // Additional fields
+      formSubmitData.append("company", formData.company?.trim() || "");
+      formSubmitData.append("phone", formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "");
+      formSubmitData.append("country", formData.country);
+      formSubmitData.append("businessType", formData.businessType);
+      formSubmitData.append("solutionType", formData.solutionType);
+      formSubmitData.append("complianceRequirements", formData.complianceRequirements);
+      formSubmitData.append("usageType", usageType);
+      formSubmitData.append("timestamp", timestampLocal);
+      formSubmitData.append("source", "Contact Page");
+
+      // Subject and CC
+      formSubmitData.append("_subject", "New Contact Form Submission - D-Secure Tech");
+      formSubmitData.append("_cc", "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,support@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com");
 
       // === 1. SUBMIT TO BACKEND API (DATABASE) ===
       const timestampISO = now.toISOString(); // Format for backend
@@ -481,7 +224,24 @@ function ContactPageContent() {
         source: "Contact Page",
         timestamp: timestampISO,
       };
-
+      setFormData({
+          name: "",
+          email: "",
+          company: "",
+          phone: "",
+          countryCode: "+1",
+          country: "United States",
+          businessType: "",
+          solutionType: "",
+          complianceRequirements: "",
+          message: "",
+        });
+         setIsLoading(false);
+         // === SUCCESS ===
+        showToast(
+          "Thank you! Your enquiry has been submitted successfully.",
+          "success"
+        );
       try {
         const API_BASE = ENV.API_BASE_URL;
         const apiResponse = await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
@@ -491,7 +251,15 @@ function ContactPageContent() {
           },
           body: JSON.stringify(submissionData),
         });
-
+        const response = await fetch(FORMSUBMIT_ENDPOINT, {
+          method: "POST",
+          body: formSubmitData,
+          headers: {
+            'Accept': 'application/json',
+          },
+         });
+         
+       
         if (!apiResponse.ok) {
           const errorData = await apiResponse.json();
           // Log but don't stop execution - let FormSubmit try as fallback/email handler
@@ -504,25 +272,10 @@ function ContactPageContent() {
           }
         }
 
-        // === SUCCESS ===
-        showToast(
-          "Thank you! Your enquiry has been submitted successfully.",
-          "success"
-        );
+       
 
         // Reset form
-        setFormData({
-          name: "",
-          email: "",
-          company: "",
-          phone: "",
-          countryCode: "+1",
-          country: "United States",
-          businessType: "",
-          solutionType: "",
-          complianceRequirements: "",
-          message: "",
-        });
+       
       } catch (error: any) {
         console.error("Form error:", error);
         showToast(error.message || "Failed to send message. Please try again later.", "error");
@@ -1499,8 +1252,9 @@ function ContactPageContent() {
                     <button
                       type="submit"
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg text-lg font-medium transition-colors duration-200"
+                      disabled={isLoading}
                     >
-                      Submit Enquiry
+                      {isLoading ? "Submitting..." : "Submit Enquiry"}
                     </button>
                   </form>
                 </div>
