@@ -685,41 +685,82 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return;
     }
 
-    // =========================================================
-    // CONFIGURATION: Sirf yahan apne 2 Main Product Links dalein
-    // =========================================================
-    const BASE_LINKS: Record<string, string> = {
-      'drive-eraser': `${ENV.DRIVE_ERASER}`, // Yahan apna Drive Eraser ka link dalein
-      'file-eraser':  `${ENV.FILE_ERASER}`,  // Yahan apna File Eraser ka link dalein
+    // Product ID mapping - Dodo Payment Product IDs
+    const PRODUCT_IDS = {
+      'drive-eraser': 'pdt_0NVH5wJYMX70syW3ioj9R',
+      'file-eraser': 'pdt_0NVHHRwPSypqgPTs3kuSu',
     };
 
-    try {
-      // 3. Category ke hisab se sahi link uthao
-      const baseLink = BASE_LINKS[selectedCategory];
+    const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
 
-      if (!baseLink) {
-        showToast('Product link not found.', 'error');
+    if (!productId) {
+      showToast('Invalid product selection. Please try again.', 'error');
+      setIsBuyNowLoading(false);
+      return;
+    }
+
+    const quantity = parseInt(selectedLicenses) || 1;
+
+    // Store order metadata for success page (async, non-blocking)
+    const orderMetadata = {
+      category: selectedCategory,
+      //planId: selectedPlan,
+      //planName: getCurrentPlan().name,
+      productName: getCurrentProduct().title,
+      licenses: selectedLicenses,
+      years: selectedYears,
+      //totalPrice: calculatePrice(selectedCategory, selectedLicenses, selectedYears, selectedPlan),
+      //taxEnabled: true
+    };
+    localStorage.setItem('pendingOrder', JSON.stringify(orderMetadata));
+
+   
+
+    try {
+      // Set aggressive timeout for faster perceived performance
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+      // Fetch pre-generated checkout link from backend
+      const response = await api.get('/api/CheckoutLinks/get-link', {
+        params: {
+          productId: productId,
+          quantity: quantity
+        },
+        signal: controller.signal,
+        headers: {
+          'X-Request-Priority': 'high'
+        }
+      });
+
+      clearTimeout(timeoutId);
+
+      // Extract checkout URL from response
+      const checkoutUrl = response.data?.url || response.data?.Url || response.data?.checkoutUrl;
+
+      if (!checkoutUrl || typeof checkoutUrl !== 'string') {
+        console.error('No checkout URL in response:', response.data);
+        // document.body.removeChild(redirectOverlay);
+        document.body.style.overflow = '';
+        showToast('Checkout link unavailable at the moment. Please try again.', 'error');
         setIsBuyNowLoading(false);
         return;
       }
       setIsBuyNowLoading(false);
 
-      // 4. Quantity nikalo (Dropdown se)
-      const quantity = parseInt(selectedLicenses) || 1;
+      // Instant redirect - browser handles loading indicator
+      window.location.href = checkoutUrl;
 
-      // 5. Link mein dynamically quantity add karo
-      // Logic: Agar link mein pehle se '?' hai toh '&' lagao, nahi toh '?' lagao
-      // const separator = baseLink.includes('?') ? '&' : '?';
+    } catch (error: any) {
+      console.error('Error fetching checkout link:', error);
+      //document.body.removeChild(redirectOverlay);
+      document.body.style.overflow = '';
       
-      // Final URL banega: https://.../pdt_ID?quantity=10
-      const finalUrl = `${baseLink}${quantity}`;
-
-      // 6. Redirect User
-      window.location.href = finalUrl;
-
-    } catch (error) {
-      console.error('Navigation error:', error);
-      showToast('Something went wrong. Please try again.', 'error');
+      if (error.name === 'AbortError') {
+        showToast('Request timeout. Please check your connection and try again.', 'error');
+      } else {
+        showToast(error.response?.data?.error || error.message || 'Something went wrong while fetching checkout link.', 'error');
+      }
       setIsBuyNowLoading(false);
     }
   };
