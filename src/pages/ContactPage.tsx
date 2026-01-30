@@ -16,7 +16,6 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { ENV } from "@/config/env";
 export default function ContactPage() {
-
   return (
     <>
       {/* SEO Meta Tags */}
@@ -25,9 +24,7 @@ export default function ContactPage() {
       <ContactPageContent />
     </>
   );
-  
 }
- 
 
 // Office Data Structure Interface for type safety and easy expansion
 interface OfficeContact {
@@ -71,9 +68,9 @@ interface Office {
 function ContactPageContent() {
   const { t } = useTranslation();
   const [usageType, setUsageType] = useState<"business" | "personal">(
-    "business"
+    "business",
   );
-   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -107,7 +104,7 @@ function ContactPageContent() {
       "middle-east": ["UAE"],
     };
     return offices.filter((office) =>
-      regionMap[region]?.includes(office.location.countryCode)
+      regionMap[region]?.includes(office.location.countryCode),
     );
   };
 
@@ -132,7 +129,7 @@ function ContactPageContent() {
   // Toast functionality
   const showToast = (
     message: string,
-    type: "success" | "error" = "success"
+    type: "success" | "error" = "success",
   ) => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 6000); // Auto hide after 6 seconds
@@ -143,9 +140,8 @@ function ContactPageContent() {
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    setIsLoading(true);
 
+    setIsLoading(true);
 
     // Validation
     const errors: string[] = [];
@@ -164,21 +160,24 @@ function ContactPageContent() {
 
     try {
       const now = new Date();
-      const timestampLocal = now.toLocaleString('en-IN', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZoneName: 'short'
+      const timestampLocal = now.toLocaleString("en-IN", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZoneName: "short",
       });
 
       // Prepare form data for FormSubmit
       const formSubmitData = new FormData();
-            // === MANDATORY HIDDEN FIELDS ===
+      // === MANDATORY HIDDEN FIELDS ===
       // Webhook to notify backend - backend will send auto-response email
-      formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
+      formSubmitData.append(
+        "_webhook",
+        "https://api.dsecuretech.com/api/formsubmit/webhook",
+      );
       // Disable captcha
       formSubmitData.append("_captcha", "false");
       // Table template for email
@@ -194,18 +193,32 @@ function ContactPageContent() {
 
       // Additional fields
       formSubmitData.append("company", formData.company?.trim() || "");
-      formSubmitData.append("phone", formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "");
+      formSubmitData.append(
+        "phone",
+        formData.phone
+          ? `${formData.countryCode} ${formData.phone}`.trim()
+          : "",
+      );
       formSubmitData.append("country", formData.country);
       formSubmitData.append("businessType", formData.businessType);
       formSubmitData.append("solutionType", formData.solutionType);
-      formSubmitData.append("complianceRequirements", formData.complianceRequirements);
+      formSubmitData.append(
+        "complianceRequirements",
+        formData.complianceRequirements,
+      );
       formSubmitData.append("usageType", usageType);
       formSubmitData.append("timestamp", timestampLocal);
       formSubmitData.append("source", "Contact Page");
 
       // Subject and CC
-      formSubmitData.append("_subject", "New Contact Form Submission - D-Secure Tech");
-      formSubmitData.append("_cc", "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com");
+      formSubmitData.append(
+        "_subject",
+        "New Contact Form Submission - D-Secure Tech",
+      );
+      formSubmitData.append(
+        "_cc",
+        "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com",
+      );
 
       // === 1. SUBMIT TO BACKEND API (DATABASE) ===
       const timestampISO = now.toISOString(); // Format for backend
@@ -214,7 +227,9 @@ function ContactPageContent() {
         name: formData.name.trim(),
         email: formData.email.trim(),
         company: formData.company?.trim() || "",
-        phone: formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "",
+        phone: formData.phone
+          ? `${formData.countryCode} ${formData.phone}`.trim()
+          : "",
         country: formData.country,
         businessType: formData.businessType,
         solutionType: formData.solutionType,
@@ -225,60 +240,74 @@ function ContactPageContent() {
         timestamp: timestampISO,
       };
       setFormData({
-          name: "",
-          email: "",
-          company: "",
-          phone: "",
-          countryCode: "+1",
-          country: "United States",
-          businessType: "",
-          solutionType: "",
-          complianceRequirements: "",
-          message: "",
-        });
-         setIsLoading(false);
-         // === SUCCESS ===
-        showToast(
-          "Thank you! Your enquiry has been submitted successfully.",
-          "success"
-        );
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        countryCode: "+1",
+        country: "United States",
+        businessType: "",
+        solutionType: "",
+        complianceRequirements: "",
+        message: "",
+      });
+      setIsLoading(false);
+      // === SUCCESS ===
+      showToast(
+        "Thank you! Your enquiry has been submitted successfully.",
+        "success",
+      );
       try {
         const API_BASE = ENV.API_BASE_URL;
-        const apiResponse = await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const apiResponse = await fetch(
+          `${API_BASE}/api/ContactFormSubmissions`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(submissionData),
           },
-          body: JSON.stringify(submissionData),
-        });
+        );
         const response = await fetch(FORMSUBMIT_ENDPOINT, {
           method: "POST",
           body: formSubmitData,
           headers: {
-            'Accept': 'application/json',
+            Accept: "application/json",
           },
-         });
-         
-       
+        });
+        // Microsoft Excel + Teams tracking (non-blocking)
+        fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": "REACT_CONTACT_2026",
+          },
+          body: JSON.stringify(submissionData),
+        }).catch(() => {});
+
         if (!apiResponse.ok) {
           const errorData = await apiResponse.json();
           // Log but don't stop execution - let FormSubmit try as fallback/email handler
-          console.error('Backend submission failed:', errorData);
-          throw new Error(errorData.message || "Failed to send message. Please try again later.");
+          console.error("Backend submission failed:", errorData);
+          throw new Error(
+            errorData.message ||
+              "Failed to send message. Please try again later.",
+          );
 
           // Optionally show error if it's a validation error meant for the user
           if (errorData.errors) {
-            console.warn('Validation errors:', errorData.errors);
+            console.warn("Validation errors:", errorData.errors);
           }
         }
 
-       
-
         // Reset form
-       
       } catch (error: any) {
         console.error("Form error:", error);
-        showToast(error.message || "Failed to send message. Please try again later.", "error");
+        showToast(
+          error.message || "Failed to send message. Please try again later.",
+          "error",
+        );
       }
 
       /*
@@ -349,7 +378,6 @@ function ContactPageContent() {
     } catch (error) {
       // console.error("FormSubmit error:", error);
     }
-
   };
   const handleSubmit = (e: React.FormEvent) => {
     // //console.log("Form submitted:", formData);
@@ -359,7 +387,7 @@ function ContactPageContent() {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
 
@@ -381,8 +409,7 @@ function ContactPageContent() {
       // Company Information
       company: {
         name: "InfoTree Computers LLC",
-        logo:
-          "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
+        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
         website: "https://infotreeit.com",
         established: "2015",
       },
@@ -429,8 +456,7 @@ function ContactPageContent() {
       id: 2,
       company: {
         name: "D-Secure Technologies",
-        logo:
-          "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
+        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
         website: "https://dsecuretech.com",
         established: "2025",
       },
@@ -600,10 +626,11 @@ function ContactPageContent() {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${toast.type === "error"
-            ? "bg-red-50 border-red-200 text-red-800"
-            : "bg-green-50 border-green-200 text-green-800"
-            }`}
+          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
+            toast.type === "error"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : "bg-green-50 border-green-200 text-green-800"
+          }`}
         >
           <div className="flex items-start gap-3">
             {toast.type === "error" ? (
@@ -706,7 +733,7 @@ function ContactPageContent() {
                           checked={usageType === "business"}
                           onChange={(e) =>
                             setUsageType(
-                              e.target.value as "business" | "personal"
+                              e.target.value as "business" | "personal",
                             )
                           }
                           className="w-5 h-5 text-red-600"
@@ -721,7 +748,7 @@ function ContactPageContent() {
                           checked={usageType === "personal"}
                           onChange={(e) =>
                             setUsageType(
-                              e.target.value as "business" | "personal"
+                              e.target.value as "business" | "personal",
                             )
                           }
                           className="w-5 h-5 text-red-600"
@@ -1424,7 +1451,7 @@ function ContactPageContent() {
                       <div className="flex-shrink-0">
                         <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center overflow-hidden">
                           {(office.company as any).logoUrl ||
-                            office.company.logo?.startsWith("http") ? (
+                          office.company.logo?.startsWith("http") ? (
                             <img
                               src={
                                 (office.company as any).logoUrl ||
@@ -1436,9 +1463,10 @@ function ContactPageContent() {
                                 // Fallback to company initials if image fails to load
                                 const target = e.target as HTMLImageElement;
                                 target.style.display = "none";
-                                const fallback = target.parentElement?.querySelector(
-                                  ".logo-fallback"
-                                ) as HTMLElement;
+                                const fallback =
+                                  target.parentElement?.querySelector(
+                                    ".logo-fallback",
+                                  ) as HTMLElement;
                                 if (fallback) {
                                   fallback.style.display = "flex";
                                 }
@@ -1455,7 +1483,7 @@ function ContactPageContent() {
                             style={{
                               display:
                                 (office.company as any).logoUrl ||
-                                  office.company.logo?.startsWith("http")
+                                office.company.logo?.startsWith("http")
                                   ? "none"
                                   : "flex",
                             }}
@@ -1630,7 +1658,8 @@ function ContactPageContent() {
                     </div>
 
                     {/* Action Buttons - Only show if contact info exists */}
-                    {((office.contacts.primary as any).email || (office.contacts.primary as any).phone) && (
+                    {((office.contacts.primary as any).email ||
+                      (office.contacts.primary as any).phone) && (
                       <div className="flex gap-2 pt-4 border-t border-slate-200">
                         {(office.contacts.primary as any).email && (
                           <a
@@ -1652,7 +1681,8 @@ function ContactPageContent() {
                     )}
 
                     {/* Quick Contact Options - Only show if sales/support emails exist */}
-                    {((office.contacts as any).sales?.email || (office.contacts as any).support?.email) && (
+                    {((office.contacts as any).sales?.email ||
+                      (office.contacts as any).support?.email) && (
                       <div className="mt-3 pt-3 border-t border-slate-100">
                         <p className="text-xs text-slate-500 mb-2">
                           Quick Contact:

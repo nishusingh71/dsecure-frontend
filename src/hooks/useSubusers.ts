@@ -40,7 +40,7 @@ export function useSubusers(
   return useQuery({
     queryKey: subuserKeys.list(userEmail ? `${userEmail}-${JSON.stringify(filters)}` : undefined),
     queryFn: async () => {
-      // console.log('🔄 React Query: Fetching subusers...')
+      console.log('🔄 React Query: Fetching subusers...')
       const response = await apiClient.getAllSubusersWithFallback(userEmail, filters)
 
       if (!response.success || !response.data) {

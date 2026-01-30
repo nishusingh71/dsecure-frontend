@@ -8,6 +8,8 @@
  * - Removal of direct process.env / import.meta.env usage
  */
 
+import { Download } from "lucide-react";
+
 const validateStr = (value: string | undefined, key: string, required: boolean, fallback: string): string => {
     if (!value && required) {
         throw new Error(`CRITICAL CONFIG ERROR: Missing required environment variable: ${key}`);
@@ -52,6 +54,8 @@ export const ENV = {
     ENC_IV: validateStr(import.meta.env.VITE_ENC_IV, 'VITE_ENC_IV', false, '1234567890123456'),
     FILE_ERASER: validateStr(import.meta.env.FileEraser, 'FileEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVHHRwPSypqgPTs3kuSu?quantity='),
     DRIVE_ERASER: validateStr(import.meta.env.DriveEraser, 'DriveEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity='),
+    FileEraser_Windows_Download_Link: validateStr(import.meta.env.FileEraser_windows_download_link, 'FileEraser_windows_download_link', false, 'https://downloads.dsecuretech.com/windows/DSecureErase.exe'),
+    POWER_AUTOMATE_HTTP_URL: validateStr(import.meta.env.POWER_AUTOMATE_HTTP_URL, 'POWER_AUTOMATE_HTTP_URL', false, ''),
 };
 
 // Validate critical secrets don't map to defaults in Production if needed

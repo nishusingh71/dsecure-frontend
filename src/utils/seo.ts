@@ -952,8 +952,8 @@ export const generateSoftwareProductSchema = (productName: string, description: 
 
 // Default SEO metadata for all pages
 export const getDefaultSEO = (): SEOMetadata => ({
-  title: 'D-Secure Tech - Enterprise Data Erasure & Sanitization Solutions',
-  description: 'Leading data erasure software for GDPR, HIPAA & compliance. Secure data destruction with NIST 800-88 regulation. Enterprise data sanitization solutions.',
+  title: 'D-Secure - Best Data Erasure Software | Secure Tech for Enterprise Data Wiping',
+  description: 'D-Secure is the best data erasure software trusted globally. Secure data wiping for HDD, SSD, mobile devices. NIST 800-88, GDPR, HIPAA certified. Free trial available. Secure tech for enterprise.',
   keywords: generateKeywords(),
   canonicalUrl: SEO_CONFIG.baseUrl,
   ogTitle: 'D-Secure Tech - Secure Data Erasure Solutions',
@@ -1817,6 +1817,408 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'regulatory information'
     ]),
     canonicalUrl: getCanonicalUrl('/legal-policy'),
+  },
+
+  // ============================================================
+  // BLOG POSTS - Individual SEO for Google First Page Ranking
+  // ============================================================
+
+  // Main Blog Listing Page
+  'blog': {
+    title: 'Data Erasure Blog | Expert Guides, Compliance Tips & Best Practices',
+    description: 'Expert insights on data erasure, NIST 800-88 compliance, SSD wiping, GDPR data destruction, and enterprise data sanitization. Stay compliant with our technical guides.',
+    keywords: generateKeywords([
+      'data erasure blog',
+      'data destruction guide',
+      'data sanitization tips',
+      'NIST 800-88 blog',
+      'GDPR compliance blog',
+      'data wiping best practices',
+      'enterprise data security blog',
+      'secure data deletion articles',
+      'IT asset disposition blog',
+      'ITAD best practices',
+      'data security news',
+      'compliance updates',
+      'data destruction methods',
+      'SSD erasure guide',
+      'HDD wiping tips'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog'),
+    ogImage: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop',
+  },
+
+  // Blog: Data Sanitization Compliance
+  'blog-data-sanitization-compliance': {
+    title: 'GDPR, HIPAA, PCI-DSS Data Sanitization Compliance Guide 2025',
+    description: 'Complete guide to data sanitization compliance for GDPR, HIPAA, PCI-DSS & NIST 800-88. Avoid fines up to €20M with certified erasure methods and audit-ready documentation.',
+    keywords: generateKeywords([
+      'data sanitization compliance',
+      'GDPR data erasure requirements',
+      'HIPAA data destruction compliance',
+      'PCI-DSS data sanitization',
+      'NIST 800-88 compliance guide',
+      'certified data erasure',
+      'compliance data wiping',
+      'regulated data destruction',
+      'audit-ready data erasure',
+      'data sanitization regulation',
+      'GDPR Article 17 compliance',
+      'right to be forgotten compliance',
+      'healthcare data destruction',
+      'financial data erasure compliance',
+      'enterprise compliance erasure',
+      'data protection officer guide',
+      'DPO data erasure',
+      'compliance certificate erasure',
+      'legal data destruction',
+      'data sanitization audit'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/data-sanitization-compliance'),
+    ogImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "Complete Guide to Data Sanitization Compliance: GDPR, HIPAA, PCI-DSS & NIST 800-88",
+      "datePublished": "2025-01-15",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: Best Erasure Methods
+  'blog-best-erasure-method': {
+    title: 'Best Data Erasure Methods Compared: Overwriting vs Degaussing vs Shredding',
+    description: 'Expert comparison of data erasure methods: software overwriting, degaussing, and physical destruction. Learn which method fits your compliance needs and preserves asset value.',
+    keywords: generateKeywords([
+      'best data erasure method',
+      'data wiping comparison',
+      'overwriting vs degaussing',
+      'data destruction methods compared',
+      'NIST 800-88 erasure methods',
+      'software vs physical destruction',
+      'secure erase vs shredding',
+      'data sanitization methods',
+      'which data erasure method',
+      'erasure method selection',
+      'degaussing HDD',
+      'overwriting data',
+      'multi-pass overwrite',
+      'single pass erasure',
+      'Gutmann method',
+      'DoD 5220.22-M method',
+      'cryptographic erasure',
+      'data destruction comparison',
+      'enterprise erasure methods',
+      'ITAD erasure best practices'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/best-erasure-method'),
+    ogImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "Best Data Erasure Methods: Complete Comparison Guide for 2025",
+      "datePublished": "2025-01-10",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: SSD Wipe Guide
+  'blog-ssd-wipe-guide': {
+    title: 'How to Securely Wipe SSD: NVMe & SATA Secure Erase Guide 2025',
+    description: 'Technical guide to SSD secure erasure. Learn why traditional overwriting fails on flash storage and how to use ATA Secure Erase, NVMe SANITIZE, and cryptographic erasure.',
+    keywords: generateKeywords([
+      'SSD secure erase guide',
+      'how to wipe SSD securely',
+      'NVMe secure erase',
+      'SATA secure erase',
+      'SSD data destruction',
+      'flash memory erasure',
+      'SSD cryptographic erase',
+      'NIST 800-88 SSD',
+      'SSD sanitization',
+      'NVMe SANITIZE command',
+      'ATA secure erase command',
+      'SSD overwriting problems',
+      'wear leveling data recovery',
+      'flash translation layer',
+      'SSD trim secure',
+      'solid state drive wipe',
+      'enterprise SSD erasure',
+      'SSD wipe verification',
+      'SSD data recovery prevention',
+      'certified SSD erasure'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/ssd-wipe-guide'),
+    ogImage: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "HowTo",
+      "name": "How to Securely Wipe an SSD",
+      "step": [
+        { "@type": "HowToStep", "name": "Identify SSD Type", "text": "Determine if your SSD uses SATA or NVMe interface" },
+        { "@type": "HowToStep", "name": "Choose Erasure Method", "text": "Select appropriate secure erase or cryptographic erasure" },
+        { "@type": "HowToStep", "name": "Execute & Verify", "text": "Run the erasure command and verify with sampling" }
+      ]
+    }
+  },
+
+  // Blog: Mobile Erasure Guide
+  'blog-mobile-erasure-guide': {
+    title: 'iOS & Android Mobile Device Erasure: Complete ITAD Guide 2025',
+    description: 'Enterprise guide to mobile device data erasure for iOS and Android. Learn crypto-shredding, factory reset limitations, IMEI verification, and ADISA-certified processes.',
+    keywords: generateKeywords([
+      'mobile device erasure',
+      'iOS data wipe',
+      'Android data erasure',
+      'smartphone factory reset security',
+      'mobile ITAD',
+      'enterprise mobile erasure',
+      'iPhone secure erase',
+      'Android secure wipe',
+      'mobile data destruction',
+      'BYOD data erasure',
+      'corporate mobile wiping',
+      'mobile device sanitization',
+      'iOS crypto-shredding',
+      'Android FBE erasure',
+      'IMEI verification',
+      'mobile erasure certificate',
+      'smartphone data recovery prevention',
+      'ADISA certified mobile erasure',
+      'mobile diagnostics ITAD',
+      'enterprise phone wiping'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/mobile-erasure-guide'),
+    ogImage: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "Complete Guide to iOS and Android Mobile Device Erasure for Enterprise ITAD",
+      "datePublished": "2025-01-12",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: ESG Data Erasure
+  'blog-esg-data-erasure': {
+    title: 'ESG Reporting & ITAD: Measuring CO2 Reduction from Data Erasure',
+    description: 'Calculate carbon savings from IT asset reuse vs recycling. Learn EPA WARM methodology, GHG Protocol Scope 3 reporting, and how ITAD supports your ESG goals.',
+    keywords: generateKeywords([
+      'ESG data erasure',
+      'ITAD carbon savings',
+      'IT reuse sustainability',
+      'ESG reporting ITAD',
+      'carbon footprint IT disposal',
+      'sustainable data destruction',
+      'e-waste reduction',
+      'circular economy IT',
+      'GHG Protocol ITAD',
+      'Scope 3 emissions IT',
+      'EPA WARM model',
+      'CO2 avoided emissions',
+      'green IT disposal',
+      'sustainable ITAD',
+      'ESG compliance IT',
+      'carbon certificate erasure',
+      'e-waste diversion',
+      'IT asset reuse sustainability',
+      'CSRD data erasure',
+      'environmental IT reporting'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/esg-data-erasure'),
+    ogImage: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "ESG Reporting: How Data Erasure & ITAD Supports Your Sustainability Goals",
+      "datePublished": "2025-01-08",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: Data Deletion Myths
+  'blog-data-deletion-myths': {
+    title: '6 Data Deletion Myths That Could Get You Sued | Expert Debunked',
+    description: 'Debunking dangerous data deletion myths: formatting, factory reset, degaussing SSDs & more. Learn why "delete" doesn\'t mean deleted and avoid compliance violations.',
+    keywords: generateKeywords([
+      'data deletion myths',
+      'data recovery facts',
+      'format drive data recovery',
+      'factory reset data recovery',
+      'degaussing SSD myth',
+      'delete vs secure erase',
+      'data destruction myths debunked',
+      'why formatting not secure',
+      'recycle bin data recovery',
+      'file deletion reality',
+      'data not deleted',
+      'forensic data recovery',
+      'secure data destruction facts',
+      'data breach prevention',
+      'compliance data erasure',
+      'NIST certified deletion',
+      'data sanitization truth',
+      'secure deletion vs deletion',
+      'enterprise data destruction',
+      'IT disposal myths'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/data-deletion-myths'),
+    ogImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "6 Data Deletion Myths Debunked: What IT Managers Must Know",
+      "datePublished": "2025-01-05",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: Automated Erasure (PXE)
+  'blog-automated-erasure-pxe': {
+    title: 'PXE Network Boot Data Erasure: Automate 500+ Servers at Once',
+    description: 'Technical guide to automating data center erasure via PXE boot. DHCP/TFTP configuration, Wake-on-LAN, zero-touch wiping, and 93% labor cost reduction.',
+    keywords: generateKeywords([
+      'PXE data erasure',
+      'network boot erasure',
+      'automated data wiping',
+      'data center erasure automation',
+      'DHCP TFTP erasure',
+      'Wake-on-LAN wiping',
+      'bulk server erasure',
+      'automated ITAD',
+      'enterprise scale erasure',
+      'zero touch wiping',
+      'PXE boot wipe',
+      'server decommission automation',
+      'mass data destruction',
+      'data center refresh',
+      'automated compliance erasure',
+      'scalable data wiping',
+      'network erasure factory',
+      'ITAD automation',
+      'server room erasure',
+      'rack scale wiping'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/automated-erasure-pxe'),
+    ogImage: 'https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "TechArticle",
+      "headline": "Automating Data Center Erasure with PXE Network Boot",
+      "datePublished": "2025-01-03",
+      "dateModified": "2025-01-27",
+      "proficiencyLevel": "Advanced",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: Zero Trust Disposal
+  'blog-zero-trust-disposal': {
+    title: 'Zero Trust IT Asset Disposal: Never Trust, Always Verify Erasure',
+    description: 'Apply Zero Trust principles to IT disposal. Verify every device, cryptographic audit trails, tamper-proof certificates, and continuous monitoring for NIST compliance.',
+    keywords: generateKeywords([
+      'Zero Trust disposal',
+      'Zero Trust ITAD',
+      'verify erasure',
+      'tamper-proof certificates',
+      'cryptographic audit trail',
+      'Zero Trust data destruction',
+      'never trust always verify',
+      'secure IT disposal',
+      'verified data sanitization',
+      'Zero Trust security model',
+      'NIST Zero Trust',
+      'disposal verification',
+      'chain of custody erasure',
+      'trusted data destruction',
+      'enterprise Zero Trust',
+      'compliance verification',
+      'audit-ready disposal',
+      'secure asset retirement',
+      'Zero Trust framework',
+      'data erasure verification'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/zero-trust-disposal'),
+    ogImage: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "Applying Zero Trust Principles to IT Asset Disposal",
+      "datePublished": "2025-01-01",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: Government Device Theft
+  'blog-gov-device-theft': {
+    title: 'Government Device Theft Prevention: Military-Grade Data Erasure',
+    description: 'Prevent data breaches from stolen government devices. DoD 5220.22-M erasure, classified data destruction, CMMC compliance, and federal security protocols.',
+    keywords: generateKeywords([
+      'government device theft',
+      'DoD data erasure',
+      'classified data destruction',
+      'federal data security',
+      'military data wiping',
+      'government laptop theft',
+      'CMMC compliance erasure',
+      'federal IT security',
+      'classified device disposal',
+      'government data breach prevention',
+      'DoD 5220.22-M',
+      'NSA approved erasure',
+      'government compliance',
+      'secure government disposal',
+      'federal data protection',
+      'classified information destruction',
+      'government ITAD',
+      'military device wiping',
+      'federal agency erasure',
+      'government cybersecurity'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/gov-device-theft'),
+    ogImage: 'https://images.unsplash.com/photo-1569025590792-bc3d2c6c44d9?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "Preventing Government Data Breaches: Military-Grade Device Erasure",
+      "datePublished": "2024-12-28",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
+  },
+
+  // Blog: ITAM Disposal Guide
+  'blog-itam-disposal-guide': {
+    title: 'ITAM Integration: Complete IT Asset Disposal Lifecycle Guide',
+    description: 'Integrate data erasure into your ITAM workflow. Asset tracking, ServiceNow integration, disposal automation, compliance reporting, and circular economy strategies.',
+    keywords: generateKeywords([
+      'ITAM disposal',
+      'IT asset management disposal',
+      'ITAM lifecycle',
+      'asset tracking erasure',
+      'ServiceNow ITAD integration',
+      'IT asset disposal workflow',
+      'ITAM compliance',
+      'asset retirement process',
+      'IT lifecycle management',
+      'disposal automation ITAM',
+      'asset inventory erasure',
+      'IT asset tracking',
+      'CMDB disposal integration',
+      'ITAM best practices',
+      'asset management compliance',
+      'enterprise ITAM',
+      'IT disposal process',
+      'asset decommission',
+      'ITAM security',
+      'lifecycle disposal'
+    ]),
+    canonicalUrl: getCanonicalUrl('/blog/itam-disposal-guide'),
+    ogImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=630&fit=crop',
+    structuredData: {
+      "@type": "Article",
+      "headline": "ITAM Integration: Complete Guide to IT Asset Disposal Lifecycle",
+      "datePublished": "2024-12-25",
+      "dateModified": "2025-01-27",
+      "author": { "@type": "Organization", "name": "D-Secure Tech" }
+    }
   },
 
   // Payment and plan pages
@@ -2868,45 +3270,6 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       'product demonstrations'
     ]),
     canonicalUrl: getCanonicalUrl('/support/product-videos'),
-  },
-
-  // Blog
-  'blog': {
-    title: 'Blog - Data Security News & Insights | D-Secure Tech',
-    description: 'Stay updated with latest data security news, data erasure insights, compliance updates, and industry trends.',
-    keywords: generateKeywords([
-      'data security blog',
-      'erasure news',
-      'security insights',
-      'industry blog',
-      'compliance updates',
-      'data protection blog',
-      'security articles',
-      'industry news',
-      'erasure blog',
-      'tech blog',
-      'data erasure blog',
-      'cybersecurity blog',
-      'IT security blog',
-      'compliance blog',
-      'GDPR blog',
-      'HIPAA blog',
-      'data privacy blog',
-      'security news',
-      'blog articles',
-      'tech articles',
-      'security best practices',
-      'data erasure tips',
-      'security trends',
-      'industry insights',
-      'thought leadership',
-      'expert blog',
-      'security updates',
-      'compliance news',
-      'data security articles',
-      'IT blog'
-    ]),
-    canonicalUrl: getCanonicalUrl('/blog'),
   },
 
   // News
@@ -6767,64 +7130,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: 'https://dsecuretech.com/support/manual/working-with-D-Secure',
   },
-  'blog-data-deletion-myths': {
-    title: 'Blog Data Deletion Myths | D-Secure Tech',
-    description: 'Learn about blog data deletion myths. D-Secure provides comprehensive data erasure solutions and documentation for blog data deletion myths.',
-    keywords: generateKeywords([
-      'blog',
-      'data',
-      'deletion',
-      'myths',
-      'data erasure',
-    ]),
-    canonicalUrl: 'https://dsecuretech.com/blog/data-deletion-myths',
-  },
-  'blog-data-sanitization-compliance': {
-    title: 'Blog Data Sanitization Compliance | D-Secure Tech',
-    description: 'Learn about blog data sanitization compliance. D-Secure provides comprehensive data erasure solutions and documentation for blog data sanitization compliance.',
-    keywords: generateKeywords([
-      'blog',
-      'data',
-      'sanitization',
-      'compliance',
-      'data erasure',
-    ]),
-    canonicalUrl: 'https://dsecuretech.com/blog/data-sanitization-compliance',
-  },
-  'blog-erasure-vs-destruction': {
-    title: 'Blog Erasure Vs Destruction | D-Secure Tech',
-    description: 'Learn about blog erasure vs destruction. D-Secure provides comprehensive data erasure solutions and documentation for blog erasure vs destruction.',
-    keywords: generateKeywords([
-      'blog',
-      'erasure',
-      'destruction',
-      'data erasure',
-    ]),
-    canonicalUrl: 'https://dsecuretech.com/blog/erasure-vs-destruction',
-  },
-  'blog-overwrite-guide': {
-    title: 'Blog Overwrite Guide | D-Secure Tech',
-    description: 'Learn about blog overwrite guide. D-Secure provides comprehensive data erasure solutions and documentation for blog overwrite guide.',
-    keywords: generateKeywords([
-      'blog',
-      'overwrite',
-      'guide',
-      'data erasure',
-    ]),
-    canonicalUrl: 'https://dsecuretech.com/blog/overwrite-guide',
-  },
-  'blog-ssd-wipe-guide': {
-    title: 'Blog Ssd Wipe Guide | D-Secure Tech',
-    description: 'Learn about blog ssd wipe guide. D-Secure provides comprehensive data erasure solutions and documentation for blog ssd wipe guide.',
-    keywords: generateKeywords([
-      'blog',
-      'ssd',
-      'wipe',
-      'guide',
-      'data erasure',
-    ]),
-    canonicalUrl: 'https://dsecuretech.com/blog/ssd-wipe-guide',
-  },
+
   'cloud-integration': {
     title: 'Cloud Integration | D-Secure Tech',
     description: 'Learn about cloud integration. D-Secure provides comprehensive data erasure solutions and documentation for cloud integration.',
@@ -7460,4 +7766,116 @@ export const analyzeKeywordDensity = (content: string, keywords: string[]) => {
   });
 
   return density;
+}
+
+/**
+ * Generate SEO metadata for blog posts
+ * @param blogData - Blog post data from blogPosts.ts
+ * @returns Complete SEO metadata for the blog post
+ */
+export const getBlogSEO = (blogData: {
+  title: string;
+  excerpt: string;
+  slug: string;
+  author: string;
+  publishDate: string;
+  keywords: string;
+  category?: string;
+  tag?: string;
+}): SEOMetadata => {
+  const canonicalUrl = `${SEO_CONFIG.baseUrl}/blog/${blogData.slug}`;
+  const ogImage = `${SEO_CONFIG.baseUrl}/blog-images/${blogData.slug}.webp`;
+
+  // Create Article structured data for Google
+  const articleStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": blogData.title,
+    "description": blogData.excerpt,
+    "author": {
+      "@type": "Person",
+      "name": blogData.author,
+      "url": `${SEO_CONFIG.baseUrl}/team`
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": SEO_CONFIG.siteName,
+      "logo": {
+        "@type": "ImageObject",
+        "url": SEO_CONFIG.defaultImage
+      }
+    },
+    "datePublished": formatDateForSchema(blogData.publishDate),
+    "dateModified": formatDateForSchema(blogData.publishDate),
+    "image": ogImage,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonicalUrl
+    },
+    "keywords": blogData.keywords,
+    "articleSection": blogData.category || "Blog"
+  };
+
+  // Create BreadcrumbList structured data
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": SEO_CONFIG.baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": `${SEO_CONFIG.baseUrl}/blog`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": blogData.title
+      }
+    ]
+  };
+
+  return {
+    title: `${blogData.title} | ${SEO_CONFIG.siteName}`,
+    description: blogData.excerpt.length > 155 
+      ? blogData.excerpt.substring(0, 152) + '...' 
+      : blogData.excerpt,
+    keywords: blogData.keywords,
+    canonicalUrl: canonicalUrl,
+    ogTitle: blogData.title,
+    ogDescription: blogData.excerpt,
+    ogImage: ogImage,
+    ogType: 'article',
+    twitterCard: 'summary_large_image',
+    twitterTitle: blogData.title,
+    twitterDescription: blogData.excerpt,
+    twitterImage: ogImage,
+    structuredData: [articleStructuredData, breadcrumbStructuredData]
+  };
+};
+
+/**
+ * Convert human-readable date to ISO format for Schema.org
+ */
+const formatDateForSchema = (dateStr: string): string => {
+  const months: { [key: string]: string } = {
+    'January': '01', 'February': '02', 'March': '03', 'April': '04',
+    'May': '05', 'June': '06', 'July': '07', 'August': '08',
+    'September': '09', 'October': '10', 'November': '11', 'December': '12'
+  };
+  
+  const parts = dateStr.match(/(\w+)\s+(\d+),\s+(\d+)/);
+  if (parts) {
+    const month = months[parts[1]] || '01';
+    const day = parts[2].padStart(2, '0');
+    const year = parts[3];
+    return `${year}-${month}-${day}`;
+  }
+  return new Date().toISOString().split('T')[0];
 };

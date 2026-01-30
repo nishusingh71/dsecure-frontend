@@ -319,7 +319,7 @@ const HomePage = memo(function HomePage() {
                           </svg>
                         </div>
                         <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
-                          Desktop
+                          Personal Computer's
                         </span>
                       </div>
                     </div>

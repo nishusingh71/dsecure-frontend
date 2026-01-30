@@ -958,7 +958,7 @@ export default function AdminReports() {
 
       // ✅ Use new filtered endpoint (single API call instead of multiple)
       const response = await apiClient.getFilteredAuditReports(filters);
-
+      console.log("📋 Respone of api filtered reports:", response.data);
       let uniqueReports: any[] = [];
       if (response.success && response.data) {
         // ✅ Handle new response format: { filters, totalReports, reports: [...] }
@@ -978,7 +978,7 @@ export default function AdminReports() {
           apiClient.getFilteredAuditReports({ ...filters, userEmail: s.subuser_email })
         );
         const subuserResults = await Promise.all(subuserPromises);
-        
+        console.log('📥 Fetched reports for all subusers:', subuserResults);
         subuserResults.forEach((res) => {
           if (res.success && res.data) {
             // Handle new response format
@@ -1034,7 +1034,7 @@ export default function AdminReports() {
                   selectedFilter: groupFilter
                 });
               }
-              // console.log("📄 Parsed report_details_json:", reportDetails);
+              console.log("📄 Parsed report_details_json:", reportDetails);
 
               // Get device count from erasure_log array
               if (
@@ -1120,7 +1120,7 @@ export default function AdminReports() {
             _details: reportDetails,
           };
 
-          // console.log("✅ Mapped:", mappedReport);
+          console.log("✅ Mapped:", mappedReport);
           return mappedReport;
         });
 
@@ -1170,7 +1170,7 @@ export default function AdminReports() {
           // console.log(`🔒 GroupAdmin Filter: ${processedReports.length} → ${filteredReports.length} reports (Group, Email, or MAC match)`)
         }
         // SuperAdmin: No filtering - sees all reports
-
+        console.log("final reports to show in table :", filteredReports);
         setAllRows(filteredReports);
         // ✅ Cache all filtered data with filter-specific key
         console.log("💾 Caching filtered reports with key:", cacheKey);
@@ -1219,6 +1219,11 @@ export default function AdminReports() {
   );
 
   const filtered = useMemo(() => {
+    // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
+    // All filtering (query, status, date range, eraser method, device range, report type, group) 
+    // is handled by the API endpoint with proper database relationships
+    
+    /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
     let result = allRows.filter((r) => {
       const matchesQuery =
         String(r.id || "")
@@ -1277,26 +1282,6 @@ export default function AdminReports() {
       // New filters for Report Type and Group
       const matchesReportType =
         !reportTypeFilter || r.reportType === reportTypeFilter;
-      
-      // ✅ Check top-level group fields first (stored during mapping), then fallback to nested fields
-      const reportGroup = r.group || r.groupName ||
-                         r._details?.group || r._raw?.group || 
-                         r._details?.groupName || r._raw?.groupName ||
-                         r._details?.group_name || r._raw?.group_name ||
-                         r._details?.groupId || r._raw?.groupId ||
-                         r._details?.group_id || r._raw?.group_id;
-      
-      const matchesGroup = !groupFilter || reportGroup === groupFilter;
-      
-      // Debug logging for group filter
-      if (groupFilter && reportGroup) {
-        console.log('🔍 Group Filter Check:', {
-          reportId: r.id,
-          reportGroup: reportGroup,
-          groupFilter: groupFilter,
-          matches: matchesGroup
-        });
-      }
 
       return (
         matchesQuery &&
@@ -1304,12 +1289,15 @@ export default function AdminReports() {
         matchesDateRange &&
         matchesEraserMethod &&
         matchesDeviceRange &&
-        matchesReportType &&
-        matchesGroup
+        matchesReportType
       );
     });
+    */
 
-    // Remove duplicates if requested
+    // Start with all API-filtered results
+    let result = [...allRows];
+
+    // Remove duplicates if requested (UI-only feature)
     if (showUniqueOnly) {
       const seen = new Set();
       result = result.filter((r) => {
@@ -1320,7 +1308,7 @@ export default function AdminReports() {
       });
     }
 
-    // Sort results
+    // Sort results (UI-only feature)
     result.sort((a, b) => {
       let aVal: any, bVal: any;
 
@@ -1365,14 +1353,9 @@ export default function AdminReports() {
     return result;
   }, [
     allRows,
-    query,
-    statusFilter,
-    fromDate,
-    toDate,
-    eraserMethodFilter,
-    deviceRangeFilter,
-    reportTypeFilter,
-    groupFilter,
+    // Removed filter dependencies - API handles all filtering
+    // query, statusFilter, fromDate, toDate, eraserMethodFilter, 
+    // deviceRangeFilter, reportTypeFilter, groupFilter,
     showUniqueOnly,
     sortBy,
     sortOrder,

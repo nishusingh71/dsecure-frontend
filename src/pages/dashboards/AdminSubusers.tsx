@@ -215,6 +215,7 @@ export default function AdminSubusers() {
   const emailToFetch = subuserOwnerFilter || userEmail;
 
   // Fetch subusers for selected owner with filters
+  // ✅ Map UI filter states to API parameters
   const {
     data: apiSubusersData = [],
     isLoading: apiLoading,
@@ -224,8 +225,9 @@ export default function AdminSubusers() {
     subuserEmail: subuserEmailFilter || undefined,
     department: departmentFilter || undefined,
     role: roleFilter || undefined,
+    // status: statusFilter || undefined, // ✅ Added status filter
     group: groupFilter || undefined,
-    search: searchFilter || undefined,
+    search: query || searchFilter || undefined, // ✅ Use query as primary search
   });
 
   // 🎭 Use DEMO_SUBUSERS in demo mode, otherwise use API data
@@ -335,6 +337,10 @@ export default function AdminSubusers() {
   );
 
   const filtered = useMemo(() => {
+    // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
+    // All filtering (query, role, status, department) is handled by the API endpoint
+    
+    /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
     let result = allRows.filter((r) => {
       const matchesQuery =
         r.subuser_email.toLowerCase().includes(query.toLowerCase()) ||
@@ -346,8 +352,12 @@ export default function AdminSubusers() {
         !departmentFilter || r.department === departmentFilter;
       return matchesQuery && matchesRole && matchesStatus && matchesDepartment;
     });
+    */
 
-    // Remove duplicates if requested
+    // Start with all API-filtered results
+    let result = [...allRows];
+
+    // Remove duplicates if requested (UI-only feature)
     if (showUniqueOnly) {
       const seen = new Set();
       result = result.filter((r) => {
@@ -358,7 +368,7 @@ export default function AdminSubusers() {
       });
     }
 
-    // Sort results
+    // Sort results (UI-only feature)
     result.sort((a, b) => {
       const aVal = a[sortBy as keyof typeof a] || "";
       const bVal = b[sortBy as keyof typeof b] || "";
@@ -369,10 +379,8 @@ export default function AdminSubusers() {
     return result;
   }, [
     allRows,
-    query,
-    roleFilter,
-    statusFilter,
-    departmentFilter,
+    // Removed filter dependencies - API handles all filtering
+    // query, roleFilter, statusFilter, departmentFilter,
     showUniqueOnly,
     sortBy,
     sortOrder,
@@ -1022,35 +1030,34 @@ export default function AdminSubusers() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-            {/* Subuser Owner Filter - Show only if current user has subusers */}
-            {displayCurrentUserSubusers && displayCurrentUserSubusers.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Subuser Owner
-                </label>
-                <select
-                  className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
-                  value={subuserOwnerFilter}
-                  onChange={(e) => {
-                    setSubuserOwnerFilter(e.target.value);
-                    setPage(1);
-                  }}
-                >
-                  <option value="">My Subusers</option>
-                  <optgroup label="View Subuser's Subusers">
-                    {displayCurrentUserSubusers.map((subuser: any) => (
-                      <option
-                        key={subuser.subuser_email}
-                        value={subuser.subuser_email}
-                      >
-                        {subuser.subuser_name || subuser.subuser_email}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-              </div>
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* {displayCurrentUserSubusers && displayCurrentUserSubusers.length > 0 && (
+              // <div>
+              //   <label className="block text-sm font-medium text-slate-700 mb-1">
+              //     Subuser Owner
+              //   </label>
+              //   <select
+              //     className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+              //     value={subuserOwnerFilter}
+              //     onChange={(e) => {
+              //       setSubuserOwnerFilter(e.target.value);
+              //       setPage(1);
+              //     }}
+              //   >
+              //     <option value="">My Subusers</option>
+              //     <optgroup label="View Subuser's Subusers">
+              //       {displayCurrentUserSubusers.map((subuser: any) => (
+              //         <option
+              //           key={subuser.subuser_email}
+              //           value={subuser.subuser_email}
+              //         >
+              //           {subuser.subuser_name || subuser.subuser_email}
+              //         </option>
+              //       ))}
+              //     </optgroup>
+              //   </select>
+              // </div>
+            )} */}
 
             {/* Parent User Email Filter */}
             {/* <div>
@@ -1064,7 +1071,7 @@ export default function AdminSubusers() {
             </div> */}
 
             {/* Subuser Email Filter */}
-            {/* <div>
+             {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Subuser Email</label>
               <input
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1072,7 +1079,7 @@ export default function AdminSubusers() {
                 value={subuserEmailFilter}
                 onChange={(e) => { setSubuserEmailFilter(e.target.value); setPage(1) }}
               />
-            </div> */}
+            </div>  */}
 
             {/* Search */}
             <div>
@@ -1139,7 +1146,7 @@ export default function AdminSubusers() {
               </select>
             </div>
             {/* Department Filter */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Department
               </label>
@@ -1158,9 +1165,9 @@ export default function AdminSubusers() {
                   </option>
                 ))}
               </select>
-            </div>
-            <div className="">
-              {/* Status Filter */}
+            </div> */}
+            {/* <div className="">
+ 
               <div>
                 <label className="text-sm font-medium text-slate-700 mb-1">
                   Status
@@ -1181,7 +1188,7 @@ export default function AdminSubusers() {
                   ))}
                 </select>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Additional Options */}
@@ -1254,8 +1261,8 @@ export default function AdminSubusers() {
                 <tr className="text-left text-slate-500 border-b">
                   <th className="py-2">Email</th>
                   <th className="py-2">Role</th>
-                  <th className="py-2">Status</th>
-                  <th className="py-2">Department</th>
+                  {/* <th className="py-2">Status</th>
+                  <th className="py-2">Department</th> */}
                   <th className="py-2">Last Login</th>
                   <th className="py-2">Actions</th>
                 </tr>
@@ -1322,7 +1329,7 @@ export default function AdminSubusers() {
                           {user.roles}
                         </span>
                       </td>
-                      <td className="py-2">
+                      {/* <td className="py-2">
                         <span
                           className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
                             user.status === "active"
@@ -1347,8 +1354,8 @@ export default function AdminSubusers() {
                           ></span>
                           {user.status}
                         </span>
-                      </td>
-                      <td className="py-2">{user.department}</td>
+                      </td> */}
+                      {/* <td className="py-2">{user.department}</td> */}
                       <td className="py-2 text-slate-600">
                         <div className="flex flex-col">
                           <span className="font-medium">

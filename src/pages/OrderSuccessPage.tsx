@@ -92,39 +92,40 @@ export default function OrderSuccessPage() {
   const seo = getSEOForPage('order-success');
 
   useEffect(() => {
+    let retryCount = 0;
+    const maxRetries = 5;
+    const retryDelay = 2000; // 2 seconds
+
     const fetchOrderDetails = async () => {
-      // Get URL parameters - either order_id or payment_id can be used as identifier
       const orderId = searchParams.get('order_id') || searchParams.get('orderId');
       const paymentId = searchParams.get('payment_id');
-      const paymentStatus = searchParams.get('status');
-
-      // Log payment status from Dodo
-      if (paymentStatus) {
-        console.log(`🎉 Payment status from Dodo: ${paymentStatus}`);
-      }
-
-      // Use order_id or payment_id as identifier - both work with the same endpoint
       const identifier = orderId || paymentId || localStorage.getItem('lastOrderId');
 
       if (!identifier) {
-        setError('No order or payment ID found. Redirecting to pricing page...');
+        setError('No order or payment ID found. Redirecting...');
         setTimeout(() => navigate('/pricing-and-plan'), 3000);
         setLoading(false);
         return;
       }
 
       try {
-        console.log(`📦 Fetching order details for identifier: ${identifier}`);
-        // Single endpoint accepts both order_id and payment_id
+        console.log(`📦 Fetching order details (Attempt ${retryCount + 1}/${maxRetries})`);
         const response = await api.get<OrderDetailsResponse>(`/api/Payments/orders/${identifier}/details`);
         setOrderData(response.data);
-        // Store for future reference
         localStorage.setItem('lastOrderId', identifier);
-      } catch (err: any) {
-        console.error('Failed to fetch order details:', err);
-        setError(err.response?.data?.message || 'Failed to load order details. Please try again.');
-      } finally {
         setLoading(false);
+      } catch (err: any) {
+        console.error(`Attempt ${retryCount + 1} failed:`, err);
+        
+        // Agar data nahi mila aur retries baaki hain
+        if (retryCount < maxRetries && err.response?.status === 404) {
+          retryCount++;
+          console.log(`⏳ Waiting ${retryDelay}ms before retry...`);
+          setTimeout(fetchOrderDetails, retryDelay);
+        } else {
+          setError(err.response?.data?.message || 'Failed to load order details. Please refresh the page.');
+          setLoading(false);
+        }
       }
     };
 
@@ -285,7 +286,8 @@ export default function OrderSuccessPage() {
                 <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 12H9v-2h2v2zm0-4H9V6h2v4z" />
+                      <path d="M10 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                      <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
                     </svg>
                     Product Details
                   </h2>
@@ -321,8 +323,6 @@ export default function OrderSuccessPage() {
                   </div>
                 </div>
               </div>
-
-
 
               {/* Customer Information Card */}
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
@@ -410,10 +410,6 @@ export default function OrderSuccessPage() {
                         </span>
                       </div>
                     )}
-                    {/* <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Provider</span>
-                      <span className="font-medium text-gray-900">{payment_info.provider}</span>
-                    </div> */}
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Date</span>
                       <span className="font-medium text-gray-900">{formatDate(payment_info.payment_date)}</span>
@@ -449,12 +445,6 @@ export default function OrderSuccessPage() {
                         <span className="text-gray-500">Date</span>
                         <span className="font-medium text-gray-900">{formatDate(invoice_info.date)}</span>
                       </div>
-                      {/* <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Status</span>
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getStatusColor(invoice_info.status)}`}>
-                          {invoice_info.status.toUpperCase()}
-                        </span>
-                      </div> */}
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Total</span>
                         <span className="font-bold text-gray-900">{formatCurrency(invoice_info.total_amount, invoice_info.currency)}</span>
@@ -482,7 +472,7 @@ export default function OrderSuccessPage() {
           <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-6 mb-8 border border-blue-100">
             <h3 className="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" />
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
               </svg>
               What Happens Next?
             </h3>

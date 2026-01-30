@@ -17,6 +17,7 @@ import { encodeEmail } from './encodeEmail'
 
 import { ENV } from '../config/env'
 import { ApiResponse, User, Subuser, EnhancedSubuser, license } from '../types/models'
+import { log } from 'console'
 
 // API Configuration
 const API_BASE_URL = ENV.API_BASE_URL
@@ -936,16 +937,18 @@ class EnhancedApiClient {
     const params = new URLSearchParams();
     
     if (filters?.parentUserEmail) params.append('ParentUserEmail', filters.parentUserEmail);
+
     if (filters?.subuserEmail) params.append('SubuserEmail', filters.subuserEmail);
     if (filters?.department) params.append('Department', filters.department);
     if (filters?.role) params.append('Role', filters.role);
     if (filters?.group) params.append('Group', filters.group);
     if (filters?.search) params.append('Search', filters.search);
+    console.log('???? Filters before API call:', filters);
 
     const queryString = params.toString();
-    const url = `/api/EnhancedSubusers/by-parent/${encodeEmail(email)}${queryString ? `?${queryString}` : ''}`;
-    
-    console.log('🔍 EnhancedSubusers API Call:', { url, filters });
+    const url = `/api/EnhancedSubuser/${queryString ? `?${queryString}` : ''}`;
+    // const url = `/api/EnhancedSubuser/${queryString }`;
+    console.log('🔍 EnhancedSubusers API Call:Test 1', { url, filters });
     
     return this.request<EnhancedSubuser[]>(url);
   }
@@ -1008,6 +1011,7 @@ class EnhancedApiClient {
       try {
         // console.log(`?? Trying endpoint: ${strategy.name}...`)
         const response = await strategy.execute()
+        console.log('helllll',response);
 
         // console.log(`?? Response from ${strategy.name}:`, {
         //   success: response.success,
@@ -1301,10 +1305,10 @@ class EnhancedApiClient {
     if (filters.dateTo) params.append('dateTo', filters.dateTo);
     if (filters.reportType) params.append('reportType', filters.reportType);
     if (filters.groupName) params.append('groupName', filters.groupName);
-
+    
     const queryString = params.toString();
     const url = `/api/EnhancedAuditReports/all-filtered-reports${queryString ? `?${queryString}` : ''}`;
-    
+    console.log("📋 Fetching final  filteres:", url);
     return this.request<AuditReport[]>(url);
   }
 

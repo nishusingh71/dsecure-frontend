@@ -216,6 +216,7 @@ export const pageToSeoKeyMapping: Record<string, string> = {
     'IconShowcase.tsx': 'icon-showcase',
     'NotFoundPage.tsx': '404',
     'OrderSuccessPage.tsx': 'order-success',
+    'FailurePage.tsx': 'order-failure',
     'PaymentPage.tsx': 'payment',
     'PaymentSetupPage.tsx': 'payment-setup',
     'CheckoutPage.tsx': 'checkout',

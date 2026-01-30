@@ -452,6 +452,10 @@ export default function AdminMachines() {
   );
 
   const filtered = useMemo(() => {
+    // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
+    // All filtering (query, erase option, license, status, group) is handled by the API endpoint
+    
+    /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
     let result = allRows.filter(r => {
       const matchesQuery = r.hostname.toLowerCase().includes(query.toLowerCase()) ||
         r.eraseOption.toLowerCase().includes(query.toLowerCase()) ||
@@ -462,14 +466,17 @@ export default function AdminMachines() {
       const matchesLicense = !licenseFilter || r.license === licenseFilter
       const matchesStatus = !statusFilter || r.status === statusFilter
       
-      // ✅ Check top-level group fields first (stored during mapping)
       const machineGroup = r.group || r.groupName || (r as any).group_name;
       const matchesGroup = !groupFilter || machineGroup === groupFilter;
       
       return matchesQuery && matchesErase && matchesLicense && matchesStatus && matchesGroup
     })
+    */
 
-    // Remove duplicates if requested
+    // Start with all API-filtered results
+    let result = [...allRows];
+
+    // Remove duplicates if requested (UI-only feature)
     if (showUniqueOnly) {
       const seen = new Set()
       result = result.filter(r => {
@@ -480,7 +487,7 @@ export default function AdminMachines() {
       })
     }
 
-    // Sort results
+    // Sort results (UI-only feature)
     result.sort((a, b) => {
       const aVal = String(a[sortBy as keyof typeof a] || '')
       const bVal = String(b[sortBy as keyof typeof b] || '')
@@ -489,7 +496,14 @@ export default function AdminMachines() {
     })
 
     return result
-  }, [allRows, query, eraseFilter, licenseFilter, statusFilter, showUniqueOnly, sortBy, sortOrder])
+  }, [
+    allRows, 
+    // Removed filter dependencies - API handles all filtering
+    // query, eraseFilter, licenseFilter, statusFilter, groupFilter,
+    showUniqueOnly, 
+    sortBy, 
+    sortOrder
+  ])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
   const rows = filtered.slice((page - 1) * pageSize, page * pageSize)

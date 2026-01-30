@@ -695,26 +695,59 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     try {
       // 3. Category ke hisab se sahi link uthao
-      const baseLink = BASE_LINKS[selectedCategory];
+      // const baseLink = BASE_LINKS[selectedCategory];
 
+      // if (!baseLink) {
+      //   showToast('Product link not found.', 'error');
+      //   setIsBuyNowLoading(false);
+      //   return;
+      // }
+      // setIsBuyNowLoading(false);
+
+      // // 4. Quantity nikalo (Dropdown se)
+      // const quantity = parseInt(selectedLicenses) || 1;
+
+      // // 5. Link mein dynamically quantity add karo
+      // // Logic: Agar link mein pehle se '?' hai toh '&' lagao, nahi toh '?' lagao
+      // // const separator = baseLink.includes('?') ? '&' : '?';
+      
+      // // Final URL banega: https://.../pdt_ID?quantity=10
+      // const finalUrl = `${baseLink}${quantity}`;
+  
+      // // 6. Redirect User
+      // window.location.href = finalUrl;
+
+      const baseLink = BASE_LINKS[selectedCategory];
       if (!baseLink) {
-        showToast('Product link not found.', 'error');
+        showToast("Product link not found.", "error");
         setIsBuyNowLoading(false);
         return;
       }
-      setIsBuyNowLoading(false);
 
-      // 4. Quantity nikalo (Dropdown se)
       const quantity = parseInt(selectedLicenses) || 1;
 
-      // 5. Link mein dynamically quantity add karo
-      // Logic: Agar link mein pehle se '?' hai toh '&' lagao, nahi toh '?' lagao
-      // const separator = baseLink.includes('?') ? '&' : '?';
-      
-      // Final URL banega: https://.../pdt_ID?quantity=10
-      const finalUrl = `${baseLink}${quantity}`;
+      // 🔑 Generate your own reference ID (optional but recommended)
+      const clientRef = crypto.randomUUID();
 
-      // 6. Redirect User
+      // Optional: store locally for fallback
+      localStorage.setItem("pending_client_ref", clientRef);
+
+      // Redirect URL (single router page or success page)
+      const redirectUrl = encodeURIComponent(
+        "https://dsecuretech.com/order-success"
+      );
+     const failureUrl = encodeURIComponent(
+      "https://dsecuretech.com/order-failed"
+    );
+      // Final checkout URL
+      const finalUrl =
+        `${baseLink}` +
+        `${quantity}` +
+        `&client_ref=${clientRef}` +
+        `&redirect_url=${redirectUrl}`+
+        `&cancel_url=${failureUrl}`;
+
+      // 🚀 Instant redirect
       window.location.href = finalUrl;
 
     } catch (error) {
@@ -723,7 +756,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
       setIsBuyNowLoading(false);
     }
   };
-
   const faqs = [
     {
       question: "How do I get my License?",
