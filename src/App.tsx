@@ -51,6 +51,7 @@ const CookiePolicyPage = lazy(() => import("./pages/CookiePolicyPage"));
 const SecurityPage = lazy(() => import("./pages/SecurityPage"));
 const StatusPage = lazy(() => import("./pages/StatusPage"));
 const DownloadPage = lazy(() => import("./pages/DownloadPage"));
+const DriveEraserPage = lazy(() => import("./pages/DriveEraserPage"));
 const PartnersPage = lazy(() => import("./pages/PartnersPage"));
 const SupportPage = lazy(() => import("./pages/SupportPage"));
 // Auth pages - lazy loaded
@@ -128,6 +129,9 @@ const NetworkFileManualLayout = lazy(
 // Network file pages - keep as namespace import since components are accessed via NetworkFilePages.ComponentName
 import * as NetworkFilePages from "./pages/manual/network-file";
 import FailurePage from "./pages/FailurePage";
+import FileEraserPage from "./pages/FileEraserPage";
+import DataGuardianAwardPage from "./pages/DataGuardianAwardPage";
+
 
 const HealthcareSolutionsPage = lazy(
   () => import("./pages/solutions/HealthcareSolutionsPage"),
@@ -1313,6 +1317,8 @@ export default function App() {
                       element={<PricingAndPlanPage />}
                     />
                     <Route path="download" element={<DownloadPage />} />
+                    <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
+                     <Route path="/products/file-eraser" element={<FileEraserPage />} />
                     <Route path="checkout" element={<CheckoutPage />} />
                     <Route
                       path="order-success"
@@ -1617,6 +1623,10 @@ export default function App() {
                     <Route
                       path="support/file-eraser-guide"
                       element={<FileEraserGuide />}
+                    />
+                    <Route
+                      path="/data-guardian-award"
+                      element={<DataGuardianAwardPage />}
                     />
                     <Route
                       path="support/secure-erase-hddssd"
