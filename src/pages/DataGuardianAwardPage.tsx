@@ -8,6 +8,7 @@ import {
     GlobeIcon,
     HoverIcon,
 } from "@/components/FlatIcons";
+import { ENV } from "@/config/env";
 
 // Type for certified company
 interface CertifiedCompany {
@@ -23,12 +24,17 @@ interface CertifiedCompany {
 // Sample certified companies data (empty for now, ready for future)
 const certifiedCompanies: CertifiedCompany[] = [];
 
+// FormSubmit configuration
+const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/support@dsecuretech.com";
+
 const DataGuardianAwardPage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<typeof certifiedCompanies>([]);
     const [hasSearched, setHasSearched] = useState(false);
     const [openFaq, setOpenFaq] = useState<number | null>(null);
     const [usageType, setUsageType] = useState<"business" | "personal">("business");
+    const [isLoading, setIsLoading] = useState(false);
+    const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -41,6 +47,12 @@ const DataGuardianAwardPage: React.FC = () => {
         complianceRequirements: "",
         message: ""
     });
+
+    // Toast functionality
+    const showToast = (message: string, type: "success" | "error" = "success") => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 6000);
+    };
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
@@ -58,11 +70,131 @@ const DataGuardianAwardPage: React.FC = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
-        // Add your form submission logic here
-        alert("Form submitted successfully!");
+        setIsLoading(true);
+
+        // Validation
+        const errors: string[] = [];
+        if (!formData.name?.trim()) errors.push("Name is required");
+        if (!formData.email?.trim()) {
+            errors.push("Email is required");
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            errors.push("Please enter a valid email address");
+        }
+        if (!formData.message?.trim()) errors.push("Message is required");
+
+        if (errors.length > 0) {
+            showToast(errors.join(", "), "error");
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const now = new Date();
+            const timestampLocal = now.toLocaleString("en-IN", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                timeZoneName: "short",
+            });
+
+            // Prepare form data for FormSubmit
+            const formSubmitData = new FormData();
+            
+            // Hidden fields
+            formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
+            formSubmitData.append("_captcha", "false");
+            formSubmitData.append("_template", "table");
+            
+            // Form fields
+            formSubmitData.append("name", formData.name.trim());
+            formSubmitData.append("email", formData.email.trim());
+            formSubmitData.append("message", formData.message.trim());
+            formSubmitData.append("_replyto", formData.email.trim());
+            
+            // Additional fields
+            formSubmitData.append("company", formData.company?.trim() || "");
+            formSubmitData.append("phone", formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "");
+            formSubmitData.append("country", formData.country);
+            formSubmitData.append("businessType", formData.businessType);
+            formSubmitData.append("solutionType", formData.solutionType);
+            formSubmitData.append("complianceRequirements", formData.complianceRequirements);
+            formSubmitData.append("usageType", usageType);
+            formSubmitData.append("timestamp", timestampLocal);
+            formSubmitData.append("source", "Data Guardian Award Page");
+            
+            // Subject and CC
+            formSubmitData.append("_subject", "New Data Hygiene Assurance Enquiry - D-Secure Tech");
+            formSubmitData.append("_cc", "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com");
+
+            // Reset form immediately for better UX
+            setFormData({
+                name: "",
+                email: "",
+                phone: "",
+                countryCode: "+91",
+                businessType: "",
+                company: "",
+                country: "United States",
+                solutionType: "",
+                complianceRequirements: "",
+                message: ""
+            });
+            setIsLoading(false);
+            showToast("Thank you! Your enquiry has been submitted successfully.", "success");
+
+            // Submit to backend API
+            const timestampISO = now.toISOString();
+            const submissionData = {
+                name: formData.name.trim(),
+                email: formData.email.trim(),
+                company: formData.company?.trim() || "",
+                phone: formData.phone ? `${formData.countryCode} ${formData.phone}`.trim() : "",
+                country: formData.country,
+                businessType: formData.businessType,
+                solutionType: formData.solutionType,
+                complianceRequirements: formData.complianceRequirements,
+                message: formData.message.trim(),
+                usageType: usageType,
+                source: "Data Guardian Award Page",
+                timestamp: timestampISO,
+            };
+
+            try {
+                const API_BASE = ENV.API_BASE_URL;
+                await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(submissionData),
+                });
+
+                await fetch(FORMSUBMIT_ENDPOINT, {
+                    method: "POST",
+                    body: formSubmitData,
+                    headers: { Accept: "application/json" },
+                });
+
+                // Power Automate tracking (non-blocking)
+                fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-api-key": "REACT_CONTACT_2026",
+                    },
+                    body: JSON.stringify(submissionData),
+                }).catch(() => {});
+            } catch (error) {
+                console.error("Submission error:", error);
+            }
+        } catch (error) {
+            console.error("Form error:", error);
+            showToast("Failed to send message. Please try again later.", "error");
+            setIsLoading(false);
+        }
     };
 
     const toggleFaq = (index: number) => {
@@ -81,6 +213,37 @@ const DataGuardianAwardPage: React.FC = () => {
                     keywords: "D-Secure assurance badge, data hygiene certification, secure data protection, data erasure assurance, IT data security certification, trusted data partner",
                 }}
             />
+
+            {/* Toast Notification */}
+            {toast && (
+                <div
+                    className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
+                        toast.type === "error"
+                            ? "bg-red-50 border-red-200 text-red-800"
+                            : "bg-green-50 border-green-200 text-green-800"
+                    }`}
+                >
+                    <div className="flex items-start gap-3">
+                        {toast.type === "error" ? (
+                            <svg className="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        ) : (
+                            <svg className="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                        )}
+                        <div className="flex-1">
+                            <span className="font-medium text-sm">{toast.message}</span>
+                        </div>
+                        <button onClick={() => setToast(null)} className="text-gray-400 hover:text-gray-600 flex-shrink-0">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <div className="min-h-screen bg-white">
                 {/* Hero Section - Light with Centered Layout */}
@@ -117,24 +280,32 @@ const DataGuardianAwardPage: React.FC = () => {
 
                                         {/* CTA Buttons */}
                                         <div className="flex flex-col sm:flex-row gap-4">
-                                            <Link
-                                                to="#contact-form"
-                                                className="group bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2"
+                                            <a
+                                                href="#contact-form"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+                                                }}
+                                                className="group bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-blue-500/25 flex items-center justify-center gap-2 cursor-pointer"
                                             >
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
                                                 <span>Get Certified</span>
-                                            </Link>
-                                            <Link
-                                                to="#faq-section"
-                                                className="group bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-teal-500/30 flex items-center justify-center gap-2"
+                                            </a>
+                                            <a
+                                                href="#faq-section"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    document.getElementById('faq-section')?.scrollIntoView({ behavior: 'smooth' });
+                                                }}
+                                                className="group bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-teal-500/30 flex items-center justify-center gap-2 cursor-pointer"
                                             >
                                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
                                                 <span>Learn More</span>
-                                            </Link>
+                                            </a>
                                         </div>
                                     </div>
                                 </Reveal>
@@ -601,7 +772,7 @@ const DataGuardianAwardPage: React.FC = () => {
                 </section>
 
                 {/* FAQ Section */}
-                <section className="py-20 md:py-28 bg-gradient-to-br from-slate-50 to-white">
+                <section id="faq-section" className="py-20 md:py-28 bg-gradient-to-br from-slate-50 to-white">
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <Reveal>
                             <div className="text-center mb-16">
@@ -676,7 +847,7 @@ const DataGuardianAwardPage: React.FC = () => {
 
 
                 {/* Contact Form Section */}
-                <section className="py-10 md:py-18 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+                <section id="contact-form" className="py-10 md:py-18 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
                     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
                             {/* Contact Form */}
@@ -1049,9 +1220,20 @@ const DataGuardianAwardPage: React.FC = () => {
 
                                             <button
                                                 type="submit"
-                                                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 px-6 rounded-lg text-lg font-medium transition-colors duration-200"
+                                                disabled={isLoading}
+                                                className={`w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 px-6 rounded-lg text-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                                             >
-                                                Submit Enquiry
+                                                {isLoading ? (
+                                                    <>
+                                                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                        </svg>
+                                                        Submitting...
+                                                    </>
+                                                ) : (
+                                                    'Submit Enquiry'
+                                                )}
                                             </button>
                                         </form>
                                     </div>
