@@ -685,6 +685,19 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return;
     }
 
+    // Product ID mapping - Dodo Payment Product IDs
+    const PRODUCT_IDS = {
+      'drive-eraser': 'pdt_0NVH5wJYMX70syW3ioj9R',
+      'file-eraser': 'pdt_0NVHHRwPSypqgPTs3kuSu',
+    };
+
+    const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
+
+    if (!productId) {
+      showToast('Invalid product selection. Please try again.', 'error');
+      setIsBuyNowLoading(false);
+      return;
+    }
     // =========================================================
     // CONFIGURATION: Sirf yahan apne 2 Main Product Links dalein
     // =========================================================

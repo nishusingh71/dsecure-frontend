@@ -286,3 +286,82 @@ export const GearIcon: React.FC<IconProps> = ({ className = "w-6 h-6", filled = 
     )}
   </svg>
 );
+
+// Alert Triangle/Warning Icon
+export const AlertTriangleIcon: React.FC<IconProps> = ({ className = "w-6 h-6", filled = false }) => (
+  <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke={filled ? "none" : "currentColor"}>
+    {filled ? (
+      <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+    ) : (
+      <>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </>
+    )}
+  </svg>
+);
+
+// Leaf/Environment Icon
+export const LeafIcon: React.FC<IconProps> = ({ className = "w-6 h-6", filled = false }) => (
+  <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke={filled ? "none" : "currentColor"}>
+    {filled ? (
+      <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/>
+    ) : (
+      <>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 21c.5-4.5 2.5-8 7-10m5-7c0 0-1 2-3 4s-4 3-7 3c-3 0-5 2-5 5 0 1.5.5 3 1.5 4 3-1 5-3 6-6 1.5-4 5-6 7.5-7 0 0 3-1 5-1s3 2 3 4-2 7-8 8" />
+      </>
+    )}
+  </svg>
+);
+
+// Trending Up/Growth Icon
+export const TrendingUpIcon: React.FC<IconProps> = ({ className = "w-6 h-6", filled = false }) => (
+  <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke={filled ? "none" : "currentColor"}>
+    {filled ? (
+      <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+    ) : (
+      <>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+      </>
+    )}
+  </svg>
+);
+
+// Users/Team Icon
+export const UsersIcon: React.FC<IconProps> = ({ className = "w-6 h-6", filled = false }) => (
+  <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke={filled ? "none" : "currentColor"}>
+    {filled ? (
+      <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+    ) : (
+      <>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      </>
+    )}
+  </svg>
+);
+
+// Hard Drive/Storage Icon
+export const HardDriveIcon: React.FC<IconProps> = ({ className = "w-6 h-6", filled = false }) => (
+  <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke={filled ? "none" : "currentColor"}>
+    {filled ? (
+      <path d="M2 17h20v4H2v-4zM20 3H4c-1.1 0-2 .9-2 2v10h20V5c0-1.1-.9-2-2-2zM6 19h2v2H6v-2z"/>
+    ) : (
+      <>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M22 12H2M22 12a2 2 0 01-2 2H4a2 2 0 01-2-2m20 0V6a2 2 0 00-2-2H4a2 2 0 00-2 2v6m20 0v6a2 2 0 01-2 2H4a2 2 0 01-2-2v-6" />
+        <circle cx="6" cy="15" r="1" fill="currentColor" />
+      </>
+    )}
+  </svg>
+);
+
+// Lock/Security Icon
+export const LockIcon: React.FC<IconProps> = ({ className = "w-6 h-6", filled = false }) => (
+  <svg className={className} viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke={filled ? "none" : "currentColor"}>
+    {filled ? (
+      <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+    ) : (
+      <>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </>
+    )}
+  </svg>
+);

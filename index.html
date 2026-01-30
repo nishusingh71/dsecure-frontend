@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="D-Secure - Secure data erasure and device sanitization platform for enterprises" />
-   <meta
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="D-Secure - Secure data erasure and device sanitization platform for enterprises"
+    />
+    <meta
       name="title"
       content="Eraser – Secure Erase Files from Hard Drives | D-Secure"
     />
@@ -24,74 +26,235 @@
     />
     <meta name="googlebot" content="index, follow" />
     <meta name="bingbot" content="index, follow" />
-  <!-- Critical performance optimizations -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-  <link rel="dns-prefetch" href="//res.cloudinary.com">
-  <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link rel="preconnect" href="https://www.google-analytics.com">
 
-  <!-- Favicon -->
-  <link rel="icon" href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg">
-  <link rel="manifest" href="/site.webmanifest" />
-  <meta name="theme-color" content="#059669" />
+    <!-- Critical performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="dns-prefetch" href="//res.cloudinary.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
 
-  <!-- Critical inline CSS for above-the-fold content - eliminates render blocking -->
-  <style>
-    /* Critical CSS - Above the fold */
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
-      line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-      background:linear-gradient(135deg,#f8fafc 0%,#ffffff 100%);min-height:100vh}
-    #root{display:flex;flex-direction:column;min-height:100vh}
-    /* Loading state - prevents layout shift */
-    .loading-container{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f8fafc}
-    .loading-spinner{width:40px;height:40px;border:3px solid #e2e8f0;border-top-color:#059669;border-radius:50%;animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    /* Hero section placeholder to prevent CLS */
-    .hero-section{min-height:70vh;contain:layout style paint}
-    /* Container defaults */
-    .container-app{width:100%;max-width:1280px;margin:0 auto;padding:0 1rem}
-    @media(min-width:640px){.container-app{padding:0 1.5rem}}
-    @media(min-width:1024px){.container-app{padding:0 2rem}}
-  </style>
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://dsecuretech.com/" />
 
-  <title>D-Secure - Secure Data Erasure Solutions</title>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dsecuretech.com/" />
+    <meta
+      property="og:title"
+      content="D-Secure - Best Data Erasure Software | Secure Tech"
+    />
+    <meta
+      property="og:description"
+      content="D-Secure is India's leading data erasure software. NIST 800-88 certified. Erase HDD, SSD, mobile devices securely. Free trial."
+    />
+    <meta
+      property="og:image"
+      content="https://dsecuretech.com/logo-white.svg"
+    />
+    <meta property="og:site_name" content="D-Secure Tech" />
+    <meta property="og:locale" content="en_US" />
 
-  <!-- Defer non-critical scripts -->
-  <script>
-    // Inline critical redirect script
-    (function () {
-      var redirect = sessionStorage.redirect;
-      delete sessionStorage.redirect;
-      if (redirect && redirect !== location.href) {
-        history.replaceState(null, null, redirect);
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://dsecuretech.com/" />
+    <meta
+      name="twitter:title"
+      content="D-Secure - Best Data Erasure Software | Secure Tech"
+    />
+    <meta
+      name="twitter:description"
+      content="D-Secure is India's leading data erasure software. NIST 800-88 certified. Erase HDD, SSD, mobile devices securely."
+    />
+    <meta
+      name="twitter:image"
+      content="https://dsecuretech.com/logo-white.svg"
+    />
+
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="IN" />
+    <meta name="geo.placename" content="India" />
+
+    <!-- Critical performance optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link rel="dns-prefetch" href="//res.cloudinary.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#059669" />
+
+    <!-- Structured Data - Organization Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "D-Secure Tech",
+        "alternateName": ["D-Secure", "DSecure", "Secure Tech"],
+        "url": "https://dsecuretech.com",
+        "logo": "https://dsecuretech.com/logo-white.svg",
+        "description": "D-Secure is the best data erasure software for enterprises. NIST 800-88 certified, GDPR & HIPAA compliant.",
+        "sameAs": [
+          "https://twitter.com/dsecuretech",
+          "https://www.linkedin.com/company/dsecuretech"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "availableLanguage": ["English", "Hindi"]
+        }
       }
-    })();
+    </script>
 
-    // Only load analytics in production (not on localhost)
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-      // Defer Google Analytics
-      window.addEventListener('load', function () {
-        var script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81';
-        document.head.appendChild(script);
+    <!-- Structured Data - Software Application Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "D-Secure Data Erasure Software",
+        "operatingSystem": "Windows, macOS, Linux",
+        "applicationCategory": "SecurityApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "1250"
+        },
+        "description": "Best data erasure software for secure data wiping. NIST 800-88 certified, GDPR, HIPAA compliant. Erase HDD, SSD, mobile devices."
+      }
+    </script>
 
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-6B20XY3K81');
-      });
-    }
-  </script>
-</head>
+    <!-- Critical inline CSS for above-the-fold content - eliminates render blocking -->
+    <style>
+      /* Critical CSS - Above the fold */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        min-height: 100vh;
+      }
+      #root {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      /* Loading state - prevents layout shift */
+      .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #f8fafc;
+      }
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #e2e8f0;
+        border-top-color: #059669;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      /* Hero section placeholder to prevent CLS */
+      .hero-section {
+        min-height: 70vh;
+        contain: layout style paint;
+      }
+      /* Container defaults */
+      .container-app {
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+      @media (min-width: 640px) {
+        .container-app {
+          padding: 0 1.5rem;
+        }
+      }
+      @media (min-width: 1024px) {
+        .container-app {
+          padding: 0 2rem;
+        }
+      }
+    </style>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
+    <!-- Defer non-critical scripts -->
+    <script>
+      // Inline critical redirect script
+      (function () {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
 
+      // Only load analytics in production (not on localhost)
+      if (
+        window.location.hostname !== "localhost" &&
+        window.location.hostname !== "127.0.0.1"
+      ) {
+        // Defer Google Analytics
+        window.addEventListener("load", function () {
+          var script = document.createElement("script");
+          script.async = true;
+          script.src =
+            "https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81";
+          document.head.appendChild(script);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", "G-6B20XY3K81");
+        });
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

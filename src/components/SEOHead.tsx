@@ -3,38 +3,48 @@ import { Helmet } from 'react-helmet-async';
 import { SEOMetadata, formatStructuredData } from '@/utils/seo';
 
 interface SEOHeadProps {
-  seo: SEOMetadata;
+  seo?: SEOMetadata;
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
 }
 
 /**
  * SEOHead Component - Standardized SEO meta tags for all pages
  * Uses react-helmet-async for efficient meta tag management
  */
-export const SEOHead: React.FC<SEOHeadProps> = ({ seo }) => {
+export const SEOHead: React.FC<SEOHeadProps> = ({ seo, title, description, canonicalUrl }) => {
+  const effectiveSeo: SEOMetadata = seo || {
+    title: title || '',
+    description: description || '',
+    canonicalUrl: canonicalUrl || '',
+    keywords: '', // Default fallbacks handled or empty
+  };
+
   return (
     <Helmet>
       {/* Primary Meta Tags */}
-      <title>{seo.title}</title>
-      <meta name="description" content={seo.description} />
-      <meta name="keywords" content={seo.keywords} />
+      <title>{effectiveSeo.title}</title>
+      <meta name="description" content={effectiveSeo.description} />
+      <meta name="keywords" content={effectiveSeo.keywords} />
       
       {/* Canonical URL */}
-      <link rel="canonical" href={seo.canonicalUrl} />
+      <link rel="canonical" href={effectiveSeo.canonicalUrl} />
       
       {/* Open Graph / Facebook */}
-      <meta property="og:type" content={seo.ogType || 'website'} />
-      <meta property="og:title" content={seo.ogTitle || seo.title} />
-      <meta property="og:description" content={seo.ogDescription || seo.description} />
-      <meta property="og:image" content={seo.ogImage} />
-      <meta property="og:url" content={seo.canonicalUrl} />
+      <meta property="og:type" content={effectiveSeo.ogType || 'website'} />
+      <meta property="og:title" content={effectiveSeo.ogTitle || effectiveSeo.title} />
+      <meta property="og:description" content={effectiveSeo.ogDescription || effectiveSeo.description} />
+      <meta property="og:image" content={effectiveSeo.ogImage} />
+      <meta property="og:url" content={effectiveSeo.canonicalUrl} />
       <meta property="og:site_name" content="D-Secure Tech" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter */}
-      <meta name="twitter:card" content={seo.twitterCard || 'summary_large_image'} />
-      <meta name="twitter:title" content={seo.twitterTitle || seo.title} />
-      <meta name="twitter:description" content={seo.twitterDescription || seo.description} />
-      <meta name="twitter:image" content={seo.twitterImage || seo.ogImage} />
+      <meta name="twitter:card" content={effectiveSeo.twitterCard || 'summary_large_image'} />
+      <meta name="twitter:title" content={effectiveSeo.twitterTitle || effectiveSeo.title} />
+      <meta name="twitter:description" content={effectiveSeo.twitterDescription || effectiveSeo.description} />
+      <meta name="twitter:image" content={effectiveSeo.twitterImage || effectiveSeo.ogImage} />
       <meta name="twitter:creator" content="@D-Securetech" />
       <meta name="twitter:site" content="@D-Securetech" />
       
@@ -46,9 +56,9 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo }) => {
       <meta name="rating" content="General" />
       
       {/* Structured Data */}
-      {seo.structuredData && (
+      {effectiveSeo.structuredData && (
         <script type="application/ld+json">
-          {formatStructuredData(seo.structuredData)}
+          {formatStructuredData(effectiveSeo.structuredData)}
         </script>
       )}
       
