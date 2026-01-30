@@ -109,6 +109,7 @@ Allow: /release-notes
 
 # Blog and Content
 Allow: /blog
+Allow: /blog/*
 
 # Community
 Allow: /community

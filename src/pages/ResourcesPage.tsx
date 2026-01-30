@@ -664,6 +664,60 @@ function ResourcesPageContent() {
                   </div>
                 </Link>
               </Reveal>
+              <Reveal delayMs={15}>
+                <Link
+                  to="/blog"
+                  className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-rose-300/50 hover:-translate-y-2 overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-rose-50/50 via-transparent to-rose-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative w-16 h-16 bg-gradient-to-br from-rose-500 to-rose-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-rose-500/25">
+                    <svg
+                      className="w-8 h-8"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                      />
+                    </svg>
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-rose-300 rounded-full opacity-75"></div>
+                  </div>
+                  <div className="relative">
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-rose-600 transition-colors duration-300">
+                      Industry Insights & Blog
+                    </h3>
+                    <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+                      Stay updated with the latest trends, expert insights, and
+                      best practices in data sanitization and security.
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-rose-600 text-sm font-semibold group-hover:text-rose-700 transition-colors">
+                        Read Latest Articles
+                        <svg
+                          className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          />
+                        </svg>
+                      </div>
+                      <div className="text-xs text-slate-400 font-medium">
+                        Weekly Updates
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </Reveal>
               <Reveal delayMs={20}>
                 <Link
                   to="/resources/case-studies"
@@ -1242,105 +1296,7 @@ function ResourcesPageContent() {
           )}
         </div>
       </section>
-
-      {/* Support Section */}
-      {/* <section className="py-16 md:py-24 bg-slate-50">
-        <div className="container-responsive">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Need Additional Support?
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Can't find what you're looking for? Our support team is here to
-              help.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Reveal delayMs={10}>
-              <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200/60">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-8 h-8 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="font-bold text-slate-900 mb-2">
-                  Live Chat Support
-                </h3>
-                <p className="text-slate-600 text-sm mb-4">
-                  Get instant help from our technical experts
-                </p>
-                <button className="btn-primary text-sm">
-                  <Link to="/contact">Start Chat</Link>
-                </button>
-              </div>
-            </Reveal>
-            <Reveal delayMs={20}>
-              <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200/60">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-8 h-8 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="font-bold text-slate-900 mb-2">Email Support</h3>
-                <p className="text-slate-600 text-sm mb-4">
-                  Detailed responses within 24 hours
-                </p>
-                <button className="btn-secondary text-sm">
-                  <Link to="/contact">Contact Support</Link>
-                </button>
-              </div>
-            </Reveal>
-            <Reveal delayMs={30}>
-              <div className="text-center p-6 bg-white rounded-xl shadow-lg border border-slate-200/60">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg
-                    className="w-8 h-8 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                    />
-                  </svg>
-                </div>
-                <h3 className="font-bold text-slate-900 mb-2">
-                  Training Services
-                </h3>
-                <p className="text-slate-600 text-sm mb-4">
-                  Comprehensive training programs for your team
-                </p>
-                <button className="btn-secondary text-sm">
-                  <Link to="/training">Learn More</Link>
-                </button>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section> */}
+      
     </>
   );
 }

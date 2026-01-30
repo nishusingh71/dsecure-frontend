@@ -25,7 +25,7 @@ export default function OptimizedImage({
   srcSet,
   sizes
 }: OptimizedImageProps) {
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(priority)
   const [isInView, setIsInView] = useState(priority)
   const [hasError, setHasError] = useState(false)
   const [currentSrc, setCurrentSrc] = useState(src)
@@ -106,7 +106,7 @@ export default function OptimizedImage({
         ref={imgRef}
         src={isInView ? currentSrc : placeholder}
         alt={alt}
-        className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'
+        className={`transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-50'
           } ${className}`}
         width={width}
         height={height}

@@ -309,47 +309,6 @@ const HomePage = memo(function HomePage() {
                       </div>
                     </div>
 
-                    {/* Bottom - Compliance/Certification */}
-                    <div className="absolute bottom-[5px] left-1/2 -translate-x-1/2">
-                      <div className="group relative">
-                        <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
-                          {/* Shield with Checkmark - Compliance */}
-                          <svg className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                          </svg>
-                        </div>
-                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] lg:text-[10px] font-semibold text-emerald-700 whitespace-nowrap bg-white/80 px-2 py-0.5 rounded">Compliance</span>
-
-                      </div>
-                    </div>
-
-                    {/* Bottom Right - HDD/SSD Drives */}
-                    <div className="absolute bottom-[80px] right-[12px] lg:bottom-[95px] lg:right-[15px]">
-                      <div className="group relative">
-                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
-                          {/* HDD/Drive Icon - Disk with center */}
-                          <svg
-                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                          >
-                            <rect x="4" y="4" width="16" height="16" rx="2" />
-                            <circle cx="12" cy="12" r="4" />
-                            <circle
-                              cx="12"
-                              cy="12"
-                              r="1.5"
-                              fill="currentColor"
-                            />
-                          </svg>
-                        </div>
-                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
-                          HDD/SSD/NVMe
-                        </span>
-                      </div>
-                    </div>
 
                     {/* Bottom - Compliance/Certification */}
                     <div className="absolute bottom-[-20px] left-1/2 -translate-x-1/2">
@@ -376,6 +335,7 @@ const HomePage = memo(function HomePage() {
                       </div>
                     </div>
                   </div>
+
                 </div>
               </Reveal>
             </div>
