@@ -59,16 +59,22 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      
+
       // Show nav after scrolling past hero section (approx 400px)
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
-      
+
       // Dispatch event to hide/show main navbar
-      window.dispatchEvent(new CustomEvent('stickyNavVisible', { detail: { visible: shouldShow } }));
+      window.dispatchEvent(
+        new CustomEvent("stickyNavVisible", {
+          detail: { visible: shouldShow },
+        }),
+      );
 
       // Find current active section
-      const sections = sectionNavItems.map(item => document.getElementById(item.id));
+      const sections = sectionNavItems.map((item) =>
+        document.getElementById(item.id),
+      );
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = sections[i];
         if (section && section.offsetTop - 150 <= scrollPosition) {
@@ -82,7 +88,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       // Reset main navbar visibility on unmount
-      window.dispatchEvent(new CustomEvent('stickyNavVisible', { detail: { visible: false } }));
+      window.dispatchEvent(
+        new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
+      );
     };
   }, []);
 
@@ -90,10 +98,11 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     const element = document.getElementById(sectionId);
     if (element) {
       const offset = 100; // Account for sticky nav height
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - offset,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   };
@@ -184,7 +193,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   const platforms = [
     {
       name: "Windows",
-      versions: "Windows 10, 11, Server 2016+ etc.",
+      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
       features: [
         "Desktop & Laptop Support",
         "Server Edition Available",
@@ -199,7 +208,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     },
     {
       name: "macOS",
-      versions: "Monterey, Ventura, Sonoma, Sequoia etc.",
+      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM), Intel (x64)",
       features: [
         "Intel & Apple Silicon",
         "Full Disk Access",
@@ -214,7 +223,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     },
     {
       name: "Linux",
-      versions: "Ubuntu, CentOS, Debian, RHEL etc.",
+      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
       features: [
         "CLI & GUI Options",
         "Kernel Level Erasure",
@@ -439,7 +448,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between h-14">
               <Link to="/" className="flex items-center">
-                <ThemeAwareLogo className="h-7 sm:h-8 w-auto" responsive={true} />
+                <ThemeAwareLogo
+                  className="h-7 sm:h-8 w-auto"
+                  responsive={true}
+                />
               </Link>
               <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2">
                 {sectionNavItems.map((item) => (
@@ -538,90 +550,132 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 </div>
               </Reveal>
 
-              {/* Right: Hero Illustration (Same as HomePage) */}
-              <div className="flex items-center justify-center min-h-[420px] lg:min-h-[520px]">
-                <div className="relative bg-white rounded-3xl shadow-xl border border-emerald-200 w-[360px] lg:w-[420px] p-8">
-                  {/* Header */}
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center">
-                      <svg
-                        className="w-7 h-7 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999A5.002 5.002 0 105.22 11.1 4.001 4.001 0 003 15z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-800">
-                        D-Secure Drive
-                      </h3>
-                      <p className="text-xs text-slate-500">
-                        Cloud Storage & Cleanup
-                      </p>
-                    </div>
-                  </div>
+              {/* Right: Hero Illustration - 3D Product Box */}
+              <Reveal delayMs={100}>
+                <div
+                  className="relative flex items-center justify-center min-h-[400px] lg:min-h-[500px]"
+                  style={{ perspective: "1000px" }}
+                >
+                  {/* Background Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/30 via-transparent to-teal-200/30 blur-3xl"></div>
 
-                  {/* Storage Card */}
-                  <div className="bg-emerald-50 rounded-2xl p-4 mb-6 border border-emerald-200">
-                    <p className="text-sm font-semibold text-slate-700 mb-2">
-                      Storage Used
-                    </p>
-                    <div className="w-full h-2 bg-emerald-100 rounded-full overflow-hidden">
-                      <div className="h-full w-[65%] bg-emerald-500 rounded-full"></div>
-                    </div>
-                    <p className="text-xs text-slate-600 mt-2">
-                      6.5 GB of 10 GB used
-                    </p>
-                  </div>
+                  <div
+                    className="relative animate-[float_4s_ease-in-out_infinite]"
+                    style={{
+                      transformStyle: "preserve-3d",
+                      animation: "float 4s ease-in-out infinite",
+                    }}
+                  >
+                    {/* Glow */}
+                    <div className="absolute inset-0 bg-emerald-500/40 blur-3xl rounded-lg scale-110"></div>
 
-                  {/* Actions */}
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      {
-                        label: "My Files",
-                        icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z",
-                      },
-                      {
-                        label: "Upload",
-                        icon: "M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V3m0 0l-4 4m4-4l4 4",
-                      },
-                      {
-                        label: "Backup",
-                        icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
-                      },
-                      {
-                        label: "Clean Drive",
-                        icon: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6",
-                      },
-                    ].map((item) => (
-                      <div
-                        key={item.label}
-                        className="flex items-center gap-3 p-3 rounded-xl bg-white border border-emerald-200 hover:border-emerald-500 hover:shadow-md transition"
-                      >
-                        <svg
-                          className="w-6 h-6 text-emerald-600"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d={item.icon}
-                          />
-                        </svg>
-                        <span className="text-sm font-medium text-slate-700">
-                          {item.label}
+                    {/* SERVER BODY */}
+                    <div
+                      className="relative w-[520px] h-[170px] lg:w-[640px] lg:h-[210px] bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 rounded-md shadow-2xl overflow-hidden"
+                      style={{
+                        transform: "rotateY(-12deg) rotateX(4deg)",
+                        boxShadow:
+                          "25px 25px 70px rgba(0,0,0,0.4), inset 0 0 70px rgba(255,255,255,0.05)",
+                      }}
+                    >
+                      {/* Metal Shine Sweep */}
+                      <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.18),transparent)]"></div>
+
+                      {/* Top Enterprise Label */}
+                      <div className="absolute top-3 left-5 right-5 h-6 bg-white/10 border border-white/20 rounded-sm flex items-center px-3">
+                        <span className="text-[10px] text-white/80 tracking-widest font-semibold">
+                          D-SECURE DATA ERASURE SERVER
                         </span>
                       </div>
-                    ))}
+
+                      {/* Rack Handles */}
+                      <div className="absolute top-1/2 -translate-y-1/2 left-2 w-3 h-12 border border-white/30 rounded-sm"></div>
+                      <div className="absolute top-1/2 -translate-y-1/2 right-2 w-3 h-12 border border-white/30 rounded-sm"></div>
+
+                      {/* U Numbers */}
+                      <span className="absolute left-1 top-10 text-[8px] text-white/60">
+                        U1
+                      </span>
+                      <span className="absolute left-1 bottom-10 text-[8px] text-white/60">
+                        U2
+                      </span>
+
+                      {/* Honeycomb Mesh Grill */}
+                      <div
+                        className="absolute inset-x-6 bottom-10 top-14 opacity-20 
+                        bg-[radial-gradient(circle,white_1px,transparent_1px)] 
+                        [background-size:8px_8px]"
+                      ></div>
+
+                      {/* Server Blade Slots */}
+                      <div className="absolute top-16 left-6 right-6 space-y-2">
+                        <div className="h-3 bg-black/25 rounded-sm"></div>
+                        <div className="h-3 bg-black/25 rounded-sm"></div>
+                        <div className="h-3 bg-black/25 rounded-sm"></div>
+                      </div>
+
+                      {/* Center Branding */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <h3 className="text-white text-xl font-bold">
+                          Drive Eraser
+                        </h3>
+                        {/* <p className="text-white/70 text-[10px] uppercase tracking-wide">
+                          Secure Data Destruction
+                        </p> */}
+                      </div>
+
+                      {/* Ports Section */}
+                      <div className="absolute bottom-4 left-6 flex gap-2">
+                        <div className="w-4 h-3 bg-black/40 rounded-sm"></div>
+                        <div className="w-4 h-3 bg-black/40 rounded-sm"></div>
+                        <div className="w-6 h-3 bg-black/40 rounded-sm"></div>
+                      </div>
+
+                      {/* Power Button */}
+                      <div className="absolute bottom-4 left-24 w-4 h-4 rounded-full border border-white/40 flex items-center justify-center">
+                        <div className="w-2 h-2 bg-emerald-300 rounded-full animate-pulse"></div>
+                      </div>
+
+                      {/* Dual LED Bars */}
+                      <div className="absolute bottom-4 right-6 space-y-1">
+                        <div className="w-20 h-2 bg-black/30 rounded-full overflow-hidden">
+                          <div className="w-2/3 h-full bg-emerald-300 animate-pulse"></div>
+                        </div>
+                        <div className="w-16 h-2 bg-black/30 rounded-full overflow-hidden">
+                          <div className="w-1/2 h-full bg-green-400"></div>
+                        </div>
+                      </div>
+
+                      {/* Serial */}
+                      <div className="absolute bottom-2 left-6 text-[8px] text-white/60 tracking-widest">
+                        SRV-DX-90321-ERASE
+                      </div>
+
+                      {/* Border Pulse */}
+                      <div className="absolute inset-0 border border-white/10 rounded-md animate-pulse"></div>
+                    </div>
+
+                    {/* Thin 3D Side */}
+                    <div
+                      className="absolute top-0 right-0 w-[22px] h-full bg-gradient-to-l from-emerald-800 to-emerald-700"
+                      style={{
+                        transform: "rotateY(90deg) translateX(11px)",
+                        transformOrigin: "left center",
+                      }}
+                    ></div>
+
+                    {/* Reflection */}
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[420px] h-12 bg-gradient-to-t from-emerald-600/20 to-transparent blur-xl rounded-full"></div>
                   </div>
+
+                  <style>{`
+                    @keyframes float {
+                      0%,100% { transform: translateY(0px) rotateY(-12deg) rotateX(4deg); }
+                      50% { transform: translateY(-14px) rotateY(-8deg) rotateX(2deg); }
+                    }
+                  `}</style>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -664,7 +718,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
         </section>
 
         {/* ================= VIDEO SECTION ================= */}
-        <section id="demo" className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-emerald-50">
+        <section
+          id="demo"
+          className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-emerald-50"
+        >
           <div className="container mx-auto px-4 max-w-5xl">
             <Reveal>
               <div className="text-center mb-10">
@@ -713,8 +770,168 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           </div>
         </section>
 
+        {/* ================= HOW IT WORKS (Help Manual) ================= */}
+        <section id="how-it-works" className="py-16 lg:py-24 bg-white">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <Reveal>
+              <div className="text-center mb-16">
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+                  How To Use <span className="text-emerald-600">D-Secure</span>{" "}
+                  Drive Eraser?
+                </h2>
+                <p className="text-lg text-slate-600">
+                  Multiple Deployment Options for D-Secure
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              {/* Left Column: Visual Flow Diagram */}
+              <div className="lg:col-span-7">
+                <Reveal delayMs={100}>
+                  <div className="relative">
+                    {/* Mobile: Vertical, Desktop: Horizontal Flow */}
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-4 relative z-10">
+                      {/* Step 1: Deploy */}
+                      <div className="text-center flex-1 w-full md:w-auto group">
+                        <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 hover:border-emerald-300 transition-colors h-full flex flex-col items-center">
+                          <div className="relative mb-4">
+                            <CloudIcon className="w-12 h-12 text-emerald-600" />
+                            <ArrowRightIcon className="w-5 h-5 text-emerald-400 absolute -bottom-2 -right-2 transform rotate-45" />
+                          </div>
+                          <p className="font-semibold text-slate-800 mb-3 text-sm">
+                            Multiple Ways to Deploy
+                          </p>
+                          <div className="flex flex-wrap justify-center gap-2">
+                            <span className="text-[10px] px-2 py-1 bg-white border border-slate-200 rounded text-slate-600">
+                              USB ISO
+                            </span>
+                            <span className="text-[10px] px-2 py-1 bg-white border border-slate-200 rounded text-slate-600">
+                              PXE Boot
+                            </span>
+                            <span className="text-[10px] px-2 py-1 bg-white border border-slate-200 rounded text-slate-600">
+                              MSI
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Arrow 1 */}
+                      <div className="hidden md:block text-slate-300">
+                        <ArrowRightIcon className="w-8 h-8" />
+                      </div>
+
+                      {/* Step 2: Erase */}
+                      <div className="text-center flex-1 w-full md:w-auto group">
+                        <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 hover:border-emerald-300 transition-colors h-full flex flex-col items-center">
+                          <div className="flex -space-x-2 mb-4">
+                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm border border-emerald-100 flex items-center justify-center relative z-10">
+                              <ShieldIcon className="w-5 h-5 text-emerald-600" />
+                            </div>
+                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm border border-emerald-100 flex items-center justify-center relative z-0 transform translate-y-2">
+                              <ShieldIcon className="w-5 h-5 text-emerald-600" />
+                            </div>
+                          </div>
+                          <p className="font-semibold text-slate-800 text-sm max-w-[150px] mx-auto">
+                            Erase Multiple Devices with D-Secure
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Arrow 2 */}
+                      <div className="hidden md:block text-slate-300">
+                        <ArrowRightIcon className="w-8 h-8" />
+                      </div>
+
+                      {/* Step 3: Report */}
+                      <div className="text-center flex-1 w-full md:w-auto group">
+                        <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 hover:border-emerald-300 transition-colors h-full flex flex-col items-center">
+                          <div className="relative mb-4">
+                            <FileTextIcon className="w-12 h-12 text-emerald-600" />
+                            <div className="absolute bottom-0 right-0 bg-emerald-100 rounded-full p-1">
+                              <CheckIcon className="w-3 h-3 text-emerald-600" />
+                            </div>
+                          </div>
+                          <p className="font-semibold text-slate-800 text-sm">
+                            Save Erasure Reports on Cloud
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Connecting Line (Desktop) */}
+                    <div className="hidden md:block absolute top-1/2 left-10 right-10 h-0.5 bg-slate-100 -z-0 -translate-y-[20px]"></div>
+                  </div>
+                </Reveal>
+              </div>
+
+              {/* Right Column: Text Content */}
+              <div className="lg:col-span-5">
+                <Reveal delayMs={200}>
+                  <div className="space-y-6">
+                    <p className="text-slate-600 leading-relaxed text-lg">
+                      <strong className="text-slate-900">
+                        D-Secure Drive Eraser
+                      </strong>{" "}
+                      offers the flexibility to wipe drives and devices in both
+                      internet-enabled locations and offline facilities.
+                    </p>
+                    <p className="text-slate-600 leading-relaxed">
+                      Deployment options include using a{" "}
+                      <strong className="text-slate-800">USB drive</strong>,
+                      employing a{" "}
+                      <strong className="text-slate-800">
+                        PXE boot solution
+                      </strong>{" "}
+                      over a network, or utilizing an{" "}
+                      <strong className="text-slate-800">MSI package</strong>{" "}
+                      for remote wiping on Windows endpoint devices.
+                    </p>
+                    <p className="text-slate-600 leading-relaxed">
+                      Additionally, the USB solution supports wiping Mac
+                      devices, ensuring comprehensive coverage for your IT
+                      infrastructure.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                      {/* <Link
+                        to="/support/help-manual/complete-manual"
+                        className="inline-flex items-center gap-2 text-slate-600 font-semibold hover:text-emerald-600 transition-colors group"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-colors">
+                          <ClipboardIcon className="w-5 h-5" />
+                        </div>
+                        Help Manual
+                      </Link> */}
+
+                      <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                        <Link
+                          to="/support/help-manual/complete-manual"
+                          className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors group"
+                        >
+                          Help Manual
+                          <ClipboardIcon className="w-4 h-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-sm text-slate-500">
+                *Offline variant available for Non-Internet locations
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* ================= COMPLIANCE STANDARDS ================= */}
-        <section id="compliance" className="py-16 lg:py-24 bg-gradient-to-br from-slate-900 to-slate-800">
+        <section
+          id="compliance"
+          className="py-16 lg:py-24 bg-gradient-to-br from-slate-900 to-slate-800"
+        >
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center mb-14">
@@ -748,7 +965,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
         </section>
 
         {/* ================= PLATFORM SUPPORT ================= */}
-        <section id="platforms" className="py-16 lg:py-24 bg-gradient-to-br from-emerald-50 to-teal-50">
+        <section
+          id="platforms"
+          className="py-16 lg:py-24 bg-gradient-to-br from-emerald-50 to-teal-50"
+        >
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center mb-14">
@@ -815,7 +1035,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
         </section>
 
         {/* ================= USE CASES ================= */}
-        <section id="use-cases" className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-emerald-50">
+        <section
+          id="use-cases"
+          className="py-16 lg:py-24 bg-gradient-to-br from-slate-50 to-emerald-50"
+        >
           <div className="container mx-auto px-4 max-w-6xl">
             <Reveal>
               <div className="text-center mb-14">

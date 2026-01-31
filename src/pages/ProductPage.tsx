@@ -18,25 +18,25 @@ import {
 } from "@/components/FlatIcons";
 
 // Product Catalog Download Functions
-const downloadCatalog = (productType: 'drive-eraser' | 'file-eraser') => {
+const downloadCatalog = (productType: "drive-eraser" | "file-eraser") => {
   const catalogInfo = {
-    'drive-eraser': {
-      filename: 'D-Secure-Drive-Eraser-Catalog.pdf',
-      url: '/downloads/dsecure-drive-eraser-catalog.pdf'
+    "drive-eraser": {
+      filename: "D-Secure-Drive-Eraser-Catalog.pdf",
+      url: "/downloads/dsecure-drive-eraser-catalog.pdf",
     },
-    'file-eraser': {
-      filename: 'D-Secure-File-Eraser-Catalog.pdf',
-      url: '/downloads/dsecure-file-eraser-catalog.pdf'
-    }
+    "file-eraser": {
+      filename: "D-Secure-File-Eraser-Catalog.pdf",
+      url: "/downloads/dsecure-file-eraser-catalog.pdf",
+    },
   };
 
   const catalog = catalogInfo[productType];
 
   // Create download link
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = catalog.url;
   link.download = catalog.filename;
-  link.target = '_blank';
+  link.target = "_blank";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -73,7 +73,7 @@ const ProductPage: React.FC = () => {
   const features = {
     platform: [
       {
-        name: t('products.windowsSupport'),
+        name: t("products.windowsSupport"),
         basic: "check",
         standard: "check",
         cloud: "check",
@@ -82,7 +82,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.linuxSupport'),
+        name: t("products.linuxSupport"),
         basic: "x",
         standard: "check",
         cloud: "check",
@@ -91,7 +91,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.macosSupport'),
+        name: t("products.macosSupport"),
         basic: "x",
         standard: "check",
         cloud: "check",
@@ -100,7 +100,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.multiLanguageUI'),
+        name: t("products.multiLanguageUI"),
         basic: "pending",
         standard: "pending",
         cloud: "pending",
@@ -111,7 +111,7 @@ const ProductPage: React.FC = () => {
     ],
     core: [
       {
-        name: t('products.thirtyAlgorithms'),
+        name: t("products.thirtyAlgorithms"),
         basic: "check",
         standard: "check",
         cloud: "check",
@@ -120,7 +120,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.fileFolderErase'),
+        name: t("products.fileFolderErase"),
         basic: "check",
         standard: "check",
         cloud: "check",
@@ -129,7 +129,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.eraseTraces'),
+        name: t("products.eraseTraces"),
         basic: "check",
         standard: "check",
         cloud: "check",
@@ -138,7 +138,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.eraseDeletedData'),
+        name: t("products.eraseDeletedData"),
         basic: "x",
         standard: "check",
         cloud: "check",
@@ -147,7 +147,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.eraseVolume'),
+        name: t("products.eraseVolume"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -156,7 +156,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-5",
       },
       {
-        name: t('products.eraseDisk'),
+        name: t("products.eraseDisk"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -165,7 +165,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-1",
       },
       {
-        name: t('products.scheduledErase'),
+        name: t("products.scheduledErase"),
         basic: "check-file",
         standard: "check-expanded",
         cloud: "check",
@@ -174,7 +174,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.cloudStorageErase'),
+        name: t("products.cloudStorageErase"),
         basic: "check",
         standard: "check",
         cloud: "check",
@@ -185,7 +185,7 @@ const ProductPage: React.FC = () => {
     ],
     reporting: [
       {
-        name: t('products.localPdfReports'),
+        name: t("products.localPdfReports"),
         basic: "x",
         standard: "check",
         cloud: "check",
@@ -194,7 +194,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.whiteLabelReports'),
+        name: t("products.whiteLabelReports"),
         basic: "x",
         standard: "x",
         cloud: "check",
@@ -203,7 +203,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.cloudReportUpload'),
+        name: t("products.cloudReportUpload"),
         basic: "x",
         standard: "x",
         cloud: "check-slow",
@@ -212,7 +212,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-fastest",
       },
       {
-        name: t('products.xmlReportFormat'),
+        name: t("products.xmlReportFormat"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -221,7 +221,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.auditGradeCompliance'),
+        name: t("products.auditGradeCompliance"),
         basic: "x",
         standard: "check",
         cloud: "check",
@@ -230,7 +230,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.userActionLogs'),
+        name: t("products.userActionLogs"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -241,7 +241,7 @@ const ProductPage: React.FC = () => {
     ],
     services: [
       {
-        name: t('products.webDashboard'),
+        name: t("products.webDashboard"),
         basic: "limited",
         standard: "check",
         cloud: "check",
@@ -250,7 +250,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.cloudCommands'),
+        name: t("products.cloudCommands"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -259,7 +259,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.customInstaller'),
+        name: t("products.customInstaller"),
         basic: "locked",
         standard: "locked",
         cloud: "locked",
@@ -268,7 +268,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-5",
       },
       {
-        name: t('products.subUserManagement'),
+        name: t("products.subUserManagement"),
         basic: "locked-profiles",
         standard: "locked",
         cloud: "locked",
@@ -277,7 +277,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: t('products.privateCloudSupport'),
+        name: t("products.privateCloudSupport"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -286,7 +286,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check-1",
       },
       {
-        name: t('products.multiLevelUserLogs'),
+        name: t("products.multiLevelUserLogs"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -295,7 +295,7 @@ const ProductPage: React.FC = () => {
         enterprise: "check",
       },
       {
-        name: t('products.whiteLabelDashboard'),
+        name: t("products.whiteLabelDashboard"),
         basic: "x",
         standard: "x",
         cloud: "check",
@@ -306,7 +306,7 @@ const ProductPage: React.FC = () => {
     ],
     addons: [
       {
-        name: t('products.additionalDiskLicenses'),
+        name: t("products.additionalDiskLicenses"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -315,7 +315,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: t('products.additionalVolumeLicenses'),
+        name: t("products.additionalVolumeLicenses"),
         basic: "x",
         standard: "x",
         cloud: "x",
@@ -324,7 +324,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: t('products.extraCustomInstaller'),
+        name: t("products.extraCustomInstaller"),
         basic: "locked",
         standard: "locked",
         cloud: "locked",
@@ -333,7 +333,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: t('products.extraSubUsers'),
+        name: t("products.extraSubUsers"),
         basic: "locked",
         standard: "locked",
         cloud: "locked",
@@ -342,7 +342,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: t('products.extraPrivateClouds'),
+        name: t("products.extraPrivateClouds"),
         basic: "x",
         standard: "locked",
         cloud: "locked",
@@ -351,7 +351,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: t('products.bespokeIntegrations'),
+        name: t("products.bespokeIntegrations"),
         basic: "locked",
         standard: "locked",
         cloud: "locked",
@@ -360,7 +360,7 @@ const ProductPage: React.FC = () => {
         enterprise: "locked",
       },
       {
-        name: t('products.dedicatedSlaSupport'),
+        name: t("products.dedicatedSlaSupport"),
         basic: "locked",
         standard: "locked",
         cloud: "locked",
@@ -374,29 +374,29 @@ const ProductPage: React.FC = () => {
   const comparisonSections = [
     {
       key: "platform" as const,
-      title: t('products.platformOsSupport'),
+      title: t("products.platformOsSupport"),
       data: features.platform,
     },
     {
       key: "core" as const,
-      title: t('products.coreErasureCapabilities'),
+      title: t("products.coreErasureCapabilities"),
       data: features.core,
     },
     {
       key: "reporting" as const,
-      title: t('products.reportingCompliance'),
+      title: t("products.reportingCompliance"),
       data: features.reporting,
     },
     {
       key: "addons" as const,
-      title: t('products.addOnCustomization'),
+      title: t("products.addOnCustomization"),
       data: features.addons,
     },
   ];
 
   const renderFeatureIcon = (
     value: string,
-    variant: "default" | "compact" = "default"
+    variant: "default" | "compact" = "default",
   ) => {
     const iconClass = variant === "compact" ? "w-3 h-3" : "w-4 h-4";
     const textClass = variant === "compact" ? "text-[0.65rem]" : "text-xs";
@@ -427,7 +427,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ClipboardIcon className={`${iconClass} text-emerald-600`} />
             <span className={`${textClass} font-medium text-emerald-600`}>
-              {t('products.files')}
+              {t("products.files")}
             </span>
           </div>
         );
@@ -436,7 +436,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ClipboardIcon className={`${iconClass} text-emerald-600`} />
             <span className={`${textClass} font-medium text-emerald-600`}>
-              {t('products.all')}
+              {t("products.all")}
             </span>
           </div>
         );
@@ -445,7 +445,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-amber-500`} />
             <span className={`${textClass} font-medium text-amber-500`}>
-              {t('products.basic')}
+              {t("products.basic")}
             </span>
           </div>
         );
@@ -454,7 +454,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-emerald-500`} />
             <span className={`${textClass} font-medium text-emerald-500`}>
-              {t('products.fast')}
+              {t("products.fast")}
             </span>
           </div>
         );
@@ -463,7 +463,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-emerald-600`} />
             <span className={`${textClass} font-medium text-emerald-600`}>
-              {t('products.faster')}
+              {t("products.faster")}
             </span>
           </div>
         );
@@ -472,7 +472,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <LightningIcon className={`${iconClass} text-purple-600`} />
             <span className={`${textClass} font-medium text-purple-600`}>
-              {t('products.premium')}
+              {t("products.premium")}
             </span>
           </div>
         );
@@ -497,7 +497,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ShieldIcon className={`${iconClass} text-amber-600`} />
             <span className={`${textClass} font-medium text-amber-600`}>
-              {t('products.addon')}
+              {t("products.addon")}
             </span>
           </div>
         );
@@ -506,7 +506,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <ShieldIcon className={`${iconClass} text-amber-600`} />
             <span className={`${textClass} font-medium text-amber-600`}>
-              {t('products.profiles')}
+              {t("products.profiles")}
             </span>
           </div>
         );
@@ -515,7 +515,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <StarIcon className={`${iconClass} text-blue-600`} />
             <span className={`${textClass} font-medium text-blue-600`}>
-              {t('products.comingSoon')}
+              {t("products.comingSoon")}
             </span>
           </div>
         );
@@ -524,7 +524,7 @@ const ProductPage: React.FC = () => {
           <div className={`flex items-center ${gapClass}`}>
             <GearIcon className={`${iconClass} text-slate-600`} />
             <span className={`${textClass} font-medium text-slate-600`}>
-              {t('products.limited')}
+              {t("products.limited")}
             </span>
           </div>
         );
@@ -544,12 +544,12 @@ const ProductPage: React.FC = () => {
           <div className="max-w-6xl mx-auto">
             <Reveal>
               <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-emerald-700 mb-4 xs:mb-6">
-                {t('products.title')}
+                {t("products.title")}
               </h1>
             </Reveal>
             <Reveal delayMs={100}>
               <p className="max-w-4xl mx-auto text-lg xs:text-xl sm:text-2xl text-slate-600 mb-6 xs:mb-8 leading-relaxed">
-                {t('products.subtitle')}
+                {t("products.subtitle")}
               </p>
             </Reveal>
             <Reveal delayMs={200}>
@@ -558,14 +558,14 @@ const ProductPage: React.FC = () => {
                   to="/contact?request=free-demo"
                   className="inline-flex items-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition-all shadow-2xl hover:shadow-2xl hover:scale-105 text-base xs:text-lg w-full sm:w-auto justify-center"
                 >
-                  {t('products.requestFreeDemo')}
+                  {t("products.requestFreeDemo")}
                   <ArrowRightIcon className="ml-2 xs:ml-3 w-4 xs:w-5 h-4 xs:h-5" />
                 </Link>
                 <Link
                   to="/pricing-and-plan"
                   className="inline-flex items-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-bold hover:bg-emerald-50 transition-all text-base xs:text-lg w-full sm:w-auto justify-center"
                 >
-                  {t('products.buyLicenses')}
+                  {t("products.buyLicenses")}
                 </Link>
               </div>
             </Reveal>
@@ -580,72 +580,82 @@ const ProductPage: React.FC = () => {
               <Reveal>
                 <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-6 xs:p-8 sm:p-10 border border-emerald-100 group relative overflow-hidden">
                   <div className="absolute top-4 xs:top-6 right-4 xs:right-6 bg-emerald-600 text-white px-3 xs:px-4 py-1 rounded-full text-xs xs:text-sm font-bold">
-                    {t('products.mostPopular')}
+                    {t("products.mostPopular")}
                   </div>
                   <div className="flex-none">
                     <DatabaseIcon className="w-12 xs:w-14 sm:w-16 h-12 xs:h-14 sm:h-16 text-emerald-600 mb-4 xs:mb-6 transition-transform group-hover:scale-110" />
                     <h3 className="text-xl xs:text-2xl sm:text-3xl font-bold mb-2 text-slate-900">
-                      {t('products.driveEraserTitle')}
+                      {t("products.driveEraserTitle")}
                     </h3>
                     <p className="text-slate-600 mb-3 xs:mb-4 leading-relaxed text-base xs:text-lg font-semibold">
-                      {t('products.driveEraserSubtitle')}
+                      {t("products.driveEraserSubtitle")}
                     </p>
                     <p className="text-slate-600 mb-4 xs:mb-6 leading-relaxed text-sm xs:text-base">
-                      {t('products.driveEraserDesc')}
+                      {t("products.driveEraserDesc")}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 xs:gap-6 mb-6 xs:mb-8 flex-1">
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-3 xs:mb-4 text-sm xs:text-base">
-                        {t('products.keyFeatures')}
+                        {t("products.keyFeatures")}
                       </h4>
                       <ul className="text-slate-700 space-y-3 text-sm">
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.erasureStandards')}
+                          {t("products.erasureStandards")}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.cloudConsoleIntegration')}
+                          {t("products.cloudConsoleIntegration")}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.usbPxeBoot')}
+                          {t("products.usbPxeBoot")}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.digitallySigned')}
+                          {t("products.digitallySigned")}
                         </li>
                       </ul>
                     </div>
 
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        {t('products.technicalSpecs')}
+                        {t("products.technicalSpecs")}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between border-b border-slate-200 pb-2">
                           <span className="text-slate-600">
-                            {t('products.supportedTypes')}
+                            {t("products.supportedTypes")}
                           </span>
                           <span className="font-semibold">
-                            {t('products.supportedTypesValue')}
+                            {t("products.supportedTypesValue")}
                           </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
                           <span className="text-slate-600">
-                            {t('products.erasureMethods')}
+                            {t("products.erasureMethods")}
                           </span>
-                          <span className="font-semibold">{t('products.twentySixStandards')}</span>
+                          <span className="font-semibold">
+                            {t("products.twentySixStandards")}
+                          </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">{t('products.deployment')}</span>
-                          <span className="font-semibold">{t('products.deploymentValue')}</span>
+                          <span className="text-slate-600">
+                            {t("products.deployment")}
+                          </span>
+                          <span className="font-semibold">
+                            {t("products.deploymentValue")}
+                          </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">{t('products.licenses')}</span>
-                          <span className="font-semibold">{t('products.licensesValue')}</span>
+                          <span className="text-slate-600">
+                            {t("products.licenses")}
+                          </span>
+                          <span className="font-semibold">
+                            {t("products.licensesValue")}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -653,50 +663,50 @@ const ProductPage: React.FC = () => {
 
                   <div className="mb-8">
                     <h4 className="font-semibold text-slate-900 mb-3">
-                      {t('products.keyBenefits')}
+                      {t("products.keyBenefits")}
                     </h4>
                     <ul className="text-slate-700 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.safeguardPrivacy')}
+                        {t("products.safeguardPrivacy")}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.preventDataThefts')}
+                        {t("products.preventDataThefts")}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.maxResaleValue')}
+                        {t("products.maxResaleValue")}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.globalStandardsCompliance')}
+                        {t("products.globalStandardsCompliance")}
                       </li>
                     </ul>
                   </div>
 
                   <div className="mb-6">
                     <div className="text-3xl font-bold text-slate-900 mb-2">
-                      {t('products.startingAt')} $20
+                      {t("products.startingAt")} $20
                     </div>
                     <div className="text-slate-600">
-                      {t('products.payPerUse')}
+                      {t("products.payPerUse")}
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                    <button
-                      onClick={() => downloadCatalog('drive-eraser')}
+                    <Link
+                      to={"/products/drive-eraser"}
                       className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center gap-2"
                     >
-                      <ClipboardIcon className="w-4 h-4" />
-                      {t('products.dataSheet')}
-                    </button>
+                      {/* <ClipboardIcon className="w-4 h-4" /> */}
+                      {t("products.dataSheet")}
+                    </Link>
                     <Link
                       to="/contact?request=free-license&product=drive-eraser"
                       className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
                     >
-                      {t('products.requestFreeDemo')}
+                      {t("products.requestFreeDemo")}
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
                   </div>
@@ -704,7 +714,7 @@ const ProductPage: React.FC = () => {
                     to="/pricing-and-plan?product=drive-eraser"
                     className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center mt-2"
                   >
-                    {t('products.buyNow')}
+                    {t("products.buyNow")}
                   </Link>
                 </div>
               </Reveal>
@@ -713,66 +723,82 @@ const ProductPage: React.FC = () => {
               <Reveal delayMs={100}>
                 <div className="flex flex-col h-full bg-white rounded-3xl shadow-2xl hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 p-10 border border-emerald-100 group relative overflow-hidden">
                   <div className="absolute top-6 right-6 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">
-                    {t('products.bestRated')}
+                    {t("products.bestRated")}
                   </div>
                   <div className="flex-none">
                     <ServerIcon className="w-16 h-16 text-emerald-600 mb-6 transition-transform group-hover:scale-110" />
                     <h3 className="text-3xl font-bold mb-2 text-slate-900">
-                      {t('products.fileEraserTitle')}
+                      {t("products.fileEraserTitle")}
                     </h3>
                     <p className="text-slate-600 mb-4 leading-relaxed text-lg font-semibold">
-                      {t('products.fileEraserSubtitle')}
+                      {t("products.fileEraserSubtitle")}
                     </p>
                     <p className="text-slate-600 mb-6 leading-relaxed">
-                      {t('products.fileEraserDesc')}
+                      {t("products.fileEraserDesc")}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 flex-1">
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        {t('products.keyFeatures')}
+                        {t("products.keyFeatures")}
                       </h4>
                       <ul className="text-slate-700 space-y-3 text-sm">
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.erasureStandards')}
+                          {t("products.erasureStandards")}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.multiLanguageUI')}
+                          {t("products.multiLanguageUI")}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.googleDriveErasure')}
+                          {t("products.googleDriveErasure")}
                         </li>
                         <li className="flex items-center gap-3">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
-                          {t('products.comprehensiveReporting')}
+                          {t("products.comprehensiveReporting")}
                         </li>
                       </ul>
                     </div>
 
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        {t('products.platformSupport')}
+                        {t("products.platformSupport")}
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">{t('products.windows')}</span>
-                          <span className="font-semibold">{t('products.windowsFullSupport')}</span>
+                          <span className="text-slate-600">
+                            {t("products.windows")}
+                          </span>
+                          <span className="font-semibold">
+                            {t("products.windowsFullSupport")}
+                          </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">{t('products.macos')}</span>
-                          <span className="font-semibold">{t('products.macosFullSupport')}</span>
+                          <span className="text-slate-600">
+                            {t("products.macos")}
+                          </span>
+                          <span className="font-semibold">
+                            {t("products.macosFullSupport")}
+                          </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">{t('products.linux')}</span>
-                          <span className="font-semibold">{t('products.linuxFullSupport')}</span>
+                          <span className="text-slate-600">
+                            {t("products.linux")}
+                          </span>
+                          <span className="font-semibold">
+                            {t("products.linuxFullSupport")}
+                          </span>
                         </div>
                         <div className="flex justify-between border-b border-slate-200 pb-2">
-                          <span className="text-slate-600">{t('products.cloud')}</span>
-                          <span className="font-semibold">{t('products.cloudEnterprise')}</span>
+                          <span className="text-slate-600">
+                            {t("products.cloud")}
+                          </span>
+                          <span className="font-semibold">
+                            {t("products.cloudEnterprise")}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -780,51 +806,51 @@ const ProductPage: React.FC = () => {
 
                   <div className="mb-8">
                     <h4 className="font-semibold text-slate-900 mb-3">
-                      {t('products.useCases')}
+                      {t("products.useCases")}
                     </h4>
                     <ul className="text-slate-700 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.individualUsers')}
+                        {t("products.individualUsers")}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.corporateDataProtection')}
+                        {t("products.corporateDataProtection")}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.cloudErasure')}
+                        {t("products.cloudErasure")}
                       </li>
                       <li className="flex items-center gap-2">
                         <CheckIcon className="w-4 h-4 text-emerald-600" />
-                        {t('products.complianceAudit')}
+                        {t("products.complianceAudit")}
                       </li>
                     </ul>
                   </div>
 
                   <div className="mb-6">
                     <div className="text-3xl font-bold text-slate-900 mb-2">
-                      {t('products.startingAt')} $40
+                      {t("products.startingAt")} $40
                     </div>
                     <div className="text-slate-600">
-                      {t('products.individualEnterpriseAvailable')}
+                      {t("products.individualEnterpriseAvailable")}
                     </div>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                    <button
-                      onClick={() => downloadCatalog('file-eraser')}
+                    <Link
+                      to={"/products/file-eraser"}
                       className="flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center gap-2"
                     >
-                      <ClipboardIcon className="w-4 h-4" />
-                      {t('products.dataSheet')}
-                    </button>
+                      {/* <ClipboardIcon className="w-4 h-4" /> */}
+                      {t("products.dataSheet")}
+                    </Link>
 
                     <Link
                       to="/contact?request=free-demo&product=file-eraser"
                       className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-all group-hover:translate-x-1 text-center"
                     >
-                      {t('products.requestFreeDemo')}
+                      {t("products.requestFreeDemo")}
                       <ArrowRightIcon className="w-4 h-4" />
                     </Link>
                   </div>
@@ -832,7 +858,7 @@ const ProductPage: React.FC = () => {
                     to="/pricing-and-plan?product=file-eraser"
                     className="mt-2 flex-1 inline-flex items-center justify-center px-6 py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 font-semibold hover:bg-emerald-50 transition-all text-center"
                   >
-                    {t('products.buyNow')}
+                    {t("products.buyNow")}
                   </Link>
                 </div>
               </Reveal>
@@ -843,188 +869,197 @@ const ProductPage: React.FC = () => {
         {/* --- Features & Plans for File Eraser --- */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6 sm:px-10">
-            {false && (<><Reveal>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                  {t('products.fileErasureFeatures')}
-                </h2>
-                <p className="text-lg text-slate-600 mb-6 max-w-4xl mx-auto">
-                  {t('products.compareAllFeatures')}
-                </p>
-              </div>
-            </Reveal>
+            {false && (
+              <>
+                <Reveal>
+                  <div className="text-center mb-16">
+                    <h2 className="text-4xl font-bold text-slate-900 mb-4">
+                      {t("products.fileErasureFeatures")}
+                    </h2>
+                    <p className="text-lg text-slate-600 mb-6 max-w-4xl mx-auto">
+                      {t("products.compareAllFeatures")}
+                    </p>
+                  </div>
+                </Reveal>
 
-              {/* Pricing Table for File Eraser */}
-              <Reveal delayMs={100}>
-                <div className="bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
-                  <div className="hidden sm:block">
-                    <div className="grid grid-cols-5 gap-0 bg-emerald-600 text-white">
-                      <div className="p-6 font-semibold">{t('products.feature')}</div>
-                      {pricingPlans.map((plan) => (
-                        <div key={plan.id} className="p-6 text-center relative">
-                          <div className="font-bold text-lg">{plan.name}</div>
-                          {/* {plan.tag && (
+                {/* Pricing Table for File Eraser */}
+                <Reveal delayMs={100}>
+                  <div className="bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
+                    <div className="hidden sm:block">
+                      <div className="grid grid-cols-5 gap-0 bg-emerald-600 text-white">
+                        <div className="p-6 font-semibold">
+                          {t("products.feature")}
+                        </div>
+                        {pricingPlans.map((plan) => (
+                          <div
+                            key={plan.id}
+                            className="p-6 text-center relative"
+                          >
+                            <div className="font-bold text-lg">{plan.name}</div>
+                            {/* {plan.tag && (
                           <div className="absolute top-1 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">
                             {plan.tag === 'Popular' ? t('products.popular') : t('products.premium')}
                           </div>
                         )} */}
-                        </div>
-                      ))}
-                    </div>
+                          </div>
+                        ))}
+                      </div>
 
-                    {comparisonSections.map((section) => {
-                      const isExpanded = expandedSections[section.key];
-                      return (
-                        <div
-                          key={section.key}
-                          className="border-b border-slate-200"
-                        >
-                          <button
-                            onClick={() => toggleSection(section.key)}
-                            className="w-full p-6 text-left bg-slate-100 hover:bg-slate-200 transition-colors flex justify-between items-center"
+                      {comparisonSections.map((section) => {
+                        const isExpanded = expandedSections[section.key];
+                        return (
+                          <div
+                            key={section.key}
+                            className="border-b border-slate-200"
                           >
-                            <span className="font-semibold text-slate-900">
-                              {section.title}
-                            </span>
-                            {isExpanded ? (
-                              <ArrowRightIcon className="w-5 h-5 rotate-[-90deg]" />
-                            ) : (
-                              <ArrowRightIcon className="w-5 h-5 rotate-90" />
-                            )}
-                          </button>
-                          {isExpanded && (
-                            <div className="bg-white">
-                              {section.data.map((feature, index) => (
-                                <div
-                                  key={`${section.key}-${index}`}
-                                  className="grid grid-cols-5 gap-0 border-b border-slate-100 last:border-b-0"
-                                >
-                                  <div className="p-4 border-r border-slate-100 text-sm text-slate-700 flex items-center">
-                                    {feature.name}
-                                  </div>
-                                  {pricingPlans.map((plan) => (
-                                    <div
-                                      key={plan.id}
-                                      className="p-4 border-r border-slate-100 last:border-r-0 text-center flex items-center justify-center"
-                                    >
-                                      {renderFeatureIcon(
-                                        feature[
-                                        plan.id as keyof typeof feature
-                                        ]
-                                      )}
+                            <button
+                              onClick={() => toggleSection(section.key)}
+                              className="w-full p-6 text-left bg-slate-100 hover:bg-slate-200 transition-colors flex justify-between items-center"
+                            >
+                              <span className="font-semibold text-slate-900">
+                                {section.title}
+                              </span>
+                              {isExpanded ? (
+                                <ArrowRightIcon className="w-5 h-5 rotate-[-90deg]" />
+                              ) : (
+                                <ArrowRightIcon className="w-5 h-5 rotate-90" />
+                              )}
+                            </button>
+                            {isExpanded && (
+                              <div className="bg-white">
+                                {section.data.map((feature, index) => (
+                                  <div
+                                    key={`${section.key}-${index}`}
+                                    className="grid grid-cols-5 gap-0 border-b border-slate-100 last:border-b-0"
+                                  >
+                                    <div className="p-4 border-r border-slate-100 text-sm text-slate-700 flex items-center">
+                                      {feature.name}
                                     </div>
-                                  ))}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="sm:hidden">
-                    {comparisonSections.map((section) => {
-                      const isExpanded = expandedSections[section.key];
-                      return (
-                        <div
-                          key={`mobile-${section.key}`}
-                          className="border-b border-slate-200"
-                        >
-                          <button
-                            onClick={() => toggleSection(section.key)}
-                            className="w-full px-4 py-4 text-left bg-slate-100 hover:bg-slate-200 transition-colors flex justify-between items-center"
-                          >
-                            <span className="font-semibold text-slate-900 text-sm">
-                              {section.title}
-                            </span>
-                            {isExpanded ? (
-                              <ArrowRightIcon className="w-5 h-5 rotate-[-90deg]" />
-                            ) : (
-                              <ArrowRightIcon className="w-5 h-5 rotate-90" />
-                            )}
-                          </button>
-                          {isExpanded && (
-                            <div className="bg-white px-4 pb-4 pt-2 space-y-4">
-                              {section.data.map((feature, index) => (
-                                <div
-                                  key={`${section.key}-mobile-${index}`}
-                                  className="rounded-2xl border border-slate-100 bg-slate-50 p-4 shadow-sm"
-                                >
-                                  <div className="text-sm font-semibold text-slate-900">
-                                    {feature.name}
-                                  </div>
-                                  <div className="mt-3 grid grid-cols-2 gap-3">
                                     {pricingPlans.map((plan) => (
                                       <div
-                                        key={`${section.key}-${plan.id}-${index}`}
-                                        className="flex items-center justify-between rounded-xl bg-white px-3 py-2 shadow-sm border border-slate-100"
+                                        key={plan.id}
+                                        className="p-4 border-r border-slate-100 last:border-r-0 text-center flex items-center justify-center"
                                       >
-                                        <span className="text-xs font-medium text-slate-600">
-                                          {plan.name}
-                                        </span>
-                                        <div className="flex items-center justify-end">
-                                          {renderFeatureIcon(
-                                            feature[
+                                        {renderFeatureIcon(
+                                          feature[
                                             plan.id as keyof typeof feature
-                                            ],
-                                            "compact"
-                                          )}
-                                        </div>
+                                          ],
+                                        )}
                                       </div>
                                     ))}
                                   </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="bg-white px-4 xs:px-6 sm:px-8 py-6 xs:py-7 sm:py-8">
-                    <div className="grid grid-cols-2 xs:grid-cols-2 md:grid-cols-4 gap-3 xs:gap-4">
-                      {pricingPlans.map((plan) => (
-                        <Link
-                          key={plan.id}
-                          to={`/pricing-and-plan?plan=${plan.id}&product=file-eraser&section=file-eraser`}
-                          className="inline-flex items-center justify-center px-4 py-2.5 xs:py-3 rounded-lg bg-emerald-600 text-white text-sm xs:text-base font-semibold hover:bg-emerald-700 transition-all text-center w-full"
-                        >
-                          {plan.name} Plan
-                        </Link>
-                      ))}
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                    <div className="mt-6 xs:mt-7 sm:mt-8 text-center">
-                      <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 justify-center items-center">
-                        <Link
-                          to="/contact?request=free-demo&product=file-eraser"
-                          className="inline-flex items-center justify-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl bg-emerald-600 text-white text-sm xs:text-base sm:text-lg font-bold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl w-full sm:w-auto"
-                        >
-                          {t('products.requestFreeDemoBtn')}
-                          <ArrowRightIcon className="ml-2 xs:ml-3 w-4 xs:w-5 h-4 xs:h-5" />
-                        </Link>
-                        <Link
-                          to="/pricing-and-plan?product=file-eraser"
-                          className="inline-flex items-center justify-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 text-sm xs:text-base sm:text-lg font-bold hover:bg-emerald-50 transition-all w-full sm:w-auto"
-                        >
-                          {t('products.buyLicensesBtn')}
-                        </Link>
+
+                    <div className="sm:hidden">
+                      {comparisonSections.map((section) => {
+                        const isExpanded = expandedSections[section.key];
+                        return (
+                          <div
+                            key={`mobile-${section.key}`}
+                            className="border-b border-slate-200"
+                          >
+                            <button
+                              onClick={() => toggleSection(section.key)}
+                              className="w-full px-4 py-4 text-left bg-slate-100 hover:bg-slate-200 transition-colors flex justify-between items-center"
+                            >
+                              <span className="font-semibold text-slate-900 text-sm">
+                                {section.title}
+                              </span>
+                              {isExpanded ? (
+                                <ArrowRightIcon className="w-5 h-5 rotate-[-90deg]" />
+                              ) : (
+                                <ArrowRightIcon className="w-5 h-5 rotate-90" />
+                              )}
+                            </button>
+                            {isExpanded && (
+                              <div className="bg-white px-4 pb-4 pt-2 space-y-4">
+                                {section.data.map((feature, index) => (
+                                  <div
+                                    key={`${section.key}-mobile-${index}`}
+                                    className="rounded-2xl border border-slate-100 bg-slate-50 p-4 shadow-sm"
+                                  >
+                                    <div className="text-sm font-semibold text-slate-900">
+                                      {feature.name}
+                                    </div>
+                                    <div className="mt-3 grid grid-cols-2 gap-3">
+                                      {pricingPlans.map((plan) => (
+                                        <div
+                                          key={`${section.key}-${plan.id}-${index}`}
+                                          className="flex items-center justify-between rounded-xl bg-white px-3 py-2 shadow-sm border border-slate-100"
+                                        >
+                                          <span className="text-xs font-medium text-slate-600">
+                                            {plan.name}
+                                          </span>
+                                          <div className="flex items-center justify-end">
+                                            {renderFeatureIcon(
+                                              feature[
+                                                plan.id as keyof typeof feature
+                                              ],
+                                              "compact",
+                                            )}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="bg-white px-4 xs:px-6 sm:px-8 py-6 xs:py-7 sm:py-8">
+                      <div className="grid grid-cols-2 xs:grid-cols-2 md:grid-cols-4 gap-3 xs:gap-4">
+                        {pricingPlans.map((plan) => (
+                          <Link
+                            key={plan.id}
+                            to={`/pricing-and-plan?plan=${plan.id}&product=file-eraser&section=file-eraser`}
+                            className="inline-flex items-center justify-center px-4 py-2.5 xs:py-3 rounded-lg bg-emerald-600 text-white text-sm xs:text-base font-semibold hover:bg-emerald-700 transition-all text-center w-full"
+                          >
+                            {plan.name} Plan
+                          </Link>
+                        ))}
+                      </div>
+                      <div className="mt-6 xs:mt-7 sm:mt-8 text-center">
+                        <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 justify-center items-center">
+                          <Link
+                            to="/contact?request=free-demo&product=file-eraser"
+                            className="inline-flex items-center justify-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl bg-emerald-600 text-white text-sm xs:text-base sm:text-lg font-bold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl w-full sm:w-auto"
+                          >
+                            {t("products.requestFreeDemoBtn")}
+                            <ArrowRightIcon className="ml-2 xs:ml-3 w-4 xs:w-5 h-4 xs:h-5" />
+                          </Link>
+                          <Link
+                            to="/pricing-and-plan?product=file-eraser"
+                            className="inline-flex items-center justify-center px-6 xs:px-7 sm:px-8 py-3 xs:py-4 rounded-xl border-2 border-emerald-600 text-emerald-700 text-sm xs:text-base sm:text-lg font-bold hover:bg-emerald-50 transition-all w-full sm:w-auto"
+                          >
+                            {t("products.buyLicensesBtn")}
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Reveal></>)}
+                </Reveal>
+              </>
+            )}
 
             {/* --- Services Table for File & Drive Eraser --- */}
             <Reveal delayMs={200}>
               <div className="mt-20 bg-slate-50 rounded-2xl shadow-lg overflow-hidden">
                 <div className="text-center py-10">
                   <h2 className="text-3xl font-bold text-slate-900 mb-2">
-                    {t('products.servicesAvailable')}
+                    {t("products.servicesAvailable")}
                   </h2>
                   <p className="text-slate-600 max-w-2xl mx-auto">
-                    {t('products.servicesDescription')}
+                    {t("products.servicesDescription")}
                   </p>
                 </div>
                 <div className="overflow-x-auto">
@@ -1032,29 +1067,20 @@ const ProductPage: React.FC = () => {
                     <thead className="bg-emerald-600 text-white">
                       <tr>
                         <th className="px-6 py-4 text-left font-semibold">
-                          {t('products.service')}
+                          {t("products.service")}
                         </th>
                         <th className="px-6 py-4 text-center font-semibold">
-                          {t('products.fileEraser')}
+                          {t("products.fileEraser")}
                         </th>
                         <th className="px-6 py-4 text-center font-semibold">
-                          {t('products.driveEraser')}
+                          {t("products.driveEraser")}
                         </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-slate-100">
                       <tr>
-                        <td className="px-6 py-4">{t('products.webDashboard')}</td>
-                        <td className="px-6 py-4 text-center">
-                          {renderFeatureIcon("check")}
-                        </td>
-                        <td className="px-6 py-4 text-center">
-                          {renderFeatureIcon("check")}
-                        </td>
-                      </tr>
-                      <tr>
                         <td className="px-6 py-4">
-                          {t('products.cloudCommands')}
+                          {t("products.webDashboard")}
                         </td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
@@ -1065,7 +1091,7 @@ const ProductPage: React.FC = () => {
                       </tr>
                       <tr>
                         <td className="px-6 py-4">
-                          {t('products.customInstaller')}
+                          {t("products.cloudCommands")}
                         </td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
@@ -1075,16 +1101,9 @@ const ProductPage: React.FC = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="px-6 py-4">{t('products.privateCloudSupport')}</td>
-                        <td className="px-6 py-4 text-center">
-                          {renderFeatureIcon("check")}
+                        <td className="px-6 py-4">
+                          {t("products.customInstaller")}
                         </td>
-                        <td className="px-6 py-4 text-center">
-                          {renderFeatureIcon("check")}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-6 py-4">{t('products.multiLevelUserLogs')}</td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
                         </td>
@@ -1093,7 +1112,31 @@ const ProductPage: React.FC = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td className="px-6 py-4">{t('products.whiteLabelDashboard')}</td>
+                        <td className="px-6 py-4">
+                          {t("products.privateCloudSupport")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">
+                          {t("products.multiLevelUserLogs")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {renderFeatureIcon("check")}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4">
+                          {t("products.whiteLabelDashboard")}
+                        </td>
                         <td className="px-6 py-4 text-center">
                           {renderFeatureIcon("check")}
                         </td>
@@ -1113,24 +1156,24 @@ const ProductPage: React.FC = () => {
         <section className="text-center py-20 px-6 sm:px-10 bg-gradient-to-br from-emerald-600 to-teal-600 text-white">
           <Reveal>
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              {t('products.readyToSecure')}
+              {t("products.readyToSecure")}
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-emerald-100 mb-8">
-              {t('products.joinThousands')}
+              {t("products.joinThousands")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/contact"
                 className="inline-flex items-center px-8 py-4 rounded-xl bg-white text-emerald-700 font-bold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl text-lg"
               >
-                {t('products.requestFreeDemoCtA')}
+                {t("products.requestFreeDemoCtA")}
                 <ArrowRightIcon className="ml-3 w-5 h-5" />
               </Link>
               <Link
                 to="/pricing-and-plan"
                 className="inline-flex items-center px-8 py-4 rounded-xl border-2 border-white text-white font-bold hover:bg-white hover:text-emerald-700 transition-all text-lg"
               >
-                {t('products.buyLicensesNow')}
+                {t("products.buyLicensesNow")}
               </Link>
             </div>
           </Reveal>

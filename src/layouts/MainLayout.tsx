@@ -9,7 +9,7 @@ import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
 import ScrollToTop from "@/components/ScrollToTop";
 import BlogPage from "@/components/BlogPage";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 export default function MainLayout() {
   const { user, logout } = useAuth();
@@ -44,45 +44,57 @@ export default function MainLayout() {
       // console.log('🔄 Header updated - Auth state changed');
     };
 
-    window.addEventListener('authStateChanged', handleAuthStateChange);
-    return () => window.removeEventListener('authStateChanged', handleAuthStateChange);
+    window.addEventListener("authStateChanged", handleAuthStateChange);
+    return () =>
+      window.removeEventListener("authStateChanged", handleAuthStateChange);
   }, []);
 
   // Close products dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (productsDropdownOpen && !target.closest('[data-products-dropdown]')) {
+      if (productsDropdownOpen && !target.closest("[data-products-dropdown]")) {
         setProductsDropdownOpen(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [productsDropdownOpen]);
 
   // Listen for sticky section nav visibility to hide main header
   useEffect(() => {
-    const handleStickyNavVisible = (event: CustomEvent<{ visible: boolean }>) => {
+    const handleStickyNavVisible = (
+      event: CustomEvent<{ visible: boolean }>,
+    ) => {
       setHideHeader(event.detail.visible);
     };
 
-    window.addEventListener('stickyNavVisible', handleStickyNavVisible as EventListener);
-    return () => window.removeEventListener('stickyNavVisible', handleStickyNavVisible as EventListener);
+    window.addEventListener(
+      "stickyNavVisible",
+      handleStickyNavVisible as EventListener,
+    );
+    return () =>
+      window.removeEventListener(
+        "stickyNavVisible",
+        handleStickyNavVisible as EventListener,
+      );
   }, []);
 
   return (
     <>
-      <SEOHead seo={getSEOForPage('home')} />
+      <SEOHead seo={getSEOForPage("home")} />
       <div className="min-h-dvh flex flex-col">
         <header
-          className={`border-b sticky top-0 z-50 transition-all duration-300 ${hideHeader
-            ? "-translate-y-full opacity-0 pointer-events-none"
-            : "translate-y-0 opacity-100"
-          } ${isScrolled
-            ? "bg-white/95 backdrop-blur-xl shadow-lg border-slate-200/50"
-            : "bg-white/80 backdrop-blur-md shadow-sm border-slate-200/30"
-            } supports-[backdrop-filter]:bg-white/80`}
+          className={`border-b sticky top-0 z-50 transition-all duration-300 ${
+            hideHeader
+              ? "-translate-y-full opacity-0 pointer-events-none"
+              : "translate-y-0 opacity-100"
+          } ${
+            isScrolled
+              ? "bg-white/95 backdrop-blur-xl shadow-lg border-slate-200/50"
+              : "bg-white/80 backdrop-blur-md shadow-sm border-slate-200/30"
+          } supports-[backdrop-filter]:bg-white/80`}
         >
           <div className="mx-auto max-w-7xl px-4 xs:px-4 sm:px-6 md:px-6 lg:px-8 xl:px-8 xxl:px-10 h-16 xs:h-18 sm:h-20 md:h-20 lg:h-22 xl:h-24 xxl:h-24 flex items-center justify-between">
             <Link
@@ -113,10 +125,10 @@ export default function MainLayout() {
               {/* Products Dropdown */}
               <div className="relative" data-products-dropdown>
                 <button
-                  className={`inline-flex items-center gap-2 py-2 text-slate-600 hover:text-slate-900 ${productsDropdownOpen ? 'text-brand font-medium' : ''}`}
+                  className={`inline-flex items-center gap-2 py-2 text-slate-600 hover:text-slate-900 ${productsDropdownOpen ? "text-brand font-medium" : ""}`}
                   onClick={() => setProductsDropdownOpen(!productsDropdownOpen)}
                 >
-                  {t('common.products')}
+                  {t("common.products")}
                 </button>
 
                 {/* Dropdown Panel */}
@@ -125,9 +137,13 @@ export default function MainLayout() {
                     {/* Dropdown Header */}
                     <div className="border-b border-slate-200 px-6 py-5">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-emerald-700 border-b-2 border-emerald-500 pb-1">Erasure</span>
+                        <span className="text-sm font-semibold text-emerald-700 border-b-2 border-emerald-500 pb-1">
+                          Erasure
+                        </span>
                       </div>
-                      <p className="text-xs text-slate-500 mt-1">Wiping Of Sensitive Data Across Storage Devices.</p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Wiping Of Sensitive Data Across Storage Devices.
+                      </p>
                     </div>
 
                     {/* Products Grid - 2 Columns (Row Layout) */}
@@ -139,13 +155,28 @@ export default function MainLayout() {
                         onClick={() => setProductsDropdownOpen(false)}
                       >
                         <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                          <svg
+                            className="w-5 h-5 text-rose-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                            />
                           </svg>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">Drive Eraser</h4>
-                          <p className="text-sm text-slate-500 leading-relaxed">Software to Erase Data From HDD, SSD, PC, Mac, Chromebook & Server</p>
+                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
+                            Drive Eraser
+                          </h4>
+                          <p className="text-sm text-slate-500 leading-relaxed">
+                            Software to Erase Data From HDD, SSD, PC, Mac,
+                            Chromebook & Server
+                          </p>
                         </div>
                       </Link>
 
@@ -156,13 +187,28 @@ export default function MainLayout() {
                         onClick={() => setProductsDropdownOpen(false)}
                       >
                         <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          <svg
+                            className="w-5 h-5 text-rose-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
                           </svg>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">File Erasure Software</h4>
-                          <p className="text-sm text-slate-500 leading-relaxed">Software to Wipe Files, Folders, Traces, Browser History Etc.</p>
+                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
+                            File Erasure Software
+                          </h4>
+                          <p className="text-sm text-slate-500 leading-relaxed">
+                            Software to Wipe Files, Folders, Traces, Browser
+                            History Etc.
+                          </p>
                         </div>
                       </Link>
                     </div>
@@ -178,7 +224,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                {t('solutions.title')}
+                {t("solutions.title")}
               </NavLink>
               <NavLink
                 to="/resources"
@@ -189,7 +235,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                {t('common.resources')}
+                {t("common.resources")}
               </NavLink>
               <NavLink
                 to="/partners"
@@ -200,7 +246,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                {t('common.partners')}
+                {t("common.partners")}
               </NavLink>
               <NavLink
                 to="/data-guardian-award"
@@ -222,7 +268,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                {t('nav.support')}
+                {t("nav.support")}
               </NavLink>
             </nav>
 
@@ -303,7 +349,7 @@ export default function MainLayout() {
                           d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                         />
                       </svg>
-                      {t('common.login')}
+                      {t("common.login")}
                     </NavLink>
                   </>
                 )}
@@ -311,10 +357,11 @@ export default function MainLayout() {
 
               {/* Mobile menu button */}
               <button
-                className={`lg:hidden xl:hidden xxl:hidden inline-flex items-center justify-center w-8 xs:w-9 sm:w-10 md:w-10 h-8 xs:h-9 sm:h-10 md:h-10 rounded-lg transition-all duration-200 ${open
-                  ? "bg-brand text-white hover:bg-brand/90"
-                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
-                  }`}
+                className={`lg:hidden xl:hidden xxl:hidden inline-flex items-center justify-center w-8 xs:w-9 sm:w-10 md:w-10 h-8 xs:h-9 sm:h-10 md:h-10 rounded-lg transition-all duration-200 ${
+                  open
+                    ? "bg-brand text-white hover:bg-brand/90"
+                    : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+                }`}
                 onClick={toggleMobileMenu}
                 aria-label={
                   open ? "Close navigation menu" : "Open navigation menu"
@@ -350,10 +397,11 @@ export default function MainLayout() {
           {open && (
             <div
               id="mobile-menu"
-              className={`lg:hidden xl:hidden xxl:hidden border-t animate-slide-down ${isScrolled
-                ? "bg-white/98 backdrop-blur-xl shadow-lg"
-                : "bg-white/95 backdrop-blur-md"
-                }`}
+              className={`lg:hidden xl:hidden xxl:hidden border-t animate-slide-down ${
+                isScrolled
+                  ? "bg-white/98 backdrop-blur-xl shadow-lg"
+                  : "bg-white/95 backdrop-blur-md"
+              }`}
               role="navigation"
               aria-label="Mobile navigation menu"
             >
@@ -379,7 +427,7 @@ export default function MainLayout() {
                         d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"
                       />
                     </svg>
-                    {t('common.products')}
+                    {t("common.products")}
                   </NavLink>
                   {/* Product Sub-items */}
                   <div className="ml-8 space-y-1 border-l-2 border-emerald-200 pl-4">
@@ -389,13 +437,25 @@ export default function MainLayout() {
                       className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
                     >
                       <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                          />
                         </svg>
                       </div>
                       <div>
                         <span className="font-medium">Drive Eraser</span>
-                        <p className="text-xs text-slate-400">HDD, SSD, Mac, Server</p>
+                        <p className="text-xs text-slate-400">
+                          HDD, SSD, Mac, Server
+                        </p>
                       </div>
                     </Link>
                     <Link
@@ -404,13 +464,25 @@ export default function MainLayout() {
                       className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
                     >
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-md flex items-center justify-center flex-shrink-0">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
                         </svg>
                       </div>
                       <div>
                         <span className="font-medium">File Eraser</span>
-                        <p className="text-xs text-slate-400">Files, Folders, Traces</p>
+                        <p className="text-xs text-slate-400">
+                          Files, Folders, Traces
+                        </p>
                       </div>
                     </Link>
                   </div>
@@ -434,7 +506,7 @@ export default function MainLayout() {
                       d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
                     />
                   </svg>
-                  {t('solutions.title')}
+                  {t("solutions.title")}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -455,7 +527,7 @@ export default function MainLayout() {
                       d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                     />
                   </svg>
-                  {t('common.resources')}
+                  {t("common.resources")}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -476,7 +548,7 @@ export default function MainLayout() {
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  {t('common.partners')}
+                  {t("common.partners")}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -512,7 +584,7 @@ export default function MainLayout() {
                       d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
                     />
                   </svg>
-                  {t('nav.support')}
+                  {t("nav.support")}
                 </NavLink>
                 {/* <NavLink
                 onClick={() => setOpen(false)}
@@ -669,7 +741,7 @@ export default function MainLayout() {
                     />
                   </Link>
                   <p className="text-slate-300 leading-relaxed mb-4 xs:mb-5 sm:mb-6 text-sm xs:text-base sm:text-base md:text-base lg:text-base xl:text-lg xxl:text-lg">
-                    {t('footer.description')}
+                    {t("footer.description")}
                   </p>
 
                   {/* Trust Indicators */}
@@ -757,7 +829,7 @@ export default function MainLayout() {
                   {/* Services */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t('footer.products')}
+                      {t("footer.products")}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -769,23 +841,23 @@ export default function MainLayout() {
                             window.location.href = "/products";
                           }}
                         >
-                          {t('footer.allProducts')}
+                          {t("footer.allProducts")}
                         </Link>
                       </li>
                       <li>
                         <Link
-                          to="/products"
+                          to="/products/drive-eraser"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.driveErasure')}
+                          {t("footer.driveErasure")}
                         </Link>
                       </li>
                       <li>
                         <Link
-                          to="/products"
+                          to="/products/file-eraser"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.fileErasure')}
+                          {t("footer.fileErasure")}
                         </Link>
                       </li>
                       {/* <li>
@@ -810,7 +882,7 @@ export default function MainLayout() {
                   {/* Solutions */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t('footer.solutions')}
+                      {t("footer.solutions")}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -822,7 +894,7 @@ export default function MainLayout() {
                             window.location.href = "/#industries";
                           }}
                         >
-                          {t('footer.allSolutions')}
+                          {t("footer.allSolutions")}
                         </Link>
                       </li>
                       <li>
@@ -830,7 +902,7 @@ export default function MainLayout() {
                           to="/solutions/healthcare"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.healthcare')}
+                          {t("footer.healthcare")}
                         </Link>
                       </li>
                       <li>
@@ -838,7 +910,7 @@ export default function MainLayout() {
                           to="/solutions/financial-services"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.financialServices')}
+                          {t("footer.financialServices")}
                         </Link>
                       </li>
                       <li>
@@ -846,7 +918,7 @@ export default function MainLayout() {
                           to="/solutions/government"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.government')}
+                          {t("footer.government")}
                         </Link>
                       </li>
                       <li>
@@ -854,7 +926,7 @@ export default function MainLayout() {
                           to="/solutions/education"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.education')}
+                          {t("footer.education")}
                         </Link>
                       </li>
                     </ul>
@@ -863,7 +935,7 @@ export default function MainLayout() {
                   {/* Resources */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t('footer.resources')}
+                      {t("footer.resources")}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -871,7 +943,7 @@ export default function MainLayout() {
                           to="resources/documentation?type=documentation"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.documentation')}
+                          {t("footer.documentation")}
                         </Link>
                       </li>
                       <li>
@@ -879,7 +951,7 @@ export default function MainLayout() {
                           to="/resources/compliance?type=compliance"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.compliance')}
+                          {t("footer.compliance")}
                         </Link>
                       </li>
                       <li>
@@ -887,7 +959,7 @@ export default function MainLayout() {
                           to="/blog"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.blog')}
+                          {t("footer.blog")}
                         </Link>
                       </li>
                       <li>
@@ -895,7 +967,7 @@ export default function MainLayout() {
                           to="/solutions?type=case-studies"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.caseStudies')}
+                          {t("footer.caseStudies")}
                         </Link>
                       </li>
                       {/* <li>
@@ -912,7 +984,7 @@ export default function MainLayout() {
                   {/* Company */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
-                      {t('footer.company')}
+                      {t("footer.company")}
                     </h4>
                     <ul className="space-y-4 text-slate-300">
                       <li>
@@ -920,7 +992,7 @@ export default function MainLayout() {
                           to="/about"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.aboutUs')}
+                          {t("footer.aboutUs")}
                         </Link>
                       </li>
                       <li>
@@ -928,7 +1000,7 @@ export default function MainLayout() {
                           to="/contact"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.contact')}
+                          {t("footer.contact")}
                         </Link>
                       </li>
                       {/* <li>
@@ -944,7 +1016,7 @@ export default function MainLayout() {
                           to="/partners"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
-                          {t('footer.partners')}
+                          {t("footer.partners")}
                         </Link>
                       </li>
                       {/* <li>
@@ -966,12 +1038,14 @@ export default function MainLayout() {
               <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
                 <div className="flex flex-col sm:flex-row gap-6 items-center text-slate-400 text-sm">
                   <p>
-                    © {new Date().getFullYear()} {t('footer.copyright')}
+                    © {new Date().getFullYear()} {t("footer.copyright")}
                   </p>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2 text-green-400">
                       <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-xs">{t('footer.systemStatus')}</span>
+                      <span className="text-xs">
+                        {t("footer.systemStatus")}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -982,35 +1056,35 @@ export default function MainLayout() {
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Privacy Policy"
                   >
-                    {t('footer.privacyPolicy')}
+                    {t("footer.privacyPolicy")}
                   </Link>
                   <Link
                     to="/legal-policy"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Legal Policy"
                   >
-                    {t('footer.legalPolicy')}
+                    {t("footer.legalPolicy")}
                   </Link>
                   <Link
                     to="/terms-of-service"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Terms of Service"
                   >
-                    {t('footer.termsOfService')}
+                    {t("footer.termsOfService")}
                   </Link>
                   <Link
                     to="/cookie-policy"
                     className="hover:text-brand transition-colors"
                     aria-label="Read our Cookie Policy"
                   >
-                    {t('footer.cookiePolicy')}
+                    {t("footer.cookiePolicy")}
                   </Link>
                   <Link
                     to="/security"
                     className="hover:text-brand transition-colors"
                     aria-label="View our security practices and certifications"
                   >
-                    {t('footer.security')}
+                    {t("footer.security")}
                   </Link>
                   <Link
                     to="/status"
