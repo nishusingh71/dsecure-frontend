@@ -1264,7 +1264,7 @@ function ContactPageContent() {
                           href="/privacy-policy"
                           className="text-green-600 hover:underline"
                         >
-                          Dsecure Privacy Policy
+                          D-secure Privacy Policy
                         </a>
                         .
                       </div>

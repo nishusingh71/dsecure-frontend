@@ -57,12 +57,16 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       const shouldShow = scrollPosition > 400;
       setIsNavVisible(shouldShow);
 
-      // Dispatch event to hide/show main navbar
-      window.dispatchEvent(
-        new CustomEvent("stickyNavVisible", {
-          detail: { visible: shouldShow },
-        }),
-      );
+      // Only dispatch event to hide/show main navbar on desktop (md+) screens
+      // since sticky nav is hidden on mobile
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", {
+            detail: { visible: shouldShow },
+          }),
+        );
+      }
 
       // Find current active section
       const sections = sectionNavItems.map((item) =>
@@ -80,10 +84,13 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      // Reset main navbar visibility on unmount
-      window.dispatchEvent(
-        new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
-      );
+      // Reset main navbar visibility on unmount (only on desktop)
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
+        );
+      }
     };
   }, []);
 
@@ -201,6 +208,26 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
       color: "from-purple-500 to-purple-600",
     },
+    {
+      name: "Volume Erase",
+      desc: "Completely erase volume partitions including boot sectors, partition tables, and all data structures.",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M5 14l6-6m-3 6V8a2 2 0 012-2h6a2 2 0 012 2v6m2 4H7a2 2 0 01-2-2v-2a2 2 0 012-2h10a2 2 0 012 2v2a2 2 0 01-2 2z"
+          />
+        </svg>
+      ),
+      color: "from-emerald-500 to-emerald-600",
+    },
   ];
 
   const platforms = [
@@ -303,8 +330,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      title: "Hex Verification",
-      desc: "Inspect drive sectors with a built-in hex viewer to visually verify successful data overwrite.",
+      title: "Encryption",
+      desc: "Military-grade encryption secures data before erasure, preventing unauthorized access during the process.",
       icon: (
         <svg
           className="w-6 h-6"
@@ -316,7 +343,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
           />
         </svg>
       ),
@@ -463,7 +490,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isNavVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0"
@@ -1142,7 +1169,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       Select the file/s or folders or search the name to erase.
                       The{" "}
                       <strong className="text-emerald-700">
-                        Network Edition
+                        Cloud
                       </strong>{" "}
                       allows administrators to execute and monitor erasures
                       remotely across multiple endpoints as well.

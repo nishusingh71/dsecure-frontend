@@ -138,7 +138,7 @@ export default function MainLayout() {
                     <div className="border-b border-slate-200 px-6 py-5">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-emerald-700 border-b-2 border-emerald-500 pb-1">
-                          Erasure
+                          Eraser
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-1">
@@ -203,7 +203,7 @@ export default function MainLayout() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
-                            File Erasure Software
+                            File Eraser
                           </h4>
                           <p className="text-sm text-slate-500 leading-relaxed">
                             Software to Wipe Files, Folders, Traces, Browser

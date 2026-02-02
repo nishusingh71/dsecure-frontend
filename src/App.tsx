@@ -131,6 +131,7 @@ import * as NetworkFilePages from "./pages/manual/network-file";
 import FailurePage from "./pages/FailurePage";
 import FileEraserPage from "./pages/FileEraserPage";
 import DataGuardianAwardPage from "./pages/DataGuardianAwardPage";
+import CompleteDSecureDriveManual from "./pages/manual/CompleteDSecureDriveManual";
 
 
 const HealthcareSolutionsPage = lazy(
@@ -1720,6 +1721,10 @@ export default function App() {
                     <Route
                       path="/support/help-manual/complete-manual"
                       element={<CompleteDSecureManual />}
+                    />
+                    <Route
+                      path="/support/help-manual/complete-drive-manual"
+                      element={<CompleteDSecureDriveManual />}
                     />
                     {/* Network File Manual - Nested Routes */}
                     <Route

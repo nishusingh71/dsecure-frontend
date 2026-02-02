@@ -43,7 +43,7 @@ function CaseStudiesResourcesContent() {
       ],
       metrics: {
         devices: '15,000+',
-        timeframe: '12 months',
+        timeframe: '10 months',
         roiPercentage: '285%'
       },
       icon: <BuildingIcon className="w-6 h-6" filled={true} />,
@@ -64,7 +64,7 @@ function CaseStudiesResourcesContent() {
       ],
       metrics: {
         devices: '8,500+',
-        timeframe: '18 months',
+        timeframe: '10 months',
         roiPercentage: '195%'
       },
       icon: <ShieldIcon className="w-6 h-6" filled={true} />,
@@ -85,7 +85,7 @@ function CaseStudiesResourcesContent() {
       ],
       metrics: {
         devices: '12,000+',
-        timeframe: '24 months',
+        timeframe: '10 months',
         roiPercentage: '320%'
       },
       icon: <DatabaseIcon className="w-6 h-6" filled={true} />,

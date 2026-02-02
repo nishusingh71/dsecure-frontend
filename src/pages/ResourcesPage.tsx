@@ -187,6 +187,22 @@ function ResourcesPageContent() {
             />
           </svg>
         );
+      case "blog":
+        return (
+          <svg
+            className="w-6 h-6 text-slate-700"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+            />
+          </svg>
+        );
       default:
         return (
           <svg
@@ -309,34 +325,99 @@ function ResourcesPageContent() {
       referenceUrl:
         "https://owasp.org/www-project-application-security-architecture/",
     },
+    // Blog Posts
+    {
+      id: 10,
+      title: "Overwrite Standards: Beyond the Basics",
+      type: "blog",
+      category: "blog",
+      description:
+        "A deep dive into NIST 800-88 and DoD 5220.22-M standards. meticulous analysis of overwrite passes required for modern storage media versus legacy systems.",
+      downloadSize: "N/A",
+      pages: "1 min read",
+      featured: true,
+      referenceUrl: "/blog/overwrite-guide",
+      author: "Nitesh Kushwaha",
+      date: "October 15, 2024"
+    },
+    {
+      id: 11,
+      title: "Securely Erasing SSDs & NVMe Drives",
+      type: "blog",
+      category: "blog",
+      description:
+        "Why traditional wiping methods fail on SSDs. Exploring command-based erasure, cryptographic sanitization, and handling wear leveling.",
+      downloadSize: "N/A",
+      pages: "1 min read",
+      featured: true,
+      referenceUrl: "/blog/ssd-wipe-guide",
+      author: "Nitish",
+      date: "October 22, 2024"
+    },
+    {
+      id: 12,
+      title: "Erasure vs. Physical Destruction: ROI Analysis",
+      type: "blog",
+      category: "blog",
+      description:
+        "A comparative analysis of value retention. How secure erasure allows for asset remarketing and ESG compliance, compared to the total loss of value with physical destruction.",
+      downloadSize: "N/A",
+      pages: "1 min read",
+      featured: true,
+      referenceUrl: "/blog/erasure-vs-destruction",
+      author: "Nitesh Kushwaha",
+      date: "November 5, 2024"
+    },
+    {
+      id: 13,
+      title: "Debunking 5 Critical Data Deletion Myths",
+      type: "blog",
+      category: "blog",
+      description:
+        "Formatting is not erasure. We expose common misconceptions that leave organizations vulnerable to data breaches and regulatory fines.",
+      downloadSize: "N/A",
+      pages: "1 min read",
+      featured: false,
+      referenceUrl: "/blog/data-deletion-myths",
+      author: "Nitish",
+      date: "November 12, 2024"
+    },
+    {
+      id: 14,
+      title: "Navigating Global Data Compliance Standards",
+      type: "blog",
+      category: "blog",
+      description:
+        "Essential guide to matching your sanitization protocols with GDPR, HIPAA, SOX, and ISO/IEC 27001 requirements for audit-proof security.",
+      downloadSize: "N/A",
+      pages: "1 min read",
+      featured: false,
+      referenceUrl: "/blog/data-sanitization-compliance",
+      author: "Nitish",
+      date: "November 19, 2024"
+    },
+    {
+      id: 15,
+      title: "Best Data Erasure Method for Any Storage Media Type",
+      type: "blog",
+      category: "blog",
+      description:
+        "One size does not fit all. Learn the correct erasure standard for HDDs, SSDs, and Mobile devices to ensure compliance.",
+      downloadSize: "N/A",
+      pages: "1 min read",
+      featured: false,
+      referenceUrl: "/blog/best-data-erasure-methods",
+      author: "Prashant Saini",
+      date: "December 03, 2024"
+    },
   ];
 
   const categories = [
-    { id: "all", name: "All Resources", count: resources.length },
+    { id: "all", name: "All Blog Articles", count: resources.filter((r) => r.type === "blog").length },
     {
-      id: "compliance",
-      name: "Compliance",
-      count: resources.filter((r) => r.category === "compliance").length,
-    },
-    {
-      id: "technical",
-      name: "Technical",
-      count: resources.filter((r) => r.category === "technical").length,
-    },
-    {
-      id: "enterprise",
-      name: "Enterprise",
-      count: resources.filter((r) => r.category === "enterprise").length,
-    },
-    {
-      id: "itad",
-      name: "ITAD",
-      count: resources.filter((r) => r.category === "itad").length,
-    },
-    {
-      id: "business",
-      name: "Business",
-      count: resources.filter((r) => r.category === "business").length,
+      id: "blog",
+      name: "Blog Articles",
+      count: resources.filter((r) => r.category === "blog").length,
     },
   ];
 
@@ -383,8 +464,9 @@ function ResourcesPageContent() {
     );
   };
 
-  // Enhanced resource filtering
+  // Enhanced resource filtering - only show blogs
   const filteredResources = resources.filter((resource) => {
+    const isBlogs = resource.type === "blog";
     const matchesCategory =
       activeCategory === "all" || resource.category === activeCategory;
     const matchesSearch =
@@ -395,11 +477,11 @@ function ResourcesPageContent() {
       resource.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
       resource.referenceUrl.toLowerCase().includes(searchTerm.toLowerCase()) ||
       searchMatchesPageContent(searchTerm);
-    return matchesCategory && matchesSearch;
+    return isBlogs && matchesCategory && matchesSearch;
   });
 
-  // Filter featured resources based on search
-  const featuredResources = resources.filter((r) => r.featured);
+  // Filter featured resources based on search - only show blogs
+  const featuredResources = resources.filter((r) => r.featured && r.type === "blog");
   const filteredFeaturedResources = featuredResources.filter((resource) => {
     if (searchTerm === "") return true;
     const term = searchTerm.toLowerCase();
@@ -528,15 +610,14 @@ function ResourcesPageContent() {
           <div className="text-center max-w-4xl mx-auto">
             <Reveal>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
-                Knowledge Center & Resources
+                Blog & Insights Hub
               </h1>
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Access comprehensive guides, whitepapers, case studies,
-                webinars, and technical documentation to maximize your data
-                sanitization success. Search across all content and reference
-                links.
+                Explore our latest insights, expert perspectives, and industry
+                trends through our comprehensive blog articles. Stay updated with
+                data security best practices and emerging technologies.
               </p>
             </Reveal>
             <Reveal delayMs={20}>
@@ -609,10 +690,10 @@ function ResourcesPageContent() {
                 </p>
               </Reveal>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Reveal delayMs={10}>
                 <Link
-                  to="/resources/documentation"
+                  to="/support/help-manual/complete-manual"
                   className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-blue-300/50 hover:-translate-y-2 overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-blue-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -718,170 +799,8 @@ function ResourcesPageContent() {
                   </div>
                 </Link>
               </Reveal>
-              <Reveal delayMs={20}>
-                <Link
-                  to="/resources/case-studies"
-                  className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-green-300/50 hover:-translate-y-2 overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-green-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-green-500/25">
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                      />
-                    </svg>
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-300 rounded-full opacity-75"></div>
-                  </div>
-                  <div className="relative">
-                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-green-600 transition-colors duration-300">
-                      Customer Success Stories
-                    </h3>
-                    <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-                      Real-world case studies showcasing implementation success
-                      and measurable ROI outcomes.
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-green-600 text-sm font-semibold group-hover:text-green-700 transition-colors">
-                        View Case Studies
-                        <svg
-                          className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </div>
-                      <div className="text-xs text-slate-400 font-medium">
-                        8 Studies
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-              <Reveal delayMs={30}>
-                <Link
-                  to="/resources/compliance"
-                  className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-purple-300/50 hover:-translate-y-2 overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-purple-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-purple-500/25">
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-300 rounded-full opacity-75"></div>
-                  </div>
-                  <div className="relative">
-                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">
-                      Compliance Frameworks
-                    </h3>
-                    <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-                      Navigate GDPR, HIPAA, PCI DSS, and SOX requirements with
-                      our detailed compliance guides.
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-purple-600 text-sm font-semibold group-hover:text-purple-700 transition-colors">
-                        Browse Compliance
-                        <svg
-                          className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </div>
-                      <div className="text-xs text-slate-400 font-medium">
-                        12 Frameworks
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-              <Reveal delayMs={40}>
-                <Link
-                  to="/resources/whitepapers"
-                  className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-orange-300/50 hover:-translate-y-2 overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 via-transparent to-orange-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg group-hover:shadow-orange-500/25">
-                    <svg
-                      className="w-8 h-8"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                      />
-                    </svg>
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-300 rounded-full opacity-75"></div>
-                  </div>
-                  <div className="relative">
-                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">
-                      Research Whitepapers
-                    </h3>
-                    <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-                      In-depth research, industry analysis, and technical
-                      insights on data security trends.
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-orange-600 text-sm font-semibold group-hover:text-orange-700 transition-colors">
-                        Read Whitepapers
-                        <svg
-                          className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          />
-                        </svg>
-                      </div>
-                      <div className="text-xs text-slate-400 font-medium">
-                        25+ Papers
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
             </div>
-            <Reveal delayMs={50}>
+            {/* <Reveal delayMs={50}>
               <div className="mt-16 pt-12 border-t border-slate-200/60">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                   <div className="group cursor-default">
@@ -916,7 +835,7 @@ function ResourcesPageContent() {
                   </div>
                 </div>
               </div>
-            </Reveal>
+            </Reveal> */}
           </div>
         </section>
       )}
@@ -927,17 +846,17 @@ function ResourcesPageContent() {
           <div className="container-responsive">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                Featured Resources
+                Featured Blog Articles
               </h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Our most popular and comprehensive resources to get you started.
+                Our most popular and insightful blog articles to keep you informed.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {filteredFeaturedResources.map((resource, i) => (
                 <Reveal key={resource.id} delayMs={i * 100}>
-                  <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                    <div className="p-6">
+                  <div className="bg-white rounded-xl shadow-lg border border-slate-200/60 overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
+                    <div className="p-6 flex-1 flex flex-col">
                       <div className="flex items-center justify-between mb-4">
                         <div>{getIcon(resource.category)}</div>
                         <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded-full text-xs font-medium">
@@ -947,30 +866,17 @@ function ResourcesPageContent() {
                       <h3 className="font-bold text-slate-900 mb-3">
                         {resource.title}
                       </h3>
-                      <p className="text-slate-600 text-sm mb-4">
+                      <p className="text-slate-600 text-sm mb-4 flex-grow">
                         {resource.description}
                       </p>
                       <div className="flex items-center justify-between text-xs text-slate-500 mb-4">
-                        <span>{resource.pages} pages</span>
-                        <span>{resource.downloadSize}</span>
+                        <span>{resource.pages}</span>
                         <span className="capitalize">{resource.type}</span>
                       </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => {
-                            const ok = downloadResource(resource);
-                            if (ok)
-                              toast.showToast(
-                                `Downloaded: ${resource.title}`,
-                                "success"
-                              );
-                            else
-                              toast.showToast(
-                                "Download failed. Please try again.",
-                                "error"
-                              );
-                          }}
-                          className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 text-sm inline-flex items-center justify-center"
+                      <div className="mt-auto">
+                        <Link
+                          to={resource.referenceUrl}
+                          className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 text-sm inline-flex items-center justify-center"
                         >
                           <svg
                             className="w-4 h-4 mr-1"
@@ -982,32 +888,11 @@ function ResourcesPageContent() {
                               strokeLinecap="round"
                               strokeLinejoin="round"
                               strokeWidth={2}
-                              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                             />
                           </svg>
-                          Download
-                        </button>
-                        <a
-                          href={resource.referenceUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-3 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm inline-flex items-center justify-center"
-                          title="View Reference"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                            />
-                          </svg>
-                        </a>
+                          Read Article
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -1024,10 +909,10 @@ function ResourcesPageContent() {
           <div className="container-responsive">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                All Resources
+                All Blog Articles
               </h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Browse our complete library of resources by category.
+                Browse our complete library of blog articles and insights.
               </p>
             </div>
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-3 mb-12 max-w-4xl mx-auto">
@@ -1057,7 +942,7 @@ function ResourcesPageContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredResources.map((resource, i) => (
                 <Reveal key={resource.id} delayMs={i * 50}>
-                  <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300">
+                  <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                     <div className="flex items-start justify-between mb-4">
                       <div>{getIcon(resource.category)}</div>
                       <span
@@ -1072,6 +957,8 @@ function ResourcesPageContent() {
                             ? "bg-orange-100 text-orange-700"
                             : resource.type === "report"
                             ? "bg-red-100 text-red-700"
+                            : resource.type === "blog"
+                            ? "bg-rose-100 text-rose-700"
                             : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
@@ -1081,29 +968,16 @@ function ResourcesPageContent() {
                     <h3 className="font-bold text-slate-900 mb-2 text-sm">
                       {resource.title}
                     </h3>
-                    <p className="text-slate-600 text-xs mb-4 leading-relaxed">
+                    <p className="text-slate-600 text-xs mb-4 leading-relaxed flex-grow">
                       {resource.description}
                     </p>
                     <div className="flex items-center justify-between text-xs text-slate-500 mb-4">
-                      <span>{resource.pages} pages</span>
-                      <span>{resource.downloadSize}</span>
+                      <span>{resource.pages}</span>
                     </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => {
-                          const ok = downloadResource(resource);
-                          if (ok)
-                            toast.showToast(
-                              `Downloaded: ${resource.title}`,
-                              "success"
-                            );
-                          else
-                            toast.showToast(
-                              "Download failed. Please try again.",
-                              "error"
-                            );
-                        }}
-                        className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 text-xs inline-flex items-center justify-center"
+                    <div className="mt-auto">
+                      <Link
+                        to={resource.referenceUrl}
+                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 text-xs inline-flex items-center justify-center"
                       >
                         <svg
                           className="w-3 h-3 mr-1"
@@ -1115,32 +989,12 @@ function ResourcesPageContent() {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                           />
                         </svg>
-                        Download
-                      </button>
-                      <a
-                        href={resource.referenceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-2 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-xs inline-flex items-center justify-center"
-                        title="View Reference"
-                      >
-                        <svg
-                          className="w-3 h-3"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                      </a>
+                        Read Article
+                      </Link>
+
                     </div>
                   </div>
                 </Reveal>
@@ -1174,128 +1028,6 @@ function ResourcesPageContent() {
           </div>
         </section>
       )}
-
-      {/* Webinars Section */}
-      <section className="py-16 md:py-24">
-        <div className="container-responsive">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Webinars & Events
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Join our experts for live discussions on data sanitization best
-              practices and industry trends.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {filteredWebinars.map((webinar, i) => (
-              <Reveal key={i} delayMs={i * 100}>
-                <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60">
-                  <div className="flex items-center justify-between mb-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        webinar.status === "upcoming"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-slate-100 text-slate-600"
-                      }`}
-                    >
-                      {webinar.status === "upcoming"
-                        ? "Upcoming"
-                        : "Recording Available"}
-                    </span>
-                    <div className="w-6 h-6 text-slate-700">
-                      <svg
-                        className="w-full h-full"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 10l4.59-4.59a2 2 0 012.83 2.83L18 13l4.59 4.59a2 2 0 01-2.83 2.83L15 18l-4.59 4.59a2 2 0 01-2.83-2.83L12 15l-4.59 4.59a2 2 0 01-2.83-2.83L9 13l-4.59-4.59a2 2 0 012.83-2.83L12 10z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <h3 className="font-bold text-slate-900 mb-3">
-                    {webinar.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm mb-4">
-                    {webinar.description}
-                  </p>
-                  <div className="space-y-2 text-sm text-slate-500 mb-6">
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      Coming Soon - Stay Tuned
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                      {webinar.speaker}
-                    </div>
-                  </div>
-                  <button
-                    disabled
-                    className="w-full text-sm font-medium py-2 px-4 rounded-lg transition-colors inline-block text-center bg-blue-100 text-blue-600 cursor-not-allowed"
-                  >
-                    Register Soon - Coming Soon
-                  </button>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          {filteredWebinars.length === 0 && searchTerm && (
-            <div className="text-center py-12">
-              <div className="w-12 h-12 text-slate-400 mx-auto mb-4">
-                <svg
-                  className="w-full h-full"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 10l4.59-4.59a2 2 0 012.83 2.83L18 13l4.59 4.59a2 2 0 01-2.83 2.83L15 18l-4.59 4.59a2 2 0 01-2.83-2.83L12 15l-4.59 4.59a2 2 0 01-2.83-2.83L9 13l-4.59-4.59a2 2 0 012.83-2.83L12 10z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                No webinars found
-              </h3>
-              <p className="text-slate-600">
-                Try adjusting your search terms to find relevant webinars.
-              </p>
-            </div>
-          )}
-        </div>
-      </section>
       
     </>
   );
