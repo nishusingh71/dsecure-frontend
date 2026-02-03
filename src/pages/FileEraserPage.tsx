@@ -466,8 +466,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   const downloadCatalog = () => {
     const link = document.createElement("a");
-    link.href = "/downloads/D-Secure-file-eraser-catalog.pdf";
-    link.download = "D-Secure-File-Eraser-Catalog.pdf";
+    link.href = "/downloads/DataSheetFileEraser.pdf";
+    link.download = "DataSheetFileEraser.pdf";
     link.target = "_blank";
     document.body.appendChild(link);
     link.click();
@@ -1450,6 +1450,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                 {
                   q: "Does File Eraser support SSD and NVMe drives?",
                   a: "Yes, the software is optimized for all storage types including HDDs, SSDs, NVMe drives, and USB storage devices. It uses appropriate erasure techniques for each storage type to ensure complete and verifiable data destruction.",
+                },
+                {
+                  q: "What ongoing support is provided?",
+                  a: "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
                 },
               ].map((faq, i) => (
                 <Reveal key={i} delayMs={i * 50}>

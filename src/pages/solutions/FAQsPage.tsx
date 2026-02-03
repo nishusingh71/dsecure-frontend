@@ -98,6 +98,12 @@ const FAQsPage: React.FC = memo(() => {
       question: "Can I wipe data while keeping the operating system?",
       answer: "Yes, D-Secure offers selective erasure options that allow you to wipe user data, applications, and specific folders while preserving the operating system. This is useful for device redeployment or when selling computers that need to remain functional.",
       category: "general"
+    },
+    {
+      id: 13,
+      question: "What ongoing support is provided?",
+      answer: "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
+      category: "general"
     }
   ];
 

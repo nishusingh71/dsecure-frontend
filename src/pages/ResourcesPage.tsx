@@ -328,15 +328,15 @@ function ResourcesPageContent() {
     // Blog Posts
     {
       id: 10,
-      title: "Overwrite Standards: Beyond the Basics",
+      title: "D-Secure File Eraser Manual",
       type: "blog",
       category: "blog",
       description:
-        "A deep dive into NIST 800-88 and DoD 5220.22-M standards. meticulous analysis of overwrite passes required for modern storage media versus legacy systems.",
+        "Complete user manual for D-Secure File Eraser. Installation, configuration, and operational instructions for secure file deletion.",
       downloadSize: "N/A",
       pages: "1 min read",
       featured: true,
-      referenceUrl: "/blog/overwrite-guide",
+      referenceUrl: "/support/help-manual/complete-manual",
       author: "Nitesh Kushwaha",
       date: "October 15, 2024"
     },
@@ -693,7 +693,7 @@ function ResourcesPageContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Reveal delayMs={10}>
                 <Link
-                  to="/support/help-manual/complete-manual"
+                  to="/resources/documentation"
                   className="group relative bg-white rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 border border-slate-200/60 hover:border-blue-300/50 hover:-translate-y-2 overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-blue-100/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

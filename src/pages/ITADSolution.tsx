@@ -1181,6 +1181,10 @@ const ITADSolution: React.FC = () => {
               {
                 q: 'Can you handle large-scale enterprise deployments?',
                 a: 'Absolutely. Our solutions support simultaneous erasure of thousands of devices with centralized management, automated reporting, and integration with existing systems.'
+              },
+              {
+                q: 'What ongoing support is provided?',
+                a: 'We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.'
               }
             ].map((faq, idx) => (
               <details key={idx} className="group rounded-xl p-6 shadow-sm hover:shadow-md transition-all border" style={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb' }}>

@@ -1433,6 +1433,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   q: "Can I track separate Inventory for different types of Drives (SSD/HDD, Mobile, etc)?",
                   a: "Absolutely. The cloud console provides detailed categorization and filtering by device type, making it easy to track and report on different asset categories.",
                 },
+                {
+                  q: "What ongoing support is provided?",
+                  a: "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
+                },
               ].map((faq, i) => (
                 <Reveal key={i} delayMs={i * 50}>
                   <details className="group bg-slate-50 rounded-lg sm:rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors">

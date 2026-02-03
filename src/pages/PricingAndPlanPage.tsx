@@ -809,6 +809,11 @@ const PricingAndPlanPage: React.FC = memo(() => {
       answer:
         "All licenses include lifetime technical support via email, phone, and live chat. Enterprise customers receive priority support with dedicated account managers.",
     },
+    {
+      question: "What ongoing support is provided?",
+      answer:
+        "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
+    },
   ];
 
   return (

@@ -90,8 +90,8 @@ function DocumentationResourcesContent() {
 
   const quickStartGuides = [
     {
-      title: "5-Minute Quick Start",
-      description: "Get started with basic erasure operations in minutes",
+      title: "D-Secure File Eraser Setup",
+      description: "Quick setup guide for D-Secure File Eraser",
       steps: [
         "Download software",
         "Install and configure",
@@ -99,29 +99,32 @@ function DocumentationResourcesContent() {
         "Generate report",
       ],
       time: "5 min",
+      link: "/support/help-manual/complete-manual"
     },
     {
-      title: "Google Drive Erasure Setup",
-      description: "Secure Google Drive data erasure configuration and usage",
+      title: "D-Secure Drive Eraser Setup",
+      description: "Quick setup guide for D-Secure Drive Eraser",
       steps: [
-        "Install D-Secure extension",
-        "Configure erasure settings",
-        "Connect to Google Drive",
-        "Execute secure erasure",
+       "Download software",
+        "Install and configure",
+        "Run first erasure",
+        "Generate report",
       ],
-      time: "15 min",
+      time: "5 min",
+      link: "",
+      comingSoon: true
     },
-    {
-      title: "Enterprise Setup",
-      description: "Set up enterprise-grade deployment",
-      steps: [
-        "Plan architecture",
-        "Deploy infrastructure",
-        "Configure policies",
-        "Test operations",
-      ],
-      time: "30 min",
-    },
+    // {
+    //   title: "Enterprise Setup",
+    //   description: "Quick setup guide for enterprise-grade deployment",
+    //   steps: [
+    //     "Plan architecture",
+    //     "Deploy infrastructure",
+    //     "Configure policies",
+    //     "Test operations",
+    //   ],
+    //   time: "30 min",
+    // },
   ];
 
   const supportResources = [
@@ -174,7 +177,7 @@ function DocumentationResourcesContent() {
                   you implement and optimize D-Secure data erasure solutions.
                 </p>
               </Reveal>
-              <Reveal delayMs={30}>
+              {/* <Reveal delayMs={30}>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
                     to="/technical-documentation"
@@ -189,7 +192,7 @@ function DocumentationResourcesContent() {
                     Get Technical Support
                   </Link>
                 </div>
-              </Reveal>
+              </Reveal> */}
             </div>
           </div>
         </div>
@@ -201,13 +204,12 @@ function DocumentationResourcesContent() {
           <div className="text-center mb-12">
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                Quick Start Guides
+                Products Guides
               </h2>
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                Get up and running quickly with our step-by-step quick start
-                guides.
+                Get up and running quickly with our step-by-step product guides.
               </p>
             </Reveal>
           </div>
@@ -235,12 +237,18 @@ function DocumentationResourcesContent() {
                       </div>
                     ))}
                   </div>
-                  <Link
-                    to="/contact"
-                    className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
-                  >
-                    Start Guide
-                  </Link>
+                  {guide.comingSoon ? (
+                    <div className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-300 text-slate-500 font-medium rounded-lg cursor-not-allowed">
+                      Coming Soon
+                    </div>
+                  ) : (
+                    <Link
+                      to={guide.link}
+                      className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
+                    >
+                      Start Guide
+                    </Link>
+                  )}
                 </div>
               </Reveal>
             ))}
@@ -249,7 +257,7 @@ function DocumentationResourcesContent() {
       </section>
 
       {/* Documentation Categories */}
-      <section id="documentation" className="py-16 md:py-24">
+      {/* <section id="documentation" className="py-16 md:py-24">
         <div className="container-app">
           <div className="text-center mb-12">
             <Reveal>
@@ -332,10 +340,10 @@ function DocumentationResourcesContent() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Support Resources */}
-      <section className="py-16 md:py-24 bg-slate-50">
+      {/* <section className="py-16 md:py-24 bg-slate-50">
         <div className="container-app">
           <div className="text-center mb-12">
             <Reveal>
@@ -380,7 +388,7 @@ function DocumentationResourcesContent() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-16 md:py-24">
