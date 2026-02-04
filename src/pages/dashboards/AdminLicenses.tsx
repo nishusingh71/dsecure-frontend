@@ -311,17 +311,27 @@ export default function AdminLicenses() {
                 // SuperAdmin: No filtering - sees everything
 
                 setLicenseList(filteredList);
-            }
 
-            // Update distribution data for pie chart
-            if (distributionRes.success && distributionRes.data) {
-                const distribution = distributionRes.data.licenseDetails ||
-                    (Array.isArray(distributionRes.data) ? distributionRes.data : []) ||
-                    distributionRes.data.distribution || [];
+                // ✅ Count IN_USE licenses and add to inactive count
+                const inUseCount = filteredList.filter((license: License) => 
+                    license.status?.toUpperCase() === 'IN_USE'
+                ).length;
+                
+                if (inUseCount > 0) {
+                    setLicenses(prev => ({
+                        ...prev,
+                        inactive: prev.inactive + inUseCount
+                    }));
+                }
 
-                console.log('Distribution Data:', distribution);
+                // ✅ Calculate distribution from license list as fallback
+                const typeCountMap: Record<string, number> = {};
+                filteredList.forEach((license: License) => {
+                    const type = license.license_type || 'Unknown';
+                    typeCountMap[type] = (typeCountMap[type] || 0) + 1;
+                });
 
-                // Map colors to distribution types
+                const totalCount = filteredList.length;
                 const colorMap: Record<string, string> = {
                     'Enterprise': 'emerald',
                     'ENTERPRISE': 'emerald',
@@ -332,16 +342,55 @@ export default function AdminLicenses() {
                     'Basic': 'slate',
                     'Premium': 'indigo'
                 };
+                const colorPalette = ['emerald', 'blue', 'purple', 'orange', 'indigo', 'slate'];
 
-                const mappedDistribution = distribution.map((item: any, index: number) => ({
+                const calculatedDistribution = Object.entries(typeCountMap).map(([type, count], index) => ({
                     id: index + 1,
-                    type: item.type || item.license_type || 'Unknown',
-                    count: item.count || 0,
-                    percentage: item.percentage || 0,
-                    color: colorMap[item.type || item.license_type] || colorMap[item.type?.toUpperCase()] || 'slate'
+                    type,
+                    count,
+                    percentage: totalCount > 0 ? Math.round((count / totalCount) * 100) : 0,
+                    color: colorMap[type] || colorMap[type?.toUpperCase()] || colorPalette[index % colorPalette.length]
                 }));
 
-                setLicenseDetails(mappedDistribution);
+                // Use calculated distribution as primary source
+                if (calculatedDistribution.length > 0) {
+                    setLicenseDetails(calculatedDistribution);
+                }
+            }
+
+            // Update distribution data for pie chart (from API - backup)
+            if (distributionRes.success && distributionRes.data) {
+                const distribution = distributionRes.data.licenseDetails ||
+                    (Array.isArray(distributionRes.data) ? distributionRes.data : []) ||
+                    distributionRes.data.distribution || [];
+
+                console.log('Distribution Data:', distribution);
+
+                // Only use API distribution if we don't already have calculated data
+                if (distribution.length > 0 && licenseDetails.length === 0) {
+                    // Map colors to distribution types
+                    const colorMap: Record<string, string> = {
+                        'Enterprise': 'emerald',
+                        'ENTERPRISE': 'emerald',
+                        'Professional': 'blue',
+                        'PRO': 'blue',
+                        'Standard': 'purple',
+                        'Trial': 'orange',
+                        'Basic': 'slate',
+                        'Premium': 'indigo'
+                    };
+                    const colorPalette = ['emerald', 'blue', 'purple', 'orange', 'indigo', 'slate'];
+
+                    const mappedDistribution = distribution.map((item: any, index: number) => ({
+                        id: index + 1,
+                        type: item.type || item.license_type || 'Unknown',
+                        count: item.count || 0,
+                        percentage: item.percentage || 0,
+                        color: colorMap[item.type || item.license_type] || colorMap[item.type?.toUpperCase()] || colorPalette[index % colorPalette.length]
+                    }));
+
+                    setLicenseDetails(mappedDistribution);
+                }
             }
         } catch (err: any) {
             console.error('Error fetching license data:', err);
@@ -570,7 +619,11 @@ export default function AdminLicenses() {
             (license.license_key?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
             (license.user_email?.toLowerCase() || '').includes(searchQuery.toLowerCase())
         );
-        const matchesStatus = statusFilter === 'all' || (license.status?.toLowerCase() === statusFilter.toLowerCase());
+        // ✅ Treat IN_USE as Inactive for filtering
+        const licenseStatus = license.status?.toLowerCase();
+        const matchesStatus = statusFilter === 'all' || 
+            (licenseStatus === statusFilter.toLowerCase()) ||
+            (statusFilter === 'inactive' && licenseStatus === 'in_use');
         const matchesType = typeFilter === 'all' || (license.license_type?.toLowerCase() === typeFilter.toLowerCase());
 
         return matchesSearch && matchesStatus && matchesType;
@@ -755,11 +808,7 @@ export default function AdminLicenses() {
                             <div>
                                 <p className="text-sm text-slate-600">Total Licenses</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-1">
-                                    {loading ? (
-                                        <span className="inline-block w-16 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        licenses.total.toLocaleString()
-                                    )}
+                                    {licenses.total.toLocaleString()}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -775,11 +824,7 @@ export default function AdminLicenses() {
                             <div>
                                 <p className="text-sm text-slate-600">Active</p>
                                 <p className="text-3xl font-bold text-emerald-600 mt-1">
-                                    {loading ? (
-                                        <span className="inline-block w-16 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        licenses.active.toLocaleString()
-                                    )}
+                                    {licenses.active.toLocaleString()}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
@@ -795,11 +840,7 @@ export default function AdminLicenses() {
                             <div>
                                 <p className="text-sm text-slate-600">Inactive</p>
                                 <p className="text-3xl font-bold text-orange-600 mt-1">
-                                    {loading ? (
-                                        <span className="inline-block w-16 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        licenses.inactive.toLocaleString()
-                                    )}
+                                    {licenses.inactive.toLocaleString()}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -815,11 +856,7 @@ export default function AdminLicenses() {
                             <div>
                                 <p className="text-sm text-slate-600">Expired</p>
                                 <p className="text-3xl font-bold text-red-600 mt-1">
-                                    {loading ? (
-                                        <span className="inline-block w-16 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        licenses.expired.toLocaleString()
-                                    )}
+                                    {licenses.expired.toLocaleString()}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
@@ -835,11 +872,7 @@ export default function AdminLicenses() {
                             <div>
                                 <p className="text-sm text-slate-600">Revoked</p>
                                 <p className="text-3xl font-bold text-rose-600 mt-1">
-                                    {loading ? (
-                                        <span className="inline-block w-16 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        licenses.revoked.toLocaleString()
-                                    )}
+                                    {licenses.revoked.toLocaleString()}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
@@ -878,7 +911,18 @@ export default function AdminLicenses() {
                                                 nameKey="type"
                                             >
                                                 {licenseDetails.map((entry, index) => {
-                                                    const colors: Record<string, string> = {
+                                                    // Define color palette for pie chart
+                                                    const colorPalette = [
+                                                        '#10b981', // emerald
+                                                        '#3b82f6', // blue
+                                                        '#a855f7', // purple
+                                                        '#f97316', // orange
+                                                        '#6366f1', // indigo
+                                                        '#64748b', // slate
+                                                        '#ec4899', // pink
+                                                        '#14b8a6'  // teal
+                                                    ];
+                                                    const colorMap: Record<string, string> = {
                                                         emerald: '#10b981',
                                                         blue: '#3b82f6',
                                                         purple: '#a855f7',
@@ -886,8 +930,12 @@ export default function AdminLicenses() {
                                                         slate: '#64748b',
                                                         indigo: '#6366f1'
                                                     };
+                                                    // Use color from entry if valid, otherwise use palette by index
+                                                    const fillColor = entry.color && colorMap[entry.color] 
+                                                        ? colorMap[entry.color] 
+                                                        : colorPalette[index % colorPalette.length];
                                                     return (
-                                                        <Cell key={`cell-${index}`} fill={colors[entry.color] || '#64748b'} strokeWidth={0} />
+                                                        <Cell key={`cell-${index}`} fill={fillColor} strokeWidth={0} />
                                                     );
                                                 })}
                                             </Pie>
@@ -1115,7 +1163,8 @@ export default function AdminLicenses() {
                                                         ? 'bg-rose-100 text-rose-800'
                                                         : 'bg-orange-100 text-orange-800'
                                                 }`}>
-                                                {license.status || 'Unknown'}
+                                                {/* ✅ Show IN_USE as Inactive */}
+                                                {license.status?.toUpperCase() === 'IN_USE' ? 'Inactive' : (license.status || 'Unknown')}
                                             </span>
                                         </td>
                                         <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-600">

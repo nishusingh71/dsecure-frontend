@@ -35,7 +35,51 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   const [activeSection, setActiveSection] = useState("");
   const [isNavVisible, setIsNavVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  // Gallery images array for lightbox navigation
+  const galleryImages = [
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/x2bqsc3nxzdfns3nyb5r.png", alt: "Dashboard View" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/y0qoxkpzqqxw8f0vibb8.png", alt: "Erasure Report" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/bdacwvgixrbp512igxz0.png", alt: "File Selection" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/cfpwnf2ii0sjjkknhdjl.png", alt: "Erasure Progress" },
+    // Additional images accessible via gallery navigation
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/l6owryrcsiswinplq14v.png", alt: "File Eraser Screenshot 5" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/fktnf2lu1pokq5dnv0kp.png", alt: "File Eraser Screenshot 6" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/ogm948td7jwfgme6kfpq.png", alt: "File Eraser Screenshot 7" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/cztmzkivdbuj833cpjp1.png", alt: "File Eraser Screenshot 8" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790690/xh6mhqk6xcvwdsvnmshr.png", alt: "File Eraser Screenshot 9" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790689/tp4jx36yibsgmxle86wg.png", alt: "File Eraser Screenshot 10" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/oacueotgkybzczqlxr1d.png", alt: "File Eraser Screenshot 11" },
+    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/drcxg5xxoxrupgijnuc6.png", alt: "File Eraser Screenshot 12" },
+  ];
+
+  // Number of additional images beyond the 4th card (for "More" badge)
+  const additionalImagesCount = galleryImages.length - 4;
+
+  const handlePrevImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(selectedImageIndex === 0 ? galleryImages.length - 1 : selectedImageIndex - 1);
+    }
+  };
+
+  const handleNextImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(selectedImageIndex === galleryImages.length - 1 ? 0 : selectedImageIndex + 1);
+    }
+  };
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImageIndex === null) return;
+      if (e.key === "ArrowLeft") handlePrevImage();
+      if (e.key === "ArrowRight") handleNextImage();
+      if (e.key === "Escape") setSelectedImageIndex(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImageIndex]);
 
   const sectionNavItems = [
     { id: "erase-types", label: "Erase Types" },
@@ -830,11 +874,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                 {/* Screenshot 1 */}
                 <Reveal delayMs={150}>
                   <div
-                    onClick={() =>
-                      setSelectedImage(
-                        "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/x2bqsc3nxzdfns3nyb5r.png",
-                      )
-                    }
+                    onClick={() => setSelectedImageIndex(0)}
                     className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
                   >
                     <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
@@ -888,11 +928,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                 {/* Screenshot 2 */}
                 <Reveal delayMs={200}>
                   <div
-                    onClick={() =>
-                      setSelectedImage(
-                        "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/y0qoxkpzqqxw8f0vibb8.png",
-                      )
-                    }
+                    onClick={() => setSelectedImageIndex(1)}
                     className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
                   >
                     <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
@@ -946,11 +982,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                 {/* Screenshot 3 */}
                 <Reveal delayMs={250}>
                   <div
-                    onClick={() =>
-                      setSelectedImage(
-                        "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/bdacwvgixrbp512igxz0.png",
-                      )
-                    }
+                    onClick={() => setSelectedImageIndex(2)}
                     className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
                   >
                     <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
@@ -1001,14 +1033,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                   </div>
                 </Reveal>
 
-                {/* Screenshot 4 */}
+                {/* Screenshot 4 - Shows "More" badge if additional images exist */}
                 <Reveal delayMs={300}>
                   <div
-                    onClick={() =>
-                      setSelectedImage(
-                        "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/cfpwnf2ii0sjjkknhdjl.png",
-                      )
-                    }
+                    onClick={() => setSelectedImageIndex(3)}
                     className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
                   >
                     <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
@@ -1034,6 +1062,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         alt="Erasure Progress"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
+                      {/* More Images Badge */}
+                      {additionalImagesCount > 0 && (
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                          <span className="text-white text-xl sm:text-2xl font-bold">+{additionalImagesCount} More</span>
+                        </div>
+                      )}
                     </div>
                     {/* <div className="p-3">
                       <span className="text-xs font-medium text-slate-700">Erasure Progress</span>
@@ -1592,18 +1626,38 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
         </section>
       </div>
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
+      {/* Lightbox Modal with Gallery Navigation */}
+      {selectedImageIndex !== null && (
         <div
           className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
-          onClick={() => setSelectedImage(null)}
+          onClick={() => setSelectedImageIndex(null)}
         >
           {/* Close Button */}
           <button
-            onClick={() => setSelectedImage(null)}
-            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+            onClick={() => setSelectedImageIndex(null)}
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
           >
             <X className="w-6 h-6" />
+          </button>
+
+          {/* Left Arrow */}
+          <button
+            onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
+            className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+          >
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
+            className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+          >
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
           </button>
 
           {/* Image Container */}
@@ -1612,10 +1666,15 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={selectedImage}
-              alt="Preview"
+              src={galleryImages[selectedImageIndex].url}
+              alt={galleryImages[selectedImageIndex].alt}
               className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-200"
             />
+          </div>
+
+          {/* Image Counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full text-white text-sm">
+            {selectedImageIndex + 1} / {galleryImages.length}
           </div>
         </div>
       )}

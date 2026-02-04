@@ -618,65 +618,83 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
                       {/* Drive Visualization */}
                       <div className="relative bg-gradient-to-br from-slate-700/50 to-slate-800/50 rounded-lg sm:rounded-xl lg:rounded-2xl p-2 sm:p-3 lg:p-5 border border-slate-600/30 mb-3 sm:mb-4 lg:mb-6">
-                        {/* Spinning Disk Animation */}
-                        <div className="relative w-20 h-20 sm:w-28 sm:h-28 lg:w-40 lg:h-40 mx-auto">
-                          {/* Outer Ring */}
-                          <div
-                            className="absolute inset-0 rounded-full border-2 sm:border-4 border-slate-600/50"
-                            style={{ animation: "spinDisk 3s linear infinite" }}
-                          >
-                            <div className="absolute inset-1 sm:inset-2 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 border border-slate-500/30"></div>
-                            <div className="absolute inset-2 sm:inset-4 rounded-full bg-gradient-to-br from-slate-700 to-slate-800"></div>
-                          </div>
-
-                          {/* Center Hub */}
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                              <ShieldIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-white" />
+                        {/* Server Stack Visualization */}
+                        <div className="relative w-full max-w-[180px] sm:max-w-[220px] lg:max-w-[280px] mx-auto space-y-1.5 sm:space-y-2 lg:space-y-3">
+                          {/* Server Unit 1 */}
+                          <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 rounded-md sm:rounded-lg p-1.5 sm:p-2 lg:p-3 border border-slate-500/40 shadow-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.2s' }}></div>
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" style={{ animationDelay: '0.4s' }}></div>
+                              </div>
+                              <div className="flex gap-0.5 sm:gap-1">
+                                {[...Array(4)].map((_, i) => (
+                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"></div>
+                                ))}
+                              </div>
                             </div>
                           </div>
 
-                          {/* Erasure Progress Ring */}
-                          <svg
-                            className="absolute inset-0 w-full h-full -rotate-90"
-                            viewBox="0 0 100 100"
-                          >
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="45"
-                              fill="none"
-                              stroke="rgba(100,116,139,0.3)"
-                              strokeWidth="3"
-                            />
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="45"
-                              fill="none"
-                              stroke="url(#progressGradient)"
-                              strokeWidth="3"
-                              strokeLinecap="round"
-                              strokeDasharray="283"
-                              strokeDashoffset="70"
-                              style={{
-                                animation:
-                                  "progressPulse 2s ease-in-out infinite",
-                              }}
-                            />
-                            <defs>
-                              <linearGradient
-                                id="progressGradient"
-                                x1="0%"
-                                y1="0%"
-                                x2="100%"
-                                y2="0%"
-                              >
-                                <stop offset="0%" stopColor="#10b981" />
-                                <stop offset="100%" stopColor="#14b8a6" />
-                              </linearGradient>
-                            </defs>
-                          </svg>
+                          {/* Server Unit 2 - Main with Shield */}
+                          <div className="relative bg-gradient-to-r from-slate-700 via-slate-800 to-slate-700 rounded-md sm:rounded-lg p-2 sm:p-3 lg:p-4 border border-emerald-500/30 shadow-xl shadow-emerald-500/10">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2 sm:gap-3">
+                                <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-md sm:rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                                  <ShieldIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-[8px] sm:text-[9px] lg:text-xs text-emerald-400 font-semibold">ERASING</span>
+                                  <div className="w-12 sm:w-16 lg:w-24 h-1 sm:h-1.5 lg:h-2 bg-slate-600 rounded-full overflow-hidden">
+                                    <div 
+                                      className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
+                                      style={{ 
+                                        width: '75%',
+                                        animation: 'progressPulse 2s ease-in-out infinite'
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex gap-0.5 sm:gap-1">
+                                {[...Array(4)].map((_, i) => (
+                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-4 sm:h-5 lg:h-6 bg-slate-500/60 rounded-sm"></div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Server Unit 3 */}
+                          <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 rounded-md sm:rounded-lg p-1.5 sm:p-2 lg:p-3 border border-slate-500/40 shadow-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></div>
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" style={{ animationDelay: '0.3s' }}></div>
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.6s' }}></div>
+                              </div>
+                              <div className="flex gap-0.5 sm:gap-1">
+                                {[...Array(4)].map((_, i) => (
+                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"></div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Server Unit 4 */}
+                          <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 rounded-md sm:rounded-lg p-1.5 sm:p-2 lg:p-3 border border-slate-500/40 shadow-lg">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.5s' }}></div>
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.7s' }}></div>
+                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" style={{ animationDelay: '0.9s' }}></div>
+                              </div>
+                              <div className="flex gap-0.5 sm:gap-1">
+                                {[...Array(4)].map((_, i) => (
+                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"></div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
                         </div>
 
                         {/* Erasure Status Text */}

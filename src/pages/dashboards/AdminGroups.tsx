@@ -904,11 +904,7 @@ export default function AdminGroups() {
                             <div>
                                 <p className="text-sm text-slate-600">Total Groups</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-1">
-                                    {isLoading ? (
-                                        <span className="inline-block w-12 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        groups.length
-                                    )}
+                                    {groups.length}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
@@ -924,11 +920,7 @@ export default function AdminGroups() {
                             <div>
                                 <p className="text-sm text-slate-600">Total Users</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-1">
-                                    {isLoading ? (
-                                        <span className="inline-block w-12 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        totalUsers
-                                    )}
+                                    {totalUsers}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -944,11 +936,7 @@ export default function AdminGroups() {
                             <div>
                                 <p className="text-sm text-slate-600">Total Machines</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-1">
-                                    {isLoading ? (
-                                        <span className="inline-block w-12 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        totalMachines
-                                    )}
+                                    {totalMachines}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -964,11 +952,7 @@ export default function AdminGroups() {
                             <div>
                                 <p className="text-sm text-slate-600">Total Reports</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-1">
-                                    {isLoading ? (
-                                        <span className="inline-block w-12 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        totalReports
-                                    )}
+                                    {totalReports}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
@@ -984,11 +968,7 @@ export default function AdminGroups() {
                             <div>
                                 <p className="text-sm text-slate-600">Total Available Licenses</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-1">
-                                    {isLoading ? (
-                                        <span className="inline-block w-12 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        licenseSummary?.totalAllocated || 0
-                                    )}
+                                    {licenseSummary?.totalAllocated || 0}
                                 </p>
                                 {licenseSummary && (
                                     <p className="text-xs text-slate-500 mt-1">
@@ -1009,11 +989,7 @@ export default function AdminGroups() {
                             <div>
                                 <p className="text-sm text-slate-600">Unsed License Available</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-1">
-                                    {isLoading ? (
-                                        <span className="inline-block w-12 h-8 bg-slate-200 animate-pulse rounded"></span>
-                                    ) : (
-                                        licenseSummary?.totalAvailable || 0
-                                    )}
+                                    {licenseSummary?.totalAvailable || 0}
                                 </p>
                                 {licenseSummary && (
                                     <p className="text-xs text-slate-500 mt-1">
@@ -1045,14 +1021,9 @@ export default function AdminGroups() {
 
                 {/* Loading State */}
                 {isLoading && groups.length === 0 && (
-                    <div className="flex justify-center items-center py-12">
-                        <div className="text-center">
-                            <svg className="animate-spin h-12 w-12 text-emerald-500 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            <p className="text-slate-600">Loading groups...</p>
-                        </div>
+                    <div className="flex flex-col items-center justify-center py-12">
+                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
+                        {/* <p className="text-slate-500 text-sm">Loading groups...</p> */}
                     </div>
                 )}
 
@@ -1436,7 +1407,7 @@ export default function AdminGroups() {
                                         required
                                     />
                                 </div>
-                                <div>
+                                {/* <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">
                                         License Allocation <span className="text-red-500">*</span>
                                     </label>
@@ -1469,8 +1440,8 @@ export default function AdminGroups() {
                                         <option value="admin">Admin</option>
                                         <option value="full">Full Access</option>
                                     </select>
-                                </div>
-                                <div>
+                                </div> */}
+                                {/* <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">
                                         Status <span className="text-red-500">*</span>
                                     </label>
@@ -1484,7 +1455,7 @@ export default function AdminGroups() {
                                         <option value="inactive">Inactive</option>
                                         <option value="suspended">Suspended</option>
                                     </select>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="flex gap-3 mt-6">
                                 <button 

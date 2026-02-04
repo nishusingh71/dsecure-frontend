@@ -285,7 +285,10 @@ export default function AdminDownloads() {
                     </div>
                     <div className="p-6 space-y-4">
                         {loading ? (
-                            <div className="text-center py-8 text-slate-500">Loading download data...</div>
+                            <div className="flex flex-col items-center justify-center py-12">
+                                <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
+                                <p className="text-slate-500 text-sm">Loading download data...</p>
+                            </div>
                         ) : products.length === 0 ? (
                             <div className="text-center py-8 text-slate-500">No download data available</div>
                         ) : (

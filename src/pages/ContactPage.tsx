@@ -982,17 +982,17 @@ function ContactPageContent() {
                             >
                               <option value="">Select Solution Type *</option>
                               <option value="device-erasure">
-                                Device Erasure
+                                File Eraser
                               </option>
                               <option value="network-erasure">
-                                Network Erasure
+                                Drive Eraser
                               </option>
-                              <option value="cloud-erasure">
+                              {/* <option value="cloud-erasure">
                                 Cloud Erasure
-                              </option>
-                              <option value="enterprise-suite">
+                              </option> */}
+                              {/* <option value="enterprise-suite">
                                 Enterprise Suite
-                              </option>
+                              </option> */}
                               <option value="custom-solution">
                                 Custom Solution
                               </option>

@@ -1753,6 +1753,160 @@ export default function AdminReports() {
     setSelectedReportIds(newSelection);
   };
 
+  // ✅ Handle preview of selected reports - Opens PDFs in new tabs (supports multiple)
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  
+  const handlePreviewSelectedReports = async () => {
+    if (selectedReportIds.size === 0) {
+      showWarning("No Reports Selected", "Please select at least one report to preview");
+      return;
+    }
+
+    // Prevent multiple clicks while loading
+    if (isPreviewLoading) {
+      showInfo("Preview is already in progress...");
+      return;
+    }
+
+    // Limit to prevent browser from blocking too many popups
+    const MAX_PREVIEW_TABS = 5;
+    const selectedCount = selectedReportIds.size;
+    
+    if (selectedCount > MAX_PREVIEW_TABS) {
+      showWarning(
+        "Too Many Reports", 
+        `You can preview maximum ${MAX_PREVIEW_TABS} reports at once. You selected ${selectedCount}. Please select fewer reports.`
+      );
+      return;
+    }
+
+    // Get all selected reports
+    const selectedReportsArray = allRows.filter(r => 
+      selectedReportIds.has(String(r.id || ""))
+    );
+
+    if (selectedReportsArray.length === 0) {
+      showError("Reports Not Found", "Could not find the selected report data");
+      return;
+    }
+
+    setIsPreviewLoading(true);
+    
+    try {
+      let successCount = 0;
+      let failedCount = 0;
+
+      // Process each report sequentially to avoid overwhelming the browser
+      for (const selectedReport of selectedReportsArray) {
+        try {
+          const rawReport = selectedReport._raw;
+          const reportDetails = selectedReport._details;
+          const reportId = reportDetails?.report_id?.toString() || rawReport?.report_id || String(selectedReport.id || "");
+
+          if (!reportId) {
+            console.warn(`Skipping report - no ID found`);
+            failedCount++;
+            continue;
+          }
+
+          // Create FormData for the request
+          const submitData = new FormData();
+
+          // Add text fields
+          submitData.append("reportTitle", pdfFormData.reportTitle);
+          submitData.append("headerText", pdfFormData.headerText);
+          submitData.append("technicianName", pdfFormData.technicianName);
+          submitData.append("technicianDept", pdfFormData.technicianDept);
+          submitData.append("validatorName", pdfFormData.validatorName);
+          submitData.append("validatorDept", pdfFormData.validatorDept);
+
+          // Add file fields if they exist, or use base64 from localStorage
+          if (pdfFormData.headerLeftLogo) {
+            submitData.append("headerLeftLogo", pdfFormData.headerLeftLogo);
+          } else if (imageBase64.headerLeftLogo) {
+            submitData.append("headerLeftLogoBase64", imageBase64.headerLeftLogo);
+          }
+
+          if (pdfFormData.headerRightLogo) {
+            submitData.append("headerRightLogo", pdfFormData.headerRightLogo);
+          } else if (imageBase64.headerRightLogo) {
+            submitData.append("headerRightLogoBase64", imageBase64.headerRightLogo);
+          }
+
+          if (pdfFormData.watermarkImage) {
+            submitData.append("watermarkImage", pdfFormData.watermarkImage);
+          } else if (imageBase64.watermarkImage) {
+            submitData.append("watermarkImageBase64", imageBase64.watermarkImage);
+          }
+
+          if (pdfFormData.technicianSignature) {
+            submitData.append("technicianSignature", pdfFormData.technicianSignature);
+          } else if (imageBase64.technicianSignature) {
+            submitData.append("technicianSignatureBase64", imageBase64.technicianSignature);
+          }
+
+          if (pdfFormData.validatorSignature) {
+            submitData.append("validatorSignature", pdfFormData.validatorSignature);
+          } else if (imageBase64.validatorSignature) {
+            submitData.append("validatorSignatureBase64", imageBase64.validatorSignature);
+          }
+
+          const response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-files`,
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${authService.getAccessToken()}`,
+              },
+              body: submitData,
+            }
+          );
+
+          if (response.ok) {
+            const blob = await response.blob();
+            // Create object URL and open in new tab for preview
+            const pdfUrl = window.URL.createObjectURL(blob);
+            const newTab = window.open(pdfUrl, '_blank');
+            
+            if (newTab) {
+              successCount++;
+            } else {
+              // Popup was blocked
+              console.warn(`Popup blocked for report ${reportId}`);
+              failedCount++;
+            }
+            
+            // Small delay between opening tabs to prevent browser blocking
+            if (selectedReportsArray.length > 1) {
+              await new Promise(resolve => setTimeout(resolve, 300));
+            }
+          } else {
+            const errorText = await response.text();
+            console.error(`PDF preview failed for report ${reportId}:`, errorText);
+            failedCount++;
+          }
+        } catch (error) {
+          console.error(`Error generating PDF preview for report:`, error);
+          failedCount++;
+        }
+      }
+
+      // Show final result
+      if (successCount === 0) {
+        showError("Preview Failed", "No PDFs could be opened. Please check if popups are blocked.");
+      } else if (failedCount > 0) {
+        showWarning("Partial Success", `Opened ${successCount} PDF${successCount > 1 ? 's' : ''}. ${failedCount} failed.`);
+      } else {
+        showSuccess(`${successCount} PDF${successCount > 1 ? 's' : ''} opened in new tab${successCount > 1 ? 's' : ''}`);
+      }
+    } catch (error) {
+      console.error("Error generating PDF previews:", error);
+      showError("Preview Failed", "Failed to generate PDF previews. Please try again.");
+    } finally {
+      setIsPreviewLoading(false);
+    }
+  };
+
   // const handleDeleteReport = async (report: AdminReport) => {
   //   if (
   //     window.confirm(`Are you sure you want to delete report ${report.id}?`)
@@ -1989,12 +2143,12 @@ export default function AdminReports() {
             <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">
               Audit Reports
             </h1>
-            {/* {selectedReportIds.size > 0 && (
+            {selectedReportIds.size > 0 && (
               <p className="text-sm text-slate-600 mt-1">
                 {selectedReportIds.size} report
                 {selectedReportIds.size > 1 ? "s" : ""} selected
               </p>
-            )} */}
+            )}
           </div>
 
           {/* PDF Settings Button - Always visible outside table */}
@@ -2460,8 +2614,40 @@ export default function AdminReports() {
                       onClick={() => setSelectedReportIds(new Set())}
                       className="text-sm px-3 py-1.5 rounded border font-medium transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100 border-slate-300"
                       title="Clear selection"
+                      disabled={isPreviewLoading}
                     >
                       Clear
+                    </button>
+                    <button
+                      onClick={handlePreviewSelectedReports}
+                      disabled={isPreviewLoading}
+                      className={`text-sm px-4 py-1.5 rounded border font-medium transition-colors flex items-center gap-2 ${
+                        isPreviewLoading 
+                          ? 'bg-blue-400 cursor-not-allowed border-blue-400' 
+                          : 'bg-blue-600 hover:bg-blue-700 border-blue-600'
+                      } text-white`}
+                      title={`Preview ${selectedReportIds.size} selected report${selectedReportIds.size > 1 ? 's' : ''} in new tab${selectedReportIds.size > 1 ? 's' : ''}`}
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                      Preview
                     </button>
                     <button
                       onClick={handleBulkDownload}

@@ -968,6 +968,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                             scrollWheelZoom={false}
                                             touchZoom={true}
                                             dragging={true}
+                                            zoomControl={false}
                                             style={{ height: '100%', width: '100%' }}
                                         >
                                             <TileLayer
@@ -977,58 +978,41 @@ const DataGuardianAwardPage: React.FC = () => {
 
                                             {/* InfoTree Computers - Dubai */}
                                             <Marker position={[25.2048, 55.2708]} icon={certifiedMarkerIcon}>
-                                                <Tooltip
+                                                {/* <Tooltip
                                                     permanent
                                                     direction="right"
                                                     offset={[20, 0]}
                                                     className="custom-tooltip"
                                                 >
                                                     <span style={{ fontWeight: 'bold', fontSize: '12px' }}>InfoTree Computers</span>
-                                                </Tooltip>
+                                                </Tooltip> */}
                                                 <Popup>
                                                     <div style={{ minWidth: '200px', padding: '8px' }}>
                                                         <h3 style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '8px', color: '#1e293b' }}>InfoTree Computers</h3>
                                                         <p style={{ color: '#64748b', fontSize: '12px', marginBottom: '4px' }}>CERTIFIED TO:</p>
                                                         <p style={{ color: '#059669', fontSize: '13px', marginBottom: '12px' }}>Data Hygiene Assurance</p>
-                                                        <p style={{ color: '#64748b', fontSize: '12px' }}>📍 Dubai, UAE</p>
-                                                        <p style={{ color: '#64748b', fontSize: '12px' }}>CEO: Varun</p>
-                                                        <a
-                                                            href="https://www.google.com/maps?q=25.2048,55.2708"
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            style={{ color: '#2563eb', fontSize: '12px', marginTop: '8px', display: 'block' }}
-                                                        >
-                                                            Get Directions
-                                                        </a>
+
+
                                                     </div>
                                                 </Popup>
                                             </Marker>
 
                                             {/* Revent Store - UAE */}
                                             <Marker position={[24.4539, 54.3773]} icon={certifiedMarkerIcon}>
-                                                <Tooltip
+                                                {/* <Tooltip
                                                     permanent
                                                     direction="left"
                                                     offset={[-20, 0]}
                                                     className="custom-tooltip"
                                                 >
                                                     <span style={{ fontWeight: 'bold', fontSize: '12px' }}>Revent Store</span>
-                                                </Tooltip>
+                                                </Tooltip> */}
                                                 <Popup>
                                                     <div style={{ minWidth: '200px', padding: '8px' }}>
                                                         <h3 style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '8px', color: '#1e293b' }}>Revent Store</h3>
                                                         <p style={{ color: '#64748b', fontSize: '12px', marginBottom: '4px' }}>CERTIFIED TO:</p>
                                                         <p style={{ color: '#0d9488', fontSize: '13px', marginBottom: '12px' }}>Data Hygiene Assurance</p>
-                                                        <p style={{ color: '#64748b', fontSize: '12px' }}>📍 UAE</p>
-                                                        <p style={{ color: '#64748b', fontSize: '12px' }}>CEO: Dhananjay</p>
-                                                        <a
-                                                            href="https://www.google.com/maps?q=24.4539,54.3773"
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            style={{ color: '#2563eb', fontSize: '12px', marginTop: '8px', display: 'block' }}
-                                                        >
-                                                            Get Directions
-                                                        </a>
+
                                                     </div>
                                                 </Popup>
                                             </Marker>
@@ -1090,7 +1074,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 {
                                     question: "What are the prerequisites for certification?",
                                     answer:
-                                        "Organizations must implement D-Secure data hygiene tools including our automated eraser system, D-Secure Recycle Bin, and Free Space Wipe. We provide complete guidance on setup and implementation.",
+                                        "Organizations must implement D-Secure data hygiene tools including our automated eraser system, Free Space Wipe. We provide complete guidance on setup and implementation.",
                                 },
                                 {
                                     question: "How do audits work?",

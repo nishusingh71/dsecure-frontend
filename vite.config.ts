@@ -120,8 +120,7 @@ export default defineConfig({
   },
   // Drop console logs in production build
   esbuild: {
-    // Temporarily disabled to debug blank page issue
-    // drop: ['console', 'debugger'],
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
     legalComments: 'none',
     treeShaking: true
   },
