@@ -233,11 +233,17 @@ function createApiInstance(): AxiosInstance {
           sessionStorage.removeItem('D-Secure:jwt');
           localStorage.removeItem('D-Secure:jwt');
           localStorage.removeItem('jwt_token');
+          localStorage.removeItem('user_data');
+          localStorage.removeItem('authUser');
+          localStorage.removeItem('pdfExportSettingsCache');
 
           // Dispatch custom event for auth handling
           window.dispatchEvent(new CustomEvent('authError', {
             detail: { status: 401, message: 'Session expired' }
           }));
+          
+          // Redirect to login page with expired flag
+          window.location.href = '/login?expired=true';
         }
 
         // Try to parse error response

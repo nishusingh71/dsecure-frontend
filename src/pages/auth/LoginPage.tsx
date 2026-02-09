@@ -42,6 +42,16 @@ export default function LoginPage() {
     setTimeout(() => setToast(null), 5000); // Auto hide after 5 seconds
   };
 
+  // ✅ Check for session expired query param
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('expired') === 'true') {
+      showToast("Your session has expired. Please login again.", "error");
+      // Clean up the URL
+      window.history.replaceState({}, '', '/login');
+    }
+  }, [location.search]);
+
   // ✅ FormSubmit.co Email Service with Error Handling
   const sendEmailViaFormSubmit = async (
     toEmail: string,

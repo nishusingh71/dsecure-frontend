@@ -353,14 +353,45 @@ export default function AdminReports() {
     technicianSignature: string | null;
     validatorSignature: string | null;
   }>(() => {
+    console.log('🔵 Initializing imageBase64 state...');
     try {
+      // First check the unified cache
+      const cachedSettings = localStorage.getItem("pdfExportSettingsCache");
+      console.log('🔵 Cache found:', !!cachedSettings);
+      if (cachedSettings) {
+        const parsed = JSON.parse(cachedSettings);
+        console.log('🔵 Parsed cache:', { 
+          hasImages: !!parsed.images,
+          imageKeys: parsed.images ? Object.keys(parsed.images) : []
+        });
+        if (parsed.images) {
+          const result = {
+            headerLeftLogo: parsed.images.headerLeftLogo || null,
+            headerRightLogo: parsed.images.headerRightLogo || null,
+            watermarkImage: parsed.images.watermarkImage || null,
+            technicianSignature: parsed.images.technicianSignature || null,
+            validatorSignature: parsed.images.validatorSignature || null,
+          };
+          console.log('🖼️ Initial imageBase64 from cache:', {
+            headerLeftLogo: result.headerLeftLogo ? '✅ loaded' : '❌ null',
+            headerRightLogo: result.headerRightLogo ? '✅ loaded' : '❌ null',
+            watermarkImage: result.watermarkImage ? '✅ loaded' : '❌ null',
+            technicianSignature: result.technicianSignature ? '✅ loaded' : '❌ null',
+            validatorSignature: result.validatorSignature ? '✅ loaded' : '❌ null',
+          });
+          return result;
+        }
+      }
+      // Fallback to old key for backwards compatibility
       const saved = localStorage.getItem("pdfImageSettings");
       if (saved) {
+        console.log('🖼️ Initial imageBase64 loaded from pdfImageSettings (legacy)');
         return JSON.parse(saved);
       }
     } catch (e) {
-      console.warn("Failed to load image settings from localStorage:", e);
+      console.error("❌ Failed to load image settings from localStorage:", e);
     }
+    console.log('🔵 No cached images found, using defaults');
     return {
       headerLeftLogo: null,
       headerRightLogo: null,
@@ -399,136 +430,308 @@ export default function AdminReports() {
     validatorSignature: File | null;
   }>(defaultPdfSettings);
 
-  // Load saved PDF settings from API on component mount
+  // Loading state for PDF settings fetch
+  const [pdfSettingsLoading, setPdfSettingsLoading] = useState(true);
+  const [pdfSettingsLoaded, setPdfSettingsLoaded] = useState(false);
+
+  // Cache key for PDF settings
+  const PDF_SETTINGS_CACHE_KEY = 'pdfExportSettingsCache';
+
+  // Load saved PDF settings - first from cache, then from API if needed
   React.useEffect(() => {
     console.log('🟢 PDF Settings useEffect triggered');
+    let isMounted = true;
 
     const loadSavedSettings = async () => {
+      if (!isMounted) return;
+      
+      setPdfSettingsLoading(true);
+      
       try {
-        const token = authService.getAccessToken();
-        console.log('🔵 Token available:', token ? 'Yes' : 'No');
+        // Step 1: Check localStorage cache first
+        const cachedSettings = localStorage.getItem(PDF_SETTINGS_CACHE_KEY);
+        if (cachedSettings) {
+          try {
+            const parsed = JSON.parse(cachedSettings);
+            console.log('✅ Using cached PDF settings from localStorage:', parsed);
+            
+            // Apply cached settings to form
+            setPdfFormData({
+              reportTitle: parsed.reportTitle || defaultPdfSettings.reportTitle,
+              headerText: parsed.headerText || defaultPdfSettings.headerText,
+              technicianName: parsed.technicianName || '',
+              technicianDept: parsed.technicianDept || '',
+              validatorName: parsed.validatorName || '',
+              validatorDept: parsed.validatorDept || '',
+              headerLeftLogo: null,
+              headerRightLogo: null,
+              watermarkImage: null,
+              technicianSignature: null,
+              validatorSignature: null,
+            });
+            
+            // Apply cached images
+            if (parsed.images) {
+              console.log('🖼️ Applying cached images:', {
+                headerLeftLogo: parsed.images.headerLeftLogo ? '✅ exists' : '❌ null',
+                headerRightLogo: parsed.images.headerRightLogo ? '✅ exists' : '❌ null',
+                watermarkImage: parsed.images.watermarkImage ? '✅ exists' : '❌ null',
+                technicianSignature: parsed.images.technicianSignature ? '✅ exists' : '❌ null',
+                validatorSignature: parsed.images.validatorSignature ? '✅ exists' : '❌ null',
+              });
+              setImageBase64({
+                headerLeftLogo: parsed.images.headerLeftLogo || null,
+                headerRightLogo: parsed.images.headerRightLogo || null,
+                watermarkImage: parsed.images.watermarkImage || null,
+                technicianSignature: parsed.images.technicianSignature || null,
+                validatorSignature: parsed.images.validatorSignature || null,
+              });
+            } else {
+              console.log('⚠️ No images found in cache');
+            }
+            
+            setPdfSettingsLoaded(true);
+            setPdfSettingsLoading(false);
+            console.log('✅ PDF settings loaded from cache successfully');
+            return; // Don't make API call if cache exists
+          } catch (e) {
+            console.warn('⚠️ Failed to parse cached settings, will fetch from API');
+            localStorage.removeItem(PDF_SETTINGS_CACHE_KEY);
+          }
+        }
+
+        // Step 2: No cache - fetch from API
+        console.log('🔵 No cache found, fetching from API...');
+        
+        // Wait for token to be available (with retry)
+        let token = authService.getAccessToken();
+        let retryCount = 0;
+        const maxRetries = 5;
+        const retryDelay = 500;
+        
+        while (!token && retryCount < maxRetries) {
+          console.log(`🔄 Token not available, retry ${retryCount + 1}/${maxRetries}...`);
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+          token = authService.getAccessToken();
+          retryCount++;
+        }
+
+        if (!token) {
+          console.warn('⚠️ No auth token available, skipping settings fetch');
+          if (isMounted) setPdfSettingsLoading(false);
+          return;
+        }
 
         const API_BASE = ENV.API_BASE_URL;
-        console.log('🔵 Fetching PDF settings from:', `${API_BASE}/api/EnhancedAuditReports/export-settings`);
-
         const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/export-settings`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${authService.getAccessToken()}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
 
-        console.log('🔵 Response status:', response.status);
+        if (!isMounted) return;
 
         if (response.ok) {
           const responseData = await response.json();
-          console.log('✅ Loaded PDF settings from server (raw):', JSON.stringify(responseData, null, 2));
+          console.log('✅ Loaded PDF settings from server:', responseData);
 
-          // Handle nested response structure: { success, hasSettings, data: {...} }
           const savedSettings = responseData.data || responseData;
-          const hasSettings = responseData.hasSettings || responseData.success || savedSettings.id;
+          const hasSettings = responseData.hasSettings === true;
 
           if (hasSettings && savedSettings) {
-            console.log('✅ Settings found, populating form...');
-
-            // Handle different possible field name formats (camelCase or PascalCase)
-            const getField = (obj: any, ...keys: string[]) => {
-              for (const key of keys) {
-                if (obj[key] !== undefined && obj[key] !== null && obj[key] !== '') {
-                  return obj[key];
-                }
-              }
-              return '';
+            const formSettings = {
+              reportTitle: savedSettings.reportTitle || savedSettings.ReportTitle || defaultPdfSettings.reportTitle,
+              headerText: savedSettings.headerText || savedSettings.HeaderText || defaultPdfSettings.headerText,
+              technicianName: savedSettings.technicianName || savedSettings.TechnicianName || '',
+              technicianDept: savedSettings.technicianDept || savedSettings.TechnicianDept || '',
+              validatorName: savedSettings.validatorName || savedSettings.ValidatorName || '',
+              validatorDept: savedSettings.validatorDept || savedSettings.ValidatorDept || '',
+            };
+            
+            const imageSettings = {
+              headerLeftLogo: savedSettings.headerLeftLogoBase64 || savedSettings.HeaderLeftLogoBase64 || null,
+              headerRightLogo: savedSettings.headerRightLogoBase64 || savedSettings.HeaderRightLogoBase64 || null,
+              watermarkImage: savedSettings.watermarkImageBase64 || savedSettings.WatermarkImageBase64 || null,
+              technicianSignature: savedSettings.technicianSignatureBase64 || savedSettings.TechnicianSignatureBase64 || null,
+              validatorSignature: savedSettings.validatorSignatureBase64 || savedSettings.ValidatorSignatureBase64 || null,
             };
 
-            // Update form data with saved settings
-            setPdfFormData(prev => ({
-              ...prev,
-              reportTitle: getField(savedSettings, 'reportTitle', 'ReportTitle') || prev.reportTitle,
-              headerText: getField(savedSettings, 'headerText', 'HeaderText') || prev.headerText,
-              technicianName: getField(savedSettings, 'technicianName', 'TechnicianName') || prev.technicianName,
-              technicianDept: getField(savedSettings, 'technicianDept', 'TechnicianDept') || prev.technicianDept,
-              validatorName: getField(savedSettings, 'validatorName', 'ValidatorName') || prev.validatorName,
-              validatorDept: getField(savedSettings, 'validatorDept', 'ValidatorDept') || prev.validatorDept,
-            }));
-
-            // If API returns base64 images, update imageBase64 state
-            // Note: API returns hasHeaderLeftLogo (boolean) - actual images may need separate fetch
-            const headerLeftLogo = getField(savedSettings, 'headerLeftLogoBase64', 'HeaderLeftLogoBase64');
-            const headerRightLogo = getField(savedSettings, 'headerRightLogoBase64', 'HeaderRightLogoBase64');
-            const watermarkImage = getField(savedSettings, 'watermarkImageBase64', 'WatermarkImageBase64');
-            const technicianSignature = getField(savedSettings, 'technicianSignatureBase64', 'TechnicianSignatureBase64');
-            const validatorSignature = getField(savedSettings, 'validatorSignatureBase64', 'ValidatorSignatureBase64');
-
-            if (headerLeftLogo || headerRightLogo || watermarkImage || technicianSignature || validatorSignature) {
-              setImageBase64(prev => ({
-                ...prev,
-                headerLeftLogo: headerLeftLogo || prev.headerLeftLogo,
-                headerRightLogo: headerRightLogo || prev.headerRightLogo,
-                watermarkImage: watermarkImage || prev.watermarkImage,
-                technicianSignature: technicianSignature || prev.technicianSignature,
-                validatorSignature: validatorSignature || prev.validatorSignature,
-              }));
+            // Apply to state
+            if (isMounted) {
+              setPdfFormData({
+                ...formSettings,
+                headerLeftLogo: null,
+                headerRightLogo: null,
+                watermarkImage: null,
+                technicianSignature: null,
+                validatorSignature: null,
+              });
+              
+              setImageBase64(imageSettings);
+              setPdfSettingsLoaded(true);
+              
+              // Save to cache for future use
+              const cacheData = {
+                ...formSettings,
+                images: imageSettings,
+                cachedAt: Date.now(),
+              };
+              localStorage.setItem(PDF_SETTINGS_CACHE_KEY, JSON.stringify(cacheData));
+              console.log('✅ PDF settings cached to localStorage');
             }
-
-            console.log('✅ PDF settings loaded into form');
           } else {
-            console.log('ℹ️ No saved settings found - using defaults');
+            console.log('ℹ️ No saved settings found on server - using defaults');
           }
         } else {
-          const errorText = await response.text();
-          console.warn('⚠️ Failed to load settings:', response.status, errorText);
+          console.warn('⚠️ Failed to load settings from server:', response.status);
         }
       } catch (error) {
-        console.warn('⚠️ Could not load saved PDF settings:', error);
+        console.warn('⚠️ Could not load PDF settings:', error);
+      } finally {
+        if (isMounted) setPdfSettingsLoading(false);
       }
     };
 
     loadSavedSettings();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
 
-  // Save PDF settings to API using JSON
-  const savePdfSettingsToServer = useCallback(async () => {
+  // Save PDF settings to API using FormData (server expects multipart/form-data)
+  const savePdfSettingsToServer = useCallback(async (): Promise<boolean> => {
     try {
       const API_BASE = ENV.API_BASE_URL;
 
-      // Build settings object with text fields and base64 images
-      const settingsData = {
-        reportTitle: pdfFormData.reportTitle,
-        headerText: pdfFormData.headerText,
-        technicianName: pdfFormData.technicianName,
-        technicianDept: pdfFormData.technicianDept,
-        validatorName: pdfFormData.validatorName,
-        validatorDept: pdfFormData.validatorDept,
-        // Include base64 images if available
-        headerLeftLogoBase64: imageBase64.headerLeftLogo || null,
-        headerRightLogoBase64: imageBase64.headerRightLogo || null,
-        watermarkImageBase64: imageBase64.watermarkImage || null,
-        technicianSignatureBase64: imageBase64.technicianSignature || null,
-        validatorSignatureBase64: imageBase64.validatorSignature || null,
-      };
+      // Build FormData for server
+      const formData = new FormData();
+      formData.append('reportTitle', pdfFormData.reportTitle);
+      formData.append('headerText', pdfFormData.headerText);
+      formData.append('technicianName', pdfFormData.technicianName);
+      formData.append('technicianDept', pdfFormData.technicianDept);
+      formData.append('validatorName', pdfFormData.validatorName);
+      formData.append('validatorDept', pdfFormData.validatorDept);
+      
+      // Include base64 images if available
+      if (imageBase64.headerLeftLogo) {
+        formData.append('headerLeftLogoBase64', imageBase64.headerLeftLogo);
+      }
+      if (imageBase64.headerRightLogo) {
+        formData.append('headerRightLogoBase64', imageBase64.headerRightLogo);
+      }
+      if (imageBase64.watermarkImage) {
+        formData.append('watermarkImageBase64', imageBase64.watermarkImage);
+      }
+      if (imageBase64.technicianSignature) {
+        formData.append('technicianSignatureBase64', imageBase64.technicianSignature);
+      }
+      if (imageBase64.validatorSignature) {
+        formData.append('validatorSignatureBase64', imageBase64.validatorSignature);
+      }
 
-      console.log('🔵 Saving PDF settings to server:', settingsData);
+      console.log('🔵 Saving PDF settings to server with FormData');
 
-      const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/save-export-settings-json`, {
+      const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/export-settings`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authService.getAccessToken()}`,
-          'Content-Type': 'application/json',
+          // Don't set Content-Type - browser will set it automatically with boundary for FormData
         },
-        body: JSON.stringify(settingsData),
+        body: formData,
       });
 
       if (response.ok) {
         console.log('✅ PDF settings saved to server successfully');
+        setPdfSettingsLoaded(true);
+        
+        // Update localStorage cache with new settings
+        try {
+          const cacheData = {
+            reportTitle: pdfFormData.reportTitle,
+            headerText: pdfFormData.headerText,
+            technicianName: pdfFormData.technicianName,
+            technicianDept: pdfFormData.technicianDept,
+            validatorName: pdfFormData.validatorName,
+            validatorDept: pdfFormData.validatorDept,
+            images: {
+              headerLeftLogo: imageBase64.headerLeftLogo,
+              headerRightLogo: imageBase64.headerRightLogo,
+              watermarkImage: imageBase64.watermarkImage,
+              technicianSignature: imageBase64.technicianSignature,
+              validatorSignature: imageBase64.validatorSignature,
+            },
+            cachedAt: Date.now(),
+          };
+          console.log('🖼️ Saving images to cache:', {
+            headerLeftLogo: imageBase64.headerLeftLogo ? `✅ exists (${(imageBase64.headerLeftLogo.length / 1024).toFixed(1)}KB)` : '❌ null',
+            headerRightLogo: imageBase64.headerRightLogo ? `✅ exists (${(imageBase64.headerRightLogo.length / 1024).toFixed(1)}KB)` : '❌ null',
+            watermarkImage: imageBase64.watermarkImage ? `✅ exists (${(imageBase64.watermarkImage.length / 1024).toFixed(1)}KB)` : '❌ null',
+            technicianSignature: imageBase64.technicianSignature ? `✅ exists (${(imageBase64.technicianSignature.length / 1024).toFixed(1)}KB)` : '❌ null',
+            validatorSignature: imageBase64.validatorSignature ? `✅ exists (${(imageBase64.validatorSignature.length / 1024).toFixed(1)}KB)` : '❌ null',
+          });
+          
+          const cacheString = JSON.stringify(cacheData);
+          console.log(`📦 Total cache size: ${(cacheString.length / 1024).toFixed(1)}KB`);
+          
+          localStorage.setItem(PDF_SETTINGS_CACHE_KEY, cacheString);
+          
+          // Verify cache was saved
+          const verifyCache = localStorage.getItem(PDF_SETTINGS_CACHE_KEY);
+          if (verifyCache) {
+            const verified = JSON.parse(verifyCache);
+            console.log('✅ Cache verified - images present:', {
+              headerLeftLogo: !!verified.images?.headerLeftLogo,
+              headerRightLogo: !!verified.images?.headerRightLogo,
+              watermarkImage: !!verified.images?.watermarkImage,
+              technicianSignature: !!verified.images?.technicianSignature,
+              validatorSignature: !!verified.images?.validatorSignature,
+            });
+          } else {
+            console.error('❌ Cache verification failed - cache not found after save!');
+          }
+        } catch (e) {
+          console.error('❌ Failed to update cache:', e);
+          // If localStorage is full, try to clear old data and retry
+          if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+            console.warn('⚠️ localStorage quota exceeded, clearing old caches...');
+            localStorage.removeItem('pdfImageSettings'); // Remove old key
+            try {
+              const cacheData = {
+                reportTitle: pdfFormData.reportTitle,
+                headerText: pdfFormData.headerText,
+                technicianName: pdfFormData.technicianName,
+                technicianDept: pdfFormData.technicianDept,
+                validatorName: pdfFormData.validatorName,
+                validatorDept: pdfFormData.validatorDept,
+                images: {
+                  headerLeftLogo: imageBase64.headerLeftLogo,
+                  headerRightLogo: imageBase64.headerRightLogo,
+                  watermarkImage: imageBase64.watermarkImage,
+                  technicianSignature: imageBase64.technicianSignature,
+                  validatorSignature: imageBase64.validatorSignature,
+                },
+                cachedAt: Date.now(),
+              };
+              localStorage.setItem(PDF_SETTINGS_CACHE_KEY, JSON.stringify(cacheData));
+              console.log('✅ Cache saved after clearing old data');
+            } catch (retryError) {
+              console.error('❌ Still failed after clearing old data:', retryError);
+            }
+          }
+        }
+        return true;
       } else {
         const errorText = await response.text();
         console.warn('⚠️ Failed to save PDF settings:', response.status, errorText);
+        return false;
       }
     } catch (e) {
       console.warn("❌ Failed to save PDF settings:", e);
+      return false;
     }
   }, [pdfFormData.reportTitle, pdfFormData.headerText, pdfFormData.technicianName, pdfFormData.technicianDept, pdfFormData.validatorName, pdfFormData.validatorDept, imageBase64]);
 
@@ -559,7 +762,39 @@ export default function AdminReports() {
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      setImageBase64((prev) => ({ ...prev, [fieldName]: base64String }));
+      console.log(`🖼️ Image ${fieldName} converted to base64 (${(base64String.length / 1024).toFixed(1)}KB)`);
+      
+      setImageBase64((prev) => {
+        const newState = { ...prev, [fieldName]: base64String };
+        
+        // Immediately persist to localStorage
+        try {
+          const existingCache = localStorage.getItem('pdfExportSettingsCache');
+          const cacheData = existingCache ? JSON.parse(existingCache) : {
+            reportTitle: pdfFormData.reportTitle,
+            headerText: pdfFormData.headerText,
+            technicianName: pdfFormData.technicianName,
+            technicianDept: pdfFormData.technicianDept,
+            validatorName: pdfFormData.validatorName,
+            validatorDept: pdfFormData.validatorDept,
+            images: {},
+            cachedAt: Date.now(),
+          };
+          
+          cacheData.images = {
+            ...cacheData.images,
+            [fieldName]: base64String,
+          };
+          cacheData.cachedAt = Date.now();
+          
+          localStorage.setItem('pdfExportSettingsCache', JSON.stringify(cacheData));
+          console.log(`✅ Image ${fieldName} persisted to localStorage cache`);
+        } catch (e) {
+          console.error(`❌ Failed to persist ${fieldName} to cache:`, e);
+        }
+        
+        return newState;
+      });
     };
     reader.readAsDataURL(file);
 
@@ -1086,11 +1321,11 @@ export default function AdminReports() {
 
             // New fields from report_details_json
             reportType:
-              reportDetails?.report_type ||
-              reportDetails?.reportType ||
-              report.report_type ||
-              reportDetails?.process_mode ||
-              "Erasure",
+              reportDetails?.erasure_type ||
+              reportDetails?.Erasure_Type ||
+              report.erasure_type ||
+              reportDetails?.erasure_type ||
+              "File and Folder",
 
             totalFiles:
               reportDetails?.total_files ??
@@ -2153,7 +2388,12 @@ export default function AdminReports() {
 
           {/* PDF Settings Button - Always visible outside table */}
           <button
-            onClick={() => setShowBulkSettingsModal(true)}
+            onClick={() => {
+              console.log('🔵 Opening Settings Modal with current pdfFormData:', pdfFormData);
+              console.log('🔵 Current imageBase64:', imageBase64);
+              console.log('🔵 pdfSettingsLoaded:', pdfSettingsLoaded);
+              setShowBulkSettingsModal(true);
+            }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700"
             title="Configure PDF Report Settings"
           >
@@ -2887,23 +3127,43 @@ export default function AdminReports() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10">
-              <h2 className="text-xl font-bold text-slate-900">
-                Settings
-              </h2>
+              <div className="flex items-center gap-3">
+                <h2 className="text-xl font-bold text-slate-900">
+                  Settings
+                </h2>
+                {pdfSettingsLoading && (
+                  <span className="text-sm text-blue-600 flex items-center gap-2">
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Loading saved settings...
+                  </span>
+                )}
+                {!pdfSettingsLoading && pdfSettingsLoaded && (
+                  <span className="text-sm text-green-600 flex items-center gap-1">
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {/* Settings loaded from server */}
+                  </span>
+                )}
+              </div>
               <div className="flex gap-4">
                 <button
                   type="button"
-                  onClick={() => {
-                    if (!pdfFormData.reportTitle.trim() || !pdfFormData.headerText.trim()) {
-                      showError("Validation Error", "Please fill in Report Title and Header Text");
-                      return;
-                    }
+                  disabled={pdfSettingsLoading}
+                  onClick={async () => {
+                    // if (!pdfFormData.reportTitle.trim() || !pdfFormData.headerText.trim()) {
+                    //   showError("Validation Error", "Please fill in Report Title and Header Text");
+                    //   return;
+                    // }
                     // Save settings to API
-                    savePdfSettingsToServer();
+                    await savePdfSettingsToServer();
                     showSuccess("Settings saved successfully!");
                     setShowBulkSettingsModal(false);
                   }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Save
                 </button>

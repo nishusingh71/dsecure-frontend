@@ -1319,7 +1319,7 @@ class EnhancedApiClient {
 
   // Get audit report by single report_id
   async getAuditReportById(reportId: string): Promise<ApiResponse<AuditReport>> {
-    return this.request<AuditReport>(`/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf`)
+    return this.request<AuditReport>(`/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-settings`)
   }
 
   // Get audit reports by multiple report_ids

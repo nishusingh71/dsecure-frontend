@@ -8,6 +8,13 @@ import { authService } from '@/utils/authService'
 import { isDemoMode, DEMO_SESSIONS } from '@/data/demoData'
 
 // ✅ 1. Standardized Interface
+interface ActivityLogItem {
+  type: string;
+  time: string;
+  resourceId?: string;
+  details?: any;
+}
+
 interface MappedSession {
   session_id: string;
   user_email: string;
@@ -19,6 +26,13 @@ interface MappedSession {
   activity_type: string;
   activity_details: any;
   resource_id: string;
+  resource_type: string;
+  // New fields from API
+  activityLog: ActivityLogItem[];
+  lastActiveTime: string | null;
+  estimatedExpiryTime: string | null;
+  sessionDurationMinutes: number | null;
+  isActive: boolean;
 }
 
 // ✅ 2. Helper: Safely Parse JSON
@@ -75,16 +89,37 @@ const flattenTimelineData = (response: any): any[] => {
     return allRecords;
 }
 
-// ✅ 5. Normalizer: Enhanced Mapping logic
+// ✅ 5. Helper: Parse Activity Log JSON
+const parseActivityLog = (raw: any): ActivityLogItem[] => {
+  const logValue = findValue(raw, ['activityLog', 'ActivityLog', 'activity_log']);
+  if (!logValue) return [];
+  
+  try {
+    if (typeof logValue === 'string') {
+      return JSON.parse(logValue);
+    }
+    if (Array.isArray(logValue)) {
+      return logValue;
+    }
+  } catch (e) {
+    console.warn('Failed to parse activityLog:', e);
+  }
+  return [];
+};
+
+// ✅ 6. Normalizer: Enhanced Mapping logic
 const normalizeSession = (raw: any): MappedSession => {
+  const activityLog = parseActivityLog(raw);
+  const isActive = findValue(raw, ['is_active', 'isActive', 'IsActive']) ?? false;
+  
   return {
-    session_id: findValue(raw, ['session_id', 'sessionId', 'SessionId', 'id', 'ID']) || 'N/A',
+    session_id: String(findValue(raw, ['session_id', 'sessionId', 'SessionId', 'id', 'ID']) || 'N/A'),
     user_email: findValue(raw, ['user_email', 'userEmail', 'UserEmail', 'email', 'Email']) || 'Unknown',
     
     // Login Time Candidates
     login_time: findValue(raw, ['login_time', 'loginTime', 'LoginTime', 'CreatedAt', 'created_at', 'startTime']) || new Date().toISOString(),
     
-    // Logout Time Candidates (Added More)
+    // Logout Time Candidates
     logout_time: findValue(raw, ['logout_time', 'logoutTime', 'LogoutTime', 'endTime', 'EndTime', 'completed_at', 'EndDate']) || null,
     
     ip_address: findValue(raw, ['ip_address', 'ipAddress', 'IP', 'ClientIp']) || 'N/A',
@@ -98,8 +133,16 @@ const normalizeSession = (raw: any): MappedSession => {
     // Activity Details
     activity_details: safeJsonParse(findValue(raw, ['activity_details', 'activityDetails', 'details', 'meta_data']) || 'No details'),
     
-    // Resource ID Candidates (Added More)
+    // Resource ID & Type
     resource_id: findValue(raw, ['resource_id', 'resourceId', 'ResourceId', 'Resource_Id', 'key', 'Key']) || '-',
+    resource_type: findValue(raw, ['resource_type', 'resourceType', 'ResourceType']) || '-',
+    
+    // ✅ NEW Fields from API
+    activityLog: activityLog,
+    lastActiveTime: findValue(raw, ['lastActiveTime', 'LastActiveTime', 'last_active_time']) || null,
+    estimatedExpiryTime: findValue(raw, ['estimatedExpiryTime', 'EstimatedExpiryTime', 'estimated_expiry_time']) || null,
+    sessionDurationMinutes: findValue(raw, ['session_duration_minutes', 'sessionDurationMinutes', 'SessionDurationMinutes']) || null,
+    isActive: Boolean(isActive),
   };
 };
 
@@ -118,6 +161,44 @@ export default function AdminSessions() {
   useEffect(() => {
     loadData();
   }, [fromDate, toDate]);
+
+  // ✅ Auto-logout check: Monitor current user's session expiry
+  useEffect(() => {
+    const currentUserEmail = authService.getUserEmail?.() || localStorage.getItem('user_data') ? JSON.parse(localStorage.getItem('user_data') || '{}').email : null;
+    
+    if (!currentUserEmail || sessions.length === 0) return;
+
+    // Find current user's active session
+    const currentSession = sessions.find(
+      s => s.user_email === currentUserEmail && s.isActive && s.estimatedExpiryTime
+    );
+
+    if (!currentSession?.estimatedExpiryTime) return;
+
+    const expiryTime = new Date(currentSession.estimatedExpiryTime).getTime();
+    const now = Date.now();
+    const timeUntilExpiry = expiryTime - now;
+
+    console.log(`⏰ Session expires in ${Math.round(timeUntilExpiry / 1000 / 60)} minutes`);
+
+    // If already expired, logout immediately
+    if (timeUntilExpiry <= 0) {
+      console.warn('🔴 Session already expired, logging out...');
+      authService.clearTokens();
+      window.location.href = '/login?expired=true';
+      return;
+    }
+
+    // Set timeout to logout when session expires
+    const logoutTimer = setTimeout(() => {
+      console.warn('🔴 Session expired, auto-logout triggered');
+      showError('Session Expired', 'Your session has expired. Please login again.');
+      authService.clearTokens();
+      window.location.href = '/login?expired=true';
+    }, timeUntilExpiry);
+
+    return () => clearTimeout(logoutTimer);
+  }, [sessions]);
 
   const handleRefresh = () => {
     showInfo('Refreshing...');
@@ -166,11 +247,26 @@ export default function AdminSessions() {
 
   const totalPages = Math.max(1, Math.ceil(sessions.length / pageSize));
 
+  // ✅ Format date with proper UTC to local timezone conversion
   const formatDate = (dateString: string) => {
     if (!dateString || dateString === 'N/A') return '-';
     try {
-      return new Date(dateString).toLocaleString('en-US', {
-        month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+      // Parse the date - if it ends with 'Z' or has no timezone, treat as UTC
+      let date = new Date(dateString);
+      
+      // If the date string doesn't have timezone info, assume UTC
+      if (!dateString.includes('+') && !dateString.includes('Z') && !dateString.includes('-', 10)) {
+        // Append Z to treat as UTC
+        date = new Date(dateString + 'Z');
+      }
+      
+      return date.toLocaleString('en-IN', {
+        month: 'short', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone // Use local timezone
       });
     } catch { return dateString; }
   };
@@ -205,6 +301,43 @@ export default function AdminSessions() {
 
     // If String
     return <span>{String(details)}</span>;
+  }
+
+  // ✅ NEW: Render Activity Log (JSON array from API)
+  const renderActivityLog = (activityLog: ActivityLogItem[]) => {
+    if (!activityLog || activityLog.length === 0) {
+      return <span className="text-slate-400 italic text-xs">No activity log</span>;
+    }
+
+    return (
+      <div className="flex flex-col gap-1.5">
+        {activityLog.map((item, idx) => (
+          <div key={idx} className="flex items-center gap-2 text-xs">
+            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
+              item.type === 'LOGIN' ? 'bg-emerald-100 text-emerald-700' :
+              item.type === 'LOGOUT' ? 'bg-slate-100 text-slate-700' :
+              item.type === 'REPORT_DOWNLOAD' ? 'bg-blue-100 text-blue-700' :
+              'bg-amber-100 text-amber-700'
+            }`}>
+              {item.type}
+            </span>
+            {item.resourceId && (
+              <span className="text-slate-500 font-mono text-[10px]">{item.resourceId}</span>
+            )}
+            <span className="text-slate-400 text-[10px]">{formatDate(item.time)}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // ✅ Format duration in human readable format
+  const formatDuration = (minutes: number | null) => {
+    if (minutes === null || minutes === undefined) return '-';
+    if (minutes < 60) return `${minutes}m`;
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
   }
 
   return (
@@ -282,9 +415,10 @@ export default function AdminSessions() {
         
         {/* Table Header */}
         <div className="overflow-x-auto max-h-[600px] overflow-y-auto scrollbar-hide">
-        <div className="hidden md:grid grid-cols-11 gap-4 p-4 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            <div className="col-span-3">User & Status</div>
-            <div className="col-span-2">Time</div>
+        <div className="hidden md:grid grid-cols-12 gap-4 p-4 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <div className="col-span-2">User & Status</div>
+            <div className="col-span-2">Session Time</div>
+            <div className="col-span-2">Duration & Activity</div>
             <div className="col-span-3">Device & Network</div>
             <div className="col-span-3">Activity Log</div>
         </div>
@@ -304,21 +438,27 @@ export default function AdminSessions() {
                 </div>
             ) : (
                 paginatedData.map((session, idx) => (
-                    <div key={idx} className="grid grid-cols-1 md:grid-cols-11 gap-4 p-4 hover:bg-slate-50 transition-colors items-start">
+                    <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 hover:bg-slate-50 transition-colors items-start">
                         
                         {/* 1. User & Status */}
-                        <div className="col-span-12 md:col-span-3">
+                        <div className="col-span-12 md:col-span-2">
                             <div className="flex flex-col gap-1">
-                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border w-fit ${getStatusColor(session.session_status)}`}>
-                                    {session.session_status}
-                                </span>
+                                <div className="flex items-center gap-1.5">
+                                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border w-fit ${getStatusColor(session.session_status)}`}>
+                                      {session.session_status}
+                                  </span>
+                                  {session.isActive && (
+                                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Active Session"></span>
+                                  )}
+                                </div>
                                 <span className="text-sm font-semibold text-slate-800 truncate" title={session.user_email}>
                                     {session.user_email}
                                 </span>
+                                <span className="text-[10px] text-slate-400 font-mono">#{session.session_id}</span>
                             </div>
                         </div>
 
-                        {/* 2. Time */}
+                        {/* 2. Session Time */}
                         <div className="col-span-6 md:col-span-2 flex flex-col justify-center text-sm">
                             <div className="flex flex-col mb-1">
                                 <span className="text-[10px] text-slate-400 uppercase font-bold">Login</span>
@@ -327,12 +467,32 @@ export default function AdminSessions() {
                             <div className="flex flex-col">
                                 <span className="text-[10px] text-slate-400 uppercase font-bold">Logout</span>
                                 <span className="font-medium text-slate-700">
-                                    {session.logout_time ? formatDate(session.logout_time) : <span className="text-emerald-600 font-medium bg-emerald-50 px-1 rounded text-xs">Active Now</span>}
+                                    {session.logout_time ? formatDate(session.logout_time) : <span className="text-emerald-600 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">Active Now</span>}
                                 </span>
                             </div>
                         </div>
 
-                        {/* 3. Device & Network */}
+                        {/* 3. Duration & Last Activity */}
+                        <div className="col-span-6 md:col-span-2 flex flex-col justify-center text-sm">
+                            <div className="flex flex-col mb-1">
+                                <span className="text-[10px] text-slate-400 uppercase font-bold">Duration</span>
+                                <span className="font-medium text-slate-700">{formatDuration(session.sessionDurationMinutes)}</span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] text-slate-400 uppercase font-bold">Last Active</span>
+                                <span className="font-medium text-slate-600 text-xs">
+                                    {session.lastActiveTime ? formatDate(session.lastActiveTime) : '-'}
+                                </span>
+                            </div>
+                            {session.estimatedExpiryTime && !session.logout_time && (
+                              <div className="flex flex-col mt-1">
+                                <span className="text-[10px] text-amber-500 uppercase font-bold">Expires</span>
+                                <span className="font-medium text-amber-600 text-xs">{formatDate(session.estimatedExpiryTime)}</span>
+                              </div>
+                            )}
+                        </div>
+
+                        {/* 4. Device & Network */}
                         <div className="col-span-12 md:col-span-3 bg-slate-50 p-2 rounded-lg border border-slate-100">
                              <div className="flex flex-col gap-2 text-xs">
                                 <div>
@@ -348,17 +508,24 @@ export default function AdminSessions() {
                              </div>
                         </div>
 
-                        {/* 4. Activity Log */}
+                        {/* 5. Activity Log */}
                         <div className="col-span-12 md:col-span-3 text-sm">
                              <div className="flex flex-col gap-1">
                                 <span className="font-semibold text-slate-700 flex items-center gap-2 text-xs uppercase tracking-wide">
                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                                    {session.activity_type}
+                                    Activity Log
                                 </span>
-                                {/* Uses the new renderer for cleaner output */}
-                                <div className="bg-white border border-slate-100 rounded p-2 text-xs shadow-sm">
-                                    {renderActivityDetails(session.activity_details)}
+                                <div className="bg-white border border-slate-100 rounded p-2 text-xs shadow-sm max-h-24 overflow-y-auto">
+                                    {session.activityLog && session.activityLog.length > 0 
+                                      ? renderActivityLog(session.activityLog)
+                                      : renderActivityDetails(session.activity_details)
+                                    }
                                 </div>
+                                {session.resource_id && session.resource_id !== '-' && (
+                                  <div className="mt-1 text-[10px] text-slate-500">
+                                    <span className="font-semibold">Resource:</span> {session.resource_type !== '-' && <span className="text-blue-600">{session.resource_type}/</span>}{session.resource_id}
+                                  </div>
+                                )}
                              </div>
                         </div>
 

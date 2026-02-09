@@ -128,6 +128,9 @@ class AuthService {
     // Also clear the actual user_data key that's being used
     localStorage.removeItem('user_data')
     localStorage.removeItem('authUser')
+    
+    // Clear PDF export settings cache on logout
+    localStorage.removeItem('pdfExportSettingsCache')
 
     // Clear the refresh timeout
     if (this.refreshTimeoutId) {
