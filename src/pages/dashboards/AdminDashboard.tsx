@@ -1,4 +1,4 @@
-﻿import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/auth/AuthContext";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useNotification } from "@/contexts/NotificationContext";
@@ -361,6 +361,23 @@ import {
 } from "@/data/demoData";
 import { decodeEmail, encodeEmail } from "@/utils/encodeEmail";
 
+// ✅ DEMO MODE: Suppress all console logs in demo mode
+const devLog = (...args: any[]) => {
+  if (!isDemoMode()) {
+    console.log(...args);
+  }
+};
+const devWarn = (...args: any[]) => {
+  if (!isDemoMode()) {
+    console.warn(...args);
+  }
+};
+const devError = (...args: any[]) => {
+  if (!isDemoMode()) {
+    console.error(...args);
+  }
+};
+
 // Interface for merged user data displayed in Users tab
 interface MergedUserData {
   user_name: string;
@@ -552,7 +569,7 @@ export default function AdminDashboard() {
       try {
         return JSON.parse(storedUser);
       } catch (e) {
-        console.error("Error parsing user_data:", e);
+        devError("Error parsing user_data:", e);
       }
     }
 
@@ -560,7 +577,7 @@ export default function AdminDashboard() {
       try {
         return JSON.parse(authUser);
       } catch (e) {
-        console.error("Error parsing authUser:", e);
+        devError("Error parsing authUser:", e);
       }
     }
 
@@ -617,7 +634,7 @@ export default function AdminDashboard() {
   // Check if user has private cloud access
   const isPrivateCloudEnabled = user?.is_private_cloud || storedUserData?.is_private_cloud || false;
 
-  console.log("🔍 Private Cloud Check:", {
+  devLog("🔍 Private Cloud Check:", {
     userIsPrivateCloud: user?.is_private_cloud,
     storedIsPrivateCloud: storedUserData?.is_private_cloud,
     isPrivateCloudEnabled,
@@ -686,7 +703,7 @@ export default function AdminDashboard() {
     departmentId: storedUserData?.department_id || storedUserData?.departmentId || undefined
   }), [currentUserRole, currentUserGroupId, currentUserEmail, storedUserData, user, isSuperAdmin, isGroupAdmin, isSubUser])
 
-  console.log('🔐 RBAC Info (AdminDashboard):', { 
+  devLog('🔐 RBAC Info (AdminDashboard):', { 
     role: currentUserRole, 
     groupId: currentUserGroupId, 
     email: currentUserEmail,
@@ -702,7 +719,7 @@ export default function AdminDashboard() {
     storedUserData?.user_type || storedUserData?.userType || "";
   const isCurrentUserSubuser = currentUserType === "subuser";
 
-  console.log(
+  devLog(
     "👤 Current User Type:",
     currentUserType,
     "| Is Subuser:",
@@ -748,7 +765,7 @@ export default function AdminDashboard() {
         const subuserGroupId = subuser.user_group || subuser.groupId || subuser.group_id
         return subuserGroupId === groupId || subuser.subuser_email === currentUserEmail
       })
-      console.log(`🔒 GroupAdmin Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
+      devLog(`🔒 GroupAdmin Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
       return filtered
     }
     
@@ -759,7 +776,7 @@ export default function AdminDashboard() {
       subuser.email === currentUserEmail ||
       subuser.owner_id === ownerId
     )
-    console.log(`🔒 SubUser/User Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
+    devLog(`🔒 SubUser/User Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
     return filtered
   }, [subusersData, currentUser, currentUserEmail])
   
@@ -850,13 +867,13 @@ export default function AdminDashboard() {
         });
       }
     } catch (error) {
-      console.error("Error formatting last login date:", error);
+      devError("Error formatting last login date:", error);
       return lastLogin;
     }
   };
 
   // Debug: Log role and permissions
-  console.log("🔍 AdminDashboard Role Debug:", {
+  devLog("🔍 AdminDashboard Role Debug:", {
     currentUserRole,
     userRole: user?.role,
     storedUserRole: storedUserData?.userRole,
@@ -878,7 +895,7 @@ export default function AdminDashboard() {
       const customEvent = event as CustomEvent;
       if (customEvent.detail === null) {
         // User logged out - reset all dashboard state
-        console.log("🚪 User logged out - clearing AdminDashboard state");
+        devLog("🚪 User logged out - clearing AdminDashboard state");
         setDashboardStats(null);
         setUserActivity([]);
         setGroups([]);
@@ -930,7 +947,7 @@ export default function AdminDashboard() {
     if (dashboardData.licenses && dashboardData.licenses.length > 0) {
       setLicenseData(dashboardData.licenses);
       setUserLicenseDetails(dashboardData.licenses);
-      console.log('✅ License data synced from React Query cache:', dashboardData.licenses.length, 'items');
+      devLog('✅ License data synced from React Query cache:', dashboardData.licenses.length, 'items');
     }
 
     // Sync reports
@@ -970,7 +987,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (performanceQuery.data) {
       setPerformanceData(performanceQuery.data);
-      console.log(
+      devLog(
         "✅ Performance data updated from React Query cache:",
         performanceQuery.data
       );
@@ -986,7 +1003,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (sessionsQuery.data) {
       setRecentSessions(sessionsQuery.data);
-      console.log(
+      devLog(
         "✅ Sessions data updated from React Query cache:",
         sessionsQuery.data.length
       );
@@ -996,7 +1013,7 @@ export default function AdminDashboard() {
   // ✅ DEMO MODE: Set static/dummy data when user logs in via "Try Demo Account"
   useEffect(() => {
     if (isDemoMode()) {
-      console.log("🎭 DEMO MODE ACTIVE - Loading static demo data");
+      devLog("🎭 DEMO MODE ACTIVE - Loading static demo data");
 
       // Set demo dashboard stats
       setDashboardStats(DEMO_DASHBOARD_STATS);
@@ -1052,7 +1069,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     // Skip API calls in demo mode
     if (isDemoMode()) {
-      console.log("🎭 DEMO MODE - Skipping API calls");
+      devLog("🎭 DEMO MODE - Skipping API calls");
       return;
     }
     loadDashboardData();
@@ -1064,7 +1081,7 @@ export default function AdminDashboard() {
   /*
   useEffect(() => {
     if (activeTab === 'users') {
-      console.log('🔄 Users tab opened, fetching users data...')
+      devLog('🔄 Users tab opened, fetching users data...')
       fetchAndMergeUsersData()
     }
   }, [activeTab])
@@ -1300,7 +1317,7 @@ export default function AdminDashboard() {
         setGroupsWithUsers(transformedGroups);
       }
     } catch (error) {
-      console.error('Error fetching groups with users:', error);
+      devError('Error fetching groups with users:', error);
     } finally {
       setGroupsLoading(false);
     }
@@ -1315,6 +1332,13 @@ export default function AdminDashboard() {
   };
 
   const loadDashboardData = async () => {
+    // ✅ DEMO MODE GUARD: Skip all API calls in demo mode
+    if (isDemoMode()) {
+      devLog("🎭 DEMO MODE - Skipping loadDashboardData API calls");
+      setDataLoading(false);
+      return;
+    }
+
     setDataLoading(true);
     try {
       // ✅ React Query now handles caching automatically
@@ -1399,8 +1423,8 @@ export default function AdminDashboard() {
       // This ensures subusers can only see their own data, not the parent user's data
       const userEmail = storedUserData?.user_email || user?.email || profileRes.data?.email;
       if (userEmail) {
-        console.log('📧 Fetching essential data for email:', userEmail);
-        console.log('👤 User Type:', storedUserData?.user_type || 'user');
+        devLog('📧 Fetching essential data for email:', userEmail);
+        devLog('👤 User Type:', storedUserData?.user_type || 'user');
         
         // ✅ OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
         const [
@@ -1423,7 +1447,7 @@ export default function AdminDashboard() {
         // Process machines data (active licenses) - NOW HANDLED BY machinesQuery
         if (machinesRes.success && machinesRes.data) {
           const activeLicenses = machinesRes.data.filter((machine: Machine) => machine.license_activated === true).length;
-          console.log('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
+          devLog('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
           setActiveLicensesCount(activeLicenses);
           setCachedData('activeLicenses', activeLicenses);
           
@@ -1432,7 +1456,7 @@ export default function AdminDashboard() {
             licenses: activeLicenses
           }));
         } else {
-          console.warn('⚠️ Failed to fetch machines:', machinesRes.error);
+          devWarn('⚠️ Failed to fetch machines:', machinesRes.error);
         }
 
         // Process audit reports data - NOW HANDLED BY enhancedAuditReportsQuery
@@ -1444,11 +1468,11 @@ export default function AdminDashboard() {
         user?.email ||
         dashboardQuery.profile?.email;
       if (userEmailForLogs) {
-        console.log(
+        devLog(
           "📧 Fetching sessions and system logs for email:",
           userEmailForLogs
         );
-        console.log("👤 User Type:", storedUserData?.user_type || "user");
+        devLog("👤 User Type:", storedUserData?.user_type || "user");
 
         // ✅ Sessions are now fetched via React Query (sessionsQuery) - removed from Promise.all
         const [userRes, subusersRes, systemLogsRes] =
@@ -1487,7 +1511,7 @@ export default function AdminDashboard() {
         /* MIGRATED TO REACT QUERY
         if (machinesRes.success && machinesRes.data) {
           const activeLicenses = machinesRes.data.filter((machine: Machine) => machine.license_activated === true).length;
-          console.log('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
+          devLog('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
           setActiveLicensesCount(activeLicenses);
           setCachedData('activeLicenses', activeLicenses);
           
@@ -1496,7 +1520,7 @@ export default function AdminDashboard() {
             licenses: activeLicenses
           }));
         } else {
-          console.warn('⚠️ Failed to fetch machines:', machinesRes.error);
+          devWarn('⚠️ Failed to fetch machines:', machinesRes.error);
         }
         */
 
@@ -1505,7 +1529,7 @@ export default function AdminDashboard() {
         /* MIGRATED TO REACT QUERY
         if (auditReportsRes.success && auditReportsRes.data) {
           const reportsCount = auditReportsRes.data.length;
-          console.log('✅ Audit reports count:', reportsCount);
+          devLog('✅ Audit reports count:', reportsCount);
           setAuditReportsCount(reportsCount);
           setCachedData('auditReportsCount', reportsCount);
           
@@ -1519,7 +1543,7 @@ export default function AdminDashboard() {
                   deviceCount: machinesRes.success && machinesRes.data ? machinesRes.data.length : 0
                 };
               } catch (error) {
-                console.warn(`⚠️ Failed to fetch machines for ${report.user_email}:`, error);
+                devWarn(`⚠️ Failed to fetch machines for ${report.user_email}:`, error);
                 return { ...report, deviceCount: 0 };
               }
             })
@@ -1540,20 +1564,20 @@ export default function AdminDashboard() {
                   softwareNames.add(reportDetails.software_name);
                 }
               } catch (e) {
-                console.warn(
+                devWarn(
                   "⚠️ Failed to parse report_details_json for software_name:",
                   e
                 );
               }
             }
           });
-          console.log(
+          devLog(
             "✅ Unique software names extracted from reports:",
             Array.from(softwareNames)
           );
 
           // ✅ Calculate Performance Metrics from React Query data
-          console.log(
+          devLog(
             "📊 Calculating performance metrics from user-filtered data..."
           );
 
@@ -1566,7 +1590,7 @@ export default function AdminDashboard() {
               ? systemLogsRes.data
               : [];
 
-          console.log("📊 Performance data sources:", {
+          devLog("📊 Performance data sources:", {
             auditReports: performanceAuditReports.length,
             machines: performanceMachines.length,
             sessions: performanceSessions.length,
@@ -1717,7 +1741,7 @@ export default function AdminDashboard() {
             throughput,
           });
 
-          console.log("✅ Performance metrics calculated from all APIs:", {
+          devLog("✅ Performance metrics calculated from all APIs:", {
             monthlyErasures,
             avgDuration,
             throughput,
@@ -1732,14 +1756,14 @@ export default function AdminDashboard() {
             ),
           });
         } else {
-          console.warn(
+          devWarn(
             "⚠️ Failed to fetch audit reports - using React Query data instead"
           );
         }
 
         // Process user license details
         if (userRes.success && userRes.data) {
-          console.log("✅ User data fetched from database:", userRes.data);
+          devLog("✅ User data fetched from database:", userRes.data);
 
           // ✅ UPDATE PROFILE with latest data from database (handle both User and Subuser fields)
           setProfileData((prev) => ({
@@ -1771,21 +1795,21 @@ export default function AdminDashboard() {
             storedData.payment_details_json = userRes.data!.payment_details_json;
             localStorage.setItem("user_data", JSON.stringify(storedData));
             localStorage.setItem("authUser", JSON.stringify(storedData));
-            console.log("💾 LocalStorage synced with database on page load, is_private_cloud:", userRes.data!.is_private_cloud);
-            console.log("💾 LocalStorage synced billing: license_details_json =", !!storedData.license_details_json, "| payment_details_json =", !!storedData.payment_details_json);
+            devLog("💾 LocalStorage synced with database on page load, is_private_cloud:", userRes.data!.is_private_cloud);
+            devLog("💾 LocalStorage synced billing: license_details_json =", !!storedData.license_details_json, "| payment_details_json =", !!storedData.payment_details_json);
           }
 
           // Process license details if available
           if (userRes.data.license_details_json) {
-            console.log(
+            devLog(
               "🔍 RAW license_details_json:",
               userRes.data.license_details_json
             );
-            console.log(
+            devLog(
               "🔍 Type of license_details_json:",
               typeof userRes.data.license_details_json
             );
-            console.log(
+            devLog(
               "🔍 Is Array?",
               Array.isArray(userRes.data.license_details_json)
             );
@@ -1799,30 +1823,30 @@ export default function AdminDashboard() {
 
                 // Check if array contains already-parsed objects or JSON strings
                 if (typeof firstItem === "string") {
-                  console.log(
+                  devLog(
                     "📦 License details is an array of JSON strings, length:",
                     userRes.data.license_details_json.length
                   );
                   // Parse each JSON string
                   userRes.data.license_details_json.forEach(
                     (jsonString: string, index: number) => {
-                      console.log(
+                      devLog(
                         `🔍 Processing array item ${index}:`,
                         jsonString
                       );
                       try {
                         const parsed = JSON.parse(jsonString);
-                        console.log(
+                        devLog(
                           `✅ Successfully parsed item ${index}:`,
                           parsed
                         );
                         licenseDetailsArray.push(parsed);
                       } catch (e) {
-                        console.error(
+                        devError(
                           `❌ Failed to parse array item ${index}:`,
                           e
                         );
-                        console.error("Failed JSON string:", jsonString);
+                        devError("Failed JSON string:", jsonString);
                       }
                     }
                   );
@@ -1830,7 +1854,7 @@ export default function AdminDashboard() {
                   typeof firstItem === "object" &&
                   firstItem !== null
                 ) {
-                  console.log(
+                  devLog(
                     "📦 License details is already an array of parsed objects, length:",
                     userRes.data.license_details_json.length
                   );
@@ -1841,9 +1865,9 @@ export default function AdminDashboard() {
                 typeof userRes.data.license_details_json === "string"
               ) {
                 // Single JSON string (original format)
-                console.log("📦 License details is a single JSON string");
+                devLog("📦 License details is a single JSON string");
                 const parsed = JSON.parse(userRes.data.license_details_json);
-                console.log("✅ Successfully parsed single string:", parsed);
+                devLog("✅ Successfully parsed single string:", parsed);
 
                 // Check if parsed result is array or single object
                 if (Array.isArray(parsed)) {
@@ -1854,21 +1878,21 @@ export default function AdminDashboard() {
               } else if (
                 typeof userRes.data.license_details_json === "object"
               ) {
-                console.log("📦 License details is already a parsed object");
+                devLog("📦 License details is already a parsed object");
                 licenseDetailsArray.push(userRes.data.license_details_json);
               }
 
-              console.log(
+              devLog(
                 "✅ Total license details items:",
                 licenseDetailsArray.length
               );
-              console.log("✅ License details array:", licenseDetailsArray);
+              devLog("✅ License details array:", licenseDetailsArray);
 
               // Process all parsed license details
               let allFormattedLicenses: LicenseData[] = [];
 
               licenseDetailsArray.forEach((licenseDetails, index) => {
-                console.log(
+                devLog(
                   `🔍 Processing licenseDetails item ${index}:`,
                   licenseDetails
                 );
@@ -1878,7 +1902,7 @@ export default function AdminDashboard() {
                   licenseDetails.plans &&
                   Array.isArray(licenseDetails.plans)
                 ) {
-                  console.log(
+                  devLog(
                     `📦 Item ${index} - Using new license format with plans array, count:`,
                     licenseDetails.plans.length
                   );
@@ -1922,7 +1946,7 @@ export default function AdminDashboard() {
                         plan.planType ||
                         "Unknown Product";
 
-                      console.log(
+                      devLog(
                         `🔍 Plan mapping - planType: ${plan.planType}, softwareName: ${softwareName}, total: ${plan.totalLicenses}, consumed: ${plan.consumedLicenses}`
                       );
 
@@ -1934,7 +1958,7 @@ export default function AdminDashboard() {
                       };
                     });
 
-                  console.log(
+                  devLog(
                     `✅ Item ${index} - Formatted ${formattedLicenses.length} licenses from plans:`,
                     formattedLicenses
                   );
@@ -1942,7 +1966,7 @@ export default function AdminDashboard() {
                 }
                 // Old format: Backward compatibility
                 else {
-                  console.log(`📦 Item ${index} - Checking old format...`);
+                  devLog(`📦 Item ${index} - Checking old format...`);
                   let productsArray: any[] = [];
 
                   if (
@@ -1950,18 +1974,18 @@ export default function AdminDashboard() {
                     Array.isArray(licenseDetails.products)
                   ) {
                     productsArray = licenseDetails.products;
-                    console.log(
+                    devLog(
                       `📦 Item ${index} - Using products array from object (old format), count:`,
                       productsArray.length
                     );
                   } else if (Array.isArray(licenseDetails)) {
                     productsArray = licenseDetails;
-                    console.log(
+                    devLog(
                       `📦 Item ${index} - Using direct array format (old format), count:`,
                       productsArray.length
                     );
                   } else {
-                    console.warn(
+                    devWarn(
                       `⚠️ Item ${index} - Unknown license details format:`,
                       licenseDetails
                     );
@@ -1970,7 +1994,7 @@ export default function AdminDashboard() {
                   if (productsArray.length > 0) {
                     const formattedLicenses: LicenseData[] = productsArray.map(
                       (item: any, itemIndex: number) => {
-                        console.log(`🔍 Product ${itemIndex}:`, item);
+                        devLog(`🔍 Product ${itemIndex}:`, item);
                         return {
                           product: item.product || item.Product || "Unknown",
                           total: parseInt(
@@ -1994,45 +2018,45 @@ export default function AdminDashboard() {
                       license.available = license.total - license.consumed;
                     });
 
-                    console.log(
+                    devLog(
                       `✅ Item ${index} - Formatted ${formattedLicenses.length} licenses from old format:`,
                       formattedLicenses
                     );
                     allFormattedLicenses.push(...formattedLicenses);
                   } else {
-                    console.warn(`⚠️ Item ${index} - productsArray is empty`);
+                    devWarn(`⚠️ Item ${index} - productsArray is empty`);
                   }
                 }
               });
 
-              console.log(
+              devLog(
                 "🎯 FINAL - All formatted license details:",
                 allFormattedLicenses
               );
-              console.log(
+              devLog(
                 "🎯 FINAL - Total licenses count:",
                 allFormattedLicenses.length
               );
 
               if (allFormattedLicenses.length === 0) {
-                console.error(
+                devError(
                   "❌ NO LICENSES FORMATTED! Check the data structure above."
                 );
               }
 
               setUserLicenseDetails(allFormattedLicenses);
             } catch (parseError) {
-              console.error(
+              devError(
                 "❌ Failed to parse license_details_json:",
                 parseError
               );
-              console.error("❌ Error stack:", (parseError as Error).stack);
+              devError("❌ Error stack:", (parseError as Error).stack);
             }
           } else {
-            console.warn("⚠️ license_details_json is NULL or UNDEFINED");
+            devWarn("⚠️ license_details_json is NULL or UNDEFINED");
           }
         } else {
-          console.warn(
+          devWarn(
             "⚠️ Failed to fetch user data or no license details:",
             userRes.error
           );
@@ -2044,7 +2068,7 @@ export default function AdminDashboard() {
           subusersRes.data &&
           subusersRes.data.length > 0
         ) {
-          console.log("✅ Subusers fetched:", subusersRes.data.length);
+          devLog("✅ Subusers fetched:", subusersRes.data.length);
 
           // ✅ Use sessions from React Query cache
           const sessionsData: Session[] = sessionsQuery.data || [];
@@ -2055,12 +2079,12 @@ export default function AdminDashboard() {
             const serverTimeRes = await apiClient.getServerTime();
             if (serverTimeRes.success && serverTimeRes.data) {
               currentTime = new Date(serverTimeRes.data.serverTime).getTime();
-              console.log("✅ Using server time:", serverTimeRes.data.serverTime);
+              devLog("✅ Using server time:", serverTimeRes.data.serverTime);
             } else {
-              console.warn("⚠️ Failed to fetch server time, using local time");
+              devWarn("⚠️ Failed to fetch server time, using local time");
             }
           } catch (error) {
-            console.warn("⚠️ Error fetching server time, using local time:", error);
+            devWarn("⚠️ Error fetching server time, using local time:", error);
           }
 
           const ACTIVE_THRESHOLD = 30 * 60 * 1000; // 30 minutes
@@ -2156,7 +2180,7 @@ export default function AdminDashboard() {
               }
             }
 
-            console.log(`🔍 User Activity for ${subuserEmail}:`, {
+            devLog(`🔍 User Activity for ${subuserEmail}:`, {
               last_login: subuser.last_login,
               last_logout: subuser.last_logout,
               loginTime,
@@ -2178,13 +2202,13 @@ export default function AdminDashboard() {
             };
           });
 
-          console.log(
+          devLog(
             "✅ User activity calculated for subusers:",
             usersActivity
           );
           setUserActivity(usersActivity);
         } else {
-          console.warn("⚠️ No subusers found for superuser:", userEmail);
+          devWarn("⚠️ No subusers found for superuser:", userEmail);
           setUserActivity([]);
         }
 
@@ -2200,19 +2224,19 @@ export default function AdminDashboard() {
             )
             .slice(0, 5);
 
-          console.log("✅ Recent system logs fetched:", sortedLogs.length);
+          devLog("✅ Recent system logs fetched:", sortedLogs.length);
           setRecentSystemLogs(sortedLogs);
         } else {
-          console.warn("⚠️ Failed to fetch system logs");
+          devWarn("⚠️ Failed to fetch system logs");
           setRecentSystemLogs([]);
         }
 
-        console.log("✅ All data fetched successfully in parallel!");
+        devLog("✅ All data fetched successfully in parallel!");
       } else {
-        console.warn("⚠️ No user email available for fetching machines");
+        devWarn("⚠️ No user email available for fetching machines");
       }
     } catch (error) {
-      console.error("Error loading dashboard data:", error);
+      devError("Error loading dashboard data:", error);
       showError(
         "Data Loading Error",
         "Failed to load dashboard data. Using default values."
@@ -2274,52 +2298,52 @@ export default function AdminDashboard() {
   /* COMMENTED OUT - React Query handles this now
   const fetchAndMergeUsersData = async () => {
     setUsersDataLoading(true)
-    console.log('🚀 Starting fetchAndMergeUsersData...')
+    devLog('🚀 Starting fetchAndMergeUsersData...')
     
     try {
       const userEmail = profileData?.email || user?.email || ''
       
-      console.log('👥 Current user email:', userEmail)
-      console.log('📊 ProfileData:', profileData)
-      console.log('📊 User from context:', user)
+      devLog('👥 Current user email:', userEmail)
+      devLog('📊 ProfileData:', profileData)
+      devLog('📊 User from context:', user)
       
       // ✅ Check cache first for instant display
       const cachedSubusers = getCachedData('subusers');
       const cachedSuperuser = getCachedData('superuser');
       
       if (cachedSubusers && cachedSubusers.length > 0) {
-        console.log('⚡ Displaying cached subusers data:', cachedSubusers.length, 'users');
+        devLog('⚡ Displaying cached subusers data:', cachedSubusers.length, 'users');
         setSubusersData(cachedSubusers);
         setUsersDataLoading(false); // Hide loader since we have cached data
       }
       
       if (cachedSuperuser) {
-        console.log('⚡ Displaying cached superuser data');
+        devLog('⚡ Displaying cached superuser data');
         setSuperuserData(cachedSuperuser);
       }
       
       // 1️⃣ Fetch All Subusers using fallback strategy across all available endpoints
-      console.log('🔍 Calling getAllSubusersWithFallback API with fallback across multiple endpoints...')
+      devLog('🔍 Calling getAllSubusersWithFallback API with fallback across multiple endpoints...')
       const subusersRes = await apiClient.getAllSubusersWithFallback(userEmail)
-      console.log('📥 Final Subusers API Response:', subusersRes)
-      console.log('📥 Response success:', subusersRes.success)
-      console.log('📥 Response data:', subusersRes.data)
-      console.log('📥 Data type:', typeof subusersRes.data)
-      console.log('📥 Is Array:', Array.isArray(subusersRes.data))
+      devLog('📥 Final Subusers API Response:', subusersRes)
+      devLog('📥 Response success:', subusersRes.success)
+      devLog('📥 Response data:', subusersRes.data)
+      devLog('📥 Data type:', typeof subusersRes.data)
+      devLog('📥 Is Array:', Array.isArray(subusersRes.data))
       if (subusersRes.data) {
-        console.log('📥 Data length:', subusersRes.data.length)
+        devLog('📥 Data length:', subusersRes.data.length)
       }
       
       // 2️⃣ Process Subusers data with machine-based license counting and complete user details
       if (subusersRes.success && subusersRes.data && subusersRes.data.length > 0) {
-        console.log(`📋 Found ${subusersRes.data.length} subusers, fetching their complete user details...`)
+        devLog(`📋 Found ${subusersRes.data.length} subusers, fetching their complete user details...`)
         
         // Fetch complete user data from /api/Users/{email} for each subuser
         const subusersWithCompleteData = await Promise.all(
           subusersRes.data.map(async (subuser) => {
             try {
               // 1. Fetch complete user data from /api/Users/{email}
-              console.log(`🔍 Fetching complete user data for: ${subuser.subuser_email}`)
+              devLog(`🔍 Fetching complete user data for: ${subuser.subuser_email}`)
               const userDataRes = await apiClient.getUserByEmail(subuser.subuser_email)
               
               let userData = {
@@ -2343,13 +2367,13 @@ export default function AdminDashboard() {
                   user_group: userDataRes.data.user_group || 'N/A',
                   license_allocation: userDataRes.data.licesne_allocation || '0'
                 }
-                console.log(`✅ User data for ${subuser.subuser_email}:`, userData)
+                devLog(`✅ User data for ${subuser.subuser_email}:`, userData)
               } else {
-                console.warn(`⚠️ Failed to fetch user data for ${subuser.subuser_email}, using defaults`)
+                devWarn(`⚠️ Failed to fetch user data for ${subuser.subuser_email}, using defaults`)
               }
 
               // 2. Fetch machines for license usage
-              console.log(`🔍 Fetching machines for subuser: ${subuser.subuser_email}`)
+              devLog(`🔍 Fetching machines for subuser: ${subuser.subuser_email}`)
               const machinesRes = await apiClient.getMachinesByEmail(subuser.subuser_email)
               
               let licenseUsage = 0
@@ -2359,7 +2383,7 @@ export default function AdminDashboard() {
                   (machine) => (machine.demo_usage_count || 0) > 0
                 ).length
                 
-                console.log(`📊 Subuser ${subuser.subuser_email}: ${licenseUsage} licenses used (${machinesRes.data.length} total machines)`)
+                devLog(`📊 Subuser ${subuser.subuser_email}: ${licenseUsage} licenses used (${machinesRes.data.length} total machines)`)
               }
               
               return {
@@ -2375,7 +2399,7 @@ export default function AdminDashboard() {
                 license_allocation: userData.license_allocation
               }
             } catch (error) {
-              console.error(`❌ Error fetching data for ${subuser.subuser_email}:`, error)
+              devError(`❌ Error fetching data for ${subuser.subuser_email}:`, error)
               return {
                 ...subuser,
                 licenseUsage: 0,
@@ -2393,15 +2417,15 @@ export default function AdminDashboard() {
         
         setSubusersData(subusersWithCompleteData)
         setCachedData('subusers', subusersWithCompleteData)
-        console.log('✅ Subusers data with complete user details set')
+        devLog('✅ Subusers data with complete user details set')
       } else {
-        console.log('ℹ️ No subusers found or failed to fetch')
+        devLog('ℹ️ No subusers found or failed to fetch')
         setSubusersData([])
         setCachedData('subusers', [])
       }
       
     } catch (error) {
-      console.error('❌ Error fetching and merging users data:', error)
+      devError('❌ Error fetching and merging users data:', error)
       showError('Users Data Error', 'Failed to load users data')
     } finally {
       setUsersDataLoading(false)
@@ -2411,39 +2435,42 @@ export default function AdminDashboard() {
 
   // Generate stats array from API data or use defaults
   const stats = useMemo(() => {
-    if (!dashboardStats) return [];
+    // ✅ DEMO MODE: Always use demo stats in demo mode (no API dependency)
+    const statsData = isDemo ? DEMO_DASHBOARD_STATS : dashboardStats;
+    
+    if (!statsData) return [];
 
     return [
       {
         label: "Total Licenses",
-        value: dashboardStats.totalLicenses,
-        change: dashboardStats.changes?.totalLicenses?.value || '0',
-        trend: dashboardStats.changes?.totalLicenses?.trend || 'up',
+        value: statsData.totalLicenses,
+        change: statsData.changes?.totalLicenses?.value || '0',
+        trend: statsData.changes?.totalLicenses?.trend || 'up',
         color: "bg-blue-500",
       },
       {
         label: "Active Users",
-        value: dashboardStats.activeUsers,
-        change: dashboardStats.changes?.activeUsers?.value || '0',
-        trend: dashboardStats.changes?.activeUsers?.trend || 'up',
+        value: statsData.activeUsers,
+        change: statsData.changes?.activeUsers?.value || '0',
+        trend: statsData.changes?.activeUsers?.trend || 'up',
         color: "bg-emerald-500",
       },
       {
         label: "Available Licenses",
-        value: dashboardStats.availableLicenses,
-        change: dashboardStats.changes?.availableLicenses?.value || '0',
-        trend: dashboardStats.changes?.availableLicenses?.trend || 'up',
+        value: statsData.availableLicenses,
+        change: statsData.changes?.availableLicenses?.value || '0',
+        trend: statsData.changes?.availableLicenses?.trend || 'up',
         color: "bg-orange-500",
       },
       {
         label: "Success Rate",
-        value: dashboardStats.successRate,
-        change: dashboardStats.changes?.successRate?.value || '0%',
-        trend: dashboardStats.changes?.successRate?.trend || 'up',
+        value: statsData.successRate,
+        change: statsData.changes?.successRate?.value || '0%',
+        trend: statsData.changes?.successRate?.trend || 'up',
         color: "bg-purple-500",
       },
     ];
-  }, [dashboardStats]);
+  }, [dashboardStats, isDemo]);
 
   // Calculate active users count (status === 'active' or 'Active')
   const activeUsersCount = useMemo(() => {
@@ -2459,6 +2486,13 @@ export default function AdminDashboard() {
   };
 
   const handleBulkLicenseSubmit = async () => {
+    // ✅ DEMO MODE GUARD: Prevent bulk license assignment in demo mode
+    if (isDemo) {
+      showInfo("Demo Mode", "Bulk license assignment is disabled in demo mode");
+      setShowBulkLicenseModal(false);
+      return;
+    }
+
     if (
       !bulkUserCount ||
       !bulkLicenseCount ||
@@ -2493,7 +2527,7 @@ export default function AdminDashboard() {
         throw new Error(response.error || "Assignment failed");
       }
     } catch (error) {
-      console.error("Bulk license assignment error:", error);
+      devError("Bulk license assignment error:", error);
       showError(
         "Assignment Failed",
         "Failed to assign licenses. Please try again."
@@ -2513,7 +2547,7 @@ export default function AdminDashboard() {
         setLicenseData(response.data);
       }
     } catch (error) {
-      console.error("License audit data loading error:", error);
+      devError("License audit data loading error:", error);
     }
   };
 
@@ -2523,6 +2557,13 @@ export default function AdminDashboard() {
   };
 
   const handleAddUserSubmit = async () => {
+    // ✅ DEMO MODE GUARD: Prevent user creation in demo mode
+    if (isDemo) {
+      showInfo("Demo Mode", "User creation is disabled in demo mode");
+      setShowAddUserModal(false);
+      return;
+    }
+
     if (
       !newUserForm.name ||
       !newUserForm.email ||
@@ -2543,7 +2584,7 @@ export default function AdminDashboard() {
         (user as any)?.user_email ||
         user?.email;
 
-      console.log("📧 Creating subuser with superuser email:", superuserEmail);
+      devLog("📧 Creating subuser with superuser email:", superuserEmail);
 
       if (!superuserEmail) {
         throw new Error("Superuser email not found. Please log in again.");
@@ -2562,20 +2603,20 @@ export default function AdminDashboard() {
         license_allocation: newUserForm.license_allocation || "0",
       };
 
-      console.log("📤 Sending subuser data to API:");
-      console.log("  - name:", subuserData.name);
-      console.log("  - subuser_email:", subuserData.subuser_email);
-      console.log("  - role:", subuserData.role);
-      console.log("  - department:", subuserData.department);
-      console.log("  - phone:", subuserData.phone);
-      console.log("  - subuser_group:", subuserData.subuser_group);
-      console.log("  - license_allocation:", subuserData.license_allocation);
-      console.log("  - superuser_email:", subuserData.superuser_email);
+      devLog("📤 Sending subuser data to API:");
+      devLog("  - name:", subuserData.name);
+      devLog("  - subuser_email:", subuserData.subuser_email);
+      devLog("  - role:", subuserData.role);
+      devLog("  - department:", subuserData.department);
+      devLog("  - phone:", subuserData.phone);
+      devLog("  - subuser_group:", subuserData.subuser_group);
+      devLog("  - license_allocation:", subuserData.license_allocation);
+      devLog("  - superuser_email:", subuserData.superuser_email);
 
       // Use apiClient which handles authentication automatically
       const response = await apiClient.createSubuser(subuserData);
 
-      console.log("✅ Subuser creation response:", response);
+      devLog("✅ Subuser creation response:", response);
 
       if (response && response.success && response.data) {
         showSuccess(
@@ -2597,7 +2638,7 @@ export default function AdminDashboard() {
         // ✅ Clear users cache to force fresh data fetch
         localStorage.removeItem("dashboard_cache_subusers");
         localStorage.removeItem("dashboard_cache_superuser");
-        console.log("🗑️ Cleared users cache after creating new user");
+        devLog("🗑️ Cleared users cache after creating new user");
 
         loadDashboardData(); // Refresh dashboard data
       } else {
@@ -2606,7 +2647,7 @@ export default function AdminDashboard() {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      console.error("❌ User creation error:", error);
+      devError("❌ User creation error:", error);
       const errorMessage =
         error && typeof error === "object" && "message" in error
           ? (error as Error).message
@@ -2622,6 +2663,13 @@ export default function AdminDashboard() {
   };
 
   const handleAddGroupSubmit = async () => {
+    // ✅ DEMO MODE GUARD: Prevent group creation in demo mode
+    if (isDemo) {
+      showInfo("Demo Mode", "Group creation is disabled in demo mode");
+      setShowAddGroupModal(false);
+      return;
+    }
+
     if (!newGroupForm.name || !newGroupForm.description) {
       showError("Invalid Input", "Please fill all required fields");
       return;
@@ -2643,7 +2691,7 @@ export default function AdminDashboard() {
         throw new Error(response.error || "Group creation failed");
       }
     } catch (error) {
-      console.error("Group creation error:", error);
+      devError("Group creation error:", error);
       showError("Creation Failed", "Failed to create group. Please try again.");
     } finally {
       setIsLoading(false);
@@ -2694,7 +2742,7 @@ export default function AdminDashboard() {
   const handleEditSubuser = (subuser: Subuser) => {
     showInfo("Edit Subuser", `Opening edit page for ${subuser.subuser_email}`);
     // Future: Navigate to subuser edit page or open modal
-    console.log("Edit subuser:", subuser);
+    devLog("Edit subuser:", subuser);
   };
 
   const handleDeleteSubuser = async (subuser: Subuser) => {
@@ -2720,7 +2768,7 @@ export default function AdminDashboard() {
           `${subuser.subuser_email} has been deleted successfully`
         );
       } catch (error) {
-        console.error("Error deleting subuser:", error);
+        devError("Error deleting subuser:", error);
         showError("Delete Failed", `Failed to delete ${subuser.subuser_email}`);
       }
     }
@@ -2732,6 +2780,13 @@ export default function AdminDashboard() {
   };
 
   const handleAssignLicensesSubmit = async () => {
+    // ✅ DEMO MODE GUARD: Prevent license assignment in demo mode
+    if (isDemo) {
+      showInfo("Demo Mode", "License assignment is disabled in demo mode");
+      setShowAssignLicensesModal(false);
+      return;
+    }
+
     if (
       !selectedGroupForLicenses ||
       !assignLicensesForm.licenseCount ||
@@ -2765,7 +2820,7 @@ export default function AdminDashboard() {
         throw new Error(response.error || "License assignment failed");
       }
     } catch (error) {
-      console.error("License assignment error:", error);
+      devError("License assignment error:", error);
       showError(
         "Assignment Failed",
         "Failed to assign licenses. Please try again."
@@ -2865,14 +2920,14 @@ export default function AdminDashboard() {
 
                   // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
                   if (isDemo) {
-                    console.log('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
+                    devLog('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
                     setBillingDetails(DEMO_BILLING_DETAILS);
                     return;
                   }
 
                 // ✅ CACHE CHECK: If billing data already loaded, don't fetch again
                 if (billingDetails && Object.keys(billingDetails).length > 0) {
-                  console.log("✅ Using cached billing data, skipping API call");
+                  devLog("✅ Using cached billing data, skipping API call");
                   return;
                 }
 
@@ -2880,7 +2935,7 @@ export default function AdminDashboard() {
                 const userEmail = user?.email || (user as any)?.user_email || storedUserData?.user_email || storedUserData?.email;
 
                 if (!userEmail) {
-                  console.log("⚠️ No user email found for billing fetch");
+                  devLog("⚠️ No user email found for billing fetch");
                   return;
                 }
 
@@ -2902,24 +2957,24 @@ export default function AdminDashboard() {
 
                 try {
                   // 📡 Fetch fresh user data from API to get payment_details_json
-                  console.log("📡 Fetching user billing data from API for:", userEmail);
+                  devLog("📡 Fetching user billing data from API for:", userEmail);
                   const apiUserRes = await apiClient.getUserByEmail(userEmail);
 
                   if (apiUserRes.success && apiUserRes.data) {
                     const apiUser = apiUserRes.data;
-                    console.log("✅ API User data received:", apiUser);
+                    devLog("✅ API User data received:", apiUser);
 
                     // Debug: Show what fields are available
                     const hasLicense = !!apiUser.license_details_json && apiUser.license_details_json !== "{}";
                     const hasPayment = !!apiUser.payment_details_json && apiUser.payment_details_json !== "{}";
-                    console.log("🔍 Has license_details_json:", hasLicense, "| Has payment_details_json:", hasPayment);
+                    devLog("🔍 Has license_details_json:", hasLicense, "| Has payment_details_json:", hasPayment);
 
                     // 1️⃣ Load license details and normalize to DEMO format
                     const licenseDetailsJson = apiUser.license_details_json;
                     if (licenseDetailsJson && licenseDetailsJson !== "{}") {
                       try {
                         const parsed = JSON.parse(licenseDetailsJson);
-                        console.log("✅ License details parsed:", parsed);
+                        devLog("✅ License details parsed:", parsed);
 
                         // Handle format with plans array and summary
                         if (parsed.plans && parsed.summary) {
@@ -2974,7 +3029,7 @@ export default function AdminDashboard() {
                           };
                         }
                       } catch (e) {
-                        console.error("❌ Failed to parse license details:", e);
+                        devError("❌ Failed to parse license details:", e);
                       }
                     }
 
@@ -2983,16 +3038,16 @@ export default function AdminDashboard() {
                     if (paymentDetailsJson && paymentDetailsJson !== "{}") {
                       try {
                         const paymentParsed = JSON.parse(paymentDetailsJson);
-                        console.log("✅ Payment details parsed:", paymentParsed);
+                        devLog("✅ Payment details parsed:", paymentParsed);
                         combinedBillingInfo = { ...combinedBillingInfo, ...paymentParsed };
                       } catch (e) {
-                        console.error("❌ Failed to parse payment details:", e);
+                        devError("❌ Failed to parse payment details:", e);
                       }
                     }
 
                     // 3️⃣ If still empty, use basic user info as fallback
                     if (Object.keys(combinedBillingInfo).length === 0) {
-                      console.log("⚠️ No billing/payment JSON found, using basic user info");
+                      devLog("⚠️ No billing/payment JSON found, using basic user info");
                       combinedBillingInfo = {
                         userEmail: apiUser.user_email || apiUser.email || userEmail,
                         userName: apiUser.user_name || apiUser.name || "N/A",
@@ -3006,7 +3061,7 @@ export default function AdminDashboard() {
                       };
                     }
                   } else {
-                    console.log("⚠️ API call failed, falling back to localStorage");
+                    devLog("⚠️ API call failed, falling back to localStorage");
                     // Fallback to localStorage data
                     const storedData = getUserDataFromStorage();
                     const licenseDetailsJson = storedData?.license_details_json;
@@ -3036,10 +3091,10 @@ export default function AdminDashboard() {
                     }
                   }
                 } catch (error) {
-                  console.error("❌ Error fetching billing data:", error);
+                  devError("❌ Error fetching billing data:", error);
                 }
 
-                console.log("✅ Final billing details:", combinedBillingInfo);
+                devLog("✅ Final billing details:", combinedBillingInfo);
                 setBillingDetails(combinedBillingInfo);
               }}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
@@ -4684,7 +4739,31 @@ export default function AdminDashboard() {
                                 #{report.report_id || report.reportId || report.id}
                               </td>
                               <td className="py-4 text-slate-600">
-                                {report.report_name || report.reportType || report.erasure_method || "Erasure Report"}
+                                {(() => {
+                                  // Parse reportType from report_details_json (same logic as AdminReports)
+                                  let reportType = "Erasure";
+                                  const reportWithDetails = report as any;
+
+                                  if (reportWithDetails.report_details_json) {
+                                    try {
+                                      const reportDetails = JSON.parse(reportWithDetails.report_details_json);
+                                      reportType = reportDetails?.report_type ||
+                                        reportDetails?.Erasure_Type ||
+                                        (report as any).erasure_type ||
+                                        "Files and Folders";
+                                    } catch (e) {
+                                      reportType = (report as any).reportType || (report as any).erasure_type || "Erasure";
+                                    }
+                                  } else {
+                                    reportType = (report as any).reportType || (report as any).erasure_type || "Erasure";
+                                  }
+
+                                  return (
+                                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                      {reportType}
+                                    </span>
+                                  );
+                                })()}
                               </td>
                               {/* <td className="py-4 text-slate-600">
                             {(() => {
@@ -5929,8 +6008,8 @@ export default function AdminDashboard() {
                             return;
                           }
 
-                          console.log("🔄 Updating profile for:", userEmail);
-                          console.log("📝 Update data:", profileEditForm);
+                          devLog("🔄 Updating profile for:", userEmail);
+                          devLog("📝 Update data:", profileEditForm);
 
                           // Call APIs to update user profile
                           // 1. Update name and phone via DynamicUser/profile
@@ -5941,7 +6020,7 @@ export default function AdminDashboard() {
                               timezone: profileEditForm.timezone,
                             });
 
-                          console.log(
+                          devLog(
                             "📡 Profile API Response:",
                             profileResponse
                           );
@@ -5953,7 +6032,7 @@ export default function AdminDashboard() {
                               profileEditForm.timezone
                             );
 
-                          console.log(
+                          devLog(
                             "📡 Timezone API Response:",
                             timezoneResponse
                           );
@@ -5962,7 +6041,7 @@ export default function AdminDashboard() {
                             profileResponse.success &&
                             timezoneResponse.success
                           ) {
-                            console.log(
+                            devLog(
                               "✅ Profile and timezone updated successfully in database"
                             );
 
@@ -6003,7 +6082,7 @@ export default function AdminDashboard() {
                                 "userData",
                                 JSON.stringify(storedData)
                               );
-                              console.log(
+                              devLog(
                                 "💾 LocalStorage updated with server data"
                               );
                             }
@@ -6018,11 +6097,11 @@ export default function AdminDashboard() {
                               profileResponse.error ||
                               timezoneResponse.error ||
                               "Failed to update profile";
-                            console.error("❌ API Error:", errorMsg);
+                            devError("❌ API Error:", errorMsg);
                             showError("Update Failed", errorMsg);
                           }
                         } catch (error) {
-                          console.error("❌ Profile update error:", error);
+                          devError("❌ Profile update error:", error);
                           showError(
                             "Update Failed",
                             "An error occurred while updating profile"
@@ -6413,19 +6492,19 @@ export default function AdminDashboard() {
                     </div>
 
                     {(() => {
-                      console.log(
+                      devLog(
                         "🔍 DEBUG RENDER: billingDetails:",
                         billingDetails
                       );
-                      console.log(
+                      devLog(
                         "🔍 DEBUG RENDER: billingDetails is truthy?",
                         !!billingDetails
                       );
-                      console.log(
+                      devLog(
                         "🔍 DEBUG RENDER: billingDetails type:",
                         typeof billingDetails
                       );
-                      console.log(
+                      devLog(
                         "🔍 DEBUG RENDER: Object.keys(billingDetails):",
                         billingDetails ? Object.keys(billingDetails) : "null"
                       );
@@ -6495,11 +6574,11 @@ export default function AdminDashboard() {
                           >
                             <div className="px-6 pb-6">
                               {(() => {
-                                console.log(
+                                devLog(
                                   "🔍 DEBUG ACCORDION 1: billingDetails.activePlanTypes:",
                                   billingDetails.activePlanTypes
                                 );
-                                console.log(
+                                devLog(
                                   "🔍 DEBUG ACCORDION 1: billingDetails.totalPurchases:",
                                   billingDetails.totalPurchases
                                 );
@@ -7095,7 +7174,7 @@ export default function AdminDashboard() {
                             );
                           }
                         } catch (error) {
-                          console.error("Password change error:", error);
+                          devError("Password change error:", error);
                           showError(
                             "Error",
                             "An error occurred while changing password"
@@ -8134,7 +8213,7 @@ export default function AdminDashboard() {
                         migrateTables: false,
                       });
                     } catch (error) {
-                      console.error("Private cloud setup error:", error);
+                      devError("Private cloud setup error:", error);
                       showError("Setup Failed", "Failed to configure private cloud. Please try again.");
                     } finally {
                       setPrivateCloudLoading(false);

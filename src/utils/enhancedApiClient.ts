@@ -115,6 +115,7 @@ export interface Report {
   report_id?: string
   computer_name?: string
   datetime?: string
+  ersasure_type?: string
 }
 
 export interface AuditReport {

@@ -8,6 +8,12 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apiClient } from '@/utils/enhancedApiClient'
 import type { EnhancedSubuser } from '@/utils/enhancedApiClient'
+import { isDemoMode } from '@/data/demoData'
+
+// ✅ DEMO MODE: Suppress console logs in demo mode
+const devLog = (...args: any[]) => { if (!isDemoMode()) console.log(...args); };
+const devWarn = (...args: any[]) => { if (!isDemoMode()) console.warn(...args); };
+const devError = (...args: any[]) => { if (!isDemoMode()) console.error(...args); };
 
 export default function UserDashboard() {
   const { user, logout } = useAuth()
@@ -41,7 +47,7 @@ export default function UserDashboard() {
         const storedUserData = localStorage.getItem('user_data')
 
         if (!storedUserData) {
-          // console.log('⚠️ No user_data in localStorage')
+          // devLog('⚠️ No user_data in localStorage')
           // Fallback to AuthContext user
           if (user) {
             setProfileData({
@@ -58,31 +64,45 @@ export default function UserDashboard() {
         }
 
         const parsedData = JSON.parse(storedUserData)
-        // console.log('📦 Parsed user_data:', parsedData)
+        // devLog('📦 Parsed user_data:', parsedData)
 
         // Check if logged-in user is a subuser
         const userType = parsedData.user_type || parsedData.userType || user?.role
         const isSubuser = userType === 'subuser'
 
-        // console.log(`🔍 User Type: ${userType}, Is Subuser: ${isSubuser}`)
+        // devLog(`🔍 User Type: ${userType}, Is Subuser: ${isSubuser}`)
 
         if (isSubuser) {
           // Fetch subuser data from API
           const subuserEmail = parsedData.user_email || parsedData.email || user?.email
 
           if (!subuserEmail) {
-            console.error('❌ No subuser email found')
+            devError('❌ No subuser email found')
             setLoadingProfile(false)
             return
           }
 
-          // console.log(`📧 Fetching subuser data for: ${subuserEmail}`)
+          // ✅ DEMO MODE GUARD: Skip API call in demo mode
+          if (isDemoMode()) {
+            setProfileData({
+              name: parsedData.user_name || parsedData.name || 'Demo Subuser',
+              email: subuserEmail,
+              role: parsedData.user_role || 'Subuser',
+              department: parsedData.department || 'Demo Department',
+              phone: parsedData.phone_number || '+91-9876543210',
+              isSubuser: true
+            })
+            setLoadingProfile(false)
+            return
+          }
+
+          // devLog(`📧 Fetching subuser data for: ${subuserEmail}`)
 
           const response = await apiClient.getEnhancedSubuser(subuserEmail)
 
           if (response.success && response.data) {
             const subuserData = response.data
-            // console.log('✅ Subuser data fetched:', subuserData)
+            // devLog('✅ Subuser data fetched:', subuserData)
 
             // Use Subuser interface fields: subuser_name, subuser_phone, name, phone
             setProfileData({
@@ -94,7 +114,7 @@ export default function UserDashboard() {
               isSubuser: true
             })
           } else {
-            console.warn('⚠️ Failed to fetch subuser data, using stored data')
+            devWarn('⚠️ Failed to fetch subuser data, using stored data')
             setProfileData({
               name: parsedData.user_name || parsedData.name || user?.name || 'Subuser',
               email: subuserEmail,
@@ -106,7 +126,7 @@ export default function UserDashboard() {
           }
         } else {
           // Regular user - use AuthContext or localStorage data
-          // console.log('👤 Regular user detected')
+          // devLog('👤 Regular user detected')
           setProfileData({
             name: parsedData.user_name || parsedData.name || user?.name || 'User',
             email: parsedData.user_email || parsedData.email || user?.email || '',
@@ -117,7 +137,7 @@ export default function UserDashboard() {
           })
         }
       } catch (error) {
-        console.error('❌ Error fetching profile data:', error)
+        devError('❌ Error fetching profile data:', error)
         // Fallback to AuthContext user
         if (user) {
           setProfileData({

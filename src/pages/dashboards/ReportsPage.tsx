@@ -9,6 +9,12 @@ import { Link } from 'react-router-dom'
 import { AdminDashboardAPI, Report } from '@/services/adminDashboardAPI'
 import { useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
+import { isDemoMode, DEMO_REPORTS } from '@/data/demoData'
+
+// ✅ DEMO MODE: Suppress console logs in demo mode
+const devLog = (...args: any[]) => { if (!isDemoMode()) console.log(...args); };
+const devWarn = (...args: any[]) => { if (!isDemoMode()) console.warn(...args); };
+const devError = (...args: any[]) => { if (!isDemoMode()) console.error(...args); };
 
 const ReportsPage: React.FC = () => {
   const { user } = useAuth()
@@ -25,6 +31,14 @@ const ReportsPage: React.FC = () => {
 
   const loadReportsData = async () => {
     setLoading(true)
+
+    // ✅ DEMO MODE GUARD: Use static data in demo mode
+    if (isDemoMode()) {
+      setReports(DEMO_REPORTS as Report[])
+      setLoading(false)
+      return
+    }
+
     try {
       const response = await AdminDashboardAPI.getReports()
       if (response.success) {
@@ -33,7 +47,7 @@ const ReportsPage: React.FC = () => {
         throw new Error(response.error || 'Failed to load reports')
       }
     } catch (error) {
-      console.error('Error loading reports:', error)
+      devError('Error loading reports:', error)
       showError('Data Loading Error', 'Failed to load report data. Using default values.')
     } finally {
       setLoading(false)
@@ -85,6 +99,12 @@ const ReportsPage: React.FC = () => {
   }
 
   const downloadReport = async (reportId: string) => {
+    // ✅ DEMO MODE GUARD: Show info in demo mode
+    if (isDemoMode()) {
+      showSuccess(`Demo: Report ${reportId} download simulated`)
+      return
+    }
+
     try {
       const response = await AdminDashboardAPI.downloadReport(reportId)
       if (response.success) {
@@ -94,12 +114,18 @@ const ReportsPage: React.FC = () => {
         throw new Error(response.error || 'Download failed')
       }
     } catch (error) {
-      console.error('Error downloading report:', error)
+      devError('Error downloading report:', error)
       showError('Download Failed', 'Failed to download report. Please try again.')
     }
   }
 
   const exportAllReports = async () => {
+    // ✅ DEMO MODE GUARD: Show info in demo mode
+    if (isDemoMode()) {
+      showSuccess('Demo: All reports export simulated')
+      return
+    }
+
     try {
       const response = await AdminDashboardAPI.exportReports('csv')
       if (response.success) {
@@ -109,7 +135,7 @@ const ReportsPage: React.FC = () => {
         throw new Error(response.error || 'Export failed')
       }
     } catch (error) {
-      console.error('Error exporting reports:', error)
+      devError('Error exporting reports:', error)
       showError('Export Failed', 'Failed to export reports. Please try again.')
     }
   }
@@ -275,7 +301,7 @@ const ReportsPage: React.FC = () => {
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => console.log(`Viewing details for ${report.id}`)}
+                          onClick={() => devLog(`Viewing details for ${report.id}`)}
                           className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
                           title="View Details"
                         >
