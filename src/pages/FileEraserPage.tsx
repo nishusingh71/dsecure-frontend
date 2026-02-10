@@ -35,23 +35,121 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   const [activeSection, setActiveSection] = useState("");
   const [isNavVisible, setIsNavVisible] = useState(false);
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
+  const [showVideoModal, setShowVideoModal] = useState(false);
 
   // Gallery images array for lightbox navigation
   const galleryImages = [
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/x2bqsc3nxzdfns3nyb5r.png", alt: "Dashboard View" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/y0qoxkpzqqxw8f0vibb8.png", alt: "Erasure Report" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/bdacwvgixrbp512igxz0.png", alt: "File Selection" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/cfpwnf2ii0sjjkknhdjl.png", alt: "Erasure Progress" },
-    // Additional images accessible via gallery navigation
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/l6owryrcsiswinplq14v.png", alt: "File Eraser Screenshot 5" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/fktnf2lu1pokq5dnv0kp.png", alt: "File Eraser Screenshot 6" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/ogm948td7jwfgme6kfpq.png", alt: "File Eraser Screenshot 7" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/cztmzkivdbuj833cpjp1.png", alt: "File Eraser Screenshot 8" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790690/xh6mhqk6xcvwdsvnmshr.png", alt: "File Eraser Screenshot 9" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790689/tp4jx36yibsgmxle86wg.png", alt: "File Eraser Screenshot 10" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/oacueotgkybzczqlxr1d.png", alt: "File Eraser Screenshot 11" },
-    { url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/drcxg5xxoxrupgijnuc6.png", alt: "File Eraser Screenshot 12" },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/wyano4in32dsvwrjfose.png",
+      alt: "Dashboard View",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/kwmr1zmohxlsvu7mewu6.png",
+      alt: "Erasure Report",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/gw3zeqnncwvnn1hnlekg.png",
+      alt: "File Selection",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/m0m1b2hqj9tl6g9gmhgz.png",
+      alt: "Erasure Progress",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/zulpnihjrlfuoitqaizh.png",
+      alt: "File Eraser Screenshot 5",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/a31wp92vyyeh2j2hu9zc.png",
+      alt: "File Eraser Screenshot 6",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/s18pgdvgux4dye0fmscy.png",
+      alt: "File Eraser Screenshot 7",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/iyavx0ommailpdkcxng5.png",
+      alt: "File Eraser Screenshot 8",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/uxdebjbpxhj9s4e9f2a5.png",
+      alt: "File Eraser Screenshot 9",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/h71mhoxgsxhsmftagfui.png",
+      alt: "File Eraser Screenshot 10",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/zx7c8pmkp59la8bat6co.png",
+      alt: "File Eraser Screenshot 11",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/f3brvyeayc1gjvvbhycn.png",
+      alt: "File Eraser Screenshot 12",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/k5qipygfaw0nczflr3zz.png",
+      alt: "File Eraser Screenshot 13",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/ju9tjx02ffgsyg7hytqm.png",
+      alt: "File Eraser Screenshot 14",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/vytjbf7yigyyo6nc5qhv.png",
+      alt: "File Eraser Screenshot 15",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mu4inz3sickwxfbtduzn.png",
+      alt: "File Eraser Screenshot 16",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/smkmqfqk7dw0xwmfl4xa.png",
+      alt: "File Eraser Screenshot 17",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/trcabsasqpewodfyrykl.png",
+      alt: "File Eraser Screenshot 18",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qnl0maavgwb12eyx9drx.png",
+      alt: "File Eraser Screenshot 19",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/y20i3mvvbzzddrzjnunf.png",
+      alt: "File Eraser Screenshot 20",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/g59dppsz6gyjm10rf5lo.png",
+      alt: "File Eraser Screenshot 21",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mx6or4o6uenf3q42ipqg.png",
+      alt: "File Eraser Screenshot 22",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/bj1yo6ykwgxvkp9bbmlm.png",
+      alt: "File Eraser Screenshot 23",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/iuvskkxwxsawnvvk8i4l.png",
+      alt: "File Eraser Screenshot 24",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/nalxxlyfrewjxtpptplf.png",
+      alt: "File Eraser Screenshot 25",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qxrifgrivw11cqhuegx0.png",
+      alt: "File Eraser Screenshot 26",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/pb9yo6kfjwz8z4shw2vz.png",
+      alt: "File Eraser Screenshot 27",
+    },
   ];
 
   // Number of additional images beyond the 4th card (for "More" badge)
@@ -59,13 +157,21 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   const handlePrevImage = () => {
     if (selectedImageIndex !== null) {
-      setSelectedImageIndex(selectedImageIndex === 0 ? galleryImages.length - 1 : selectedImageIndex - 1);
+      setSelectedImageIndex(
+        selectedImageIndex === 0
+          ? galleryImages.length - 1
+          : selectedImageIndex - 1,
+      );
     }
   };
 
   const handleNextImage = () => {
     if (selectedImageIndex !== null) {
-      setSelectedImageIndex(selectedImageIndex === galleryImages.length - 1 ? 0 : selectedImageIndex + 1);
+      setSelectedImageIndex(
+        selectedImageIndex === galleryImages.length - 1
+          ? 0
+          : selectedImageIndex + 1,
+      );
     }
   };
 
@@ -829,27 +935,76 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Main Video Card */}
               <Reveal delayMs={100}>
-                <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300">
-                  {/* Video Thumbnail */}
-                  <div className="relative aspect-video bg-gradient-to-br from-slate-800 to-slate-900">
-                    {/* Replace VIDEO_THUMBNAIL_URL with actual thumbnail */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl cursor-pointer group-hover:scale-110 transition-transform">
-                        <svg
-                          className="w-7 h-7 text-white ml-1"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
+                <div
+                  onClick={() => setShowVideoModal(true)}
+                  className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                >
+                  {/* Video Thumbnail - Custom Styled */}
+                  <div className="relative aspect-video bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2310b981' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                        }}
+                      />
                     </div>
-                    {/* Uncomment when video thumbnail ready: */}
-                    {/* <img 
-                      src="VIDEO_THUMBNAIL_URL" 
-                      alt="File Eraser Demo" 
-                      className="w-full h-full object-cover"
-                    /> */}
+
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                    {/* Content */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+                      {/* Logo/Icon Area */}
+                      <div className="mb-4 flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                          <svg
+                            className="w-7 h-7 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
+                          </svg>
+                        </div>
+                        <div className="text-left">
+                          <h4 className="text-white font-bold text-lg">
+                            File Eraser
+                          </h4>
+                          <p className="text-emerald-400 text-sm font-medium">
+                            Product Demo
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Play Button */}
+                      <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-2xl">
+                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl">
+                          <svg
+                            className="w-7 h-7 text-white ml-1"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* Bottom Text */}
+                      <p className="mt-4 text-white/70 text-sm font-medium">
+                        Click to watch demo
+                      </p>
+                    </div>
+
+                    {/* Corner Accent */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-teal-500/20 to-transparent" />
                   </div>
                   {/* Video Info */}
                   <div className="p-5">
@@ -857,7 +1012,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
                         VIDEO
                       </span>
-                      <span className="text-slate-400 text-xs">2:45</span>
+                      <span className="text-slate-400 text-xs">6:10</span>
                     </div>
                     <h3 className="font-bold text-slate-900 mb-1">
                       Product Demo
@@ -1065,7 +1220,9 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* More Images Badge */}
                       {additionalImagesCount > 0 && (
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                          <span className="text-white text-xl sm:text-2xl font-bold">+{additionalImagesCount} More</span>
+                          <span className="text-white text-xl sm:text-2xl font-bold">
+                            +{additionalImagesCount} More
+                          </span>
                         </div>
                       )}
                     </div>
@@ -1201,10 +1358,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                     </p>
                     <p className="text-slate-600 leading-relaxed">
                       Select the file/s or folders or search the name to erase.
-                      The{" "}
-                      <strong className="text-emerald-700">
-                        Cloud
-                      </strong>{" "}
+                      The <strong className="text-emerald-700">Cloud</strong>{" "}
                       allows administrators to execute and monitor erasures
                       remotely across multiple endpoints as well.
                     </p>
@@ -1642,21 +1796,47 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
           {/* Left Arrow */}
           <button
-            onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrevImage();
+            }}
             className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
           >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
 
           {/* Right Arrow */}
           <button
-            onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNextImage();
+            }}
             className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
           >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
 
@@ -1675,6 +1855,36 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           {/* Image Counter */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full text-white text-sm">
             {selectedImageIndex + 1} / {galleryImages.length}
+          </div>
+        </div>
+      )}
+
+      {/* Video Modal */}
+      {showVideoModal && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setShowVideoModal(false)}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setShowVideoModal(false)}
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Video Container */}
+          <div
+            className="relative max-w-5xl w-full max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video
+              src="https://res.cloudinary.com/dhwi5wevf/video/upload/v1770725346/jqkinwc7zk4w2ak9nplw.3gp"
+              controls
+              autoPlay
+              playsInline
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-200"
+            />
           </div>
         </div>
       )}

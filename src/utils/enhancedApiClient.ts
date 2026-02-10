@@ -405,14 +405,14 @@ class EnhancedApiClient {
         }
 
         // Handle specific HTTP status codes with better error messages
-        let errorMessage = data.message || `HTTP ${response.status}: ${response.statusText}`
+        let errorMessage = data?.message || `HTTP ${response.status}: ${response.statusText}`
 
         if (response.status === 409) {
-          errorMessage = data.message || 'User already exists with this email address. Please try logging in instead.'
+          errorMessage = data?.message || 'User already exists with this email address. Please try logging in instead.'
         } else if (response.status === 400) {
-          errorMessage = data.message || 'Invalid registration data. Please check your input and try again.'
+          errorMessage = data?.message || 'Invalid registration data. Please check your input and try again.'
         } else if (response.status === 422) {
-          errorMessage = data.message || 'Validation failed. Please check your input data.'
+          errorMessage = data?.message || 'Validation failed. Please check your input data.'
         }
 
         return {
@@ -423,8 +423,8 @@ class EnhancedApiClient {
 
       return {
         success: true,
-        data: data.data || data,
-        message: data.message,
+        data: data?.data || data,
+        message: data?.message,
       }
     } catch (error) {
       if (DEBUG_MODE) {
@@ -1056,6 +1056,15 @@ class EnhancedApiClient {
     return this.request<Subuser>('/api/EnhancedSubuser', {
       method: 'POST',
       body: JSON.stringify(subuserData)
+    });
+  }
+
+  async addMemberToGroupByEmail(groupId: string, payload: { email: string, groupRole: string }): Promise<ApiResponse<any>> {
+    // Remove "group-" prefix if present
+    const cleanGroupId = groupId.toString().replace(/^group-/, '');
+    return this.request<any>(`/api/Group/${cleanGroupId}/members/by-email`, {
+      method: 'POST',
+      body: JSON.stringify(payload)
     });
   }
 
