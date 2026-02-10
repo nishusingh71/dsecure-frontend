@@ -54,7 +54,7 @@ export const ENV = {
     ENC_IV: validateStr(import.meta.env.VITE_ENC_IV, 'VITE_ENC_IV', false, '1234567890123456'),
     FILE_ERASER: validateStr(import.meta.env.FileEraser, 'FileEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVHHRwPSypqgPTs3kuSu?quantity='),
     DRIVE_ERASER: validateStr(import.meta.env.DriveEraser, 'DriveEraser', false, 'https://checkout.dodopayments.com/buy/pdt_0NVH5wJYMX70syW3ioj9R?quantity='),
-    FileEraser_Windows_Download_Link: validateStr(import.meta.env.FileEraser_windows_download_link, 'FileEraser_windows_download_link', false, 'https://downloads.dsecuretech.com/windows/D-SFE_INST_v1_0_0_0.exe'),
+    FileEraser_Windows_Download_Link: validateStr(import.meta.env.FileEraser_windows_download_link, 'FileEraser_windows_download_link', false, 'https://downloads.dsecuretech.com/windows/D-SFE_installer_v1_0_0_0.exe'),
     POWER_AUTOMATE_HTTP_URL: validateStr(import.meta.env.POWER_AUTOMATE_HTTP_URL, 'POWER_AUTOMATE_HTTP_URL', false, ''),
 };
 
