@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { exportToCsv, openPrintView } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -32,7 +32,7 @@ export default function AdminSubusers() {
   const [subuserOwnerFilter, setSubuserOwnerFilter] = useState('') // Filter to view subuser's subusers
   const navigate = useNavigate()
 
-  // 🎭 Demo mode check
+  // ?? Demo mode check
   const isDemo = isDemoMode()
 
   // Helper function to format datetime for Last Login display
@@ -79,7 +79,7 @@ export default function AdminSubusers() {
     }
   }
 
-  // ✅ Get user email for fetching subusers
+  // ? Get user email for fetching subusers
   const getUserEmail = (): string => {
     const storedUser = localStorage.getItem('user_data')
     const authUser = localStorage.getItem('authUser')
@@ -104,7 +104,7 @@ export default function AdminSubusers() {
     return storedUserData?.user_email || user?.email || ''
   }
 
-  // ✅ Check if current user has admin/superadmin role
+  // ? Check if current user has admin/superadmin role
   const getUserRole = (): string => {
     const storedUser = localStorage.getItem('user_data')
     const authUser = localStorage.getItem('authUser')
@@ -133,9 +133,9 @@ export default function AdminSubusers() {
   const currentUserRole = getUserRole()
   const canEditOrDelete = currentUserRole === 'admin' || currentUserRole === 'superadmin'
 
-  // console.log('🔍 Current User Role:', currentUserRole, '| Can Edit/Delete:', canEditOrDelete)
+  // console.log('?? Current User Role:', currentUserRole, '| Can Edit/Delete:', canEditOrDelete)
 
-  // ✅ Check if current user is a subuser
+  // ? Check if current user is a subuser
   const getUserType = (): string => {
     const storedUser = localStorage.getItem('user_data')
     let storedUserData = null
@@ -152,12 +152,12 @@ export default function AdminSubusers() {
   const currentUserType = getUserType()
   const isSubuser = currentUserType === 'subuser'
 
-  // console.log('👤 User Type:', currentUserType, '| Is Subuser:', isSubuser)
-  // console.log('📧 Current User Email:', userEmail)
+  // console.log('?? User Type:', currentUserType, '| Is Subuser:', isSubuser)
+  // console.log('?? Current User Email:', userEmail)
 
-  // ✅ Fetch subusers filtered by current user's email (works for both regular users and subusers)
+  // ? Fetch subusers filtered by current user's email (works for both regular users and subusers)
   // If subuser has sub-subusers, they will be shown; if not, empty state will appear
-  // 🎭 In demo mode, disable React Query and use static data
+  // ?? In demo mode, disable React Query and use static data
 
   // Fetch current user's subusers (for the dropdown)
   const { data: currentUserSubusers = [] } = useSubusers(userEmail, !isDemo)
@@ -168,7 +168,7 @@ export default function AdminSubusers() {
   // Fetch subusers for selected owner
   const { data: apiSubusersData = [], isLoading: apiLoading, refetch } = useSubusers(emailToFetch, !isDemo)
 
-  // 🎭 Use DEMO_SUBUSERS in demo mode, otherwise use API data
+  // ?? Use DEMO_SUBUSERS in demo mode, otherwise use API data
   const subusersData = isDemo ? DEMO_SUBUSERS : apiSubusersData
   const loading = isDemo ? false : apiLoading
 
@@ -199,7 +199,7 @@ export default function AdminSubusers() {
   const [editLoading, setEditLoading] = useState(false)
   const [editFetching, setEditFetching] = useState(false)
 
-  // ✅ Transform hook data to table rows format
+  // ? Transform hook data to table rows format
   const allRows = useMemo<SubuserTableRow[]>(() => {
     return subusersData.map((subuser: any) => ({
       subuser_email: subuser.subuser_email,
@@ -269,7 +269,7 @@ export default function AdminSubusers() {
     setEditModal({ show: true, user })
     setEditFetching(true)
 
-    // 🎭 DEMO MODE: Use demo data directly
+    // ?? DEMO MODE: Use demo data directly
     if (isDemo) {
       const demoUser = DEMO_SUBUSERS.find(u => u.subuser_email === user.subuser_email)
       setEditFormData({
@@ -378,7 +378,7 @@ export default function AdminSubusers() {
       if (response.success) {
         showSuccess(`User ${user.subuser_email} deleted successfully`)
         setDeleteModal({ show: false, user: null })
-        await refetch() // ✅ Use refetch from hook instead of loadUsersData
+        await refetch() // ? Use refetch from hook instead of loadUsersData
       } else {
         throw new Error(response.error || 'Failed to delete user')
       }
@@ -420,7 +420,7 @@ export default function AdminSubusers() {
       // await apiClient.updateSubuserStatus(user.subuser_email, newStatus)
 
       showSuccess(`User ${user.subuser_email} status changed to ${newStatus}`)
-      await refetch() // ✅ Use refetch from hook instead of loadUsersData
+      await refetch() // ? Use refetch from hook instead of loadUsersData
     } catch (error) {
       console.error('Error toggling status:', error)
       showError('Status Update Failed', 'Failed to update user status. Please try again.')
@@ -493,25 +493,54 @@ export default function AdminSubusers() {
                       <label className="block text-sm font-medium text-slate-700 mb-1">
                         Role
                       </label>
-                      <input
-                        type="text"
+                      <select
                         value={editFormData.role}
                         onChange={(e) => setEditFormData({ ...editFormData, role: e.target.value })}
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                        placeholder="user, manager, admin"
-                      />
+                      >
+                        <option value="">Select Role</option>
+                        {uniqueRoles.length > 0 ? (
+                          uniqueRoles.filter(role => role && role !== 'N/A').map((role) => (
+                            <option key={role} value={role}>
+                              {role.charAt(0).toUpperCase() + role.slice(1)}
+                            </option>
+                          ))
+                        ) : (
+                          <>
+                            <option value="user">User</option>
+                            <option value="manager">Manager</option>
+                            <option value="admin">Admin</option>
+                            <option value="subuser">Subuser</option>
+                          </>
+                        )}
+                      </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
                         Department
                       </label>
-                      <input
-                        type="text"
+                      <select
                         value={editFormData.department}
                         onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value })}
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                        placeholder="IT Department"
-                      />
+                      >
+                        <option value="">Select Department</option>
+                        {uniqueDepartments.length > 0 ? (
+                          uniqueDepartments.filter(dept => dept && dept !== 'N/A').map((dept) => (
+                            <option key={dept} value={dept}>
+                              {dept}
+                            </option>
+                          ))
+                        ) : (
+                          <>
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Marketing">Marketing</option>
+                          </>
+                        )}
+                      </select>
                     </div>
                   </div>
 
@@ -533,13 +562,27 @@ export default function AdminSubusers() {
                       <label className="block text-sm font-medium text-slate-700 mb-1">
                         Status
                       </label>
-                      <input
-                        type="text"
+                      <select
                         value={editFormData.status}
                         onChange={(e) => setEditFormData({ ...editFormData, status: e.target.value })}
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                        placeholder="active, inactive"
-                      />
+                      >
+                        <option value="">Select Status</option>
+                        {uniqueStatuses.length > 0 ? (
+                          uniqueStatuses.filter(status => status && status !== 'N/A').map((status) => (
+                            <option key={status} value={status}>
+                              {status.charAt(0).toUpperCase() + status.slice(1)}
+                            </option>
+                          ))
+                        ) : (
+                          <>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                            <option value="pending">Pending</option>
+                          </>
+                        )}
+                      </select>
                     </div>
                   </div>
 
@@ -624,11 +667,11 @@ export default function AdminSubusers() {
         </div>
       )}
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/subusers" />
-        <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
+        <link rel="canonical" href="https://D-Securetech.com/admin/subusers" />
+        <title>D-SecureTech Compliance | Data Erasure Standards & Regulations</title>
         <meta
           name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
         />
         <meta
           name="keywords"
@@ -811,7 +854,7 @@ export default function AdminSubusers() {
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
                 className="px-2 py-1 border rounded text-sm hover:bg-slate-50"
               >
-                {sortOrder === 'asc' ? '↑' : '↓'}
+                {sortOrder === 'asc' ? '?' : '?'}
               </button>
             </div>
 
@@ -931,7 +974,7 @@ export default function AdminSubusers() {
                         View
                       </button> */}
 
-                          {/* ✅ Edit Button - Disabled for simple users */}
+                          {/* ? Edit Button - Disabled for simple users */}
                           <button
                             onClick={() => canEditOrDelete && handleEditUser(user)}
                             disabled={!canEditOrDelete}
@@ -975,7 +1018,7 @@ export default function AdminSubusers() {
                         {user.status === 'active' ? 'Deactivate' : 'Activate'}
                       </button> */}
 
-                          {/* ✅ Delete Button - Disabled for simple users */}
+                          {/* ? Delete Button - Disabled for simple users */}
                           <button
                             onClick={() => canEditOrDelete && handleDeleteUser(user)}
                             disabled={!canEditOrDelete}
@@ -1094,7 +1137,7 @@ export default function AdminSubusers() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     <span className="text-slate-600">{deleteModal.user.department}</span>
-                    <span className="mx-2 text-slate-300">•</span>
+                    <span className="mx-2 text-slate-300">�</span>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${deleteModal.user.roles === 'admin' ? 'bg-purple-100 text-purple-800' :
                       deleteModal.user.roles === 'manager' ? 'bg-blue-100 text-blue-800' :
                         'bg-slate-100 text-slate-800'

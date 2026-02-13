@@ -136,7 +136,7 @@ function ContactPageContent() {
   };
 
   // FormSubmit configuration - Primary recipient
-  // const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@dsecuretech.com";
+  // const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/dhruv.rai@D-Securetech.com";
 
   //   const sendEmail = async (e: React.FormEvent) => {
   //     e.preventDefault();
@@ -259,18 +259,18 @@ function ContactPageContent() {
   // • Submitted: ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
 
   // In the meantime, feel free to explore our resources:
-  // 🔗 Product Documentation: https://docs.dsecuretech.com
-  // 🔗 Knowledge Base: https://dsecuretech.com/resources
+  // 🔗 Product Documentation: https://docs.D-Securetech.com
+  // 🔗 Knowledge Base: https://D-Securetech.com/resources
 
-  // If you have any urgent questions, please don't hesitate to reach out to our support team at support@dsecuretech.com.
+  // If you have any urgent questions, please don't hesitate to reach out to our support team at support@D-Securetech.com.
 
   // Best regards,
   // The D-Secure Technologies Team
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // D-Secure Technologies | Enterprise Data Erasure Solutions
-  // 🌐 https://dsecuretech.com
-  // 📧 sales@dsecuretech.com
+  // 🌐 https://D-Securetech.com
+  // 📧 sales@D-Securetech.com
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   // This is an automated response. Please do not reply to this email.`
@@ -313,7 +313,7 @@ function ContactPageContent() {
   //   };
 
   // FormSubmit.co AJAX endpoint
-  // const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/support@dsecuretech.com";
+  // const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/support@D-Securetech.com";
 
   // const sendEmail = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -355,7 +355,7 @@ function ContactPageContent() {
 
   //     // === MANDATORY HIDDEN FIELDS ===
   //     // Webhook to notify backend - backend will send auto-response email
-  //     formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
+  //     formSubmitData.append("_webhook", "https://api.D-Securetech.com/api/formsubmit/webhook");
   //     // Disable captcha
   //     formSubmitData.append("_captcha", "false");
   //     // Table template for email
@@ -382,7 +382,7 @@ function ContactPageContent() {
 
   //     // Subject and CC
   //     formSubmitData.append("_subject", "New Contact Form Submission - D-Secure Tech");
-  //     formSubmitData.append("_cc", "dhruv.rai@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com");
+  //     formSubmitData.append("_cc", "dhruv.rai@D-Securetech.com,nishus877@gmail.com,spsingh8477@gmail.com");
 
   //     // Auto-response handled by backend via webhook - no frontend autoresponse needed
 
@@ -429,7 +429,7 @@ function ContactPageContent() {
   //   }
   // };
 
-  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/support@dsecuretech.com";
+  const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/support@D-Securetech.com";
 
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -532,7 +532,7 @@ function ContactPageContent() {
       // === 2. SUBMIT TO FORMSUBMIT (EMAIL & WEBHOOK) ===
       // === FORM SUBMIT CONFIGURATION ===
       // Webhook to your .NET 8 backend
-      formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
+      formSubmitData.append("_webhook", "https://api.D-Securetech.com/api/formsubmit/webhook");
 
       // Important: Tell FormSubmit to expect JSON from your webhook
       formSubmitData.append("_webhookContentType", "application/json");
@@ -553,7 +553,7 @@ function ContactPageContent() {
       formSubmitData.append("_replyto", formData.email.trim());
 
       // CC for admin notifications
-      formSubmitData.append("_cc", "dhruv.rai@dsecuretech.com,nishus877@gmail.com,spsingh8477@gmail.com");
+      formSubmitData.append("_cc", "dhruv.rai@D-Securetech.com,nishus877@gmail.com,spsingh8477@gmail.com");
 
       // === FORM FIELDS ===
       formSubmitData.append("name", formData.name.trim());
@@ -678,7 +678,7 @@ function ContactPageContent() {
         name: "D-Secure Technologies",
         logo:
           "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
-        website: "https://dsecuretech.com",
+        website: "https://D-Securetech.com",
         established: "2025",
       },
       location: {
@@ -696,16 +696,16 @@ function ContactPageContent() {
           name: "Dhruv Rai",
           title: "CEO",
           // phone: "8527346992",
-          // email: "dhruv.rai@dsecuretech.com",
-          // directEmail: "dhruv.rai@dsecuretech.com",
+          // email: "dhruv.rai@D-Securetech.com",
+          // directEmail: "dhruv.rai@D-Securetech.com",
         },
         // sales: {
         //   phone: "8527346992",
-        //   email: "sales@dsecuretech.com",
+        //   email: "sales@D-Securetech.com",
         // },
         // support: {
         //   phone: "8527346992",
-        //   email: "support@dsecuretech.com",
+        //   email: "support@D-Securetech.com",
         // },
       },
       services: ["Data Erasure Solutions"],
@@ -718,7 +718,7 @@ function ContactPageContent() {
     //   company: {
     //     name: "D-Secure Europe Ltd",
     //     logo: "�🇧",
-    //     website: "https://dsecure.eu",
+    //     website: "https://D-Secure.eu",
     //     established: "2021"
     //   },
     //   location: {
@@ -736,16 +736,16 @@ function ContactPageContent() {
     //       name: "Sarah Johnson",
     //       title: "European Director",
     //       phone: "+44 20 7123 4567",
-    //       email: "london@dsecure.com",
-    //       directEmail: "sarah.johnson@dsecure.com"
+    //       email: "london@D-Secure.com",
+    //       directEmail: "sarah.johnson@D-Secure.com"
     //     },
     //     sales: {
     //       phone: "+44 20 7123 4567",
-    //       email: "sales.eu@dsecure.com"
+    //       email: "sales.eu@D-Secure.com"
     //     },
     //     support: {
     //       phone: "+44 20 7123 4568",
-    //       email: "support.eu@dsecure.com"
+    //       email: "support.eu@D-Secure.com"
     //     }
     //   },
     //   services: ["GDPR Compliance", "European Markets", "Data Erasure"],
@@ -758,7 +758,7 @@ function ContactPageContent() {
     //   company: {
     //     name: "D-Secure Asia Pacific",
     //     logo: "��🇬",
-    //     website: "https://dsecure.sg",
+    //     website: "https://D-Secure.sg",
     //     established: "2022"
     //   },
     //   location: {
@@ -776,16 +776,16 @@ function ContactPageContent() {
     //       name: "Michael Chen",
     //       title: "APAC Director",
     //       phone: "+65 6123 4567",
-    //       email: "singapore@dsecure.com",
-    //       directEmail: "michael.chen@dsecure.com"
+    //       email: "singapore@D-Secure.com",
+    //       directEmail: "michael.chen@D-Secure.com"
     //     },
     //     sales: {
     //       phone: "+65 6123 4567",
-    //       email: "sales.apac@dsecure.com"
+    //       email: "sales.apac@D-Secure.com"
     //     },
     //     support: {
     //       phone: "+65 6123 4568",
-    //       email: "support.apac@dsecure.com"
+    //       email: "support.apac@D-Secure.com"
     //     }
     //   },
     //   services: ["Regional Distribution", "Technical Support", "Training"],
@@ -804,7 +804,7 @@ function ContactPageContent() {
           {(filled) => <DollarIcon className="w-6 h-6" filled={filled} />}
         </HoverIcon>
       ),
-      contact: "sales@dsecuretech.com",
+      contact: "sales@D-Securetech.com",
       hours: "9 AM - 6 PM PST",
     },
     {
@@ -815,7 +815,7 @@ function ContactPageContent() {
           {(filled) => <GearIcon className="w-6 h-6" filled={filled} />}
         </HoverIcon>
       ),
-      contact: "support@dsecuretech.com",
+      contact: "support@D-Securetech.com",
       hours: "24/7",
     },
     // {
@@ -826,7 +826,7 @@ function ContactPageContent() {
     //       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 119.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
     //     </svg>
     //   ),
-    //   contact: 'partners@dsecuretech.com',
+    //   contact: 'partners@D-Securetech.com',
     //   hours: '9 AM - 6 PM PST'
     // },
     // {
@@ -837,7 +837,7 @@ function ContactPageContent() {
     //       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
     //     </svg>
     //   ),
-    //   contact: 'press@dsecure.com',
+    //   contact: 'press@D-Secure.com',
     //   hours: '9 AM - 5 PM PST'
     // }
   ];
@@ -1484,7 +1484,7 @@ function ContactPageContent() {
                           href="/privacy-policy"
                           className="text-green-600 hover:underline"
                         >
-                          Dsecure Privacy Policy
+                          D-Secure Privacy Policy
                         </a>
                         .
                       </div>
@@ -1493,7 +1493,7 @@ function ContactPageContent() {
                     <input
                       type="hidden"
                       name="to_email"
-                      value="dhruv.rai@dsecuretech.com"
+                      value="dhruv.rai@D-Securetech.com"
                     />
 
                     <button

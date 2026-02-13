@@ -7,12 +7,12 @@ import { HelpCircle, ChevronRight } from "lucide-react";
 const FAQ: React.FC = () => {
   const faqs = [
     {
-      question: "What does DSecure File Eraser Network do?",
-      answer: "DSecure File Eraser Network is a comprehensive data erasure solution for network environments. It allows IT administrators to permanently erase files, folders, and digital traces from multiple networked computers simultaneously from a central console. The software uses advanced overwriting algorithms to ensure that deleted data cannot be recovered, even with sophisticated data recovery tools."
+      question: "What does D-Secure File Eraser Network do?",
+      answer: "D-Secure File Eraser Network is a comprehensive data erasure solution for network environments. It allows IT administrators to permanently erase files, folders, and digital traces from multiple networked computers simultaneously from a central console. The software uses advanced overwriting algorithms to ensure that deleted data cannot be recovered, even with sophisticated data recovery tools."
     },
     {
-      question: "Does DSecure really remove data beyond recovery?",
-      answer: "Yes, absolutely. When you use DSecure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
+      question: "Does D-Secure really remove data beyond recovery?",
+      answer: "Yes, absolutely. When you use D-Secure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
     },
     {
       question: "Which erasure algorithm should I choose?",
@@ -20,7 +20,7 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Why are administrator credentials required for domain connection?",
-      answer: "Administrator credentials are necessary because DSecure File Eraser Network needs elevated permissions to access remote computers on the network, read their file systems, and perform permanent erasure operations. Only domain administrators have the necessary rights to execute these operations across multiple computers. This security measure prevents unauthorized users from erasing data on network computers."
+      answer: "Administrator credentials are necessary because D-Secure File Eraser Network needs elevated permissions to access remote computers on the network, read their file systems, and perform permanent erasure operations. Only domain administrators have the necessary rights to execute these operations across multiple computers. This security measure prevents unauthorized users from erasing data on network computers."
     },
     {
       question: "Should I check network connection status for all computers?",
@@ -32,7 +32,7 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Can I erase files on non-domain computers?",
-      answer: "DSecure File Eraser Network is specifically designed for domain environments and requires Active Directory integration. For standalone computers not joined to a domain, you would need to use the standalone version of DSecure File Eraser. The network version relies on domain infrastructure for authentication, computer discovery, and remote access."
+      answer: "D-Secure File Eraser Network is specifically designed for domain environments and requires Active Directory integration. For standalone computers not joined to a domain, you would need to use the standalone version of D-Secure File Eraser. The network version relies on domain infrastructure for authentication, computer discovery, and remote access."
     },
     {
       question: "If a computer disconnects after scheduling a task, will the task still run?",
@@ -40,7 +40,7 @@ const FAQ: React.FC = () => {
     },
     {
       question: "How do I activate if my server has no internet connection?",
-      answer: "Use the offline activation method: Generate a Registration ID from the application, email it to techsupport@dsecuretech.com along with your Activation Key, receive a License Key file from support (usually within one business day), and import the License Key file into the application to complete activation. See the Licensing section for detailed step-by-step instructions."
+      answer: "Use the offline activation method: Generate a Registration ID from the application, email it to techsupport@D-Securetech.com along with your Activation Key, receive a License Key file from support (usually within one business day), and import the License Key file into the application to complete activation. See the Licensing section for detailed step-by-step instructions."
     },
     {
       question: "How can I check which licenses are expiring soon?",
@@ -80,21 +80,21 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Can I save multiple reports at once?",
-      answer: "Currently, reports must be saved individually—you cannot batch-export multiple reports in one operation. To save multiple reports, select and save each one separately. Alternatively, you can send reports to DSecure Cloud in batch, which provides centralized storage and management of all your erasure reports."
+      answer: "Currently, reports must be saved individually—you cannot batch-export multiple reports in one operation. To save multiple reports, select and save each one separately. Alternatively, you can send reports to D-Secure Cloud in batch, which provides centralized storage and management of all your erasure reports."
     },
     {
       question: "What should I do if I lose local reports?",
-      answer: "If you've been uploading reports to DSecure Cloud, you can access them from the Cloud Console at any time. If you haven't been using Cloud integration, local reports lost due to database corruption or system failure cannot be recovered. To prevent data loss: regularly back up your MariaDB database, enable DSecure Cloud integration and upload reports regularly, export critical reports to PDF and store in a separate location, and configure automated database backups as part of your IT maintenance routine."
+      answer: "If you've been uploading reports to D-Secure Cloud, you can access them from the Cloud Console at any time. If you haven't been using Cloud integration, local reports lost due to database corruption or system failure cannot be recovered. To prevent data loss: regularly back up your MariaDB database, enable D-Secure Cloud integration and upload reports regularly, export critical reports to PDF and store in a separate location, and configure automated database backups as part of your IT maintenance routine."
     }
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Frequently Asked Questions - DSecure Network File Manual</title>
+        <title>Frequently Asked Questions - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Find answers to commonly asked questions about DSecure File Eraser Network."
+          content="Find answers to commonly asked questions about D-Secure File Eraser Network."
         />
       </Helmet>
 
@@ -106,14 +106,14 @@ const FAQ: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Find answers to the most common questions about DSecure File Eraser Network. If you can't find what you're looking for, contact our support team.
+            Find answers to the most common questions about D-Secure File Eraser Network. If you can't find what you're looking for, contact our support team.
           </p>
         </div>
 
         {/* Introduction */}
         <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-6 mb-8">
           <p className="text-gray-700 leading-relaxed">
-            This FAQ section covers the top 20 questions we receive from DSecure File Eraser Network users. Each answer provides detailed information and links to relevant sections of the manual for more in-depth guidance.
+            This FAQ section covers the top 20 questions we receive from D-Secure File Eraser Network users. Each answer provides detailed information and links to relevant sections of the manual for more in-depth guidance.
           </p>
         </section>
 
@@ -162,7 +162,7 @@ const FAQ: React.FC = () => {
                 Send detailed questions to our technical support team.
               </p>
               <p className="text-blue-600 text-sm font-medium">
-                techsupport@dsecuretech.com
+                techsupport@D-Securetech.com
               </p>
             </div>
 

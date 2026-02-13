@@ -9,10 +9,10 @@ const WorkingWithDSecurePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Working with DSecure File Eraser - Complete User Guide</title>
+        <title>Working with D-Secure File Eraser - Complete User Guide</title>
         <meta 
           name="description" 
-          content="Complete guide to working with DSecure File Eraser including file erasure, free space cleaning, traces cleanup, and software activation."
+          content="Complete guide to working with D-Secure File Eraser including file erasure, free space cleaning, traces cleanup, and software activation."
         />
       </Helmet>
 
@@ -25,7 +25,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                 🚀 User Operations
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Working with DSecure File Eraser
+                Working with D-Secure File Eraser
               </h1>
               <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
                 Complete operational guide covering file erasure, free space cleaning, trace removal, and software activation.
@@ -57,9 +57,9 @@ const WorkingWithDSecurePage: React.FC = () => {
           <Reveal>
             <div className="bg-white rounded-2xl p-8 shadow-lg mb-12">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-slate-900 mb-4">DSecure User Interface</h2>
+                <h2 className="text-3xl font-bold text-slate-900 mb-4">D-Secure User Interface</h2>
                 <p className="text-slate-600 max-w-2xl mx-auto">
-                  The main user interface of <strong>DSecure File Eraser</strong> provides access to all erasure functions through intuitive tabs and buttons.
+                  The main user interface of <strong>D-Secure File Eraser</strong> provides access to all erasure functions through intuitive tabs and buttons.
                 </p>
               </div>
               
@@ -73,7 +73,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                       <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
                       <div className="w-3 h-3 bg-green-400 rounded-full"></div>
                     </div>
-                    <h4 className="font-medium text-slate-700">DSecure File Eraser - Complete</h4>
+                    <h4 className="font-medium text-slate-700">D-Secure File Eraser - Complete</h4>
                     <div className="w-16"></div>
                   </div>
                   
@@ -277,7 +277,7 @@ const WorkingWithDSecurePage: React.FC = () => {
               
               <div className="mb-6">
                 <p className="text-slate-600 mb-4">
-                  DSecure File Eraser is a powerful software designed to securely erase files/folders from your hard drive. You can select and delete 
+                  D-Secure File Eraser is a powerful software designed to securely erase files/folders from your hard drive. You can select and delete 
                   multiple files/folders simultaneously using a range of algorithms to achieve maximum security.
                 </p>
                 <div className="bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded">
@@ -291,7 +291,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                 {/* Step 1: Run Software */}
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-3">Step 1: Launch DSecure</h3>
+                    <h3 className="text-lg font-bold text-slate-900 mb-3">Step 1: Launch D-Secure</h3>
                     <p className="text-slate-600 mb-4">
                       Select <strong>Erase Files & Folders</strong> from Select Option displayed on the left pane of the screen.
                     </p>
@@ -434,7 +434,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                           <span className="text-emerald-600 font-bold text-sm">1</span>
                         </div>
                         <div>
-                          <p className="text-slate-700">Run <strong>DSecure File Eraser</strong></p>
+                          <p className="text-slate-700">Run <strong>D-Secure File Eraser</strong></p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -489,7 +489,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 mb-3">Activation Success</h3>
                     <p className="text-slate-600 mb-4">
-                      A message <strong>"DSecure File Eraser Activated Successfully"</strong> is displayed after the process is completed successfully.
+                      A message <strong>"D-Secure File Eraser Activated Successfully"</strong> is displayed after the process is completed successfully.
                     </p>
                     <div className="space-y-2">
                       <p className="text-slate-700 font-medium">After successful activation:</p>
@@ -508,7 +508,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                         </svg>
                       </div>
                       <h4 className="font-bold text-slate-900 mb-2">Activation</h4>
-                      <p className="text-emerald-600 text-sm font-medium mb-4">DSecure File Eraser Activated Successfully!</p>
+                      <p className="text-emerald-600 text-sm font-medium mb-4">D-Secure File Eraser Activated Successfully!</p>
                       <button className="bg-emerald-500 text-white px-6 py-2 rounded font-medium">OK</button>
                     </div>
                   </div>
@@ -568,7 +568,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Ready to Start Erasing!</h3>
                 <p className="text-blue-100 mb-6">
-                  You're now ready to use DSecure File Eraser for secure data deletion operations.
+                  You're now ready to use D-Secure File Eraser for secure data deletion operations.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link

@@ -43,7 +43,7 @@ const DownloadInstallerPage: React.FC = memo(() => {
                     <div className="bg-blue-50 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-blue-900 mb-3">Official Download Sources</h3>
                       <ul className="space-y-2 text-blue-800">
-                        <li>• D-Secure official website: dsecuretech.com</li>
+                        <li>• D-Secure official website: D-Securetech.com</li>
                         <li>• Customer portal download section</li>
                         <li>• Email link from purchase confirmation</li>
                         <li>• Authorized reseller portals</li>

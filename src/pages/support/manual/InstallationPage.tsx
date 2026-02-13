@@ -212,7 +212,7 @@ const InstallationPage: React.FC = memo(() => {
       <Helmet>
         <link
           rel="canonical"
-          href="https://dsecuretech.com/support/installation"
+          href="https://D-Securetech.com/support/installation"
         />
         <title>Installation Guide | D-Secure Setup & Configuration</title>
         <meta
@@ -731,7 +731,7 @@ const InstallationPage: React.FC = memo(() => {
                     Contact Installation Support
                   </Link>
                   <a
-                    href="mailto:install-support@dsecuretech.com"
+                    href="mailto:install-support@D-Securetech.com"
                     className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 inline-flex items-center justify-center text-sm sm:text-base"
                   >
                     Email Installation Team

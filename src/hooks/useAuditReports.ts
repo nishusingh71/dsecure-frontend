@@ -118,28 +118,32 @@ export function useEnhancedAuditReports(userEmail?: string, enabled: boolean = t
 
       const reports = response.data
 
-      // Fetch device count for each report in parallel
-      const reportsWithDeviceCount = await Promise.all(
-        reports.map(async (report: AuditReport) => {
-          try {
-            const machinesRes = await apiClient.getMachinesByEmail(report.user_email)
-            const deviceCount = machinesRes.success && machinesRes.data
-              ? machinesRes.data.length
-              : 0
+      // Optimization: Extract unique user emails to avoid N+1 API calls (Refactored)
+      // If all reports belong to the same user, this reduces N calls to 1 call
+      const uniqueEmails = [...new Set(reports.map((r: AuditReport) => r.user_email))];
 
-            return {
-              ...report,
-              deviceCount
-            }
+      // Fetch machines for each unique email in parallel
+      const machinesMap = new Map<string, number>();
+
+      await Promise.all(
+        uniqueEmails.map(async (email) => {
+          if (!email) return;
+          try {
+            const machinesRes = await apiClient.getMachinesByEmail(email as string);
+            const count = machinesRes.success && machinesRes.data ? machinesRes.data.length : 0;
+            machinesMap.set(email as string, count);
           } catch (error) {
-            console.warn(`⚠️ Failed to fetch machines for ${report.user_email}:`, error)
-            return {
-              ...report,
-              deviceCount: 0
-            }
+            console.warn(`⚠️ Failed to fetch machines for ${email}:`, error);
+            machinesMap.set(email as string, 0);
           }
         })
-      )
+      );
+
+      // Map device counts back to reports
+      const reportsWithDeviceCount = reports.map((report: AuditReport) => ({
+        ...report,
+        deviceCount: machinesMap.get(report.user_email) || 0
+      }));
 
       return reportsWithDeviceCount
     },

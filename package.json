@@ -1,5 +1,5 @@
 {
-  "name": "dsecure-frontend",
+  "name": "D-Secure-frontend",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "verify-assets": "node scripts/verify-assets.js",
     "cloudinary:setup": "echo 'Run: npm run test-cloudinary' && echo 'Then: npm run upload-assets' && echo 'Finally: Set VITE_CLOUDINARY_CLOUD_NAME in your Vercel environment variables'",
     "update-sitemap": "node scripts/update-sitemap.js",
-    "seo:check": "echo 'SEO Status Check...' && echo 'Sitemap: https://www.dsecuretech.com/sitemap.xml' && echo 'Robots: https://www.dsecuretech.com/robots.txt'",
+    "seo:check": "echo 'SEO Status Check...' && echo 'Sitemap: https://www.D-Securetech.com/sitemap.xml' && echo 'Robots: https://www.D-Securetech.com/robots.txt'",
     "analytics:verify": "echo 'Analytics Verification...' && echo 'GA4: G-6B20XY3K81' && echo 'Clarity: tkbibktdah'",
     "test": "vitest",
     "test:run": "vitest run"
@@ -26,6 +26,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^5.90.5",
     "@types/crypto-js": "^4.2.2",
+    "@types/leaflet": "^1.9.21",
     "@vitejs/plugin-rsc": "^0.5.5",
     "axios": "^1.12.2",
     "better-auth": "^1.4.9",
@@ -36,12 +37,14 @@
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.24",
+    "html2pdf.js": "^0.14.0",
     "i18next": "^25.6.0",
     "i18next-browser-languagedetector": "^8.2.0",
     "jspdf": "^4.0.0",
     "jspdf-autotable": "^5.0.2",
     "jszip": "^3.10.1",
     "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
     "lint": "^1.1.2",
     "lucide-react": "^0.548.0",
     "pako": "^2.1.0",
@@ -51,11 +54,13 @@
     "react-i18next": "^16.2.2",
     "react-intersection-observer": "^9.16.0",
     "react-is": "^19.2.3",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^6.26.2",
     "recharts": "^3.3.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^7.0.2",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^24.6.0",
     "@types/pako": "^2.0.4",
@@ -66,9 +71,12 @@
     "baseline-browser-mapping": "^2.8.29",
     "dotenv": "^17.2.3",
     "postcss": "^8.4.47",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^3.4.14",
+    "terser": "^5.46.0",
     "typescript": "^5.6.2",
     "vite": "^7.2.2",
+    "vite-plugin-compression": "^0.5.1",
     "vitest": "^4.0.15"
   }
 }

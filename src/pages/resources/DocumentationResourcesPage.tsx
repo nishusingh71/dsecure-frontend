@@ -104,7 +104,7 @@ function DocumentationResourcesContent() {
       title: "Google Drive Erasure Setup",
       description: "Secure Google Drive data erasure configuration and usage",
       steps: [
-        "Install DSecure extension",
+        "Install D-Secure extension",
         "Configure erasure settings",
         "Connect to Google Drive",
         "Execute secure erasure",
@@ -171,7 +171,7 @@ function DocumentationResourcesContent() {
               <Reveal delayMs={20}>
                 <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-3xl mx-auto">
                   Comprehensive technical documentation and user guides to help
-                  you implement and optimize DSecure data erasure solutions.
+                  you implement and optimize D-Secure data erasure solutions.
                 </p>
               </Reveal>
               <Reveal delayMs={30}>
@@ -394,7 +394,7 @@ function DocumentationResourcesContent() {
             <Reveal delayMs={10}>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
                 Our technical team is ready to help you implement and optimize
-                DSecure solutions for your specific requirements.
+                D-Secure solutions for your specific requirements.
               </p>
             </Reveal>
             <Reveal delayMs={20}>

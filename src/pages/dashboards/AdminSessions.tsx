@@ -1,4 +1,4 @@
-﻿import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { exportToCsv } from '@/utils/csv'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -19,13 +19,13 @@ export default function AdminSessions() {
   const [levelFilter, setLevelFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [dateFilter, setDateFilter] = useState('')
-  const [emailFilter, setEmailFilter] = useState<'all' | 'by-email'>('all') // ✅ Default to ALL logs
+  const [emailFilter, setEmailFilter] = useState<'all' | 'by-email'>('all') // ? Default to ALL logs
   const [subuserFilter, setSubuserFilter] = useState<string>('') // "" = my logs, email = subuser's logs, "all" = all users
   const [groupFilter, setGroupFilter] = useState<string>('') // Group filter
   const [departmentFilter, setDepartmentFilter] = useState<string>('') // Department filter
   const [showDetails, setShowDetails] = useState<number | null>(null)
 
-  // ✅ Get current user email for API calls
+  // ? Get current user email for API calls
   const getUserEmail = (): string => {
     const storedUser = localStorage.getItem('user_data');
     const authUser = localStorage.getItem('authUser');
@@ -54,10 +54,10 @@ export default function AdminSessions() {
   const currentUserEmail = getUserEmail();
   const isDemo = isDemoMode();
 
-  // ✅ Fetch subusers for filter dropdown
+  // ? Fetch subusers for filter dropdown
   const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
 
-  // ✅ Get user role - Only admin and superadmin can see "All Logs" filter
+  // ? Get user role - Only admin and superadmin can see "All Logs" filter
   const getUserRole = (): string => {
     const storedUser = localStorage.getItem('user_data')
     const authUser = localStorage.getItem('authUser')
@@ -85,7 +85,7 @@ export default function AdminSessions() {
   const currentUserRole = getUserRole()
   const canViewAllLogs = currentUserRole === 'admin' || currentUserRole === 'superadmin'
 
-  // ✅ Cache Helper Functions
+  // ? Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
   const getCachedData = (key: string) => {
@@ -94,13 +94,13 @@ export default function AdminSessions() {
       if (cached) {
         const { data, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          // console.log(`✅ Using cached data for ${key}`);
+          // console.log(`? Using cached data for ${key}`);
           return data;
         }
         localStorage.removeItem(`admin_cache_${key}`);
       }
     } catch (e) {
-      console.warn(`⚠️ Cache read error for ${key}:`, e);
+      console.warn(`?? Cache read error for ${key}:`, e);
     }
     return null;
   };
@@ -111,9 +111,9 @@ export default function AdminSessions() {
         data,
         timestamp: Date.now()
       }));
-      // console.log(`💾 Cached data for ${key}`);
+      // console.log(`?? Cached data for ${key}`);
     } catch (e) {
-      console.warn(`⚠️ Cache write error for ${key}:`, e);
+      console.warn(`?? Cache write error for ${key}:`, e);
     }
   };
 
@@ -135,9 +135,9 @@ export default function AdminSessions() {
     setLoading(true)
     const startTime = performance.now()
 
-    // ✅ DEMO MODE: Return static data instead of API calls
+    // ? DEMO MODE: Return static data instead of API calls
     if (isDemoMode()) {
-      // console.log('🎭 DEMO MODE - Loading static demo data for AdminLogs');
+      // console.log('?? DEMO MODE - Loading static demo data for AdminLogs');
       let demoLogs = DEMO_SYSTEM_LOGS as any;
       let demoCmds = DEMO_COMMANDS as any;
       let demoSess = DEMO_SESSIONS as any;
@@ -156,24 +156,24 @@ export default function AdminSessions() {
       return;
     }
 
-    // ✅ Determine which email to fetch data for based on subuserFilter
+    // ? Determine which email to fetch data for based on subuserFilter
     const targetEmail = subuserFilter && subuserFilter !== 'all'
       ? subuserFilter
       : currentUserEmail;
 
-    // ✅ Use dynamic cache keys based on emailFilter and subuserFilter
+    // ? Use dynamic cache keys based on emailFilter and subuserFilter
     const cacheKeySuffix = `${emailFilter}_${subuserFilter || 'self'}`;
     const cachedLogs = getCachedData(`logs_${cacheKeySuffix}`);
     const cachedCommands = getCachedData(`commands_${cacheKeySuffix}`);
     const cachedSessions = getCachedData(`sessions_${cacheKeySuffix}`);
 
     if (cachedLogs && cachedCommands && cachedSessions) {
-      // console.log(`⚡ Displaying cached data for filter: ${cacheKeySuffix}`);
+      // console.log(`? Displaying cached data for filter: ${cacheKeySuffix}`);
       setSystemLogs(cachedLogs);
       setCommands(cachedCommands);
       setSessions(cachedSessions);
       setLoading(false);
-      // console.log(`⏱️ Cache load time: ${(performance.now() - startTime).toFixed(2)}ms`);
+      // console.log(`?? Cache load time: ${(performance.now() - startTime).toFixed(2)}ms`);
       return; // Skip API call if all data is cached for this filter
     }
 
@@ -186,10 +186,10 @@ export default function AdminSessions() {
         return
       }
 
-      // console.log('📊 Fetching logs, commands, and sessions for:', userEmail)
-      // console.log('🔍 Filter mode:', emailFilter)
+      // console.log('?? Fetching logs, commands, and sessions for:', userEmail)
+      // console.log('?? Filter mode:', emailFilter)
 
-      // ⚡ PARALLEL API CALLS - Much faster than sequential
+      // ? PARALLEL API CALLS - Much faster than sequential
       const [logsRes, commandsRes, sessionsRes] = await Promise.all([
         emailFilter === 'by-email'
           ? apiClient.getSystemLogsByEmail(userEmail)
@@ -208,7 +208,7 @@ export default function AdminSessions() {
       if (logsRes.success && logsRes.data) {
         setSystemLogs(logsRes.data)
         setCachedData(`logs_${cacheKey}`, logsRes.data);
-        // console.log('✅ Logs loaded:', logsRes.data.length)
+        // console.log('? Logs loaded:', logsRes.data.length)
       } else {
         setSystemLogs([])
       }
@@ -216,7 +216,7 @@ export default function AdminSessions() {
       if (commandsRes.success && commandsRes.data) {
         setCommands(commandsRes.data)
         setCachedData(`commands_${cacheKey}`, commandsRes.data);
-        // console.log('✅ Commands loaded:', commandsRes.data.length)
+        // console.log('? Commands loaded:', commandsRes.data.length)
       } else {
         setCommands([])
       }
@@ -224,16 +224,16 @@ export default function AdminSessions() {
       if (sessionsRes.success && sessionsRes.data) {
         setSessions(sessionsRes.data)
         setCachedData(`sessions_${cacheKey}`, sessionsRes.data);
-        // console.log('✅ Sessions loaded:', sessionsRes.data.length)
+        // console.log('? Sessions loaded:', sessionsRes.data.length)
       } else {
         setSessions([])
       }
 
       const loadTime = (performance.now() - startTime).toFixed(2)
-      // console.log(`⏱️ Total API load time: ${loadTime}ms`)
+      // console.log(`?? Total API load time: ${loadTime}ms`)
 
     } catch (error) {
-      console.error('❌ Error loading data:', error)
+      console.error('? Error loading data:', error)
       showError('Data Loading Error', 'Failed to load system logs data')
     } finally {
       setLoading(false)
@@ -242,7 +242,7 @@ export default function AdminSessions() {
 
 
 
-  // ⚡ Optimized filtering with early returns and case-insensitive search
+  // ? Optimized filtering with early returns and case-insensitive search
   const filteredLogs = useMemo(() => {
     const lowerQuery = query.toLowerCase()
     let result = systemLogs
@@ -302,7 +302,7 @@ export default function AdminSessions() {
   }, [sessions, query, statusFilter, dateFilter])
 
   // Get current tab data
-  // ⚡ Optimized data selection - only calculate what's needed
+  // ? Optimized data selection - only calculate what's needed
   const currentData = useMemo(() => {
     switch (activeTab) {
       case 'logs': return filteredLogs
@@ -311,7 +311,7 @@ export default function AdminSessions() {
     }
   }, [activeTab, filteredLogs, filteredCommands, filteredSessions])
 
-  // ⚡ Only calculate unique values when tab is active
+  // ? Only calculate unique values when tab is active
   const uniqueLevels = useMemo(() => {
     if (activeTab !== 'logs') return []
     return [...new Set(systemLogs.map(log => log.log_level).filter(Boolean))]
@@ -338,7 +338,7 @@ export default function AdminSessions() {
     setLevelFilter('')
     setStatusFilter('')
     setDateFilter('')
-    setEmailFilter('all') // ✅ Reset to ALL logs
+    setEmailFilter('all') // ? Reset to ALL logs
     setSubuserFilter('') // Reset subuser filter
     setGroupFilter('') // Reset group filter
     setDepartmentFilter('') // Reset department filter
@@ -374,7 +374,7 @@ export default function AdminSessions() {
     return 'bg-gray-100 text-gray-800'
   }
 
-  // ⚡ Memoized date formatting with cache
+  // ? Memoized date formatting with cache
   const dateCache = useMemo(() => new Map<string, string>(), [])
 
   const formatDate = (dateString: string) => {
@@ -398,7 +398,7 @@ export default function AdminSessions() {
     return formatted
   }
 
-  // ⚡ Memoized JSON parsing cache to avoid re-parsing on every render
+  // ? Memoized JSON parsing cache to avoid re-parsing on every render
   const jsonCache = useMemo(() => new Map<string, any>(), [])
 
   const parseJsonDetails = (jsonString: string) => {
@@ -445,8 +445,8 @@ export default function AdminSessions() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/sessions" />
-        <title>DSecureTech Admin Logs | System Activity & Security Monitoring</title>
+        <link rel="canonical" href="https://D-Securetech.com/admin/sessions" />
+        <title>D-SecureTech Admin Logs | System Activity & Security Monitoring</title>
         <meta
           name="description"
           content="Monitor system activity, commands, and user sessions with comprehensive logging and filtering capabilities."

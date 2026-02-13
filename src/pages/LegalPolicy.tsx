@@ -125,8 +125,8 @@ const LegalPolicy: React.FC = () => {
                         <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                         <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                       </svg>
-                      <a href="mailto:legal@dsecuretech.com" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
-                        legal@dsecuretech.com
+                      <a href="mailto:legal@D-Securetech.com" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
+                        legal@D-Securetech.com
                       </a>
                     </div>
                     <div className="flex items-start gap-2">

@@ -6,10 +6,10 @@ const CloudIntegration: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Cloud Integration - DSecure Network File Manual</title>
+        <title>Cloud Integration - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Connect to DSecure Cloud to centrally store and manage erasure reports, access them from anywhere, and ensure data compliance."
+          content="Connect to D-Secure Cloud to centrally store and manage erasure reports, access them from anywhere, and ensure data compliance."
         />
       </Helmet>
 
@@ -18,10 +18,10 @@ const CloudIntegration: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <Cloud className="w-8 h-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-gray-900">DSecure Cloud Integration</h1>
+            <h1 className="text-4xl font-bold text-gray-900">D-Secure Cloud Integration</h1>
           </div>
           <p className="text-xl text-gray-600">
-            Connect to DSecure Cloud for centralized report storage, remote access, and enhanced data management capabilities.
+            Connect to D-Secure Cloud for centralized report storage, remote access, and enhanced data management capabilities.
           </p>
         </div>
 
@@ -29,7 +29,7 @@ const CloudIntegration: React.FC = () => {
         <section className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl p-8 mb-8 text-white">
           <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
             <Globe className="w-6 h-6" />
-            Why Use DSecure Cloud?
+            Why Use D-Secure Cloud?
           </h2>
           <div className="grid md:grid-cols-2 gap-4 text-lg">
             <div className="bg-white/10 rounded-lg p-4">
@@ -55,7 +55,7 @@ const CloudIntegration: React.FC = () => {
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
             <span className="w-1.5 h-8 bg-blue-600 rounded"></span>
-            How to Connect to DSecure Cloud
+            How to Connect to D-Secure Cloud
           </h2>
           
           <div className="space-y-5 text-lg">
@@ -72,7 +72,7 @@ const CloudIntegration: React.FC = () => {
                 <span className="shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold flex items-center justify-center mt-0.5">2</span>
                 <div>
                   <strong className="text-gray-900">Enter Credentials</strong>
-                  <p className="text-gray-700 mt-1">Provide your DSecure Cloud credentials:</p>
+                  <p className="text-gray-700 mt-1">Provide your D-Secure Cloud credentials:</p>
                   <div className="mt-3 space-y-2">
                     <div className="bg-blue-50 rounded-lg p-3">
                       <strong className="text-gray-900">User ID:</strong>
@@ -80,7 +80,7 @@ const CloudIntegration: React.FC = () => {
                     </div>
                     <div className="bg-blue-50 rounded-lg p-3">
                       <strong className="text-gray-900">Password:</strong>
-                      <p className="text-sm text-gray-600 mt-1">Your DSecure Cloud account password</p>
+                      <p className="text-sm text-gray-600 mt-1">Your D-Secure Cloud account password</p>
                     </div>
                     <div className="bg-blue-50 rounded-lg p-3">
                       <strong className="text-gray-900">Cloud URL:</strong>
@@ -104,7 +104,7 @@ const CloudIntegration: React.FC = () => {
                   <strong className="text-gray-900">Verify Connection</strong>
                   <p className="text-gray-700 mt-1">Status will change to <span className="text-green-600 font-semibold">Connected</span></p>
                   <div className="mt-2 bg-green-50 border border-green-200 rounded-lg p-3 text-sm">
-                    ✓ A green checkmark indicates successful connection to DSecure Cloud
+                    ✓ A green checkmark indicates successful connection to D-Secure Cloud
                   </div>
                 </div>
               </li>
@@ -121,7 +121,7 @@ const CloudIntegration: React.FC = () => {
           
           <div className="space-y-5 text-lg">
             <p className="text-gray-700 leading-relaxed">
-              After connecting to DSecure Cloud, you can upload erasure reports for centralized storage and compliance.
+              After connecting to D-Secure Cloud, you can upload erasure reports for centralized storage and compliance.
             </p>
 
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200 p-6">
@@ -172,12 +172,12 @@ const CloudIntegration: React.FC = () => {
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
             <Download className="w-7 h-7 text-purple-600" />
-            Accessing DSecure Cloud Console
+            Accessing D-Secure Cloud Console
           </h2>
           
           <div className="space-y-5 text-lg">
             <p className="text-gray-700 leading-relaxed">
-              The DSecure Cloud Console is a web-based interface where you can view, manage, and download all your uploaded reports from any location.
+              The D-Secure Cloud Console is a web-based interface where you can view, manage, and download all your uploaded reports from any location.
             </p>
 
             <div className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-200 p-6">
@@ -231,7 +231,7 @@ const CloudIntegration: React.FC = () => {
             <div className="border border-purple-200 rounded-lg p-4 bg-purple-50/30">
               <h4 className="font-semibold text-gray-900 mb-2">How to Access</h4>
               <p className="text-gray-700">
-                Log in to the DSecure Cloud Console at <code className="bg-purple-100 px-2 py-1 rounded text-sm">cloud.dsecure.com</code> using your DSecure Cloud credentials.
+                Log in to the D-Secure Cloud Console at <code className="bg-purple-100 px-2 py-1 rounded text-sm">cloud.D-Secure.com</code> using your D-Secure Cloud credentials.
               </p>
             </div>
           </div>
@@ -251,7 +251,7 @@ const CloudIntegration: React.FC = () => {
                   <Lock className="w-5 h-5 text-red-600" />
                   Encrypted Transfer
                 </h3>
-                <p className="text-gray-700">All data is encrypted using TLS/SSL during transmission to DSecure Cloud</p>
+                <p className="text-gray-700">All data is encrypted using TLS/SSL during transmission to D-Secure Cloud</p>
               </div>
 
               <div className="border border-red-200 rounded-lg p-4 bg-red-50/30">

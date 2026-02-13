@@ -165,9 +165,9 @@ const WindowsSystemsPage: React.FC = memo(() => {
       subsections: [
         {
           id: 51,
-          title: "DSecure Windows Eraser",
+          title: "D-Secure Windows Eraser",
           description: "Specialized tool for comprehensive Windows erasure",
-          url: "/support/manual/windows-dsecure-eraser",
+          url: "/support/manual/windows-D-Secure-eraser",
           pageCount: 2,
         },
         {
@@ -309,7 +309,7 @@ const WindowsSystemsPage: React.FC = memo(() => {
       <Helmet>
         <link
           rel="canonical"
-          href="https://dsecuretech.com/support/windows-systems"
+          href="https://D-Securetech.com/support/windows-systems"
         />
         <title>
           Windows Systems Data Erasure | Windows 10/11 Secure Wipe Guide

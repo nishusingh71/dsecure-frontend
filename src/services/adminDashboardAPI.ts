@@ -1,7 +1,7 @@
-﻿// API Service for Admin Dashboard
+// API Service for Admin Dashboard
 // This file contains all API endpoints and data fetching logic for the admin dashboard
-// ✅ Updated to use apiClient with automatic decryption interceptor
-// 🔒 PII-Safe Refactor: Email is never sent in URL parameters, only in Base64-encoded headers
+// ? Updated to use apiClient with automatic decryption interceptor
+// ?? PII-Safe Refactor: Email is never sent in URL parameters, only in Base64-encoded headers
 
 import { Subuser } from "@/types/models"
 import { api } from "@/utils/apiClient"
@@ -150,7 +150,7 @@ interface Report {
 // API Configuration
 const API_BASE_URL = ENV.API_BASE_URL
 
-// ✅ Generic API call function using axios with automatic decryption
+// ? Generic API call function using axios with automatic decryption
 // The `api` instance from apiClient.ts has an interceptor that automatically
 // decrypts encrypted responses from the .NET backend
 async function apiCall<T>(endpoint: string, options?: { method?: string; body?: string; headers?: Record<string, string> }): Promise<ApiResponse<T>> {
@@ -223,7 +223,7 @@ export class AdminDashboardAPI {
     }
 
     try {
-      console.log('🔍 Calling UserActivity API with email:', userEmail);
+      console.log('?? Calling UserActivity API with email:', userEmail);
 
       const response = await apiCall<{
         success: boolean;
@@ -244,10 +244,10 @@ export class AdminDashboardAPI {
         }>;
       }>(`/api/UserActivity/user-subusers-activity/${encodeEmail(userEmail)}`);
 
-      console.log('📥 UserActivity API raw response:', response);
+      console.log('?? UserActivity API raw response:', response);
 
       if (!response.success || !response.data) {
-        console.warn('⚠️ UserActivity API failed or no data:', response);
+        console.warn('?? UserActivity API failed or no data:', response);
         return {
           success: false,
           data: [],
@@ -255,8 +255,8 @@ export class AdminDashboardAPI {
         };
       }
 
-      console.log('👥 Subusers count:', response.data.subusers?.length || 0);
-      console.log('👥 Subusers data:', response.data.subusers);
+      console.log('?? Subusers count:', response.data.subusers?.length || 0);
+      console.log('?? Subusers data:', response.data.subusers);
 
       // Transform backend response to UI format
       const transformedData: UserActivity[] = response.data.subusers.map(subuser => ({
@@ -284,14 +284,14 @@ export class AdminDashboardAPI {
         status: (subuser.calculated_status === 'online' ? 'active' : 'offline') as 'active' | 'offline'
       }));
 
-      console.log('✅ Transformed UserActivity data:', transformedData);
+      console.log('? Transformed UserActivity data:', transformedData);
 
       return {
         success: true,
         data: transformedData
       };
     } catch (error: any) {
-      console.error('❌ UserActivity API error:', error);
+      console.error('? UserActivity API error:', error);
       return {
         success: false,
         data: [],
@@ -316,7 +316,7 @@ export class AdminDashboardAPI {
   }
 
   // Get admin profile - Fetch from backend using user email
-  // ✅ Updated to use axios api with automatic decryption
+  // ? Updated to use axios api with automatic decryption
   static async getAdminProfile(): Promise<ApiResponse<ProfileData>> {
     try {
       // Get user email from stored user data
@@ -337,13 +337,13 @@ export class AdminDashboardAPI {
         throw new Error('User email not found in stored data');
       }
 
-      // console.log('🔍 Fetching profile for email:', userEmail);
+      // console.log('?? Fetching profile for email:', userEmail);
 
-      // ✅ Use axios api instance with automatic decryption
+      // ? Use axios api instance with automatic decryption
       const response = await api.get(`/api/Users/${encodeEmail(userEmail)}`);
       const data = response.data;
 
-      // console.log('✅ Profile data received:', data);
+      // console.log('? Profile data received:', data);
 
       // Transform backend data to ProfileData format
       // Priority: userRole (camelCase) > user_role > user_type > role
@@ -369,7 +369,7 @@ export class AdminDashboardAPI {
       };
 
     } catch (error: any) {
-      // console.error('❌ Error fetching profile:', error);
+      // console.error('? Error fetching profile:', error);
       return {
         success: false,
         data: {} as ProfileData,
@@ -379,7 +379,7 @@ export class AdminDashboardAPI {
   }
 
   // Update admin profile - Update backend using user email
-  // ✅ Updated to use axios api with automatic decryption
+  // ? Updated to use axios api with automatic decryption
   static async updateAdminProfile(profileData: Partial<ProfileData>): Promise<ApiResponse<ProfileData>> {
     try {
       // Get user email from stored user data or profileData
@@ -400,7 +400,7 @@ export class AdminDashboardAPI {
         throw new Error('User email not found');
       }
 
-      // console.log('🔄 Updating profile for email:', userEmail);
+      // console.log('?? Updating profile for email:', userEmail);
 
       // Transform ProfileData to backend format
       const backendData = {
@@ -412,10 +412,10 @@ export class AdminDashboardAPI {
         user_type: profileData.role
       };
 
-      // ✅ Use axios api instance with automatic decryption
+      // ? Use axios api instance with automatic decryption
       const response = await api.put(`/api/Users/${encodeEmail(userEmail)}`, backendData);
       const data = response.data;
-      // console.log('✅ Profile updated successfully:', data);
+      // console.log('? Profile updated successfully:', data);
 
       // Transform response back to ProfileData format
       // Priority: userRole (camelCase) > user_role > user_type > role
@@ -453,7 +453,7 @@ export class AdminDashboardAPI {
       };
 
     } catch (error) {
-      // console.error('❌ Error updating profile:', error);
+      // console.error('? Error updating profile:', error);
       return {
         success: false,
         data: {} as ProfileData,

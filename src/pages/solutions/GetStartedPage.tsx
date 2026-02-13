@@ -28,9 +28,9 @@ const GetStartedPage: React.FC = memo(() => {
       difficulty: "Easy",
       estimatedTime: "15-30 minutes",
       steps: [
-        "Download and install DSecure for Windows",
+        "Download and install D-Secure for Windows",
         "Close all running applications and save important data",
-        "Launch DSecure with administrator privileges",
+        "Launch D-Secure with administrator privileges",
         "Select drives or partitions to wipe",
         "Choose erasure method (Quick, DoD, or Custom)",
         "Review settings and start the erasure process",
@@ -52,9 +52,9 @@ const GetStartedPage: React.FC = memo(() => {
       difficulty: "Medium",
       estimatedTime: "20-45 minutes",
       steps: [
-        "Download DSecure for Mac from official website",
+        "Download D-Secure for Mac from official website",
         "Disable FileVault if currently enabled",
-        "Boot from DSecure USB drive or run from macOS",
+        "Boot from D-Secure USB drive or run from macOS",
         "Authenticate with administrator credentials",
         "Select target drives and erasure parameters",
         "Configure T2/M1 security chip settings",
@@ -77,7 +77,7 @@ const GetStartedPage: React.FC = memo(() => {
       estimatedTime: "1-4 hours",
       steps: [
         "Schedule maintenance window and notify stakeholders",
-        "Deploy DSecure Enterprise across server infrastructure",
+        "Deploy D-Secure Enterprise across server infrastructure",
         "Inventory all storage devices and RAID configurations",
         "Configure parallel erasure jobs for multiple drives",
         "Set compliance standards (NIST 800-88, Common Criteria)",
@@ -101,7 +101,7 @@ const GetStartedPage: React.FC = memo(() => {
       estimatedTime: "10-20 minutes",
       steps: [
         "Connect mobile device to computer with USB cable",
-        "Install DSecure Mobile Edition or use cloud service",
+        "Install D-Secure Mobile Edition or use cloud service",
         "Authenticate device access and enable debugging mode",
         "Select erasure scope (user data, system, or complete)",
         "Choose overwrite patterns suitable for flash memory",
@@ -165,7 +165,7 @@ const GetStartedPage: React.FC = memo(() => {
                   Quick Start in 3 Steps
                 </h2>
                 <p className="text-xl text-slate-700 max-w-2xl mx-auto">
-                  Get up and running with DSecure in minutes
+                  Get up and running with D-Secure in minutes
                 </p>
               </div>
             </Reveal>
@@ -349,7 +349,7 @@ const GetStartedPage: React.FC = memo(() => {
                   Additional Resources
                 </h2>
                 <p className="text-xl text-slate-700 max-w-2xl mx-auto">
-                  Explore more guides and tools to master DSecure
+                  Explore more guides and tools to master D-Secure
                 </p>
               </div>
             </Reveal>
@@ -357,8 +357,8 @@ const GetStartedPage: React.FC = memo(() => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: "Download DSecure",
-                  description: "Get the latest version of DSecure for your operating system",
+                  title: "Download D-Secure",
+                  description: "Get the latest version of D-Secure for your operating system",
                   icon: "⬇️",
                   url: "/download",
                   color: "bg-blue-500"

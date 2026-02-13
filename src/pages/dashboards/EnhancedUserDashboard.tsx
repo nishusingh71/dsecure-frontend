@@ -93,11 +93,11 @@ export default function EnhancedUserDashboard() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/user/dashboard" />
-        <title>User Dashboard - DSecure Tech | Data Erasure Management</title>
+        <link rel="canonical" href="https://D-Securetech.com/user/dashboard" />
+        <title>User Dashboard - D-Secure Tech | Data Erasure Management</title>
         <meta
           name="description"
-          content="Access your DSecure Tech user dashboard to manage data erasure tasks, view certificates, and monitor system performance."
+          content="Access your D-Secure Tech user dashboard to manage data erasure tasks, view certificates, and monitor system performance."
         />
         <meta
           name="keywords"

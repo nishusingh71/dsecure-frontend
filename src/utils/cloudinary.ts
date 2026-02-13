@@ -138,26 +138,26 @@ export const transformations = {
 // Asset mapping - replace local assets with Cloudinary public IDs
 export const assets = {
   logos: {
-    main: 'dsecure/logos/dsecure-logo-black', // Black logo for light backgrounds
-    white: 'dsecure/logos/dsecure-logo-white', // White logo for dark backgrounds (footer)
-    icon: 'dsecure/logos/dsecure-icon', // Just the icon part
-    favicon: 'dsecure/logos/dsecure-favicon' // Favicon version
+    main: 'D-Secure/logos/D-Secure-logo-black', // Black logo for light backgrounds
+    white: 'D-Secure/logos/D-Secure-logo-white', // White logo for dark backgrounds (footer)
+    icon: 'D-Secure/logos/D-Secure-icon', // Just the icon part
+    favicon: 'D-Secure/logos/D-Secure-favicon' // Favicon version
   },
 
   images: {
     // Add your other images here as you upload them to Cloudinary
-    heroBackground: 'dsecure/images/hero-bg',
-    aboutImage: 'dsecure/images/about',
-    featureImage1: 'dsecure/images/feature-1',
-    featureImage2: 'dsecure/images/feature-2',
+    heroBackground: 'D-Secure/images/hero-bg',
+    aboutImage: 'D-Secure/images/about',
+    featureImage1: 'D-Secure/images/feature-1',
+    featureImage2: 'D-Secure/images/feature-2',
     // Add more as needed
   },
 
   icons: {
     // SVG icons can also be stored in Cloudinary
-    security: 'dsecure/icons/security',
-    compliance: 'dsecure/icons/compliance',
-    performance: 'dsecure/icons/performance'
+    security: 'D-Secure/icons/security',
+    compliance: 'D-Secure/icons/compliance',
+    performance: 'D-Secure/icons/performance'
   }
 }
 

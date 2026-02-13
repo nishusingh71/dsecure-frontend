@@ -88,7 +88,7 @@ const NewErasurePage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>New Erasure Process | DSecure Dashboard</title>
+        <title>New Erasure Process | D-Secure Dashboard</title>
         <meta name="description" content="Start a new secure data erasure process" />
       </Helmet>
 

@@ -5,11 +5,11 @@ export default function AdminShell() {
   return (
     <>
       <Helmet>
-        +      <link rel="canonical" href="https://dsecuretech.com/admin" />
-        <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
+        +      <link rel="canonical" href="https://D-Securetech.com/admin" />
+        <title>D-SecureTech Compliance | Data Erasure Standards & Regulations</title>
         <meta
           name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
         />
         <meta
           name="keywords"

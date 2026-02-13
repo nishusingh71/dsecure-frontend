@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -13,7 +13,7 @@ const DataDeletionMythsBlog: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-teal-50">
       <SEOHead seo={getSEOForPage('blog')} />
 
       {/* Hero Section */}
@@ -26,11 +26,6 @@ const DataDeletionMythsBlog: React.FC = () => {
             Learn the truth behind common misconceptions about secure data
             erasure.
           </p>
-          <img
-            src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1000&h=400&fit=crop&crop=center"
-            alt="Data Security Myths and Facts - Computer Security Concept"
-            className="mx-auto mt-6 rounded-xl shadow-md w-full max-w-4xl object-cover"
-          />
         </Reveal>
       </section>
 
@@ -76,11 +71,6 @@ const DataDeletionMythsBlog: React.FC = () => {
               Understanding proper erasure methods can help prevent data
               recovery risks.
             </p>
-            <img
-              src="https://images.unsplash.com/photo-1563206767-5b18f218e8de?w=1000&h=400&fit=crop&crop=center"
-              alt="Data Security Myths vs Reality - Cybersecurity Concept"
-              className="mx-auto rounded-xl shadow-lg object-cover w-full"
-            />
           </div>
         </Reveal>
       </section>
@@ -89,3 +79,9 @@ const DataDeletionMythsBlog: React.FC = () => {
 };
 
 export default DataDeletionMythsBlog;
+
+
+
+
+
+

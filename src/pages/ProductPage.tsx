@@ -22,11 +22,11 @@ const downloadCatalog = (productType: 'drive-eraser' | 'file-eraser') => {
   const catalogInfo = {
     'drive-eraser': {
       filename: 'D-Secure-Drive-Eraser-Catalog.pdf',
-      url: '/downloads/dsecure-drive-eraser-catalog.pdf'
+      url: '/downloads/D-Secure-drive-eraser-catalog.pdf'
     },
     'file-eraser': {
       filename: 'D-Secure-File-Eraser-Catalog.pdf',
-      url: '/downloads/dsecure-file-eraser-catalog.pdf'
+      url: '/downloads/D-Secure-file-eraser-catalog.pdf'
     }
   };
 

@@ -1,11 +1,11 @@
-import React from "react";
+﻿import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const OverwriteGuideBlog: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-teal-50">
       <SEOHead seo={getSEOForPage('blog')} />
 
       {/* Hero Section */}
@@ -18,11 +18,6 @@ const OverwriteGuideBlog: React.FC = () => {
             Understand the recommended number of overwrites for modern and
             legacy storage devices.
           </p>
-          <img
-            src="https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=1200&h=600&fit=crop&crop=center"
-            alt="Secure Data Overwriting Technology"
-            className="mx-auto mt-6 rounded-xl shadow-md w-full max-w-4xl object-cover"
-          />
         </Reveal>
       </section>
 
@@ -48,13 +43,6 @@ const OverwriteGuideBlog: React.FC = () => {
                 combined with physical destruction for maximum protection.
               </p>
             </div>
-            <div className="mt-6">
-              <img
-                src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1000&h=400&fit=crop&crop=center"
-                alt="Multiple Pass Data Overwriting Security Layers"
-                className="rounded-xl shadow-lg object-cover w-full h-64"
-              />
-            </div>
           </div>
         </Reveal>
       </section>
@@ -70,11 +58,6 @@ const OverwriteGuideBlog: React.FC = () => {
               Follow proper overwrite techniques to ensure data confidentiality
               and regulatory compliance.
             </p>
-            <img
-              src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1000&h=400&fit=crop&crop=center"
-              alt="Government Standard Compliance for Data Security"
-              className="mx-auto rounded-xl shadow-lg object-cover w-full"
-            />
           </div>
         </Reveal>
       </section>
@@ -83,3 +66,9 @@ const OverwriteGuideBlog: React.FC = () => {
 };
 
 export default OverwriteGuideBlog;
+
+
+
+
+
+

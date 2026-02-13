@@ -27,7 +27,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo }) => {
       <meta property="og:description" content={seo.ogDescription || seo.description} />
       <meta property="og:image" content={seo.ogImage} />
       <meta property="og:url" content={seo.canonicalUrl} />
-      <meta property="og:site_name" content="DSecure Tech" />
+      <meta property="og:site_name" content="D-Secure Tech" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter */}
@@ -35,12 +35,12 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ seo }) => {
       <meta name="twitter:title" content={seo.twitterTitle || seo.title} />
       <meta name="twitter:description" content={seo.twitterDescription || seo.description} />
       <meta name="twitter:image" content={seo.twitterImage || seo.ogImage} />
-      <meta name="twitter:creator" content="@dsecuretech" />
-      <meta name="twitter:site" content="@dsecuretech" />
+      <meta name="twitter:creator" content="@D-Securetech" />
+      <meta name="twitter:site" content="@D-Securetech" />
       
       {/* Additional SEO Meta Tags */}
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="author" content="DSecure Tech" />
+      <meta name="author" content="D-Secure Tech" />
       <meta name="language" content="English" />
       <meta name="revisit-after" content="7 days" />
       <meta name="rating" content="General" />

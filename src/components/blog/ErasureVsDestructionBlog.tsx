@@ -1,11 +1,11 @@
-import React from "react";
+﻿import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 
 const ErasureVsDestructionBlog: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-emerald-50/30 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50/30 to-teal-50">
       <SEOHead seo={getSEOForPage('blog')} />
 
       {/* Hero Section */}
@@ -18,11 +18,6 @@ const ErasureVsDestructionBlog: React.FC = () => {
             Learn which method to choose for secure data disposal based on your
             needs.
           </p>
-          <img
-            src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1000&h=400&fit=crop&crop=center"
-            alt="Data Security Comparison - Digital vs Physical Destruction"
-            className="mx-auto mt-6 rounded-xl shadow-md w-full max-w-4xl object-cover"
-          />
         </Reveal>
       </section>
 
@@ -43,19 +38,12 @@ const ErasureVsDestructionBlog: React.FC = () => {
                 your compliance and security requirements.
               </p>
             </div>
-            <div className="mt-6">
-              <img
-                src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=1000&h=400&fit=crop&crop=center"
-                alt="Data Storage Methods Comparison - Digital vs Physical"
-                className="rounded-xl shadow-lg object-cover w-full h-64"
-              />
-            </div>
           </div>
         </Reveal>
       </section>
 
       {/* Example Illustration Section */}
-      <section className="py-16 bg-gradient-to-br from-cyan-50 to-emerald-100">
+      <section className="py-16 bg-gradient-to-br from-teal-50 to-emerald-100">
         <Reveal>
           <div className="max-w-5xl mx-auto text-center space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
@@ -65,11 +53,6 @@ const ErasureVsDestructionBlog: React.FC = () => {
               Proper selection of erasure or destruction ensures data security
               and regulatory compliance.
             </p>
-            <img
-              src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1000&h=400&fit=crop&crop=center"
-              alt="Secure Data Disposal Decision Matrix"
-              className="mx-auto rounded-xl shadow-lg object-cover w-full"
-            />
           </div>
         </Reveal>
       </section>
@@ -78,3 +61,9 @@ const ErasureVsDestructionBlog: React.FC = () => {
 };
 
 export default ErasureVsDestructionBlog;
+
+
+
+
+
+

@@ -323,7 +323,7 @@ const VerificationMethodsPage: React.FC = memo(() => {
       <Helmet>
         <link
           rel="canonical"
-          href="https://dsecuretech.com/support/verification-methods"
+          href="https://D-Securetech.com/support/verification-methods"
         />
         <title>
           Verification Methods | Data Erasure Confirmation & Assurance
@@ -809,7 +809,7 @@ const VerificationMethodsPage: React.FC = memo(() => {
                     to="/contact"
                     className="bg-white text-teal-600 hover:bg-teal-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg"
                   >
-                    Contact DSecure for Verification
+                    Contact D-Secure for Verification
                   </Link>
                   <Link
                     to="/services/verification"

@@ -6,10 +6,10 @@ const SchedulingTasks: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Scheduling Tasks - DSecure Network File Manual</title>
+        <title>Scheduling Tasks - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Learn how to schedule automatic erasure tasks in DSecure File Eraser Network for files, folders, and traces."
+          content="Learn how to schedule automatic erasure tasks in D-Secure File Eraser Network for files, folders, and traces."
         />
       </Helmet>
 

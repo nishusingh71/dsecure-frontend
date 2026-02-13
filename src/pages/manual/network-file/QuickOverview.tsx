@@ -6,10 +6,10 @@ const QuickOverview: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Quick Overview - DSecure Network File Manual</title>
+        <title>Quick Overview - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Learn how to navigate and use the DSecure File Eraser Network documentation effectively."
+          content="Learn how to navigate and use the D-Secure File Eraser Network documentation effectively."
         />
       </Helmet>
 
@@ -21,7 +21,7 @@ const QuickOverview: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">Quick Overview</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Everything you need to know about navigating this guide and getting started with DSecure File Eraser Network.
+            Everything you need to know about navigating this guide and getting started with D-Secure File Eraser Network.
           </p>
         </div>
 
@@ -34,7 +34,7 @@ const QuickOverview: React.FC = () => {
             </h2>
             <div className="space-y-4">
               <p className="text-gray-700 leading-relaxed">
-                Welcome to the comprehensive user guide for DSecure File Eraser Network. This documentation is designed to help you understand and effectively use all features of the software, from basic setup to advanced erasure operations.
+                Welcome to the comprehensive user guide for D-Secure File Eraser Network. This documentation is designed to help you understand and effectively use all features of the software, from basic setup to advanced erasure operations.
               </p>
               <p className="text-gray-700 leading-relaxed">
                 Whether you're a first-time user looking to install the software or an experienced administrator managing network-wide erasure operations, this guide provides detailed instructions and best practices for every aspect of the application.
@@ -48,7 +48,7 @@ const QuickOverview: React.FC = () => {
               What's Covered in This Guide
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              This documentation is organized into logical sections that cover different aspects of DSecure File Eraser Network:
+              This documentation is organized into logical sections that cover different aspects of D-Secure File Eraser Network:
             </p>
             
             <div className="grid gap-4 md:grid-cols-2">
@@ -81,7 +81,7 @@ const QuickOverview: React.FC = () => {
               </div>
               
               <div className="border-l-4 border-teal-500 pl-4 py-2">
-                <h3 className="font-semibold text-gray-900 mb-1">About DSecureTech</h3>
+                <h3 className="font-semibold text-gray-900 mb-1">About D-SecureTech</h3>
                 <p className="text-sm text-gray-600">
                   Company information and product portfolio
                 </p>

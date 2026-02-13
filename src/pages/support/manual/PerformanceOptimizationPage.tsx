@@ -243,7 +243,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/manual/performance-optimization" />
+        <link rel="canonical" href="https://D-Securetech.com/support/manual/performance-optimization" />
         <title>Performance Optimization | D-Secure Speed & Efficiency Guide</title>
         <meta name="description" content="Comprehensive guide to optimizing D-Secure performance. Maximize erasure speed, system efficiency, and throughput with expert optimization techniques." />
         <meta name="keywords" content="D-Secure performance, erasure speed optimization, system tuning, hardware acceleration, throughput optimization" />
@@ -679,7 +679,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                     </svg>
                     Get Performance Consultation
                   </Link>
-                  <a href="mailto:performance@dsecuretech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
+                  <a href="mailto:performance@D-Securetech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>

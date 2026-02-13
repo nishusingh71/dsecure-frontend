@@ -406,7 +406,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   to="/privacy-policy"
                   className="text-brand hover:underline"
                 >
-                  DSecure's Privacy Policy.
+                  D-Secure's Privacy Policy.
                 </Link>
               </div>
             )}

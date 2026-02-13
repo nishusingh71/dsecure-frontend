@@ -260,7 +260,7 @@ const UserInterfacePage: React.FC = memo(() => {
       title="User Interface Guide"
       subtitle="Master D-Secure's intuitive interface for efficient data erasure operations"
       description="Comprehensive guide to D-Secure's user interface. Learn to navigate dashboards, manage erasure operations, generate reports, and configure settings."
-      canonicalUrl="https://dsecuretech.com/support/manual/user-interface"
+      canonicalUrl="https://D-Securetech.com/support/manual/user-interface"
       keywords="D-Secure interface, data erasure dashboard, UI guide, erasure operations, D-Secure navigation"
       sections={sections}
       quickAccessItems={quickAccessItems}

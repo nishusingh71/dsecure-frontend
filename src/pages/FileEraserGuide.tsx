@@ -90,7 +90,7 @@ const FileEraserGuide: React.FC = () => {
                 </div>
               </Reveal>
 
-              {/* DSecure File Eraser Features */}
+              {/* D-Secure File Eraser Features */}
               <Reveal>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
                   <div className="flex items-center mb-6">
@@ -100,7 +100,7 @@ const FileEraserGuide: React.FC = () => {
                       </svg>
                     </div>
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-                      DSecure File Eraser Features
+                      D-Secure File Eraser Features
                     </h2>
                   </div>
                   
@@ -178,7 +178,7 @@ const FileEraserGuide: React.FC = () => {
                       </svg>
                     </div>
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-                      How to Use DSecure File Eraser
+                      How to Use D-Secure File Eraser
                     </h2>
                   </div>
 
@@ -186,8 +186,8 @@ const FileEraserGuide: React.FC = () => {
                     {[
                       {
                         step: 1,
-                        title: "Launch DSecure File Eraser",
-                        content: "Open the DSecure File Eraser application from your desktop or start menu. The intuitive interface will display your file system for easy navigation."
+                        title: "Launch D-Secure File Eraser",
+                        content: "Open the D-Secure File Eraser application from your desktop or start menu. The intuitive interface will display your file system for easy navigation."
                       },
                       {
                         step: 2,

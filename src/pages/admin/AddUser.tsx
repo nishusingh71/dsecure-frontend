@@ -175,8 +175,8 @@ export default function AddUser() {
   return (
     <>
       <Helmet>
-        <title>Add New User - Admin Dashboard | DSecureTech</title>
-        <meta name="description" content="Add a new user to the DSecureTech admin dashboard." />
+        <title>Add New User - Admin Dashboard | D-SecureTech</title>
+        <meta name="description" content="Add a new user to the D-SecureTech admin dashboard." />
       </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">

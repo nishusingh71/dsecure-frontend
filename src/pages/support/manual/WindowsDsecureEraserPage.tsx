@@ -3,11 +3,11 @@ import { Helmet } from "react-helmet-async";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
-const WindowsDsecureEraserPage: React.FC = memo(() => {
+const WindowsDSecureEraserPage: React.FC = memo(() => {
   return (
     <>
       <Helmet>
-        <title>Windows Dsecure Eraser | D-Secure</title>
+        <title>Windows D-Secure Eraser | D-Secure</title>
       </Helmet>
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
@@ -20,7 +20,7 @@ const WindowsDsecureEraserPage: React.FC = memo(() => {
                 Back
               </Link>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                Windows Dsecure Eraser
+                Windows D-Secure Eraser
               </h1>
             </Reveal>
           </div>
@@ -31,7 +31,7 @@ const WindowsDsecureEraserPage: React.FC = memo(() => {
               <div className="prose prose-lg max-w-none">
                 <h2 className="text-3xl font-bold text-slate-900 mb-6">Overview</h2>
                 <ul className="space-y-3 text-slate-700">
-                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Comprehensive Windows Dsecure Eraser guide</li>
+                  <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Comprehensive Windows D-Secure Eraser guide</li>
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Step-by-step instructions</li>
                   <li className="flex items-start"><span className="text-emerald-600 mr-2">✓</span> Best practices and recommendations</li>
                 </ul>
@@ -44,4 +44,4 @@ const WindowsDsecureEraserPage: React.FC = memo(() => {
   );
 });
 
-export default WindowsDsecureEraserPage;
+export default WindowsDSecureEraserPage;

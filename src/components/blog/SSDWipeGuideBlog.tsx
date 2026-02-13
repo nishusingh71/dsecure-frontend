@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -18,11 +18,6 @@ const SSDWipeGuideBlog: React.FC = () => {
             Discover how to safely erase SSDs considering wear-leveling and
             encryption.
           </p>
-          <img
-            src="https://images.unsplash.com/photo-1551808525-51a94da548ce?w=1000&h=400&fit=crop&crop=center"
-            alt="SSD Secure Erasure Technology and NAND Flash Memory"
-            className="mx-auto mt-6 rounded-xl shadow-md w-full max-w-4xl object-cover"
-          />
         </Reveal>
       </section>
 
@@ -42,13 +37,6 @@ const SSDWipeGuideBlog: React.FC = () => {
                 and consider verification when handling sensitive information.
               </p>
             </div>
-            <div className="mt-6">
-              <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759944057/lgfrwgskur3kdpwl3awo.png"
-                alt="SSD Secure Erase Command Process Illustration"
-                className="rounded-xl shadow-lg object-cover w-full h-64"
-              />
-            </div>
           </div>
         </Reveal>
       </section>
@@ -64,11 +52,6 @@ const SSDWipeGuideBlog: React.FC = () => {
               Always follow proper techniques for secure erasure and compliance
               with regulatory requirements.
             </p>
-            <img
-              src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1000&h=400&fit=crop&crop=center"
-              alt="Professional SSD Security and Data Protection Standards"
-              className="mx-auto rounded-xl shadow-lg object-cover w-full"
-            />
           </div>
         </Reveal>
       </section>
@@ -77,3 +60,9 @@ const SSDWipeGuideBlog: React.FC = () => {
 };
 
 export default SSDWipeGuideBlog;
+
+
+
+
+
+

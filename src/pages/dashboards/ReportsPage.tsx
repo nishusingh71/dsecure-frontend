@@ -116,7 +116,7 @@ const ReportsPage: React.FC = () => {
     return (
       <>
         <Helmet>
-          <title>Reports | DSecure Dashboard</title>
+          <title>Reports | D-Secure Dashboard</title>
           <meta name="description" content="View and manage erasure reports and regulatory documents" />
         </Helmet>
 
@@ -166,7 +166,7 @@ const ReportsPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Reports | DSecure Dashboard</title>
+        <title>Reports | D-Secure Dashboard</title>
         <meta name="description" content="View and manage erasure reports and regulatory documents" />
       </Helmet>
 

@@ -1,4 +1,4 @@
-﻿import { ENV } from "@/config/env";
+import { ENV } from "@/config/env";
 import { useMemo, useState, useRef, useCallback } from "react";
 import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
@@ -47,7 +47,7 @@ export default function AdminReports() {
 
   const navigate = useNavigate();
 
-  // ✅ Cache Helper Functions
+  // ? Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
   const getCachedData = (key: string) => {
@@ -56,13 +56,13 @@ export default function AdminReports() {
       if (cached) {
         const { data, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          // console.log(`✅ Using cached data for ${key}`);
+          // console.log(`? Using cached data for ${key}`);
           return data;
         }
         localStorage.removeItem(`admin_cache_${key}`);
       }
     } catch (e) {
-      console.warn(`⚠️ Cache read error for ${key}:`, e);
+      console.warn(`?? Cache read error for ${key}:`, e);
     }
     return null;
   };
@@ -76,13 +76,13 @@ export default function AdminReports() {
           timestamp: Date.now(),
         })
       );
-      // console.log(`💾 Cached data for ${key}`);
+      // console.log(`?? Cached data for ${key}`);
     } catch (e) {
-      console.warn(`⚠️ Cache write error for ${key}:`, e);
+      console.warn(`?? Cache write error for ${key}:`, e);
     }
   };
 
-  // ✅ Date Helper Functions
+  // ? Date Helper Functions
   const formatDateToYYYYMMDD = (date: Date): string => {
     return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
   };
@@ -94,7 +94,7 @@ export default function AdminReports() {
     return !isNaN(date.getTime()) && dateString === formatDateToYYYYMMDD(date);
   };
 
-  // ✅ Custom DateInput Component with YYYY-MM-DD format
+  // ? Custom DateInput Component with YYYY-MM-DD format
   const CustomDateInput = ({
     label,
     value,
@@ -177,7 +177,7 @@ export default function AdminReports() {
     );
   };
 
-  // ✅ Get current user email for API calls
+  // ? Get current user email for API calls
   const getUserEmail = (): string => {
     const storedUser = localStorage.getItem("user_data");
     const authUser = localStorage.getItem("authUser");
@@ -206,7 +206,7 @@ export default function AdminReports() {
   const currentUserEmail = getUserEmail();
   const isDemo = isDemoMode();
 
-  // ✅ Fetch subusers for filter dropdown
+  // ? Fetch subusers for filter dropdown
   const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
 
   const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(
@@ -305,15 +305,15 @@ export default function AdminReports() {
 
   // Load saved PDF settings from API on component mount
   React.useEffect(() => {
-    console.log('🟢 PDF Settings useEffect triggered');
+    console.log('?? PDF Settings useEffect triggered');
 
     const loadSavedSettings = async () => {
       try {
         const token = authService.getAccessToken();
-        console.log('🔵 Token available:', token ? 'Yes' : 'No');
+        console.log('?? Token available:', token ? 'Yes' : 'No');
 
         const API_BASE = ENV.API_BASE_URL;
-        console.log('🔵 Fetching PDF settings from:', `${API_BASE}/api/EnhancedAuditReports/export-settings`);
+        console.log('?? Fetching PDF settings from:', `${API_BASE}/api/EnhancedAuditReports/export-settings`);
 
         const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/export-settings`, {
           method: 'GET',
@@ -323,18 +323,18 @@ export default function AdminReports() {
           },
         });
 
-        console.log('🔵 Response status:', response.status);
+        console.log('?? Response status:', response.status);
 
         if (response.ok) {
           const responseData = await response.json();
-          console.log('✅ Loaded PDF settings from server (raw):', JSON.stringify(responseData, null, 2));
+          console.log('? Loaded PDF settings from server (raw):', JSON.stringify(responseData, null, 2));
 
           // Handle nested response structure: { success, hasSettings, data: {...} }
           const savedSettings = responseData.data || responseData;
           const hasSettings = responseData.hasSettings || responseData.success || savedSettings.id;
 
           if (hasSettings && savedSettings) {
-            console.log('✅ Settings found, populating form...');
+            console.log('? Settings found, populating form...');
 
             // Handle different possible field name formats (camelCase or PascalCase)
             const getField = (obj: any, ...keys: string[]) => {
@@ -376,16 +376,16 @@ export default function AdminReports() {
               }));
             }
 
-            console.log('✅ PDF settings loaded into form');
+            console.log('? PDF settings loaded into form');
           } else {
-            console.log('ℹ️ No saved settings found - using defaults');
+            console.log('?? No saved settings found - using defaults');
           }
         } else {
           const errorText = await response.text();
-          console.warn('⚠️ Failed to load settings:', response.status, errorText);
+          console.warn('?? Failed to load settings:', response.status, errorText);
         }
       } catch (error) {
-        console.warn('⚠️ Could not load saved PDF settings:', error);
+        console.warn('?? Could not load saved PDF settings:', error);
       }
     };
 
@@ -414,7 +414,7 @@ export default function AdminReports() {
         validatorSignatureBase64: imageBase64.validatorSignature || null,
       };
 
-      console.log('🔵 Saving PDF settings to server:', settingsData);
+      console.log('?? Saving PDF settings to server:', settingsData);
 
       const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/save-export-settings-json`, {
         method: 'POST',
@@ -426,13 +426,13 @@ export default function AdminReports() {
       });
 
       if (response.ok) {
-        console.log('✅ PDF settings saved to server successfully');
+        console.log('? PDF settings saved to server successfully');
       } else {
         const errorText = await response.text();
-        console.warn('⚠️ Failed to save PDF settings:', response.status, errorText);
+        console.warn('?? Failed to save PDF settings:', response.status, errorText);
       }
     } catch (e) {
-      console.warn("❌ Failed to save PDF settings:", e);
+      console.warn("? Failed to save PDF settings:", e);
     }
   }, [pdfFormData.reportTitle, pdfFormData.headerText, pdfFormData.technicianName, pdfFormData.technicianDept, pdfFormData.validatorName, pdfFormData.validatorDept, imageBase64]);
 
@@ -489,7 +489,7 @@ export default function AdminReports() {
   //     const userEmail = user?.email || 'unknown';
 
   //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/list/${encodeURIComponent(userEmail)}`,
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.D-Securetech.com"}/api/ReportScheduler/list/${encodeURIComponent(userEmail)}`,
   //       {
   //         method: 'GET',
   //         headers: {
@@ -502,13 +502,13 @@ export default function AdminReports() {
   //     if (response.ok) {
   //       const data = await response.json();
   //       setScheduledReports(data.data || []);
-  //       console.log('✅ Loaded scheduled reports:', data.data?.length || 0);
+  //       console.log('? Loaded scheduled reports:', data.data?.length || 0);
   //     } else {
-  //       console.warn('⚠️ Failed to load scheduled reports:', response.status);
+  //       console.warn('?? Failed to load scheduled reports:', response.status);
   //       setScheduledReports([]);
   //     }
   //   } catch (error) {
-  //     console.error('❌ Error loading scheduled reports:', error);
+  //     console.error('? Error loading scheduled reports:', error);
   //     setScheduledReports([]);
   //   } finally {
   //     setLoadingScheduledReports(false);
@@ -523,7 +523,7 @@ export default function AdminReports() {
 
   //   try {
   //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/${scheduleId}`,
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.D-Securetech.com"}/api/ReportScheduler/${scheduleId}`,
   //       {
   //         method: 'DELETE',
   //         headers: {
@@ -539,7 +539,7 @@ export default function AdminReports() {
   //       showError('Delete Failed', 'Failed to delete scheduled report');
   //     }
   //   } catch (error) {
-  //     console.error('❌ Error deleting scheduled report:', error);
+  //     console.error('? Error deleting scheduled report:', error);
   //     showError('Delete Failed', 'Failed to delete scheduled report');
   //   }
   // };
@@ -548,7 +548,7 @@ export default function AdminReports() {
   // const handleToggleSchedule = async (scheduleId: string, currentStatus: boolean) => {
   //   try {
   //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/${scheduleId}/toggle`,
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.D-Securetech.com"}/api/ReportScheduler/${scheduleId}/toggle`,
   //       {
   //         method: 'PATCH',
   //         headers: {
@@ -567,7 +567,7 @@ export default function AdminReports() {
   //       showError('Update Failed', 'Failed to update schedule status');
   //     }
   //   } catch (error) {
-  //     console.error('❌ Error toggling schedule:', error);
+  //     console.error('? Error toggling schedule:', error);
   //     showError('Update Failed', 'Failed to update schedule status');
   //   }
   // };
@@ -649,11 +649,11 @@ export default function AdminReports() {
   //       }
   //     };
 
-  //     console.log('📅 Scheduling report with payload:', JSON.stringify(schedulerPayload, null, 2));
+  //     console.log('?? Scheduling report with payload:', JSON.stringify(schedulerPayload, null, 2));
 
   //     // Call Report Scheduler API
   //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/ReportScheduler/create`,
+  //       `${import.meta.env.VITE_API_BASE_URL || "https://api.D-Securetech.com"}/api/ReportScheduler/create`,
   //       {
   //         method: 'POST',
   //         headers: {
@@ -664,22 +664,22 @@ export default function AdminReports() {
   //       }
   //     );
 
-  //     console.log('📥 Scheduler API Response status:', response.status);
+  //     console.log('?? Scheduler API Response status:', response.status);
 
   //     if (!response.ok) {
   //       let errorMessage = `HTTP error! status: ${response.status}`;
   //       try {
   //         const errorData = await response.json();
-  //         console.error('❌ Scheduler API error response:', errorData);
+  //         console.error('? Scheduler API error response:', errorData);
   //         errorMessage = errorData.message || errorData.error || errorMessage;
   //       } catch (e) {
-  //         console.error('❌ Could not parse scheduler error response');
+  //         console.error('? Could not parse scheduler error response');
   //       }
   //       throw new Error(errorMessage);
   //     }
 
   //     const responseData = await response.json();
-  //     console.log('✅ Scheduler created successfully:', responseData);
+  //     console.log('? Scheduler created successfully:', responseData);
 
   //     // Show success message with schedule details
   //     const recipientCount = schedulerData.emailRecipients
@@ -715,7 +715,7 @@ export default function AdminReports() {
   //     setShowSchedulerModal(false);
 
   //   } catch (error) {
-  //     console.error('❌ Error scheduling report:', error);
+  //     console.error('? Error scheduling report:', error);
   //     showError(
   //       'Scheduling Failed',
   //       `Failed to schedule report. ${error instanceof Error ? error.message : "Please try again."}`
@@ -731,9 +731,9 @@ export default function AdminReports() {
   const loadReportsData = async () => {
     setLoading(true);
 
-    // 🎮 Demo Mode Check - Show static data only
+    // ?? Demo Mode Check - Show static data only
     if (isDemoMode()) {
-      // console.log('🎮 Demo Mode Active - Using static audit reports data')
+      // console.log('?? Demo Mode Active - Using static audit reports data')
       // Map DEMO_AUDIT_REPORTS to AdminReport format
       let demoReports = DEMO_AUDIT_REPORTS.map(report => ({
         id: report.report_id,
@@ -763,11 +763,11 @@ export default function AdminReports() {
       return
     }
 
-    // ✅ Check cache first for instant display (only if no subuser filter)
+    // ? Check cache first for instant display (only if no subuser filter)
     if (!subuserFilter) {
       const cachedReports = getCachedData("reports");
       if (cachedReports && cachedReports.length > 0) {
-        // console.log("⚡ Displaying cached reports data");
+        // console.log("? Displaying cached reports data");
         setAllRows(cachedReports);
         setLoading(false); // Hide loader since we have cached data
       }
@@ -775,7 +775,7 @@ export default function AdminReports() {
 
     try {
       // Get user email - EXACT SAME PATTERN AS AdminDashboard & AdminMachines
-      // 1. Try localStorage 'user_data' key (not 'dsecure_user_data')
+      // 1. Try localStorage 'user_data' key (not 'D-Secure_user_data')
       let storedUserData = null;
       const storedUser = localStorage.getItem("user_data");
       const authUser = localStorage.getItem("authUser");
@@ -783,7 +783,7 @@ export default function AdminReports() {
       if (storedUser) {
         try {
           storedUserData = JSON.parse(storedUser);
-          // console.log("💾 Parsed user_data from localStorage:", storedUserData);
+          // console.log("?? Parsed user_data from localStorage:", storedUserData);
         } catch (e) {
           console.error("Error parsing user_data:", e);
         }
@@ -792,7 +792,7 @@ export default function AdminReports() {
       if (!storedUserData && authUser) {
         try {
           storedUserData = JSON.parse(authUser);
-          // console.log("💾 Parsed authUser from localStorage:", storedUserData);
+          // console.log("?? Parsed authUser from localStorage:", storedUserData);
         } catch (e) {
           console.error("Error parsing authUser:", e);
         }
@@ -800,15 +800,15 @@ export default function AdminReports() {
 
       // 2. Get user from JWT token
       const user = authService.getUserFromToken();
-      // console.log("👤 User from token:", user);
+      // console.log("?? User from token:", user);
 
       // 3. PRIORITY: Use user_email from localStorage user_data, then from token
       const userEmail =
         storedUserData?.user_email || user?.user_email || user?.email;
-      // console.log("📧 Final userEmail for reports:", userEmail);
+      // console.log("?? Final userEmail for reports:", userEmail);
 
       if (!userEmail) {
-        console.error("❌ No user email found");
+        console.error("? No user email found");
         showError(
           "Authentication Error",
           "No user email found. Please login again."
@@ -818,7 +818,7 @@ export default function AdminReports() {
         return;
       }
 
-      // ✅ Determine which email to use based on subuserFilter
+      // ? Determine which email to use based on subuserFilter
       // If subuserFilter is set, fetch reports for that subuser
       // If subuserFilter is "all", we need to fetch for user + all subusers
       let emailsToFetch: string[] = [];
@@ -834,7 +834,7 @@ export default function AdminReports() {
         emailsToFetch = [userEmail];
       }
 
-      // console.log("📋 Fetching audit reports for emails:", emailsToFetch);
+      // console.log("?? Fetching audit reports for emails:", emailsToFetch);
 
       // Fetch reports for all selected emails in parallel
       const allReportsPromises = emailsToFetch.map(email =>
@@ -854,21 +854,21 @@ export default function AdminReports() {
         }
       });
 
-      // console.log("📥 Combined Reports:", combinedReports.length);
+      // console.log("?? Combined Reports:", combinedReports.length);
 
       if (combinedReports.length > 0) {
-        // console.log("✅ Audit reports fetched:", combinedReports.length);
+        // console.log("? Audit reports fetched:", combinedReports.length);
 
         // If no reports found
         if (combinedReports.length === 0) {
-          // console.log("ℹ️ No audit reports found");
+          // console.log("?? No audit reports found");
           showInfo("No Reports", "No audit reports found.");
           setAllRows([]);
           setLoading(false);
           return;
         }
 
-        // console.log("🔄 Processing reports with report_details_json...");
+        // console.log("?? Processing reports with report_details_json...");
 
         // Process each report
         const processedReports = combinedReports.map((report: any) => {
@@ -879,7 +879,7 @@ export default function AdminReports() {
           if (report.report_details_json) {
             try {
               reportDetails = JSON.parse(report.report_details_json);
-              // console.log("📄 Parsed report_details_json:", reportDetails);
+              // console.log("?? Parsed report_details_json:", reportDetails);
 
               // Get device count from erasure_log array
               if (
@@ -889,8 +889,8 @@ export default function AdminReports() {
                 deviceCount = reportDetails.erasure_log.length;
               }
             } catch (e) {
-              console.warn(`⚠️ Failed to parse report_details_json:`, e);
-              // console.log("❌ Raw data:", report.report_details_json);
+              console.warn(`?? Failed to parse report_details_json:`, e);
+              // console.log("? Raw data:", report.report_details_json);
             }
           }
 
@@ -955,7 +955,7 @@ export default function AdminReports() {
             _details: reportDetails,
           };
 
-          // console.log("✅ Mapped:", mappedReport);
+          // console.log("? Mapped:", mappedReport);
           return mappedReport;
         });
 
@@ -969,7 +969,7 @@ export default function AdminReports() {
         setAllRows([]);
       }
     } catch (error) {
-      console.error("❌ Error:", error);
+      console.error("? Error:", error);
       showError("Error", "Failed to load reports.");
       setAllRows([]);
     } finally {
@@ -1182,7 +1182,7 @@ export default function AdminReports() {
         return;
       }
 
-      // console.log("📄 Report details for PDF:", reportDetails);
+      // console.log("?? Report details for PDF:", reportDetails);
 
       // Extract all fields from report_details_json for PDF generation
       const pdfPayload = {
@@ -1235,7 +1235,7 @@ export default function AdminReports() {
       };
 
       // console.log(
-      // "📤 Sending PDF payload:",
+      // "?? Sending PDF payload:",
       // JSON.stringify(pdfPayload, null, 2)
       // );
 
@@ -1286,9 +1286,9 @@ export default function AdminReports() {
       }
 
       const downloadUrl = `${import.meta.env.VITE_API_BASE_URL ||
-        "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-settings`;
+        "https://api.D-Securetech.com"}/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-settings`;
 
-      console.log('🔵 Download request:', downloadUrl);
+      console.log('?? Download request:', downloadUrl);
 
       const response = await fetch(downloadUrl, {
         method: "GET",
@@ -1298,25 +1298,25 @@ export default function AdminReports() {
       }
       );
 
-      console.log('🔵 Response status:', response.status, response.statusText);
-      console.log('🔵 Content-Type:', response.headers.get('content-type'));
+      console.log('?? Response status:', response.status, response.statusText);
+      console.log('?? Content-Type:', response.headers.get('content-type'));
 
       if (!response.ok) {
         // Try to get error message from response body
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
           const errorData = await response.json();
-          console.error("❌ Backend error response:", errorData);
+          console.error("? Backend error response:", errorData);
           errorMessage = errorData.message || errorData.error || errorMessage;
         } catch (e) {
-          console.error("❌ Could not parse error response");
+          console.error("? Could not parse error response");
         }
         throw new Error(errorMessage);
       }
 
       // Get the PDF blob
       const blob = await response.blob();
-      console.log("✅ PDF blob received, size:", blob.size, "type:", blob.type);
+      console.log("? PDF blob received, size:", blob.size, "type:", blob.type);
 
       if (blob.size === 0) {
         throw new Error("Received empty PDF file");
@@ -1334,7 +1334,7 @@ export default function AdminReports() {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      console.log("✅ Download triggered for:", a.download);
+      console.log("? Download triggered for:", a.download);
       showSuccess(`Report ${report.id} downloaded successfully`);
     } catch (error) {
       console.error("Error downloading report:", error);
@@ -1346,7 +1346,7 @@ export default function AdminReports() {
     }
   };
 
-  // ✅ Bulk Download Multiple Reports as ZIP
+  // ? Bulk Download Multiple Reports as ZIP
   const handleBulkDownload = async () => {
     if (selectedReportIds.size === 0) {
       showWarning(
@@ -1430,7 +1430,7 @@ export default function AdminReports() {
 
           const response = await fetch(
             `${import.meta.env.VITE_API_BASE_URL ||
-            "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
+            "https://api.D-Securetech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
               reportId
             )}/export-pdf-with-files`,
             {
@@ -1504,7 +1504,7 @@ export default function AdminReports() {
   // Bulk customization function
   // handleBulkCustomization removed - now redirects to /admin/reports/generate
 
-  // ✅ Toggle individual report selection
+  // ? Toggle individual report selection
   const toggleReportSelection = (reportId: string) => {
     const newSelection = new Set(selectedReportIds);
     if (newSelection.has(reportId)) {
@@ -1512,11 +1512,11 @@ export default function AdminReports() {
     } else {
       newSelection.add(reportId);
     }
-    // console.log("🔄 Selection updated:", newSelection.size, "reports selected");
+    // console.log("?? Selection updated:", newSelection.size, "reports selected");
     setSelectedReportIds(newSelection);
   };
 
-  // ✅ Toggle all reports on current page
+  // ? Toggle all reports on current page
   const toggleSelectAll = (currentPageReports: ExtendedAdminReport[]) => {
     const currentPageIds = currentPageReports.map((r) => String(r.id || ""));
     const allSelected = currentPageIds.every((id) => selectedReportIds.has(id));
@@ -1530,7 +1530,7 @@ export default function AdminReports() {
       currentPageIds.forEach((id) => newSelection.add(id));
     }
     // console.log(
-    // "🔄 Select All updated:",
+    // "?? Select All updated:",
     // newSelection.size,
     // "reports selected"
     // );
@@ -1670,7 +1670,7 @@ export default function AdminReports() {
   //       validatorSignature: pdfFormData.validatorSignature
   //     };
 
-  //     console.log("📤 Sending Generate PDF payload:", JSON.stringify(pdfPayload, null, 2));
+  //     console.log("?? Sending Generate PDF payload:", JSON.stringify(pdfPayload, null, 2));
 
   //     // Create FormData for multipart/form-data request
   //     const formData = new FormData();
@@ -1694,7 +1694,7 @@ export default function AdminReports() {
   //     // Call the PDF export API with POST method
   //     const response = await fetch(
   //       `${import.meta.env.VITE_API_BASE_URL ||
-  //         "https://api.dsecuretech.com"}/api/EnhancedAuditReports/export-pdf-with-files`,
+  //         "https://api.D-Securetech.com"}/api/EnhancedAuditReports/export-pdf-with-files`,
   //       {
   //         method: "POST",
   //         headers: {
@@ -1705,23 +1705,23 @@ export default function AdminReports() {
   //       }
   //     );
 
-  //     console.log("📥 Response status:", response.status);
+  //     console.log("?? Response status:", response.status);
 
   //     if (!response.ok) {
   //       let errorMessage = `HTTP error! status: ${response.status}`;
   //       try {
   //         const errorData = await response.json();
-  //         console.error("❌ Backend error response:", errorData);
+  //         console.error("? Backend error response:", errorData);
   //         errorMessage = errorData.message || errorData.error || errorMessage;
   //       } catch (e) {
-  //         console.error("❌ Could not parse error response");
+  //         console.error("? Could not parse error response");
   //       }
   //       throw new Error(errorMessage);
   //     }
 
   //     // Get the PDF blob
   //     const blob = await response.blob();
-  //     console.log("✅ PDF blob received, size:", blob.size);
+  //     console.log("? PDF blob received, size:", blob.size);
 
   //     // Create download link
   //     const url = window.URL.createObjectURL(blob);
@@ -1751,13 +1751,13 @@ export default function AdminReports() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/reports" />
+        <link rel="canonical" href="https://D-Securetech.com/admin/reports" />
         <title>
-          DSecureTech Compliance | Data Erasure Standards & Regulations
+          D-SecureTech Compliance | Data Erasure Standards & Regulations
         </title>
         <meta
           name="description"
-          content="DSecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
+          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
         />
         <meta
           name="keywords"
@@ -1977,7 +1977,7 @@ export default function AdminReports() {
             {/* Date Validation Error */}
             {dateValidationError && (
               <div className="col-span-5 text-red-500 text-sm bg-red-50 border border-red-200 rounded px-3 py-2">
-                ⚠️ {dateValidationError}
+                ?? {dateValidationError}
               </div>
             )}
 
@@ -2112,7 +2112,7 @@ export default function AdminReports() {
                 }
                 className="px-2 py-1 border rounded text-sm hover:bg-slate-50"
               >
-                {sortOrder === "asc" ? "↑" : "↓"}
+                {sortOrder === "asc" ? "?" : "?"}
               </button>
             </div>
 
@@ -2657,7 +2657,7 @@ export default function AdminReports() {
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
                   {(pdfFormData.headerLeftLogo || imageBase64.headerLeftLogo) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.headerLeftLogo ? "Image uploaded" : "Saved image"}</p>
+                    <p className="text-xs text-green-600 mt-1">? {pdfFormData.headerLeftLogo ? "Image uploaded" : "Saved image"}</p>
                   )}
                 </div>
                 <div>
@@ -2671,7 +2671,7 @@ export default function AdminReports() {
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
                   {(pdfFormData.headerRightLogo || imageBase64.headerRightLogo) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.headerRightLogo ? "Image uploaded" : "Saved image"}</p>
+                    <p className="text-xs text-green-600 mt-1">? {pdfFormData.headerRightLogo ? "Image uploaded" : "Saved image"}</p>
                   )}
                 </div>
               </div>
@@ -2688,7 +2688,7 @@ export default function AdminReports() {
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                 />
                 {(pdfFormData.watermarkImage || imageBase64.watermarkImage) && (
-                  <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.watermarkImage ? "Watermark uploaded" : "Saved watermark"}</p>
+                  <p className="text-xs text-green-600 mt-1">? {pdfFormData.watermarkImage ? "Watermark uploaded" : "Saved watermark"}</p>
                 )}
               </div>
 
@@ -2705,7 +2705,7 @@ export default function AdminReports() {
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
                   {(pdfFormData.technicianSignature || imageBase64.technicianSignature) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.technicianSignature ? "Signature uploaded" : "Saved signature"}</p>
+                    <p className="text-xs text-green-600 mt-1">? {pdfFormData.technicianSignature ? "Signature uploaded" : "Saved signature"}</p>
                   )}
                 </div>
                 <div>
@@ -2719,7 +2719,7 @@ export default function AdminReports() {
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
                   {(pdfFormData.validatorSignature || imageBase64.validatorSignature) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.validatorSignature ? "Signature uploaded" : "Saved signature"}</p>
+                    <p className="text-xs text-green-600 mt-1">? {pdfFormData.validatorSignature ? "Signature uploaded" : "Saved signature"}</p>
                   )}
                 </div>
               </div>

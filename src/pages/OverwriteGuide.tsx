@@ -54,7 +54,7 @@ const OverwriteGuide: React.FC = () => {
                       With the exponential growth of digital data and the alarming rise in
                       data breaches, organizations can no longer afford to neglect data
                       security—especially at the end-of-life stage of their IT assets. As
-                      a company founded in 2025, <span className="font-semibold text-emerald-600">DSecureTech</span> recognizes that data erasure
+                      a company founded in 2025, <span className="font-semibold text-emerald-600">D-SecureTech</span> recognizes that data erasure
                       is not just a technical process—it's a compliance imperative and a
                       sustainability strategy.
                     </p>
@@ -239,7 +239,7 @@ const OverwriteGuide: React.FC = () => {
                 </div>
               </Reveal>
 
-              {/* DSecure Recommendations */}
+              {/* D-Secure Recommendations */}
               <Reveal>
                 <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 rounded-2xl p-8 text-white">
                   <div className="text-center">
@@ -248,7 +248,7 @@ const OverwriteGuide: React.FC = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
-                    <h2 className="text-3xl font-bold mb-6">DSecure Recommendations</h2>
+                    <h2 className="text-3xl font-bold mb-6">D-Secure Recommendations</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
                       <div className="bg-white/10 rounded-xl p-6">
                         <h3 className="text-xl font-bold mb-3">Standard Security</h3>
@@ -331,7 +331,7 @@ const OverwriteGuide: React.FC = () => {
                     </p>
                     <p className="text-slate-300 leading-relaxed max-w-2xl mx-auto">
                       Choose additional passes only when required by specific compliance mandates or when dealing with extraordinarily sensitive data.
-                      DSecure's intelligent algorithms automatically select the optimal number of passes based on your security requirements and device type.
+                      D-Secure's intelligent algorithms automatically select the optimal number of passes based on your security requirements and device type.
                     </p>
                   </div>
                 </div>

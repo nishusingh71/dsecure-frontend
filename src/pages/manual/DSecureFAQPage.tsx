@@ -23,7 +23,7 @@ const DSecureFAQPage: React.FC = () => {
                 Back to Help Manual
               </Link>
               <ChevronRight className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-900 font-medium">DSecure FAQ</span>
+              <span className="text-gray-900 font-medium">D-Secure FAQ</span>
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@ const DSecureFAQPage: React.FC = () => {
                   Frequently Asked Questions (FAQs)
                 </h1>
                 <p className="text-gray-600 mt-2">
-                  Find answers to common questions about DSecure File Eraser
+                  Find answers to common questions about D-Secure File Eraser
                 </p>
               </div>
             </div>
@@ -64,7 +64,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">1</span>
-                      What does the demo version of DSecure File Eraser do?
+                      What does the demo version of D-Secure File Eraser do?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       The demo version of the software only allows you to select and list traces of files, folders, web browsers, applications or system files. 
@@ -76,12 +76,12 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">2</span>
-                      Why do I need to use DSecure File Eraser?
+                      Why do I need to use D-Secure File Eraser?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       When you delete a file in your computer, it is not actually erased. It is just marked as deleted and the space it was using is 
                       made available for other files to be stored. This means that the data can still be recovered by using data recovery software. 
-                      <span className="font-semibold text-blue-600"> DSecure File Eraser</span> helps you remove all traces of deleted files, 
+                      <span className="font-semibold text-blue-600"> D-Secure File Eraser</span> helps you remove all traces of deleted files, 
                       applications and internet traces from your system thereby ensuring your data privacy. Also, the 
                       <span className="font-semibold text-blue-600"> Erase Free Space</span> feature of the software completely 
                       erases data in the free space of the storage which leaves no possibility of data to be recovered.
@@ -92,10 +92,10 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">3</span>
-                      Does DSecure File Eraser remove data beyond recovery?
+                      Does D-Secure File Eraser remove data beyond recovery?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
-                      Yes, <span className="font-semibold text-blue-600">DSecure File Eraser</span> removes data beyond recovery.
+                      Yes, <span className="font-semibold text-blue-600">D-Secure File Eraser</span> removes data beyond recovery.
                     </p>
                   </div>
 
@@ -106,7 +106,7 @@ const DSecureFAQPage: React.FC = () => {
                       Does erasure cause any harm to my hard drive?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
-                      Erasing data using <span className="font-semibold text-blue-600">DSecure File Eraser</span> does not cause any harm to the hard drive.
+                      Erasing data using <span className="font-semibold text-blue-600">D-Secure File Eraser</span> does not cause any harm to the hard drive.
                     </p>
                   </div>
 
@@ -114,7 +114,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-blue-100 text-blue-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">5</span>
-                      Can I erase a specific file using DSecure File Eraser?
+                      Can I erase a specific file using D-Secure File Eraser?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       Yes, you can erase specific files by adding them to the erasure list or dragging the items and dropping them to the software or you 
@@ -206,7 +206,7 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-purple-100 text-purple-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">12</span>
-                      Which types of files cannot be erased using DSecure File Eraser?
+                      Which types of files cannot be erased using D-Secure File Eraser?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
                       System files are critical files that are used by operating systems to run your computer. So it is not possible to erase system files.
@@ -228,10 +228,10 @@ const DSecureFAQPage: React.FC = () => {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
                       <span className="bg-purple-100 text-purple-700 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">17</span>
-                      Can I use DSecure File Eraser to erase the free space on the primary partition of my hard drive?
+                      Can I use D-Secure File Eraser to erase the free space on the primary partition of my hard drive?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
-                      Yes, it is secure to use <span className="font-semibold text-blue-600">DSecure File Eraser</span> to erase data in the 
+                      Yes, it is secure to use <span className="font-semibold text-blue-600">D-Secure File Eraser</span> to erase data in the 
                       <span className="font-semibold text-blue-600"> free space</span> of the hard drive's primary partition as it removes the 
                       free space left by the deletion of files and folders.
                     </p>
@@ -263,7 +263,7 @@ const DSecureFAQPage: React.FC = () => {
                       Can I get the reports of the data I have deleted so far?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
-                      Yes, <span className="font-semibold text-blue-600">DSecure File Eraser</span> provides erasure reports. See 
+                      Yes, <span className="font-semibold text-blue-600">D-Secure File Eraser</span> provides erasure reports. See 
                       <span className="font-semibold text-blue-600"> Reports</span> for more details.
                     </p>
                   </div>
@@ -276,7 +276,7 @@ const DSecureFAQPage: React.FC = () => {
                     </h3>
                     <div className="text-gray-700 leading-relaxed space-y-4">
                       <p>To schedule an eraser task for a specific browser, you need to configure the default settings for that browser in the 
-                      <span className="font-semibold text-blue-600"> DSecure File Eraser</span> settings. After that, select the Schedule erasure task for the desired duration.</p>
+                      <span className="font-semibold text-blue-600"> D-Secure File Eraser</span> settings. After that, select the Schedule erasure task for the desired duration.</p>
                       
                       <div className="ml-6 space-y-3">
                         <p className="font-semibold">Follow the steps below to schedule an erase traces task for a specific browser:</p>
@@ -336,7 +336,7 @@ const DSecureFAQPage: React.FC = () => {
                       Is it possible for the software to automatically erase traces of any files or folder?
                     </h3>
                     <p className="text-gray-700 leading-relaxed">
-                      Yes, <span className="font-semibold text-blue-600">DSecure File Eraser</span> provides an option to schedule an eraser task to perform automatically at predefined period. Refer to 
+                      Yes, <span className="font-semibold text-blue-600">D-Secure File Eraser</span> provides an option to schedule an eraser task to perform automatically at predefined period. Refer to 
                       <span className="font-semibold text-blue-600"> Set Schedule Erasure for Files and Folders</span> section to schedule erasure task automatically.
                     </p>
                   </div>
@@ -421,7 +421,7 @@ const DSecureFAQPage: React.FC = () => {
                       System Setup
                     </Link>
                     <Link to="/support/help-manual/working-guide" className="block text-blue-600 hover:underline">
-                      Working with DSecure
+                      Working with D-Secure
                     </Link>
                   </div>
                 </div>

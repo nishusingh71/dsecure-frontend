@@ -21,7 +21,7 @@ const MacEraseGuide: React.FC = () => {
                   </span>
                 </h1>
                 <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
-                  Securely erase Apple Silicon and Intel-based Mac devices using the DSecureTech Drive Eraser
+                  Securely erase Apple Silicon and Intel-based Mac devices using the D-SecureTech Drive Eraser
                   Terminal command for complete data sanitization and compliance.
                 </p>
               </div>
@@ -46,7 +46,7 @@ const MacEraseGuide: React.FC = () => {
                     </h2>
                   </div>
                   <p className="text-slate-700 text-lg leading-relaxed">
-                    DSecureTech Drive Eraser for Mac offers a powerful solution for securely erasing and
+                    D-SecureTech Drive Eraser for Mac offers a powerful solution for securely erasing and
                     diagnosing Apple Silicon Macs (M1, M2, M3, M4) and Intel-based Macs with T1 or T2 chips.
                     After wiping, your MacBook, iMac, or Mac Mini can be reused or sold safely without risk of
                     data leakage.
@@ -134,11 +134,11 @@ const MacEraseGuide: React.FC = () => {
                     </p>
                   </li>
                   <li>
-                    This launches the DSecureTech Drive Eraser (Mac) application.
+                    This launches the D-SecureTech Drive Eraser (Mac) application.
                   </li>
                   <li>
                     The software opens on the <b>Erasure</b> tab by default. To run diagnostics, refer to the
-                    DSecureTech Mac Diagnostics Deployment Guide.
+                    D-SecureTech Mac Diagnostics Deployment Guide.
                   </li>
                   <li>
                     Select the drive you wish to wipe from the list.
@@ -147,7 +147,7 @@ const MacEraseGuide: React.FC = () => {
                     Click on <b>Settings</b> (top right corner) and choose <b>Only Erasing</b>.
                   </li>
                   <li>
-                    Click on the <b>Cloud</b> icon, log in with your DSecureTech Cloud credentials, and fetch
+                    Click on the <b>Cloud</b> icon, log in with your D-SecureTech Cloud credentials, and fetch
                     your erasure licenses. Then click <b>Close</b>.
                   </li>
                   <li>
@@ -159,7 +159,7 @@ const MacEraseGuide: React.FC = () => {
                   </li>
                   <li>
                     Once completed, click <b>Report</b> to view and download the erasure report and
-                    regulatory document of destruction. Reports are also saved to your DSecureTech Cloud account.
+                    regulatory document of destruction. Reports are also saved to your D-SecureTech Cloud account.
                   </li>
                 </ol>
               </section>
@@ -176,7 +176,7 @@ const MacEraseGuide: React.FC = () => {
                     <h2 className="text-2xl font-bold">Success!</h2>
                   </div>
                   <p className="text-emerald-50 text-lg leading-relaxed">
-                    You have successfully erased your Mac device using DSecureTech Drive Eraser via Terminal.
+                    You have successfully erased your Mac device using D-SecureTech Drive Eraser via Terminal.
                     To make your Mac functional again, reinstall macOS using Internet Recovery or a bootable
                     USB installer.
                   </p>

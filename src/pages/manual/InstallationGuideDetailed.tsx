@@ -7,10 +7,10 @@ const InstallationGuideDetailed: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>DSecure Installation Guide - Complete Visual Tutorial</title>
+        <title>D-Secure Installation Guide - Complete Visual Tutorial</title>
         <meta 
           name="description" 
-          content="Step-by-step visual installation guide for DSecure File Eraser with detailed screenshots and system requirements."
+          content="Step-by-step visual installation guide for D-Secure File Eraser with detailed screenshots and system requirements."
         />
       </Helmet>
 
@@ -23,7 +23,7 @@ const InstallationGuideDetailed: React.FC = () => {
                 📖 Installation Manual
               </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                DSecure Installation Guide
+                D-Secure Installation Guide
               </h1>
               <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
                 Complete step-by-step visual installation process with system requirements and troubleshooting tips.
@@ -100,13 +100,13 @@ const InstallationGuideDetailed: React.FC = () => {
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
                     <span className="font-bold text-emerald-600">1</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-slate-900">Download DSecure File Eraser</h2>
+                  <h2 className="text-2xl font-bold text-slate-900">Download D-Secure File Eraser</h2>
                 </div>
                 
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   <div>
                     <p className="text-slate-600 mb-4">
-                      Download the DSecure installation file from the official website. Make sure to verify the file integrity before installation.
+                      Download the D-Secure installation file from the official website. Make sure to verify the file integrity before installation.
                     </p>
                     <div className="bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded">
                       <p className="text-emerald-800">
@@ -120,7 +120,7 @@ const InstallationGuideDetailed: React.FC = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
-                    <p className="text-slate-700 font-medium">DSecureFileEraser.dmg</p>
+                    <p className="text-slate-700 font-medium">D-SecureFileEraser.dmg</p>
                     <p className="text-slate-500 text-sm">Installation Package</p>
                   </div>
                 </div>
@@ -140,7 +140,7 @@ const InstallationGuideDetailed: React.FC = () => {
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   <div>
                     <p className="text-slate-600 mb-4">
-                      Double-click the downloaded .dmg file to mount the virtual volume. This will create a virtual volume named <strong>DSecure File Eraser</strong>.
+                      Double-click the downloaded .dmg file to mount the virtual volume. This will create a virtual volume named <strong>D-Secure File Eraser</strong>.
                     </p>
                     <div className="space-y-2">
                       <p className="text-slate-700 font-medium">Steps:</p>
@@ -159,7 +159,7 @@ const InstallationGuideDetailed: React.FC = () => {
                           <polyline points="14,2 14,8 20,8"/>
                         </svg>
                       </div>
-                      <p className="font-bold text-slate-900">DSecure File Eraser</p>
+                      <p className="font-bold text-slate-900">D-Secure File Eraser</p>
                       <p className="text-slate-500 text-sm">Virtual Volume Mounted</p>
                     </div>
                   </div>
@@ -174,13 +174,13 @@ const InstallationGuideDetailed: React.FC = () => {
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
                     <span className="font-bold text-emerald-600">3</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-slate-900">Install DSecure Application</h2>
+                  <h2 className="text-2xl font-bold text-slate-900">Install D-Secure Application</h2>
                 </div>
                 
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   <div>
                     <p className="text-slate-600 mb-4">
-                      Drag the <strong>DSecure File Eraser</strong> application from the mounted virtual volume to the Applications folder.
+                      Drag the <strong>D-Secure File Eraser</strong> application from the mounted virtual volume to the Applications folder.
                     </p>
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
@@ -193,7 +193,7 @@ const InstallationGuideDetailed: React.FC = () => {
                         <div className="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center">
                           <span className="text-emerald-600 font-bold text-sm">2</span>
                         </div>
-                        <span className="text-slate-700">Drag DSecure app to Applications</span>
+                        <span className="text-slate-700">Drag D-Secure app to Applications</span>
                       </div>
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                         <div className="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center">
@@ -211,7 +211,7 @@ const InstallationGuideDetailed: React.FC = () => {
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                           </svg>
                         </div>
-                        <p className="text-sm font-medium text-slate-900">DSecure</p>
+                        <p className="text-sm font-medium text-slate-900">D-Secure</p>
                       </div>
                       <div className="text-2xl text-slate-400">→</div>
                       <div className="text-center">
@@ -239,13 +239,13 @@ const InstallationGuideDetailed: React.FC = () => {
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
                     <span className="font-bold text-emerald-600">4</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-slate-900">Launch DSecure File Eraser</h2>
+                  <h2 className="text-2xl font-bold text-slate-900">Launch D-Secure File Eraser</h2>
                 </div>
                 
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   <div>
                     <p className="text-slate-600 mb-4">
-                      To launch the software, double-click on <strong>DSecure File Eraser</strong> in the Applications folder.
+                      To launch the software, double-click on <strong>D-Secure File Eraser</strong> in the Applications folder.
                     </p>
                     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded mb-4">
                       <p className="text-yellow-800">
@@ -268,7 +268,7 @@ const InstallationGuideDetailed: React.FC = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
                       </div>
-                      <p className="font-bold text-slate-900">DSecure File Eraser</p>
+                      <p className="font-bold text-slate-900">D-Secure File Eraser</p>
                       <p className="text-emerald-600 text-sm">Ready to Launch</p>
                     </div>
                   </div>
@@ -289,7 +289,7 @@ const InstallationGuideDetailed: React.FC = () => {
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   <div>
                     <p className="text-slate-600 mb-4">
-                      Accept the <strong>License Agreement</strong> and then the main window of <strong>DSecure File Eraser</strong> software is displayed.
+                      Accept the <strong>License Agreement</strong> and then the main window of <strong>D-Secure File Eraser</strong> software is displayed.
                     </p>
                     <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
                       <p className="text-blue-800">
@@ -306,7 +306,7 @@ const InstallationGuideDetailed: React.FC = () => {
                           </svg>
                         </div>
                         <h4 className="font-bold text-slate-900">License Agreement</h4>
-                        <p className="text-slate-500 text-sm">DSecure End User License</p>
+                        <p className="text-slate-500 text-sm">D-Secure End User License</p>
                       </div>
                       <div className="space-y-2">
                         <button className="w-full bg-emerald-500 text-white py-2 rounded font-medium">
@@ -335,7 +335,7 @@ const InstallationGuideDetailed: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Installation Complete!</h3>
                 <p className="text-emerald-100 mb-6">
-                  DSecure File Eraser has been successfully installed on your system.
+                  D-Secure File Eraser has been successfully installed on your system.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link

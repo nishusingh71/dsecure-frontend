@@ -6,10 +6,10 @@ const ConnectingDomain: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Connect to Domain - DSecure Network File Manual</title>
+        <title>Connect to Domain - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Learn how to connect DSecure File Eraser Network to your Active Directory domain and manage networked computers."
+          content="Learn how to connect D-Secure File Eraser Network to your Active Directory domain and manage networked computers."
         />
       </Helmet>
 
@@ -21,7 +21,7 @@ const ConnectingDomain: React.FC = () => {
             <h1 className="text-4xl font-bold text-gray-900">Connect to Active Directory Domain</h1>
           </div>
           <p className="text-lg text-gray-600">
-            Connect DSecure File Eraser Network to your Active Directory domain to manage and erase data across multiple networked computers from a centralized console.
+            Connect D-Secure File Eraser Network to your Active Directory domain to manage and erase data across multiple networked computers from a centralized console.
           </p>
         </div>
 
@@ -43,7 +43,7 @@ const ConnectingDomain: React.FC = () => {
             <div className="bg-white/10 rounded-lg p-4">
               <h3 className="font-semibold text-base mb-2">Domain-Joined Computer</h3>
               <p className="text-blue-100">
-                The computer running DSecure File Eraser Network must be joined to the Active Directory domain you want to manage. Standalone computers cannot connect to domain resources.
+                The computer running D-Secure File Eraser Network must be joined to the Active Directory domain you want to manage. Standalone computers cannot connect to domain resources.
               </p>
             </div>
             
@@ -72,7 +72,7 @@ const ConnectingDomain: React.FC = () => {
               </div>
               <div className="ml-13 space-y-3">
                 <p className="text-gray-700">
-                  Open DSecure File Eraser Network on a computer that is joined to your Active Directory domain. Verify domain membership by checking System Properties.
+                  Open D-Secure File Eraser Network on a computer that is joined to your Active Directory domain. Verify domain membership by checking System Properties.
                 </p>
                 <div className="bg-white rounded-lg p-3 border border-blue-200">
                   <p className="text-sm font-medium text-gray-900 mb-1">Verification Tip:</p>
@@ -89,7 +89,7 @@ const ConnectingDomain: React.FC = () => {
               </div>
               <div className="ml-13 space-y-3">
                 <p className="text-gray-700">
-                  In the DSecure application, click the <strong>Home</strong> tab in the ribbon, then locate and click the <strong>Connect to Domain</strong> button.
+                  In the D-Secure application, click the <strong>Home</strong> tab in the ribbon, then locate and click the <strong>Connect to Domain</strong> button.
                 </p>
                 <div className="bg-white rounded-lg p-3 border border-green-200">
                   <p className="text-sm font-medium text-gray-900 mb-1">Location:</p>
@@ -246,7 +246,7 @@ const ConnectingDomain: React.FC = () => {
           
           <div className="space-y-5">
             <p className="text-gray-700 leading-relaxed">
-              Once connected successfully, the DSecure interface updates to display your domain structure and available computers:
+              Once connected successfully, the D-Secure interface updates to display your domain structure and available computers:
             </p>
 
             <div className="grid md:grid-cols-2 gap-5">
@@ -390,7 +390,7 @@ const ConnectingDomain: React.FC = () => {
                   <li className="flex items-start gap-2">
                     <span className="text-yellow-600 mt-1">•</span>
                     <div>
-                      <strong>Firewall Blocking:</strong> Windows Firewall or third-party firewall blocking ICMP (ping) or SMB protocols - add DSecure exceptions
+                      <strong>Firewall Blocking:</strong> Windows Firewall or third-party firewall blocking ICMP (ping) or SMB protocols - add D-Secure exceptions
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
@@ -427,7 +427,7 @@ const ConnectingDomain: React.FC = () => {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 shrink-0" />
-                  <span>Use dedicated service account (not personal admin account) for DSecure operations</span>
+                  <span>Use dedicated service account (not personal admin account) for D-Secure operations</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 shrink-0" />
@@ -485,7 +485,7 @@ const ConnectingDomain: React.FC = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 shrink-0" />
-                  <span>Document firewall rules needed for DSecure operations</span>
+                  <span>Document firewall rules needed for D-Secure operations</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-5 h-5 shrink-0" />

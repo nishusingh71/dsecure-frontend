@@ -135,8 +135,8 @@ export default function AdminUsers() {
   return (
     <>
       <Helmet>
-        <title>Manage Users - Admin Dashboard | DSecureTech</title>
-        <meta name="description" content="Manage user accounts, roles, and permissions in DSecureTech admin dashboard." />
+        <title>Manage Users - Admin Dashboard | D-SecureTech</title>
+        <meta name="description" content="Manage user accounts, roles, and permissions in D-SecureTech admin dashboard." />
       </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">

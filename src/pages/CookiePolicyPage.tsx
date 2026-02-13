@@ -79,13 +79,13 @@ const CookiePolicyPage: React.FC = () => {
                         </thead>
                         <tbody>
                           <tr className="border-b border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                            <td className="p-4 text-slate-700 dark:text-slate-300">DSecure.com</td>
+                            <td className="p-4 text-slate-700 dark:text-slate-300">D-Secure.com</td>
                             <td className="p-4 text-slate-700 dark:text-slate-300">session_id</td>
                             <td className="p-4 text-slate-700 dark:text-slate-300">Maintains user session</td>
                             <td className="p-4 text-slate-700 dark:text-slate-300">Session</td>
                           </tr>
                           <tr className="border-b border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                            <td className="p-4 text-slate-700 dark:text-slate-300">DSecure.com</td>
+                            <td className="p-4 text-slate-700 dark:text-slate-300">D-Secure.com</td>
                             <td className="p-4 text-slate-700 dark:text-slate-300">preferences</td>
                             <td className="p-4 text-slate-700 dark:text-slate-300">Stores user preferences</td>
                             <td className="p-4 text-slate-700 dark:text-slate-300">1 year</td>
@@ -172,8 +172,8 @@ const CookiePolicyPage: React.FC = () => {
                         <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                         <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                       </svg>
-                      <a href="mailto:privacy@dsecuretech.com" className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-semibold">
-                        privacy@dsecuretech.com
+                      <a href="mailto:privacy@D-Securetech.com" className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-semibold">
+                        privacy@D-Securetech.com
                       </a>
                     </div>
                     <div className="flex items-start gap-2">

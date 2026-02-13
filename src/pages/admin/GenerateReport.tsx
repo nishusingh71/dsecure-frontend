@@ -158,7 +158,7 @@ export default function GenerateReport() {
 
         // Call enhanced audit reports API for custom PDF generation
         const response = await fetch(
-          `https://api.dsecuretech.com/api/EnhancedAuditReports/${reportId}/export-pdf-with-files`,
+          `https://api.D-Securetech.com/api/EnhancedAuditReports/${reportId}/export-pdf-with-files`,
           {
             method: "POST",
             headers: {
@@ -242,7 +242,7 @@ export default function GenerateReport() {
             }
 
             const response = await fetch(
-              `https://api.dsecuretech.com/api/EnhancedAuditReports/${reportId}/export-pdf-with-files`,
+              `https://api.D-Securetech.com/api/EnhancedAuditReports/${reportId}/export-pdf-with-files`,
               {
                 method: "POST",
                 headers: {
@@ -361,10 +361,10 @@ export default function GenerateReport() {
   return (
     <>
       <Helmet>
-        <title>Generate Report - Admin Dashboard | DSecureTech</title>
+        <title>Generate Report - Admin Dashboard | D-SecureTech</title>
         <meta
           name="description"
-          content="Generate custom reports for data erasure activities in DSecureTech admin dashboard."
+          content="Generate custom reports for data erasure activities in D-SecureTech admin dashboard."
         />
       </Helmet>
 

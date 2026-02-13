@@ -211,7 +211,7 @@ const SystemRequirementsPage: React.FC = memo(() => {
                         <li>• HTTPS access for license activation (port 443)</li>
                         <li>• HTTP access for updates (port 80)</li>
                         <li>• DNS resolution for activation servers</li>
-                        <li>• Outbound connections to *.dsecuretech.com</li>
+                        <li>• Outbound connections to *.D-Securetech.com</li>
                         <li>• Proxy server support available</li>
                         <li>• Offline activation option for air-gapped systems</li>
                       </ul>

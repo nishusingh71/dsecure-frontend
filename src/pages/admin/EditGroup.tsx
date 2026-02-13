@@ -1,4 +1,4 @@
-﻿import { useAuth } from '@/auth/AuthContext'
+import { useAuth } from '@/auth/AuthContext'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
@@ -149,8 +149,8 @@ export default function EditGroup() {
   return (
     <>
       <Helmet>
-        <title>Edit Group - Admin Dashboard | DSecureTech</title>
-        <meta name="description" content="Edit group details in the DSecureTech admin dashboard." />
+        <title>Edit Group - Admin Dashboard | D-SecureTech</title>
+        <meta name="description" content="Edit group details in the D-SecureTech admin dashboard." />
       </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">

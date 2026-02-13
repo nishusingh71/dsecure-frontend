@@ -213,7 +213,7 @@ function ResourcesPageContent() {
       type: "whitepaper",
       category: "compliance",
       description:
-        "Comprehensive guide to implementing NIST 800-88 Rev. 1 standards with DSecure solutions.",
+        "Comprehensive guide to implementing NIST 800-88 Rev. 1 standards with D-Secure solutions.",
       downloadSize: "2.4 MB",
       pages: 28,
       featured: true,
@@ -302,7 +302,7 @@ function ResourcesPageContent() {
       type: "whitepaper",
       category: "technical",
       description:
-        "Deep dive into DSecure's security architecture and cryptographic implementations.",
+        "Deep dive into D-Secure's security architecture and cryptographic implementations.",
       downloadSize: "3.5 MB",
       pages: 38,
       featured: false,

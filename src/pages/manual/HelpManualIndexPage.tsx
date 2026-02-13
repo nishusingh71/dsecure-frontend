@@ -36,11 +36,11 @@ const HelpManualIndexPage: React.FC = () => {
               <Book className="w-8 h-8" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold">
-              DSecure Help Manual
+              D-Secure Help Manual
             </h1>
           </div>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Complete Visual Guide To Learn More About DSecure Products, Installation, FAQs, Report Management & Advanced Settings Configuration
+            Complete Visual Guide To Learn More About D-Secure Products, Installation, FAQs, Report Management & Advanced Settings Configuration
           </p>
           
           {/* Quick Stats */}
@@ -119,7 +119,7 @@ const HelpManualIndexPage: React.FC = () => {
                 <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg group-hover:bg-purple-200 dark:group-hover:bg-purple-800/50 transition-colors">
                   <Mouse className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Working with DSecure</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white">Working with D-Secure</h3>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                 Complete user interface guide, activation process, and file erasure operations with visual examples.
@@ -203,7 +203,7 @@ const HelpManualIndexPage: React.FC = () => {
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Frequently Asked Questions</h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-4">
-                    Get answers to common questions about DSecure features, usage, troubleshooting, and best practices.
+                    Get answers to common questions about D-Secure features, usage, troubleshooting, and best practices.
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
                     <div className="flex items-center space-x-2">
@@ -251,9 +251,9 @@ const HelpManualIndexPage: React.FC = () => {
                 <Book className="w-6 h-6 text-green-600 dark:text-green-400" />
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Complete DSecure Manual</h3>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Complete D-Secure Manual</h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Comprehensive single-page manual covering all D-Securescreenshots content transformed for DSecure, including FAQs, cloud integration, settings, reports, scheduling, and advanced configurations.
+                  Comprehensive single-page manual covering all D-Securescreenshots content transformed for D-Secure, including FAQs, cloud integration, settings, reports, scheduling, and advanced configurations.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="flex items-center space-x-2">

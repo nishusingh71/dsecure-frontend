@@ -223,7 +223,7 @@ const QuickStartTutorial: React.FC = memo(() => {
       title="Quick Start Tutorial"
       subtitle="Complete your first secure data erasure in under 10 minutes with D-Secure"
       description="Step-by-step quick start tutorial for D-Secure. Learn to install, configure, and perform your first secure data erasure in minutes."
-      canonicalUrl="https://dsecuretech.com/support/manual/quickstart"
+      canonicalUrl="https://D-Securetech.com/support/manual/quickstart"
       keywords="D-Secure quick start, data erasure tutorial, secure wipe guide, D-Secure tutorial"
       sections={sections}
       quickAccessItems={quickAccessItems}

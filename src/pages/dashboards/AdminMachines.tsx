@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { exportToCsv } from '@/utils/csv'
 import { Helmet } from 'react-helmet-async'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -37,7 +37,7 @@ export default function AdminMachines() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [subuserFilter, setSubuserFilter] = useState<string>("") // "" = my machines, email = subuser's machines, "all" = all machines
 
-  // ✅ Get current user email for API calls
+  // ? Get current user email for API calls
   const getUserEmail = (): string => {
     const storedUser = localStorage.getItem('user_data');
     const authUser = localStorage.getItem('authUser');
@@ -66,10 +66,10 @@ export default function AdminMachines() {
   const currentUserEmail = getUserEmail();
   const isDemo = isDemoMode();
 
-  // ✅ Fetch subusers for filter dropdown
+  // ? Fetch subusers for filter dropdown
   const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
 
-  // ✅ Cache Helper Functions
+  // ? Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
   const getCachedData = (key: string) => {
@@ -78,13 +78,13 @@ export default function AdminMachines() {
       if (cached) {
         const { data, timestamp } = JSON.parse(cached);
         if (Date.now() - timestamp < CACHE_DURATION) {
-          // console.log(`✅ Using cached data for ${key}`);
+          // console.log(`? Using cached data for ${key}`);
           return data;
         }
         localStorage.removeItem(`admin_cache_${key}`);
       }
     } catch (e) {
-      console.warn(`⚠️ Cache read error for ${key}:`, e);
+      console.warn(`?? Cache read error for ${key}:`, e);
     }
     return null;
   };
@@ -95,9 +95,9 @@ export default function AdminMachines() {
         data,
         timestamp: Date.now()
       }));
-      // console.log(`💾 Cached data for ${key}`);
+      // console.log(`?? Cached data for ${key}`);
     } catch (e) {
-      console.warn(`⚠️ Cache write error for ${key}:`, e);
+      console.warn(`?? Cache write error for ${key}:`, e);
     }
   };
 
@@ -123,9 +123,9 @@ export default function AdminMachines() {
   const loadMachinesData = async () => {
     setLoading(true)
 
-    // 🎮 Demo Mode Check - Show static data only
+    // ?? Demo Mode Check - Show static data only
     if (isDemoMode()) {
-      // console.log('🎮 Demo Mode Active - Using static machines data')
+      // console.log('?? Demo Mode Active - Using static machines data')
       let demoMachines = DEMO_MACHINES
 
       // Apply subuser filter in demo mode
@@ -138,11 +138,11 @@ export default function AdminMachines() {
       return
     }
 
-    // ✅ Check cache first for instant display (only if no subuser filter)
+    // ? Check cache first for instant display (only if no subuser filter)
     if (!subuserFilter) {
       const cachedMachines = getCachedData('machines');
       if (cachedMachines && cachedMachines.length > 0) {
-        // console.log('⚡ Displaying cached machines data');
+        // console.log('? Displaying cached machines data');
         setAllRows(cachedMachines);
         setLoading(false); // Hide loader since we have cached data
       }
@@ -151,17 +151,17 @@ export default function AdminMachines() {
     try {
       // Get user email - already computed above
       const userEmail = currentUserEmail;
-      // console.log('📧 Final userEmail for machines:', userEmail)
+      // console.log('?? Final userEmail for machines:', userEmail)
 
       if (!userEmail) {
-        console.error('❌ No user email found')
+        console.error('? No user email found')
         showError('Authentication Error', 'No user email found. Please login again.')
         setAllRows([])
         setLoading(false)
         return
       }
 
-      // ✅ Determine which email(s) to fetch based on subuserFilter
+      // ? Determine which email(s) to fetch based on subuserFilter
       let emailsToFetch: string[] = [];
 
       if (subuserFilter === "all") {
@@ -175,7 +175,7 @@ export default function AdminMachines() {
         emailsToFetch = [userEmail];
       }
 
-      // console.log('🖥️ Fetching machines for emails:', emailsToFetch)
+      // console.log('??? Fetching machines for emails:', emailsToFetch)
 
       // Fetch machines for all selected emails in parallel
       const allMachinesPromises = emailsToFetch.map(email =>
@@ -194,18 +194,18 @@ export default function AdminMachines() {
 
       // Try to fetch machines by email first
       let machinesRes = { success: combinedMachines.length > 0, data: combinedMachines }
-      // console.log('📥 Machines API Response:', machinesRes)
-      // console.log('📥 Full Response Object:', JSON.stringify(machinesRes, null, 2))
+      // console.log('?? Machines API Response:', machinesRes)
+      // console.log('?? Full Response Object:', JSON.stringify(machinesRes, null, 2))
 
-      // console.log('📥 Combined Machines:', combinedMachines.length)
+      // console.log('?? Combined Machines:', combinedMachines.length)
 
       if (machinesRes.success && machinesRes.data) {
-        // console.log('✅ Final Machines fetched:', machinesRes.data.length)
-        // console.log('✅ Machines data:', machinesRes.data)
+        // console.log('? Final Machines fetched:', machinesRes.data.length)
+        // console.log('? Machines data:', machinesRes.data)
 
         // If no machines found, set empty array
         if (machinesRes.data.length === 0) {
-          // console.log('ℹ️ No machines found for this user')
+          // console.log('?? No machines found for this user')
           showInfo('No Machines', 'No machines found for your account')
           setAllRows([])
           setLoading(false)
@@ -227,7 +227,7 @@ export default function AdminMachines() {
           if (machine.license_details_json) {
             try {
               licenseDetails = JSON.parse(machine.license_details_json)
-              // console.log('📄 Parsed license_details_json for machine:', machine.machine_id, licenseDetails)
+              // console.log('?? Parsed license_details_json for machine:', machine.machine_id, licenseDetails)
 
               // Extract erase option from license details
               if (licenseDetails.erase_option) {
@@ -240,7 +240,7 @@ export default function AdminMachines() {
                 eraseOption = licenseDetails.license_type
               }
             } catch (error) {
-              console.warn('⚠️ Failed to parse license_details_json:', error)
+              console.warn('?? Failed to parse license_details_json:', error)
             }
           }
 
@@ -328,7 +328,7 @@ export default function AdminMachines() {
           }
         })
 
-        // console.log('✅ Mapped machines:', uiMachines)
+        // console.log('? Mapped machines:', uiMachines)
         setAllRows(uiMachines)
         // Only cache if not using subuser filter
         if (!subuserFilter) {
@@ -339,7 +339,7 @@ export default function AdminMachines() {
         setAllRows([])
       }
     } catch (error) {
-      console.error('❌ Error loading machines:', error)
+      console.error('? Error loading machines:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
       showError('Data Loading Error', `Failed to load machine data: ${errorMessage}`)
       setAllRows([])
@@ -400,7 +400,7 @@ export default function AdminMachines() {
     setPage(1)
   }
 
-  // ✅ Toggle individual machine selection
+  // ? Toggle individual machine selection
   const toggleMachineSelection = (machineId: string) => {
     const newSelection = new Set(selectedMachineIds)
     if (newSelection.has(machineId)) {
@@ -408,11 +408,11 @@ export default function AdminMachines() {
     } else {
       newSelection.add(machineId)
     }
-    // console.log('🔄 Selection updated:', newSelection.size, 'machines selected')
+    // console.log('?? Selection updated:', newSelection.size, 'machines selected')
     setSelectedMachineIds(newSelection)
   }
 
-  // ✅ Toggle all machines on current page
+  // ? Toggle all machines on current page
   const toggleSelectAll = (currentPageMachines: UIMachine[]) => {
     const currentPageIds = currentPageMachines.map((m) => m.machineId || m.hostname).filter(Boolean)
     const allSelected = currentPageIds.every((id) => selectedMachineIds.has(id))
@@ -425,7 +425,7 @@ export default function AdminMachines() {
       // Select all on current page
       currentPageIds.forEach((id) => newSelection.add(id))
     }
-    // console.log('🔄 Select All updated:', newSelection.size, 'machines selected')
+    // console.log('?? Select All updated:', newSelection.size, 'machines selected')
     setSelectedMachineIds(newSelection)
   }
 
@@ -501,7 +501,7 @@ export default function AdminMachines() {
     }
   }
 
-  // ✅ Bulk Erase Multiple Machines
+  // ? Bulk Erase Multiple Machines
   const handleBulkErase = async () => {
     if (selectedMachineIds.size === 0) {
       showWarning('No Machines Selected', 'Please select at least one machine to erase')
@@ -587,7 +587,7 @@ export default function AdminMachines() {
     }
   }
 
-  // ✅ Bulk View Details
+  // ? Bulk View Details
   const handleBulkViewDetails = () => {
     if (selectedMachineIds.size === 0) {
       showWarning('No Machines Selected', 'Please select at least one machine to view details')
@@ -695,7 +695,7 @@ export default function AdminMachines() {
                   <div>
                     <p className="text-xs text-slate-500 mb-1">License Status</p>
                     <p className={`text-sm font-medium ${machine.licenseActivated ? 'text-green-700' : 'text-red-700'}`}>
-                      {machine.licenseActivated ? '✓ Active' : '✗ Inactive'}
+                      {machine.licenseActivated ? '? Active' : '? Inactive'}
                     </p>
                   </div>
                   <div>
@@ -850,7 +850,7 @@ export default function AdminMachines() {
               <div className="space-y-1">
                 {selectedMachines.map((machine) => (
                   <div key={machine.machineId || machine.hostname} className="text-sm text-slate-700">
-                    • {machine.hostname}
+                    � {machine.hostname}
                   </div>
                 ))}
               </div>
@@ -903,7 +903,7 @@ export default function AdminMachines() {
       <TransferModal />
 
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/machines" />
+        <link rel="canonical" href="https://D-Securetech.com/admin/machines" />
         <title>D-SecureTech Compliance | Data Erasure Standards & Regulations</title>
         <meta
           name="description"
@@ -1147,7 +1147,7 @@ export default function AdminMachines() {
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
                 className="px-2 py-1 border rounded text-sm hover:bg-slate-50"
               >
-                {sortOrder === 'asc' ? '↑' : '↓'}
+                {sortOrder === 'asc' ? '?' : '?'}
               </button>
             </div>
 

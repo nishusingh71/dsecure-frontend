@@ -119,7 +119,7 @@ export default function GroupDetailPage() {
     return (
         <>
             <Helmet>
-                <title>{resources?.groupName || 'Group'} Resources - Admin Dashboard | DSecureTech</title>
+                <title>{resources?.groupName || 'Group'} Resources - Admin Dashboard | D-SecureTech</title>
             </Helmet>
 
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30">

@@ -1,4 +1,4 @@
-﻿// Role-Based Access Control (RBAC) System for Admin Dashboard
+// Role-Based Access Control (RBAC) System for Admin Dashboard
 
 export type UserRole = 'superadmin' | 'administrator' | 'admin' | 'manager' | 'user';
 
@@ -140,8 +140,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canDeleteUser: true,
     canViewAllUsers: true,
     canViewSubordinateUsers: true,
-    canManageSuperAdmin: true, // ✅ Can manage SuperAdmin
-    canManageAdmin: true, // ✅ Can manage other Admins
+    canManageSuperAdmin: true, // ? Can manage SuperAdmin
+    canManageAdmin: true, // ? Can manage other Admins
     canCreateGroup: true,
     canEditGroup: true,
     canDeleteGroup: true,
@@ -155,10 +155,10 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canDeleteReports: true,
     canGenerateReports: true,
     canViewSettings: true,
-    canEditSettings: true, // ✅ Can edit system settings
-    canViewSecuritySettings: true, // ✅ Can view security settings
+    canEditSettings: true, // ? Can edit system settings
+    canViewSecuritySettings: true, // ? Can view security settings
     canViewLogs: true,
-    canClearLogs: true, // ✅ Can clear logs
+    canClearLogs: true, // ? Can clear logs
     canViewMachines: true,
     canManageMachines: true,
     canEditOwnProfile: true,
@@ -168,12 +168,12 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
   // Manager - Limited management capabilities
   manager: {
     canViewDashboard: true,
-    canViewAllStats: false, // ❌ Limited stats view
+    canViewAllStats: false, // ? Limited stats view
     canCreateUser: true,
     canEditUser: true,
-    canDeleteUser: false, // ❌ Cannot delete users
-    canViewAllUsers: true, // ✅ Can view all users
-    canViewSubordinateUsers: true, // ✅ Only subordinates
+    canDeleteUser: false, // ? Cannot delete users
+    canViewAllUsers: true, // ? Can view all users
+    canViewSubordinateUsers: true, // ? Only subordinates
     canManageSuperAdmin: false,
     canManageAdmin: false,
     canCreateGroup: true,
@@ -185,7 +185,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canViewLicenses: true,
     canRevokeLicenses: false,
     canViewReports: true,
-    canDownloadReports: true, // ✅ Can download reports
+    canDownloadReports: true, // ? Can download reports
     canDeleteReports: false,
     canGenerateReports: true,
     canViewSettings: false,
@@ -201,7 +201,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
 
   // Regular User - Limited access (can view dashboard but with restricted features)
   user: {
-    canViewDashboard: true, // ✅ Can view dashboard
+    canViewDashboard: true, // ? Can view dashboard
     canViewAllStats: false,
     canCreateUser: false,
     canEditUser: false,
@@ -216,10 +216,10 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canViewGroups: false,
     canAssignLicenses: false,
     canBulkAssignLicenses: false,
-    canViewLicenses: true, // ✅ Can view own licenses
+    canViewLicenses: true, // ? Can view own licenses
     canRevokeLicenses: false,
-    canViewReports: true, // ✅ Can view reports
-    canDownloadReports: true, // ✅ Can download reports
+    canViewReports: true, // ? Can view reports
+    canDownloadReports: true, // ? Can download reports
     canDeleteReports: false,
     canGenerateReports: false,
     canViewSettings: false,
@@ -229,7 +229,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
     canClearLogs: false,
     canViewMachines: false,
     canManageMachines: false,
-    canEditOwnProfile: true, // ✅ Can edit own profile
+    canEditOwnProfile: true, // ? Can edit own profile
     canEditOthersProfile: false
   }
 };
@@ -242,7 +242,7 @@ export function getRolePermissions(role: string): RolePermissions {
   const permissions = ROLE_PERMISSIONS[normalizedRole] || ROLE_PERMISSIONS.user;
   
   // Debug logging
-  // console.log('📋 getRolePermissions:', {
+  // console.log('?? getRolePermissions:', {
   //   originalRole: role,
   //   normalizedRole,
   //   hasPermissions: !!ROLE_PERMISSIONS[normalizedRole],

@@ -29,7 +29,7 @@ const HelpManualPage: React.FC = memo(() => {
       id: 1,
       title: "Getting Started",
       description:
-        "Essential information for new users to get up and running with DSecure",
+        "Essential information for new users to get up and running with D-Secure",
       icon: "🚀",
       subsections: [
         {
@@ -52,7 +52,7 @@ const HelpManualPage: React.FC = memo(() => {
           id: 13,
           title: "User Interface Overview",
           description:
-            "Navigate the DSecure interface and understand key features",
+            "Navigate the D-Secure interface and understand key features",
           url: "/support/manual/user-interface",
           pageCount: 12,
         },
@@ -288,25 +288,25 @@ const HelpManualPage: React.FC = memo(() => {
         },
         {
           id: 17,
-          title: "Working with DSecure Interface",
+          title: "Working with D-Secure Interface",
           description:
-            "Complete guide to using DSecure with activation and file erasure operations",
-          url: "/support/manual/working-with-dsecure",
+            "Complete guide to using D-Secure with activation and file erasure operations",
+          url: "/support/manual/working-with-D-Secure",
           pageCount: 15,
         },
         {
           id: 71,
-          title: "DSecure File Eraser Manual",
+          title: "D-Secure File Eraser Manual",
           description:
-            "Comprehensive single-page manual with all DSecure features and functionality",
+            "Comprehensive single-page manual with all D-Secure features and functionality",
           url: "/support/help-manual/complete-manual",
           pageCount: 1,
         },
         // {
         //   id: 79,
-        //   title: "DSecure File Eraser Network Manual",
+        //   title: "D-Secure File Eraser Network Manual",
         //   description:
-        //     "Comprehensive single-page manual with all DSecure network features and functionality",
+        //     "Comprehensive single-page manual with all D-Secure network features and functionality",
         //   url: "/support/help-manual/complete-network-manual",
         //   pageCount: 1,
         // },
@@ -319,7 +319,7 @@ const HelpManualPage: React.FC = memo(() => {
         },
         {
           id: 73,
-          title: "DSecure FAQ",
+          title: "D-Secure FAQ",
           description: "Frequently asked questions and detailed answers",
           url: "/support/help-manual/faqs",
           pageCount: 12,
@@ -391,7 +391,7 @@ const HelpManualPage: React.FC = memo(() => {
                     Help <span className="text-brand">Manual</span>
                   </h1>
                   <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
-                    Comprehensive documentation and user guide for DSecure data
+                    Comprehensive documentation and user guide for D-Secure data
                     erasure solutions
                   </p>
 
@@ -648,7 +648,7 @@ const HelpManualPage: React.FC = memo(() => {
                   Download PDF Manual
                 </h2>
                 <p className="text-xl text-slate-700 mb-8 max-w-2xl mx-auto">
-                  Get the complete DSecure manual as a downloadable PDF for
+                  Get the complete D-Secure manual as a downloadable PDF for
                   offline reference
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -713,7 +713,7 @@ const HelpManualPage: React.FC = memo(() => {
                     Contact Support
                   </Link>
                   <a
-                    href="mailto:docs@dsecuretech.com"
+                    href="mailto:docs@D-Securetech.com"
                     className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300 inline-flex items-center justify-center"
                   >
                     Request Documentation

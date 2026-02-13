@@ -1,4 +1,4 @@
-﻿import { useAuth } from '@/auth/AuthContext'
+import { useAuth } from '@/auth/AuthContext'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
@@ -102,8 +102,8 @@ export default function AddGroup() {
   return (
     <>
       <Helmet>
-        <title>Add New Group - Admin Dashboard | DSecureTech</title>
-        <meta name="description" content="Create a new user group in the DSecureTech admin dashboard." />
+        <title>Add New Group - Admin Dashboard | D-SecureTech</title>
+        <meta name="description" content="Create a new user group in the D-SecureTech admin dashboard." />
       </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">

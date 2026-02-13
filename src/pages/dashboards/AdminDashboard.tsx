@@ -1,4 +1,4 @@
-﻿import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/auth/AuthContext";
 import { useNotification } from "@/contexts/NotificationContext";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Helmet } from "react-helmet-async";
@@ -51,7 +51,7 @@ import { usePerformanceData } from "@/hooks/usePerformanceData";
 import { useSessions } from "@/hooks/useSessions";
 
 
-// ✅ Import Demo Data for "Try Demo Account" mode
+// ? Import Demo Data for "Try Demo Account" mode
 import {
   isDemoMode,
   DEMO_DASHBOARD_STATS,
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
     return null;
   };
 
-  // ✅ Cache Helper Functions - Store data with timestamp
+  // ? Cache Helper Functions - Store data with timestamp
   // API Data States - React Query will populate these via useEffect
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(
     null
@@ -251,7 +251,7 @@ export default function AdminDashboard() {
   // Check if user has private cloud access
   const isPrivateCloudEnabled = user?.is_private_cloud || storedUserData?.is_private_cloud || false;
 
-  console.log("🔍 Private Cloud Check:", {
+  console.log("?? Private Cloud Check:", {
     userIsPrivateCloud: user?.is_private_cloud,
     storedIsPrivateCloud: storedUserData?.is_private_cloud,
     isPrivateCloudEnabled,
@@ -308,28 +308,28 @@ export default function AdminDashboard() {
   // Get user email for API calls (calculate before using in queries)
   const userEmail = storedUserData?.user_email || storedUserData?.email || user?.email || "";
 
-  // ✅ React Query: Fetch dashboard data with automatic caching
+  // ? React Query: Fetch dashboard data with automatic caching
   const dashboardDataEnabled = activeTab === "overview";
   const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
 
-  // ✅ Check if current user is a subuser
+  // ? Check if current user is a subuser
   const currentUserType =
     storedUserData?.user_type || storedUserData?.userType || "";
   const isCurrentUserSubuser = currentUserType === "subuser";
 
   console.log(
-    "👤 Current User Type:",
+    "?? Current User Type:",
     currentUserType,
     "| Is Subuser:",
     isCurrentUserSubuser
   );
 
-  // ✅ React Query: Fetch subusers data with automatic caching and refetching
+  // ? React Query: Fetch subusers data with automatic caching and refetching
   // Fetch subusers filtered by current user's email (works for both regular users and subusers)
   // Always fetch to show Active Users count on overview tab
   // Note: userEmail is already defined above (line 284)
 
-  // ✅ In Demo Mode, disable all React Query API calls
+  // ? In Demo Mode, disable all React Query API calls
   const isDemo = isDemoMode();
 
   const {
@@ -340,10 +340,10 @@ export default function AdminDashboard() {
     isRefetching,
   } = useSubusers(userEmail, !!userEmail && !isDemo);
 
-  // 🎭 In Demo Mode, never show loading state
+  // ?? In Demo Mode, never show loading state
   const usersDataLoading = isDemo ? false : _usersDataLoading;
 
-  // ✅ React Query: Fetch machines and audit reports for user (disabled in demo mode)
+  // ? React Query: Fetch machines and audit reports for user (disabled in demo mode)
   const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo);
   const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo);
   const enhancedAuditReportsQuery = useEnhancedAuditReports(
@@ -351,16 +351,16 @@ export default function AdminDashboard() {
     !!userEmail && activeTab === "overview" && !isDemo
   );
 
-  // ✅ React Query: Get active licenses count directly from cache (disabled in demo mode)
+  // ? React Query: Get active licenses count directly from cache (disabled in demo mode)
   const activeLicensesFromCache = useActiveLicensesCount(isDemo ? '' : userEmail);
 
-  // ✅ React Query: Fetch performance data automatically from cached audit reports and machines (disabled in demo mode)
+  // ? React Query: Fetch performance data automatically from cached audit reports and machines (disabled in demo mode)
   const performanceQuery = usePerformanceData(
     isDemo ? '' : userEmail,
     !!userEmail && activeTab === "overview" && !isDemo
   );
 
-  // ✅ React Query: Fetch sessions data with caching (disabled in demo mode)
+  // ? React Query: Fetch sessions data with caching (disabled in demo mode)
   const sessionsQuery = useSessions(
     isDemo ? '' : userEmail,
     !!userEmail && !isDemo
@@ -375,7 +375,7 @@ export default function AdminDashboard() {
 
   // Role-based permissions (using primary role from roles array if available)
   // Priority: Demo mode > userRole (camelCase) > user_role (snake_case) > getPrimaryRole() > user.role
-  // 🎭 In Demo Mode, always show superadmin role
+  // ?? In Demo Mode, always show superadmin role
   const currentUserRole = isDemo
     ? 'superadmin'
     : (storedUserData?.userRole ||
@@ -432,7 +432,7 @@ export default function AdminDashboard() {
   };
 
   // Debug: Log role and permissions
-  console.log("🔍 AdminDashboard Role Debug:", {
+  console.log("?? AdminDashboard Role Debug:", {
     currentUserRole,
     userRole: user?.role,
     storedUserRole: storedUserData?.userRole,
@@ -448,13 +448,13 @@ export default function AdminDashboard() {
   // Note: All users can access admin dashboard, but with limited permissions
   // UI elements will be hidden based on role permissions
 
-  // ✅ Listen for auth state changes (logout/login) to reset dashboard
+  // ? Listen for auth state changes (logout/login) to reset dashboard
   useEffect(() => {
     const handleAuthStateChange = (event: Event) => {
       const customEvent = event as CustomEvent;
       if (customEvent.detail === null) {
         // User logged out - reset all dashboard state
-        console.log("🚪 User logged out - clearing AdminDashboard state");
+        console.log("?? User logged out - clearing AdminDashboard state");
         setDashboardStats(null);
         setUserActivity([]);
         setGroups([]);
@@ -471,7 +471,7 @@ export default function AdminDashboard() {
           throughput: [],
         });
         setSuperuserData(null);
-        // ✅ React Query handles cache invalidation automatically
+        // ? React Query handles cache invalidation automatically
         // setSubusersData([]) // No longer needed - React Query manages this
         setProfileData(null);
       }
@@ -482,10 +482,10 @@ export default function AdminDashboard() {
       window.removeEventListener("authStateChanged", handleAuthStateChange);
   }, []);
 
-  // ✅ React Query provides data directly - no need for useEffect with object dependencies
+  // ? React Query provides data directly - no need for useEffect with object dependencies
   // Using dashboardQuery.activity directly in UI to avoid "Maximum update depth" error
 
-  // ✅ React Query: Sync dashboard data from useDashboardData hook to local state
+  // ? React Query: Sync dashboard data from useDashboardData hook to local state
   // This ensures cached data is properly used without re-fetching
   const dashboardData = useDashboardData(userEmail, !!userEmail && !isDemo);
 
@@ -506,7 +506,7 @@ export default function AdminDashboard() {
     if (dashboardData.licenses && dashboardData.licenses.length > 0) {
       setLicenseData(dashboardData.licenses);
       setUserLicenseDetails(dashboardData.licenses);
-      console.log('✅ License data synced from React Query cache:', dashboardData.licenses.length, 'items');
+      console.log('? License data synced from React Query cache:', dashboardData.licenses.length, 'items');
     }
 
     // Sync reports
@@ -517,7 +517,7 @@ export default function AdminDashboard() {
     // Note: Profile data is handled separately via profileData state initialization and fallback logic
   }, [dashboardData.stats, dashboardData.groups, dashboardData.licenses, dashboardData.reports, isDemo]);
 
-  // ✅ React Query: Update machines data (keep for backward compatibility)
+  // ? React Query: Update machines data (keep for backward compatibility)
   useEffect(() => {
     if (machinesQuery.data) {
       const activeLicenses = machinesQuery.data.filter(
@@ -542,32 +542,32 @@ export default function AdminDashboard() {
     }
   }, [enhancedAuditReportsQuery.data]);
 
-  // ✅ React Query: Update performance data from cache
+  // ? React Query: Update performance data from cache
   useEffect(() => {
     if (performanceQuery.data) {
       setPerformanceData(performanceQuery.data);
       console.log(
-        "✅ Performance data updated from React Query cache:",
+        "? Performance data updated from React Query cache:",
         performanceQuery.data
       );
     }
   }, [performanceQuery.data]);
 
-  // ✅ React Query: Update sessions data from cache
+  // ? React Query: Update sessions data from cache
   useEffect(() => {
     if (sessionsQuery.data) {
       setRecentSessions(sessionsQuery.data);
       console.log(
-        "✅ Sessions data updated from React Query cache:",
+        "? Sessions data updated from React Query cache:",
         sessionsQuery.data.length
       );
     }
   }, [sessionsQuery.data]);
 
-  // ✅ DEMO MODE: Set static/dummy data when user logs in via "Try Demo Account"
+  // ? DEMO MODE: Set static/dummy data when user logs in via "Try Demo Account"
   useEffect(() => {
     if (isDemoMode()) {
-      console.log("🎭 DEMO MODE ACTIVE - Loading static demo data");
+      console.log("?? DEMO MODE ACTIVE - Loading static demo data");
 
       // Set demo dashboard stats
       setDashboardStats(DEMO_DASHBOARD_STATS);
@@ -620,19 +620,19 @@ export default function AdminDashboard() {
   useEffect(() => {
     // Skip API calls in demo mode
     if (isDemoMode()) {
-      console.log("🎭 DEMO MODE - Skipping API calls");
+      console.log("?? DEMO MODE - Skipping API calls");
       return;
     }
     loadDashboardData();
   }, []);
 
-  // ✅ React Query now handles data fetching automatically when activeTab === 'users'
+  // ? React Query now handles data fetching automatically when activeTab === 'users'
   // No need for manual useEffect - React Query hook useSubusers is enabled only when activeTab === 'users'
   // Old code commented out:
   /*
   useEffect(() => {
     if (activeTab === 'users') {
-      console.log('🔄 Users tab opened, fetching users data...')
+      console.log('?? Users tab opened, fetching users data...')
       fetchAndMergeUsersData()
     }
   }, [activeTab])
@@ -641,10 +641,10 @@ export default function AdminDashboard() {
   const loadDashboardData = async () => {
     setDataLoading(true);
     try {
-      // ✅ React Query now handles caching automatically
+      // ? React Query now handles caching automatically
       // No need for manual cache checking - React Query provides instant cached data
 
-      // ✅ NOTE: Dashboard data now fetched by React Query hooks (dashboardQuery)
+      // ? NOTE: Dashboard data now fetched by React Query hooks (dashboardQuery)
       // This manual fetch kept for backward compatibility during migration
       // Can be removed after testing confirms React Query works correctly
 
@@ -711,22 +711,22 @@ export default function AdminDashboard() {
         });
       }
 
-      // ✅ NOTE: Machines and Audit Reports now fetched by React Query hooks
+      // ? NOTE: Machines and Audit Reports now fetched by React Query hooks
       // machinesQuery, auditReportsQuery, enhancedAuditReportsQuery handle this automatically
       // Keeping this section commented for reference during migration
 
       /* MIGRATED TO REACT QUERY
       // Fetch active licenses count from Machines API by user email
-      // ✅ ROLE-BASED DATA FILTERING:
+      // ? ROLE-BASED DATA FILTERING:
       // - User/Superuser: Gets data filtered by their email (their machines, reports, logs, etc.)
       // - Subuser: Gets data filtered by their email (only their own machines, reports, logs, etc.)
       // This ensures subusers can only see their own data, not the parent user's data
       const userEmail = storedUserData?.user_email || user?.email || profileRes.data?.email;
       if (userEmail) {
-        console.log('📧 Fetching essential data for email:', userEmail);
-        console.log('👤 User Type:', storedUserData?.user_type || 'user');
+        console.log('?? Fetching essential data for email:', userEmail);
+        console.log('?? User Type:', storedUserData?.user_type || 'user');
         
-        // ✅ OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
+        // ? OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
         const [
           machinesRes,
           auditReportsRes,
@@ -735,7 +735,7 @@ export default function AdminDashboard() {
           sessionsRes,
           systemLogsRes
         ] = await Promise.all([
-          // ✅ These APIs filter by email - both user and subuser get their own data
+          // ? These APIs filter by email - both user and subuser get their own data
           apiClient.getMachinesByEmail(userEmail),
           apiClient.getAuditReportsByEmail(userEmail),
           apiClient.getUserByEmail(userEmail),
@@ -747,7 +747,7 @@ export default function AdminDashboard() {
         // Process machines data (active licenses) - NOW HANDLED BY machinesQuery
         if (machinesRes.success && machinesRes.data) {
           const activeLicenses = machinesRes.data.filter((machine: Machine) => machine.license_activated === true).length;
-          console.log('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
+          console.log('? Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
           setActiveLicensesCount(activeLicenses);
           setCachedData('activeLicenses', activeLicenses);
           
@@ -756,7 +756,7 @@ export default function AdminDashboard() {
             licenses: activeLicenses
           }));
         } else {
-          console.warn('⚠️ Failed to fetch machines:', machinesRes.error);
+          console.warn('?? Failed to fetch machines:', machinesRes.error);
         }
 
         // Process audit reports data - NOW HANDLED BY enhancedAuditReportsQuery
@@ -769,12 +769,12 @@ export default function AdminDashboard() {
         dashboardQuery.profile?.email;
       if (userEmailForLogs) {
         console.log(
-          "📧 Fetching sessions and system logs for email:",
+          "?? Fetching sessions and system logs for email:",
           userEmailForLogs
         );
-        console.log("👤 User Type:", storedUserData?.user_type || "user");
+        console.log("?? User Type:", storedUserData?.user_type || "user");
 
-        // ✅ Sessions are now fetched via React Query (sessionsQuery) - removed from Promise.all
+        // ? Sessions are now fetched via React Query (sessionsQuery) - removed from Promise.all
         const [userRes, subusersRes, systemLogsRes] =
           await Promise.all([
             apiClient.getUserByEmail(userEmailForLogs),
@@ -787,7 +787,7 @@ export default function AdminDashboard() {
           ]);
 
         /* REMOVED - Duplicate code already commented out above
-        // ✅ OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
+        // ? OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
         const [
           machinesRes,
           auditReportsRes,
@@ -796,7 +796,7 @@ export default function AdminDashboard() {
           sessionsRes,
           systemLogsRes
         ] = await Promise.all([
-          // ✅ These APIs filter by email - both user and subuser get their own data
+          // ? These APIs filter by email - both user and subuser get their own data
           apiClient.getMachinesByEmail(userEmail),
           apiClient.getAuditReportsByEmail(userEmail),
           apiClient.getUserByEmail(userEmail),
@@ -806,12 +806,12 @@ export default function AdminDashboard() {
         ]);
         */
 
-        // ✅ Machines and audit reports now handled by React Query (machinesQuery, auditReportsQuery)
+        // ? Machines and audit reports now handled by React Query (machinesQuery, auditReportsQuery)
         // Process machines data (active licenses) - MIGRATED TO useEffect above
         /* MIGRATED TO REACT QUERY
         if (machinesRes.success && machinesRes.data) {
           const activeLicenses = machinesRes.data.filter((machine: Machine) => machine.license_activated === true).length;
-          console.log('✅ Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
+          console.log('? Active licenses count:', activeLicenses, 'from', machinesRes.data.length, 'total machines');
           setActiveLicensesCount(activeLicenses);
           setCachedData('activeLicenses', activeLicenses);
           
@@ -820,16 +820,16 @@ export default function AdminDashboard() {
             licenses: activeLicenses
           }));
         } else {
-          console.warn('⚠️ Failed to fetch machines:', machinesRes.error);
+          console.warn('?? Failed to fetch machines:', machinesRes.error);
         }
         */
 
-        // ✅ Audit reports now handled by enhancedAuditReportsQuery
+        // ? Audit reports now handled by enhancedAuditReportsQuery
         // Process audit reports data - MIGRATED TO useEffect above
         /* MIGRATED TO REACT QUERY
         if (auditReportsRes.success && auditReportsRes.data) {
           const reportsCount = auditReportsRes.data.length;
-          console.log('✅ Audit reports count:', reportsCount);
+          console.log('? Audit reports count:', reportsCount);
           setAuditReportsCount(reportsCount);
           setCachedData('auditReportsCount', reportsCount);
           
@@ -843,7 +843,7 @@ export default function AdminDashboard() {
                   deviceCount: machinesRes.success && machinesRes.data ? machinesRes.data.length : 0
                 };
               } catch (error) {
-                console.warn(`⚠️ Failed to fetch machines for ${report.user_email}:`, error);
+                console.warn(`?? Failed to fetch machines for ${report.user_email}:`, error);
                 return { ...report, deviceCount: 0 };
               }
             })
@@ -853,7 +853,7 @@ export default function AdminDashboard() {
           setCachedData('auditReports', reportsWithDevices);
         */
 
-        // ✅ Extract unique software names from audit reports for license products
+        // ? Extract unique software names from audit reports for license products
         const softwareNames = new Set<string>();
         if (auditReportsQuery.data) {
           auditReportsQuery.data.forEach((report: any) => {
@@ -865,20 +865,20 @@ export default function AdminDashboard() {
                 }
               } catch (e) {
                 console.warn(
-                  "⚠️ Failed to parse report_details_json for software_name:",
+                  "?? Failed to parse report_details_json for software_name:",
                   e
                 );
               }
             }
           });
           console.log(
-            "✅ Unique software names extracted from reports:",
+            "? Unique software names extracted from reports:",
             Array.from(softwareNames)
           );
 
-          // ✅ Calculate Performance Metrics from React Query data
+          // ? Calculate Performance Metrics from React Query data
           console.log(
-            "📊 Calculating performance metrics from user-filtered data..."
+            "?? Calculating performance metrics from user-filtered data..."
           );
 
           // Use React Query data for performance calculations
@@ -890,7 +890,7 @@ export default function AdminDashboard() {
               ? systemLogsRes.data
               : [];
 
-          console.log("📊 Performance data sources:", {
+          console.log("?? Performance data sources:", {
             auditReports: performanceAuditReports.length,
             machines: performanceMachines.length,
             sessions: performanceSessions.length,
@@ -930,7 +930,7 @@ export default function AdminDashboard() {
             };
           }
 
-          // 1️⃣ Process Audit Reports (Erasure operations) - Use ALL data
+          // 1?? Process Audit Reports (Erasure operations) - Use ALL data
           performanceAuditReports.forEach((report: any) => {
             const reportDate = new Date(
               report.report_datetime || report.created_at
@@ -971,7 +971,7 @@ export default function AdminDashboard() {
             }
           });
 
-          // 2️⃣ Process Machines (Active devices per month) - Use ALL data
+          // 2?? Process Machines (Active devices per month) - Use ALL data
           performanceMachines.forEach((machine: any) => {
             const activationDate = new Date(
               machine.license_activation_date || machine.created_at
@@ -985,7 +985,7 @@ export default function AdminDashboard() {
             }
           });
 
-          // 3️⃣ Process Sessions (User activity) - Use ALL data
+          // 3?? Process Sessions (User activity) - Use ALL data
           performanceSessions.forEach((session: any) => {
             const sessionDate = new Date(session.login_time);
             const monthKey = sessionDate.toLocaleDateString("en-IN", {
@@ -997,7 +997,7 @@ export default function AdminDashboard() {
             }
           });
 
-          // 4️⃣ Process System Logs (Operations tracking) - Use ALL data
+          // 4?? Process System Logs (Operations tracking) - Use ALL data
           performanceSystemLogs.forEach((log: any) => {
             const logDate = new Date(log.created_at);
             const monthKey = logDate.toLocaleDateString("en-IN", {
@@ -1041,7 +1041,7 @@ export default function AdminDashboard() {
             throughput,
           });
 
-          console.log("✅ Performance metrics calculated from all APIs:", {
+          console.log("? Performance metrics calculated from all APIs:", {
             monthlyErasures,
             avgDuration,
             throughput,
@@ -1057,15 +1057,15 @@ export default function AdminDashboard() {
           });
         } else {
           console.warn(
-            "⚠️ Failed to fetch audit reports - using React Query data instead"
+            "?? Failed to fetch audit reports - using React Query data instead"
           );
         }
 
         // Process user license details
         if (userRes.success && userRes.data) {
-          console.log("✅ User data fetched from database:", userRes.data);
+          console.log("? User data fetched from database:", userRes.data);
 
-          // ✅ UPDATE PROFILE with latest data from database (handle both User and Subuser fields)
+          // ? UPDATE PROFILE with latest data from database (handle both User and Subuser fields)
           setProfileData((prev) => ({
             ...prev!,
             name:
@@ -1084,33 +1084,33 @@ export default function AdminDashboard() {
             is_private_cloud: userRes.data!.is_private_cloud ?? prev!.is_private_cloud,
           }));
 
-          // ✅ UPDATE LOCALSTORAGE with latest database data including billing details
+          // ? UPDATE LOCALSTORAGE with latest database data including billing details
           const storedData = getUserDataFromStorage();
           if (storedData) {
             storedData.user_name = userRes.data!.user_name;
             storedData.phone_number = userRes.data!.phone_number;
             storedData.is_private_cloud = userRes.data!.is_private_cloud;
-            // ✅ Save billing details JSON for Settings modal
+            // ? Save billing details JSON for Settings modal
             storedData.license_details_json = userRes.data!.license_details_json;
             storedData.payment_details_json = userRes.data!.payment_details_json;
             localStorage.setItem("user_data", JSON.stringify(storedData));
             localStorage.setItem("authUser", JSON.stringify(storedData));
-            console.log("💾 LocalStorage synced with database on page load, is_private_cloud:", userRes.data!.is_private_cloud);
-            console.log("💾 LocalStorage synced billing: license_details_json =", !!storedData.license_details_json, "| payment_details_json =", !!storedData.payment_details_json);
+            console.log("?? LocalStorage synced with database on page load, is_private_cloud:", userRes.data!.is_private_cloud);
+            console.log("?? LocalStorage synced billing: license_details_json =", !!storedData.license_details_json, "| payment_details_json =", !!storedData.payment_details_json);
           }
 
           // Process license details if available
           if (userRes.data.license_details_json) {
             console.log(
-              "🔍 RAW license_details_json:",
+              "?? RAW license_details_json:",
               userRes.data.license_details_json
             );
             console.log(
-              "🔍 Type of license_details_json:",
+              "?? Type of license_details_json:",
               typeof userRes.data.license_details_json
             );
             console.log(
-              "🔍 Is Array?",
+              "?? Is Array?",
               Array.isArray(userRes.data.license_details_json)
             );
 
@@ -1124,26 +1124,26 @@ export default function AdminDashboard() {
                 // Check if array contains already-parsed objects or JSON strings
                 if (typeof firstItem === "string") {
                   console.log(
-                    "📦 License details is an array of JSON strings, length:",
+                    "?? License details is an array of JSON strings, length:",
                     userRes.data.license_details_json.length
                   );
                   // Parse each JSON string
                   userRes.data.license_details_json.forEach(
                     (jsonString: string, index: number) => {
                       console.log(
-                        `🔍 Processing array item ${index}:`,
+                        `?? Processing array item ${index}:`,
                         jsonString
                       );
                       try {
                         const parsed = JSON.parse(jsonString);
                         console.log(
-                          `✅ Successfully parsed item ${index}:`,
+                          `? Successfully parsed item ${index}:`,
                           parsed
                         );
                         licenseDetailsArray.push(parsed);
                       } catch (e) {
                         console.error(
-                          `❌ Failed to parse array item ${index}:`,
+                          `? Failed to parse array item ${index}:`,
                           e
                         );
                         console.error("Failed JSON string:", jsonString);
@@ -1155,7 +1155,7 @@ export default function AdminDashboard() {
                   firstItem !== null
                 ) {
                   console.log(
-                    "📦 License details is already an array of parsed objects, length:",
+                    "?? License details is already an array of parsed objects, length:",
                     userRes.data.license_details_json.length
                   );
                   // Already parsed objects - directly use them
@@ -1165,9 +1165,9 @@ export default function AdminDashboard() {
                 typeof userRes.data.license_details_json === "string"
               ) {
                 // Single JSON string (original format)
-                console.log("📦 License details is a single JSON string");
+                console.log("?? License details is a single JSON string");
                 const parsed = JSON.parse(userRes.data.license_details_json);
-                console.log("✅ Successfully parsed single string:", parsed);
+                console.log("? Successfully parsed single string:", parsed);
 
                 // Check if parsed result is array or single object
                 if (Array.isArray(parsed)) {
@@ -1178,22 +1178,22 @@ export default function AdminDashboard() {
               } else if (
                 typeof userRes.data.license_details_json === "object"
               ) {
-                console.log("📦 License details is already a parsed object");
+                console.log("?? License details is already a parsed object");
                 licenseDetailsArray.push(userRes.data.license_details_json);
               }
 
               console.log(
-                "✅ Total license details items:",
+                "? Total license details items:",
                 licenseDetailsArray.length
               );
-              console.log("✅ License details array:", licenseDetailsArray);
+              console.log("? License details array:", licenseDetailsArray);
 
               // Process all parsed license details
               let allFormattedLicenses: LicenseData[] = [];
 
               licenseDetailsArray.forEach((licenseDetails, index) => {
                 console.log(
-                  `🔍 Processing licenseDetails item ${index}:`,
+                  `?? Processing licenseDetails item ${index}:`,
                   licenseDetails
                 );
 
@@ -1203,7 +1203,7 @@ export default function AdminDashboard() {
                   Array.isArray(licenseDetails.plans)
                 ) {
                   console.log(
-                    `📦 Item ${index} - Using new license format with plans array, count:`,
+                    `?? Item ${index} - Using new license format with plans array, count:`,
                     licenseDetails.plans.length
                   );
 
@@ -1247,7 +1247,7 @@ export default function AdminDashboard() {
                         "Unknown Product";
 
                       console.log(
-                        `🔍 Plan mapping - planType: ${plan.planType}, softwareName: ${softwareName}, total: ${plan.totalLicenses}, consumed: ${plan.consumedLicenses}`
+                        `?? Plan mapping - planType: ${plan.planType}, softwareName: ${softwareName}, total: ${plan.totalLicenses}, consumed: ${plan.consumedLicenses}`
                       );
 
                       return {
@@ -1259,14 +1259,14 @@ export default function AdminDashboard() {
                     });
 
                   console.log(
-                    `✅ Item ${index} - Formatted ${formattedLicenses.length} licenses from plans:`,
+                    `? Item ${index} - Formatted ${formattedLicenses.length} licenses from plans:`,
                     formattedLicenses
                   );
                   allFormattedLicenses.push(...formattedLicenses);
                 }
                 // Old format: Backward compatibility
                 else {
-                  console.log(`📦 Item ${index} - Checking old format...`);
+                  console.log(`?? Item ${index} - Checking old format...`);
                   let productsArray: any[] = [];
 
                   if (
@@ -1275,18 +1275,18 @@ export default function AdminDashboard() {
                   ) {
                     productsArray = licenseDetails.products;
                     console.log(
-                      `📦 Item ${index} - Using products array from object (old format), count:`,
+                      `?? Item ${index} - Using products array from object (old format), count:`,
                       productsArray.length
                     );
                   } else if (Array.isArray(licenseDetails)) {
                     productsArray = licenseDetails;
                     console.log(
-                      `📦 Item ${index} - Using direct array format (old format), count:`,
+                      `?? Item ${index} - Using direct array format (old format), count:`,
                       productsArray.length
                     );
                   } else {
                     console.warn(
-                      `⚠️ Item ${index} - Unknown license details format:`,
+                      `?? Item ${index} - Unknown license details format:`,
                       licenseDetails
                     );
                   }
@@ -1294,7 +1294,7 @@ export default function AdminDashboard() {
                   if (productsArray.length > 0) {
                     const formattedLicenses: LicenseData[] = productsArray.map(
                       (item: any, itemIndex: number) => {
-                        console.log(`🔍 Product ${itemIndex}:`, item);
+                        console.log(`?? Product ${itemIndex}:`, item);
                         return {
                           product: item.product || item.Product || "Unknown",
                           total: parseInt(
@@ -1319,45 +1319,45 @@ export default function AdminDashboard() {
                     });
 
                     console.log(
-                      `✅ Item ${index} - Formatted ${formattedLicenses.length} licenses from old format:`,
+                      `? Item ${index} - Formatted ${formattedLicenses.length} licenses from old format:`,
                       formattedLicenses
                     );
                     allFormattedLicenses.push(...formattedLicenses);
                   } else {
-                    console.warn(`⚠️ Item ${index} - productsArray is empty`);
+                    console.warn(`?? Item ${index} - productsArray is empty`);
                   }
                 }
               });
 
               console.log(
-                "🎯 FINAL - All formatted license details:",
+                "?? FINAL - All formatted license details:",
                 allFormattedLicenses
               );
               console.log(
-                "🎯 FINAL - Total licenses count:",
+                "?? FINAL - Total licenses count:",
                 allFormattedLicenses.length
               );
 
               if (allFormattedLicenses.length === 0) {
                 console.error(
-                  "❌ NO LICENSES FORMATTED! Check the data structure above."
+                  "? NO LICENSES FORMATTED! Check the data structure above."
                 );
               }
 
               setUserLicenseDetails(allFormattedLicenses);
             } catch (parseError) {
               console.error(
-                "❌ Failed to parse license_details_json:",
+                "? Failed to parse license_details_json:",
                 parseError
               );
-              console.error("❌ Error stack:", (parseError as Error).stack);
+              console.error("? Error stack:", (parseError as Error).stack);
             }
           } else {
-            console.warn("⚠️ license_details_json is NULL or UNDEFINED");
+            console.warn("?? license_details_json is NULL or UNDEFINED");
           }
         } else {
           console.warn(
-            "⚠️ Failed to fetch user data or no license details:",
+            "?? Failed to fetch user data or no license details:",
             userRes.error
           );
         }
@@ -1368,9 +1368,9 @@ export default function AdminDashboard() {
           subusersRes.data &&
           subusersRes.data.length > 0
         ) {
-          console.log("✅ Subusers fetched:", subusersRes.data.length);
+          console.log("? Subusers fetched:", subusersRes.data.length);
 
-          // ✅ Use sessions from React Query cache
+          // ? Use sessions from React Query cache
           const sessionsData: Session[] = sessionsQuery.data || [];
 
           // Fetch server time from API
@@ -1379,12 +1379,12 @@ export default function AdminDashboard() {
             const serverTimeRes = await apiClient.getServerTime();
             if (serverTimeRes.success && serverTimeRes.data) {
               currentTime = new Date(serverTimeRes.data.serverTime).getTime();
-              console.log("✅ Using server time:", serverTimeRes.data.serverTime);
+              console.log("? Using server time:", serverTimeRes.data.serverTime);
             } else {
-              console.warn("⚠️ Failed to fetch server time, using local time");
+              console.warn("?? Failed to fetch server time, using local time");
             }
           } catch (error) {
-            console.warn("⚠️ Error fetching server time, using local time:", error);
+            console.warn("?? Error fetching server time, using local time:", error);
           }
 
           const ACTIVE_THRESHOLD = 30 * 60 * 1000; // 30 minutes
@@ -1480,7 +1480,7 @@ export default function AdminDashboard() {
               }
             }
 
-            console.log(`🔍 User Activity for ${subuserEmail}:`, {
+            console.log(`?? User Activity for ${subuserEmail}:`, {
               last_login: subuser.last_login,
               last_logout: subuser.last_logout,
               loginTime,
@@ -1503,16 +1503,16 @@ export default function AdminDashboard() {
           });
 
           console.log(
-            "✅ User activity calculated for subusers:",
+            "? User activity calculated for subusers:",
             usersActivity
           );
           setUserActivity(usersActivity);
         } else {
-          console.warn("⚠️ No subusers found for superuser:", userEmail);
+          console.warn("?? No subusers found for superuser:", userEmail);
           setUserActivity([]);
         }
 
-        // ✅ Sessions data is now handled by React Query (sessionsQuery) - no need to process here
+        // ? Sessions data is now handled by React Query (sessionsQuery) - no need to process here
 
         // Process system logs data
         if (systemLogsRes.success && systemLogsRes.data) {
@@ -1524,16 +1524,16 @@ export default function AdminDashboard() {
             )
             .slice(0, 5);
 
-          console.log("✅ Recent system logs fetched:", sortedLogs.length);
+          console.log("? Recent system logs fetched:", sortedLogs.length);
           setRecentSystemLogs(sortedLogs);
         } else {
-          console.warn("⚠️ Failed to fetch system logs");
+          console.warn("?? Failed to fetch system logs");
           setRecentSystemLogs([]);
         }
 
-        console.log("✅ All data fetched successfully in parallel!");
+        console.log("? All data fetched successfully in parallel!");
       } else {
-        console.warn("⚠️ No user email available for fetching machines");
+        console.warn("?? No user email available for fetching machines");
       }
     } catch (error) {
       console.error("Error loading dashboard data:", error);
@@ -1579,7 +1579,7 @@ export default function AdminDashboard() {
   };
 
   /**
-   * 🔄 Fetch Subusers data with machine-based license counting
+   * ?? Fetch Subusers data with machine-based license counting
    *
    * This function:
    * 1. Fetches subusers from /api/Subuser/by-superuser/{email}
@@ -1587,7 +1587,7 @@ export default function AdminDashboard() {
    * 3. Calculates license usage from demo_usage_count field in machines
    * 4. Stores enhanced subuser data with license counts
    *
-   * ✅ NOW HANDLED BY REACT QUERY - See useSubusers hook
+   * ? NOW HANDLED BY REACT QUERY - See useSubusers hook
    * This function is commented out because React Query automatically handles:
    * - Data fetching when activeTab === 'users'
    * - Caching (5 minutes fresh, 10 minutes total)
@@ -1598,52 +1598,52 @@ export default function AdminDashboard() {
   /* COMMENTED OUT - React Query handles this now
   const fetchAndMergeUsersData = async () => {
     setUsersDataLoading(true)
-    console.log('🚀 Starting fetchAndMergeUsersData...')
+    console.log('?? Starting fetchAndMergeUsersData...')
     
     try {
       const userEmail = profileData?.email || user?.email || ''
       
-      console.log('👥 Current user email:', userEmail)
-      console.log('📊 ProfileData:', profileData)
-      console.log('📊 User from context:', user)
+      console.log('?? Current user email:', userEmail)
+      console.log('?? ProfileData:', profileData)
+      console.log('?? User from context:', user)
       
-      // ✅ Check cache first for instant display
+      // ? Check cache first for instant display
       const cachedSubusers = getCachedData('subusers');
       const cachedSuperuser = getCachedData('superuser');
       
       if (cachedSubusers && cachedSubusers.length > 0) {
-        console.log('⚡ Displaying cached subusers data:', cachedSubusers.length, 'users');
+        console.log('? Displaying cached subusers data:', cachedSubusers.length, 'users');
         setSubusersData(cachedSubusers);
         setUsersDataLoading(false); // Hide loader since we have cached data
       }
       
       if (cachedSuperuser) {
-        console.log('⚡ Displaying cached superuser data');
+        console.log('? Displaying cached superuser data');
         setSuperuserData(cachedSuperuser);
       }
       
-      // 1️⃣ Fetch All Subusers using fallback strategy across all available endpoints
-      console.log('🔍 Calling getAllSubusersWithFallback API with fallback across multiple endpoints...')
+      // 1?? Fetch All Subusers using fallback strategy across all available endpoints
+      console.log('?? Calling getAllSubusersWithFallback API with fallback across multiple endpoints...')
       const subusersRes = await apiClient.getAllSubusersWithFallback(userEmail)
-      console.log('📥 Final Subusers API Response:', subusersRes)
-      console.log('📥 Response success:', subusersRes.success)
-      console.log('📥 Response data:', subusersRes.data)
-      console.log('📥 Data type:', typeof subusersRes.data)
-      console.log('📥 Is Array:', Array.isArray(subusersRes.data))
+      console.log('?? Final Subusers API Response:', subusersRes)
+      console.log('?? Response success:', subusersRes.success)
+      console.log('?? Response data:', subusersRes.data)
+      console.log('?? Data type:', typeof subusersRes.data)
+      console.log('?? Is Array:', Array.isArray(subusersRes.data))
       if (subusersRes.data) {
-        console.log('📥 Data length:', subusersRes.data.length)
+        console.log('?? Data length:', subusersRes.data.length)
       }
       
-      // 2️⃣ Process Subusers data with machine-based license counting and complete user details
+      // 2?? Process Subusers data with machine-based license counting and complete user details
       if (subusersRes.success && subusersRes.data && subusersRes.data.length > 0) {
-        console.log(`📋 Found ${subusersRes.data.length} subusers, fetching their complete user details...`)
+        console.log(`?? Found ${subusersRes.data.length} subusers, fetching their complete user details...`)
         
         // Fetch complete user data from /api/Users/{email} for each subuser
         const subusersWithCompleteData = await Promise.all(
           subusersRes.data.map(async (subuser) => {
             try {
               // 1. Fetch complete user data from /api/Users/{email}
-              console.log(`🔍 Fetching complete user data for: ${subuser.subuser_email}`)
+              console.log(`?? Fetching complete user data for: ${subuser.subuser_email}`)
               const userDataRes = await apiClient.getUserByEmail(subuser.subuser_email)
               
               let userData = {
@@ -1667,13 +1667,13 @@ export default function AdminDashboard() {
                   user_group: userDataRes.data.user_group || 'N/A',
                   license_allocation: userDataRes.data.licesne_allocation || '0'
                 }
-                console.log(`✅ User data for ${subuser.subuser_email}:`, userData)
+                console.log(`? User data for ${subuser.subuser_email}:`, userData)
               } else {
-                console.warn(`⚠️ Failed to fetch user data for ${subuser.subuser_email}, using defaults`)
+                console.warn(`?? Failed to fetch user data for ${subuser.subuser_email}, using defaults`)
               }
 
               // 2. Fetch machines for license usage
-              console.log(`🔍 Fetching machines for subuser: ${subuser.subuser_email}`)
+              console.log(`?? Fetching machines for subuser: ${subuser.subuser_email}`)
               const machinesRes = await apiClient.getMachinesByEmail(subuser.subuser_email)
               
               let licenseUsage = 0
@@ -1683,7 +1683,7 @@ export default function AdminDashboard() {
                   (machine) => (machine.demo_usage_count || 0) > 0
                 ).length
                 
-                console.log(`📊 Subuser ${subuser.subuser_email}: ${licenseUsage} licenses used (${machinesRes.data.length} total machines)`)
+                console.log(`?? Subuser ${subuser.subuser_email}: ${licenseUsage} licenses used (${machinesRes.data.length} total machines)`)
               }
               
               return {
@@ -1699,7 +1699,7 @@ export default function AdminDashboard() {
                 license_allocation: userData.license_allocation
               }
             } catch (error) {
-              console.error(`❌ Error fetching data for ${subuser.subuser_email}:`, error)
+              console.error(`? Error fetching data for ${subuser.subuser_email}:`, error)
               return {
                 ...subuser,
                 licenseUsage: 0,
@@ -1717,15 +1717,15 @@ export default function AdminDashboard() {
         
         setSubusersData(subusersWithCompleteData)
         setCachedData('subusers', subusersWithCompleteData)
-        console.log('✅ Subusers data with complete user details set')
+        console.log('? Subusers data with complete user details set')
       } else {
-        console.log('ℹ️ No subusers found or failed to fetch')
+        console.log('?? No subusers found or failed to fetch')
         setSubusersData([])
         setCachedData('subusers', [])
       }
       
     } catch (error) {
-      console.error('❌ Error fetching and merging users data:', error)
+      console.error('? Error fetching and merging users data:', error)
       showError('Users Data Error', 'Failed to load users data')
     } finally {
       setUsersDataLoading(false)
@@ -1867,7 +1867,7 @@ export default function AdminDashboard() {
         (user as any)?.user_email ||
         user?.email;
 
-      console.log("📧 Creating subuser with superuser email:", superuserEmail);
+      console.log("?? Creating subuser with superuser email:", superuserEmail);
 
       if (!superuserEmail) {
         throw new Error("Superuser email not found. Please log in again.");
@@ -1886,7 +1886,7 @@ export default function AdminDashboard() {
         license_allocation: newUserForm.license_allocation || "0",
       };
 
-      console.log("📤 Sending subuser data to API:");
+      console.log("?? Sending subuser data to API:");
       console.log("  - name:", subuserData.name);
       console.log("  - subuser_email:", subuserData.subuser_email);
       console.log("  - role:", subuserData.role);
@@ -1899,7 +1899,7 @@ export default function AdminDashboard() {
       // Use apiClient which handles authentication automatically
       const response = await apiClient.createSubuser(subuserData);
 
-      console.log("✅ Subuser creation response:", response);
+      console.log("? Subuser creation response:", response);
 
       if (response && response.success && response.data) {
         showSuccess(
@@ -1918,10 +1918,10 @@ export default function AdminDashboard() {
           license_allocation: "0",
         });
 
-        // ✅ Clear users cache to force fresh data fetch
+        // ? Clear users cache to force fresh data fetch
         localStorage.removeItem("dashboard_cache_subusers");
         localStorage.removeItem("dashboard_cache_superuser");
-        console.log("🗑️ Cleared users cache after creating new user");
+        console.log("??? Cleared users cache after creating new user");
 
         loadDashboardData(); // Refresh dashboard data
       } else {
@@ -1930,7 +1930,7 @@ export default function AdminDashboard() {
         throw new Error(errorMessage);
       }
     } catch (error) {
-      console.error("❌ User creation error:", error);
+      console.error("? User creation error:", error);
       const errorMessage =
         error && typeof error === "object" && "message" in error
           ? (error as Error).message
@@ -2037,7 +2037,7 @@ export default function AdminDashboard() {
         // Simulate API call delay
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // ✅ React Query: Refetch users data after deletion
+        // ? React Query: Refetch users data after deletion
         await refetchSubusers();
         showSuccess(
           "Subuser Deleted",
@@ -2105,9 +2105,9 @@ export default function AdminDashboard() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin" />
+        <link rel="canonical" href="https://D-Securetech.com/admin" />
         <title>
-          DSecureTech Compliance | Data Erasure Standards & Regulations
+          D-SecureTech Compliance | Data Erasure Standards & Regulations
         </title>
         <meta
           name="description"
@@ -2139,7 +2139,7 @@ export default function AdminDashboard() {
               <span className="truncate">
                 {t('dashboard.welcomeBack')}, {storedUserData?.name || storedUserData?.user_name || storedUserData?.subuser_name || profileData?.name || user?.name || getNameFromEmail(profileData?.email || storedUserData?.user_email || storedUserData?.email || user?.email || "user@example.com")}
               </span>
-              <span className="hidden sm:inline text-slate-400">•</span>
+              <span className="hidden sm:inline text-slate-400">�</span>
               <span className="hidden sm:inline text-sm text-slate-500">
                 {roleInfo.description}
               </span>
@@ -2183,16 +2183,16 @@ export default function AdminDashboard() {
               onClick={async () => {
                 setShowSettingsModal(true);
 
-                // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
+                // ?? In Demo Mode, use DEMO_BILLING_DETAILS directly
                 if (isDemo) {
-                  console.log('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
+                  console.log('?? Demo Mode: Using DEMO_BILLING_DETAILS');
                   setBillingDetails(DEMO_BILLING_DETAILS);
                   return;
                 }
 
-                // ✅ CACHE CHECK: If billing data already loaded, don't fetch again
+                // ? CACHE CHECK: If billing data already loaded, don't fetch again
                 if (billingDetails && Object.keys(billingDetails).length > 0) {
-                  console.log("✅ Using cached billing data, skipping API call");
+                  console.log("? Using cached billing data, skipping API call");
                   return;
                 }
 
@@ -2200,7 +2200,7 @@ export default function AdminDashboard() {
                 const userEmail = user?.email || (user as any)?.user_email || storedUserData?.user_email || storedUserData?.email;
 
                 if (!userEmail) {
-                  console.log("⚠️ No user email found for billing fetch");
+                  console.log("?? No user email found for billing fetch");
                   return;
                 }
 
@@ -2221,25 +2221,25 @@ export default function AdminDashboard() {
                 let combinedBillingInfo: any = {};
 
                 try {
-                  // 📡 Fetch fresh user data from API to get payment_details_json
-                  console.log("📡 Fetching user billing data from API for:", userEmail);
+                  // ?? Fetch fresh user data from API to get payment_details_json
+                  console.log("?? Fetching user billing data from API for:", userEmail);
                   const apiUserRes = await apiClient.getUserByEmail(userEmail);
 
                   if (apiUserRes.success && apiUserRes.data) {
                     const apiUser = apiUserRes.data;
-                    console.log("✅ API User data received:", apiUser);
+                    console.log("? API User data received:", apiUser);
 
                     // Debug: Show what fields are available
                     const hasLicense = !!apiUser.license_details_json && apiUser.license_details_json !== "{}";
                     const hasPayment = !!apiUser.payment_details_json && apiUser.payment_details_json !== "{}";
-                    console.log("🔍 Has license_details_json:", hasLicense, "| Has payment_details_json:", hasPayment);
+                    console.log("?? Has license_details_json:", hasLicense, "| Has payment_details_json:", hasPayment);
 
-                    // 1️⃣ Load license details and normalize to DEMO format
+                    // 1?? Load license details and normalize to DEMO format
                     const licenseDetailsJson = apiUser.license_details_json;
                     if (licenseDetailsJson && licenseDetailsJson !== "{}") {
                       try {
                         const parsed = JSON.parse(licenseDetailsJson);
-                        console.log("✅ License details parsed:", parsed);
+                        console.log("? License details parsed:", parsed);
 
                         // Handle format with plans array and summary
                         if (parsed.plans && parsed.summary) {
@@ -2294,25 +2294,25 @@ export default function AdminDashboard() {
                           };
                         }
                       } catch (e) {
-                        console.error("❌ Failed to parse license details:", e);
+                        console.error("? Failed to parse license details:", e);
                       }
                     }
 
-                    // 2️⃣ Load payment details
+                    // 2?? Load payment details
                     const paymentDetailsJson = apiUser.payment_details_json;
                     if (paymentDetailsJson && paymentDetailsJson !== "{}") {
                       try {
                         const paymentParsed = JSON.parse(paymentDetailsJson);
-                        console.log("✅ Payment details parsed:", paymentParsed);
+                        console.log("? Payment details parsed:", paymentParsed);
                         combinedBillingInfo = { ...combinedBillingInfo, ...paymentParsed };
                       } catch (e) {
-                        console.error("❌ Failed to parse payment details:", e);
+                        console.error("? Failed to parse payment details:", e);
                       }
                     }
 
-                    // 3️⃣ If still empty, use basic user info as fallback
+                    // 3?? If still empty, use basic user info as fallback
                     if (Object.keys(combinedBillingInfo).length === 0) {
-                      console.log("⚠️ No billing/payment JSON found, using basic user info");
+                      console.log("?? No billing/payment JSON found, using basic user info");
                       combinedBillingInfo = {
                         userEmail: apiUser.user_email || apiUser.email || userEmail,
                         userName: apiUser.user_name || apiUser.name || "N/A",
@@ -2326,7 +2326,7 @@ export default function AdminDashboard() {
                       };
                     }
                   } else {
-                    console.log("⚠️ API call failed, falling back to localStorage");
+                    console.log("?? API call failed, falling back to localStorage");
                     // Fallback to localStorage data
                     const storedData = getUserDataFromStorage();
                     const licenseDetailsJson = storedData?.license_details_json;
@@ -2356,10 +2356,10 @@ export default function AdminDashboard() {
                     }
                   }
                 } catch (error) {
-                  console.error("❌ Error fetching billing data:", error);
+                  console.error("? Error fetching billing data:", error);
                 }
 
-                console.log("✅ Final billing details:", combinedBillingInfo);
+                console.log("? Final billing details:", combinedBillingInfo);
                 setBillingDetails(combinedBillingInfo);
               }}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
@@ -3188,7 +3188,7 @@ export default function AdminDashboard() {
                           <div className="text-sm text-slate-600 mt-1">Assign licenses to multiple users at once with advanced options</div>
                           <div className="flex items-center gap-2 mt-2">
                             <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">Quick Setup</span>
-                            <span className="text-xs text-slate-500">•</span>
+                            <span className="text-xs text-slate-500">�</span>
                             <span className="text-xs text-slate-500">Batch Processing</span>
                           </div>
                         </div>
@@ -3214,7 +3214,7 @@ export default function AdminDashboard() {
                         <div className="text-sm text-slate-600 mt-1">Comprehensive analysis of license usage and optimization insights</div>
                         <div className="flex items-center gap-2 mt-2">
                           <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full font-medium">Detailed Analytics</span>
-                          <span className="text-xs text-slate-500">•</span>
+                          <span className="text-xs text-slate-500">�</span>
                           <span className="text-xs text-slate-500">Export Available</span>
                         </div>
                       </div>
@@ -5055,8 +5055,8 @@ export default function AdminDashboard() {
                             return;
                           }
 
-                          console.log("🔄 Updating profile for:", userEmail);
-                          console.log("📝 Update data:", profileEditForm);
+                          console.log("?? Updating profile for:", userEmail);
+                          console.log("?? Update data:", profileEditForm);
 
                           // Call APIs to update user profile
                           // 1. Update name and phone via DynamicUser/profile
@@ -5068,7 +5068,7 @@ export default function AdminDashboard() {
                             });
 
                           console.log(
-                            "📡 Profile API Response:",
+                            "?? Profile API Response:",
                             profileResponse
                           );
 
@@ -5080,7 +5080,7 @@ export default function AdminDashboard() {
                             );
 
                           console.log(
-                            "📡 Timezone API Response:",
+                            "?? Timezone API Response:",
                             timezoneResponse
                           );
 
@@ -5089,7 +5089,7 @@ export default function AdminDashboard() {
                             timezoneResponse.success
                           ) {
                             console.log(
-                              "✅ Profile and timezone updated successfully in database"
+                              "? Profile and timezone updated successfully in database"
                             );
 
                             // Update local state with response data from server (handle both User and Subuser fields)
@@ -5130,7 +5130,7 @@ export default function AdminDashboard() {
                                 JSON.stringify(storedData)
                               );
                               console.log(
-                                "💾 LocalStorage updated with server data"
+                                "?? LocalStorage updated with server data"
                               );
                             }
 
@@ -5144,11 +5144,11 @@ export default function AdminDashboard() {
                               profileResponse.error ||
                               timezoneResponse.error ||
                               "Failed to update profile";
-                            console.error("❌ API Error:", errorMsg);
+                            console.error("? API Error:", errorMsg);
                             showError("Update Failed", errorMsg);
                           }
                         } catch (error) {
-                          console.error("❌ Profile update error:", error);
+                          console.error("? Profile update error:", error);
                           showError(
                             "Update Failed",
                             "An error occurred while updating profile"
@@ -5540,19 +5540,19 @@ export default function AdminDashboard() {
 
                     {(() => {
                       console.log(
-                        "🔍 DEBUG RENDER: billingDetails:",
+                        "?? DEBUG RENDER: billingDetails:",
                         billingDetails
                       );
                       console.log(
-                        "🔍 DEBUG RENDER: billingDetails is truthy?",
+                        "?? DEBUG RENDER: billingDetails is truthy?",
                         !!billingDetails
                       );
                       console.log(
-                        "🔍 DEBUG RENDER: billingDetails type:",
+                        "?? DEBUG RENDER: billingDetails type:",
                         typeof billingDetails
                       );
                       console.log(
-                        "🔍 DEBUG RENDER: Object.keys(billingDetails):",
+                        "?? DEBUG RENDER: Object.keys(billingDetails):",
                         billingDetails ? Object.keys(billingDetails) : "null"
                       );
                       return null;
@@ -5622,11 +5622,11 @@ export default function AdminDashboard() {
                             <div className="px-6 pb-6">
                               {(() => {
                                 console.log(
-                                  "🔍 DEBUG ACCORDION 1: billingDetails.activePlanTypes:",
+                                  "?? DEBUG ACCORDION 1: billingDetails.activePlanTypes:",
                                   billingDetails.activePlanTypes
                                 );
                                 console.log(
-                                  "🔍 DEBUG ACCORDION 1: billingDetails.totalPurchases:",
+                                  "?? DEBUG ACCORDION 1: billingDetails.totalPurchases:",
                                   billingDetails.totalPurchases
                                 );
                                 return null;
@@ -5895,7 +5895,7 @@ export default function AdminDashboard() {
                                     typeof value === "object" &&
                                     value !== null
                                   ) {
-                                    // ✅ Skip arrays entirely (like activeBindings, machines, etc.)
+                                    // ? Skip arrays entirely (like activeBindings, machines, etc.)
                                     if (Array.isArray(value)) {
                                       return null;
                                     }
@@ -6794,7 +6794,7 @@ export default function AdminDashboard() {
                     <input
                       type="text"
                       id="systemName"
-                      defaultValue="DSecure Admin System"
+                      defaultValue="D-Secure Admin System"
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                     />
                   </div>
@@ -6808,7 +6808,7 @@ export default function AdminDashboard() {
                     <input
                       type="email"
                       id="adminEmail"
-                      defaultValue="admin@dsecuretech.com"
+                      defaultValue="admin@D-Securetech.com"
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                     />
                   </div>
@@ -6911,7 +6911,7 @@ export default function AdminDashboard() {
                   Software Downloads
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">
-                  Download DSecure software installers for your platform
+                  Download D-Secure software installers for your platform
                 </p>
               </div>
               <div className="p-6">
@@ -7005,25 +7005,25 @@ export default function AdminDashboard() {
                     <div>
                       <p className="font-medium text-slate-900 mb-1">Windows</p>
                       <ul className="text-xs space-y-1">
-                        <li>• Windows 10/11 (64-bit)</li>
-                        <li>• 4GB RAM minimum</li>
-                        <li>• 500MB free disk space</li>
+                        <li>� Windows 10/11 (64-bit)</li>
+                        <li>� 4GB RAM minimum</li>
+                        <li>� 500MB free disk space</li>
                       </ul>
                     </div>
                     <div>
                       <p className="font-medium text-slate-900 mb-1">macOS</p>
                       <ul className="text-xs space-y-1">
-                        <li>• macOS 10.15 or later</li>
-                        <li>• 4GB RAM minimum</li>
-                        <li>• 500MB free disk space</li>
+                        <li>� macOS 10.15 or later</li>
+                        <li>� 4GB RAM minimum</li>
+                        <li>� 500MB free disk space</li>
                       </ul>
                     </div>
                     <div>
                       <p className="font-medium text-slate-900 mb-1">Linux</p>
                       <ul className="text-xs space-y-1">
-                        <li>• Ubuntu 20.04+ / CentOS 8+</li>
-                        <li>• 4GB RAM minimum</li>
-                        <li>• 500MB free disk space</li>
+                        <li>� Ubuntu 20.04+ / CentOS 8+</li>
+                        <li>� 4GB RAM minimum</li>
+                        <li>� 500MB free disk space</li>
                       </ul>
                     </div>
                   </div>
@@ -7204,9 +7204,9 @@ export default function AdminDashboard() {
                     <div>
                       <h4 className="text-sm font-medium text-amber-900 mb-1">Important Note</h4>
                       <ul className="text-xs text-amber-800 space-y-1">
-                        <li>• Ensure your connection string is correct before proceeding</li>
-                        <li>• Data migration may take time depending on data volume</li>
-                        <li>• Backup your data before migration</li>
+                        <li>� Ensure your connection string is correct before proceeding</li>
+                        <li>� Data migration may take time depending on data volume</li>
+                        <li>� Backup your data before migration</li>
                       </ul>
                     </div>
                   </div>

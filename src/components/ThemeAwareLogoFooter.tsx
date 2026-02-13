@@ -18,7 +18,7 @@ const ThemeAwareLogoFooter = memo(({
   responsive = true
 }: ThemeAwareLogoFooterProps) => {
   const logoSrc = '/logo-white.svg' // Use white logo for footer (visible on dark background)
-  const altText = 'DSecure - Advanced Data Security Solutions'
+  const altText = 'D-Secure - Advanced Data Security Solutions'
 
   // Responsive size mappings for footer
   const sizeClasses = {

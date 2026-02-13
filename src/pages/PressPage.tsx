@@ -35,7 +35,7 @@ export default function PressPage() {
               <div className="max-w-3xl mx-auto">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">Media Contact</h2>
                 <p className="text-slate-600 mb-8">
-                  For media inquiries, please contact our press team at press@dsecuretech.com
+                  For media inquiries, please contact our press team at press@D-Securetech.com
                 </p>
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">Press Releases</h2>
                 <p className="text-slate-600">Press releases and media materials coming soon.</p>

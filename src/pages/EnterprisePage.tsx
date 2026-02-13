@@ -14,7 +14,7 @@ const EnterprisePage: React.FC = () => {
               Secure Compliant
             </h1>
             <p className="text-lg sm:text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
-              Safeguard sensitive data with DSecure's enterprise-grade data erasure platform. Ensure compliance with global data security standards and protect your organization from data breaches with regulated, permanent data erasure.
+              Safeguard sensitive data with D-Secure's enterprise-grade data erasure platform. Ensure compliance with global data security standards and protect your organization from data breaches with regulated, permanent data erasure.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button

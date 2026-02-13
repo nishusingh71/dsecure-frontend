@@ -47,7 +47,7 @@ const CommonIssuesPage: React.FC = memo(() => {
       id: 4,
       title: "D-Secure License Activation Failed",
       description: "License key is rejected, activation server cannot be reached, or 'Invalid License' error appears.",
-      solution: "Step 1: Verify internet connectivity by accessing dsecuretech.com. Step 2: Check Windows Firewall and allow D-Secure through firewall (ports 80, 443). Step 3: Temporarily disable proxy servers or configure proxy settings in D-Secure. Step 4: Ensure license key is entered exactly as provided (25 characters, no spaces). Step 5: Check system date/time - incorrect time can cause SSL certificate errors. Step 6: For corporate networks, whitelist *.dsecuretech.com domains. Step 7: Try offline activation if available. Step 8: Contact support with license key and error details.",
+      solution: "Step 1: Verify internet connectivity by accessing D-Securetech.com. Step 2: Check Windows Firewall and allow D-Secure through firewall (ports 80, 443). Step 3: Temporarily disable proxy servers or configure proxy settings in D-Secure. Step 4: Ensure license key is entered exactly as provided (25 characters, no spaces). Step 5: Check system date/time - incorrect time can cause SSL certificate errors. Step 6: For corporate networks, whitelist *.D-Securetech.com domains. Step 7: Try offline activation if available. Step 8: Contact support with license key and error details.",
       category: "Licensing",
       severity: "Critical",
     },
@@ -103,7 +103,7 @@ const CommonIssuesPage: React.FC = memo(() => {
       id: 11,
       title: "Linux Permission Denied Errors",
       description: "Cannot access drives or perform erasure operations on Linux systems due to permission restrictions.",
-      solution: "Step 1: Run D-Secure with sudo privileges: 'sudo dsecure'. Step 2: Check drive ownership: 'ls -la /dev/sdX'. Step 3: Add user to disk group: 'sudo usermod -a -G disk username'. Step 4: Unmount drive before erasure: 'sudo umount /dev/sdX'. Step 5: Check for active swap on target drive: 'sudo swapoff -a'. Step 6: Verify drive is not part of LVM or RAID array. Step 7: For encrypted drives, use LUKS commands to unlock first. Step 8: Check SELinux policies if enabled.",
+      solution: "Step 1: Run D-Secure with sudo privileges: 'sudo D-Secure'. Step 2: Check drive ownership: 'ls -la /dev/sdX'. Step 3: Add user to disk group: 'sudo usermod -a -G disk username'. Step 4: Unmount drive before erasure: 'sudo umount /dev/sdX'. Step 5: Check for active swap on target drive: 'sudo swapoff -a'. Step 6: Verify drive is not part of LVM or RAID array. Step 7: For encrypted drives, use LUKS commands to unlock first. Step 8: Check SELinux policies if enabled.",
       category: "Installation",
       severity: "Medium",
     },
@@ -164,7 +164,7 @@ const CommonIssuesPage: React.FC = memo(() => {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/manual/common-issues" />
+        <link rel="canonical" href="https://D-Securetech.com/support/manual/common-issues" />
         <title>D-Secure Common Issues | Comprehensive Troubleshooting Guide</title>
         <meta name="description" content="Comprehensive troubleshooting guide with step-by-step solutions for D-Secure installation, erasure operations, licensing, and performance optimization issues." />
         <meta name="keywords" content="D-Secure troubleshooting, common issues, installation problems, erasure errors, support guide, step-by-step solutions" />
@@ -363,7 +363,7 @@ const CommonIssuesPage: React.FC = memo(() => {
                     </svg>
                     Contact D-Secure Support
                   </Link>
-                  <a href="mailto:support@dsecuretech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
+                  <a href="mailto:support@D-Securetech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>

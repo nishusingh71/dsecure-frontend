@@ -1,4 +1,4 @@
-﻿import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -24,14 +24,14 @@ export default function LoginPage() {
     type: "error" | "success";
   } | null>(null);
 
-  // ✅ Forgot Password States
+  // ? Forgot Password States
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordStep, setForgotPasswordStep] = useState<
     "email" | "otp" | "newPassword"
   >("email");
   const [forgotEmail, setForgotEmail] = useState("");
   const [otp, setOtp] = useState("");
-  const [resetToken, setResetToken] = useState(""); // ✅ Store resetToken from API
+  const [resetToken, setResetToken] = useState(""); // ? Store resetToken from API
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
@@ -42,13 +42,13 @@ export default function LoginPage() {
     setTimeout(() => setToast(null), 5000); // Auto hide after 5 seconds
   };
 
-  // ✅ FormSubmit.co Email Service with Error Handling
+  // ? FormSubmit.co Email Service with Error Handling
   const sendEmailViaFormSubmit = async (
     toEmail: string,
     otpCode: string
   ): Promise<{ success: boolean; error?: string }> => {
     try {
-      // console.log("📧 Sending OTP via FormSubmit.co to:", toEmail);
+      // console.log("?? Sending OTP via FormSubmit.co to:", toEmail);
 
       const formData = new FormData();
       formData.append("_subject", "Password Reset OTP - D-SecureTech");
@@ -82,57 +82,57 @@ export default function LoginPage() {
         if (response.status === 429) {
           return {
             success: false,
-            error: "⚠️ Too many requests. Please wait a few minutes before trying again.",
+            error: "?? Too many requests. Please wait a few minutes before trying again.",
           };
         } else if (response.status >= 500) {
           return {
             success: false,
-            error: "⚠️ FormSubmit.co email service is temporarily down. Please try again later or contact support.",
+            error: "?? FormSubmit.co email service is temporarily down. Please try again later or contact support.",
           };
         } else if (response.status === 403) {
           return {
             success: false,
-            error: "⚠️ Email address not verified with FormSubmit.co. Please check your inbox for a verification email from FormSubmit or contact support.",
+            error: "?? Email address not verified with FormSubmit.co. Please check your inbox for a verification email from FormSubmit or contact support.",
           };
         } else {
           return {
             success: false,
-            error: `⚠️ Email service error (${response.status}). Please try again or contact support.`,
+            error: `?? Email service error (${response.status}). Please try again or contact support.`,
           };
         }
       }
 
-      // console.log("✅ OTP sent via FormSubmit.co successfully");
+      // console.log("? OTP sent via FormSubmit.co successfully");
       return { success: true };
     } catch (error: any) {
-      console.error("❌ FormSubmit.co Error:", error);
+      console.error("? FormSubmit.co Error:", error);
 
       // Handle specific error types
       if (error.name === "AbortError") {
         return {
           success: false,
-          error: "⚠️ Email service timeout. FormSubmit.co is taking too long to respond. Please try again.",
+          error: "?? Email service timeout. FormSubmit.co is taking too long to respond. Please try again.",
         };
       } else if (error.message?.includes("Failed to fetch") || error.message?.includes("NetworkError")) {
         return {
           success: false,
-          error: "⚠️ Network error. Please check your internet connection and try again.",
+          error: "?? Network error. Please check your internet connection and try again.",
         };
       } else if (error.message?.includes("CORS")) {
         return {
           success: false,
-          error: "⚠️ Email service blocked by browser security. Please try a different browser or contact support.",
+          error: "?? Email service blocked by browser security. Please try a different browser or contact support.",
         };
       } else {
         return {
           success: false,
-          error: `⚠️ Failed to send email: ${error.message || "Unknown error"}. Please try again or contact support.`,
+          error: `?? Failed to send email: ${error.message || "Unknown error"}. Please try again or contact support.`,
         };
       }
     }
   };
 
-  // ✅ Forgot Password - Step 1: Request OTP & Reset Token via FormSubmit.co
+  // ? Forgot Password - Step 1: Request OTP & Reset Token via FormSubmit.co
   const handleSendOTP = async () => {
     if (!forgotEmail) {
       showToast("Please enter your email address", "error");
@@ -141,7 +141,7 @@ export default function LoginPage() {
 
     setForgotPasswordLoading(true);
     try {
-      // console.log("🔐 Step 1: Requesting OTP for:", forgotEmail);
+      // console.log("?? Step 1: Requesting OTP for:", forgotEmail);
 
       // First, call the backend API to request OTP
       const backendResponse = await api.post(
@@ -150,7 +150,7 @@ export default function LoginPage() {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      // console.log("✅ Step 1 Backend Response:", backendResponse.data);
+      // console.log("? Step 1 Backend Response:", backendResponse.data);
 
       if (backendResponse.data && backendResponse.data.success !== false) {
         // Store resetToken if provided (optional)
@@ -170,7 +170,7 @@ export default function LoginPage() {
         throw new Error(backendResponse.data?.message || "Failed to send OTP");
       }
     } catch (err: any) {
-      console.error("❌ Step 1 Error:", err);
+      console.error("? Step 1 Error:", err);
 
       // Detailed error messages based on error type
       let errorMsg = "Failed to send OTP. Please try again.";
@@ -179,17 +179,17 @@ export default function LoginPage() {
         // Server responded with error
         const status = err.response.status;
         if (status === 404) {
-          errorMsg = "❌ Email not found. Please check if you're registered with this email.";
+          errorMsg = "? Email not found. Please check if you're registered with this email.";
         } else if (status === 429) {
-          errorMsg = "⚠️ Too many attempts. Please wait 5 minutes before trying again.";
+          errorMsg = "?? Too many attempts. Please wait 5 minutes before trying again.";
         } else if (status >= 500) {
-          errorMsg = "⚠️ Server error. Our backend is experiencing issues. Please try again later.";
+          errorMsg = "?? Server error. Our backend is experiencing issues. Please try again later.";
         } else {
           errorMsg = err.response.data?.message || `Server error (${status})`;
         }
       } else if (err.request) {
         // Network error - no response received
-        errorMsg = "⚠️ Cannot connect to server. Please check your internet connection.";
+        errorMsg = "?? Cannot connect to server. Please check your internet connection.";
       } else {
         errorMsg = err.message || "Unknown error occurred";
       }
@@ -199,20 +199,20 @@ export default function LoginPage() {
     }
   };
 
-  // ✅ Forgot Password - Step 2: Validate Reset Link (Auto-called after Step 1)
+  // ? Forgot Password - Step 2: Validate Reset Link (Auto-called after Step 1)
   const handleValidateResetLink = async (token: string) => {
     try {
-      // console.log("🔐 Step 2: Validating reset link with token:", token);
+      // console.log("?? Step 2: Validating reset link with token:", token);
 
       const response = await api.post(
         "/api/ForgotPassword/verify-otp",
         { resetToken: token }
       );
 
-      // console.log("✅ Step 2 Response:", response.data);
+      // console.log("? Step 2 Response:", response.data);
 
       if (response.data && response.data.success !== false) {
-        // console.log("✅ Reset link validated successfully");
+        // console.log("? Reset link validated successfully");
         showToast(
           "Reset link validated. Please verify OTP from your email.",
           "success"
@@ -224,7 +224,7 @@ export default function LoginPage() {
         );
       }
     } catch (err: any) {
-      console.error("❌ Step 2 Error:", err);
+      console.error("? Step 2 Error:", err);
       const errorMsg =
         err.response?.data?.message ||
         err.message ||
@@ -235,7 +235,7 @@ export default function LoginPage() {
     }
   };
 
-  // ✅ Forgot Password - Step 3: Verify OTP
+  // ? Forgot Password - Step 3: Verify OTP
   const handleVerifyOTP = async () => {
     if (!otp || otp.length < 4) {
       showToast("Please enter a valid OTP", "error");
@@ -244,7 +244,7 @@ export default function LoginPage() {
 
     setForgotPasswordLoading(true);
     try {
-      // console.log("🔐 Step 3: Verifying OTP");
+      // console.log("?? Step 3: Verifying OTP");
       // console.log("  - Email:", forgotEmail);
       // console.log("  - OTP:", otp);
 
@@ -256,10 +256,10 @@ export default function LoginPage() {
         }
       );
 
-      // console.log("✅ Step 3 Response:", response.data);
+      // console.log("? Step 3 Response:", response.data);
 
       if (response.data && response.data.success !== false) {
-        // console.log("✅ OTP verified successfully");
+        // console.log("? OTP verified successfully");
         showToast(
           "OTP verified successfully! You can now reset your password.",
           "success"
@@ -269,7 +269,7 @@ export default function LoginPage() {
         throw new Error(response.data.message || "Invalid OTP");
       }
     } catch (err: any) {
-      console.error("❌ Step 3 Error:", err);
+      console.error("? Step 3 Error:", err);
       const errorMsg =
         err.response?.data?.message ||
         err.message ||
@@ -280,7 +280,7 @@ export default function LoginPage() {
     }
   };
 
-  // ✅ Resend OTP
+  // ? Resend OTP
   const handleResendOTP = async () => {
     if (!forgotEmail) {
       showToast("Email address is missing", "error");
@@ -289,17 +289,17 @@ export default function LoginPage() {
 
     setForgotPasswordLoading(true);
     try {
-      // console.log("🔄 Resending OTP for:", forgotEmail);
+      // console.log("?? Resending OTP for:", forgotEmail);
 
       const response = await api.post(
         "/api/ForgotPassword/resend-otp",
         { email: forgotEmail }
       );
 
-      // console.log("✅ Resend OTP Response:", response.data);
+      // console.log("? Resend OTP Response:", response.data);
 
       if (response.data && response.data.otp) {
-        // ✅ Send OTP via FormSubmit.co with proper error handling
+        // ? Send OTP via FormSubmit.co with proper error handling
         const emailResult = await sendEmailViaFormSubmit(
           forgotEmail,
           response.data.otp
@@ -319,21 +319,21 @@ export default function LoginPage() {
         throw new Error("Failed to generate new OTP");
       }
     } catch (err: any) {
-      console.error("❌ Resend OTP Error:", err);
+      console.error("? Resend OTP Error:", err);
 
       let errorMsg = "Failed to resend OTP. Please try again.";
 
       if (err.response) {
         const status = err.response.status;
         if (status === 429) {
-          errorMsg = "⚠️ Too many resend attempts. Please wait 2 minutes before trying again.";
+          errorMsg = "?? Too many resend attempts. Please wait 2 minutes before trying again.";
         } else if (status >= 500) {
-          errorMsg = "⚠️ Server error. Please try again later.";
+          errorMsg = "?? Server error. Please try again later.";
         } else {
           errorMsg = err.response.data?.message || `Error (${status})`;
         }
       } else if (err.request) {
-        errorMsg = "⚠️ Cannot connect to server. Check your internet connection.";
+        errorMsg = "?? Cannot connect to server. Check your internet connection.";
       } else {
         errorMsg = err.message || "Unknown error";
       }
@@ -344,7 +344,7 @@ export default function LoginPage() {
     }
   };
 
-  // ✅ Forgot Password - Step 4: Reset Password
+  // ? Forgot Password - Step 4: Reset Password
   const handleResetPassword = async () => {
     if (!newPassword || newPassword.length < 6) {
       showToast("Password must be at least 6 characters long", "error");
@@ -358,7 +358,7 @@ export default function LoginPage() {
 
     setForgotPasswordLoading(true);
     try {
-      // console.log("🔐 Step 4: Resetting Password");
+      // console.log("?? Step 4: Resetting Password");
       // console.log("  - Email:", forgotEmail);
       // console.log("  - OTP:", otp);
       // console.log("  - Reset Token:", resetToken);
@@ -374,10 +374,10 @@ export default function LoginPage() {
         }
       );
 
-      // console.log("✅ Step 4 Response:", response.data);
+      // console.log("? Step 4 Response:", response.data);
 
       if (response.data && response.data.success !== false) {
-        // console.log("✅ Password reset successfully!");
+        // console.log("? Password reset successfully!");
         showToast(
           "Password reset successfully! Redirecting to login...",
           "success"
@@ -403,7 +403,7 @@ export default function LoginPage() {
         throw new Error(response.data.message || "Failed to reset password");
       }
     } catch (err: any) {
-      console.error("❌ Step 4 Error:", err);
+      console.error("? Step 4 Error:", err);
       const errorMsg =
         err.response?.data?.message ||
         err.message ||
@@ -414,7 +414,7 @@ export default function LoginPage() {
     }
   };
 
-  // ✅ Cancel Forgot Password
+  // ? Cancel Forgot Password
   const handleCancelForgotPassword = () => {
     setShowForgotPassword(false);
     setForgotPasswordStep("email");
@@ -499,7 +499,7 @@ export default function LoginPage() {
   // };
 
   /**
-   * 🔐 Login Handler for .NET Backend with JWT Authentication
+   * ?? Login Handler for .NET Backend with JWT Authentication
    *
    * Expected Backend Response Structure:
    * {
@@ -535,9 +535,9 @@ export default function LoginPage() {
       );
 
       const data = response.data;
-      console.log("🚀 Login Response:", data);
+      console.log("?? Login Response:", data);
 
-      // ✅ Validate token presence
+      // ? Validate token presence
       if (!data || !data.token) {
         throw new Error("No JWT token received from server");
       }
@@ -572,20 +572,20 @@ export default function LoginPage() {
         timezone: data.timezone || "Asia/Kolkata",
       };
 
-      // 💾 Save JWT token using authService
+      // ?? Save JWT token using authService
       authService.saveTokens(data.token, undefined, rememberMe);
 
       // Save user data for compatibility (use login response directly - no extra API call needed)
       localStorage.setItem("user_data", JSON.stringify(user));
       localStorage.setItem("authUser", JSON.stringify(user));
 
-      // 🔐 Set auth token for all future API requests
+      // ?? Set auth token for all future API requests
       setAuthToken(data.token, rememberMe);
 
-      // ✅ Show success toast
+      // ? Show success toast
       showToast("Login successful! Redirecting...", "success");
 
-      // 🎯 Everyone redirects to admin dashboard
+      // ?? Everyone redirects to admin dashboard
       let redirectPath = "/admin";
 
       // Check for any stored redirect paths
@@ -602,18 +602,18 @@ export default function LoginPage() {
       sessionStorage.removeItem("redirectAfterLogin");
       localStorage.removeItem("returnPath");
 
-      // 📢 Dispatch auth state change event
+      // ?? Dispatch auth state change event
       window.dispatchEvent(
         new CustomEvent("authStateChanged", {
           detail: { user, token: data.token, authenticated: true },
         })
       );
 
-      // 🚀 Navigate immediately
+      // ?? Navigate immediately
       navigate(redirectPath, { replace: true });
     } catch (err: any) {
       // Log full error details to console for debugging
-      console.error('❌ Login Error:', {
+      console.error('? Login Error:', {
         message: err.message,
         status: err.response?.status,
         statusText: err.response?.statusText,
@@ -733,7 +733,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* ✅ FORGOT PASSWORD FORM */}
+          {/* ? FORGOT PASSWORD FORM */}
           {showForgotPassword ? (
             <div className="space-y-6">
               {/* Step 1: Email Input */}
@@ -1052,7 +1052,7 @@ export default function LoginPage() {
               )}
             </div>
           ) : (
-            /* ✅ ORIGINAL LOGIN FORM */
+            /* ? ORIGINAL LOGIN FORM */
             <form onSubmit={handleLogin} className="space-y-6">
               {/* Error Messages
           {(error || validationError) && (
@@ -1222,7 +1222,7 @@ export default function LoginPage() {
                 </div>
               )}
 
-              {/* ✅ Forgot Password Link */}
+              {/* ? Forgot Password Link */}
               <div className="text-right">
                 <button
                   type="button"

@@ -90,7 +90,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
     },
     {
       id: 6,
-      title: "How to use DSecure Cloud Console?",
+      title: "How to use D-Secure Cloud Console?",
       description: "Comprehensive guide to managing remote erasure tasks and monitoring through the cloud console.",
       category: "enterprise",
       difficulty: "Intermediate",
@@ -120,7 +120,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
     },
     {
       id: 9,
-      title: "DSecure File Eraser Complete Guide",
+      title: "D-Secure File Eraser Complete Guide",
       description: "Master the file-level erasure features for selective data destruction and privacy protection.",
       category: "getting-started",
       difficulty: "Beginner",
@@ -198,7 +198,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
                     Knowledge <span className="text-brand">Base</span>
                   </h1>
                   <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
-                    Step-by-step guides to securely wipe data on different devices and master DSecure features
+                    Step-by-step guides to securely wipe data on different devices and master D-Secure features
                   </p>
 
                   {/* Search Bar */}

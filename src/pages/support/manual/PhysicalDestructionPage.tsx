@@ -273,7 +273,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
       <Helmet>
         <link
           rel="canonical"
-          href="https://dsecuretech.com/support/physical-destruction"
+          href="https://D-Securetech.com/support/physical-destruction"
         />
         <title>
           Physical Destruction Methods | Ultimate Data Disposal Security
@@ -774,7 +774,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
                       Our Commitment
                     </h3>
                     <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                      At DSecure, we combine secure logistics, regulated
+                      At D-Secure, we combine secure logistics, regulated
                       equipment, and audit trails to deliver verifiable
                       destruction of your data-bearing assets — from pickup to
                       proof of destruction.

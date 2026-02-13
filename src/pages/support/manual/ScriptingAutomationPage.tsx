@@ -46,20 +46,20 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  <div className="mb-4">
  <span className="text-slate-400"># Basic erasure command</span>
  </div>
- <div className="mb-2">dsecure-cli --device /dev/sda --method dod --verify</div>
+ <div className="mb-2">D-Secure-cli --device /dev/sda --method dod --verify</div>
  <div className="mb-4">
  <span className="text-slate-400"># Batch operation with configuration file</span>
  </div>
- <div>dsecure-cli --config batch-config.json --output report.xml</div>
+ <div>D-Secure-cli --config batch-config.json --output report.xml</div>
  </div>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="space-y-3">
  <h3 className="text-lg font-semibold text-emerald-600">Core Commands</h3>
  <ul className="space-y-1 text-sm text-slate-700">
- <li>• <code className="bg-slate-100 px-2 py-1 rounded">dsecure-cli</code> - Main CLI tool</li>
- <li>• <code className="bg-slate-100 px-2 py-1 rounded">dsecure-scan</code> - Device discovery</li>
- <li>• <code className="bg-slate-100 px-2 py-1 rounded">dsecure-verify</code> - Verification tool</li>
- <li>• <code className="bg-slate-100 px-2 py-1 rounded">dsecure-report</code> - Report generator</li>
+ <li>• <code className="bg-slate-100 px-2 py-1 rounded">D-Secure-cli</code> - Main CLI tool</li>
+ <li>• <code className="bg-slate-100 px-2 py-1 rounded">D-Secure-scan</code> - Device discovery</li>
+ <li>• <code className="bg-slate-100 px-2 py-1 rounded">D-Secure-verify</code> - Verification tool</li>
+ <li>• <code className="bg-slate-100 px-2 py-1 rounded">D-Secure-report</code> - Report generator</li>
  </ul>
  </div>
  <div className="space-y-3">

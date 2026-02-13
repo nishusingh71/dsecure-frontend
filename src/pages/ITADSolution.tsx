@@ -281,7 +281,7 @@
 //                 Which compliance standards do you support?
 //               </h3>
 //               <p className="text-gray-600 leading-relaxed">
-//                 DSecure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, 
+//                 D-Secure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, 
 //                 Common Criteria, FedRAMP, and industry-specific regulations across 
 //                 healthcare, finance, government, and enterprise sectors.
 //               </p>
@@ -587,7 +587,7 @@
 //               },
 //               {
 //                 q: 'Which compliance standards do you support?',
-//                 a: 'DSecure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
+//                 a: 'D-Secure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
 //               },
 //               {
 //                 q: 'Do you provide regulatory documents of data destruction?',
@@ -878,7 +878,7 @@
 //               },
 //               {
 //                 q: 'Which compliance standards do you support?',
-//                 a: 'DSecure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
+//                 a: 'D-Secure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
 //               },
 //               {
 //                 q: 'Do you provide certificates of data destruction?',
@@ -1168,7 +1168,7 @@ const ITADSolution: React.FC = () => {
               },
               {
                 q: 'Which compliance standards do you support?',
-                a: 'DSecure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
+                a: 'D-Secure supports GDPR, HIPAA, SOX, PCI DSS, CCPA, ISO 27001, NIST 800-88, Common Criteria, FedRAMP, and industry-specific regulations across multiple sectors.'
               },
               {
                 q: 'Do you provide regulatory documents of data destruction?',

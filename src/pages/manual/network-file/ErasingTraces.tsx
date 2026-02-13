@@ -6,10 +6,10 @@ const ErasingTraces: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Erasing Traces - DSecure Network File Manual</title>
+        <title>Erasing Traces - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Learn how to erase internet activity, application, and system traces using DSecure File Eraser Network for complete privacy protection."
+          content="Learn how to erase internet activity, application, and system traces using D-Secure File Eraser Network for complete privacy protection."
         />
       </Helmet>
 
@@ -262,7 +262,7 @@ const ErasingTraces: React.FC = () => {
           
           <div className="space-y-5">
             <p className="text-gray-700 leading-relaxed">
-              DSecure can erase internet traces from all major web browsers installed on the target computer. Each browser stores traces independently in different locations, requiring specialized cleanup for each.
+              D-Secure can erase internet traces from all major web browsers installed on the target computer. Each browser stores traces independently in different locations, requiring specialized cleanup for each.
             </p>
 
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border-2 border-blue-200 p-6">
@@ -455,7 +455,7 @@ const ErasingTraces: React.FC = () => {
                 <h3 className="font-semibold text-gray-900 mb-3">Recycle Bin Contents</h3>
                 <div className="space-y-2">
                   <p className="text-gray-700">
-                    Files moved to Recycle Bin remain on disk until manually emptied. DSecure permanently erases all Recycle Bin contents across all drives.
+                    Files moved to Recycle Bin remain on disk until manually emptied. D-Secure permanently erases all Recycle Bin contents across all drives.
                   </p>
                   <div className="bg-white rounded-lg p-3 border border-green-300 text-sm">
                     <strong>Coverage:</strong> Empties Recycle Bin on C:, D:, and all other local drives, then securely overwrites the freed space

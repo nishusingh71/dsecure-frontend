@@ -6,10 +6,10 @@ const Support: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Support & Updates - DSecure Network File Manual</title>
+        <title>Support & Updates - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Get technical support, access resources, and learn how to update DSecure File Eraser Network."
+          content="Get technical support, access resources, and learn how to update D-Secure File Eraser Network."
         />
       </Helmet>
 
@@ -29,7 +29,7 @@ const Support: React.FC = () => {
         <section className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-8 text-white">
           <h2 className="text-2xl font-semibold mb-4">We're Here to Help</h2>
           <p className="text-xl text-blue-100 leading-relaxed">
-            DSecureTech provides multiple support channels to ensure you get the help you need, when you need it.
+            D-SecureTech provides multiple support channels to ensure you get the help you need, when you need it.
           </p>
         </section>
 
@@ -52,8 +52,8 @@ const Support: React.FC = () => {
                   </p>
                   <div className="bg-white rounded-lg p-4 border border-green-200">
                     <p className="text-gray-600 text-sm mb-2">Send your queries to:</p>
-                    <a href="mailto:techsupport@dsecuretech.com" className="text-green-600 font-semibold text-lg hover:text-green-700">
-                      techsupport@dsecuretech.com
+                    <a href="mailto:techsupport@D-Securetech.com" className="text-green-600 font-semibold text-lg hover:text-green-700">
+                      techsupport@D-Securetech.com
                     </a>
                   </div>
                   <div className="mt-3 text-sm text-gray-600">
@@ -74,7 +74,7 @@ const Support: React.FC = () => {
                   </p>
                   <div className="bg-white rounded-lg p-4 border border-blue-200">
                     <p className="text-gray-600 text-sm mb-2">Access chat from:</p>
-                    <p className="text-blue-600 font-semibold">DSecure Support Portal → Chat Now</p>
+                    <p className="text-blue-600 font-semibold">D-Secure Support Portal → Chat Now</p>
                   </div>
                   <div className="mt-3 text-sm text-gray-600">
                     <strong>Availability:</strong> Monday - Friday, 9 AM - 6 PM (your local timezone)
@@ -94,8 +94,8 @@ const Support: React.FC = () => {
                   </p>
                   <div className="bg-white rounded-lg p-4 border border-purple-200">
                     <p className="text-gray-600 text-sm mb-2">Visit the portal at:</p>
-                    <a href="https://support.dsecuretech.com" className="text-purple-600 font-semibold text-lg hover:text-purple-700" target="_blank" rel="noopener noreferrer">
-                      support.dsecuretech.com
+                    <a href="https://support.D-Securetech.com" className="text-purple-600 font-semibold text-lg hover:text-purple-700" target="_blank" rel="noopener noreferrer">
+                      support.D-Securetech.com
                     </a>
                   </div>
                   <div className="mt-3 space-y-1 text-sm text-gray-600">
@@ -127,7 +127,7 @@ const Support: React.FC = () => {
                   </p>
                   <div className="bg-white rounded-lg p-4 border border-orange-200">
                     <p className="text-gray-600 text-sm mb-2">Use the web form at:</p>
-                    <p className="text-orange-600 font-semibold">support.dsecuretech.com/contact</p>
+                    <p className="text-orange-600 font-semibold">support.D-Securetech.com/contact</p>
                   </div>
                 </div>
               </div>
@@ -144,7 +144,7 @@ const Support: React.FC = () => {
           
           <div className="space-y-5 text-lg">
             <p className="text-gray-700 leading-relaxed">
-              Keep DSecure File Eraser Network up-to-date with the latest features, security patches, and performance improvements.
+              Keep D-Secure File Eraser Network up-to-date with the latest features, security patches, and performance improvements.
             </p>
 
             {/* Update Wizard */}
@@ -201,7 +201,7 @@ const Support: React.FC = () => {
                 Automatic Update Check
               </h3>
               <p className="text-gray-700 mb-3">
-                By default, DSecure checks for updates automatically when you start the application.
+                By default, D-Secure checks for updates automatically when you start the application.
               </p>
               <div className="bg-white rounded p-4 border border-indigo-200">
                 <strong className="text-gray-900">To disable auto-check:</strong>
@@ -320,11 +320,11 @@ const Support: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 text-lg">
             <div>
               <h3 className="font-semibold mb-2">Technical Support</h3>
-              <p className="text-green-100">techsupport@dsecuretech.com</p>
+              <p className="text-green-100">techsupport@D-Securetech.com</p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Support Portal</h3>
-              <p className="text-green-100">support.dsecuretech.com</p>
+              <p className="text-green-100">support.D-Securetech.com</p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Live Chat</h3>

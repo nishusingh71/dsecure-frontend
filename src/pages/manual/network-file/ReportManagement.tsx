@@ -6,10 +6,10 @@ const ReportManagement: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>Report Management - DSecure Network File Manual</title>
+        <title>Report Management - D-Secure Network File Manual</title>
         <meta
           name="description"
-          content="Learn how to view, filter, export, and manage erasure reports in DSecure File Eraser Network for compliance and audit trails."
+          content="Learn how to view, filter, export, and manage erasure reports in D-Secure File Eraser Network for compliance and audit trails."
         />
       </Helmet>
 
@@ -57,7 +57,7 @@ const ReportManagement: React.FC = () => {
           
           <div className="space-y-5 text-lg">
             <p className="text-gray-700 leading-relaxed">
-              All erasure operations automatically generate detailed reports stored locally and optionally uploaded to DSecure Cloud.
+              All erasure operations automatically generate detailed reports stored locally and optionally uploaded to D-Secure Cloud.
             </p>
 
             <ol className="space-y-3">
@@ -279,7 +279,7 @@ const ReportManagement: React.FC = () => {
               <div className="flex items-start gap-2">
                 <AlertCircle className="w-6 h-6 text-amber-600 mt-0.5" />
                 <p className="text-amber-900 text-lg">
-                  <strong>Note:</strong> Currently, reports must be saved individually. You cannot batch-export multiple reports in one operation. For centralizing multiple reports, consider using DSecure Cloud integration.
+                  <strong>Note:</strong> Currently, reports must be saved individually. You cannot batch-export multiple reports in one operation. For centralizing multiple reports, consider using D-Secure Cloud integration.
                 </p>
               </div>
             </div>
@@ -295,7 +295,7 @@ const ReportManagement: React.FC = () => {
           
           <div className="space-y-5 text-lg">
             <p className="text-gray-700 leading-relaxed">
-              Upload reports to DSecure Cloud for centralized management and backup protection.
+              Upload reports to D-Secure Cloud for centralized management and backup protection.
             </p>
 
             <div className="grid md:grid-cols-2 gap-4">

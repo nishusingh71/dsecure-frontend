@@ -1,4 +1,4 @@
-﻿import { useAuth } from '@/auth/AuthContext'
+import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
@@ -128,8 +128,8 @@ export default function AdminReports() {
   return (
     <>
       <Helmet>
-        <title>Admin Reports - Dashboard | DSecureTech</title>
-        <meta name="description" content="View and manage all erasure reports and certificates in DSecureTech admin dashboard." />
+        <title>Admin Reports - Dashboard | D-SecureTech</title>
+        <meta name="description" content="View and manage all erasure reports and certificates in D-SecureTech admin dashboard." />
       </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">

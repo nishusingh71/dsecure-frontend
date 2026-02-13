@@ -9,7 +9,7 @@ export default function AdminSettings() {
   const [activeTab, setActiveTab] = useState('general')
   const [settings, setSettings] = useState({
     general: {
-      siteName: 'DSecureTech',
+      siteName: 'D-SecureTech',
       siteDescription: 'Professional Data Erasure Solutions',
       defaultLanguage: 'en',
       timezone: 'UTC',
@@ -64,8 +64,8 @@ export default function AdminSettings() {
   return (
     <>
       <Helmet>
-        <title>System Settings - Admin Dashboard | DSecureTech</title>
-        <meta name="description" content="Configure system settings and preferences for DSecureTech admin dashboard." />
+        <title>System Settings - Admin Dashboard | D-SecureTech</title>
+        <meta name="description" content="Configure system settings and preferences for D-SecureTech admin dashboard." />
       </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">

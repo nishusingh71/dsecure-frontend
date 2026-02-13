@@ -1,4 +1,4 @@
-﻿import { ENV } from "@/config/env";
+import { ENV } from "@/config/env";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
@@ -16,7 +16,7 @@ export default function PrivateCloudSetup() {
   const getUserDataFromStorage = () => {
     const storedUser = localStorage.getItem("user_data");
     const authUser = localStorage.getItem("authUser");
-    const dsecureUser = localStorage.getItem("dsecure:user");
+    const DSecureUser = localStorage.getItem("DSecure:user");
 
     if (storedUser) {
       try { return JSON.parse(storedUser); } catch (e) { console.error("Error parsing user_data:", e); }
@@ -24,8 +24,8 @@ export default function PrivateCloudSetup() {
     if (authUser) {
       try { return JSON.parse(authUser); } catch (e) { console.error("Error parsing authUser:", e); }
     }
-    if (dsecureUser) {
-      try { return JSON.parse(dsecureUser); } catch (e) { console.error("Error parsing dsecure:user:", e); }
+    if (DSecureUser) {
+      try { return JSON.parse(DSecureUser); } catch (e) { console.error("Error parsing DSecure:user:", e); }
     }
     return null;
   };
@@ -37,7 +37,7 @@ export default function PrivateCloudSetup() {
 
   // Debug log
   useEffect(() => {
-    console.log('🔍 Private Cloud Check:', {
+    console.log('?? Private Cloud Check:', {
       userIsPrivateCloud: user?.is_private_cloud,
       storedIsPrivateCloud: storedUserData?.is_private_cloud,
       finalIsPrivateCloudEnabled: isPrivateCloudEnabled,
@@ -90,7 +90,7 @@ export default function PrivateCloudSetup() {
   const handleDisabledClick = () => {
     showInfo(
       "Private Cloud Not Enabled",
-      "Please contact D-SecureTech team at support@dsecuretech.com to enable this feature."
+      "Please contact D-Secure Tech team at support@dsecuretech.com to enable this feature."
     );
   };
 
@@ -120,7 +120,7 @@ export default function PrivateCloudSetup() {
         setSetupStatus(prev => ({
           ...prev,
           tablesCreated: true,
-          message: '✅ Tables created successfully! You can now validate the schema. (DEMO)'
+          message: '? Tables created successfully! You can now validate the schema. (DEMO)'
         }));
         setSetupStep('complete');
         showSuccess("Tables Created", "Database tables have been created successfully. (DEMO)");
@@ -133,7 +133,7 @@ export default function PrivateCloudSetup() {
       const url = `${API_BASE}/api/PrivateCloud/complete-setup`;
       const payload = { connectionString: privateCloudForm.connectionString };
 
-      console.log('🔵 API Request:', {
+      console.log('?? API Request:', {
         url,
         method: 'POST',
         payload: { ...payload, connectionString: payload.connectionString.substring(0, 50) + '...' },
@@ -143,16 +143,16 @@ export default function PrivateCloudSetup() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('dsecure:jwt') || localStorage.getItem('dsecure:jwt') || ''}`,
+          'Authorization': `Bearer ${sessionStorage.getItem('DSecure:jwt') || localStorage.getItem('DSecure:jwt') || ''}`,
         },
         body: JSON.stringify(payload),
       });
 
-      console.log('🔵 Response status:', response.status, response.statusText);
+      console.log('?? Response status:', response.status, response.statusText);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('🔴 Error response:', errorText);
+        console.error('?? Error response:', errorText);
         let errorMessage = 'Failed to create tables';
         try {
           const errorData = JSON.parse(errorText);
@@ -166,15 +166,15 @@ export default function PrivateCloudSetup() {
       setSetupStatus(prev => ({
         ...prev,
         tablesCreated: true,
-        message: '✅ Tables created successfully! You can now validate the schema.'
+        message: '? Tables created successfully! You can now validate the schema.'
       }));
       setSetupStep('complete');
       showSuccess("Tables Created", "Database tables have been created successfully. Click 'Validate Schema' to continue.");
     } catch (error: any) {
-      console.error("❌ Create tables error:", error);
+      console.error("? Create tables error:", error);
       showError("Setup Failed", error.message || "Failed to create tables. Please check your connection string.");
       setSetupStep('idle');
-      setSetupStatus(prev => ({ ...prev, message: `❌ Error: ${error.message}` }));
+      setSetupStatus(prev => ({ ...prev, message: `? Error: ${error.message}` }));
     } finally {
       setLoading(false);
     }
@@ -197,7 +197,7 @@ export default function PrivateCloudSetup() {
         setSetupStatus(prev => ({
           ...prev,
           schemaValidated: true,
-          message: '✅ Schema validated successfully! You can now migrate data if needed. (DEMO)'
+          message: '? Schema validated successfully! You can now migrate data if needed. (DEMO)'
         }));
         showSuccess("Schema Validated", "Database schema matches expected structure. (DEMO)");
         setSetupStep('complete');
@@ -211,7 +211,7 @@ export default function PrivateCloudSetup() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('dsecure:jwt') || localStorage.getItem('dsecure:jwt') || ''}`,
+          'Authorization': `Bearer ${sessionStorage.getItem('DSecure:jwt') || localStorage.getItem('DSecure:jwt') || ''}`,
         },
         body: JSON.stringify({
           connectionString: privateCloudForm.connectionString,
@@ -226,15 +226,15 @@ export default function PrivateCloudSetup() {
       setSetupStatus(prev => ({
         ...prev,
         schemaValidated: true,
-        message: '✅ Schema validated successfully! You can now migrate data if needed.'
+        message: '? Schema validated successfully! You can now migrate data if needed.'
       }));
       showSuccess("Schema Validated", "Database schema matches expected structure.");
       setSetupStep('complete');
     } catch (error: any) {
-      console.error("❌ Validate schema error:", error);
+      console.error("? Validate schema error:", error);
       showError("Validation Failed", error.message || "Schema validation failed.");
       setSetupStep('complete');
-      setSetupStatus(prev => ({ ...prev, message: `❌ Schema Error: ${error.message}` }));
+      setSetupStatus(prev => ({ ...prev, message: `? Schema Error: ${error.message}` }));
     } finally {
       setLoading(false);
     }
@@ -252,7 +252,7 @@ export default function PrivateCloudSetup() {
         setSetupStatus(prev => ({
           ...prev,
           dataMigrated: true,
-          message: '✅ Data migrated successfully! (DEMO)'
+          message: '? Data migrated successfully! (DEMO)'
         }));
         showSuccess("Data Migrated", "All existing data has been migrated to your private database. (DEMO)");
         setSetupStep('complete');
@@ -270,7 +270,7 @@ export default function PrivateCloudSetup() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessionStorage.getItem('dsecure:jwt') || localStorage.getItem('dsecure:jwt') || ''}`,
+          'Authorization': `Bearer ${sessionStorage.getItem('DSecure:jwt') || localStorage.getItem('DSecure:jwt') || ''}`,
         },
         body: JSON.stringify({
           connectionString: privateCloudForm.connectionString,
@@ -279,7 +279,7 @@ export default function PrivateCloudSetup() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('🔴 Migrate error response:', response.status, errorText);
+        console.error('?? Migrate error response:', response.status, errorText);
         let errorMessage = 'Data migration failed';
         try {
           const errorData = JSON.parse(errorText);
@@ -293,7 +293,7 @@ export default function PrivateCloudSetup() {
       setSetupStatus(prev => ({
         ...prev,
         dataMigrated: true,
-        message: '✅ Data migrated successfully!'
+        message: '? Data migrated successfully!'
       }));
       showSuccess("Data Migrated", "All existing data has been migrated to your private database.");
       setSetupStep('complete');
@@ -303,9 +303,9 @@ export default function PrivateCloudSetup() {
         navigate("/admin");
       }, 2000);
     } catch (error: any) {
-      console.error("❌ Migrate data error:", error);
+      console.error("? Migrate data error:", error);
       showError("Migration Failed", error.message || "Failed to migrate data.");
-      setSetupStatus(prev => ({ ...prev, message: `❌ Migration Error: ${error.message}` }));
+      setSetupStatus(prev => ({ ...prev, message: `? Migration Error: ${error.message}` }));
     } finally {
       setLoading(false);
     }
@@ -642,7 +642,7 @@ export default function PrivateCloudSetup() {
                           </svg>
                           Creating...
                         </>
-                      ) : setupStatus.tablesCreated ? 'Done ✓' : 'Create Tables'}
+                      ) : setupStatus.tablesCreated ? 'Done ?' : 'Create Tables'}
                     </button>
                   </div>
 
@@ -674,7 +674,7 @@ export default function PrivateCloudSetup() {
                           </svg>
                           Validating...
                         </>
-                      ) : setupStatus.schemaValidated ? 'Done ✓' : 'Validate Schema'}
+                      ) : setupStatus.schemaValidated ? 'Done ?' : 'Validate Schema'}
                     </button>
                   </div>
 
@@ -706,7 +706,7 @@ export default function PrivateCloudSetup() {
                           </svg>
                           Migrating...
                         </>
-                      ) : setupStatus.dataMigrated ? 'Done ✓' : 'Migrate Data'}
+                      ) : setupStatus.dataMigrated ? 'Done ?' : 'Migrate Data'}
                     </button>
                   </div>
                 </div>
@@ -726,7 +726,7 @@ export default function PrivateCloudSetup() {
                     className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
                     disabled={loading}
                   >
-                    ← Back to Dashboard
+                    ? Back to Dashboard
                   </button>
                 </div>
               </div>

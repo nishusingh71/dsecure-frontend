@@ -1,4 +1,4 @@
-﻿import React, { useState, useCallback, useMemo, memo } from "react";
+import React, { useState, useCallback, useMemo, memo } from "react";
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
@@ -147,7 +147,7 @@ const SupportTicketModal: React.FC<{
                 onClick={onClose}
                 className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
               >
-                ×
+                �
               </button>
             </div>
             <p className="mt-2 text-emerald-100">
@@ -514,7 +514,7 @@ const SupportPage: React.FC = () => {
       template_id: 'your_license_template_id',
       user_id: 'your_user_id',
       template_params: {
-        to_email: 'license@dsecuretech.com',
+        to_email: 'license@D-Securetech.com',
         from_name: formData.fullName,
         from_email: formData.email,
         subject: `Free License Request - ${formData.company}`,
@@ -562,7 +562,7 @@ const SupportPage: React.FC = () => {
       template_id: 'your_partnership_template_id',
       user_id: 'your_user_id',
       template_params: {
-        to_email: 'partnerships@dsecuretech.com',
+        to_email: 'partnerships@D-Securetech.com',
         from_name: formData.fullName,
         from_email: formData.businessEmail,
         subject: `Partnership Request - ${formData.companyName}`,
@@ -607,7 +607,7 @@ const SupportPage: React.FC = () => {
       template_id: 'your_support_template_id',
       user_id: 'your_user_id',
       template_params: {
-        to_email: 'support@dsecuretech.com',
+        to_email: 'support@D-Securetech.com',
         from_name: ticketForm.name,
         from_email: ticketForm.email,
         subject: `Support Ticket: ${ticketForm.subject}`,
@@ -871,7 +871,7 @@ const SupportPage: React.FC = () => {
                   Self Help & Support
                 </h2>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
-                  Access Support Information For Your DSecure Products
+                  Access Support Information For Your D-Secure Products
                 </p>
               </div>
             </Reveal>
@@ -897,7 +897,7 @@ const SupportPage: React.FC = () => {
                     You.
                   </p>
                   <Link to="/support/faqs" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
-                    Learn More →
+                    Learn More ?
                   </Link>
                 </div>
               </Reveal>
@@ -922,7 +922,7 @@ const SupportPage: React.FC = () => {
                     Devices.
                   </p>
                   <Link to="/support/knowledge-base" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
-                    Learn More →
+                    Learn More ?
                   </Link>
                 </div>
               </Reveal>
@@ -946,7 +946,7 @@ const SupportPage: React.FC = () => {
                     Learn How To Wipe PC, Mac, Server & Mobile Devices.
                   </p>
                   <Link to="/support/get-started" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
-                    Learn More →
+                    Learn More ?
                   </Link>
                 </div>
               </Reveal>
@@ -971,10 +971,10 @@ const SupportPage: React.FC = () => {
                     Help Manual
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Complete Visual Guide To Learn More About DSecure Products, Installation, FAQs, Report Management & Advanced Settings Configuration.
+                    Complete Visual Guide To Learn More About D-Secure Products, Installation, FAQs, Report Management & Advanced Settings Configuration.
                   </p>
                   <Link to="/support/help-manual" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
-                    View Help Manual →
+                    View Help Manual ?
                   </Link>
                 </div>
               </Reveal>
@@ -998,7 +998,7 @@ const SupportPage: React.FC = () => {
                     Product Walkthroughs & How To Videos.
                   </p>
                   <Link to="/support/product-videos" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
-                    Learn More →
+                    Learn More ?
                   </Link>
                 </div>
               </Reveal>
@@ -1022,7 +1022,7 @@ const SupportPage: React.FC = () => {
                     Insights and practical guides on data erasure, cybersecurity, and IT asset lifecycle management.
                   </p>
                   <Link to="/blog" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
-                    Learn More →
+                    Learn More ?
                   </Link>
                 </div>
               </Reveal>
@@ -1057,7 +1057,7 @@ const SupportPage: React.FC = () => {
                   </p>
                   <button
                     onClick={() =>
-                      (window.location.href = "mailto:support@dsecuretech.com")
+                      (window.location.href = "mailto:support@D-Securetech.com")
                     }
                     className="bg-white border-2 border-brand text-brand hover:bg-brand hover:text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2 mx-auto"
                   >
@@ -1168,7 +1168,7 @@ const SupportPage: React.FC = () => {
                         onClick={() => setShowLicenseModal(true)}
                         className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300"
                       >
-                        Request Free License →
+                        Request Free License ?
                       </button>
                       <button onClick={() => (window.location.href = "tel:+91-844-775-0101")} className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300">
                         Need help: +91-844-775-0101
@@ -1187,7 +1187,7 @@ const SupportPage: React.FC = () => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                  <span className="text-brand">DSecure</span>
+                  <span className="text-brand">D-Secure</span>
                   <sup className="text-brand text-lg"></sup> Is An Innovation
                   FROM D-Secure
                 </h2>
@@ -1258,7 +1258,7 @@ const SupportPage: React.FC = () => {
 };
 
 export default SupportPage;
-//               View Documentation →
+//               View Documentation ?
 //             </a>
 //           </div>
 
@@ -1275,7 +1275,7 @@ export default SupportPage;
 //               Get instant help from our support team through live chat assistance.
 //             </p>
 //             <button className="text-green-600 hover:text-green-700 font-medium text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl">
-//               Start Chat →
+//               Start Chat ?
 //             </button>
 //           </div>
 
@@ -1292,7 +1292,7 @@ export default SupportPage;
 //               Submit detailed support requests and get expert assistance via email.
 //             </p>
 //             <a href="/contact" className="text-purple-600 hover:text-purple-700 font-medium text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl">
-//               Send Email →
+//               Send Email ?
 //             </a>
 //           </div>
 //         </div>
@@ -1311,23 +1311,23 @@ export default SupportPage;
 //             </h3>
 //             <ul className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-7 xl:space-y-8 xxl:space-y-9 text-slate-600 light:text-slate-300 text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl">
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Software installation and configuration
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Troubleshooting and error resolution
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 System compatibility issues
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Performance optimization
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Integration assistance
 //               </li>
 //             </ul>
@@ -1339,23 +1339,23 @@ export default SupportPage;
 //             </h3>
 //             <ul className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6 lg:space-y-7 xl:space-y-8 xxl:space-y-9 text-slate-600 light:text-slate-300 text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl">
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Account management and settings
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Billing inquiries and invoice questions
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 License management and renewals
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Subscription changes and upgrades
 //               </li>
 //               <li className="flex items-start gap-3">
-//                 <span className="text-blue-600 mt-1">•</span>
+//                 <span className="text-blue-600 mt-1">�</span>
 //                 Payment processing support
 //               </li>
 //             </ul>
@@ -1378,7 +1378,7 @@ export default SupportPage;
 //               Email Support
 //             </h3>
 //             <p className="text-blue-600 text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl">
-//               support@dsecuretech.com
+//               support@D-Securetech.com
 //             </p>
 //           </div>
 

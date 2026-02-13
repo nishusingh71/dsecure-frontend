@@ -150,8 +150,8 @@ export default function AdminReports() {
   return (
     <>
       <Helmet>
-        <title>Data Erasure Reports - Admin Dashboard | DSecureTech</title>
-        <meta name="description" content="View and manage all data erasure reports in DSecureTech admin dashboard." />
+        <title>Data Erasure Reports - Admin Dashboard | D-SecureTech</title>
+        <meta name="description" content="View and manage all data erasure reports in D-SecureTech admin dashboard." />
       </Helmet>
 
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">

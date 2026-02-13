@@ -17,6 +17,7 @@ export default function MainLayout() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [authKey, setAuthKey] = useState(0); // Force re-render on auth state change
+  const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
 
   const toggleMobileMenu = useCallback(() => {
     setOpen((v) => !v);
@@ -45,6 +46,19 @@ export default function MainLayout() {
     window.addEventListener('authStateChanged', handleAuthStateChange);
     return () => window.removeEventListener('authStateChanged', handleAuthStateChange);
   }, []);
+
+  // Close products dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (productsDropdownOpen && !target.closest('[data-products-dropdown]')) {
+        setProductsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [productsDropdownOpen]);
 
   return (
     <>
@@ -82,17 +96,65 @@ export default function MainLayout() {
             >
               Home
             </NavLink> */}
-              <NavLink
-                to="/products"
-                className={({ isActive }) =>
-                  (isActive
-                    ? "text-brand font-medium"
-                    : "text-slate-600 hover:text-slate-900") +
-                  " inline-flex items-center gap-2 py-2"
-                }
-              >
-                {t('common.products')}
-              </NavLink>
+              {/* Products Dropdown */}
+              <div className="relative" data-products-dropdown>
+                <button
+                  className={`inline-flex items-center gap-2 py-2 text-slate-600 hover:text-slate-900 ${productsDropdownOpen ? 'text-brand font-medium' : ''}`}
+                  onClick={() => setProductsDropdownOpen(!productsDropdownOpen)}
+                >
+                  {t('common.products')}
+                </button>
+
+                {/* Dropdown Panel */}
+                {productsDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-[800px] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
+                    {/* Dropdown Header */}
+                    <div className="border-b border-slate-200 px-6 py-5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-emerald-700 border-b-2 border-emerald-500 pb-1">Erasure</span>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1">Wiping Of Sensitive Data Across Storage Devices.</p>
+                    </div>
+
+                    {/* Products Grid - 2 Columns (Row Layout) */}
+                    <div className="p-6 grid grid-cols-2 gap-5">
+                      {/* Drive Eraser */}
+                      <Link
+                        to="/products/drive-eraser"
+                        className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
+                        onClick={() => setProductsDropdownOpen(false)}
+                      >
+                        <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                          </svg>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">Drive Eraser</h4>
+                          <p className="text-sm text-slate-500 leading-relaxed">Software to Erase Data From HDD, SSD, PC, Mac, Chromebook & Server</p>
+                        </div>
+                      </Link>
+
+                      {/* File Erasure Software */}
+                      <Link
+                        to="/products/file-eraser"
+                        className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
+                        onClick={() => setProductsDropdownOpen(false)}
+                      >
+                        <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">File Erasure Software</h4>
+                          <p className="text-sm text-slate-500 leading-relaxed">Software to Wipe Files, Folders, Traces, Browser History Etc.</p>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
               <NavLink
                 to="/solutions"
                 className={({ isActive }) =>
@@ -125,6 +187,17 @@ export default function MainLayout() {
                 }
               >
                 {t('common.partners')}
+              </NavLink>
+              <NavLink
+                to="/data-guardian-award"
+                className={({ isActive }) =>
+                  (isActive
+                    ? "text-brand font-medium"
+                    : "text-slate-600 hover:text-slate-900") +
+                  " inline-flex items-center gap-2 py-2"
+                }
+              >
+                Trust Certificate
               </NavLink>
               <NavLink
                 to="/support"
@@ -271,27 +344,63 @@ export default function MainLayout() {
               aria-label="Mobile navigation menu"
             >
               <div className="mx-auto max-w-7xl px-4 xs:px-4 sm:px-6 md:px-6 py-4 xs:py-5 sm:py-6 md:py-6 space-y-1 xs:space-y-2 sm:space-y-2 md:space-y-2">
-                <NavLink
-                  onClick={() => setOpen(false)}
-                  to="/products"
-                  className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="View all security products"
-                >
-                  <svg
-                    className="w-5 h-5 text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                {/* Mobile Products Section with Sub-items */}
+                <div className="space-y-1">
+                  <NavLink
+                    onClick={() => setOpen(false)}
+                    to="/products"
+                    className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
+                    aria-label="View all security products"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"
-                    />
-                  </svg>
-                  {t('common.products')}
-                </NavLink>
+                    <svg
+                      className="w-5 h-5 text-slate-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M20 7l-8-4-8 4m16 0l-8 4-8-4m16 0v10l-8 4-8-4V7"
+                      />
+                    </svg>
+                    {t('common.products')}
+                  </NavLink>
+                  {/* Product Sub-items */}
+                  <div className="ml-8 space-y-1 border-l-2 border-emerald-200 pl-4">
+                    <Link
+                      onClick={() => setOpen(false)}
+                      to="/products/drive-eraser"
+                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="font-medium">Drive Eraser</span>
+                        <p className="text-xs text-slate-400">HDD, SSD, Mac, Server</p>
+                      </div>
+                    </Link>
+                    <Link
+                      onClick={() => setOpen(false)}
+                      to="/products/file-eraser"
+                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-md flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="font-medium">File Eraser</span>
+                        <p className="text-xs text-slate-400">Files, Folders, Traces</p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
                 <NavLink
                   onClick={() => setOpen(false)}
                   to="/solutions"
@@ -354,6 +463,21 @@ export default function MainLayout() {
                     />
                   </svg>
                   {t('common.partners')}
+                </NavLink>
+                <NavLink
+                  onClick={() => setOpen(false)}
+                  to="/data-guardian-award"
+                  className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
+                  aria-label="D-Secure Data Guardian Award certification"
+                >
+                  <svg
+                    className="w-5 h-5 text-slate-400"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                  </svg>
+                  Data Guardian Award
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}

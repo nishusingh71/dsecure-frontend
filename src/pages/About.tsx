@@ -31,7 +31,7 @@ function AboutPageContent() {
       year: "2025",
       title: "Company Founded",
       description:
-        "DSecure was established by technology enthusiasts with a vision to modernize data sanitization solutions.",
+        "D-Secure was established by technology enthusiasts with a vision to modernize data sanitization solutions.",
       icon: "🚀",
     },
     // {
@@ -49,7 +49,7 @@ function AboutPageContent() {
     // {
     //   year: 'Q3 2025',
     //   title: 'First Commercial Release',
-    //   description: 'Officially launched DSecure platform with comprehensive data erasure and compliance features.',
+    //   description: 'Officially launched D-Secure platform with comprehensive data erasure and compliance features.',
     //   icon: '📱'
     // },
     // {
@@ -219,7 +219,7 @@ function AboutPageContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Founded in 2025, DSecure is revolutionizing the data erasure
+                Founded in 2025, D-Secure is revolutionizing the data erasure
                 industry with cutting-edge technology, bringing fresh innovation
                 and modern solutions to data protection and compliance
                 challenges.
@@ -478,7 +478,7 @@ function AboutPageContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Meet the experienced leaders driving DSecure's innovation and
+                Meet the experienced leaders driving D-Secure's innovation and
                 growth across the globe.
               </p>
             </Reveal>

@@ -165,10 +165,10 @@ const NetworkFileManualLayout: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>DSecure Network File Manual - Complete Guide</title>
+        <title>D-Secure Network File Manual - Complete Guide</title>
         <meta
           name="description"
-          content="Complete user manual for DSecure File Eraser Network - Installation, configuration, and usage guide"
+          content="Complete user manual for D-Secure File Eraser Network - Installation, configuration, and usage guide"
         />
       </Helmet>
 
@@ -262,7 +262,7 @@ const NetworkFileManualLayout: React.FC = () => {
             {location.pathname === "/support/help-manual/complete-network-manual" && (
               <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-8 text-white">
                 <h1 className="text-3xl font-bold mb-2">
-                  DSecure File Eraser Network Manual
+                  D-Secure File Eraser Network Manual
                 </h1>
                 <p className="text-blue-100 text-lg">
                   Complete guide to installation, configuration, and secure data erasure operations

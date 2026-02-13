@@ -1,4 +1,4 @@
-﻿import Sparkline from '@/components/Sparkline'
+import Sparkline from '@/components/Sparkline'
 import BarChart from '@/components/BarChart'
 import { useState, useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
@@ -16,16 +16,16 @@ interface PerformanceData {
   throughput: { month: string; count: number }[]
 }
 
-// ✅ React Query handles all caching automatically - no manual cache functions needed
+// ? React Query handles all caching automatically - no manual cache functions needed
 
 export default function AdminPerformance() {
   const { showError } = useNotification()
   const { user } = useAuth()
 
-  // ✅ Check demo mode
+  // ? Check demo mode
   const isDemo = isDemoMode()
 
-  // ✅ Get user email for React Query hooks
+  // ? Get user email for React Query hooks
   const getUserEmail = (): string => {
     const storedUser = localStorage.getItem('user_data')
     const authUser = localStorage.getItem('authUser')
@@ -52,7 +52,7 @@ export default function AdminPerformance() {
 
   const userEmail = getUserEmail()
 
-  // ✅ Use React Query hooks (disabled in demo mode)
+  // ? Use React Query hooks (disabled in demo mode)
   const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo)
   const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo)
   const performanceQuery = usePerformanceData(userEmail, !!userEmail && !isDemo)
@@ -63,42 +63,42 @@ export default function AdminPerformance() {
     throughput: []
   })
 
-  // ✅ Use React Query loading state (demo mode is never loading)
+  // ? Use React Query loading state (demo mode is never loading)
   const loading = isDemo ? false : performanceQuery.isLoading
 
-  // ✅ DEMO MODE: Load static data
+  // ? DEMO MODE: Load static data
   useEffect(() => {
     if (isDemo) {
-      // console.log('🎭 DEMO MODE - Loading static performance data');
+      // console.log('?? DEMO MODE - Loading static performance data');
       setPerformanceData(DEMO_PERFORMANCE_DATA);
     }
   }, [isDemo])
 
-  // ✅ Update performance data from React Query (same as AdminDashboard) - skip in demo mode
+  // ? Update performance data from React Query (same as AdminDashboard) - skip in demo mode
   useEffect(() => {
     if (isDemo) return;
 
     if (performanceQuery.data) {
-      // console.log('✅ Performance data loaded from React Query:', performanceQuery.data)
+      // console.log('? Performance data loaded from React Query:', performanceQuery.data)
       setPerformanceData(performanceQuery.data)
     } else if (performanceQuery.isError) {
-      console.error('❌ Error loading performance data:', performanceQuery.error)
+      console.error('? Error loading performance data:', performanceQuery.error)
       showError('Data Loading Error', 'Failed to load performance data.')
     }
   }, [performanceQuery.data, performanceQuery.isError, isDemo])
 
-  // ✅ Performance data is now automatically loaded via React Query hooks
+  // ? Performance data is now automatically loaded via React Query hooks
   // No manual API calls needed - React Query handles caching, refetching, and filtering
 
   if (loading) {
     return (
       <>
         <Helmet>
-          <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
-          <title>DSecureTech Performance | System Performance & Erasure Metrics</title>
+          <link rel="canonical" href="https://D-Securetech.com/admin/performance" />
+          <title>D-SecureTech Performance | System Performance & Erasure Metrics</title>
           <meta
             name="description"
-            content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
+            content="Monitor D-SecureTech system performance, erasure metrics, and throughput analytics in real-time."
           />
           <meta
             name="keywords"
@@ -167,11 +167,11 @@ export default function AdminPerformance() {
     return (
       <>
         <Helmet>
-          <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
-          <title>DSecureTech Performance | System Performance & Erasure Metrics</title>
+          <link rel="canonical" href="https://D-Securetech.com/admin/performance" />
+          <title>D-SecureTech Performance | System Performance & Erasure Metrics</title>
           <meta
             name="description"
-            content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
+            content="Monitor D-SecureTech system performance, erasure metrics, and throughput analytics in real-time."
           />
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
@@ -217,11 +217,11 @@ export default function AdminPerformance() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
-        <title>DSecureTech Performance | System Performance & Erasure Metrics</title>
+        <link rel="canonical" href="https://D-Securetech.com/admin/performance" />
+        <title>D-SecureTech Performance | System Performance & Erasure Metrics</title>
         <meta
           name="description"
-          content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
+          content="Monitor D-SecureTech system performance, erasure metrics, and throughput analytics in real-time."
         />
         <meta
           name="keywords"

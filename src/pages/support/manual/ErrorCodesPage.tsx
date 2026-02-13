@@ -39,7 +39,7 @@ const ErrorCodesPage: React.FC = memo(() => {
       code: "DSE-002",
       title: "License Validation Failed",
       description: "D-Secure license key is invalid, expired, or cannot be validated with the activation server.",
-      solution: "Step 1: Verify license key format (25 characters, no spaces). Step 2: Check license expiration date in account portal. Step 3: Ensure internet connectivity by accessing dsecuretech.com. Step 4: Check Windows Firewall and allow D-Secure (ports 80, 443). Step 5: Temporarily disable proxy servers or configure proxy settings. Step 6: Verify system date/time is correct. Step 7: Try offline activation if available. Step 8: Contact support with license key and error details.",
+      solution: "Step 1: Verify license key format (25 characters, no spaces). Step 2: Check license expiration date in account portal. Step 3: Ensure internet connectivity by accessing D-Securetech.com. Step 4: Check Windows Firewall and allow D-Secure (ports 80, 443). Step 5: Temporarily disable proxy servers or configure proxy settings. Step 6: Verify system date/time is correct. Step 7: Try offline activation if available. Step 8: Contact support with license key and error details.",
       category: "Licensing",
       severity: "Critical",
       causes: ["Invalid license key format", "Expired license", "No internet connectivity", "Firewall blocking activation", "Incorrect system time"],
@@ -83,7 +83,7 @@ const ErrorCodesPage: React.FC = memo(() => {
       code: "DSE-006",
       title: "Network Connection Timeout",
       description: "Connection to D-Secure cloud services, license server, or remote management timed out.",
-      solution: "Step 1: Check internet connectivity by pinging dsecuretech.com. Step 2: Verify firewall settings allow D-Secure traffic. Step 3: Configure proxy settings if behind corporate proxy. Step 4: Increase network timeout values in D-Secure settings. Step 5: Try connection during off-peak hours. Step 6: Use wired connection instead of WiFi. Step 7: Contact network administrator for firewall exceptions. Step 8: Try offline mode if available.",
+      solution: "Step 1: Check internet connectivity by pinging D-Securetech.com. Step 2: Verify firewall settings allow D-Secure traffic. Step 3: Configure proxy settings if behind corporate proxy. Step 4: Increase network timeout values in D-Secure settings. Step 5: Try connection during off-peak hours. Step 6: Use wired connection instead of WiFi. Step 7: Contact network administrator for firewall exceptions. Step 8: Try offline mode if available.",
       category: "Network",
       severity: "Warning",
       causes: ["Poor internet connectivity", "Firewall restrictions", "Proxy configuration issues", "Network congestion", "Server maintenance"],
@@ -204,7 +204,7 @@ const ErrorCodesPage: React.FC = memo(() => {
       code: "DSE-017",
       title: "Linux Permission Denied",
       description: "Linux system denying access to storage devices due to insufficient user permissions or security policies.",
-      solution: "Step 1: Run D-Secure with sudo: 'sudo dsecure'. Step 2: Check drive ownership: 'ls -la /dev/sdX'. Step 3: Add user to disk group: 'sudo usermod -a -G disk username'. Step 4: Unmount drive: 'sudo umount /dev/sdX'. Step 5: Check for active swap: 'sudo swapoff -a'. Step 6: Verify not part of LVM/RAID. Step 7: For encrypted drives, unlock with LUKS first. Step 8: Check SELinux policies if enabled.",
+      solution: "Step 1: Run D-Secure with sudo: 'sudo D-Secure'. Step 2: Check drive ownership: 'ls -la /dev/sdX'. Step 3: Add user to disk group: 'sudo usermod -a -G disk username'. Step 4: Unmount drive: 'sudo umount /dev/sdX'. Step 5: Check for active swap: 'sudo swapoff -a'. Step 6: Verify not part of LVM/RAID. Step 7: For encrypted drives, unlock with LUKS first. Step 8: Check SELinux policies if enabled.",
       category: "Access",
       severity: "Error",
       causes: ["Insufficient user permissions", "Drive mounted", "Active swap partition", "SELinux restrictions", "Group membership issues"],
@@ -283,7 +283,7 @@ const ErrorCodesPage: React.FC = memo(() => {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/support/manual/error-codes" />
+        <link rel="canonical" href="https://D-Securetech.com/support/manual/error-codes" />
         <title>D-Secure Error Codes | Complete Reference Guide & Solutions</title>
         <meta name="description" content="Complete reference guide for D-Secure error codes with detailed explanations, step-by-step solutions, and prevention tips for all error conditions." />
         <meta name="keywords" content="D-Secure error codes, error messages, troubleshooting, support reference, error solutions, DSE codes" />
@@ -543,7 +543,7 @@ const ErrorCodesPage: React.FC = memo(() => {
                     </svg>
                     Report New Error Code
                   </Link>
-                  <a href="mailto:support@dsecuretech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
+                  <a href="mailto:support@D-Securetech.com" className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>

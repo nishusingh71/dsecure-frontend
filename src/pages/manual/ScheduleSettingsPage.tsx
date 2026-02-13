@@ -19,15 +19,15 @@ const ScheduleSettingsPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <Helmet>
         <title>
-          DSecure Scheduling & Settings - Complete Configuration Guide
+          D-Secure Scheduling & Settings - Complete Configuration Guide
         </title>
         <meta
           name="description"
-          content="Master DSecure scheduling and settings - configure erasure tasks, customize themes, manage general settings, and set up automated operations."
+          content="Master D-Secure scheduling and settings - configure erasure tasks, customize themes, manage general settings, and set up automated operations."
         />
         <meta
           name="keywords"
-          content="DSecure schedule, erasure scheduling, settings configuration, themes, general settings, automation"
+          content="D-Secure schedule, erasure scheduling, settings configuration, themes, general settings, automation"
         />
       </Helmet>
 
@@ -65,7 +65,7 @@ const ScheduleSettingsPage: React.FC = () => {
                   Scheduling & Configuration Settings
                 </h1>
                 <p className="text-gray-600 mt-2">
-                  Complete guide to DSecure scheduling, themes, and general
+                  Complete guide to D-Secure scheduling, themes, and general
                   settings configuration
                 </p>
               </div>
@@ -82,7 +82,7 @@ const ScheduleSettingsPage: React.FC = () => {
 
                 <div className="bg-blue-50 rounded-lg p-6">
                   <p className="text-blue-800 leading-relaxed">
-                    <span className="font-semibold">DSecure File Eraser</span>{" "}
+                    <span className="font-semibold">D-Secure File Eraser</span>{" "}
                     provides you the ability to schedule an erase task and
                     periodically clean out data that you select. The facility
                     will help in maintaining the system by ensuring that
@@ -108,7 +108,7 @@ const ScheduleSettingsPage: React.FC = () => {
                         <p className="text-gray-700">
                           Run{" "}
                           <span className="font-semibold text-green-600">
-                            DSecure File Eraser
+                            D-Secure File Eraser
                           </span>
                           .
                         </p>
@@ -358,7 +358,7 @@ const ScheduleSettingsPage: React.FC = () => {
                       <p className="text-gray-700">
                         Run{" "}
                         <span className="font-semibold text-blue-600">
-                          DSecure File Eraser
+                          D-Secure File Eraser
                         </span>
                         .
                       </p>
@@ -452,7 +452,7 @@ const ScheduleSettingsPage: React.FC = () => {
                 <div className="bg-gray-50 rounded-lg p-6">
                   <p className="text-gray-700 mb-4">
                     <span className="font-semibold text-indigo-600">
-                      DSecure File Eraser
+                      D-Secure File Eraser
                     </span>{" "}
                     allows you to select a theme for your application, you can
                     select between light and dark mode.
@@ -508,7 +508,7 @@ const ScheduleSettingsPage: React.FC = () => {
                       <p className="text-gray-700">
                         Run{" "}
                         <span className="font-semibold text-indigo-600">
-                          DSecure File Eraser
+                          D-Secure File Eraser
                         </span>
                         .
                       </p>

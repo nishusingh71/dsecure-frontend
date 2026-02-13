@@ -127,67 +127,188 @@ const HomePage = memo(function HomePage() {
                 </div>
               </Reveal>
             </div>
+            {/* Right Side - SVG Illustration */}
             <div className="relative lg:order-last">
               <Reveal delayMs={40}>
-                <div className="relative">
-                  <div className="aspect-[16/10] xs:aspect-[16/10] sm:aspect-[16/10] md:aspect-[16/10] lg:aspect-[4/3] xl:aspect-[4/3] xxl:aspect-[4/3] bg-white rounded-xl xs:rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl xl:rounded-2xl xxl:rounded-3xl shadow-lg xs:shadow-xl sm:shadow-2xl md:shadow-2xl lg:shadow-2xl xl:shadow-2xl xxl:shadow-2xl border border-slate-200/60 overflow-hidden relative">
-                    <OptimizedImage
-                      src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-                      alt="Digital data security and secure erasure technology with cybersecurity systems"
-                      className="w-full h-full object-cover"
-                      width={2070}
-                      height={1380}
-                      priority={true}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/50 via-transparent to-emerald-900/30">
-                      <div className="absolute bottom-6 left-6 flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2">
-                        <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
-                        <span className="text-sm text-slate-700 font-medium">
-                          {t('home.secureErasureActive')}
-                        </span>
-                      </div>
-                      <div className="absolute top-6 right-6 bg-emerald-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium">
-                        {t('home.encryptionBadge')}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute -top-4 -right-4 w-20 h-20 bg-white rounded-xl shadow-lg border border-slate-200/60 flex items-center justify-center">
-                    <HoverIcon>
-                      {(filled) => (
-                        <ShieldIcon
-                          className="w-8 h-8 text-emerald-600"
-                          filled={filled}
-                        />
-                      )}
-                    </HoverIcon>
-                  </div>
-                  <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-white rounded-xl shadow-lg border border-slate-200/60 flex items-center justify-center">
-                    <HoverIcon>
-                      {(filled) => (
-                        <LightningIcon
-                          className="w-6 h-6 text-blue-600"
-                          filled={filled}
-                        />
-                      )}
-                    </HoverIcon>
-                  </div>
-                  <div className="absolute -z-10 -right-8 top-1/2 transform -translate-y-1/2 grid grid-cols-1 gap-4 opacity-20">
-                    <div className="w-24 h-24 bg-white rounded-lg shadow-lg overflow-hidden">
-                      <img
-                        src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                        alt="Network Security"
-                        className="w-full h-full object-cover"
-                        loading="lazy"
+                <div className="relative flex items-center justify-center min-h-[380px] lg:min-h-[520px]">
+                  {/* Hero Illustration Container - Professional Design */}
+                  <div className="relative w-[380px] h-[380px] lg:w-[480px] lg:h-[480px]">
+
+                    {/* Outer Glow Ring */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-100/40 via-transparent to-teal-100/40 blur-xl"></div>
+
+                    {/* Outer Dashed Circle */}
+                    <svg className="absolute inset-0 w-full h-full animate-[spin_60s_linear_infinite]" viewBox="0 0 480 480">
+                      <circle
+                        cx="240"
+                        cy="240"
+                        r="225"
+                        fill="none"
+                        stroke="url(#gradientOuter)"
+                        strokeWidth="1.5"
+                        strokeDasharray="12 8"
+                        opacity="0.5"
                       />
-                    </div>
-                    <div className="w-24 h-24 bg-white rounded-lg shadow-lg overflow-hidden">
-                      <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
-                        alt="Data Protection"
-                        className="w-full h-full object-cover"
-                        loading="lazy"
+                      <defs>
+                        <linearGradient id="gradientOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#10b981" />
+                          <stop offset="100%" stopColor="#14b8a6" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+
+                    {/* Inner Dashed Circle */}
+                    <svg className="absolute inset-0 w-full h-full animate-[spin_45s_linear_infinite_reverse]" viewBox="0 0 480 480">
+                      <circle
+                        cx="240"
+                        cy="240"
+                        r="145"
+                        fill="none"
+                        stroke="url(#gradientInner)"
+                        strokeWidth="1.5"
+                        strokeDasharray="8 6"
+                        opacity="0.6"
                       />
+                      <defs>
+                        <linearGradient id="gradientInner" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#14b8a6" />
+                          <stop offset="100%" stopColor="#10b981" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+
+                    {/* Central Element - Shield with Data Protection Theme */}
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                      <div className="relative">
+                        {/* Shield Background */}
+                        <div className="w-[140px] h-[160px] lg:w-[180px] lg:h-[200px] relative">
+                          {/* Shield Shape */}
+                          <svg viewBox="0 0 100 120" className="w-full h-full drop-shadow-xl">
+                            <defs>
+                              <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#10b981" />
+                                <stop offset="50%" stopColor="#059669" />
+                                <stop offset="100%" stopColor="#047857" />
+                              </linearGradient>
+                              <filter id="shieldShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="#10b981" floodOpacity="0.3"/>
+                              </filter>
+                            </defs>
+                            <path 
+                              d="M50 5 L95 25 L95 55 C95 85 75 105 50 115 C25 105 5 85 5 55 L5 25 Z" 
+                              fill="url(#shieldGradient)"
+                              filter="url(#shieldShadow)"
+                            />
+                            {/* Shield Inner Border */}
+                            <path 
+                              d="M50 12 L88 29 L88 55 C88 80 71 97 50 106 C29 97 12 80 12 55 L12 29 Z" 
+                              fill="none"
+                              stroke="white"
+                              strokeWidth="1"
+                              opacity="0.3"
+                            />
+                          </svg>
+                          
+                          {/* Shield Content - Checkmark + Data Icon */}
+                          <div className="absolute inset-0 flex flex-col items-center justify-center pt-2">
+                            {/* Checkmark Circle */}
+                            <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/30">
+                              <svg className="w-7 h-7 lg:w-10 lg:h-10 text-white" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                            {/* Text */}
+                            <span className="text-white text-[10px] lg:text-xs font-bold tracking-wider mt-2 uppercase">Secured</span>
+                          </div>
+                        </div>
+                        
+                        {/* Floating Badge - Removed NIST Certified */}
+                      </div>
                     </div>
+
+                    {/* Product Icons - 6 icons evenly around the Shield */}
+                    
+                    {/* Top - Data Erasure (Main Product) */}
+                    <div className="absolute top-[-8px] left-1/2 -translate-x-1/2">
+                      <div className="group relative">
+                        <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Trash/Delete Icon - Clear Data Erasure Symbol */}
+                          <svg className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] lg:text-[10px] font-semibold text-emerald-700 whitespace-nowrap bg-white/80 px-2 py-0.5 rounded">Data Erasure</span>
+                      </div>
+                    </div>
+
+                    {/* Top Left - Desktop/Laptop */}
+                    <div className="absolute top-[90px] left-[12px] lg:top-[110px] lg:left-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Desktop/Monitor Icon */}
+                          <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <path d="M8 21h8M12 17v4" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">Desktop</span>
+                      </div>
+                    </div>
+
+                    {/* Top Right - Cloud */}
+                    <div className="absolute top-[90px] right-[12px] lg:top-[110px] lg:right-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Cloud Icon */}
+                          <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">Cloud</span>
+                      </div>
+                    </div>
+
+                    {/* Bottom Left - Files/Folders */}
+                    <div className="absolute bottom-[80px] left-[12px] lg:bottom-[95px] lg:left-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Folder Icon */}
+                          <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">Files/Folder</span>
+                      </div>
+                    </div>
+
+                    {/* Bottom Right - HDD/SSD Drives */}
+                    <div className="absolute bottom-[80px] right-[12px] lg:bottom-[95px] lg:right-[15px]">
+                      <div className="group relative">
+                        <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* HDD/Drive Icon - Disk with center */}
+                          <svg className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                            <circle cx="12" cy="12" r="4" />
+                            <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">HDD/SSD</span>
+                      </div>
+                    </div>
+
+                    {/* Bottom - Compliance/Certification */}
+                    <div className="absolute bottom-[5px] left-1/2 -translate-x-1/2">
+                      <div className="group relative">
+                        <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
+                          {/* Shield with Checkmark - Compliance */}
+                          <svg className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] lg:text-[10px] font-semibold text-emerald-700 whitespace-nowrap bg-white/80 px-2 py-0.5 rounded">Compliance</span>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </Reveal>

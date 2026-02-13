@@ -1,4 +1,4 @@
-﻿import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
@@ -70,7 +70,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   // FIXED: Custom License Form Submission Configuration
   const customLicenseFormConfig = {
-    endpoint: "https://formsubmit.co/support@dsecuretech.com", // FIXED: Correct endpoint
+    endpoint: "https://formsubmit.co/support@D-Securetech.com", // FIXED: Correct endpoint
     requiredFields: ["contactName", "email", "numberOfLicenses", "companyName"],
     successMessage:
       "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours with a personalized quote.",
@@ -162,7 +162,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   // FIXED: Special Pricing Form Configuration
   const specialPricingFormConfig = {
-    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com", // FIXED: Correct endpoint
+    endpoint: "https://formsubmit.co/dhruv.rai@D-Securetech.com", // FIXED: Correct endpoint
     requiredFields: ["contactName", "email", "organizationType", "organizationName"],
     successMessage:
       "Thank you! Your special pricing request has been submitted successfully. Our team will contact you within 24 hours with customized pricing for your organization.",
@@ -601,7 +601,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     // File Eraser plan-based subtitle
     let subtitle = `File Eraser Professional - ${selectedLicenses} licenses`;
-    subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? 's' : ''}`;
+    subtitle += ` � ${selectedYears} year${parseInt(selectedYears) > 1 ? 's' : ''}`;
 
     return subtitle;
   };
@@ -619,7 +619,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     let note = `Professional @ $40.00/license/year`;
 
     if (parseInt(selectedYears) > 1) {
-      note += ` × ${selectedYears} years`;
+      note += ` � ${selectedYears} years`;
     }
 
     return note;
@@ -707,20 +707,20 @@ const PricingAndPlanPage: React.FC = memo(() => {
       });
 
       // Debug: Log full response to see structure
-      console.log('📦 API Response:', response);
-      console.log('📦 Response Data:', response.data);
+      console.log('?? API Response:', response);
+      console.log('?? Response Data:', response.data);
 
       // Check for URL in different possible field names
       const checkoutUrl = response.data?.url || response.data?.Url || response.data?.checkoutUrl || response.data?.checkout_url || response.data;
 
       if (!checkoutUrl || typeof checkoutUrl !== 'string') {
-        console.error('❌ No checkout URL in response:', response.data);
+        console.error('? No checkout URL in response:', response.data);
         showToast('Failed to create checkout session. Please try again.', 'error');
         setIsBuyNowLoading(false); // Reset loading on error
         return;
       }
 
-      console.log('🚀 Redirecting to checkout:', checkoutUrl);
+      console.log('?? Redirecting to checkout:', checkoutUrl);
 
       // Redirect to Dodo Payments checkout (loading will stop naturally when page redirects)
       window.location.href = checkoutUrl;
@@ -775,7 +775,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* Header */}
           <div className="text-center mb-12 xs:mb-14 sm:mb-16 md:mb-16">
             <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-4 xs:px-6 sm:px-6 py-2 rounded-full text-xs xs:text-sm sm:text-sm font-semibold mb-4 xs:mb-6 sm:mb-6 shadow-lg">
-              SECURE • COMPLIANT
+              SECURE � COMPLIANT
             </div>
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 xs:mb-6 sm:mb-6 leading-tight px-2">
               Choose Your{" "}

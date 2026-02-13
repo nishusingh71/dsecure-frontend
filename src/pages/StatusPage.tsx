@@ -391,7 +391,7 @@ export default function StatusPage() {
                 <strong className="text-slate-900 light:text-white">
                   Status Updates:
                 </strong>{" "}
-                status@dsecuretech.com
+                status@D-Securetech.com
                 <br />
                 <strong className="text-slate-900 light:text-white">
                   RSS Feed:

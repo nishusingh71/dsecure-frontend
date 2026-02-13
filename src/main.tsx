@@ -1,4 +1,4 @@
-﻿import { ENV } from './config/env';
+import { ENV } from './config/env';
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -11,9 +11,9 @@ import { ToastProvider } from './components/Toast';
 import { preloadCriticalResources } from './utils/performanceOptimizer';
 import './utils/internationalization'; // Initialize i18n
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// 🔇 GLOBAL CONSOLE SUPPRESSOR - Keeps browser console clean
-// ═══════════════════════════════════════════════════════════════════════════════
+// -------------------------------------------------------------------------------
+// ?? GLOBAL CONSOLE SUPPRESSOR - Keeps browser console clean
+// -------------------------------------------------------------------------------
 const ENABLE_CONSOLE = true; // Set to true to enable console output for debugging
 
 if (!ENABLE_CONSOLE) {
@@ -24,7 +24,7 @@ if (!ENABLE_CONSOLE) {
   console.info = noop;
   console.debug = noop;
 }
-// ═══════════════════════════════════════════════════════════════════════════════
+// -------------------------------------------------------------------------------
 
 // Preload critical resources
 preloadCriticalResources();

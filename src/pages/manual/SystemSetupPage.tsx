@@ -7,10 +7,10 @@ const SystemSetupPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Helmet>
-        <title>DSecure System Setup & Configuration - Visual Guide</title>
+        <title>D-Secure System Setup & Configuration - Visual Guide</title>
         <meta 
           name="description" 
-          content="Complete system configuration guide for DSecure with visual examples for disk access, user interface, and settings."
+          content="Complete system configuration guide for D-Secure with visual examples for disk access, user interface, and settings."
         />
       </Helmet>
 
@@ -119,12 +119,12 @@ const SystemSetupPage: React.FC = () => {
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 mb-3">Step 1: Open Full Disk Access Settings</h3>
                       <p className="text-slate-600 mb-4">
-                        Click <strong>Open Full Disk Access</strong> button from the DSecure interface.
+                        Click <strong>Open Full Disk Access</strong> button from the D-Secure interface.
                       </p>
                       <div className="space-y-2">
                         <p className="text-slate-700 font-medium">What you'll see:</p>
                         <ul className="list-disc list-inside text-slate-600 space-y-1">
-                          <li>DSecure main window with access prompt</li>
+                          <li>D-Secure main window with access prompt</li>
                           <li>"Open Full Disk Access" button highlighted</li>
                           <li>System settings will open automatically</li>
                         </ul>
@@ -152,12 +152,12 @@ const SystemSetupPage: React.FC = () => {
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 mb-3">Step 2: System Settings Window</h3>
                       <p className="text-slate-600 mb-4">
-                        <strong>Full Disk Access</strong> window is displayed. Enable access for DSecure application.
+                        <strong>Full Disk Access</strong> window is displayed. Enable access for D-Secure application.
                       </p>
                       <div className="space-y-2">
                         <p className="text-slate-700 font-medium">Actions required:</p>
                         <ol className="list-decimal list-inside text-slate-600 space-y-1">
-                          <li>Locate DSecure in the application list</li>
+                          <li>Locate D-Secure in the application list</li>
                           <li>Click the toggle switch to enable access</li>
                           <li>Enter administrator credentials if prompted</li>
                           <li>Confirm the permission change</li>
@@ -175,7 +175,7 @@ const SystemSetupPage: React.FC = () => {
                         </div>
                         <div className="space-y-2">
                           <div className="flex items-center justify-between p-2 bg-slate-50 rounded">
-                            <span className="text-slate-700 text-sm">DSecure File Eraser</span>
+                            <span className="text-slate-700 text-sm">D-Secure File Eraser</span>
                             <div className="w-8 h-4 bg-emerald-500 rounded-full flex items-center justify-end pr-1">
                               <div className="w-3 h-3 bg-white rounded-full"></div>
                             </div>
@@ -249,7 +249,7 @@ const SystemSetupPage: React.FC = () => {
 
                   <div className="grid lg:grid-cols-2 gap-8 items-center">
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 mb-3">Enable DSecure Access</h3>
+                      <h3 className="text-lg font-bold text-slate-900 mb-3">Enable D-Secure Access</h3>
                       <p className="text-slate-600 mb-4">
                         From the bottom, click the 🔒 lock icon and enter your <strong>administrator password</strong>.
                       </p>
@@ -258,7 +258,7 @@ const SystemSetupPage: React.FC = () => {
                         <ol className="list-decimal list-inside text-slate-600 space-y-1">
                           <li>Click the lock to make changes</li>
                           <li>Enter admin password</li>
-                          <li>Select Full Disk Access → DSecure File Eraser</li>
+                          <li>Select Full Disk Access → D-Secure File Eraser</li>
                           <li>Enable the checkbox</li>
                         </ol>
                       </div>
@@ -275,7 +275,7 @@ const SystemSetupPage: React.FC = () => {
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
                             <input type="checkbox" checked className="rounded" />
-                            <span className="text-slate-700 text-sm">DSecure File Eraser</span>
+                            <span className="text-slate-700 text-sm">D-Secure File Eraser</span>
                           </div>
                         </div>
                         <p className="text-slate-500 text-xs mt-2">Apps have access to all data</p>
@@ -299,13 +299,13 @@ const SystemSetupPage: React.FC = () => {
                 <div className="grid lg:grid-cols-2 gap-8 items-center">
                   <div>
                     <p className="text-slate-600 mb-4">
-                      A dialog box appears on the screen with a message: <strong>"DSecureFileEraser will not have full disk access until it is quit"</strong>. 
+                      A dialog box appears on the screen with a message: <strong>"D-SecureFileEraser will not have full disk access until it is quit"</strong>. 
                       Click <strong>Quit & Reopen</strong>.
                     </p>
                     <div className="space-y-3">
                       <div className="bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded">
                         <p className="text-emerald-800">
-                          <strong>Success!</strong> DSecure now has full system access and is ready to use.
+                          <strong>Success!</strong> D-Secure now has full system access and is ready to use.
                         </p>
                       </div>
                       <div className="space-y-2">
@@ -327,7 +327,7 @@ const SystemSetupPage: React.FC = () => {
                       </div>
                       <h4 className="font-bold text-slate-900 mb-2">Access Notification</h4>
                       <p className="text-slate-600 text-sm mb-4">
-                        DSecure will not have full disk access until it is quit
+                        D-Secure will not have full disk access until it is quit
                       </p>
                       <div className="space-y-2">
                         <button className="w-full bg-emerald-500 text-white py-2 rounded font-medium">
@@ -356,7 +356,7 @@ const SystemSetupPage: React.FC = () => {
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Configuration Complete!</h3>
                 <p className="text-blue-100 mb-6">
-                  DSecure is now fully configured and ready for secure data erasure operations.
+                  D-Secure is now fully configured and ready for secure data erasure operations.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link

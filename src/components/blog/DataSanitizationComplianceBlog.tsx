@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
@@ -17,11 +17,6 @@ const DataSanitizationComplianceBlog: React.FC = () => {
           <p className="text-lg md:text-xl text-slate-700 max-w-2xl mx-auto">
             How to securely erase data while meeting regulatory requirements.
           </p>
-          <img
-            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&h=400&fit=crop&crop=center"
-            alt="Compliance and Data Sanitization - Legal Documents and Technology"
-            className="mx-auto mt-6 rounded-xl shadow-md w-full max-w-4xl object-cover"
-          />
         </Reveal>
       </section>
 
@@ -41,13 +36,6 @@ const DataSanitizationComplianceBlog: React.FC = () => {
                 by allowing devices to be safely reused or recycled.
               </p>
             </div>
-            <div className="mt-6">
-              <img
-                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1000&h=400&fit=crop&crop=center"
-                alt="Data Sanitization Process and Compliance Standards"
-                className="rounded-xl shadow-lg object-cover w-full h-64"
-              />
-            </div>
           </div>
         </Reveal>
       </section>
@@ -63,11 +51,6 @@ const DataSanitizationComplianceBlog: React.FC = () => {
               Implementing proper procedures ensures regulatory compliance while
               protecting sensitive information.
             </p>
-            <img
-              src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759944511/k8ejthnuseeb8flsztls.png"
-              alt="Compliance Documentation and Best Practices"
-              className="mx-auto rounded-xl shadow-lg object-cover w-full"
-            />
           </div>
         </Reveal>
       </section>
@@ -76,3 +59,9 @@ const DataSanitizationComplianceBlog: React.FC = () => {
 };
 
 export default DataSanitizationComplianceBlog;
+
+
+
+
+
+

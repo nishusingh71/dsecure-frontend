@@ -140,7 +140,7 @@ export default function AdminProfileEdit() {
   return (
     <>
       <Helmet>
-        <title>Edit Profile - Admin Dashboard | DSecureTech</title>
+        <title>Edit Profile - Admin Dashboard | D-SecureTech</title>
         <meta name="description" content="Edit admin profile information and settings." />
       </Helmet>
 

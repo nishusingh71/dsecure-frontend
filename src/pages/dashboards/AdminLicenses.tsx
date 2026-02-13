@@ -925,8 +925,18 @@ export default function AdminLicenses() {
                                         <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                                             <button
                                                 onClick={() => handleRevoke([license.license_id])}
-                                                className="text-rose-600 hover:text-rose-900 disabled:opacity-50"
-                                                disabled={license.status?.toLowerCase() === 'revoked'}
+                                                className="text-rose-600 hover:text-rose-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                disabled={
+                                                    license.status?.toLowerCase() === 'revoked' || 
+                                                    license.status?.toLowerCase() === 'expired'
+                                                }
+                                                title={
+                                                    license.status?.toLowerCase() === 'revoked' 
+                                                        ? 'License already revoked' 
+                                                        : license.status?.toLowerCase() === 'expired'
+                                                        ? 'Cannot revoke expired license'
+                                                        : 'Revoke this license'
+                                                }
                                             >
                                                 Revoke
                                             </button>

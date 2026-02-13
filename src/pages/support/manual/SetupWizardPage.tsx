@@ -329,8 +329,8 @@ const SetupWizardPage: React.FC = memo(() => {
                         <div>
                           <h4 className="font-medium text-green-900 mb-2">Contact Support</h4>
                           <ul className="text-sm text-green-800 space-y-1">
-                            <li>• Email: install-support@dsecuretech.com</li>
-                            <li>• Phone: 1-800-DSECURE (24/7)</li>
+                            <li>• Email: install-support@D-Securetech.com</li>
+                            <li>• Phone: 1-800-D-Secure (24/7)</li>
                             <li>• Live Chat: Available on website</li>
                             <li>• Remote Assistance: Available upon request</li>
                           </ul>

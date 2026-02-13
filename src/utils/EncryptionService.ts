@@ -1,5 +1,5 @@
-﻿/**
- * 🔐 AES-256-CBC Decryption Service for .NET 8 Backend
+/**
+ * ?? AES-256-CBC Decryption Service for .NET 8 Backend
  * 
  * This service handles decryption of encrypted API responses from the backend.
  * It strictly matches the .NET backend's encryption implementation.
@@ -176,7 +176,7 @@ class EncryptionServiceClass {
     if (ENV.IS_DEV) {
       const encoder = new TextEncoder();
       const originalBytes = encoder.encode(this.rawKeyString);
-      // console.log('🔐 EncryptionService initialized');
+      // console.log('?? EncryptionService initialized');
       // console.log(`   Original key string length: ${this.rawKeyString.length} chars`);
       // console.log(`   Original key UTF-8 bytes: ${originalBytes.length} bytes`);
       // console.log(`   Processed key (after PadOrTruncate): ${this.secretKey.sigBytes} bytes`);
@@ -206,7 +206,7 @@ class EncryptionServiceClass {
       const encryptedData = CryptoJS.enc.Base64.parse(encryptedBase64);
 
       if (ENV.IS_DEV) {
-        console.log('🔓 Decrypting data...');
+        console.log('?? Decrypting data...');
         console.log(`   Base64 length: ${encryptedBase64.length} chars`);
         console.log(`   Total encrypted bytes: ${encryptedData.sigBytes}`);
       }
@@ -244,7 +244,7 @@ class EncryptionServiceClass {
       if (decryptedSigBytes === 0) {
         // Additional debugging for failed decryption
         if (ENV.IS_DEV) {
-          console.error('❌ Decryption produced empty result');
+          console.error('? Decryption produced empty result');
           console.error('   This usually means key/IV mismatch');
         }
         throw new Error('Decryption produced empty result - key/IV mismatch or corrupted data');
@@ -259,7 +259,7 @@ class EncryptionServiceClass {
       }
 
       if (ENV.IS_DEV) {
-        // console.log('🔓 Decryption successful, now decompressing...');
+        // console.log('?? Decryption successful, now decompressing...');
         // console.log(`   Decrypted bytes: ${decryptedSigBytes}`);
       }
 
@@ -271,13 +271,13 @@ class EncryptionServiceClass {
         try {
           decompressedString = pako.ungzip(decryptedBytes, { to: 'string' });
           if (ENV.IS_DEV) {
-            // console.log('✅ Decompression successful');
+            // console.log('? Decompression successful');
             // console.log(`   Decompressed string length: ${decompressedString.length} chars`);
           }
         } catch (decompressError) {
           // If decompression fails, maybe data wasn't compressed - try as raw UTF-8
           if (ENV.IS_DEV) {
-            // console.log('⚠️ Gzip decompression failed, trying as raw UTF-8...');
+            // console.log('?? Gzip decompression failed, trying as raw UTF-8...');
           }
           decompressedString = decrypted.toString(CryptoJS.enc.Utf8);
 
@@ -286,13 +286,13 @@ class EncryptionServiceClass {
           }
 
           if (ENV.IS_DEV) {
-            // console.log('✅ Raw UTF-8 decoding successful (data was not compressed)');
+            // console.log('? Raw UTF-8 decoding successful (data was not compressed)');
           }
         }
       } else {
         // Data is not compressed, decode as raw UTF-8 directly
         if (ENV.IS_DEV) {
-          // console.log('ℹ️ Data is not compressed (compressed: false), decoding as UTF-8...');
+          // console.log('?? Data is not compressed (compressed: false), decoding as UTF-8...');
         }
         decompressedString = decrypted.toString(CryptoJS.enc.Utf8);
 
@@ -301,7 +301,7 @@ class EncryptionServiceClass {
         }
 
         if (ENV.IS_DEV) {
-          // console.log('✅ UTF-8 decoding successful (no compression)');
+          // console.log('? UTF-8 decoding successful (no compression)');
           // console.log(`   String length: ${decompressedString.length} chars`);
         }
       }
@@ -318,7 +318,7 @@ class EncryptionServiceClass {
         return decompressedString as T;
       }
     } catch (error) {
-      console.error('❌ Decryption failed:', error);
+      console.error('? Decryption failed:', error);
       throw new Error(
         `Decryption failed: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
@@ -339,7 +339,7 @@ class EncryptionServiceClass {
   decryptResponse<T = unknown>(responseData: unknown): T {
     if (this.isEncrypted(responseData)) {
       if (ENV.IS_DEV) {
-        // console.log('🔐 Encrypted response detected, decrypting...');
+        // console.log('?? Encrypted response detected, decrypting...');
         // console.log(`   Compressed: ${responseData.compressed !== false}`);
       }
       // Check if data is compressed (default to true if not specified)

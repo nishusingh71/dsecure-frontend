@@ -13,7 +13,7 @@ const About: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <Building className="w-8 h-8 text-blue-600" />
-            <h1 className="text-4xl font-bold text-gray-900">About DSecureTech</h1>
+            <h1 className="text-4xl font-bold text-gray-900">About D-SecureTech</h1>
           </div>
           <p className="text-xl text-gray-600">
             Global leader in Data Care solutions trusted by enterprises, IT service providers, and individuals worldwide.
@@ -22,9 +22,9 @@ const About: React.FC = () => {
 
         {/* Company Overview */}
         <section className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-8 text-white">
-          <h2 className="text-3xl font-bold mb-4">DSecure Overview</h2>
+          <h2 className="text-3xl font-bold mb-4">D-Secure Overview</h2>
           <p className="text-xl text-blue-100 leading-relaxed">
-            DSecure is a global Data Care organization providing comprehensive solutions for data recovery, email repair & conversion, file and database repair, and secure data erasure. Our proprietary tools are used by enterprises, IT service providers, and individuals in over 190 countries.
+            D-Secure is a global Data Care organization providing comprehensive solutions for data recovery, email repair & conversion, file and database repair, and secure data erasure. Our proprietary tools are used by enterprises, IT service providers, and individuals in over 190 countries.
           </p>
         </section>
 
@@ -82,11 +82,11 @@ const About: React.FC = () => {
               <ul className="space-y-2 text-lg text-gray-700">
                 <li className="flex items-start gap-2">
                   <Zap className="w-5 h-5 text-green-600 mt-1 shrink-0" />
-                  <span><strong>DSecureTech Data Recovery (Windows/Mac):</strong> Comprehensive file recovery from drives, partitions, and storage media</span>
+                  <span><strong>D-SecureTech Data Recovery (Windows/Mac):</strong> Comprehensive file recovery from drives, partitions, and storage media</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Zap className="w-5 h-5 text-green-600 mt-1 shrink-0" />
-                  <span><strong>DSecureTech Photo Recovery:</strong> Specialized recovery for photos, videos, and multimedia files</span>
+                  <span><strong>D-SecureTech Photo Recovery:</strong> Specialized recovery for photos, videos, and multimedia files</span>
                 </li>
               </ul>
             </div>
@@ -148,11 +148,11 @@ const About: React.FC = () => {
           </div>
         </section>
 
-        {/* Why Choose DSecureTech */}
+        {/* Why Choose D-SecureTech */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
             <Users className="w-7 h-7 text-indigo-600" />
-            Why Choose DSecureTech
+            Why Choose D-SecureTech
           </h2>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -208,11 +208,11 @@ const About: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-white/10 rounded-lg p-4">
               <h3 className="font-semibold mb-2">Technical Support</h3>
-              <p className="text-indigo-100">techsupport@dsecuretech.com</p>
+              <p className="text-indigo-100">techsupport@D-Securetech.com</p>
             </div>
             <div className="bg-white/10 rounded-lg p-4">
               <h3 className="font-semibold mb-2">Sales Inquiries</h3>
-              <p className="text-indigo-100">sales@dsecuretech.com</p>
+              <p className="text-indigo-100">sales@D-Securetech.com</p>
             </div>
           </div>
 

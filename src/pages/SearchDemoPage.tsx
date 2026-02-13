@@ -78,7 +78,7 @@ export default function SearchDemoPage() {
     <>
       <SEOHead
         seo={{
-          title: "Advanced Search Demo - DSecure",
+          title: "Advanced Search Demo - D-Secure",
           description: "Experience our advanced search functionality with autocomplete, suggestions, and smart filtering",
           keywords: "search, demo, advanced search, autocomplete",
           canonicalUrl: "/search-demo"

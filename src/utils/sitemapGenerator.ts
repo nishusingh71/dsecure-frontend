@@ -1,4 +1,4 @@
-// Sitemap Generator Utility for DSecure
+// Sitemap Generator Utility for D-Secure
 // Automatically generates sitemap.xml for better SEO and search engine indexing
 
 export interface SitemapUrl {

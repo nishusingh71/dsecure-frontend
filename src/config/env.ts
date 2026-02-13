@@ -46,7 +46,7 @@ export const ENV = {
     CLARITY_ID: validateStr(import.meta.env.VITE_CLARITY_ID, 'VITE_CLARITY_ID', false, 'tkbibktdah'),
 
     // Third Party
-    CLOUDINARY_CLOUD_NAME: validateStr(import.meta.env.VITE_CLOUDINARY_CLOUD_NAME, 'VITE_CLOUDINARY_CLOUD_NAME', false, 'dsecure-tech'),
+    CLOUDINARY_CLOUD_NAME: validateStr(import.meta.env.VITE_CLOUDINARY_CLOUD_NAME, 'VITE_CLOUDINARY_CLOUD_NAME', false, 'D-Secure-tech'),
     RES_KEY: validateStr(import.meta.env.VITE_RES_KEY, 'VITE_RES_KEY', false, '2b8A1Pv0ykhppFD28MV6ResponseKey!'),
     REQ_KEY: validateStr(import.meta.env.VITE_REQ_KEY, 'VITE_REQ_KEY', false, 'YourEncryptionKey32CharactersLong!'),
     ENC_IV: validateStr(import.meta.env.VITE_ENC_IV, 'VITE_ENC_IV', false, '1234567890123456'),
