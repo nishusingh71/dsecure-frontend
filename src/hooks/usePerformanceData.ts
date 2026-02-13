@@ -7,6 +7,9 @@ export interface PerformanceData {
   monthlyErasures: { month: string; count: number }[]
   avgDuration: { month: string; duration: number }[]
   throughput: { month: string; count: number }[]
+  successRate: string
+  successCount: number
+  failureCount: number
 }
 
 export const performanceKeys = {
@@ -97,10 +100,29 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
           count: data.erasures + data.activeMachines.size
         })).sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime())
 
+        // Calculate success rate stats
+        const successCount = auditReports.filter(r => 
+          r.status?.toLowerCase() === 'success' || 
+          r.status?.toLowerCase() === 'certified'
+        ).length
+        
+        const failureCount = auditReports.filter(r => 
+          r.status?.toLowerCase() === 'failed' || 
+          r.status?.toLowerCase() === 'failed verification'
+        ).length
+        
+        const totalOps = auditReports.length
+        const successRate = totalOps > 0 
+          ? ((successCount / totalOps) * 100).toFixed(1) + '%' 
+          : '0%'
+
         const result = {
           monthlyErasures,
           avgDuration,
-          throughput
+          throughput,
+          successRate,
+          successCount,
+          failureCount
         }
 
         // console.log('? Performance metrics calculated successfully:', {
@@ -120,7 +142,10 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
         return {
           monthlyErasures: [],
           avgDuration: [],
-          throughput: []
+          throughput: [],
+          successRate: '0%',
+          successCount: 0,
+          failureCount: 0
         }
       }
     },

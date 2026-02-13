@@ -81,7 +81,7 @@ export default function AdminReports() {
         JSON.stringify({
           data,
           timestamp: Date.now(),
-        })
+        }),
       );
       // console.log(`💾 Cached data for ${key}`);
     } catch (e) {
@@ -91,7 +91,7 @@ export default function AdminReports() {
 
   // ✅ Date Helper Functions
   const formatDateToYYYYMMDD = (date: Date): string => {
-    return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD format
+    return date.toISOString().split("T")[0]; // Returns YYYY-MM-DD format
   };
 
   const isValidDateFormat = (dateString: string): boolean => {
@@ -106,7 +106,7 @@ export default function AdminReports() {
     label,
     value,
     onChange,
-    placeholder = "YYYY-MM-DD"
+    placeholder = "YYYY-MM-DD",
   }: {
     label: string;
     value: string;
@@ -118,7 +118,7 @@ export default function AdminReports() {
 
     const formatInputValue = (val: string) => {
       // Remove non-digits
-      const digitsOnly = val.replace(/\D/g, '');
+      const digitsOnly = val.replace(/\D/g, "");
 
       // Format as YYYY-MM-DD
       if (digitsOnly.length >= 8) {
@@ -138,14 +138,15 @@ export default function AdminReports() {
       setDisplayValue(formatted);
 
       // Only call onChange if we have a complete date or empty
-      if (formatted === '' || formatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
+      if (formatted === "" || formatted.match(/^\d{4}-\d{2}-\d{2}$/)) {
         onChange(formatted);
       }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       // Allow backspace, delete, tab, escape, enter
-      if ([8, 9, 27, 13, 46].includes(e.keyCode) ||
+      if (
+        [8, 9, 27, 13, 46].includes(e.keyCode) ||
         // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
         (e.keyCode === 65 && e.ctrlKey) ||
         (e.keyCode === 67 && e.ctrlKey) ||
@@ -154,7 +155,8 @@ export default function AdminReports() {
         // Allow numbers and dash
         (e.keyCode >= 48 && e.keyCode <= 57) || // 0-9
         (e.keyCode >= 96 && e.keyCode <= 105) || // numpad 0-9
-        e.keyCode === 189 || e.keyCode === 109 // dash
+        e.keyCode === 189 ||
+        e.keyCode === 109 // dash
       ) {
         return;
       }
@@ -207,7 +209,9 @@ export default function AdminReports() {
     }
 
     const jwtUser = authService.getUserFromToken();
-    return storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || "";
+    return (
+      storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || ""
+    );
   };
 
   const currentUserEmail = getUserEmail();
@@ -215,47 +219,71 @@ export default function AdminReports() {
 
   // ✅ RBAC: Role detection functions
   const getUserRole = (): string => {
-    const storedUser = localStorage.getItem('user_data')
-    const authUser = localStorage.getItem('authUser')
-    let storedUserData = null
-    
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
+    let storedUserData = null;
+
     if (storedUser) {
-      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {}
     }
     if (!storedUserData && authUser) {
-      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {}
     }
-    
-    return storedUserData?.userRole || storedUserData?.role || storedUserData?.user_role || 
-           user?.role || 'user'
-  }
+
+    return (
+      storedUserData?.userRole ||
+      storedUserData?.role ||
+      storedUserData?.user_role ||
+      user?.role ||
+      "user"
+    );
+  };
 
   const getUserGroupId = (): string | null => {
-    const storedUser = localStorage.getItem('user_data')
-    const authUser = localStorage.getItem('authUser')
-    let storedUserData = null
-    
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
+    let storedUserData = null;
+
     if (storedUser) {
-      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {}
     }
     if (!storedUserData && authUser) {
-      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {}
     }
-    
-    return storedUserData?.user_group || storedUserData?.groupId || storedUserData?.group_id || null
-  }
+
+    return (
+      storedUserData?.user_group ||
+      storedUserData?.groupId ||
+      storedUserData?.group_id ||
+      null
+    );
+  };
 
   // ✅ RBAC: Determine user's role and capabilities
-  const currentUserRole = getUserRole().toLowerCase()
-  const currentUserGroupId = getUserGroupId()
-  const isSuperAdmin = currentUserRole === 'superadmin'
-  const isGroupAdmin = currentUserRole === 'admin' || currentUserRole === 'administrator' || currentUserRole === 'groupadmin'
-  const isSubUser = currentUserRole === 'user'
+  const currentUserRole = getUserRole().toLowerCase();
+  const currentUserGroupId = getUserGroupId();
+  const isSuperAdmin = currentUserRole === "superadmin";
+  const isGroupAdmin =
+    currentUserRole === "admin" ||
+    currentUserRole === "administrator" ||
+    currentUserRole === "groupadmin";
+  const isSubUser = currentUserRole === "user";
 
   // console.log('🔐 RBAC Info (AdminReports):', { role: currentUserRole, groupId: currentUserGroupId, email: currentUserEmail })
 
   // ✅ Fetch subusers for filter dropdown
-  const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
+  const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(
+    currentUserEmail,
+    !!currentUserEmail && !isDemo,
+  );
 
   // ✅ Fetch groups for filter dropdown - using same endpoint as AdminGroups
   const [groupsData, setGroupsData] = useState<any[]>([]);
@@ -266,9 +294,9 @@ export default function AdminReports() {
     const fetchGroupsForFilter = async () => {
       if (isDemo) {
         setGroupsData([
-          { groupId: 1, groupName: 'Engineering Team' },
-          { groupId: 2, groupName: 'Marketing Team' },
-          { groupId: 3, groupName: 'Sales Team' }
+          { groupId: 1, groupName: "Engineering Team" },
+          { groupId: 2, groupName: "Marketing Team" },
+          { groupId: 3, groupName: "Sales Team" },
         ]);
         return;
       }
@@ -276,12 +304,12 @@ export default function AdminReports() {
       try {
         setGroupsLoading(true);
         const response = await apiClient.getGroupsWithUsers();
-        
+
         if (response.success && response.data?.groups?.data) {
           setGroupsData(response.data.groups.data);
         }
       } catch (error) {
-        console.error('Error fetching groups for filter:', error);
+        console.error("Error fetching groups for filter:", error);
       } finally {
         setGroupsLoading(false);
       }
@@ -293,8 +321,11 @@ export default function AdminReports() {
   // ✅ Fetch user machines to get MAC addresses for filtering
   // This includes machines transferred to this user via AdminMachines transfer button
   // When a machine is transferred, all reports with matching MAC address become visible to new owner
-  const { data: userMachines = [] } = useUserMachines(currentUserEmail, !!currentUserEmail && !isDemo);
-  
+  const { data: userMachines = [] } = useUserMachines(
+    currentUserEmail,
+    !!currentUserEmail && !isDemo,
+  );
+
   // Extract MAC addresses from user's machines (normalized and trimmed)
   // These MAC addresses will be used to fetch and filter reports
   const userMacAddresses = useMemo(() => {
@@ -306,21 +337,19 @@ export default function AdminReports() {
   // console.log('🔍 User MAC Addresses for filtering:', userMacAddresses);
 
   const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(
-    () => getCachedData("reports") || []
+    () => getCachedData("reports") || [],
   );
   const [loading, setLoading] = useState(true);
   const [selectedReportIds, setSelectedReportIds] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [pageSize, setPageSize] = useState(5); // Default 10 rows per page
   const pageSizeOptions = [5, 10, 25, 50, 100, 250];
 
   // Generate PDF Modal State
   const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const [
-    selectedReport,
-    setSelectedReport,
-  ] = useState<ExtendedAdminReport | null>(null);
+  const [selectedReport, setSelectedReport] =
+    useState<ExtendedAdminReport | null>(null);
 
   // Bulk Settings Modal State
   const [showBulkSettingsModal, setShowBulkSettingsModal] = useState(false);
@@ -328,9 +357,8 @@ export default function AdminReports() {
 
   // Scheduler Modal State
   const [showSchedulerModal, setShowSchedulerModal] = useState(false);
-  const [showScheduledReportsModal, setShowScheduledReportsModal] = useState(
-    false
-  );
+  const [showScheduledReportsModal, setShowScheduledReportsModal] =
+    useState(false);
   const [scheduledReports, setScheduledReports] = useState<any[]>([]);
   const [loadingScheduledReports, setLoadingScheduledReports] = useState(false);
   const [schedulerData, setSchedulerData] = useState({
@@ -353,16 +381,16 @@ export default function AdminReports() {
     technicianSignature: string | null;
     validatorSignature: string | null;
   }>(() => {
-    console.log('🔵 Initializing imageBase64 state...');
+    console.log("🔵 Initializing imageBase64 state...");
     try {
       // First check the unified cache
       const cachedSettings = localStorage.getItem("pdfExportSettingsCache");
-      console.log('🔵 Cache found:', !!cachedSettings);
+      console.log("🔵 Cache found:", !!cachedSettings);
       if (cachedSettings) {
         const parsed = JSON.parse(cachedSettings);
-        console.log('🔵 Parsed cache:', { 
+        console.log("🔵 Parsed cache:", {
           hasImages: !!parsed.images,
-          imageKeys: parsed.images ? Object.keys(parsed.images) : []
+          imageKeys: parsed.images ? Object.keys(parsed.images) : [],
         });
         if (parsed.images) {
           const result = {
@@ -372,12 +400,16 @@ export default function AdminReports() {
             technicianSignature: parsed.images.technicianSignature || null,
             validatorSignature: parsed.images.validatorSignature || null,
           };
-          console.log('🖼️ Initial imageBase64 from cache:', {
-            headerLeftLogo: result.headerLeftLogo ? '✅ loaded' : '❌ null',
-            headerRightLogo: result.headerRightLogo ? '✅ loaded' : '❌ null',
-            watermarkImage: result.watermarkImage ? '✅ loaded' : '❌ null',
-            technicianSignature: result.technicianSignature ? '✅ loaded' : '❌ null',
-            validatorSignature: result.validatorSignature ? '✅ loaded' : '❌ null',
+          console.log("🖼️ Initial imageBase64 from cache:", {
+            headerLeftLogo: result.headerLeftLogo ? "✅ loaded" : "❌ null",
+            headerRightLogo: result.headerRightLogo ? "✅ loaded" : "❌ null",
+            watermarkImage: result.watermarkImage ? "✅ loaded" : "❌ null",
+            technicianSignature: result.technicianSignature
+              ? "✅ loaded"
+              : "❌ null",
+            validatorSignature: result.validatorSignature
+              ? "✅ loaded"
+              : "❌ null",
           });
           return result;
         }
@@ -385,13 +417,15 @@ export default function AdminReports() {
       // Fallback to old key for backwards compatibility
       const saved = localStorage.getItem("pdfImageSettings");
       if (saved) {
-        console.log('🖼️ Initial imageBase64 loaded from pdfImageSettings (legacy)');
+        console.log(
+          "🖼️ Initial imageBase64 loaded from pdfImageSettings (legacy)",
+        );
         return JSON.parse(saved);
       }
     } catch (e) {
       console.error("❌ Failed to load image settings from localStorage:", e);
     }
-    console.log('🔵 No cached images found, using defaults');
+    console.log("🔵 No cached images found, using defaults");
     return {
       headerLeftLogo: null,
       headerRightLogo: null,
@@ -435,49 +469,62 @@ export default function AdminReports() {
   const [pdfSettingsLoaded, setPdfSettingsLoaded] = useState(false);
 
   // Cache key for PDF settings
-  const PDF_SETTINGS_CACHE_KEY = 'pdfExportSettingsCache';
+  const PDF_SETTINGS_CACHE_KEY = "pdfExportSettingsCache";
 
   // Load saved PDF settings - first from cache, then from API if needed
   React.useEffect(() => {
-    console.log('🟢 PDF Settings useEffect triggered');
+    console.log("🟢 PDF Settings useEffect triggered");
     let isMounted = true;
 
     const loadSavedSettings = async () => {
       if (!isMounted) return;
-      
+
       setPdfSettingsLoading(true);
-      
+
       try {
         // Step 1: Check localStorage cache first
         const cachedSettings = localStorage.getItem(PDF_SETTINGS_CACHE_KEY);
         if (cachedSettings) {
           try {
             const parsed = JSON.parse(cachedSettings);
-            console.log('✅ Using cached PDF settings from localStorage:', parsed);
-            
+            console.log(
+              "✅ Using cached PDF settings from localStorage:",
+              parsed,
+            );
+
             // Apply cached settings to form
             setPdfFormData({
               reportTitle: parsed.reportTitle || defaultPdfSettings.reportTitle,
               headerText: parsed.headerText || defaultPdfSettings.headerText,
-              technicianName: parsed.technicianName || '',
-              technicianDept: parsed.technicianDept || '',
-              validatorName: parsed.validatorName || '',
-              validatorDept: parsed.validatorDept || '',
+              technicianName: parsed.technicianName || "",
+              technicianDept: parsed.technicianDept || "",
+              validatorName: parsed.validatorName || "",
+              validatorDept: parsed.validatorDept || "",
               headerLeftLogo: null,
               headerRightLogo: null,
               watermarkImage: null,
               technicianSignature: null,
               validatorSignature: null,
             });
-            
+
             // Apply cached images
             if (parsed.images) {
-              console.log('🖼️ Applying cached images:', {
-                headerLeftLogo: parsed.images.headerLeftLogo ? '✅ exists' : '❌ null',
-                headerRightLogo: parsed.images.headerRightLogo ? '✅ exists' : '❌ null',
-                watermarkImage: parsed.images.watermarkImage ? '✅ exists' : '❌ null',
-                technicianSignature: parsed.images.technicianSignature ? '✅ exists' : '❌ null',
-                validatorSignature: parsed.images.validatorSignature ? '✅ exists' : '❌ null',
+              console.log("🖼️ Applying cached images:", {
+                headerLeftLogo: parsed.images.headerLeftLogo
+                  ? "✅ exists"
+                  : "❌ null",
+                headerRightLogo: parsed.images.headerRightLogo
+                  ? "✅ exists"
+                  : "❌ null",
+                watermarkImage: parsed.images.watermarkImage
+                  ? "✅ exists"
+                  : "❌ null",
+                technicianSignature: parsed.images.technicianSignature
+                  ? "✅ exists"
+                  : "❌ null",
+                validatorSignature: parsed.images.validatorSignature
+                  ? "✅ exists"
+                  : "❌ null",
               });
               setImageBase64({
                 headerLeftLogo: parsed.images.headerLeftLogo || null,
@@ -487,75 +534,115 @@ export default function AdminReports() {
                 validatorSignature: parsed.images.validatorSignature || null,
               });
             } else {
-              console.log('⚠️ No images found in cache');
+              console.log("⚠️ No images found in cache");
             }
-            
+
             setPdfSettingsLoaded(true);
             setPdfSettingsLoading(false);
-            console.log('✅ PDF settings loaded from cache successfully');
+            console.log("✅ PDF settings loaded from cache successfully");
             return; // Don't make API call if cache exists
           } catch (e) {
-            console.warn('⚠️ Failed to parse cached settings, will fetch from API');
+            console.warn(
+              "⚠️ Failed to parse cached settings, will fetch from API",
+            );
             localStorage.removeItem(PDF_SETTINGS_CACHE_KEY);
           }
         }
 
         // Step 2: No cache - fetch from API
-        console.log('🔵 No cache found, fetching from API...');
-        
+        console.log("🔵 No cache found, fetching from API...");
+
         // Wait for token to be available (with retry)
         let token = authService.getAccessToken();
         let retryCount = 0;
         const maxRetries = 5;
         const retryDelay = 500;
-        
+
         while (!token && retryCount < maxRetries) {
-          console.log(`🔄 Token not available, retry ${retryCount + 1}/${maxRetries}...`);
-          await new Promise(resolve => setTimeout(resolve, retryDelay));
+          console.log(
+            `🔄 Token not available, retry ${retryCount + 1}/${maxRetries}...`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, retryDelay));
           token = authService.getAccessToken();
           retryCount++;
         }
 
         if (!token) {
-          console.warn('⚠️ No auth token available, skipping settings fetch');
+          console.warn("⚠️ No auth token available, skipping settings fetch");
           if (isMounted) setPdfSettingsLoading(false);
           return;
         }
 
         const API_BASE = ENV.API_BASE_URL;
-        const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/export-settings`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${API_BASE}/api/EnhancedAuditReports/export-settings`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
           },
-        });
+        );
 
         if (!isMounted) return;
 
         if (response.ok) {
           const responseData = await response.json();
-          console.log('✅ Loaded PDF settings from server:', responseData);
+          console.log("✅ Loaded PDF settings from server:", responseData);
 
           const savedSettings = responseData.data || responseData;
           const hasSettings = responseData.hasSettings === true;
 
           if (hasSettings && savedSettings) {
             const formSettings = {
-              reportTitle: savedSettings.reportTitle || savedSettings.ReportTitle || defaultPdfSettings.reportTitle,
-              headerText: savedSettings.headerText || savedSettings.HeaderText || defaultPdfSettings.headerText,
-              technicianName: savedSettings.technicianName || savedSettings.TechnicianName || '',
-              technicianDept: savedSettings.technicianDept || savedSettings.TechnicianDept || '',
-              validatorName: savedSettings.validatorName || savedSettings.ValidatorName || '',
-              validatorDept: savedSettings.validatorDept || savedSettings.ValidatorDept || '',
+              reportTitle:
+                savedSettings.reportTitle ||
+                savedSettings.ReportTitle ||
+                defaultPdfSettings.reportTitle,
+              headerText:
+                savedSettings.headerText ||
+                savedSettings.HeaderText ||
+                defaultPdfSettings.headerText,
+              technicianName:
+                savedSettings.technicianName ||
+                savedSettings.TechnicianName ||
+                "",
+              technicianDept:
+                savedSettings.technicianDept ||
+                savedSettings.TechnicianDept ||
+                "",
+              validatorName:
+                savedSettings.validatorName ||
+                savedSettings.ValidatorName ||
+                "",
+              validatorDept:
+                savedSettings.validatorDept ||
+                savedSettings.ValidatorDept ||
+                "",
             };
-            
+
             const imageSettings = {
-              headerLeftLogo: savedSettings.headerLeftLogoBase64 || savedSettings.HeaderLeftLogoBase64 || null,
-              headerRightLogo: savedSettings.headerRightLogoBase64 || savedSettings.HeaderRightLogoBase64 || null,
-              watermarkImage: savedSettings.watermarkImageBase64 || savedSettings.WatermarkImageBase64 || null,
-              technicianSignature: savedSettings.technicianSignatureBase64 || savedSettings.TechnicianSignatureBase64 || null,
-              validatorSignature: savedSettings.validatorSignatureBase64 || savedSettings.ValidatorSignatureBase64 || null,
+              headerLeftLogo:
+                savedSettings.headerLeftLogoBase64 ||
+                savedSettings.HeaderLeftLogoBase64 ||
+                null,
+              headerRightLogo:
+                savedSettings.headerRightLogoBase64 ||
+                savedSettings.HeaderRightLogoBase64 ||
+                null,
+              watermarkImage:
+                savedSettings.watermarkImageBase64 ||
+                savedSettings.WatermarkImageBase64 ||
+                null,
+              technicianSignature:
+                savedSettings.technicianSignatureBase64 ||
+                savedSettings.TechnicianSignatureBase64 ||
+                null,
+              validatorSignature:
+                savedSettings.validatorSignatureBase64 ||
+                savedSettings.ValidatorSignatureBase64 ||
+                null,
             };
 
             // Apply to state
@@ -568,27 +655,35 @@ export default function AdminReports() {
                 technicianSignature: null,
                 validatorSignature: null,
               });
-              
+
               setImageBase64(imageSettings);
               setPdfSettingsLoaded(true);
-              
+
               // Save to cache for future use
               const cacheData = {
                 ...formSettings,
                 images: imageSettings,
                 cachedAt: Date.now(),
               };
-              localStorage.setItem(PDF_SETTINGS_CACHE_KEY, JSON.stringify(cacheData));
-              console.log('✅ PDF settings cached to localStorage');
+              localStorage.setItem(
+                PDF_SETTINGS_CACHE_KEY,
+                JSON.stringify(cacheData),
+              );
+              console.log("✅ PDF settings cached to localStorage");
             }
           } else {
-            console.log('ℹ️ No saved settings found on server - using defaults');
+            console.log(
+              "ℹ️ No saved settings found on server - using defaults",
+            );
           }
         } else {
-          console.warn('⚠️ Failed to load settings from server:', response.status);
+          console.warn(
+            "⚠️ Failed to load settings from server:",
+            response.status,
+          );
         }
       } catch (error) {
-        console.warn('⚠️ Could not load PDF settings:', error);
+        console.warn("⚠️ Could not load PDF settings:", error);
       } finally {
         if (isMounted) setPdfSettingsLoading(false);
       }
@@ -601,7 +696,6 @@ export default function AdminReports() {
     };
   }, []);
 
-
   // Save PDF settings to API using FormData (server expects multipart/form-data)
   const savePdfSettingsToServer = useCallback(async (): Promise<boolean> => {
     try {
@@ -609,45 +703,54 @@ export default function AdminReports() {
 
       // Build FormData for server
       const formData = new FormData();
-      formData.append('reportTitle', pdfFormData.reportTitle);
-      formData.append('headerText', pdfFormData.headerText);
-      formData.append('technicianName', pdfFormData.technicianName);
-      formData.append('technicianDept', pdfFormData.technicianDept);
-      formData.append('validatorName', pdfFormData.validatorName);
-      formData.append('validatorDept', pdfFormData.validatorDept);
-      
+      formData.append("reportTitle", pdfFormData.reportTitle);
+      formData.append("headerText", pdfFormData.headerText);
+      formData.append("technicianName", pdfFormData.technicianName);
+      formData.append("technicianDept", pdfFormData.technicianDept);
+      formData.append("validatorName", pdfFormData.validatorName);
+      formData.append("validatorDept", pdfFormData.validatorDept);
+
       // Include base64 images if available
       if (imageBase64.headerLeftLogo) {
-        formData.append('headerLeftLogoBase64', imageBase64.headerLeftLogo);
+        formData.append("headerLeftLogoBase64", imageBase64.headerLeftLogo);
       }
       if (imageBase64.headerRightLogo) {
-        formData.append('headerRightLogoBase64', imageBase64.headerRightLogo);
+        formData.append("headerRightLogoBase64", imageBase64.headerRightLogo);
       }
       if (imageBase64.watermarkImage) {
-        formData.append('watermarkImageBase64', imageBase64.watermarkImage);
+        formData.append("watermarkImageBase64", imageBase64.watermarkImage);
       }
       if (imageBase64.technicianSignature) {
-        formData.append('technicianSignatureBase64', imageBase64.technicianSignature);
+        formData.append(
+          "technicianSignatureBase64",
+          imageBase64.technicianSignature,
+        );
       }
       if (imageBase64.validatorSignature) {
-        formData.append('validatorSignatureBase64', imageBase64.validatorSignature);
+        formData.append(
+          "validatorSignatureBase64",
+          imageBase64.validatorSignature,
+        );
       }
 
-      console.log('🔵 Saving PDF settings to server with FormData');
+      console.log("🔵 Saving PDF settings to server with FormData");
 
-      const response = await fetch(`${API_BASE}/api/EnhancedAuditReports/export-settings`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authService.getAccessToken()}`,
-          // Don't set Content-Type - browser will set it automatically with boundary for FormData
+      const response = await fetch(
+        `${API_BASE}/api/EnhancedAuditReports/export-settings`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${authService.getAccessToken()}`,
+            // Don't set Content-Type - browser will set it automatically with boundary for FormData
+          },
+          body: formData,
         },
-        body: formData,
-      });
+      );
 
       if (response.ok) {
-        console.log('✅ PDF settings saved to server successfully');
+        console.log("✅ PDF settings saved to server successfully");
         setPdfSettingsLoaded(true);
-        
+
         // Update localStorage cache with new settings
         try {
           const cacheData = {
@@ -666,24 +769,36 @@ export default function AdminReports() {
             },
             cachedAt: Date.now(),
           };
-          console.log('🖼️ Saving images to cache:', {
-            headerLeftLogo: imageBase64.headerLeftLogo ? `✅ exists (${(imageBase64.headerLeftLogo.length / 1024).toFixed(1)}KB)` : '❌ null',
-            headerRightLogo: imageBase64.headerRightLogo ? `✅ exists (${(imageBase64.headerRightLogo.length / 1024).toFixed(1)}KB)` : '❌ null',
-            watermarkImage: imageBase64.watermarkImage ? `✅ exists (${(imageBase64.watermarkImage.length / 1024).toFixed(1)}KB)` : '❌ null',
-            technicianSignature: imageBase64.technicianSignature ? `✅ exists (${(imageBase64.technicianSignature.length / 1024).toFixed(1)}KB)` : '❌ null',
-            validatorSignature: imageBase64.validatorSignature ? `✅ exists (${(imageBase64.validatorSignature.length / 1024).toFixed(1)}KB)` : '❌ null',
+          console.log("🖼️ Saving images to cache:", {
+            headerLeftLogo: imageBase64.headerLeftLogo
+              ? `✅ exists (${(imageBase64.headerLeftLogo.length / 1024).toFixed(1)}KB)`
+              : "❌ null",
+            headerRightLogo: imageBase64.headerRightLogo
+              ? `✅ exists (${(imageBase64.headerRightLogo.length / 1024).toFixed(1)}KB)`
+              : "❌ null",
+            watermarkImage: imageBase64.watermarkImage
+              ? `✅ exists (${(imageBase64.watermarkImage.length / 1024).toFixed(1)}KB)`
+              : "❌ null",
+            technicianSignature: imageBase64.technicianSignature
+              ? `✅ exists (${(imageBase64.technicianSignature.length / 1024).toFixed(1)}KB)`
+              : "❌ null",
+            validatorSignature: imageBase64.validatorSignature
+              ? `✅ exists (${(imageBase64.validatorSignature.length / 1024).toFixed(1)}KB)`
+              : "❌ null",
           });
-          
+
           const cacheString = JSON.stringify(cacheData);
-          console.log(`📦 Total cache size: ${(cacheString.length / 1024).toFixed(1)}KB`);
-          
+          console.log(
+            `📦 Total cache size: ${(cacheString.length / 1024).toFixed(1)}KB`,
+          );
+
           localStorage.setItem(PDF_SETTINGS_CACHE_KEY, cacheString);
-          
+
           // Verify cache was saved
           const verifyCache = localStorage.getItem(PDF_SETTINGS_CACHE_KEY);
           if (verifyCache) {
             const verified = JSON.parse(verifyCache);
-            console.log('✅ Cache verified - images present:', {
+            console.log("✅ Cache verified - images present:", {
               headerLeftLogo: !!verified.images?.headerLeftLogo,
               headerRightLogo: !!verified.images?.headerRightLogo,
               watermarkImage: !!verified.images?.watermarkImage,
@@ -691,14 +806,18 @@ export default function AdminReports() {
               validatorSignature: !!verified.images?.validatorSignature,
             });
           } else {
-            console.error('❌ Cache verification failed - cache not found after save!');
+            console.error(
+              "❌ Cache verification failed - cache not found after save!",
+            );
           }
         } catch (e) {
-          console.error('❌ Failed to update cache:', e);
+          console.error("❌ Failed to update cache:", e);
           // If localStorage is full, try to clear old data and retry
-          if (e instanceof DOMException && e.name === 'QuotaExceededError') {
-            console.warn('⚠️ localStorage quota exceeded, clearing old caches...');
-            localStorage.removeItem('pdfImageSettings'); // Remove old key
+          if (e instanceof DOMException && e.name === "QuotaExceededError") {
+            console.warn(
+              "⚠️ localStorage quota exceeded, clearing old caches...",
+            );
+            localStorage.removeItem("pdfImageSettings"); // Remove old key
             try {
               const cacheData = {
                 reportTitle: pdfFormData.reportTitle,
@@ -716,29 +835,47 @@ export default function AdminReports() {
                 },
                 cachedAt: Date.now(),
               };
-              localStorage.setItem(PDF_SETTINGS_CACHE_KEY, JSON.stringify(cacheData));
-              console.log('✅ Cache saved after clearing old data');
+              localStorage.setItem(
+                PDF_SETTINGS_CACHE_KEY,
+                JSON.stringify(cacheData),
+              );
+              console.log("✅ Cache saved after clearing old data");
             } catch (retryError) {
-              console.error('❌ Still failed after clearing old data:', retryError);
+              console.error(
+                "❌ Still failed after clearing old data:",
+                retryError,
+              );
             }
           }
         }
         return true;
       } else {
         const errorText = await response.text();
-        console.warn('⚠️ Failed to save PDF settings:', response.status, errorText);
+        console.warn(
+          "⚠️ Failed to save PDF settings:",
+          response.status,
+          errorText,
+        );
         return false;
       }
     } catch (e) {
       console.warn("❌ Failed to save PDF settings:", e);
       return false;
     }
-  }, [pdfFormData.reportTitle, pdfFormData.headerText, pdfFormData.technicianName, pdfFormData.technicianDept, pdfFormData.validatorName, pdfFormData.validatorDept, imageBase64]);
+  }, [
+    pdfFormData.reportTitle,
+    pdfFormData.headerText,
+    pdfFormData.technicianName,
+    pdfFormData.technicianDept,
+    pdfFormData.validatorName,
+    pdfFormData.validatorDept,
+    imageBase64,
+  ]);
 
   // Handle image file upload - also convert to base64 for persistence
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
-    fieldName: string
+    fieldName: string,
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -751,7 +888,10 @@ export default function AdminReports() {
 
     // Validate file size (max 2MB for localStorage limits)
     if (file.size > 2 * 1024 * 1024) {
-      showError("File Too Large", "Image size should be less than 2MB for persistence");
+      showError(
+        "File Too Large",
+        "Image size should be less than 2MB for persistence",
+      );
       return;
     }
 
@@ -762,37 +902,44 @@ export default function AdminReports() {
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      console.log(`🖼️ Image ${fieldName} converted to base64 (${(base64String.length / 1024).toFixed(1)}KB)`);
-      
+      console.log(
+        `🖼️ Image ${fieldName} converted to base64 (${(base64String.length / 1024).toFixed(1)}KB)`,
+      );
+
       setImageBase64((prev) => {
         const newState = { ...prev, [fieldName]: base64String };
-        
+
         // Immediately persist to localStorage
         try {
-          const existingCache = localStorage.getItem('pdfExportSettingsCache');
-          const cacheData = existingCache ? JSON.parse(existingCache) : {
-            reportTitle: pdfFormData.reportTitle,
-            headerText: pdfFormData.headerText,
-            technicianName: pdfFormData.technicianName,
-            technicianDept: pdfFormData.technicianDept,
-            validatorName: pdfFormData.validatorName,
-            validatorDept: pdfFormData.validatorDept,
-            images: {},
-            cachedAt: Date.now(),
-          };
-          
+          const existingCache = localStorage.getItem("pdfExportSettingsCache");
+          const cacheData = existingCache
+            ? JSON.parse(existingCache)
+            : {
+                reportTitle: pdfFormData.reportTitle,
+                headerText: pdfFormData.headerText,
+                technicianName: pdfFormData.technicianName,
+                technicianDept: pdfFormData.technicianDept,
+                validatorName: pdfFormData.validatorName,
+                validatorDept: pdfFormData.validatorDept,
+                images: {},
+                cachedAt: Date.now(),
+              };
+
           cacheData.images = {
             ...cacheData.images,
             [fieldName]: base64String,
           };
           cacheData.cachedAt = Date.now();
-          
-          localStorage.setItem('pdfExportSettingsCache', JSON.stringify(cacheData));
+
+          localStorage.setItem(
+            "pdfExportSettingsCache",
+            JSON.stringify(cacheData),
+          );
           console.log(`✅ Image ${fieldName} persisted to localStorage cache`);
         } catch (e) {
           console.error(`❌ Failed to persist ${fieldName} to cache:`, e);
         }
-        
+
         return newState;
       });
     };
@@ -800,7 +947,6 @@ export default function AdminReports() {
 
     showSuccess(`${fieldName.replace(/([A-Z])/g, " $1").trim()} selected`);
   };
-
 
   // Bulk functions removed - now redirects to /admin/reports/generate
 
@@ -1057,7 +1203,15 @@ export default function AdminReports() {
   // Load reports data on component mount and when filters change
   useEffect(() => {
     loadReportsData();
-  }, [subuserFilter, query, statusFilter, fromDate, toDate, reportTypeFilter, groupFilter]);
+  }, [
+    subuserFilter,
+    query,
+    statusFilter,
+    fromDate,
+    toDate,
+    reportTypeFilter,
+    groupFilter,
+  ]);
 
   const loadReportsData = async () => {
     setLoading(true);
@@ -1066,7 +1220,7 @@ export default function AdminReports() {
     if (isDemoMode()) {
       // console.log('🎮 Demo Mode Active - Using static audit reports data')
       // Map DEMO_AUDIT_REPORTS to AdminReport format
-      let demoReports = DEMO_AUDIT_REPORTS.map(report => ({
+      let demoReports = DEMO_AUDIT_REPORTS.map((report) => ({
         id: report.report_id,
         report_id: report.report_id,
         date: report.report_date,
@@ -1076,22 +1230,25 @@ export default function AdminReports() {
         model: report.model,
         erasure_method: report.erasure_method,
         verification_status: report.verification_status,
-        certificate_url: '',
+        certificate_url: "",
         user_email: report.user_email,
-        status: report.verification_status === 'Verified' ? 'completed' : 'pending',
+        status:
+          report.verification_status === "Verified" ? "completed" : "pending",
         method: report.erasure_method,
         _raw: report,
-        _details: report
-      }))
+        _details: report,
+      }));
 
       // Apply subuser filter in demo mode
       if (subuserFilter && subuserFilter !== "all") {
-        demoReports = demoReports.filter((r: any) => r.user_email === subuserFilter)
+        demoReports = demoReports.filter(
+          (r: any) => r.user_email === subuserFilter,
+        );
       }
 
-      setAllRows(demoReports as any)
-      setLoading(false)
-      return
+      setAllRows(demoReports as any);
+      setLoading(false);
+      return;
     }
 
     // ✅ Generate cache key based on filters
@@ -1102,7 +1259,7 @@ export default function AdminReports() {
       from: fromDate,
       to: toDate,
       type: reportTypeFilter,
-      group: groupFilter
+      group: groupFilter,
     })}`;
 
     // ✅ Check cache first for instant display with filter-specific key
@@ -1151,7 +1308,7 @@ export default function AdminReports() {
         console.error("❌ No user email found");
         showError(
           "Authentication Error",
-          "No user email found. Please login again."
+          "No user email found. Please login again.",
         );
         setAllRows([]);
         setLoading(false);
@@ -1186,7 +1343,7 @@ export default function AdminReports() {
         from: fromDate,
         to: toDate,
         type: reportTypeFilter,
-        group: groupFilter
+        group: groupFilter,
       })}`;
 
       console.log("📋 Fetching filtered reports with:", filters);
@@ -1200,34 +1357,49 @@ export default function AdminReports() {
         const responseData = response.data as any;
         if (responseData.reports && Array.isArray(responseData.reports)) {
           uniqueReports = responseData.reports;
-          console.log(`📊 Total Reports: ${responseData.totalReports}, Pages: ${responseData.totalPages}`);
+          console.log(
+            `📊 Total Reports: ${responseData.totalReports}, Pages: ${responseData.totalPages}`,
+          );
         } else {
           // Fallback for old format (direct array)
-          uniqueReports = Array.isArray(response.data) ? response.data : [response.data];
+          uniqueReports = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
         }
       }
 
       // Handle "all" subusers - fetch for all subusers and combine
       if (subuserFilter === "all" && subusersData.length > 0) {
         const subuserPromises = subusersData.map((s: any) =>
-          apiClient.getFilteredAuditReports({ ...filters, userEmail: s.subuser_email })
+          apiClient.getFilteredAuditReports({
+            ...filters,
+            userEmail: s.subuser_email,
+          }),
         );
         const subuserResults = await Promise.all(subuserPromises);
-        console.log('📥 Fetched reports for all subusers:', subuserResults);
+        console.log("📥 Fetched reports for all subusers:", subuserResults);
         subuserResults.forEach((res) => {
           if (res.success && res.data) {
             // Handle new response format
             const resData = res.data as any;
-            const reportsArray = resData.reports && Array.isArray(resData.reports)
-              ? resData.reports
-              : (Array.isArray(res.data) ? res.data : [res.data]);
+            const reportsArray =
+              resData.reports && Array.isArray(resData.reports)
+                ? resData.reports
+                : Array.isArray(res.data)
+                  ? res.data
+                  : [res.data];
             uniqueReports = [...uniqueReports, ...reportsArray];
           }
         });
 
         // Remove duplicates based on report_id
         uniqueReports = Array.from(
-          new Map(uniqueReports.map(report => [report.report_id || report.id, report])).values()
+          new Map(
+            uniqueReports.map((report) => [
+              report.report_id || report.id,
+              report,
+            ]),
+          ).values(),
         );
       }
 
@@ -1258,7 +1430,7 @@ export default function AdminReports() {
               reportDetails = JSON.parse(report.report_details_json);
               // Debug: Log group information from report
               if (groupFilter) {
-                console.log('🔍 Report Group Info:', {
+                console.log("🔍 Report Group Info:", {
                   reportId: report.report_id,
                   rawGroup: report.group,
                   rawGroupName: report.groupName,
@@ -1266,7 +1438,7 @@ export default function AdminReports() {
                   detailsGroup: reportDetails.group,
                   detailsGroupName: reportDetails.groupName,
                   detailsGroupId: reportDetails.group_id,
-                  selectedFilter: groupFilter
+                  selectedFilter: groupFilter,
                 });
               }
               console.log("📄 Parsed report_details_json:", reportDetails);
@@ -1292,12 +1464,15 @@ export default function AdminReports() {
             date: reportDetails?.datetime
               ? new Date(reportDetails.datetime).toISOString().split("T")[0]
               : report.report_datetime
-              ? new Date(report.report_datetime).toISOString().split("T")[0]
-              : new Date().toISOString().split("T")[0],
+                ? new Date(report.report_datetime).toISOString().split("T")[0]
+                : new Date().toISOString().split("T")[0],
 
             devices: deviceCount,
 
-            status: reportDetails?.status?.toLowerCase() || report.status?.toLowerCase() || "completed",
+            status:
+              reportDetails?.status?.toLowerCase() ||
+              report.status?.toLowerCase() ||
+              "completed",
 
             department:
               reportDetails?.department ||
@@ -1310,14 +1485,28 @@ export default function AdminReports() {
               reportDetails?.erasure_method ||
               report.erasure_method ||
               "N/A",
-            
+
             // ✅ Add email field for filtering (API uses client_email)
-            email: report.client_email || report.user_email || reportDetails?.user_email,
-            user: report.client_email || report.user_email || reportDetails?.user_email,
+            email:
+              report.client_email ||
+              report.user_email ||
+              reportDetails?.user_email,
+            user:
+              report.client_email ||
+              report.user_email ||
+              reportDetails?.user_email,
 
             // ✅ Store group information from report for filtering
-            group: report.groupName || report.group || reportDetails?.groupName || reportDetails?.group,
-            groupName: report.groupName || report.group || reportDetails?.groupName || reportDetails?.group,
+            group:
+              report.groupName ||
+              report.group ||
+              reportDetails?.groupName ||
+              reportDetails?.group,
+            groupName:
+              report.groupName ||
+              report.group ||
+              reportDetails?.groupName ||
+              reportDetails?.group,
 
             // New fields from report_details_json
             reportType:
@@ -1365,43 +1554,58 @@ export default function AdminReports() {
         // - All reports with matching MAC address (from report_details_json or mac_address column)
         //   automatically become visible to the new machine owner
         // - This ensures report ownership follows machine ownership
-        let filteredReports = processedReports
-        
+        let filteredReports = processedReports;
+
         // SubUser: Show reports if email matches OR machine MAC address matches
         if (isSubUser) {
-          filteredReports = processedReports.filter((report: ExtendedAdminReport) => {
-            // Check email match (original report creator)
-            const emailMatch = (report as any).email === currentUserEmail || (report as any).user === currentUserEmail;
-            
-            // Check MAC address match from report_details_json or mac_address column
-            // This allows transferred machines' reports to appear
-            const reportMacAddress = report._details?.mac_address?.toLowerCase().trim() || 
-                                   report._raw?.mac_address?.toLowerCase().trim();
-            const macMatch = reportMacAddress && userMacAddresses.some(userMac => 
-              userMac === reportMacAddress
-            );
-            
-            return emailMatch || macMatch;
-          })
+          filteredReports = processedReports.filter(
+            (report: ExtendedAdminReport) => {
+              // Check email match (original report creator)
+              const emailMatch =
+                (report as any).email === currentUserEmail ||
+                (report as any).user === currentUserEmail;
+
+              // Check MAC address match from report_details_json or mac_address column
+              // This allows transferred machines' reports to appear
+              const reportMacAddress =
+                report._details?.mac_address?.toLowerCase().trim() ||
+                report._raw?.mac_address?.toLowerCase().trim();
+              const macMatch =
+                reportMacAddress &&
+                userMacAddresses.some(
+                  (userMac) => userMac === reportMacAddress,
+                );
+
+              return emailMatch || macMatch;
+            },
+          );
           // console.log(`🔒 SubUser Filter: ${processedReports.length} → ${filteredReports.length} reports (Email or MAC match)`)
         }
         // GroupAdmin: Show reports if group matches OR email matches OR machine MAC address matches
         else if (isGroupAdmin && currentUserGroupId) {
-          filteredReports = processedReports.filter((report: ExtendedAdminReport) => {
-            const reportGroupId = report._details?.group_id || report._details?.groupId || report._raw?.group_id
-            const groupMatch = reportGroupId === currentUserGroupId;
-            const emailMatch = (report as any).email === currentUserEmail;
-            
-            // Check MAC address match from report_details_json or mac_address column
-            // This allows transferred machines' reports to appear
-            const reportMacAddress = report._details?.mac_address?.toLowerCase().trim() || 
-                                   report._raw?.mac_address?.toLowerCase().trim();
-            const macMatch = reportMacAddress && userMacAddresses.some(userMac => 
-              userMac === reportMacAddress
-            );
-            
-            return groupMatch || emailMatch || macMatch;
-          })
+          filteredReports = processedReports.filter(
+            (report: ExtendedAdminReport) => {
+              const reportGroupId =
+                report._details?.group_id ||
+                report._details?.groupId ||
+                report._raw?.group_id;
+              const groupMatch = reportGroupId === currentUserGroupId;
+              const emailMatch = (report as any).email === currentUserEmail;
+
+              // Check MAC address match from report_details_json or mac_address column
+              // This allows transferred machines' reports to appear
+              const reportMacAddress =
+                report._details?.mac_address?.toLowerCase().trim() ||
+                report._raw?.mac_address?.toLowerCase().trim();
+              const macMatch =
+                reportMacAddress &&
+                userMacAddresses.some(
+                  (userMac) => userMac === reportMacAddress,
+                );
+
+              return groupMatch || emailMatch || macMatch;
+            },
+          );
           // console.log(`🔒 GroupAdmin Filter: ${processedReports.length} → ${filteredReports.length} reports (Group, Email, or MAC match)`)
         }
         // SuperAdmin: No filtering - sees all reports
@@ -1425,39 +1629,36 @@ export default function AdminReports() {
 
   const uniqueStatuses = useMemo(
     () => [...new Set(allRows.map((r) => r.status))],
-    [allRows]
+    [allRows],
   );
   const uniqueEraserMethods = useMemo(
     () => [...new Set(allRows.map((r) => r.method).filter(Boolean))],
-    [allRows]
+    [allRows],
   );
   const uniqueReportTypes = useMemo(
     () => [...new Set(allRows.map((r) => r.reportType).filter(Boolean))],
-    [allRows]
+    [allRows],
   );
-  
+
   // ✅ Use groups from API (same as AdminGroups) instead of extracting from reports
   // Sort groups alphabetically for better UX
-  const uniqueGroups = useMemo(
-    () => {
-      if (!groupsData || groupsData.length === 0) return [];
-      
-      // Extract groupName from API response (same structure as AdminGroups)
-      const groups = groupsData
-        .map((g: any) => g.groupName || g.name)
-        .filter(Boolean);
-      
-      // Sort alphabetically
-      return groups.sort((a: string, b: string) => a.localeCompare(b));
-    },
-    [groupsData]
-  );
+  const uniqueGroups = useMemo(() => {
+    if (!groupsData || groupsData.length === 0) return [];
+
+    // Extract groupName from API response (same structure as AdminGroups)
+    const groups = groupsData
+      .map((g: any) => g.groupName || g.name)
+      .filter(Boolean);
+
+    // Sort alphabetically
+    return groups.sort((a: string, b: string) => a.localeCompare(b));
+  }, [groupsData]);
 
   const filtered = useMemo(() => {
     // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
-    // All filtering (query, status, date range, eraser method, device range, report type, group) 
+    // All filtering (query, status, date range, eraser method, device range, report type, group)
     // is handled by the API endpoint with proper database relationships
-    
+
     /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
     let result = allRows.filter((r) => {
       const matchesQuery =
@@ -1589,7 +1790,7 @@ export default function AdminReports() {
   }, [
     allRows,
     // Removed filter dependencies - API handles all filtering
-    // query, statusFilter, fromDate, toDate, eraserMethodFilter, 
+    // query, statusFilter, fromDate, toDate, eraserMethodFilter,
     // deviceRangeFilter, reportTypeFilter, groupFilter,
     showUniqueOnly,
     sortBy,
@@ -1725,32 +1926,41 @@ export default function AdminReports() {
       }
 
       if (pdfFormData.technicianSignature) {
-        submitData.append("technicianSignature", pdfFormData.technicianSignature);
+        submitData.append(
+          "technicianSignature",
+          pdfFormData.technicianSignature,
+        );
       } else if (imageBase64.technicianSignature) {
-        submitData.append("technicianSignatureBase64", imageBase64.technicianSignature);
+        submitData.append(
+          "technicianSignatureBase64",
+          imageBase64.technicianSignature,
+        );
       }
 
       if (pdfFormData.validatorSignature) {
         submitData.append("validatorSignature", pdfFormData.validatorSignature);
       } else if (imageBase64.validatorSignature) {
-        submitData.append("validatorSignatureBase64", imageBase64.validatorSignature);
+        submitData.append(
+          "validatorSignatureBase64",
+          imageBase64.validatorSignature,
+        );
       }
 
-      const downloadUrl = `${import.meta.env.VITE_API_BASE_URL ||
-        "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-settings`;
+      const downloadUrl = `${
+        import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"
+      }/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-settings`;
 
-      console.log('🔵 Download request:', downloadUrl);
+      console.log("🔵 Download request:", downloadUrl);
 
       const response = await fetch(downloadUrl, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${authService.getAccessToken()}`,
         },
-      }
-      );
+      });
 
-      console.log('🔵 Response status:', response.status, response.statusText);
-      console.log('🔵 Content-Type:', response.headers.get('content-type'));
+      console.log("🔵 Response status:", response.status, response.statusText);
+      console.log("🔵 Content-Type:", response.headers.get("content-type"));
 
       if (!response.ok) {
         // Try to get error message from response body
@@ -1791,8 +2001,9 @@ export default function AdminReports() {
       console.error("Error downloading report:", error);
       showError(
         "Download Failed",
-        `Failed to download report. ${error instanceof Error ? error.message : "Please try again."
-        }`
+        `Failed to download report. ${
+          error instanceof Error ? error.message : "Please try again."
+        }`,
       );
     }
   };
@@ -1802,7 +2013,7 @@ export default function AdminReports() {
     if (selectedReportIds.size === 0) {
       showWarning(
         "No Reports Selected",
-        "Please select at least one report to download"
+        "Please select at least one report to download",
       );
       return;
     }
@@ -1816,7 +2027,7 @@ export default function AdminReports() {
 
       // Get selected reports
       const selectedReports = allRows.filter((report) =>
-        selectedReportIds.has(String(report.id || ""))
+        selectedReportIds.has(String(report.id || "")),
       );
 
       let successCount = 0;
@@ -1852,37 +2063,59 @@ export default function AdminReports() {
           if (pdfFormData.headerLeftLogo) {
             submitData.append("headerLeftLogo", pdfFormData.headerLeftLogo);
           } else if (imageBase64.headerLeftLogo) {
-            submitData.append("headerLeftLogoBase64", imageBase64.headerLeftLogo);
+            submitData.append(
+              "headerLeftLogoBase64",
+              imageBase64.headerLeftLogo,
+            );
           }
 
           if (pdfFormData.headerRightLogo) {
             submitData.append("headerRightLogo", pdfFormData.headerRightLogo);
           } else if (imageBase64.headerRightLogo) {
-            submitData.append("headerRightLogoBase64", imageBase64.headerRightLogo);
+            submitData.append(
+              "headerRightLogoBase64",
+              imageBase64.headerRightLogo,
+            );
           }
 
           if (pdfFormData.watermarkImage) {
             submitData.append("watermarkImage", pdfFormData.watermarkImage);
           } else if (imageBase64.watermarkImage) {
-            submitData.append("watermarkImageBase64", imageBase64.watermarkImage);
+            submitData.append(
+              "watermarkImageBase64",
+              imageBase64.watermarkImage,
+            );
           }
 
           if (pdfFormData.technicianSignature) {
-            submitData.append("technicianSignature", pdfFormData.technicianSignature);
+            submitData.append(
+              "technicianSignature",
+              pdfFormData.technicianSignature,
+            );
           } else if (imageBase64.technicianSignature) {
-            submitData.append("technicianSignatureBase64", imageBase64.technicianSignature);
+            submitData.append(
+              "technicianSignatureBase64",
+              imageBase64.technicianSignature,
+            );
           }
 
           if (pdfFormData.validatorSignature) {
-            submitData.append("validatorSignature", pdfFormData.validatorSignature);
+            submitData.append(
+              "validatorSignature",
+              pdfFormData.validatorSignature,
+            );
           } else if (imageBase64.validatorSignature) {
-            submitData.append("validatorSignatureBase64", imageBase64.validatorSignature);
+            submitData.append(
+              "validatorSignatureBase64",
+              imageBase64.validatorSignature,
+            );
           }
 
           const response = await fetch(
-            `${import.meta.env.VITE_API_BASE_URL ||
-            "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(
-              reportId
+            `${
+              import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"
+            }/api/EnhancedAuditReports/${encodeURIComponent(
+              reportId,
             )}/export-pdf-with-files`,
             {
               method: "POST",
@@ -1891,7 +2124,7 @@ export default function AdminReports() {
                 // Content-Type header is not needed for FormData, browser sets it automatically with boundary
               },
               body: submitData,
-            }
+            },
           );
 
           if (response.ok) {
@@ -1900,7 +2133,9 @@ export default function AdminReports() {
             zip.file(fileName, blob);
             successCount++;
           } else {
-            console.warn(`Failed to download report ${report.id}: ${response.statusText}`);
+            console.warn(
+              `Failed to download report ${report.id}: ${response.statusText}`,
+            );
             // Fallback to regular export if custom fails? No, better to report error
             failedCount++;
           }
@@ -1922,8 +2157,9 @@ export default function AdminReports() {
       const url = window.URL.createObjectURL(zipBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `audit-reports-${new Date().toISOString().split("T")[0]
-        }.zip`;
+      a.download = `audit-reports-${
+        new Date().toISOString().split("T")[0]
+      }.zip`;
       document.body.appendChild(a);
       a.click();
 
@@ -1938,7 +2174,7 @@ export default function AdminReports() {
       if (failedCount > 0) {
         showWarning(
           "Partial Success",
-          `Downloaded ${successCount} reports. ${failedCount} failed.`
+          `Downloaded ${successCount} reports. ${failedCount} failed.`,
         );
       } else {
         showSuccess(`Successfully downloaded ${successCount} reports as ZIP`);
@@ -1947,7 +2183,7 @@ export default function AdminReports() {
       console.error("Error creating ZIP:", error);
       showError(
         "Download Failed",
-        "Failed to create ZIP file. Please try again."
+        "Failed to create ZIP file. Please try again.",
       );
     }
   };
@@ -1990,10 +2226,13 @@ export default function AdminReports() {
 
   // ✅ Handle preview of selected reports - Opens PDFs in new tabs (supports multiple)
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
-  
+
   const handlePreviewSelectedReports = async () => {
     if (selectedReportIds.size === 0) {
-      showWarning("No Reports Selected", "Please select at least one report to preview");
+      showWarning(
+        "No Reports Selected",
+        "Please select at least one report to preview",
+      );
       return;
     }
 
@@ -2006,18 +2245,18 @@ export default function AdminReports() {
     // Limit to prevent browser from blocking too many popups
     const MAX_PREVIEW_TABS = 5;
     const selectedCount = selectedReportIds.size;
-    
+
     if (selectedCount > MAX_PREVIEW_TABS) {
       showWarning(
-        "Too Many Reports", 
-        `You can preview maximum ${MAX_PREVIEW_TABS} reports at once. You selected ${selectedCount}. Please select fewer reports.`
+        "Too Many Reports",
+        `You can preview maximum ${MAX_PREVIEW_TABS} reports at once. You selected ${selectedCount}. Please select fewer reports.`,
       );
       return;
     }
 
     // Get all selected reports
-    const selectedReportsArray = allRows.filter(r => 
-      selectedReportIds.has(String(r.id || ""))
+    const selectedReportsArray = allRows.filter((r) =>
+      selectedReportIds.has(String(r.id || "")),
     );
 
     if (selectedReportsArray.length === 0) {
@@ -2026,7 +2265,7 @@ export default function AdminReports() {
     }
 
     setIsPreviewLoading(true);
-    
+
     try {
       let successCount = 0;
       let failedCount = 0;
@@ -2036,7 +2275,10 @@ export default function AdminReports() {
         try {
           const rawReport = selectedReport._raw;
           const reportDetails = selectedReport._details;
-          const reportId = reportDetails?.report_id?.toString() || rawReport?.report_id || String(selectedReport.id || "");
+          const reportId =
+            reportDetails?.report_id?.toString() ||
+            rawReport?.report_id ||
+            String(selectedReport.id || "");
 
           if (!reportId) {
             console.warn(`Skipping report - no ID found`);
@@ -2059,31 +2301,52 @@ export default function AdminReports() {
           if (pdfFormData.headerLeftLogo) {
             submitData.append("headerLeftLogo", pdfFormData.headerLeftLogo);
           } else if (imageBase64.headerLeftLogo) {
-            submitData.append("headerLeftLogoBase64", imageBase64.headerLeftLogo);
+            submitData.append(
+              "headerLeftLogoBase64",
+              imageBase64.headerLeftLogo,
+            );
           }
 
           if (pdfFormData.headerRightLogo) {
             submitData.append("headerRightLogo", pdfFormData.headerRightLogo);
           } else if (imageBase64.headerRightLogo) {
-            submitData.append("headerRightLogoBase64", imageBase64.headerRightLogo);
+            submitData.append(
+              "headerRightLogoBase64",
+              imageBase64.headerRightLogo,
+            );
           }
 
           if (pdfFormData.watermarkImage) {
             submitData.append("watermarkImage", pdfFormData.watermarkImage);
           } else if (imageBase64.watermarkImage) {
-            submitData.append("watermarkImageBase64", imageBase64.watermarkImage);
+            submitData.append(
+              "watermarkImageBase64",
+              imageBase64.watermarkImage,
+            );
           }
 
           if (pdfFormData.technicianSignature) {
-            submitData.append("technicianSignature", pdfFormData.technicianSignature);
+            submitData.append(
+              "technicianSignature",
+              pdfFormData.technicianSignature,
+            );
           } else if (imageBase64.technicianSignature) {
-            submitData.append("technicianSignatureBase64", imageBase64.technicianSignature);
+            submitData.append(
+              "technicianSignatureBase64",
+              imageBase64.technicianSignature,
+            );
           }
 
           if (pdfFormData.validatorSignature) {
-            submitData.append("validatorSignature", pdfFormData.validatorSignature);
+            submitData.append(
+              "validatorSignature",
+              pdfFormData.validatorSignature,
+            );
           } else if (imageBase64.validatorSignature) {
-            submitData.append("validatorSignatureBase64", imageBase64.validatorSignature);
+            submitData.append(
+              "validatorSignatureBase64",
+              imageBase64.validatorSignature,
+            );
           }
 
           const response = await fetch(
@@ -2094,15 +2357,15 @@ export default function AdminReports() {
                 Authorization: `Bearer ${authService.getAccessToken()}`,
               },
               body: submitData,
-            }
+            },
           );
 
           if (response.ok) {
             const blob = await response.blob();
             // Create object URL and open in new tab for preview
             const pdfUrl = window.URL.createObjectURL(blob);
-            const newTab = window.open(pdfUrl, '_blank');
-            
+            const newTab = window.open(pdfUrl, "_blank");
+
             if (newTab) {
               successCount++;
             } else {
@@ -2110,14 +2373,17 @@ export default function AdminReports() {
               console.warn(`Popup blocked for report ${reportId}`);
               failedCount++;
             }
-            
+
             // Small delay between opening tabs to prevent browser blocking
             if (selectedReportsArray.length > 1) {
-              await new Promise(resolve => setTimeout(resolve, 300));
+              await new Promise((resolve) => setTimeout(resolve, 300));
             }
           } else {
             const errorText = await response.text();
-            console.error(`PDF preview failed for report ${reportId}:`, errorText);
+            console.error(
+              `PDF preview failed for report ${reportId}:`,
+              errorText,
+            );
             failedCount++;
           }
         } catch (error) {
@@ -2128,15 +2394,26 @@ export default function AdminReports() {
 
       // Show final result
       if (successCount === 0) {
-        showError("Preview Failed", "No PDFs could be opened. Please check if popups are blocked.");
+        showError(
+          "Preview Failed",
+          "No PDFs could be opened. Please check if popups are blocked.",
+        );
       } else if (failedCount > 0) {
-        showWarning("Partial Success", `Opened ${successCount} PDF${successCount > 1 ? 's' : ''}. ${failedCount} failed.`);
+        showWarning(
+          "Partial Success",
+          `Opened ${successCount} PDF${successCount > 1 ? "s" : ""}. ${failedCount} failed.`,
+        );
       } else {
-        showSuccess(`${successCount} PDF${successCount > 1 ? 's' : ''} opened in new tab${successCount > 1 ? 's' : ''}`);
+        showSuccess(
+          `${successCount} PDF${successCount > 1 ? "s" : ""} opened in new tab${successCount > 1 ? "s" : ""}`,
+        );
       }
     } catch (error) {
       console.error("Error generating PDF previews:", error);
-      showError("Preview Failed", "Failed to generate PDF previews. Please try again.");
+      showError(
+        "Preview Failed",
+        "Failed to generate PDF previews. Please try again.",
+      );
     } finally {
       setIsPreviewLoading(false);
     }
@@ -2389,9 +2666,12 @@ export default function AdminReports() {
           {/* PDF Settings Button - Always visible outside table */}
           <button
             onClick={() => {
-              console.log('🔵 Opening Settings Modal with current pdfFormData:', pdfFormData);
-              console.log('🔵 Current imageBase64:', imageBase64);
-              console.log('🔵 pdfSettingsLoaded:', pdfSettingsLoaded);
+              console.log(
+                "🔵 Opening Settings Modal with current pdfFormData:",
+                pdfFormData,
+              );
+              console.log("🔵 Current imageBase64:", imageBase64);
+              console.log("🔵 pdfSettingsLoaded:", pdfSettingsLoaded);
               setShowBulkSettingsModal(true);
             }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700"
@@ -2484,31 +2764,33 @@ export default function AdminReports() {
 
           <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-4">
             {/* Subuser Filter - Show only if there are subusers */}
-            {subusersData && subusersData.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Report Owner
-                </label>
-                <select
-                  className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
-                  value={subuserFilter}
-                  onChange={(e) => {
-                    setSubuserFilter(e.target.value);
-                    setPage(1);
-                  }}
-                >
-                  <option value="">My Reports</option>
-                  <option value="all">All Reports (Me + Subusers)</option>
-                  <optgroup label="Subuser Reports">
-                    {subusersData.map((subuser: any) => (
-                      <option key={subuser.subuser_email} value={subuser.subuser_email}>
-                        {subuser.subuser_name || subuser.subuser_email}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-              </div>
-            )}
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Report Owner
+              </label>
+              <select
+                className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                value={subuserFilter}
+                onChange={(e) => {
+                  setSubuserFilter(e.target.value);
+                  setPage(1);
+                }}
+              >
+                <option value="">My Reports</option>
+                <option value="all">All Reports (Me + Subusers)</option>
+                <optgroup label="Subuser Reports">
+                  {subusersData.map((subuser: any) => (
+                    <option
+                      key={subuser.subuser_email}
+                      value={subuser.subuser_email}
+                    >
+                      {subuser.subuser_name || subuser.subuser_email}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
 
             {/* Search */}
             <div>
@@ -2558,9 +2840,17 @@ export default function AdminReports() {
 
                 // Validate date format and range
                 if (value && !isValidDateFormat(value)) {
-                  setDateValidationError("Invalid date format. Please use YYYY-MM-DD.");
-                } else if (value && toDate && new Date(value) > new Date(toDate)) {
-                  setDateValidationError("From date cannot be later than To date.");
+                  setDateValidationError(
+                    "Invalid date format. Please use YYYY-MM-DD.",
+                  );
+                } else if (
+                  value &&
+                  toDate &&
+                  new Date(value) > new Date(toDate)
+                ) {
+                  setDateValidationError(
+                    "From date cannot be later than To date.",
+                  );
                 } else {
                   setDateValidationError("");
                 }
@@ -2577,9 +2867,17 @@ export default function AdminReports() {
 
                 // Validate date format and range
                 if (value && !isValidDateFormat(value)) {
-                  setDateValidationError("Invalid date format. Please use YYYY-MM-DD.");
-                } else if (value && fromDate && new Date(fromDate) > new Date(value)) {
-                  setDateValidationError("To date cannot be earlier than From date.");
+                  setDateValidationError(
+                    "Invalid date format. Please use YYYY-MM-DD.",
+                  );
+                } else if (
+                  value &&
+                  fromDate &&
+                  new Date(fromDate) > new Date(value)
+                ) {
+                  setDateValidationError(
+                    "To date cannot be earlier than From date.",
+                  );
                 } else {
                   setDateValidationError("");
                 }
@@ -2640,7 +2938,12 @@ export default function AdminReports() {
             {/* Group Filter */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Group {uniqueGroups.length > 0 && <span className="text-xs text-slate-500">({uniqueGroups.length})</span>}
+                Group{" "}
+                {uniqueGroups.length > 0 && (
+                  <span className="text-xs text-slate-500">
+                    ({uniqueGroups.length})
+                  </span>
+                )}
               </label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -2846,7 +3149,8 @@ export default function AdminReports() {
                 <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-blue-800">
-                      {selectedReportIds.size} report{selectedReportIds.size > 1 ? 's' : ''} selected
+                      {selectedReportIds.size} report
+                      {selectedReportIds.size > 1 ? "s" : ""} selected
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -2862,11 +3166,11 @@ export default function AdminReports() {
                       onClick={handlePreviewSelectedReports}
                       disabled={isPreviewLoading}
                       className={`text-sm px-4 py-1.5 rounded border font-medium transition-colors flex items-center gap-2 ${
-                        isPreviewLoading 
-                          ? 'bg-blue-400 cursor-not-allowed border-blue-400' 
-                          : 'bg-blue-600 hover:bg-blue-700 border-blue-600'
+                        isPreviewLoading
+                          ? "bg-blue-400 cursor-not-allowed border-blue-400"
+                          : "bg-blue-600 hover:bg-blue-700 border-blue-600"
                       } text-white`}
-                      title={`Preview ${selectedReportIds.size} selected report${selectedReportIds.size > 1 ? 's' : ''} in new tab${selectedReportIds.size > 1 ? 's' : ''}`}
+                      title={`Preview ${selectedReportIds.size} selected report${selectedReportIds.size > 1 ? "s" : ""} in new tab${selectedReportIds.size > 1 ? "s" : ""}`}
                     >
                       <svg
                         className="w-4 h-4"
@@ -2925,7 +3229,7 @@ export default function AdminReports() {
                             checked={
                               rows.length > 0 &&
                               rows.every((r) =>
-                                selectedReportIds.has(String(r.id || ""))
+                                selectedReportIds.has(String(r.id || "")),
                               )
                             }
                             onChange={() => toggleSelectAll(rows)}
@@ -2980,7 +3284,9 @@ export default function AdminReports() {
                           <td className="py-3 px-2">
                             <input
                               type="checkbox"
-                              checked={selectedReportIds.has(String(row.id || ""))}
+                              checked={selectedReportIds.has(
+                                String(row.id || ""),
+                              )}
                               onChange={() =>
                                 toggleReportSelection(String(row.id || ""))
                               }
@@ -3014,24 +3320,26 @@ export default function AdminReports() {
                       </td> */}
                         <td className="py-2">
                           <span
-                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${row.status === "completed"
-                              ? "bg-green-100 text-green-800"
-                              : row.status === "pending"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : row.status === "failed"
-                                  ? "bg-red-100 text-red-800"
-                                  : "bg-slate-100 text-slate-800"
-                              }`}
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                              row.status === "completed"
+                                ? "bg-green-100 text-green-800"
+                                : row.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : row.status === "failed"
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-slate-100 text-slate-800"
+                            }`}
                           >
                             <span
-                              className={`w-2 h-2 rounded-full ${row.status === "completed"
-                                ? "bg-green-400"
-                                : row.status === "pending"
-                                  ? "bg-yellow-400"
-                                  : row.status === "failed"
-                                    ? "bg-red-400"
-                                    : "bg-slate-400"
-                                }`}
+                              className={`w-2 h-2 rounded-full ${
+                                row.status === "completed"
+                                  ? "bg-green-400"
+                                  : row.status === "pending"
+                                    ? "bg-yellow-400"
+                                    : row.status === "failed"
+                                      ? "bg-red-400"
+                                      : "bg-slate-400"
+                              }`}
                             ></span>
                             {row.status}
                           </span>
@@ -3050,7 +3358,9 @@ export default function AdminReports() {
                           </span>
                         </td>
                         <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${(row.failedFiles ?? 0) > 0 ? "bg-red-100 text-red-800" : "bg-slate-100 text-slate-800"}`}>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${(row.failedFiles ?? 0) > 0 ? "bg-red-100 text-red-800" : "bg-slate-100 text-slate-800"}`}
+                          >
                             {row.failedFiles ?? 0}
                           </span>
                         </td>
@@ -3090,7 +3400,10 @@ export default function AdminReports() {
                     ))}
                   </select>
                   <span className="text-sm text-slate-500">
-                    Showing {Math.min((page - 1) * pageSize + 1, filtered.length)} to {Math.min(page * pageSize, filtered.length)} of {filtered.length} records
+                    Showing{" "}
+                    {Math.min((page - 1) * pageSize + 1, filtered.length)} to{" "}
+                    {Math.min(page * pageSize, filtered.length)} of{" "}
+                    {filtered.length} records
                   </span>
                 </div>
 
@@ -3128,22 +3441,42 @@ export default function AdminReports() {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10">
               <div className="flex items-center gap-3">
-                <h2 className="text-xl font-bold text-slate-900">
-                  Settings
-                </h2>
+                <h2 className="text-xl font-bold text-slate-900">Settings</h2>
                 {pdfSettingsLoading && (
                   <span className="text-sm text-blue-600 flex items-center gap-2">
                     <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
                     </svg>
                     Loading saved settings...
                   </span>
                 )}
                 {!pdfSettingsLoading && pdfSettingsLoaded && (
                   <span className="text-sm text-green-600 flex items-center gap-1">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     {/* Settings loaded from server */}
                   </span>
@@ -3171,8 +3504,18 @@ export default function AdminReports() {
                   onClick={() => setShowBulkSettingsModal(false)}
                   className="text-slate-400 hover:text-slate-600 transition-colors"
                 >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
@@ -3305,8 +3648,14 @@ export default function AdminReports() {
                     onChange={(e) => handleImageUpload(e, "headerLeftLogo")}
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
-                  {(pdfFormData.headerLeftLogo || imageBase64.headerLeftLogo) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.headerLeftLogo ? "Image uploaded" : "Saved image"}</p>
+                  {(pdfFormData.headerLeftLogo ||
+                    imageBase64.headerLeftLogo) && (
+                    <p className="text-xs text-green-600 mt-1">
+                      ✓{" "}
+                      {pdfFormData.headerLeftLogo
+                        ? "Image uploaded"
+                        : "Saved image"}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -3319,8 +3668,14 @@ export default function AdminReports() {
                     onChange={(e) => handleImageUpload(e, "headerRightLogo")}
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
-                  {(pdfFormData.headerRightLogo || imageBase64.headerRightLogo) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.headerRightLogo ? "Image uploaded" : "Saved image"}</p>
+                  {(pdfFormData.headerRightLogo ||
+                    imageBase64.headerRightLogo) && (
+                    <p className="text-xs text-green-600 mt-1">
+                      ✓{" "}
+                      {pdfFormData.headerRightLogo
+                        ? "Image uploaded"
+                        : "Saved image"}
+                    </p>
                   )}
                 </div>
               </div>
@@ -3337,7 +3692,12 @@ export default function AdminReports() {
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                 />
                 {(pdfFormData.watermarkImage || imageBase64.watermarkImage) && (
-                  <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.watermarkImage ? "Watermark uploaded" : "Saved watermark"}</p>
+                  <p className="text-xs text-green-600 mt-1">
+                    ✓{" "}
+                    {pdfFormData.watermarkImage
+                      ? "Watermark uploaded"
+                      : "Saved watermark"}
+                  </p>
                 )}
               </div>
 
@@ -3350,11 +3710,19 @@ export default function AdminReports() {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleImageUpload(e, "technicianSignature")}
+                    onChange={(e) =>
+                      handleImageUpload(e, "technicianSignature")
+                    }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
-                  {(pdfFormData.technicianSignature || imageBase64.technicianSignature) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.technicianSignature ? "Signature uploaded" : "Saved signature"}</p>
+                  {(pdfFormData.technicianSignature ||
+                    imageBase64.technicianSignature) && (
+                    <p className="text-xs text-green-600 mt-1">
+                      ✓{" "}
+                      {pdfFormData.technicianSignature
+                        ? "Signature uploaded"
+                        : "Saved signature"}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -3367,8 +3735,14 @@ export default function AdminReports() {
                     onChange={(e) => handleImageUpload(e, "validatorSignature")}
                     className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                   />
-                  {(pdfFormData.validatorSignature || imageBase64.validatorSignature) && (
-                    <p className="text-xs text-green-600 mt-1">✓ {pdfFormData.validatorSignature ? "Signature uploaded" : "Saved signature"}</p>
+                  {(pdfFormData.validatorSignature ||
+                    imageBase64.validatorSignature) && (
+                    <p className="text-xs text-green-600 mt-1">
+                      ✓{" "}
+                      {pdfFormData.validatorSignature
+                        ? "Signature uploaded"
+                        : "Saved signature"}
+                    </p>
                   )}
                 </div>
               </div>
@@ -3759,7 +4133,10 @@ export default function AdminReports() {
                     {pdfFormData.watermarkImage && (
                       <button
                         onClick={() =>
-                          setPdfFormData({ ...pdfFormData, watermarkImage: null })
+                          setPdfFormData({
+                            ...pdfFormData,
+                            watermarkImage: null,
+                          })
                         }
                         className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         title="Clear image"

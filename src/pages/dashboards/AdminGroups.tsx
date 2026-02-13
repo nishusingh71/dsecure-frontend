@@ -12,6 +12,7 @@ import { useAuth } from "@/auth/AuthContext";
 import { useSubusers } from "@/hooks/useSubusers";
 import { authService } from "@/utils/authService";
 import { isDemoMode } from "@/data/demoData";
+import { encodeEmail } from "@/utils/encodeEmail";
 
 interface User {
   id: number;
@@ -20,6 +21,7 @@ interface User {
   role: "User" | "Subuser" | "Group Admin";
   department: string;
   license: number;
+  licenseKey: string;
   profile: string;
   isGroupAdmin?: boolean;
 }
@@ -152,6 +154,7 @@ export default function AdminGroups() {
               role: "User",
               department: "Engineering",
               license: 5,
+              licenseKey: "",
               profile: "Developer",
             },
             {
@@ -161,6 +164,7 @@ export default function AdminGroups() {
               role: "User",
               department: "Engineering",
               license: 3,
+              licenseKey: "",
               profile: "Senior Developer",
             },
           ],
@@ -184,6 +188,7 @@ export default function AdminGroups() {
               role: "User",
               department: "Marketing",
               license: 2,
+              licenseKey: "",
               profile: "Marketing Manager",
             },
           ],
@@ -207,6 +212,7 @@ export default function AdminGroups() {
               role: "User",
               department: "Sales",
               license: 4,
+              licenseKey: "",
               profile: "Sales Executive",
             },
             {
@@ -216,6 +222,7 @@ export default function AdminGroups() {
               role: "User",
               department: "Sales",
               license: 3,
+              licenseKey: "",
               profile: "Account Manager",
             },
           ],
@@ -293,7 +300,8 @@ export default function AdminGroups() {
                       ? "User"
                       : "Subuser") as "User" | "Subuser" | "Group Admin",
                   // department: user.department || 'N/A',
-                  license: user.licenseCount || user.license || 0,
+                  license:
+                    user.licenseCount || user.license || 0 || user.licenseKey,
                   profile: user.role || "User",
                 };
               }) || [],
@@ -830,19 +838,31 @@ export default function AdminGroups() {
     setSelectedTransferUser("");
     setErrorMessage("");
 
-    // Fetch available machines and licenses for admin/superadmin
-    await fetchAvailableMachinesAndLicenses();
+    // Fetch available machines and licenses for the GroupAdmin of this group
+    await fetchAvailableMachinesAndLicenses(group);
   };
 
-  const fetchAvailableMachinesAndLicenses = async () => {
+  const fetchAvailableMachinesAndLicenses = async (group: Group) => {
     try {
       setIsLoadingMachines(true);
 
-      // Fetch machines for current admin user
+      // Find the GroupAdmin's email from the group
+      const groupAdminEmail =
+        group.users.find((u) => u.role === "Group Admin")?.email ||
+        currentUserEmail;
+      console.log("📧 Fetching machines for GroupAdmin:", groupAdminEmail);
+
+      // Fetch machines for the GroupAdmin
       const machinesResponse =
-        await apiClient.getMachinesByEmail(currentUserEmail);
+        await apiClient.getMachinesByEmail(groupAdminEmail);
       if (machinesResponse.success && machinesResponse.data) {
         setAvailableMachines(machinesResponse.data);
+        console.log(
+          "✅ GroupAdmin machines loaded:",
+          machinesResponse.data.length,
+        );
+      } else {
+        setAvailableMachines([]);
       }
 
       // Fetch available licenses - you may need to create this API endpoint
@@ -862,10 +882,8 @@ export default function AdminGroups() {
       return;
     }
 
-    if (selectedMachines.length === 0 && selectedLicenses.length === 0) {
-      setErrorMessage(
-        "Please select at least one machine or license to transfer",
-      );
+    if (selectedMachines.length === 0) {
+      setErrorMessage("Please select at least one machine to transfer");
       return;
     }
 
@@ -873,26 +891,72 @@ export default function AdminGroups() {
       setIsSubmitting(true);
       setErrorMessage("");
 
-      // Get MAC addresses for selected machines
-      const macAddresses = availableMachines
-        .filter((m) => selectedMachines.includes(m.id))
-        .map((m) => m.mac_address);
-
-      // Transfer machines using the API
-      if (macAddresses.length > 0) {
-        const response = await apiClient.transferMachinesToSubuser(
-          selectedTransferUser,
-          macAddresses,
-        );
-        if (!response.success) {
-          throw new Error(response.error || "Failed to transfer machines");
-        }
+      if (!currentUserEmail) {
+        setErrorMessage("User email not found. Please log in again.");
+        return;
       }
 
-      // Transfer licenses (implement based on your API)
-      // for (const licenseId of selectedLicenses) {
-      //     await apiClient.transferLicense(licenseId, selectedTransferUser);
-      // }
+      // Get MAC addresses for selected machines and filter for valid strings
+      console.log("🔍 Selected machine IDs:", selectedMachines);
+      console.log(
+        "🔍 Available machines:",
+        availableMachines.map((m) => ({
+          id: m.id,
+          machine_id: m.machine_id,
+          mac_address: m.mac_address,
+          machine_name: m.machine_name,
+        })),
+      );
+
+      const macAddresses = availableMachines
+        .filter((m) => {
+          const id = String(m.id || m.machine_id);
+          return selectedMachines.includes(id);
+        })
+        .map((m) => m.mac_address)
+        .filter(
+          (mac): mac is string => typeof mac === "string" && mac.length > 0,
+        );
+
+      if (macAddresses.length === 0) {
+        throw new Error("No valid MAC addresses found for selected machines");
+      }
+
+      console.log("🔍 Resolved MAC addresses:", macAddresses);
+
+      const groupAdminEmail =
+        selectedGroup.users.find((u) => u.role === "Group Admin")?.email ||
+        currentUserEmail;
+
+      // Transfer via GroupDetails admin transfer endpoint
+      const payload = {
+        groupAdminEmail: groupAdminEmail,
+        memberEmail: selectedTransferUser,
+        macAddresses: macAddresses,
+      };
+
+      const apiUrl = `/api/GroupDetails/${selectedGroup.id}/admin/transfer`;
+      console.log("📤 Admin Transfer URL:", apiUrl);
+      console.log(
+        "📤 Admin Transfer Payload:",
+        JSON.stringify(payload, null, 2),
+      );
+      console.log("📧 GroupAdmin Email:", groupAdminEmail);
+      console.log("📧 Member Email:", selectedTransferUser);
+
+      const response = await apiClient.post(apiUrl, payload);
+
+      console.log(
+        "📥 Admin Transfer Response:",
+        JSON.stringify(response, null, 2),
+      );
+
+      if (!response.success) {
+        const errMsg =
+          response.error || response.message || "Failed to transfer assets";
+        setErrorMessage(errMsg);
+        throw new Error(`${errMsg} (Details: ${JSON.stringify(response)})`);
+      }
 
       setShowTransferModal(false);
       setSelectedMachines([]);
@@ -928,14 +992,11 @@ export default function AdminGroups() {
     try {
       setIsLoadingUserAssets(true);
 
-      // Fetch user's machines
+      // Fetch user's machines (all machines for the member)
       const machinesResponse = await apiClient.getMachinesByEmail(userEmail);
       if (machinesResponse.success && machinesResponse.data) {
-        // Filter only unused/available machines
-        const availableMachines = machinesResponse.data.filter(
-          (m: any) => !m.in_use,
-        );
-        setUserMachines(availableMachines);
+        setUserMachines(machinesResponse.data);
+        console.log("✅ Member machines loaded:", machinesResponse.data.length);
       }
 
       // Fetch user's licenses (implement based on your API)
@@ -954,13 +1015,8 @@ export default function AdminGroups() {
       return;
     }
 
-    if (
-      selectedRevokeMachines.length === 0 &&
-      selectedRevokeLicenses.length === 0
-    ) {
-      setErrorMessage(
-        "Please select at least one machine or license to revoke",
-      );
+    if (selectedRevokeMachines.length === 0) {
+      setErrorMessage("Please select at least one machine to revoke");
       return;
     }
 
@@ -970,24 +1026,41 @@ export default function AdminGroups() {
 
       // Get MAC addresses for selected machines to revoke
       const macAddresses = userMachines
-        .filter((m: any) => selectedRevokeMachines.includes(m.id))
-        .map((m: any) => m.mac_address);
-
-      // Revoke machines - transfer back to admin
-      if (macAddresses.length > 0) {
-        const response = await apiClient.transferMachinesToSubuser(
-          currentUserEmail,
-          macAddresses,
+        .filter((m: any) => {
+          const id = String(m.id || m.machine_id);
+          return selectedRevokeMachines.includes(id);
+        })
+        .map((m: any) => m.mac_address)
+        .filter(
+          (mac: any): mac is string =>
+            typeof mac === "string" && mac.length > 0,
         );
-        if (!response.success) {
-          throw new Error(response.error || "Failed to revoke machines");
-        }
+
+      if (macAddresses.length === 0) {
+        throw new Error("No valid MAC addresses found for selected machines");
       }
 
-      // Revoke licenses (implement based on your API)
-      // for (const licenseId of selectedRevokeLicenses) {
-      //     await apiClient.revokeLicense(licenseId);
-      // }
+      // Revoke via GroupDetails admin revoke endpoint
+      const payload = {
+        groupAdminEmail:
+          selectedGroup.users.find((u) => u.role === "Group Admin")?.email ||
+          currentUserEmail,
+        memberEmail: selectedRevokeUser,
+        macAddresses: macAddresses,
+      };
+
+      console.log("📤 Admin Revoke Payload:", payload);
+
+      const response = await apiClient.post(
+        `/api/GroupDetails/${selectedGroup.id}/admin/revoke`,
+        payload,
+      );
+
+      console.log("📥 Admin Revoke Response:", response);
+
+      if (!response.success) {
+        throw new Error(response.error || "Failed to revoke assets");
+      }
 
       setShowRevokeModal(false);
       setSelectedRevokeMachines([]);
@@ -1041,7 +1114,7 @@ export default function AdminGroups() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -1146,7 +1219,7 @@ export default function AdminGroups() {
             </div>
           </div>
 
-          <div className="card !p-6">
+          {/* <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600">
@@ -1177,9 +1250,9 @@ export default function AdminGroups() {
                 </svg>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="card !p-6">
+          {/* <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600">
@@ -1210,7 +1283,7 @@ export default function AdminGroups() {
                 </svg>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Error Message */}
@@ -1441,7 +1514,7 @@ export default function AdminGroups() {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center gap-2">
-                                  <button
+                                  {/* <button
                                     onClick={() => {
                                       // Logic for editing member could go here
                                       // console.log('Edit member:', user.email);
@@ -1462,7 +1535,7 @@ export default function AdminGroups() {
                                       />
                                     </svg>
                                     Edit
-                                  </button>
+                                  </button> */}
                                   <button
                                     onClick={() =>
                                       handleRemoveUserFromGroup(
@@ -1869,8 +1942,8 @@ export default function AdminGroups() {
                                         <option value="admin">Admin</option>
                                         <option value="full">Full Access</option>
                                     </select>
-                                </div> */}
-                {/* <div>
+                                </div>
+                                <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">
                                         Status <span className="text-red-500">*</span>
                                     </label>
@@ -2265,17 +2338,33 @@ export default function AdminGroups() {
               )}
 
               <div className="space-y-6">
-                {/* Select User */}
+                {/* Group Admin Email (read-only) */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Transfer To User <span className="text-red-500">*</span>
+                    Group Admin Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={
+                      selectedGroup.users.find((u) => u.role === "Group Admin")
+                        ?.email || currentUserEmail
+                    }
+                    readOnly
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-600 cursor-not-allowed"
+                  />
+                </div>
+
+                {/* Select Member */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Member Email <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={selectedTransferUser}
                     onChange={(e) => setSelectedTransferUser(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Select a user...</option>
+                    <option value="">Select a member...</option>
                     {selectedGroup.users.map((user) => (
                       <option key={user.email} value={user.email}>
                         {user.name} ({user.email})
@@ -2319,10 +2408,13 @@ export default function AdminGroups() {
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         onChange={(e) => {
                           const machineId = e.target.value;
-                          if (
-                            machineId &&
-                            !selectedMachines.includes(machineId)
-                          ) {
+                          if (!machineId) return;
+
+                          if (selectedMachines.includes(machineId)) {
+                            setSelectedMachines(
+                              selectedMachines.filter((id) => id !== machineId),
+                            );
+                          } else {
                             setSelectedMachines([
                               ...selectedMachines,
                               machineId,
@@ -2335,10 +2427,17 @@ export default function AdminGroups() {
                         <option value="">Select a machine...</option>
                         {availableMachines
                           .filter(
-                            (machine) => !selectedMachines.includes(machine.id),
+                            (machine) =>
+                              !selectedMachines.includes(String(machine.id)) &&
+                              !selectedMachines.includes(
+                                String(machine.machine_id),
+                              ),
                           )
                           .map((machine: any) => (
-                            <option key={machine.id} value={machine.id}>
+                            <option
+                              key={machine.id || machine.machine_id}
+                              value={String(machine.id || machine.machine_id)}
+                            >
                               {machine.machine_name || "Unnamed Machine"} -{" "}
                               {machine.mac_address}
                             </option>
@@ -2354,7 +2453,8 @@ export default function AdminGroups() {
                           <div className="flex flex-wrap gap-2">
                             {selectedMachines.map((machineId) => {
                               const machine = availableMachines.find(
-                                (m) => m.id === machineId,
+                                (m) =>
+                                  String(m.id || m.machine_id) === machineId,
                               );
                               return machine ? (
                                 <div
@@ -2363,6 +2463,9 @@ export default function AdminGroups() {
                                 >
                                   <span className="text-slate-700 font-medium">
                                     {machine.machine_name || "Unnamed"}
+                                  </span>
+                                  <span className="text-slate-400 text-xs">
+                                    {machine.mac_address || "N/A"}
                                   </span>
                                   <button
                                     onClick={() =>
@@ -2511,8 +2614,7 @@ export default function AdminGroups() {
                   disabled={
                     isSubmitting ||
                     !selectedTransferUser ||
-                    (selectedMachines.length === 0 &&
-                      selectedLicenses.length === 0)
+                    selectedMachines.length === 0
                   }
                 >
                   {isSubmitting ? (
@@ -2569,17 +2671,33 @@ export default function AdminGroups() {
               )}
 
               <div className="space-y-6">
-                {/* Select User */}
+                {/* Group Admin Email (read-only) */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Select User <span className="text-red-500">*</span>
+                    Group Admin Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={
+                      selectedGroup.users.find((u) => u.role === "Group Admin")
+                        ?.email || currentUserEmail
+                    }
+                    readOnly
+                    className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-600 cursor-not-allowed"
+                  />
+                </div>
+
+                {/* Select Member */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Member Email <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={selectedRevokeUser}
                     onChange={(e) => handleRevokeUserChange(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   >
-                    <option value="">Select a user...</option>
+                    <option value="">Select a member...</option>
                     {selectedGroup.users.map((user) => (
                       <option key={user.email} value={user.email}>
                         {user.name} ({user.email})
@@ -2642,10 +2760,20 @@ export default function AdminGroups() {
                             {userMachines
                               .filter(
                                 (machine) =>
-                                  !selectedRevokeMachines.includes(machine.id),
+                                  !selectedRevokeMachines.includes(
+                                    String(machine.id),
+                                  ) &&
+                                  !selectedRevokeMachines.includes(
+                                    String(machine.machine_id),
+                                  ),
                               )
                               .map((machine: any) => (
-                                <option key={machine.id} value={machine.id}>
+                                <option
+                                  key={machine.id || machine.machine_id}
+                                  value={String(
+                                    machine.id || machine.machine_id,
+                                  )}
+                                >
                                   {machine.machine_name || "Unnamed Machine"} -{" "}
                                   {machine.mac_address}
                                 </option>
@@ -2662,7 +2790,9 @@ export default function AdminGroups() {
                               <div className="flex flex-wrap gap-2">
                                 {selectedRevokeMachines.map((machineId) => {
                                   const machine = userMachines.find(
-                                    (m) => m.id === machineId,
+                                    (m) =>
+                                      String(m.id || m.machine_id) ===
+                                      machineId,
                                   );
                                   return machine ? (
                                     <div
@@ -2671,6 +2801,9 @@ export default function AdminGroups() {
                                     >
                                       <span className="text-slate-700 font-medium">
                                         {machine.machine_name || "Unnamed"}
+                                      </span>
+                                      <span className="text-slate-400 text-xs">
+                                        {machine.mac_address || "N/A"}
                                       </span>
                                       <button
                                         onClick={() =>
@@ -2822,8 +2955,7 @@ export default function AdminGroups() {
                   disabled={
                     isSubmitting ||
                     !selectedRevokeUser ||
-                    (selectedRevokeMachines.length === 0 &&
-                      selectedRevokeLicenses.length === 0)
+                    selectedRevokeMachines.length === 0
                   }
                 >
                   {isSubmitting ? (

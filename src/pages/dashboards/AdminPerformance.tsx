@@ -1,331 +1,414 @@
-﻿import Sparkline from '@/components/Sparkline'
+﻿import Sparkline from "@/components/Sparkline";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import BarChart from '@/components/BarChart'
-import { useState, useEffect } from 'react'
-import { useNotification } from '@/contexts/NotificationContext'
-import { useAuth } from '@/auth/AuthContext'
-import { apiClient } from '@/utils/enhancedApiClient'
-import { usePerformanceData } from '@/hooks/usePerformanceData'
-import { useAuditReports } from '@/hooks/useAuditReports'
-import { useUserMachines } from '@/hooks/useUserMachines'
-import { isDemoMode, DEMO_PERFORMANCE_DATA } from '@/data/demoData'
-import { Helmet } from 'react-helmet-async'
+import BarChart from "@/components/BarChart";
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { useNotification } from "@/contexts/NotificationContext";
+import { useAuth } from "@/auth/AuthContext";
+import { apiClient } from "@/utils/enhancedApiClient";
+import { usePerformanceData } from "@/hooks/usePerformanceData";
+import { useErasureMetrics } from "@/hooks/useErasureMetrics";
+import { useSubusers } from "@/hooks/useSubusers";
+import { useAuditReports } from "@/hooks/useAuditReports";
+import { useUserMachines } from "@/hooks/useUserMachines";
+import { authService } from "@/utils/authService";
+import {
+  isDemoMode,
+  DEMO_PERFORMANCE_DATA,
+  DEMO_SUBUSERS,
+} from "@/data/demoData";
+import { Helmet } from "react-helmet-async";
 
 interface PerformanceData {
-  monthlyErasures: { month: string; count: number }[]
-  avgDuration: { month: string; duration: number }[]
-  throughput: { month: string; count: number }[]
+  monthlyErasures: { month: string; count: number }[];
+  avgDuration: { month: string; duration: number }[];
+  throughput: { month: string; count: number }[];
+  successRate: string;
+  successCount: number;
+  failureCount: number;
 }
 
-// ✅ React Query handles all caching automatically - no manual cache functions needed
+// ✅ Date Helper Functions
+const formatDateToYYYYMMDD = (date: Date): string => {
+  return date.toISOString().split("T")[0]; // Returns YYYY-MM-DD format
+};
+
+const isValidDateFormat = (dateString: string): boolean => {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regex.test(dateString)) return false;
+  const date = new Date(dateString);
+  return !isNaN(date.getTime()) && dateString === formatDateToYYYYMMDD(date);
+};
+
+// ✅ Custom DateInput Component using native date picker for better UX
+const CustomDateInput = ({
+  label,
+  value,
+  onChange,
+  placeholder = "YYYY-MM-DD",
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) => {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-slate-700 mb-1">
+        {label}
+      </label>
+      <input
+        type="date"
+        className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        // Use max to prevent future dates if needed, or min for past
+        max="9999-12-31" 
+      />
+    </div>
+  );
+};
 
 export default function AdminPerformance() {
-  const { showError } = useNotification()
-  const { user } = useAuth()
+  const { showError } = useNotification();
+  const { user } = useAuth();
+  const isDemo = isDemoMode();
 
-  // ✅ Check demo mode
-  const isDemo = isDemoMode()
-
-  // ✅ Get user email for React Query hooks
+  // ✅ Get current user email robustly (from AdminReports logic)
   const getUserEmail = (): string => {
-    const storedUser = localStorage.getItem('user_data')
-    const authUser = localStorage.getItem('authUser')
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
 
-    let storedUserData = null
+    let storedUserData = null;
     if (storedUser) {
       try {
-        storedUserData = JSON.parse(storedUser)
+        storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error('Error parsing user_data:', e)
+        console.error("Error parsing user_data:", e);
       }
     }
 
     if (!storedUserData && authUser) {
       try {
-        storedUserData = JSON.parse(authUser)
+        storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error('Error parsing authUser:', e)
+        console.error("Error parsing authUser:", e);
       }
     }
 
-    return storedUserData?.user_email || user?.email || ''
-  }
+    const jwtUser = authService.getUserFromToken();
+    return (
+      storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || ""
+    );
+  };
 
-  const userEmail = getUserEmail()
+  const currentUserEmail = getUserEmail();
 
-  // ✅ Use React Query hooks (disabled in demo mode)
-  const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo)
-  const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo)
-  const performanceQuery = usePerformanceData(userEmail, !!userEmail && !isDemo)
+  // --- Filter States ---
+  const [selectedYear, setSelectedYear] = useState<number>(
+    new Date().getFullYear(),
+  );
+  const [fromDate, setFromDate] = useState<string>("");
+  const [toDate, setToDate] = useState<string>("");
+  const [selectedUserEmail, setSelectedUserEmail] = useState<string>(""); // "" means My Reports (Current User)
+  const [dateValidationError, setDateValidationError] = useState("");
 
+  // --- Data Fetching ---
+
+  // 1. Fetch Subusers for Dropdown
+  const { data: subusers = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(
+    currentUserEmail,
+    !!currentUserEmail && !isDemo,
+  );
+
+  // 2. Fetch Erasure Metrics
+  const metricsFilters = useMemo(() => {
+    let targetEmails: string[] = [];
+    const effectiveUserEmail = currentUserEmail; // Use the robustly fetched email
+
+    if (selectedUserEmail === "" || selectedUserEmail === "my") {
+      // My Reports
+      if (effectiveUserEmail) targetEmails = [effectiveUserEmail];
+    } else if (selectedUserEmail === "all") {
+      // All Reports (Me + Subusers)
+      if (effectiveUserEmail) targetEmails = [effectiveUserEmail];
+      subusers.forEach((sub: any) => {
+        if (sub.subuser_email || sub.email)
+          targetEmails.push(sub.subuser_email || sub.email);
+      });
+    } else {
+      // Specific Subuser
+      targetEmails = [selectedUserEmail];
+    }
+
+    // Fallback if empty and we have a user
+    if (targetEmails.length === 0 && effectiveUserEmail) {
+      targetEmails = [effectiveUserEmail];
+    }
+
+    return {
+      userEmails: targetEmails,
+      year: selectedYear,
+      fromDate: fromDate || undefined,
+      toDate: toDate || undefined,
+    };
+  }, [selectedUserEmail, selectedYear, fromDate, toDate, currentUserEmail, subusers]);
+
+  const {
+    data: erasureMetrics,
+    isLoading: metricsLoading,
+    isError: metricsError,
+  } = useErasureMetrics(metricsFilters, !isDemo);
+
+  // --- Demo Mode Data ---
   const [performanceData, setPerformanceData] = useState<PerformanceData>({
     monthlyErasures: [],
     avgDuration: [],
-    throughput: []
-  })
+    throughput: [],
+    successRate: "0%",
+    successCount: 0,
+    failureCount: 0,
+  });
 
-  // ✅ Use React Query loading state (demo mode is never loading)
-  const loading = isDemo ? false : performanceQuery.isLoading
-
-  // ✅ DEMO MODE: Load static data
   useEffect(() => {
     if (isDemo) {
-      // console.log('🎭 DEMO MODE - Loading static performance data');
-      setPerformanceData(DEMO_PERFORMANCE_DATA);
+      setPerformanceData(DEMO_PERFORMANCE_DATA as unknown as PerformanceData);
+    } else if (erasureMetrics) {
+      // Map API response to component state
+      setPerformanceData({
+        monthlyErasures: erasureMetrics.monthlyMetrics.map((m) => ({
+          month: m.month,
+          count: m.erasureCount,
+        })),
+        avgDuration: [{ month: "Avg", duration: 0 }], // Placeholder
+        throughput: [], // Not provided by new API yet
+        successRate: `${erasureMetrics.successRate}%`,
+        successCount: 0, // Not explicitly in new response
+        failureCount: 0,
+      });
     }
-  }, [isDemo])
+  }, [isDemo, erasureMetrics]);
 
-  // ✅ Update performance data from React Query (same as AdminDashboard) - skip in demo mode
-  useEffect(() => {
-    if (isDemo) return;
+  const clearAllFilters = () => {
+    setSelectedYear(new Date().getFullYear());
+    setFromDate("");
+    setToDate("");
+    setSelectedUserEmail("");
+    setDateValidationError("");
+  };
 
-    if (performanceQuery.data) {
-      // console.log('✅ Performance data loaded from React Query:', performanceQuery.data)
-      setPerformanceData(performanceQuery.data)
-    } else if (performanceQuery.isError) {
-      console.error('❌ Error loading performance data:', performanceQuery.error)
-      showError('Data Loading Error', 'Failed to load performance data.')
-    }
-  }, [performanceQuery.data, performanceQuery.isError, isDemo])
-
-  // ✅ Performance data is now automatically loaded via React Query hooks
-  // No manual API calls needed - React Query handles caching, refetching, and filtering
+  const loading = isDemo ? false : metricsLoading;
 
   if (loading) {
     return (
-      <>
-      {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage("admin-performance")} />
-        <Helmet>
-          <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
-          <title>DSecureTech Performance | System Performance & Erasure Metrics</title>
-          <meta
-            name="description"
-            content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
-          />
-          <meta
-            name="keywords"
-            content="performance monitoring, erasure metrics, system analytics, data erasure performance"
-          />
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
-        <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900">Performance</h1>
-              <p className="text-sm text-slate-600 mt-1">Monitor system performance and erasure metrics</p>
-            </div>
-          </div>
-          <div className="animate-pulse">
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div className="h-4 bg-slate-300 rounded w-32 mb-2"></div>
-                <div className="h-10 bg-slate-300 rounded w-24 mb-3"></div>
-                <div className="h-24 bg-slate-300 rounded"></div>
-              </div>
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div className="h-4 bg-slate-300 rounded w-32 mb-2"></div>
-                <div className="h-10 bg-slate-300 rounded w-24 mb-3"></div>
-                <div className="h-24 bg-slate-300 rounded"></div>
-              </div>
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div className="h-4 bg-slate-300 rounded w-32 mb-2"></div>
-                <div className="h-10 bg-slate-300 rounded w-24 mb-3"></div>
-                <div className="h-24 bg-slate-300 rounded"></div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <div className="h-6 bg-slate-300 rounded w-32 mb-4"></div>
-              <div className="h-80 bg-slate-300 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </>
-    )
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
+      </div>
+    );
   }
 
-  // Calculate totals and averages
-  const totalErasures = performanceData.monthlyErasures.reduce((sum, item) => sum + item.count, 0)
-  const totalDuration = performanceData.avgDuration.reduce((sum, item) => sum + item.duration, 0)
-  const validDurationCount = performanceData.avgDuration.filter(i => i.duration > 0).length
-  const avgSeconds = validDurationCount > 0
-    ? totalDuration / validDurationCount
-    : 0
-  const minutes = Math.floor(avgSeconds / 60)
-  const seconds = Math.floor(avgSeconds % 60)
-  const avgDurationDisplay = `${minutes}m ${seconds}s`
+  // Calculate Display Values
+  const totalErasures = isDemo
+    ? DEMO_PERFORMANCE_DATA.monthlyErasures.reduce(
+        (sum: number, item: any) => sum + item.count,
+        0,
+      )
+    : erasureMetrics?.totalErasures || 0;
 
-  // Calculate success rate based on erasures vs total operations
-  const totalOperations = performanceData.monthlyErasures.reduce((sum, item) => sum + item.count, 0)
-  const successRate = totalOperations > 0 ? '99.2%' : '0%'
-
-  // Check if there's no data available
-  const hasNoData = !isDemo &&
-    performanceData.monthlyErasures.length === 0 &&
-    performanceData.avgDuration.length === 0 &&
-    performanceData.throughput.length === 0
-
-  // Empty state when no data is available
-  if (hasNoData) {
-    return (
-      <>
-        <Helmet>
-          <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
-          <title>DSecureTech Performance | System Performance & Erasure Metrics</title>
-          <meta
-            name="description"
-            content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
-          />
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
-        <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900">Performance</h1>
-              <p className="text-sm text-slate-600 mt-1">Monitor system performance and erasure metrics</p>
-            </div>
-          </div>
-
-          {/* No Data Available Empty State */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12">
-            <div className="flex flex-col items-center justify-center text-center py-12">
-              {/* Chart Icon */}
-              <svg
-                className="w-16 h-16 text-slate-300 mb-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
-
-              <h3 className="text-xl font-semibold text-slate-700 mb-2">
-                No Data Available
-              </h3>
-              <p className="text-slate-500 max-w-sm">
-                Performance data is not available from the server.
-              </p>
-            </div>
-          </div>
-        </div>
-      </>
-    )
-  }
+  const avgDurationDisplay = isDemo
+    ? "15m 30s"
+    : erasureMetrics?.avgDuration || "0m 0s";
+  const successRate = isDemo ? "98%" : `${erasureMetrics?.successRate || 0}%`;
 
   return (
     <>
+      <SEOHead seo={getSEOForPage("admin-performance")} />
       <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/admin/performance" />
-        <title>DSecureTech Performance | System Performance & Erasure Metrics</title>
-        <meta
-          name="description"
-          content="Monitor DSecureTech system performance, erasure metrics, and throughput analytics in real-time."
-        />
-        <meta
-          name="keywords"
-          content="performance monitoring, erasure metrics, system analytics, data erasure performance"
-        />
-        <meta name="robots" content="noindex, nofollow" />
+        <title>DSecureTech Performance | System Performance</title>
       </Helmet>
+
       <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        {/* Header & Filters */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Performance</h1>
-            <p className="text-sm text-slate-600 mt-1">Monitor system performance and erasure metrics</p>
+            <p className="text-sm text-slate-600 mt-1">
+              Monitor system performance and erasure metrics
+            </p>
           </div>
         </div>
 
-        {/* Top 3 Metric Cards - Same as AdminDashboard */}
+        {/* Filters Card - Matching AdminReports Style */}
+        {!isDemo && (
+          <div className="card p-4 space-y-4 bg-white rounded-xl shadow-sm border border-slate-200">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-slate-900">
+                Filters & Search
+              </h3>
+              <button
+                onClick={clearAllFilters}
+                className="text-sm text-red-600 hover:text-red-800 font-medium"
+              >
+                Clear All
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-4">
+              {/* User Filter */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Report Owner
+                </label>
+                <select
+                  className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                  value={selectedUserEmail}
+                  onChange={(e) => setSelectedUserEmail(e.target.value)}
+                >
+                  <option value="">My Reports</option>
+                  <option value="all">All Reports (Me + Subusers)</option>
+                  <optgroup label="Subuser Reports">
+                    {subusers.map((subuser: any) => (
+                      <option
+                        key={subuser.subuser_email || subuser.email}
+                        value={subuser.subuser_email || subuser.email}
+                      >
+                        {subuser.subuser_name ||
+                          subuser.name ||
+                          subuser.subuser_email ||
+                          subuser.email}
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+              </div>
+
+              {/* Year Selector */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Year
+                </label>
+                <select
+                  className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(Number(e.target.value))}
+                >
+                  {Array.from(
+                    { length: 5 },
+                    (_, i) => new Date().getFullYear() - i,
+                  ).map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Date Range Filter */}
+              <CustomDateInput
+                label="From Date"
+                value={fromDate}
+                onChange={(value) => {
+                  setFromDate(value);
+                  // Validate date range
+                  if (value && toDate && new Date(value) > new Date(toDate)) {
+                    setDateValidationError(
+                      "From date cannot be later than To date.",
+                    );
+                  } else {
+                    setDateValidationError("");
+                  }
+                }}
+              />
+
+              {/* To Date Filter */}
+              <CustomDateInput
+                label="To Date"
+                value={toDate}
+                onChange={(value) => {
+                  setToDate(value);
+                  // Validate date range
+                  if (
+                    value &&
+                    fromDate &&
+                    new Date(fromDate) > new Date(value)
+                  ) {
+                    setDateValidationError(
+                      "To date cannot be earlier than From date.",
+                    );
+                  } else {
+                    setDateValidationError("");
+                  }
+                }}
+              />
+
+              {/* Date Validation Error */}
+              {dateValidationError && (
+                <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-6 text-red-500 text-sm bg-red-50 border border-red-200 rounded px-3 py-2">
+                  ⚠️ {dateValidationError}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Top 3 Metric Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Monthly Erasures */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="mb-4">
-              <p className="text-sm text-slate-500 mb-1">Monthly erasures</p>
-              <p className="text-3xl font-bold text-slate-900">{totalErasures.toLocaleString()}</p>
+              <p className="text-sm text-slate-500 mb-1">Total Erasures</p>
+              <p className="text-3xl font-bold text-slate-900">
+                {totalErasures.toLocaleString()}
+              </p>
             </div>
-            <div className="h-24">
-              <svg viewBox="0 0 300 80" className="w-full h-full">
-                <defs>
-                  <linearGradient id="areaGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-
-                {performanceData.monthlyErasures.length > 0 && (
-                  <>
-                    <path
-                      d={`M 0 80 ${performanceData.monthlyErasures.map((item, index) => {
-                        const x = (index / Math.max(performanceData.monthlyErasures.length - 1, 1)) * 300
-                        const maxCount = Math.max(...performanceData.monthlyErasures.map(i => i.count), 1)
-                        const y = 80 - (item.count / maxCount) * 60
-                        return `L ${x} ${y}`
-                      }).join(' ')} L 300 80 Z`}
-                      fill="url(#areaGradient1)"
-                    />
-                    <path
-                      d={`${performanceData.monthlyErasures.map((item, index) => {
-                        const x = (index / Math.max(performanceData.monthlyErasures.length - 1, 1)) * 300
-                        const maxCount = Math.max(...performanceData.monthlyErasures.map(i => i.count), 1)
-                        const y = 80 - (item.count / maxCount) * 60
-                        return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
-                      }).join(' ')}`}
-                      stroke="#3B82F6"
-                      strokeWidth="2"
-                      fill="none"
-                    />
-                  </>
-                )}
-              </svg>
+            {/* Simple sparkline visualization */}
+            <div className="h-16 flex items-end gap-1">
+              {performanceData.monthlyErasures.map((m, i) => {
+                const max = Math.max(
+                  ...performanceData.monthlyErasures.map((x) => x.count),
+                  1,
+                );
+                const height = Math.max((m.count / max) * 100, 5); // min 5% height
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 bg-blue-100 rounded-t hover:bg-blue-200 transition-colors relative group"
+                  >
+                    <div
+                      style={{ height: `${height}%` }}
+                      className="bg-blue-500 rounded-t w-full bottom-0 absolute"
+                    ></div>
+                    <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded z-10 pointer-events-none">
+                      {m.month}: {m.count}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Average Duration */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="mb-4">
-              <p className="text-sm text-slate-500 mb-1">Avg. duration</p>
-              <p className="text-3xl font-bold text-slate-900">{avgDurationDisplay}</p>
+              <p className="text-sm text-slate-500 mb-1">Avg. Duration</p>
+              <p className="text-3xl font-bold text-slate-900">
+                {avgDurationDisplay}
+              </p>
             </div>
-            <div className="h-24">
-              <svg viewBox="0 0 300 80" className="w-full h-full">
-                <defs>
-                  <linearGradient id="areaGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#10B981" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#10B981" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-
-                {performanceData.avgDuration.length > 0 && (
-                  <>
-                    <path
-                      d={`M 0 80 ${performanceData.avgDuration.map((item, index) => {
-                        const x = (index / Math.max(performanceData.avgDuration.length - 1, 1)) * 300
-                        const maxDuration = Math.max(...performanceData.avgDuration.map(i => i.duration), 1)
-                        const y = 80 - (item.duration / maxDuration) * 60
-                        return `L ${x} ${y}`
-                      }).join(' ')} L 300 80 Z`}
-                      fill="url(#areaGradient2)"
-                    />
-                    <path
-                      d={`${performanceData.avgDuration.map((item, index) => {
-                        const x = (index / Math.max(performanceData.avgDuration.length - 1, 1)) * 300
-                        const maxDuration = Math.max(...performanceData.avgDuration.map(i => i.duration), 1)
-                        const y = 80 - (item.duration / maxDuration) * 60
-                        return `${index === 0 ? 'M' : 'L'} ${x} ${y}`
-                      }).join(' ')}`}
-                      stroke="#10B981"
-                      strokeWidth="2"
-                      fill="none"
-                    />
-                  </>
-                )}
+            <div className="h-16 flex items-center justify-center text-slate-300">
+              <svg
+                className="w-12 h-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             </div>
           </div>
@@ -333,84 +416,62 @@ export default function AdminPerformance() {
           {/* Success Rate */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="mb-4">
-              <p className="text-sm text-slate-500 mb-1">Success rate</p>
+              <p className="text-sm text-slate-500 mb-1">Success Rate</p>
               <p className="text-3xl font-bold text-slate-900">{successRate}</p>
             </div>
-            <div className="h-24">
-              <svg viewBox="0 0 300 80" className="w-full h-full">
-                <defs>
-                  <linearGradient id="areaGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#F59E0B" stopOpacity="0.05" />
-                  </linearGradient>
-                </defs>
-
-                {/* Success rate visualization - showing consistent high performance */}
-                <path
-                  d="M 0 20 L 25 18 L 50 19 L 75 17 L 100 18 L 125 16 L 150 17 L 175 15 L 200 16 L 225 15 L 250 14 L 275 15 L 300 14 L 300 80 L 0 80 Z"
-                  fill="url(#areaGradient3)"
-                />
-                <path
-                  d="M 0 20 L 25 18 L 50 19 L 75 17 L 100 18 L 125 16 L 150 17 L 175 15 L 200 16 L 225 15 L 250 14 L 275 15 L 300 14"
-                  stroke="#F59E0B"
-                  strokeWidth="2"
-                  fill="none"
-                />
-              </svg>
+            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-6">
+              <div
+                className="bg-green-500 h-2.5 rounded-full transition-all duration-500"
+                style={{ width: successRate }}
+              ></div>
             </div>
           </div>
         </div>
 
-        {/* Throughput Chart */}
+        {/* Throughput Chart (Monthly breakdown) */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <h3 className="text-lg font-semibold text-slate-900 mb-6">
-            Throughput
+            Erasure Trends ({selectedYear})
           </h3>
-          <div className="h-64">
-            <svg viewBox="0 0 800 200" className="w-full h-full">
-              {performanceData.throughput.length > 0 &&
-                performanceData.throughput.map((item, index) => {
-                  const maxCount = Math.max(
-                    ...performanceData.throughput.map((i) => i.count),
-                    1
-                  );
-                  const barWidth =
-                    800 / performanceData.throughput.length - 10;
-                  const x =
-                    (index * 800) / performanceData.throughput.length + 5;
-                  const barHeight = (item.count / maxCount) * 160;
-                  const y = 160 - barHeight;
+          <div className="h-64 flex items-end justify-between gap-2 px-4">
+            {performanceData.monthlyErasures.length > 0 ? (
+              performanceData.monthlyErasures.map((item, index) => {
+                const maxCount = Math.max(
+                  ...performanceData.monthlyErasures.map((i) => i.count),
+                  1,
+                );
+                const barHeight = (item.count / maxCount) * 100;
 
-                  return (
-                    <g key={index}>
-                      {/* Bar */}
-                      <rect
-                        x={x}
-                        y={y}
-                        width={barWidth}
-                        height={barHeight}
-                        fill="#3B82F6"
-                        rx="4"
-                      />
-                      {/* Month label */}
-                      <text
-                        x={x + barWidth / 2}
-                        y="185"
-                        textAnchor="middle"
-                        fill="#64748B"
-                        fontSize="12"
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center flex-1 group h-full justify-end"
+                  >
+                    <div className="relative w-full mx-1 flex items-end justify-center h-[85%]">
+                      <div
+                        style={{ height: `${barHeight}%` }}
+                        className="w-full max-w-[40px] bg-blue-500 rounded-t-md transition-all duration-300 group-hover:bg-blue-600"
                       >
-                        {item.month}
-                      </text>
-                    </g>
-                  );
-                })}
-            </svg>
+                        {/* Tooltip */}
+                        <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap transition-opacity pointer-events-none z-10">
+                          {item.count} Erasures
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-xs text-slate-500 mt-2 font-medium h-[15%]">
+                      {item.month}
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-slate-400">
+                No data available for this period
+              </div>
+            )}
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
-
-

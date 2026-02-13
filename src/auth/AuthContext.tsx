@@ -6,83 +6,93 @@ import type { User } from '../utils/enhancedApiClient'
 export type Role = 'user' | 'admin' | 'manager' | 'administrator' | 'superadmin'
 
 export interface AuthUser {
-  id: string
-  email: string
-  name: string
-  role: Role
-  token: string
-  department?: string
-  user_group?: string
-  timezone?: string
-  payment_details_json?: string
-  license_details_json?: string
-  phone_number?: string
-  is_private_cloud?: boolean
-  private_api?: boolean
+  id: string;
+  email: string;
+  name: string;
+  role: Role;
+  token: string;
+  department?: string;
+  user_group?: string;
+  timezone?: string;
+  payment_details_json?: string;
+  license_details_json?: string;
+  phone_number?: string;
+  is_private_cloud?: boolean;
+  private_api?: boolean;
+  is_groups_enabled?: boolean;
+  is_subusers_enabled?: boolean;
 }
 
 interface AuthContextValue {
-  user: AuthUser | null
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>
-  demoLogin: () => Promise<void>
+  user: AuthUser | null;
+  login: (
+    email: string,
+    password: string,
+    rememberMe?: boolean,
+  ) => Promise<void>;
+  demoLogin: () => Promise<void>;
   register: (registrationData: {
-    user_name: string
-    user_email: string
-    user_password: string
-    phone_number: string
-    is_private_cloud: boolean
-    private_api: boolean
-    payment_details_json: string
-    license_details_json: string
-  }) => Promise<void>
-  logout: () => Promise<void>
-  isUsingApi: boolean
-  loading: boolean
-  error: string | null
-  isAuthenticated: boolean
-  hasRole: (role: string) => boolean
-  hasPermission: (permission: string) => boolean
-  refreshToken: () => Promise<boolean>
-  hasValidPaymentDetails: () => boolean
-  hasValidLicenseDetails: () => boolean
-  isUserSetupComplete: () => boolean
-  getSmartRedirectPath: () => string
+    user_name: string;
+    user_email: string;
+    user_password: string;
+    phone_number: string;
+    is_private_cloud: boolean;
+    private_api: boolean;
+    payment_details_json: string;
+    license_details_json: string;
+  }) => Promise<void>;
+  logout: () => Promise<void>;
+  isUsingApi: boolean;
+  loading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+  hasRole: (role: string) => boolean;
+  hasPermission: (permission: string) => boolean;
+  refreshToken: () => Promise<boolean>;
+  hasValidPaymentDetails: () => boolean;
+  hasValidLicenseDetails: () => boolean;
+  isUserSetupComplete: () => boolean;
+  getSmartRedirectPath: () => string;
 }
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined)
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   // Safely extract user data with fallbacks
   // Priority: userRole (camelCase) > user_role (snake_case) > role > roles[0] > 'user'
-  let primaryRole: Role = 'user';
+  let primaryRole: Role = "user";
 
   // 1?? FIRST PRIORITY: userRole field (camelCase from API response)
-  if (jwtUser?.userRole && typeof jwtUser.userRole === 'string') {
+  if (jwtUser?.userRole && typeof jwtUser.userRole === "string") {
     primaryRole = jwtUser.userRole.toLowerCase() as Role;
     // console.log('? Using userRole (camelCase) from API:', primaryRole);
   }
   // 2?? SECOND PRIORITY: user_role field (snake_case)
-  else if (jwtUser?.user_role && typeof jwtUser.user_role === 'string') {
+  else if (jwtUser?.user_role && typeof jwtUser.user_role === "string") {
     primaryRole = jwtUser.user_role.toLowerCase() as Role;
     // console.log('? Using user_role (snake_case) from API:', primaryRole);
   }
   // 3?? THIRD PRIORITY: role field
-  else if (jwtUser?.role && typeof jwtUser.role === 'string') {
+  else if (jwtUser?.role && typeof jwtUser.role === "string") {
     primaryRole = jwtUser.role.toLowerCase() as Role;
     // console.log('? Using role field:', primaryRole);
   }
   // 4?? FOURTH PRIORITY: roles array (only if not empty)
-  else if (jwtUser?.roles && Array.isArray(jwtUser.roles) && jwtUser.roles.length > 0) {
+  else if (
+    jwtUser?.roles &&
+    Array.isArray(jwtUser.roles) &&
+    jwtUser.roles.length > 0
+  ) {
     primaryRole = jwtUser.roles[0].toLowerCase() as Role;
     // console.log('? Using roles[0]:', primaryRole);
   }
   // 5?? FIFTH PRIORITY: userType field (from JWT token)
-  else if (jwtUser?.userType && typeof jwtUser.userType === 'string') {
+  else if (jwtUser?.userType && typeof jwtUser.userType === "string") {
     primaryRole = jwtUser.userType.toLowerCase() as Role;
     // console.log('? Using userType from token:', primaryRole);
   }
   // 6?? SIXTH PRIORITY: user_type field
-  else if (jwtUser?.user_type && typeof jwtUser.user_type === 'string') {
+  else if (jwtUser?.user_type && typeof jwtUser.user_type === "string") {
     primaryRole = jwtUser.user_type.toLowerCase() as Role;
     // console.log('? Using user_type field:', primaryRole);
   }
@@ -95,18 +105,34 @@ function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
   // console.log('?? Full API response data:', jwtUser);
 
   return {
-    id: jwtUser?.userId || jwtUser?.user_id || jwtUser?.sub || jwtUser?.id || 'unknown',
-    email: jwtUser?.email || '',
-    name: jwtUser?.userName || jwtUser?.user_name || jwtUser?.subuser_name || jwtUser?.name || 'Unknown User',
+    id:
+      jwtUser?.userId ||
+      jwtUser?.user_id ||
+      jwtUser?.sub ||
+      jwtUser?.id ||
+      "unknown",
+    email: jwtUser?.email || "",
+    name:
+      jwtUser?.userName ||
+      jwtUser?.user_name ||
+      jwtUser?.subuser_name ||
+      jwtUser?.name ||
+      "Unknown User",
     role: primaryRole,
     token,
-    department: jwtUser?.department || '',
-    payment_details_json: jwtUser?.payment_details_json || '{}',
-    license_details_json: jwtUser?.license_details_json || '{}',
-    phone_number: jwtUser?.phone || jwtUser?.phone_number || jwtUser?.subuser_phone || '',
-    is_private_cloud: jwtUser?.is_private_cloud || false,
-    private_api: jwtUser?.private_api || false,
-  }
+    department: jwtUser?.department || "",
+    payment_details_json: jwtUser?.payment_details_json || "{}",
+    license_details_json: jwtUser?.license_details_json || "{}",
+    phone_number:
+      jwtUser?.phone || jwtUser?.phone_number || jwtUser?.subuser_phone || "",
+    is_private_cloud:
+      jwtUser?.is_private_cloud || jwtUser?.isPrivateCloud || false,
+    private_api: jwtUser?.private_api || jwtUser?.privateApi || false,
+    is_groups_enabled:
+      jwtUser?.is_groups_enabled || jwtUser?.isGroupsEnabled || false,
+    is_subusers_enabled:
+      jwtUser?.is_subusers_enabled || jwtUser?.isSubusersEnabled || false,
+  };
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {

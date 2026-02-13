@@ -193,6 +193,7 @@ export interface GroupsResponse {
       totalDistributed: number
       totalAvailable: number
       overallUsagePercent: number
+      licenseKey: string
     }
     data: Group[]
   }

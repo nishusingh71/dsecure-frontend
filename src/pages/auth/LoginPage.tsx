@@ -573,7 +573,18 @@ export default function LoginPage() {
         roles: userRoles,
         permissions: data.permissions || [],
         expiresAt: data.expiresAt,
-        is_private_cloud: data.is_private_cloud || false,
+        is_private_cloud:
+          String(
+            data.is_private_cloud || data.user?.is_private_cloud || false,
+          ).toLowerCase() === "true",
+        is_subusers_enabled:
+          String(
+            data.is_subusers_enabled || data.user?.is_subusers_enabled || false,
+          ).toLowerCase() === "true",
+        is_groups_enabled:
+          String(
+            data.is_groups_enabled || data.user?.is_groups_enabled || false,
+          ).toLowerCase() === "true",
         private_api: data.private_api || "",
         payment_details_json: data.payment_details_json || {},
         license_details_json: data.license_details_json || {},

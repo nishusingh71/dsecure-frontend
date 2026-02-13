@@ -297,7 +297,10 @@ export const DEMO_PERFORMANCE_DATA = {
     { month: 'Oct', count: 289 },
     { month: 'Nov', count: 312 },
     { month: 'Dec', count: 0 },
-  ]
+  ],
+  successRate: '99.2%',
+  successCount: 156,
+  failureCount: 2
 }
 
 // Demo Audit Reports - Detailed for AdminReports page

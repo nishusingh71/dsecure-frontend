@@ -27,6 +27,8 @@ export interface User {
     last_login?: string
     user_group?: string
     licesne_allocation?: string
+    is_groups_enabled?: boolean
+    is_subusers_enabled?: boolean
     // Subuser-specific fields
     subuser_name?: string
     subuser_phone?: string

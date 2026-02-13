@@ -49,9 +49,10 @@ import {
   useAuditReports,
   useEnhancedAuditReports,
 } from "@/hooks/useAuditReports";
+import { useErasureMetrics } from "@/hooks/useErasureMetrics";
 import { usePerformanceData } from "@/hooks/usePerformanceData";
 import { useSessions } from "@/hooks/useSessions";
-import authService from '@/utils/authService'
+import authService from "@/utils/authService";
 
 // ============================================================================
 // 🏗️ RBAC ARCHITECTURE: Hierarchical Role-Based Access Control System
@@ -66,10 +67,10 @@ export const Roles = {
   GROUP_ADMIN: "GroupAdmin",
   ADMIN: "Admin",
   USER: "User",
-  SUB_USER: "SubUser"
+  SUB_USER: "SubUser",
 } as const;
 
-type RoleType = typeof Roles[keyof typeof Roles];
+type RoleType = (typeof Roles)[keyof typeof Roles];
 
 /**
  * User Interface for Filter Building
@@ -86,7 +87,7 @@ interface CurrentUser {
 /**
  * Universal WHERE Clause Generator (Frontend → Backend Parity)
  * Centralized filter builder matching backend SQL WHERE clauses
- * 
+ *
  * @param user - Current authenticated user
  * @returns Base filter object for API queries
  */
@@ -101,16 +102,16 @@ export const buildWhereClause = (user: Partial<CurrentUser>) => {
     case Roles.GROUP_ADMIN:
     case Roles.ADMIN:
       // GroupAdmin/Admin: WHERE group_id = currentUser.groupId
-      return { 
-        ...base, 
-        groupId: user.groupId 
+      return {
+        ...base,
+        groupId: user.groupId,
       };
 
     case Roles.USER:
       // User: WHERE owner_id = currentUser.id
-      return { 
-        ...base, 
-        ownerId: user.id 
+      return {
+        ...base,
+        ownerId: user.id,
       };
 
     case Roles.SUB_USER:
@@ -119,14 +120,14 @@ export const buildWhereClause = (user: Partial<CurrentUser>) => {
         ...base,
         ownerId: user.parentUserId,
         subUserId: user.id,
-        departmentId: user.departmentId
+        departmentId: user.departmentId,
       };
 
     default:
       // Fallback: Most restrictive (own data only)
-      return { 
-        ...base, 
-        ownerId: user.id 
+      return {
+        ...base,
+        ownerId: user.id,
       };
   }
 };
@@ -148,11 +149,11 @@ export const buildReportFilter = (
     departmentId?: string;
     subUserId?: string;
     email?: string;
-  }
+  },
 ) => {
   return {
     ...buildWhereClause(user),
-    ...filters
+    ...filters,
   };
 };
 
@@ -168,11 +169,11 @@ export const buildMachineFilter = (
     isErased?: boolean;
     eraseType?: string;
     licenseStatus?: string;
-  }
+  },
 ) => {
   return {
     ...buildWhereClause(user),
-    ...filters
+    ...filters,
   };
 };
 
@@ -186,12 +187,12 @@ export const buildSessionFilter = (
     subUserId?: string;
     fromDate?: string;
     toDate?: string;
-  }
+  },
 ) => {
   return {
     ownerId: user.id,
     role: user.role,
-    ...filters
+    ...filters,
   };
 };
 
@@ -204,12 +205,12 @@ export const buildLicenseFilter = (
   filters: {
     status?: string[];
     assignedTo?: string;
-  }
+  },
 ) => {
   return {
     ...buildWhereClause(user),
     status: filters.status || ["Active", "Expired", "Revoked"],
-    assignedTo: filters.assignedTo
+    assignedTo: filters.assignedTo,
   };
 };
 
@@ -224,14 +225,14 @@ export const buildPerformanceFilter = (
     departmentId?: string;
     fromDate?: string;
     toDate?: string;
-  }
+  },
 ) => {
   return {
     groupId: filters.groupId,
     departmentId: filters.departmentId,
     fromDate: filters.fromDate,
     toDate: filters.toDate,
-    role: user.role
+    role: user.role,
   };
 };
 
@@ -241,27 +242,27 @@ export const buildPerformanceFilter = (
 
 /**
  * Example API Call Pattern with Centralized Filters
- * 
+ *
  * Usage in Component:
  * ```typescript
  * // 1. Build filter object using useMemo
- * const reportFilter = useMemo(() => 
+ * const reportFilter = useMemo(() =>
  *   buildReportFilter(currentUser, {
  *     groupId: selectedGroup,
  *     reportType,
  *     eraseStatus,
  *     fromDate,
  *     toDate
- *   }), 
+ *   }),
  *   [currentUser, selectedGroup, reportType, eraseStatus, fromDate, toDate]
  * );
- * 
+ *
  * // 2. Pass filter to API call
  * useEffect(() => {
  *   fetchAuditReports(reportFilter).then(setAuditData);
  * }, [reportFilter]);
  * ```
- * 
+ *
  * Backend SQL Pattern (MySQL Example):
  * ```sql
  * SELECT * FROM AuditReports
@@ -280,17 +281,17 @@ export const buildPerformanceFilter = (
  * AND
  *   (:status IS NULL OR Status = :status);
  * ```
- * 
+ *
  * API Service Example (Axios):
  * ```typescript
  * export const fetchAuditReports = async (filters: ReturnType<typeof buildReportFilter>) => {
  *   return axios.post("/api/audit/search", filters);
  * };
- * 
+ *
  * export const fetchMachines = async (filters: ReturnType<typeof buildMachineFilter>) => {
  *   return axios.post("/api/machines/search", filters);
  * };
- * 
+ *
  * export const fetchSessions = async (filters: ReturnType<typeof buildSessionFilter>) => {
  *   return axios.post("/api/sessions/search", filters);
  * };
@@ -303,11 +304,11 @@ export const buildPerformanceFilter = (
 
 /**
  * Export these functions to use in other admin components:
- * 
+ *
  * ```typescript
- * import { 
- *   Roles, 
- *   buildWhereClause, 
+ * import {
+ *   Roles,
+ *   buildWhereClause,
  *   buildReportFilter,
  *   buildMachineFilter,
  *   buildSessionFilter,
@@ -315,7 +316,7 @@ export const buildPerformanceFilter = (
  *   buildPerformanceFilter
  * } from '@/pages/dashboards/AdminDashboard';
  * ```
- * 
+ *
  * Then use in any component:
  * ```typescript
  * const currentUser = {
@@ -324,13 +325,13 @@ export const buildPerformanceFilter = (
  *   role: Roles.GROUP_ADMIN,
  *   groupId: userGroupId
  * };
- * 
+ *
  * const filters = buildReportFilter(currentUser, {
  *   fromDate: '2025-01-01',
  *   toDate: '2025-01-16',
  *   eraseType: 'DoD 5220.22-M'
  * });
- * 
+ *
  * // Use filters in API call
  * const reports = await fetchReports(filters);
  * ```
@@ -339,7 +340,6 @@ export const buildPerformanceFilter = (
 // ============================================================================
 // End of RBAC Architecture
 // ============================================================================
-
 
 // ✅ Import Demo Data for "Try Demo Account" mode
 import {
@@ -399,68 +399,96 @@ export default function AdminDashboard() {
   // ✅ RBAC: Role detection functions
   const getUserRole = (): string => {
     // ✅ Check demo mode first - demo user is always superadmin
-    const isDemoMode = localStorage.getItem('demo_mode') === 'true';
+    const isDemoMode = localStorage.getItem("demo_mode") === "true";
     if (isDemoMode) {
-      return 'superadmin';
+      return "superadmin";
     }
 
-    const storedUser = localStorage.getItem('user_data')
-    const authUser = localStorage.getItem('authUser')
-    let storedUserData = null
-    
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
+    let storedUserData = null;
+
     if (storedUser) {
-      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {}
     }
     if (!storedUserData && authUser) {
-      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {}
     }
-    
-    const role = storedUserData?.userRole || storedUserData?.role || storedUserData?.user_role || 
-                 user?.role || 'user'
-    
-    return role
-  }
+
+    const role =
+      storedUserData?.userRole ||
+      storedUserData?.role ||
+      storedUserData?.user_role ||
+      user?.role ||
+      "user";
+
+    return role;
+  };
 
   const getUserGroupId = (): string | null => {
-    const storedUser = localStorage.getItem('user_data')
-    const authUser = localStorage.getItem('authUser')
-    let storedUserData = null
-    
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
+    let storedUserData = null;
+
     if (storedUser) {
-      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {}
     }
     if (!storedUserData && authUser) {
-      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {}
     }
-    
-    const groupId = storedUserData?.user_group || storedUserData?.groupId || storedUserData?.group_id || null
-    
-    return groupId
-  }
+
+    const groupId =
+      storedUserData?.user_group ||
+      storedUserData?.groupId ||
+      storedUserData?.group_id ||
+      null;
+
+    return groupId;
+  };
 
   const getUserEmail = (): string => {
-    const storedUser = localStorage.getItem('user_data')
-    const authUser = localStorage.getItem('authUser')
-    let storedUserData = null
-    
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
+    let storedUserData = null;
+
     if (storedUser) {
-      try { storedUserData = JSON.parse(storedUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {}
     }
     if (!storedUserData && authUser) {
-      try { storedUserData = JSON.parse(authUser) } catch (e) { }
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {}
     }
-    
-    return storedUserData?.userEmail || storedUserData?.user_email || storedUserData?.email ||
-           user?.email || ''
-  }
+
+    return (
+      storedUserData?.userEmail ||
+      storedUserData?.user_email ||
+      storedUserData?.email ||
+      user?.email ||
+      ""
+    );
+  };
 
   // ✅ RBAC: Determine user's role and capabilities
-  const currentUserRole = getUserRole().toLowerCase()
-  const currentUserGroupId = getUserGroupId()
-  const currentUserEmail = getUserEmail()
-  const isSuperAdmin = currentUserRole === 'superadmin'
-  const isGroupAdmin = currentUserRole === 'admin' || currentUserRole === 'administrator' || currentUserRole === 'groupadmin'
-  const isSubUser = currentUserRole === 'user'
+  const currentUserRole = getUserRole().toLowerCase();
+  const currentUserGroupId = getUserGroupId();
+  const currentUserEmail = getUserEmail();
+  const isSuperAdmin = currentUserRole === "superadmin";
+  const isGroupAdmin =
+    currentUserRole === "admin" ||
+    currentUserRole === "administrator" ||
+    currentUserRole === "groupadmin";
+  const isSubUser = currentUserRole === "user";
 
   // Modal states
   const [showBulkLicenseModal, setShowBulkLicenseModal] = useState(false);
@@ -475,7 +503,7 @@ export default function AdminDashboard() {
   const [profileUpdateLoading, setProfileUpdateLoading] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [settingsTab, setSettingsTab] = useState<"billing" | "password">(
-    "billing"
+    "billing",
   );
   const [billingDetails, setBillingDetails] = useState<any>(null);
   const [billingAccordion, setBillingAccordion] = useState({
@@ -499,7 +527,6 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(false);
 
   // 🎛️ RBAC Filter Panel States
-
 
   // Form states for modals
   const [newUserForm, setNewUserForm] = useState({
@@ -584,10 +611,21 @@ export default function AdminDashboard() {
     return null;
   };
 
+  // Helper function to extract name from email
+  const getNameFromEmail = (email: string | undefined): string => {
+    if (!email) return "User";
+    const beforeAt = email.split("@")[0];
+    // Remove numbers and special symbols, keep only letters
+    const cleanedName = beforeAt.replace(/[^a-zA-Z]/g, "");
+    // Convert to readable name with capitalized first letter
+    if (!cleanedName) return "User";
+    return cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1);
+  };
+
   // ✅ Cache Helper Functions - Store data with timestamp
   // API Data States - React Query will populate these via useEffect
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(
-    null
+    null,
   );
   const [userActivity, setUserActivity] = useState<UserActivity[]>([]);
   const [groups, setGroups] = useState<GroupData[]>([]);
@@ -601,7 +639,7 @@ export default function AdminDashboard() {
   const [auditReportsCount, setAuditReportsCount] = useState<number>(0);
   const [auditReports, setAuditReports] = useState<AuditReport[]>([]);
   const [userLicenseDetails, setUserLicenseDetails] = useState<LicenseData[]>(
-    []
+    [],
   );
   const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>([]);
   const [recentSessions, setRecentSessions] = useState<any[]>([]);
@@ -611,36 +649,27 @@ export default function AdminDashboard() {
     monthlyErasures: { month: string; count: number }[];
     avgDuration: { month: string; duration: number }[];
     throughput: { month: string; count: number }[];
+    successRate: string;
+    successCount: number;
+    failureCount: number;
   }>({
     monthlyErasures: [],
     avgDuration: [],
     throughput: [],
+    successRate: "0%",
+    successCount: 0,
+    failureCount: 0,
   });
 
   // Separate states for Users and Subusers (not merged)
   const [superuserData, setSuperuserData] = useState<MergedUserData | null>(
-    null
+    null,
   );
 
   // Initialize profileData with localStorage data - use state to ensure reactivity
-  const [storedUserData, setStoredUserData] = useState(() => getUserDataFromStorage());
-
-  // Update stored user data when user context changes
-  useEffect(() => {
-    const userData = getUserDataFromStorage();
-    setStoredUserData(userData);
-  }, [user]);
-
-  // Check if user has private cloud access
-  const isPrivateCloudEnabled = user?.is_private_cloud || storedUserData?.is_private_cloud || false;
-
-  devLog("🔍 Private Cloud Check:", {
-    userIsPrivateCloud: user?.is_private_cloud,
-    storedIsPrivateCloud: storedUserData?.is_private_cloud,
-    isPrivateCloudEnabled,
-    user,
-    storedUserData
-  });
+  const [storedUserData, setStoredUserData] = useState(() =>
+    getUserDataFromStorage(),
+  );
   // Priority: userRole > user_role > role > user_type
   const primaryRole =
     storedUserData?.userRole ||
@@ -648,26 +677,15 @@ export default function AdminDashboard() {
     getPrimaryRole(storedUserData) ||
     user?.role ||
     "user";
-
-
-  // Helper function to extract name from email
-  const getNameFromEmail = (email: string | undefined): string => {
-    if (!email) return "User";
-    const beforeAt = email.split('@')[0];
-    // Remove numbers and special symbols, keep only letters
-    const cleanedName = beforeAt.replace(/[^a-zA-Z]/g, '');
-    // Convert to readable name with capitalized first letter
-    if (!cleanedName) return "User";
-    return cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1);
-  };
-
   const [profileData, setProfileData] = useState<ProfileData | null>({
     name:
       storedUserData?.user_name ||
       storedUserData?.subuser_name ||
       storedUserData?.name ||
       user?.name ||
-      getNameFromEmail(storedUserData?.user_email || storedUserData?.email || user?.email),
+      getNameFromEmail(
+        storedUserData?.user_email || storedUserData?.email || user?.email,
+      ),
     phone_number:
       storedUserData?.phone_number ||
       storedUserData?.phone ||
@@ -682,33 +700,109 @@ export default function AdminDashboard() {
     role: primaryRole,
     userRole: storedUserData?.userRole || storedUserData?.user_role,
     user_role: storedUserData?.user_role || storedUserData?.userRole,
-    phone: storedUserData?.phone_number || storedUserData?.phone || storedUserData?.subuser_phone || "",
+    phone:
+      storedUserData?.phone_number ||
+      storedUserData?.phone ||
+      storedUserData?.subuser_phone ||
+      "",
     department: storedUserData?.department || "",
     licenses: 0, // Will be updated from API
-    is_private_cloud: storedUserData?.is_private_cloud || user?.is_private_cloud,
+    is_private_cloud:
+      storedUserData?.is_private_cloud || user?.is_private_cloud,
+    is_groups_enabled:
+      storedUserData?.is_groups_enabled || user?.is_groups_enabled,
+    is_subusers_enabled:
+      storedUserData?.is_subusers_enabled || user?.is_subusers_enabled,
+  });
+
+  // Update stored user data when user context changes
+  useEffect(() => {
+    const userData = getUserDataFromStorage();
+    setStoredUserData(userData);
+  }, [user]);
+  const isDemo = isDemoMode();
+
+  // Check if user has private cloud access
+  const isPrivateCloudEnabled =
+    user?.is_private_cloud || storedUserData?.is_private_cloud;
+
+  const isGroupsEnabled =
+    isDemo ||
+    user?.is_groups_enabled ||
+    storedUserData?.is_groups_enabled ||
+    storedUserData?.isGroupsEnabled ||
+    profileData?.is_groups_enabled ||
+    false;
+
+  const isSubusersEnabled =
+    isDemo ||
+    user?.is_subusers_enabled ||
+    storedUserData?.is_subusers_enabled ||
+    storedUserData?.isSubusersEnabled ||
+    profileData?.is_subusers_enabled ||
+    false;
+
+  devLog("🔍 Private Cloud Check:", {
+    userIsPrivateCloud: user?.is_private_cloud,
+    storedIsPrivateCloud: storedUserData?.is_private_cloud,
+    isPrivateCloudEnabled,
+    user,
+    storedUserData,
+  });
+
+  console.log("🚀 Feature Flags Debug:", {
+    isGroupsEnabled,
+    isSubusersEnabled,
+    user_is_groups_enabled: user?.is_groups_enabled,
+    stored_is_groups_enabled: storedUserData?.is_groups_enabled,
+    user_is_subusers_enabled: user?.is_subusers_enabled,
+    stored_is_subusers_enabled: storedUserData?.is_subusers_enabled,
   });
 
   // Get user email for API calls (calculate before using in queries)
-  const userEmail = storedUserData?.user_email || storedUserData?.email || user?.email || "";
+  const userEmail =
+    storedUserData?.user_email || storedUserData?.email || user?.email || "";
 
   // ✅ RBAC: Build CurrentUser object for centralized filter builder (after storedUserData is defined)
-  const currentUser: Partial<CurrentUser> = useMemo(() => ({
-    id: storedUserData?.user_id || storedUserData?.id || user?.id || '',
-    email: currentUserEmail,
-    role: isSuperAdmin ? Roles.SUPER_ADMIN : 
-          isGroupAdmin ? Roles.GROUP_ADMIN : 
-          isSubUser ? Roles.SUB_USER : Roles.USER,
-    groupId: currentUserGroupId || undefined,
-    parentUserId: storedUserData?.parent_user_id || storedUserData?.parentUserId || undefined,
-    departmentId: storedUserData?.department_id || storedUserData?.departmentId || undefined
-  }), [currentUserRole, currentUserGroupId, currentUserEmail, storedUserData, user, isSuperAdmin, isGroupAdmin, isSubUser])
+  const currentUser: Partial<CurrentUser> = useMemo(
+    () => ({
+      id: storedUserData?.user_id || storedUserData?.id || user?.id || "",
+      email: currentUserEmail,
+      role: isSuperAdmin
+        ? Roles.SUPER_ADMIN
+        : isGroupAdmin
+          ? Roles.GROUP_ADMIN
+          : isSubUser
+            ? Roles.SUB_USER
+            : Roles.USER,
+      groupId: currentUserGroupId || undefined,
+      parentUserId:
+        storedUserData?.parent_user_id ||
+        storedUserData?.parentUserId ||
+        undefined,
+      departmentId:
+        storedUserData?.department_id ||
+        storedUserData?.departmentId ||
+        undefined,
+    }),
+    [
+      currentUserRole,
+      currentUserGroupId,
+      currentUserEmail,
+      storedUserData,
+      user,
+      isSuperAdmin,
+      isGroupAdmin,
+      isSubUser,
+    ],
+  );
 
-  devLog('🔐 RBAC Info (AdminDashboard):', { 
-    role: currentUserRole, 
-    groupId: currentUserGroupId, 
+  devLog("🔐 RBAC Info (AdminDashboard):", {
+    role: currentUserRole,
+    groupId: currentUserGroupId,
     email: currentUserEmail,
-    centralizedUser: currentUser 
-  })
+    centralizedUser: currentUser,
+  });
 
   // ✅ React Query: Fetch dashboard data with automatic caching
   const dashboardDataEnabled = activeTab === "overview";
@@ -723,7 +817,7 @@ export default function AdminDashboard() {
     "👤 Current User Type:",
     currentUserType,
     "| Is Subuser:",
-    isCurrentUserSubuser
+    isCurrentUserSubuser,
   );
 
   // ✅ React Query: Fetch subusers data with automatic caching and refetching
@@ -732,7 +826,6 @@ export default function AdminDashboard() {
   // Note: userEmail is already defined above (line 284)
 
   // ✅ In Demo Mode, disable all React Query API calls
-  const isDemo = isDemoMode();
 
   const {
     data: subusersData = isDemo ? DEMO_SUBUSERS : [],
@@ -747,73 +840,116 @@ export default function AdminDashboard() {
 
   // ✅ RBAC FILTERING: Filter subusers data using centralized WHERE clause builder
   const filteredSubusersData = useMemo(() => {
-    if (!subusersData || subusersData.length === 0) return []
-    
-    const whereClause = buildWhereClause(currentUser)
-    
+    if (!subusersData || subusersData.length === 0) return [];
+
+    const whereClause = buildWhereClause(currentUser);
+
     // SuperAdmin: No filtering (base clause only)
     if (currentUser.role === Roles.SUPER_ADMIN) {
-      return subusersData
+      return subusersData;
     }
-    
+
     // GroupAdmin: Filter by groupId
-    if (currentUser.role === Roles.GROUP_ADMIN && 'groupId' in whereClause) {
-      const groupId = (whereClause as any).groupId
-      if (!groupId) return subusersData
-      
+    if (currentUser.role === Roles.GROUP_ADMIN && "groupId" in whereClause) {
+      const groupId = (whereClause as any).groupId;
+      if (!groupId) return subusersData;
+
       const filtered = subusersData.filter((subuser: any) => {
-        const subuserGroupId = subuser.user_group || subuser.groupId || subuser.group_id
-        return subuserGroupId === groupId || subuser.subuser_email === currentUserEmail
-      })
-      devLog(`🔒 GroupAdmin Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
-      return filtered
+        const subuserGroupId =
+          subuser.user_group || subuser.groupId || subuser.group_id;
+        return (
+          subuserGroupId === groupId ||
+          subuser.subuser_email === currentUserEmail
+        );
+      });
+      devLog(
+        `🔒 GroupAdmin Filter (Subusers): ${subusersData.length} → ${filtered.length}`,
+        whereClause,
+      );
+      return filtered;
     }
-    
+
     // SubUser/User: Filter by email/ownerId
-    const ownerId = 'ownerId' in whereClause ? (whereClause as any).ownerId : currentUser.id
-    const filtered = subusersData.filter((subuser: any) => 
-      subuser.subuser_email === currentUserEmail || 
-      subuser.email === currentUserEmail ||
-      subuser.owner_id === ownerId
-    )
-    devLog(`🔒 SubUser/User Filter (Subusers): ${subusersData.length} → ${filtered.length}`, whereClause)
-    return filtered
-  }, [subusersData, currentUser, currentUserEmail])
-  
+    const ownerId =
+      "ownerId" in whereClause ? (whereClause as any).ownerId : currentUser.id;
+    const filtered = subusersData.filter(
+      (subuser: any) =>
+        subuser.subuser_email === currentUserEmail ||
+        subuser.email === currentUserEmail ||
+        subuser.owner_id === ownerId,
+    );
+    devLog(
+      `🔒 SubUser/User Filter (Subusers): ${subusersData.length} → ${filtered.length}`,
+      whereClause,
+    );
+    return filtered;
+  }, [subusersData, currentUser, currentUserEmail]);
+
   // ✅ RBAC: Use filtered data for rendering (replaces original subusersData in UI)
-  const displaySubusersData = filteredSubusersData
+  const displaySubusersData = filteredSubusersData;
 
   // ✅ React Query: Fetch machines and audit reports for user (disabled in demo mode)
   const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo);
-  
+
   // ✅ RBAC FILTERING: Filter machines using centralized buildMachineFilter
-  const displayMachinesData = machinesQuery.data || []
-  
+  const displayMachinesData = machinesQuery.data || [];
+
   const auditReportsQuery = useAuditReports(userEmail, !!userEmail && !isDemo);
-  
-  const displayAuditReportsData = auditReportsQuery.data || []
-  
+
+  const displayAuditReportsData = auditReportsQuery.data || [];
+
   const enhancedAuditReportsQuery = useEnhancedAuditReports(
     userEmail,
-    !!userEmail && activeTab === "overview" && !isDemo
+    !!userEmail && activeTab === "overview" && !isDemo,
   );
 
   // ✅ React Query: Get active licenses count directly from cache (disabled in demo mode)
-  const activeLicensesFromCache = useActiveLicensesCount(isDemo ? '' : userEmail);
+  const activeLicensesFromCache = useActiveLicensesCount(
+    isDemo ? "" : userEmail,
+  );
 
   // ✅ React Query: Fetch performance data automatically from cached audit reports and machines (disabled in demo mode)
   const performanceQuery = usePerformanceData(
-    isDemo ? '' : userEmail,
-    !!userEmail && activeTab === "overview" && !isDemo
+    isDemo ? "" : userEmail,
+    !!userEmail && activeTab === "overview" && !isDemo,
+  );
+
+  // ✅ React Query: Fetch Erasure Metrics for Performance Tab
+  const [erasureMetricsFilters, setErasureMetricsFilters] = useState<{
+    year: number;
+    month?: number;
+    userEmails: string[];
+  }>({
+    year: new Date().getFullYear(),
+    userEmails: [],
+  });
+
+  // Update filters when userEmail changes or tab becomes performance
+  useEffect(() => {
+    if (userEmail) {
+      setErasureMetricsFilters((prev) => ({
+        ...prev,
+        userEmails: [userEmail],
+      }));
+    }
+  }, [userEmail]);
+
+  const {
+    data: erasureMetrics,
+    isLoading: erasureMetricsLoading,
+    error: erasureMetricsError,
+  } = useErasureMetrics(
+    erasureMetricsFilters,
+    !!userEmail && activeTab === "performance" && !isDemo,
   );
 
   // ✅ React Query: Fetch sessions data with caching (disabled in demo mode)
   const sessionsQuery = useSessions(
-    isDemo ? '' : userEmail,
-    !!userEmail && !isDemo
+    isDemo ? "" : userEmail,
+    !!userEmail && !isDemo,
   );
-  
-  const displaySessionsData = sessionsQuery.data || []
+
+  const displaySessionsData = sessionsQuery.data || [];
 
   // React Query mutations for CRUD operations
   const createSubuserMutation = useCreateSubuser();
@@ -910,6 +1046,9 @@ export default function AdminDashboard() {
           monthlyErasures: [],
           avgDuration: [],
           throughput: [],
+          successRate: "100%",
+          successCount: 0,
+          failureCount: 0,
         });
         setSuperuserData(null);
         // ✅ React Query handles cache invalidation automatically
@@ -947,7 +1086,11 @@ export default function AdminDashboard() {
     if (dashboardData.licenses && dashboardData.licenses.length > 0) {
       setLicenseData(dashboardData.licenses);
       setUserLicenseDetails(dashboardData.licenses);
-      devLog('✅ License data synced from React Query cache:', dashboardData.licenses.length, 'items');
+      devLog(
+        "✅ License data synced from React Query cache:",
+        dashboardData.licenses.length,
+        "items",
+      );
     }
 
     // Sync reports
@@ -955,14 +1098,39 @@ export default function AdminDashboard() {
       setRecentReports(dashboardData.reports);
     }
 
-    // Note: Profile data is handled separately via profileData state initialization and fallback logic
-  }, [dashboardData.stats, dashboardData.groups, dashboardData.licenses, dashboardData.reports, isDemo]);
+    // Sync profile data and flags
+    if (dashboardData.profile) {
+      setProfileData(dashboardData.profile);
+
+      // Update localStorage to sync with sidebar (AdminShell)
+      const currentData = getUserDataFromStorage() || {};
+      const updatedData = {
+        ...currentData,
+        is_groups_enabled: dashboardData.profile.is_groups_enabled,
+        is_subusers_enabled: dashboardData.profile.is_subusers_enabled,
+      };
+      localStorage.setItem("user_data", JSON.stringify(updatedData));
+      localStorage.setItem("authUser", JSON.stringify(updatedData));
+
+      devLog(
+        "✅ Profile data and flags synced from API and persisted to storage:",
+        dashboardData.profile,
+      );
+    }
+  }, [
+    dashboardData.stats,
+    dashboardData.groups,
+    dashboardData.licenses,
+    dashboardData.reports,
+    dashboardData.profile,
+    isDemo,
+  ]);
 
   // ✅ React Query: Update machines data (keep for backward compatibility)
   useEffect(() => {
     if (machinesQuery.data) {
       const activeLicenses = machinesQuery.data.filter(
-        (machine: Machine) => machine.license_activated === true
+        (machine: Machine) => machine.license_activated === true,
       ).length;
       setActiveLicensesCount(activeLicenses);
 
@@ -989,15 +1157,15 @@ export default function AdminDashboard() {
       setPerformanceData(performanceQuery.data);
       devLog(
         "✅ Performance data updated from React Query cache:",
-        performanceQuery.data
+        performanceQuery.data,
       );
     }
   }, [performanceQuery.data]);
 
   // ✅ RBAC FILTERING: Filter license data using centralized buildLicenseFilter
-  const displayLicenseData = licenseData || []
+  const displayLicenseData = licenseData || [];
 
-  const displayPerformanceData = performanceData
+  const displayPerformanceData = performanceData;
 
   // ✅ React Query: Update sessions data from cache
   useEffect(() => {
@@ -1005,7 +1173,7 @@ export default function AdminDashboard() {
       setRecentSessions(sessionsQuery.data);
       devLog(
         "✅ Sessions data updated from React Query cache:",
-        sessionsQuery.data.length
+        sessionsQuery.data.length,
       );
     }
   }, [sessionsQuery.data]);
@@ -1032,14 +1200,16 @@ export default function AdminDashboard() {
       setUserLicenseDetails(DEMO_LICENSE_DETAILS);
 
       // Set demo reports
-      setRecentReports(DEMO_REPORTS.map(r => ({
-        id: r.id,
-        type: r.type,
-        devices: r.devices,
-        status: r.status,
-        date: r.date,
-        method: r.method
-      })));
+      setRecentReports(
+        DEMO_REPORTS.map((r) => ({
+          id: r.id,
+          type: r.type,
+          devices: r.devices,
+          status: r.status,
+          date: r.date,
+          method: r.method,
+        })),
+      );
 
       // Set demo system logs
       setRecentSystemLogs(DEMO_SYSTEM_LOGS);
@@ -1048,14 +1218,18 @@ export default function AdminDashboard() {
       setRecentSessions(DEMO_SESSIONS);
 
       // Set demo performance data
-      setPerformanceData(DEMO_PERFORMANCE_DATA);
+      setPerformanceData(DEMO_PERFORMANCE_DATA as any);
 
       // Set demo audit reports
       setAuditReports(DEMO_AUDIT_REPORTS as any);
       setAuditReportsCount(DEMO_AUDIT_REPORTS.length);
 
       // Set demo active licenses count
-      setActiveLicensesCount(DEMO_MACHINES.filter(m => m.status === 'Active' || m.status === 'Running').length);
+      setActiveLicensesCount(
+        DEMO_MACHINES.filter(
+          (m) => m.status === "Active" || m.status === "Running",
+        ).length,
+      );
 
       // Set demo billing details (for Settings modal)
       setBillingDetails(DEMO_BILLING_DETAILS);
@@ -1093,86 +1267,86 @@ export default function AdminDashboard() {
       setGroupsWithUsers([
         {
           id: 1,
-          name: 'Engineering Team',
-          description: 'Software development and engineering',
-          created: '2024-01-15',
+          name: "Engineering Team",
+          description: "Software development and engineering",
+          created: "2024-01-15",
           licenseStats: {
             totalAllocated: 100,
             distributedToUsers: 45,
             available: 55,
-            usagePercent: 45
+            usagePercent: 45,
           },
           users: [
             {
               id: 1,
-              name: 'John Doe',
-              email: 'john.doe@demo.com',
-              role: 'User',
+              name: "John Doe",
+              email: "john.doe@demo.com",
+              role: "User",
               license: 5,
-              profile: 'Developer'
+              profile: "Developer",
             },
             {
               id: 2,
-              name: 'Jane Smith',
-              email: 'jane.smith@demo.com',
-              role: 'User',
+              name: "Jane Smith",
+              email: "jane.smith@demo.com",
+              role: "User",
               license: 3,
-              profile: 'Senior Developer'
-            }
-          ]
+              profile: "Senior Developer",
+            },
+          ],
         },
         {
           id: 2,
-          name: 'Marketing Team',
-          description: 'Marketing and communications',
-          created: '2024-02-20',
+          name: "Marketing Team",
+          description: "Marketing and communications",
+          created: "2024-02-20",
           licenseStats: {
             totalAllocated: 50,
             distributedToUsers: 28,
             available: 22,
-            usagePercent: 56
+            usagePercent: 56,
           },
           users: [
             {
               id: 3,
-              name: 'Mike Johnson',
-              email: 'mike.johnson@demo.com',
-              role: 'User',
+              name: "Mike Johnson",
+              email: "mike.johnson@demo.com",
+              role: "User",
               license: 2,
-              profile: 'Marketing Manager'
-            }
-          ]
+              profile: "Marketing Manager",
+            },
+          ],
         },
         {
           id: 3,
-          name: 'Sales Team',
-          description: 'Sales and business development',
-          created: '2024-03-10',
+          name: "Sales Team",
+          description: "Sales and business development",
+          created: "2024-03-10",
           licenseStats: {
             totalAllocated: 75,
             distributedToUsers: 62,
             available: 13,
-            usagePercent: 82.7
+            usagePercent: 82.7,
           },
           users: [
             {
               id: 4,
-              name: 'Sarah Williams',
-              email: 'sarah.williams@demo.com',
-              role: 'User',
+              name: "Sarah Williams",
+              email: "sarah.williams@demo.com",
+              role: "User",
               license: 4,
-              profile: 'Sales Executive'
+              profile: "Sales Executive",
             },
             {
               id: 5,
-              name: 'Tom Brown',
-              email: 'tom.brown@demo.com',
-              role: 'User',
+              name: "Tom Brown",
+              email: "tom.brown@demo.com",
+              role: "User",
               license: 3,
-              profile: 'Account Manager'
-            }
-          ]
-        }
+              profile: "Account Manager",
+            },
+          ],
+        },
       ]);
       setGroupsCached(true);
       return;
@@ -1181,11 +1355,11 @@ export default function AdminDashboard() {
 
   // Fetch groups with users when Groups tab is active
   useEffect(() => {
-    if (activeTab === 'groups' && !groupsCached && !isDemo) {
+    if (activeTab === "groups" && !groupsCached && !isDemo) {
       // ✅ Only fetch if not cached and not demo mode
       fetchGroupsWithUsers();
     }
-  }, [activeTab, groupsCached, isDemo])
+  }, [activeTab, groupsCached, isDemo]);
 
   const fetchGroupsWithUsers = async () => {
     // ✅ If already cached, don't show loader or fetch again
@@ -1202,132 +1376,138 @@ export default function AdminDashboard() {
       setGroupsWithUsers([
         {
           id: 1,
-          name: 'Engineering Team',
-          description: 'Software development and engineering',
-          created: '2024-01-15',
+          name: "Engineering Team",
+          description: "Software development and engineering",
+          created: "2024-01-15",
           licenseStats: {
             totalAllocated: 100,
             distributedToUsers: 45,
             available: 55,
-            usagePercent: 45
+            usagePercent: 45,
           },
           users: [
             {
               id: 1,
-              name: 'John Doe',
-              email: 'john.doe@demo.com',
-              role: 'User',
+              name: "John Doe",
+              email: "john.doe@demo.com",
+              role: "User",
               license: 5,
-              profile: 'Developer'
+              profile: "Developer",
             },
             {
               id: 2,
-              name: 'Jane Smith',
-              email: 'jane.smith@demo.com',
-              role: 'User',
+              name: "Jane Smith",
+              email: "jane.smith@demo.com",
+              role: "User",
               license: 3,
-              profile: 'Senior Developer'
-            }
-          ]
+              profile: "Senior Developer",
+            },
+          ],
         },
         {
           id: 2,
-          name: 'Marketing Team',
-          description: 'Marketing and communications',
-          created: '2024-02-20',
+          name: "Marketing Team",
+          description: "Marketing and communications",
+          created: "2024-02-20",
           licenseStats: {
             totalAllocated: 50,
             distributedToUsers: 28,
             available: 22,
-            usagePercent: 56
+            usagePercent: 56,
           },
           users: [
             {
               id: 3,
-              name: 'Mike Johnson',
-              email: 'mike.johnson@demo.com',
-              role: 'User',
+              name: "Mike Johnson",
+              email: "mike.johnson@demo.com",
+              role: "User",
               license: 2,
-              profile: 'Marketing Manager'
-            }
-          ]
+              profile: "Marketing Manager",
+            },
+          ],
         },
         {
           id: 3,
-          name: 'Sales Team',
-          description: 'Sales and business development',
-          created: '2024-03-10',
+          name: "Sales Team",
+          description: "Sales and business development",
+          created: "2024-03-10",
           licenseStats: {
             totalAllocated: 75,
             distributedToUsers: 62,
             available: 13,
-            usagePercent: 82.7
+            usagePercent: 82.7,
           },
           users: [
             {
               id: 4,
-              name: 'Sarah Williams',
-              email: 'sarah.williams@demo.com',
-              role: 'User',
+              name: "Sarah Williams",
+              email: "sarah.williams@demo.com",
+              role: "User",
               license: 4,
-              profile: 'Sales Executive'
+              profile: "Sales Executive",
             },
             {
               id: 5,
-              name: 'Tom Brown',
-              email: 'tom.brown@demo.com',
-              role: 'User',
+              name: "Tom Brown",
+              email: "tom.brown@demo.com",
+              role: "User",
               license: 3,
-              profile: 'Account Manager'
-            }
-          ]
-        }
+              profile: "Account Manager",
+            },
+          ],
+        },
       ]);
       return;
     }
-    
+
     try {
       setGroupsLoading(true);
       const response = await apiClient.getGroupsWithUsers();
-      
+
       if (response.success && response.data?.groups?.data) {
         const apiGroups = response.data.groups.data;
         const transformedGroups = apiGroups.map((group: any, index: number) => {
-          const cleanId = group.groupId?.toString().replace(/^group-/, '') || `${index + 1}`;
+          const cleanId =
+            group.groupId?.toString().replace(/^group-/, "") || `${index + 1}`;
           return {
             id: parseInt(cleanId) || index + 1,
-            name: group.groupName || 'Unnamed Group',
-            description: group.groupDescription || '',
-            created: new Date().toISOString().split('T')[0],
+            name: group.groupName || "Unnamed Group",
+            description: group.groupDescription || "",
+            created: new Date().toISOString().split("T")[0],
             licenseStats: group.licenseStats || null,
-            users: group.users?.map((user: any, userIndex: number) => {
-              const cleanUserId = user.userId?.toString().replace(/^user-/, '') || `${userIndex + 1}`;
-              return {
-                id: parseInt(cleanUserId) || userIndex + 1,
-                name: user.name || 'Unknown',
-                email: user.email || '',
-                role: (user.role === 'user' ? 'User' : 'Subuser') as 'User' | 'Subuser',
-                license: user.licenseCount || user.license || 0,
-                profile: user.role || 'User'
-              };
-            }) || []
+            users:
+              group.users?.map((user: any, userIndex: number) => {
+                const cleanUserId =
+                  user.userId?.toString().replace(/^user-/, "") ||
+                  `${userIndex + 1}`;
+                return {
+                  id: parseInt(cleanUserId) || userIndex + 1,
+                  name: user.name || "Unknown",
+                  email: user.email || "",
+                  role: (user.role === "user" ? "User" : "Subuser") as
+                    | "User"
+                    | "Subuser",
+                  license: user.licenseCount || user.license || 0,
+                  profile: user.role || "User",
+                };
+              }) || [],
           };
-        setGroupsCached(true); // ✅ Mark as cached after successful fetch
+          setGroupsCached(true); // ✅ Mark as cached after successful fetch
         });
         setGroupsWithUsers(transformedGroups);
       }
     } catch (error) {
-      devError('Error fetching groups with users:', error);
+      devError("Error fetching groups with users:", error);
     } finally {
       setGroupsLoading(false);
     }
   };
 
   const toggleGroup = (groupId: number) => {
-    setExpandedGroups(prev =>
+    setExpandedGroups((prev) =>
       prev.includes(groupId)
-        ? prev.filter(id => id !== groupId)
-        : [...prev, groupId]
+        ? prev.filter((id) => id !== groupId)
+        : [...prev, groupId],
     );
   };
 
@@ -1395,7 +1575,9 @@ export default function AdminDashboard() {
             storedData?.subuser_name ||
             storedData?.name ||
             user?.name ||
-            getNameFromEmail(storedData?.user_email || storedData?.email || user?.email),
+            getNameFromEmail(
+              storedData?.user_email || storedData?.email || user?.email,
+            ),
           email:
             storedData?.user_email ||
             storedData?.email ||
@@ -1405,9 +1587,14 @@ export default function AdminDashboard() {
           role: fallbackRole,
           userRole: storedData?.userRole || storedData?.user_role,
           user_role: storedData?.user_role || storedData?.userRole,
-          phone_number: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "", // Commented out
+          phone_number:
+            storedData?.phone_number ||
+            storedData?.phone ||
+            storedData?.subuser_phone ||
+            "", // Commented out
           department: storedData?.department || "",
-          is_private_cloud: storedData?.is_private_cloud || user?.is_private_cloud || false,
+          is_private_cloud:
+            storedData?.is_private_cloud || user?.is_private_cloud || false,
         });
       }
 
@@ -1470,21 +1657,20 @@ export default function AdminDashboard() {
       if (userEmailForLogs) {
         devLog(
           "📧 Fetching sessions and system logs for email:",
-          userEmailForLogs
+          userEmailForLogs,
         );
         devLog("👤 User Type:", storedUserData?.user_type || "user");
 
         // ✅ Sessions are now fetched via React Query (sessionsQuery) - removed from Promise.all
-        const [userRes, subusersRes, systemLogsRes] =
-          await Promise.all([
-            apiClient.getUserByEmail(userEmailForLogs),
-            apiClient
-              .getSubusersBySuperuser(userEmailForLogs)
-              .catch(() => ({ success: false, data: null })),
-            apiClient
-              .getSystemLogsByEmail(userEmailForLogs)
-              .catch(() => ({ success: false, data: null })),
-          ]);
+        const [userRes, subusersRes, systemLogsRes] = await Promise.all([
+          apiClient.getUserByEmail(userEmailForLogs),
+          apiClient
+            .getSubusersBySuperuser(userEmailForLogs)
+            .catch(() => ({ success: false, data: null })),
+          apiClient
+            .getSystemLogsByEmail(userEmailForLogs)
+            .catch(() => ({ success: false, data: null })),
+        ]);
 
         /* REMOVED - Duplicate code already commented out above
         // ✅ OPTIMIZED: Only fetch essential data initially - Performance tab data loads on demand
@@ -1566,199 +1752,19 @@ export default function AdminDashboard() {
               } catch (e) {
                 devWarn(
                   "⚠️ Failed to parse report_details_json for software_name:",
-                  e
+                  e,
                 );
               }
             }
           });
           devLog(
             "✅ Unique software names extracted from reports:",
-            Array.from(softwareNames)
+            Array.from(softwareNames),
           );
 
-          // ✅ Calculate Performance Metrics from React Query data
-          devLog(
-            "📊 Calculating performance metrics from user-filtered data..."
-          );
-
-          // Use React Query data for performance calculations
-          const performanceAuditReports = displayAuditReportsData || [];
-          const performanceMachines = displayMachinesData || [];
-          const performanceSessions = displaySessionsData || [];
-          const performanceSystemLogs =
-            systemLogsRes?.success && systemLogsRes.data
-              ? systemLogsRes.data
-              : [];
-
-          devLog("📊 Performance data sources:", {
-            auditReports: performanceAuditReports.length,
-            machines: performanceMachines.length,
-            sessions: performanceSessions.length,
-            systemLogs: performanceSystemLogs.length,
-          });
-
-          // Group data by month for last 12 months
-          const currentDate = new Date();
-          const monthsData: {
-            [key: string]: {
-              erasures: number;
-              totalDuration: number;
-              sessions: number;
-              activeMachines: Set<string>;
-              commands: number;
-              logs: number;
-            };
-          } = {};
-
-          // Initialize last 12 months (Jan, Feb, Mar, etc.)
-          for (let i = 11; i >= 0; i--) {
-            const date = new Date(
-              currentDate.getFullYear(),
-              currentDate.getMonth() - i,
-              1
-            );
-            const monthKey = date.toLocaleDateString("en-IN", {
-              month: "short",
-            });
-            monthsData[monthKey] = {
-              erasures: 0,
-              totalDuration: 0,
-              sessions: 0,
-              activeMachines: new Set(),
-              commands: 0,
-              logs: 0,
-            };
-          }
-
-          // 1️⃣ Process Audit Reports (Erasure operations) - Use ALL data
-          performanceAuditReports.forEach((report: any) => {
-            const reportDate = new Date(
-              report.report_datetime || report.created_at
-            );
-            const monthKey = reportDate.toLocaleDateString("en-IN", {
-              month: "short",
-            });
-
-            if (monthsData[monthKey]) {
-              monthsData[monthKey].erasures++;
-
-              // Calculate duration based on erasure method
-              let duration = 300; // Default 5 minutes
-
-              if (report.erasure_method) {
-                const method = report.erasure_method.toLowerCase();
-                if (method.includes("dod") || method.includes("7-pass")) {
-                  duration = 480; // 8 minutes for DOD
-                } else if (
-                  method.includes("gutmann") ||
-                  method.includes("35-pass")
-                ) {
-                  duration = 720; // 12 minutes for Gutmann
-                } else if (
-                  method.includes("quick") ||
-                  method.includes("1-pass")
-                ) {
-                  duration = 180; // 3 minutes for quick
-                } else if (
-                  method.includes("nist") ||
-                  method.includes("3-pass")
-                ) {
-                  duration = 360; // 6 minutes for NIST
-                }
-              }
-
-              monthsData[monthKey].totalDuration += duration;
-            }
-          });
-
-          // 2️⃣ Process Machines (Active devices per month) - Use ALL data
-          performanceMachines.forEach((machine: any) => {
-            const activationDate = new Date(
-              machine.license_activation_date || machine.created_at
-            );
-            const monthKey = activationDate.toLocaleDateString("en-IN", {
-              month: "short",
-            });
-
-            if (monthsData[monthKey] && machine.machine_id) {
-              monthsData[monthKey].activeMachines.add(machine.machine_id);
-            }
-          });
-
-          // 3️⃣ Process Sessions (User activity) - Use ALL data
-          performanceSessions.forEach((session: any) => {
-            const sessionDate = new Date(session.login_time);
-            const monthKey = sessionDate.toLocaleDateString("en-IN", {
-              month: "short",
-            });
-
-            if (monthsData[monthKey]) {
-              monthsData[monthKey].sessions++;
-            }
-          });
-
-          // 4️⃣ Process System Logs (Operations tracking) - Use ALL data
-          performanceSystemLogs.forEach((log: any) => {
-            const logDate = new Date(log.created_at);
-            const monthKey = logDate.toLocaleDateString("en-IN", {
-              month: "short",
-            });
-
-            if (monthsData[monthKey]) {
-              monthsData[monthKey].logs++;
-            }
-          });
-
-          // Convert to arrays for charts
-          const monthlyErasures = Object.entries(monthsData).map(
-            ([month, data]) => ({
-              month,
-              count: data.erasures,
-            })
-          );
-
-          const avgDuration = Object.entries(monthsData).map(
-            ([month, data]) => ({
-              month,
-              duration:
-                data.erasures > 0
-                  ? Math.floor(data.totalDuration / data.erasures)
-                  : 0,
-            })
-          );
-
-          // Throughput = erasures + active machines count (combined metric)
-          const throughput = Object.entries(monthsData).map(
-            ([month, data]) => ({
-              month,
-              count: data.erasures + data.activeMachines.size,
-            })
-          );
-
-          setPerformanceData({
-            monthlyErasures,
-            avgDuration,
-            throughput,
-          });
-
-          devLog("✅ Performance metrics calculated from all APIs:", {
-            monthlyErasures,
-            avgDuration,
-            throughput,
-            totalErasures: monthlyErasures.reduce((sum, m) => sum + m.count, 0),
-            totalSessions: Object.values(monthsData).reduce(
-              (sum, m) => sum + m.sessions,
-              0
-            ),
-            totalLogs: Object.values(monthsData).reduce(
-              (sum, m) => sum + m.logs,
-              0
-            ),
-          });
-        } else {
-          devWarn(
-            "⚠️ Failed to fetch audit reports - using React Query data instead"
-          );
+          // ✅ Performance metrics are now handled by usePerformanceData hook
+          // Syncing state from performanceQuery.data handled in useEffect
+          devLog("📊 Performance metrics will be loaded via React Query hook");
         }
 
         // Process user license details
@@ -1773,7 +1779,9 @@ export default function AdminDashboard() {
               userRes.data!.subuser_name ||
               userRes.data!.name ||
               prev!.name ||
-              getNameFromEmail(userRes.data!.user_email || userRes.data!.email || prev!.email),
+              getNameFromEmail(
+                userRes.data!.user_email || userRes.data!.email || prev!.email,
+              ),
             phone:
               userRes.data!.phone_number ||
               userRes.data!.phone ||
@@ -1781,7 +1789,8 @@ export default function AdminDashboard() {
             email:
               userRes.data!.user_email || userRes.data!.email || prev!.email,
             role: userRes.data!.role || prev!.role,
-            is_private_cloud: userRes.data!.is_private_cloud ?? prev!.is_private_cloud,
+            is_private_cloud:
+              userRes.data!.is_private_cloud ?? prev!.is_private_cloud,
           }));
 
           // ✅ UPDATE LOCALSTORAGE with latest database data including billing details
@@ -1791,27 +1800,37 @@ export default function AdminDashboard() {
             storedData.phone_number = userRes.data!.phone_number;
             storedData.is_private_cloud = userRes.data!.is_private_cloud;
             // ✅ Save billing details JSON for Settings modal
-            storedData.license_details_json = userRes.data!.license_details_json;
-            storedData.payment_details_json = userRes.data!.payment_details_json;
+            storedData.license_details_json =
+              userRes.data!.license_details_json;
+            storedData.payment_details_json =
+              userRes.data!.payment_details_json;
             localStorage.setItem("user_data", JSON.stringify(storedData));
             localStorage.setItem("authUser", JSON.stringify(storedData));
-            devLog("💾 LocalStorage synced with database on page load, is_private_cloud:", userRes.data!.is_private_cloud);
-            devLog("💾 LocalStorage synced billing: license_details_json =", !!storedData.license_details_json, "| payment_details_json =", !!storedData.payment_details_json);
+            devLog(
+              "💾 LocalStorage synced with database on page load, is_private_cloud:",
+              userRes.data!.is_private_cloud,
+            );
+            devLog(
+              "💾 LocalStorage synced billing: license_details_json =",
+              !!storedData.license_details_json,
+              "| payment_details_json =",
+              !!storedData.payment_details_json,
+            );
           }
 
           // Process license details if available
           if (userRes.data.license_details_json) {
             devLog(
               "🔍 RAW license_details_json:",
-              userRes.data.license_details_json
+              userRes.data.license_details_json,
             );
             devLog(
               "🔍 Type of license_details_json:",
-              typeof userRes.data.license_details_json
+              typeof userRes.data.license_details_json,
             );
             devLog(
               "🔍 Is Array?",
-              Array.isArray(userRes.data.license_details_json)
+              Array.isArray(userRes.data.license_details_json),
             );
 
             try {
@@ -1825,30 +1844,21 @@ export default function AdminDashboard() {
                 if (typeof firstItem === "string") {
                   devLog(
                     "📦 License details is an array of JSON strings, length:",
-                    userRes.data.license_details_json.length
+                    userRes.data.license_details_json.length,
                   );
                   // Parse each JSON string
                   userRes.data.license_details_json.forEach(
                     (jsonString: string, index: number) => {
-                      devLog(
-                        `🔍 Processing array item ${index}:`,
-                        jsonString
-                      );
+                      devLog(`🔍 Processing array item ${index}:`, jsonString);
                       try {
                         const parsed = JSON.parse(jsonString);
-                        devLog(
-                          `✅ Successfully parsed item ${index}:`,
-                          parsed
-                        );
+                        devLog(`✅ Successfully parsed item ${index}:`, parsed);
                         licenseDetailsArray.push(parsed);
                       } catch (e) {
-                        devError(
-                          `❌ Failed to parse array item ${index}:`,
-                          e
-                        );
+                        devError(`❌ Failed to parse array item ${index}:`, e);
                         devError("Failed JSON string:", jsonString);
                       }
-                    }
+                    },
                   );
                 } else if (
                   typeof firstItem === "object" &&
@@ -1856,7 +1866,7 @@ export default function AdminDashboard() {
                 ) {
                   devLog(
                     "📦 License details is already an array of parsed objects, length:",
-                    userRes.data.license_details_json.length
+                    userRes.data.license_details_json.length,
                   );
                   // Already parsed objects - directly use them
                   licenseDetailsArray = userRes.data.license_details_json;
@@ -1884,7 +1894,7 @@ export default function AdminDashboard() {
 
               devLog(
                 "✅ Total license details items:",
-                licenseDetailsArray.length
+                licenseDetailsArray.length,
               );
               devLog("✅ License details array:", licenseDetailsArray);
 
@@ -1894,7 +1904,7 @@ export default function AdminDashboard() {
               licenseDetailsArray.forEach((licenseDetails, index) => {
                 devLog(
                   `🔍 Processing licenseDetails item ${index}:`,
-                  licenseDetails
+                  licenseDetails,
                 );
 
                 // New format: Extract from plans array
@@ -1904,7 +1914,7 @@ export default function AdminDashboard() {
                 ) {
                   devLog(
                     `📦 Item ${index} - Using new license format with plans array, count:`,
-                    licenseDetails.plans.length
+                    licenseDetails.plans.length,
                   );
 
                   // Get software names from audit reports (using React Query data)
@@ -1914,21 +1924,21 @@ export default function AdminDashboard() {
                       if (report.report_details_json) {
                         try {
                           const reportDetails = JSON.parse(
-                            report.report_details_json
+                            report.report_details_json,
                           );
                           if (reportDetails.software_name) {
                             // Map plan type to software name (you can customize this mapping)
                             softwareNamesMap.set(
                               "Pro",
-                              reportDetails.software_name
+                              reportDetails.software_name,
                             );
                             softwareNamesMap.set(
                               "Enterprise",
-                              reportDetails.software_name
+                              reportDetails.software_name,
                             );
                             softwareNamesMap.set(
                               "Basic",
-                              reportDetails.software_name
+                              reportDetails.software_name,
                             );
                           }
                         } catch (e) {
@@ -1947,7 +1957,7 @@ export default function AdminDashboard() {
                         "Unknown Product";
 
                       devLog(
-                        `🔍 Plan mapping - planType: ${plan.planType}, softwareName: ${softwareName}, total: ${plan.totalLicenses}, consumed: ${plan.consumedLicenses}`
+                        `🔍 Plan mapping - planType: ${plan.planType}, softwareName: ${softwareName}, total: ${plan.totalLicenses}, consumed: ${plan.consumedLicenses}`,
                       );
 
                       return {
@@ -1960,7 +1970,7 @@ export default function AdminDashboard() {
 
                   devLog(
                     `✅ Item ${index} - Formatted ${formattedLicenses.length} licenses from plans:`,
-                    formattedLicenses
+                    formattedLicenses,
                   );
                   allFormattedLicenses.push(...formattedLicenses);
                 }
@@ -1976,18 +1986,18 @@ export default function AdminDashboard() {
                     productsArray = licenseDetails.products;
                     devLog(
                       `📦 Item ${index} - Using products array from object (old format), count:`,
-                      productsArray.length
+                      productsArray.length,
                     );
                   } else if (Array.isArray(licenseDetails)) {
                     productsArray = licenseDetails;
                     devLog(
                       `📦 Item ${index} - Using direct array format (old format), count:`,
-                      productsArray.length
+                      productsArray.length,
                     );
                   } else {
                     devWarn(
                       `⚠️ Item ${index} - Unknown license details format:`,
-                      licenseDetails
+                      licenseDetails,
                     );
                   }
 
@@ -1999,19 +2009,19 @@ export default function AdminDashboard() {
                           product: item.product || item.Product || "Unknown",
                           total: parseInt(
                             item.total_license ||
-                            item.total ||
-                            item.Total ||
-                            "0"
+                              item.total ||
+                              item.Total ||
+                              "0",
                           ),
                           consumed: parseInt(
                             item.consumed_license ||
-                            item.consumed ||
-                            item.Consumed ||
-                            "0"
+                              item.consumed ||
+                              item.Consumed ||
+                              "0",
                           ),
                           available: 0,
                         };
-                      }
+                      },
                     );
 
                     formattedLicenses.forEach((license) => {
@@ -2020,7 +2030,7 @@ export default function AdminDashboard() {
 
                     devLog(
                       `✅ Item ${index} - Formatted ${formattedLicenses.length} licenses from old format:`,
-                      formattedLicenses
+                      formattedLicenses,
                     );
                     allFormattedLicenses.push(...formattedLicenses);
                   } else {
@@ -2031,25 +2041,22 @@ export default function AdminDashboard() {
 
               devLog(
                 "🎯 FINAL - All formatted license details:",
-                allFormattedLicenses
+                allFormattedLicenses,
               );
               devLog(
                 "🎯 FINAL - Total licenses count:",
-                allFormattedLicenses.length
+                allFormattedLicenses.length,
               );
 
               if (allFormattedLicenses.length === 0) {
                 devError(
-                  "❌ NO LICENSES FORMATTED! Check the data structure above."
+                  "❌ NO LICENSES FORMATTED! Check the data structure above.",
                 );
               }
 
               setUserLicenseDetails(allFormattedLicenses);
             } catch (parseError) {
-              devError(
-                "❌ Failed to parse license_details_json:",
-                parseError
-              );
+              devError("❌ Failed to parse license_details_json:", parseError);
               devError("❌ Error stack:", (parseError as Error).stack);
             }
           } else {
@@ -2058,7 +2065,7 @@ export default function AdminDashboard() {
         } else {
           devWarn(
             "⚠️ Failed to fetch user data or no license details:",
-            userRes.error
+            userRes.error,
           );
         }
 
@@ -2091,7 +2098,7 @@ export default function AdminDashboard() {
 
           // Automatically detect user's country and timezone from browser
           const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-          const userLocale = navigator.language || 'en-US';
+          const userLocale = navigator.language || "en-US";
 
           const usersActivity = subusersRes.data.map((subuser: Subuser) => {
             const subuserEmail = subuser.subuser_email;
@@ -2101,15 +2108,18 @@ export default function AdminDashboard() {
 
             // Priority 1: Use subuser's last_login and last_logout fields if available
             if (subuser.last_login) {
-              loginTime = new Date(subuser.last_login).toLocaleString(userLocale, {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-                timeZone: userTimezone,
-              });
+              loginTime = new Date(subuser.last_login).toLocaleString(
+                userLocale,
+                {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                  timeZone: userTimezone,
+                },
+              );
 
               // Check if last_logout exists
               if (subuser.last_logout) {
@@ -2123,7 +2133,7 @@ export default function AdminDashboard() {
                     minute: "2-digit",
                     hour12: true,
                     timeZone: userTimezone,
-                  }
+                  },
                 );
 
                 // User is offline if they have logged out
@@ -2135,13 +2145,13 @@ export default function AdminDashboard() {
             } else {
               // Priority 2: Fallback to sessions data if subuser fields not available
               const userSessions = sessionsData.filter(
-                (session) => session.user_email === subuserEmail
+                (session) => session.user_email === subuserEmail,
               );
 
               const sortedSessions = userSessions.sort(
                 (a, b) =>
                   new Date(b.login_time).getTime() -
-                  new Date(a.login_time).getTime()
+                  new Date(a.login_time).getTime(),
               );
 
               const latestSession = sortedSessions[0];
@@ -2157,12 +2167,12 @@ export default function AdminDashboard() {
                     minute: "2-digit",
                     hour12: true,
                     timeZone: userTimezone,
-                  }
+                  },
                 );
 
                 if (latestSession.logout_time) {
                   logoutTime = new Date(
-                    latestSession.logout_time
+                    latestSession.logout_time,
                   ).toLocaleString(userLocale, {
                     year: "numeric",
                     month: "short",
@@ -2190,7 +2200,8 @@ export default function AdminDashboard() {
 
             // Ensure status is either "active" or "offline"
             const finalStatus: "active" | "offline" =
-              (subuser.activity_status === "active" || subuser.activity_status === "Active")
+              subuser.activity_status === "active" ||
+              subuser.activity_status === "Active"
                 ? "active"
                 : "offline";
 
@@ -2202,10 +2213,7 @@ export default function AdminDashboard() {
             };
           });
 
-          devLog(
-            "✅ User activity calculated for subusers:",
-            usersActivity
-          );
+          devLog("✅ User activity calculated for subusers:", usersActivity);
           setUserActivity(usersActivity);
         } else {
           devWarn("⚠️ No subusers found for superuser:", userEmail);
@@ -2220,7 +2228,7 @@ export default function AdminDashboard() {
             .sort(
               (a, b) =>
                 new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime()
+                new Date(a.created_at).getTime(),
             )
             .slice(0, 5);
 
@@ -2239,7 +2247,7 @@ export default function AdminDashboard() {
       devError("Error loading dashboard data:", error);
       showError(
         "Data Loading Error",
-        "Failed to load dashboard data. Using default values."
+        "Failed to load dashboard data. Using default values.",
       );
 
       // Set profile data from localStorage or JWT token on error
@@ -2256,7 +2264,9 @@ export default function AdminDashboard() {
           storedData?.subuser_name ||
           storedData?.name ||
           user?.name ||
-          getNameFromEmail(storedData?.user_email || storedData?.email || user?.email) ||
+          getNameFromEmail(
+            storedData?.user_email || storedData?.email || user?.email,
+          ) ||
           storedData?.userName ||
           "User",
         email:
@@ -2268,10 +2278,15 @@ export default function AdminDashboard() {
         role: fallbackRole,
         userRole: storedData?.userRole || storedData?.user_role,
         user_role: storedData?.user_role || storedData?.userRole,
-        phone: storedData?.phone_number || storedData?.phone || storedData?.subuser_phone || "",
+        phone:
+          storedData?.phone_number ||
+          storedData?.phone ||
+          storedData?.subuser_phone ||
+          "",
         department: storedData?.department || "",
         licenses: 0,
-        is_private_cloud: storedData?.is_private_cloud || user?.is_private_cloud || false,
+        is_private_cloud:
+          storedData?.is_private_cloud || user?.is_private_cloud || false,
       });
     } finally {
       setDataLoading(false);
@@ -2437,46 +2452,48 @@ export default function AdminDashboard() {
   const stats = useMemo(() => {
     // ✅ DEMO MODE: Always use demo stats in demo mode (no API dependency)
     const statsData = isDemo ? DEMO_DASHBOARD_STATS : dashboardStats;
-    
+
     if (!statsData) return [];
 
     return [
       {
         label: "Total Licenses",
         value: statsData.totalLicenses,
-        change: statsData.changes?.totalLicenses?.value || '0',
-        trend: statsData.changes?.totalLicenses?.trend || 'up',
+        change: statsData.changes?.totalLicenses?.value || "0",
+        trend: statsData.changes?.totalLicenses?.trend || "up",
         color: "bg-blue-500",
       },
       {
         label: "Active Users",
         value: statsData.activeUsers,
-        change: statsData.changes?.activeUsers?.value || '0',
-        trend: statsData.changes?.activeUsers?.trend || 'up',
+        change: statsData.changes?.activeUsers?.value || "0",
+        trend: statsData.changes?.activeUsers?.trend || "up",
         color: "bg-emerald-500",
       },
       {
         label: "Available Licenses",
         value: statsData.availableLicenses,
-        change: statsData.changes?.availableLicenses?.value || '0',
-        trend: statsData.changes?.availableLicenses?.trend || 'up',
+        change: statsData.changes?.availableLicenses?.value || "0",
+        trend: statsData.changes?.availableLicenses?.trend || "up",
         color: "bg-orange-500",
       },
       {
         label: "Success Rate",
-        value: statsData.successRate,
-        change: statsData.changes?.successRate?.value || '0%',
-        trend: statsData.changes?.successRate?.trend || 'up',
+        value: isDemo
+          ? statsData.successRate
+          : performanceData.successRate || "0%",
+        change: statsData.changes?.successRate?.value || "0%",
+        trend: statsData.changes?.successRate?.trend || "up",
         color: "bg-purple-500",
       },
     ];
-  }, [dashboardStats, isDemo]);
+  }, [dashboardStats, isDemo, performanceData]);
 
   // Calculate active users count (status === 'active' or 'Active')
   const activeUsersCount = useMemo(() => {
     return subusersData.filter(
       (subuser: any) =>
-        subuser.status === "active" || subuser.status === "Active"
+        subuser.status === "active" || subuser.status === "Active",
     ).length;
   }, [subusersData]);
 
@@ -2507,14 +2524,14 @@ export default function AdminDashboard() {
     try {
       const response = await AdminDashboardAPI.assignBulkLicenses(
         Number(bulkUserCount),
-        Number(bulkLicenseCount)
+        Number(bulkLicenseCount),
       );
 
       if (response.success) {
         const totalLicenses = Number(bulkUserCount) * Number(bulkLicenseCount);
         showSuccess(
           "Licenses Assigned Successfully",
-          `Assigned ${bulkLicenseCount} licenses to ${bulkUserCount} users. Total licenses assigned: ${totalLicenses}`
+          `Assigned ${bulkLicenseCount} licenses to ${bulkUserCount} users. Total licenses assigned: ${totalLicenses}`,
         );
 
         // Refresh dashboard data after successful assignment
@@ -2530,7 +2547,7 @@ export default function AdminDashboard() {
       devError("Bulk license assignment error:", error);
       showError(
         "Assignment Failed",
-        "Failed to assign licenses. Please try again."
+        "Failed to assign licenses. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -2621,7 +2638,7 @@ export default function AdminDashboard() {
       if (response && response.success && response.data) {
         showSuccess(
           "User Created",
-          `User ${newUserForm.name} created successfully`
+          `User ${newUserForm.name} created successfully`,
         );
         setShowAddUserModal(false);
         setNewUserForm({
@@ -2682,7 +2699,7 @@ export default function AdminDashboard() {
       if (response.success) {
         showSuccess(
           "Group Created",
-          `Group ${newGroupForm.name} created successfully`
+          `Group ${newGroupForm.name} created successfully`,
         );
         setShowAddGroupModal(false);
         setNewGroupForm({ name: "", description: "", licenses: 0 });
@@ -2721,7 +2738,7 @@ export default function AdminDashboard() {
     if (superuserData) {
       showInfo(
         "Edit Superuser",
-        `Opening profile settings for ${superuserData.user_name}`
+        `Opening profile settings for ${superuserData.user_name}`,
       );
       navigate("/profile/settings");
     }
@@ -2731,7 +2748,7 @@ export default function AdminDashboard() {
     if (superuserData) {
       showInfo(
         "Manage Licenses",
-        `Managing licenses for ${superuserData.user_name}`
+        `Managing licenses for ${superuserData.user_name}`,
       );
       // Future: Open license management modal
       navigate("/admin/licenses");
@@ -2748,7 +2765,7 @@ export default function AdminDashboard() {
   const handleDeleteSubuser = async (subuser: Subuser) => {
     // Simple confirmation using window.confirm
     const confirmed = window.confirm(
-      `Are you sure you want to delete ${subuser.subuser_email}?\n\nThis action cannot be undone.`
+      `Are you sure you want to delete ${subuser.subuser_email}?\n\nThis action cannot be undone.`,
     );
 
     if (confirmed) {
@@ -2765,7 +2782,7 @@ export default function AdminDashboard() {
         await refetchSubusers();
         showSuccess(
           "Subuser Deleted",
-          `${subuser.subuser_email} has been deleted successfully`
+          `${subuser.subuser_email} has been deleted successfully`,
         );
       } catch (error) {
         devError("Error deleting subuser:", error);
@@ -2800,13 +2817,13 @@ export default function AdminDashboard() {
     try {
       const response = await AdminDashboardAPI.assignLicensesToGroup(
         selectedGroupForLicenses.name, // Using name as ID for demo
-        assignLicensesForm
+        assignLicensesForm,
       );
 
       if (response.success) {
         showSuccess(
           "Licenses Assigned",
-          `${assignLicensesForm.licenseCount} licenses assigned to ${selectedGroupForLicenses.name}`
+          `${assignLicensesForm.licenseCount} licenses assigned to ${selectedGroupForLicenses.name}`,
         );
         setShowAssignLicensesModal(false);
         setSelectedGroupForLicenses(null);
@@ -2823,7 +2840,7 @@ export default function AdminDashboard() {
       devError("License assignment error:", error);
       showError(
         "Assignment Failed",
-        "Failed to assign licenses. Please try again."
+        "Failed to assign licenses. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -2858,7 +2875,7 @@ export default function AdminDashboard() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-                {t('dashboard.adminDashboard')}
+                {t("dashboard.adminDashboard")}
               </h1>
               {/* Role Badge */}
               <span
@@ -2870,7 +2887,19 @@ export default function AdminDashboard() {
             <p className="mt-2 text-slate-600 flex items-center gap-2">
               <span className="inline-block w-2 h-2 rounded-full bg-green-400 flex-shrink-0"></span>
               <span className="truncate">
-                {t('dashboard.welcomeBack')}, {storedUserData?.name || storedUserData?.user_name || storedUserData?.subuser_name || profileData?.name || user?.name || getNameFromEmail(profileData?.email || storedUserData?.user_email || storedUserData?.email || user?.email || "user@example.com")}
+                {t("dashboard.welcomeBack")},{" "}
+                {storedUserData?.name ||
+                  storedUserData?.user_name ||
+                  storedUserData?.subuser_name ||
+                  profileData?.name ||
+                  user?.name ||
+                  getNameFromEmail(
+                    profileData?.email ||
+                      storedUserData?.user_email ||
+                      storedUserData?.email ||
+                      user?.email ||
+                      "user@example.com",
+                  )}
               </span>
               <span className="hidden sm:inline text-slate-400">•</span>
               <span className="hidden sm:inline text-sm text-slate-500">
@@ -2884,7 +2913,7 @@ export default function AdminDashboard() {
               onClick={() => setShowProfileModal(true)}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-brand-500 to-brand-700 hover:from-brand-600 hover:to-brand-800 rounded-lg transition-all duration-200 shadow-lg"
             >
-              <span>{t('dashboard.profile')}</span>
+              <span>{t("dashboard.profile")}</span>
             </button>
 
             {/* Private Cloud Setup Button - Only if is_private_cloud is true */}
@@ -2901,12 +2930,22 @@ export default function AdminDashboard() {
               </button>
             )} */}
             <button
-              onClick={() => navigate('/admin/private-cloud-setup')}
+              onClick={() => navigate("/admin/private-cloud-setup")}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-lg transition-all duration-200 shadow-lg"
               title="Private Cloud Setup"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                />
               </svg>
               <span className="hidden sm:inline">Private Cloud</span>
             </button>
@@ -2920,209 +2959,331 @@ export default function AdminDashboard() {
 
                   // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
                   if (isDemo) {
-                    devLog('🎭 Demo Mode: Using DEMO_BILLING_DETAILS');
+                    devLog("🎭 Demo Mode: Using DEMO_BILLING_DETAILS");
                     setBillingDetails(DEMO_BILLING_DETAILS);
                     return;
                   }
 
-                // ✅ CACHE CHECK: If billing data already loaded, don't fetch again
-                if (billingDetails && Object.keys(billingDetails).length > 0) {
-                  devLog("✅ Using cached billing data, skipping API call");
-                  return;
-                }
+                  // ✅ CACHE CHECK: If billing data already loaded, don't fetch again
+                  if (
+                    billingDetails &&
+                    Object.keys(billingDetails).length > 0
+                  ) {
+                    devLog("✅ Using cached billing data, skipping API call");
+                    return;
+                  }
 
-                // Get user email for API call
-                const userEmail = user?.email || (user as any)?.user_email || storedUserData?.user_email || storedUserData?.email;
+                  // Get user email for API call
+                  const userEmail =
+                    user?.email ||
+                    (user as any)?.user_email ||
+                    storedUserData?.user_email ||
+                    storedUserData?.email;
 
-                if (!userEmail) {
-                  devLog("⚠️ No user email found for billing fetch");
-                  return;
-                }
+                  if (!userEmail) {
+                    devLog("⚠️ No user email found for billing fetch");
+                    return;
+                  }
 
-                // Helper function to format date in user's local timezone
-                const formatDateLocal = (dateStr: string | undefined) => {
-                  if (!dateStr) return "N/A";
+                  // Helper function to format date in user's local timezone
+                  const formatDateLocal = (dateStr: string | undefined) => {
+                    if (!dateStr) return "N/A";
+                    try {
+                      return new Date(dateStr).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      });
+                    } catch {
+                      return dateStr;
+                    }
+                  };
+
+                  let combinedBillingInfo: any = {};
+
                   try {
-                    return new Date(dateStr).toLocaleDateString(undefined, {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric"
-                    });
-                  } catch {
-                    return dateStr;
-                  }
-                };
+                    // 📡 Fetch fresh user data from API to get payment_details_json
+                    devLog(
+                      "📡 Fetching user billing data from API for:",
+                      userEmail,
+                    );
+                    const apiUserRes =
+                      await apiClient.getUserByEmail(userEmail);
 
-                let combinedBillingInfo: any = {};
+                    if (apiUserRes.success && apiUserRes.data) {
+                      const apiUser = apiUserRes.data;
+                      devLog("✅ API User data received:", apiUser);
 
-                try {
-                  // 📡 Fetch fresh user data from API to get payment_details_json
-                  devLog("📡 Fetching user billing data from API for:", userEmail);
-                  const apiUserRes = await apiClient.getUserByEmail(userEmail);
+                      // Debug: Show what fields are available
+                      const hasLicense =
+                        !!apiUser.license_details_json &&
+                        apiUser.license_details_json !== "{}";
+                      const hasPayment =
+                        !!apiUser.payment_details_json &&
+                        apiUser.payment_details_json !== "{}";
+                      devLog(
+                        "🔍 Has license_details_json:",
+                        hasLicense,
+                        "| Has payment_details_json:",
+                        hasPayment,
+                      );
 
-                  if (apiUserRes.success && apiUserRes.data) {
-                    const apiUser = apiUserRes.data;
-                    devLog("✅ API User data received:", apiUser);
+                      // 1️⃣ Load license details and normalize to DEMO format
+                      const licenseDetailsJson = apiUser.license_details_json;
+                      if (licenseDetailsJson && licenseDetailsJson !== "{}") {
+                        try {
+                          const parsed = JSON.parse(licenseDetailsJson);
+                          devLog("✅ License details parsed:", parsed);
 
-                    // Debug: Show what fields are available
-                    const hasLicense = !!apiUser.license_details_json && apiUser.license_details_json !== "{}";
-                    const hasPayment = !!apiUser.payment_details_json && apiUser.payment_details_json !== "{}";
-                    devLog("🔍 Has license_details_json:", hasLicense, "| Has payment_details_json:", hasPayment);
+                          // Handle format with plans array and summary
+                          if (parsed.plans && parsed.summary) {
+                            combinedBillingInfo = {
+                              activePlanTypes:
+                                parsed.summary.activePlanTypes?.join(", ") ||
+                                "N/A",
+                              activePlanIds:
+                                parsed.summary.activePlanIds?.join(", ") ||
+                                "N/A",
+                              totalPurchases:
+                                parsed.summary.totalPurchases || 0,
+                              totalLicenses:
+                                parsed.summary.totalLicensesAcrossAllPlans || 0,
+                              availableLicenses:
+                                parsed.summary.totalAvailableLicenses || 0,
+                              consumedLicenses:
+                                parsed.summary.totalConsumedLicenses || 0,
+                              usedLicenses:
+                                parsed.summary.totalConsumedLicenses || 0,
+                              userEmail: parsed.useremail || userEmail,
+                              status: "Active",
+                            };
 
-                    // 1️⃣ Load license details and normalize to DEMO format
-                    const licenseDetailsJson = apiUser.license_details_json;
-                    if (licenseDetailsJson && licenseDetailsJson !== "{}") {
-                      try {
-                        const parsed = JSON.parse(licenseDetailsJson);
-                        devLog("✅ License details parsed:", parsed);
-
-                        // Handle format with plans array and summary
-                        if (parsed.plans && parsed.summary) {
-                          combinedBillingInfo = {
-                            activePlanTypes: parsed.summary.activePlanTypes?.join(", ") || "N/A",
-                            activePlanIds: parsed.summary.activePlanIds?.join(", ") || "N/A",
-                            totalPurchases: parsed.summary.totalPurchases || 0,
-                            totalLicenses: parsed.summary.totalLicensesAcrossAllPlans || 0,
-                            availableLicenses: parsed.summary.totalAvailableLicenses || 0,
-                            consumedLicenses: parsed.summary.totalConsumedLicenses || 0,
-                            usedLicenses: parsed.summary.totalConsumedLicenses || 0,
-                            userEmail: parsed.useremail || userEmail,
-                            status: "Active",
-                          };
-
-                          if (parsed.plans.length > 0) {
-                            const firstPlan = parsed.plans[0];
-                            // Extract planType from firstPlan if not in summary
-                            combinedBillingInfo.planType = firstPlan.planType || firstPlan.plan_type || combinedBillingInfo.activePlanTypes;
-                            combinedBillingInfo.totalLicenses = firstPlan.totalLicenses || firstPlan.total_licenses || combinedBillingInfo.totalLicenses || 0;
-                            combinedBillingInfo.purchaseDate = formatDateLocal(firstPlan.purchaseDate);
-                            combinedBillingInfo.startDate = formatDateLocal(firstPlan.startDate || firstPlan.purchaseDate);
-                            combinedBillingInfo.validityYears = firstPlan.validityYears || firstPlan.validity_years || "N/A";
-                            combinedBillingInfo.expiryDate = formatDateLocal(firstPlan.expiryDate);
-                            combinedBillingInfo.billingCycle = firstPlan.billingCycle || firstPlan.billing_cycle || "Annual";
-                            combinedBillingInfo.amount = firstPlan.amount || firstPlan.price || "N/A";
-                            combinedBillingInfo.features = Array.isArray(firstPlan.features)
-                              ? firstPlan.features.join(", ")
-                              : (firstPlan.features || "Standard Features");
+                            if (parsed.plans.length > 0) {
+                              const firstPlan = parsed.plans[0];
+                              // Extract planType from firstPlan if not in summary
+                              combinedBillingInfo.planType =
+                                firstPlan.planType ||
+                                firstPlan.plan_type ||
+                                combinedBillingInfo.activePlanTypes;
+                              combinedBillingInfo.totalLicenses =
+                                firstPlan.totalLicenses ||
+                                firstPlan.total_licenses ||
+                                combinedBillingInfo.totalLicenses ||
+                                0;
+                              combinedBillingInfo.purchaseDate =
+                                formatDateLocal(firstPlan.purchaseDate);
+                              combinedBillingInfo.startDate = formatDateLocal(
+                                firstPlan.startDate || firstPlan.purchaseDate,
+                              );
+                              combinedBillingInfo.validityYears =
+                                firstPlan.validityYears ||
+                                firstPlan.validity_years ||
+                                "N/A";
+                              combinedBillingInfo.expiryDate = formatDateLocal(
+                                firstPlan.expiryDate,
+                              );
+                              combinedBillingInfo.billingCycle =
+                                firstPlan.billingCycle ||
+                                firstPlan.billing_cycle ||
+                                "Annual";
+                              combinedBillingInfo.amount =
+                                firstPlan.amount || firstPlan.price || "N/A";
+                              combinedBillingInfo.features = Array.isArray(
+                                firstPlan.features,
+                              )
+                                ? firstPlan.features.join(", ")
+                                : firstPlan.features || "Standard Features";
+                            }
+                          } else {
+                            // Direct object format - normalize field names to DEMO format
+                            combinedBillingInfo = {
+                              activePlanTypes:
+                                parsed.plan_type ||
+                                parsed.planType ||
+                                parsed.activePlanTypes ||
+                                "Standard",
+                              activePlanIds:
+                                parsed.plan_id ||
+                                parsed.planId ||
+                                parsed.activePlanIds ||
+                                "N/A",
+                              totalPurchases:
+                                parsed.total_purchases ||
+                                parsed.totalPurchases ||
+                                1,
+                              totalLicenses:
+                                parsed.total_licenses ||
+                                parsed.totalLicenses ||
+                                parsed.licenses ||
+                                parsed.totalLicenses ||
+                                0,
+                              availableLicenses:
+                                parsed.available_licenses ||
+                                parsed.availableLicenses ||
+                                0,
+                              consumedLicenses:
+                                parsed.consumed_licenses ||
+                                parsed.consumedLicenses ||
+                                parsed.usedLicenses ||
+                                0,
+                              usedLicenses:
+                                parsed.used_licenses ||
+                                parsed.usedLicenses ||
+                                parsed.consumedLicenses ||
+                                0,
+                              validityYears:
+                                parsed.validity_years ||
+                                parsed.validityYears ||
+                                "1",
+                              purchaseDate: formatDateLocal(
+                                parsed.purchase_date || parsed.purchaseDate,
+                              ),
+                              startDate: formatDateLocal(
+                                parsed.start_date || parsed.startDate,
+                              ),
+                              expiryDate: formatDateLocal(
+                                parsed.expiry_date || parsed.expiryDate,
+                              ),
+                              billingCycle:
+                                parsed.billing_cycle ||
+                                parsed.billingCycle ||
+                                "Annual",
+                              amount: parsed.amount || parsed.price || "N/A",
+                              status: parsed.status || "Active",
+                              userEmail:
+                                parsed.user_email ||
+                                parsed.userEmail ||
+                                userEmail,
+                              features: Array.isArray(parsed.features)
+                                ? parsed.features.join(", ")
+                                : parsed.features || "Standard Features",
+                            };
                           }
-                        } else {
-                          // Direct object format - normalize field names to DEMO format
-                          combinedBillingInfo = {
-                            activePlanTypes: parsed.plan_type || parsed.planType || parsed.activePlanTypes || "Standard",
-                            activePlanIds: parsed.plan_id || parsed.planId || parsed.activePlanIds || "N/A",
-                            totalPurchases: parsed.total_purchases || parsed.totalPurchases || 1,
-                            totalLicenses: parsed.total_licenses || parsed.totalLicenses || parsed.licenses || parsed.totalLicenses || 0,
-                            availableLicenses: parsed.available_licenses || parsed.availableLicenses || 0,
-                            consumedLicenses: parsed.consumed_licenses || parsed.consumedLicenses || parsed.usedLicenses || 0,
-                            usedLicenses: parsed.used_licenses || parsed.usedLicenses || parsed.consumedLicenses || 0,
-                            validityYears: parsed.validity_years || parsed.validityYears || "1",
-                            purchaseDate: formatDateLocal(parsed.purchase_date || parsed.purchaseDate),
-                            startDate: formatDateLocal(parsed.start_date || parsed.startDate),
-                            expiryDate: formatDateLocal(parsed.expiry_date || parsed.expiryDate),
-                            billingCycle: parsed.billing_cycle || parsed.billingCycle || "Annual",
-                            amount: parsed.amount || parsed.price || "N/A",
-                            status: parsed.status || "Active",
-                            userEmail: parsed.user_email || parsed.userEmail || userEmail,
-                            features: Array.isArray(parsed.features)
-                              ? parsed.features.join(", ")
-                              : (parsed.features || "Standard Features"),
-                          };
+                        } catch (e) {
+                          devError("❌ Failed to parse license details:", e);
                         }
-                      } catch (e) {
-                        devError("❌ Failed to parse license details:", e);
+                      }
+
+                      // 2️⃣ Load payment details
+                      const paymentDetailsJson = apiUser.payment_details_json;
+                      if (paymentDetailsJson && paymentDetailsJson !== "{}") {
+                        try {
+                          const paymentParsed = JSON.parse(paymentDetailsJson);
+                          devLog("✅ Payment details parsed:", paymentParsed);
+                          combinedBillingInfo = {
+                            ...combinedBillingInfo,
+                            ...paymentParsed,
+                          };
+                        } catch (e) {
+                          devError("❌ Failed to parse payment details:", e);
+                        }
+                      }
+
+                      // 3️⃣ If still empty, use basic user info as fallback
+                      if (Object.keys(combinedBillingInfo).length === 0) {
+                        devLog(
+                          "⚠️ No billing/payment JSON found, using basic user info",
+                        );
+                        combinedBillingInfo = {
+                          userEmail:
+                            apiUser.user_email || apiUser.email || userEmail,
+                          userName: apiUser.user_name || apiUser.name || "N/A",
+                          userRole: apiUser.role || apiUser.user_role || "N/A",
+                          status: apiUser.status || "active",
+                          department: apiUser.department || "N/A",
+                          licenseAllocation:
+                            apiUser.licesne_allocation ||
+                            (apiUser as any).license_allocation ||
+                            "0",
+                          timezone: apiUser.timezone || "N/A",
+                          isPrivateCloud: apiUser.is_private_cloud
+                            ? "Yes"
+                            : "No",
+                          lastLogin: apiUser.last_login || "N/A",
+                        };
+                      }
+                    } else {
+                      devLog(
+                        "⚠️ API call failed, falling back to localStorage",
+                      );
+                      // Fallback to localStorage data
+                      const storedData = getUserDataFromStorage();
+                      const licenseDetailsJson =
+                        storedData?.license_details_json;
+                      const paymentDetailsJson =
+                        storedData?.payment_details_json;
+
+                      if (licenseDetailsJson && licenseDetailsJson !== "{}") {
+                        try {
+                          combinedBillingInfo = JSON.parse(licenseDetailsJson);
+                        } catch (e) {
+                          /* ignore */
+                        }
+                      }
+                      if (paymentDetailsJson && paymentDetailsJson !== "{}") {
+                        try {
+                          combinedBillingInfo = {
+                            ...combinedBillingInfo,
+                            ...JSON.parse(paymentDetailsJson),
+                          };
+                        } catch (e) {
+                          /* ignore */
+                        }
+                      }
+
+                      // Fallback to basic stored user data
+                      if (
+                        Object.keys(combinedBillingInfo).length === 0 &&
+                        storedData
+                      ) {
+                        combinedBillingInfo = {
+                          userEmail:
+                            storedData.user_email ||
+                            storedData.email ||
+                            userEmail,
+                          userName:
+                            storedData.user_name || storedData.name || "N/A",
+                          userRole:
+                            storedData.role || storedData.user_role || "N/A",
+                          status: storedData.status || "active",
+                          department: storedData.department || "N/A",
+                          licenseAllocation:
+                            storedData.license_allocation || "0",
+                        };
                       }
                     }
-
-                    // 2️⃣ Load payment details
-                    const paymentDetailsJson = apiUser.payment_details_json;
-                    if (paymentDetailsJson && paymentDetailsJson !== "{}") {
-                      try {
-                        const paymentParsed = JSON.parse(paymentDetailsJson);
-                        devLog("✅ Payment details parsed:", paymentParsed);
-                        combinedBillingInfo = { ...combinedBillingInfo, ...paymentParsed };
-                      } catch (e) {
-                        devError("❌ Failed to parse payment details:", e);
-                      }
-                    }
-
-                    // 3️⃣ If still empty, use basic user info as fallback
-                    if (Object.keys(combinedBillingInfo).length === 0) {
-                      devLog("⚠️ No billing/payment JSON found, using basic user info");
-                      combinedBillingInfo = {
-                        userEmail: apiUser.user_email || apiUser.email || userEmail,
-                        userName: apiUser.user_name || apiUser.name || "N/A",
-                        userRole: apiUser.role || apiUser.user_role || "N/A",
-                        status: apiUser.status || "active",
-                        department: apiUser.department || "N/A",
-                        licenseAllocation: apiUser.licesne_allocation || (apiUser as any).license_allocation || "0",
-                        timezone: apiUser.timezone || "N/A",
-                        isPrivateCloud: apiUser.is_private_cloud ? "Yes" : "No",
-                        lastLogin: apiUser.last_login || "N/A",
-                      };
-                    }
-                  } else {
-                    devLog("⚠️ API call failed, falling back to localStorage");
-                    // Fallback to localStorage data
-                    const storedData = getUserDataFromStorage();
-                    const licenseDetailsJson = storedData?.license_details_json;
-                    const paymentDetailsJson = storedData?.payment_details_json;
-
-                    if (licenseDetailsJson && licenseDetailsJson !== "{}") {
-                      try {
-                        combinedBillingInfo = JSON.parse(licenseDetailsJson);
-                      } catch (e) { /* ignore */ }
-                    }
-                    if (paymentDetailsJson && paymentDetailsJson !== "{}") {
-                      try {
-                        combinedBillingInfo = { ...combinedBillingInfo, ...JSON.parse(paymentDetailsJson) };
-                      } catch (e) { /* ignore */ }
-                    }
-
-                    // Fallback to basic stored user data
-                    if (Object.keys(combinedBillingInfo).length === 0 && storedData) {
-                      combinedBillingInfo = {
-                        userEmail: storedData.user_email || storedData.email || userEmail,
-                        userName: storedData.user_name || storedData.name || "N/A",
-                        userRole: storedData.role || storedData.user_role || "N/A",
-                        status: storedData.status || "active",
-                        department: storedData.department || "N/A",
-                        licenseAllocation: storedData.license_allocation || "0",
-                      };
-                    }
+                  } catch (error) {
+                    devError("❌ Error fetching billing data:", error);
                   }
-                } catch (error) {
-                  devError("❌ Error fetching billing data:", error);
-                }
 
-                devLog("✅ Final billing details:", combinedBillingInfo);
-                setBillingDetails(combinedBillingInfo);
-              }}
-              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
-              title="Settings - Billing & Password"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                  devLog("✅ Final billing details:", combinedBillingInfo);
+                  setBillingDetails(combinedBillingInfo);
+                }}
+                className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
+                title="Settings - Billing & Password"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              <span className="hidden sm:inline">Settings</span>
-            </button>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <span className="hidden sm:inline">Settings</span>
+              </button>
             )}
-
 
             {/* Private Cloud Button - For Superadmin (Not Demo) */}
             {/* {currentUserRole === 'superadmin' && isDemo && (
@@ -3153,9 +3314,6 @@ export default function AdminDashboard() {
             )} */}
 
             {/* Private Cloud Button (Gradient) - Only for Private Cloud Enabled Users */}
-
-
-
 
             {/* Renew License Button */}
             {/* <button 
@@ -3206,7 +3364,7 @@ export default function AdminDashboard() {
                 {[
                   {
                     id: "overview",
-                    name: t('dashboard.overview'),
+                    name: t("dashboard.overview"),
                     permission: "canViewDashboard", // All roles can see
                     iconSvg: (
                       <svg
@@ -3226,7 +3384,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "licenses",
-                    name: t('dashboard.licenses'),
+                    name: t("dashboard.licenses"),
                     permission: "canViewLicenses", // All roles except basic user can see
                     iconSvg: (
                       <svg
@@ -3246,7 +3404,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "users",
-                    name: t('dashboard.users'),
+                    name: t("dashboard.users"),
                     permission: "canViewAllUsers", // Only admin/superadmin/manager
                     iconSvg: (
                       <svg
@@ -3266,7 +3424,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "groups",
-                    name: t('dashboard.groups'),
+                    name: t("dashboard.groups"),
                     permission: "canViewAllUsers", // Only admin/superadmin/manager
                     iconSvg: (
                       <svg
@@ -3286,7 +3444,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "activity",
-                    name: t('dashboard.userActivity'),
+                    name: t("dashboard.userActivity"),
                     permission: "canViewAllUsers", // Only admin/superadmin/manager
                     iconSvg: (
                       <svg
@@ -3306,7 +3464,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "reports",
-                    name: t('dashboard.reports'),
+                    name: t("dashboard.reports"),
                     permission: "canViewReports", // All roles can see
                     iconSvg: (
                       <svg
@@ -3326,7 +3484,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "performance",
-                    name: t('dashboard.performance'),
+                    name: t("dashboard.performance"),
                     permission: "canViewDashboard", // All roles can see
                     iconSvg: (
                       <svg
@@ -3365,17 +3523,28 @@ export default function AdminDashboard() {
                     ),
                   },
                 ]
-                  .filter((tab) =>
-                    hasPermission(currentUserRole, tab.permission as any)
-                  ) // Only show tabs user has permission for
+                  .filter((tab) => {
+                    // Check base role permission
+                    const hasRolePermission = hasPermission(
+                      currentUserRole,
+                      tab.permission as any,
+                    );
+
+                    // Apply feature flag checks
+                    if (tab.id === "groups" && !isGroupsEnabled) return false;
+                    if (tab.id === "users" && !isSubusersEnabled) return false;
+
+                    return hasRolePermission;
+                  }) // Only show tabs user has permission for
                   .map((tab) => (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${activeTab === tab.id
-                        ? "border-emerald-500 text-emerald-600"
-                        : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
-                        }`}
+                      className={`flex items-center gap-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
+                        activeTab === tab.id
+                          ? "border-emerald-500 text-emerald-600"
+                          : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                      }`}
                     >
                       {tab.iconSvg}
                       <span>{tab.name}</span>
@@ -3410,13 +3579,15 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                   <div
-                    className={`flex items-center gap-1 text-sm font-medium ml-2 flex-shrink-0 ${stat.trend === "up" ? "text-green-600" : "text-red-600"
-                      }`}
+                    className={`flex items-center gap-1 text-sm font-medium ml-2 flex-shrink-0 ${
+                      stat.trend === "up" ? "text-green-600" : "text-red-600"
+                    }`}
                   >
                     <span>{stat.change}</span>
                     <svg
-                      className={`w-4 h-4 ${stat.trend === "up" ? "rotate-0" : "rotate-180"
-                        }`}
+                      className={`w-4 h-4 ${
+                        stat.trend === "up" ? "rotate-0" : "rotate-180"
+                      }`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -3432,11 +3603,25 @@ export default function AdminDashboard() {
             </div>
           ) : (
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-8 text-center mb-8">
-              <svg className="w-12 h-12 text-slate-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              <svg
+                className="w-12 h-12 text-slate-400 mx-auto mb-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
               </svg>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">No Statistics Available</h3>
-              <p className="text-sm text-slate-600">Dashboard statistics are not available from the server.</p>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">
+                No Statistics Available
+              </h3>
+              <p className="text-sm text-slate-600">
+                Dashboard statistics are not available from the server.
+              </p>
             </div>
           )}
         </RoleBased>
@@ -3507,7 +3692,10 @@ export default function AdminDashboard() {
               </div>
               <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                 {(Array.isArray(userLicenseDetails)
-                  ? userLicenseDetails.reduce((sum, lic) => sum + (lic.total || 0), 0)
+                  ? userLicenseDetails.reduce(
+                      (sum, lic) => sum + (lic.total || 0),
+                      0,
+                    )
                   : 0) || 0}
               </p>
               <p className="text-sm text-slate-500 mt-2">All licenses</p>
@@ -3569,7 +3757,10 @@ export default function AdminDashboard() {
                 {auditReports.length > 0 ? (
                   <>
                     {auditReports
-                      .slice((recentReportsPage - 1) * recentReportsPageSize, recentReportsPage * recentReportsPageSize)
+                      .slice(
+                        (recentReportsPage - 1) * recentReportsPageSize,
+                        recentReportsPage * recentReportsPageSize,
+                      )
                       .map((report) => (
                         <div
                           key={report.id || report.report_id}
@@ -3577,23 +3768,27 @@ export default function AdminDashboard() {
                         >
                           <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
                             <div
-                              className={`w-2 h-2 rounded-full flex-shrink-0 ${report.status === "completed" ||
+                              className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                report.status === "completed" ||
                                 report.status === "Completed"
-                                ? "bg-green-400"
-                                : report.status === "running" ||
-                                  report.status === "Running"
-                                  ? "bg-blue-400"
-                                  : report.status === "pending" ||
-                                    report.status === "Pending"
-                                    ? "bg-yellow-400"
-                                    : "bg-red-400"
-                                }`}
+                                  ? "bg-green-400"
+                                  : report.status === "running" ||
+                                      report.status === "Running"
+                                    ? "bg-blue-400"
+                                    : report.status === "pending" ||
+                                        report.status === "Pending"
+                                      ? "bg-yellow-400"
+                                      : "bg-red-400"
+                              }`}
                             ></div>
                             <div className="min-w-0 flex-1">
                               <div className="font-medium text-slate-900 truncate">
                                 {report.report_name ||
                                   report.reportType ||
-                                  `Report #${report.report_id || report.reportId || report.id
+                                  `Report #${
+                                    report.report_id ||
+                                    report.reportId ||
+                                    report.id
                                   }`}
                               </div>
                               <div className="text-sm text-slate-500 truncate">
@@ -3608,15 +3803,19 @@ export default function AdminDashboard() {
                           </div>
                           <div className="text-sm text-slate-500 flex-shrink-0 ml-2">
                             {report.report_datetime
-                              ? new Date(report.report_datetime).toLocaleDateString(
-                                "en-IN",
-                                { month: "short", day: "numeric" }
-                              )
+                              ? new Date(
+                                  report.report_datetime,
+                                ).toLocaleDateString("en-IN", {
+                                  month: "short",
+                                  day: "numeric",
+                                })
                               : report.reportDate
-                                ? new Date(report.reportDate).toLocaleDateString(
-                                  "en-IN",
-                                  { month: "short", day: "numeric" }
-                                )
+                                ? new Date(
+                                    report.reportDate,
+                                  ).toLocaleDateString("en-IN", {
+                                    month: "short",
+                                    day: "numeric",
+                                  })
                                 : "N/A"}
                           </div>
                         </div>
@@ -3652,33 +3851,67 @@ export default function AdminDashboard() {
               {auditReports.length > 0 && (
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 sm:px-6 py-3 border-t border-slate-200 bg-slate-50">
                   <div className="flex items-center gap-2">
-                    <label className="text-xs text-slate-600">Rows per page:</label>
+                    <label className="text-xs text-slate-600">
+                      Rows per page:
+                    </label>
                     <select
                       value={recentReportsPageSize}
-                      onChange={(e) => { setRecentReportsPageSize(parseInt(e.target.value, 10)); setRecentReportsPage(1); }}
+                      onChange={(e) => {
+                        setRecentReportsPageSize(parseInt(e.target.value, 10));
+                        setRecentReportsPage(1);
+                      }}
                       className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                     >
-                      {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                      {pageSizeOptions.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
                     </select>
                     <span className="text-xs text-slate-500">
-                      Showing {Math.min((recentReportsPage - 1) * recentReportsPageSize + 1, auditReports.length)} to {Math.min(recentReportsPage * recentReportsPageSize, auditReports.length)} of {auditReports.length}
+                      Showing{" "}
+                      {Math.min(
+                        (recentReportsPage - 1) * recentReportsPageSize + 1,
+                        auditReports.length,
+                      )}{" "}
+                      to{" "}
+                      {Math.min(
+                        recentReportsPage * recentReportsPageSize,
+                        auditReports.length,
+                      )}{" "}
+                      of {auditReports.length}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-slate-600">
-                      Page {recentReportsPage} of {Math.ceil(auditReports.length / recentReportsPageSize)}
+                      Page {recentReportsPage} of{" "}
+                      {Math.ceil(auditReports.length / recentReportsPageSize)}
                     </span>
                     <div className="flex gap-1">
                       <button
-                        onClick={() => setRecentReportsPage(prev => Math.max(prev - 1, 1))}
+                        onClick={() =>
+                          setRecentReportsPage((prev) => Math.max(prev - 1, 1))
+                        }
                         disabled={recentReportsPage === 1}
                         className="px-2 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Prev
                       </button>
                       <button
-                        onClick={() => setRecentReportsPage(prev => Math.min(prev + 1, Math.ceil(auditReports.length / recentReportsPageSize)))}
-                        disabled={recentReportsPage >= Math.ceil(auditReports.length / recentReportsPageSize)}
+                        onClick={() =>
+                          setRecentReportsPage((prev) =>
+                            Math.min(
+                              prev + 1,
+                              Math.ceil(
+                                auditReports.length / recentReportsPageSize,
+                              ),
+                            ),
+                          )
+                        }
+                        disabled={
+                          recentReportsPage >=
+                          Math.ceil(auditReports.length / recentReportsPageSize)
+                        }
                         className="px-2 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
@@ -3706,7 +3939,10 @@ export default function AdminDashboard() {
                 {recentSessions.length > 0 ? (
                   <>
                     {recentSessions
-                      .slice((systemLogsPage - 1) * systemLogsPageSize, systemLogsPage * systemLogsPageSize)
+                      .slice(
+                        (systemLogsPage - 1) * systemLogsPageSize,
+                        systemLogsPage * systemLogsPageSize,
+                      )
                       .map((session, index) => (
                         <div
                           key={session.session_id || index}
@@ -3716,12 +3952,15 @@ export default function AdminDashboard() {
                             {/* Session Status Badge */}
                             <div className="flex-shrink-0 mt-0.5">
                               <span
-                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${session.session_status === "active" || session.session_status === "Active"
-                                  ? "bg-green-100 text-green-700"
-                                  : session.session_status === "inactive" || session.session_status === "Inactive"
-                                    ? "bg-red-100 text-red-700"
-                                    : "bg-slate-100 text-slate-700"
-                                  }`}
+                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                  session.session_status === "active" ||
+                                  session.session_status === "Active"
+                                    ? "bg-green-100 text-green-700"
+                                    : session.session_status === "inactive" ||
+                                        session.session_status === "Inactive"
+                                      ? "bg-red-100 text-red-700"
+                                      : "bg-slate-100 text-slate-700"
+                                }`}
                               >
                                 {session.session_status || "Unknown"}
                               </span>
@@ -3735,15 +3974,14 @@ export default function AdminDashboard() {
                                 </p>
                                 <span className="text-xs text-slate-500 flex-shrink-0">
                                   {session.login_time
-                                    ? new Date(session.login_time).toLocaleString(
-                                      "en-IN",
-                                      {
+                                    ? new Date(
+                                        session.login_time,
+                                      ).toLocaleString("en-IN", {
                                         month: "short",
                                         day: "numeric",
                                         hour: "2-digit",
                                         minute: "2-digit",
-                                      }
-                                    )
+                                      })
                                     : "N/A"}
                                 </span>
                               </div>
@@ -3770,7 +4008,13 @@ export default function AdminDashboard() {
                                 )}
                                 {session.logout_time && (
                                   <span className="truncate text-slate-400">
-                                    Logout: {new Date(session.logout_time).toLocaleString("en-IN", { hour: "2-digit", minute: "2-digit" })}
+                                    Logout:{" "}
+                                    {new Date(
+                                      session.logout_time,
+                                    ).toLocaleString("en-IN", {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
                                   </span>
                                 )}
                               </div>
@@ -3778,7 +4022,6 @@ export default function AdminDashboard() {
                           </div>
                         </div>
                       ))}
-
                   </>
                 ) : (
                   <div className="px-4 sm:px-6 py-12 text-center">
@@ -3813,26 +4056,48 @@ export default function AdminDashboard() {
                     <label className="text-xs text-slate-600">Rows:</label>
                     <select
                       value={systemLogsPageSize}
-                      onChange={(e) => { setSystemLogsPageSize(parseInt(e.target.value, 10)); setSystemLogsPage(1); }}
+                      onChange={(e) => {
+                        setSystemLogsPageSize(parseInt(e.target.value, 10));
+                        setSystemLogsPage(1);
+                      }}
                       className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
                     >
-                      {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                      {pageSizeOptions.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <span className="text-sm text-slate-600">
-                    Page {systemLogsPage} of {Math.ceil(recentSessions.length / systemLogsPageSize)}
+                    Page {systemLogsPage} of{" "}
+                    {Math.ceil(recentSessions.length / systemLogsPageSize)}
                   </span>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => setSystemLogsPage(prev => Math.max(prev - 1, 1))}
+                      onClick={() =>
+                        setSystemLogsPage((prev) => Math.max(prev - 1, 1))
+                      }
                       disabled={systemLogsPage === 1}
                       className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Previous
                     </button>
                     <button
-                      onClick={() => setSystemLogsPage(prev => Math.min(prev + 1, Math.ceil(recentSessions.length / systemLogsPageSize)))}
-                      disabled={systemLogsPage >= Math.ceil(recentSessions.length / systemLogsPageSize)}
+                      onClick={() =>
+                        setSystemLogsPage((prev) =>
+                          Math.min(
+                            prev + 1,
+                            Math.ceil(
+                              recentSessions.length / systemLogsPageSize,
+                            ),
+                          ),
+                        )
+                      }
+                      disabled={
+                        systemLogsPage >=
+                        Math.ceil(recentSessions.length / systemLogsPageSize)
+                      }
                       className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Next
@@ -4022,8 +4287,14 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200">
-                        {(Array.isArray(userLicenseDetails) ? userLicenseDetails : [])
-                          .slice((licenseDetailsPage - 1) * licensePageSize, licenseDetailsPage * licensePageSize)
+                        {(Array.isArray(userLicenseDetails)
+                          ? userLicenseDetails
+                          : []
+                        )
+                          .slice(
+                            (licenseDetailsPage - 1) * licensePageSize,
+                            licenseDetailsPage * licensePageSize,
+                          )
                           .map((license, index) => {
                             const usagePercent =
                               license.total > 0
@@ -4044,16 +4315,17 @@ export default function AdminDashboard() {
                                   <div className="flex items-center gap-3">
                                     <div className="flex-1 bg-slate-200 rounded-full h-2 min-w-[80px]">
                                       <div
-                                        className={`h-2 rounded-full ${usagePercent > 80
-                                          ? "bg-red-500"
-                                          : usagePercent > 60
-                                            ? "bg-yellow-500"
-                                            : "bg-green-500"
-                                          }`}
+                                        className={`h-2 rounded-full ${
+                                          usagePercent > 80
+                                            ? "bg-red-500"
+                                            : usagePercent > 60
+                                              ? "bg-yellow-500"
+                                              : "bg-green-500"
+                                        }`}
                                         style={{
                                           width: `${Math.min(
                                             usagePercent,
-                                            100
+                                            100,
                                           )}%`,
                                         }}
                                       ></div>
@@ -4066,7 +4338,8 @@ export default function AdminDashboard() {
                               </tr>
                             );
                           })}
-                        {(!Array.isArray(userLicenseDetails) || userLicenseDetails.length === 0) && (
+                        {(!Array.isArray(userLicenseDetails) ||
+                          userLicenseDetails.length === 0) && (
                           <tr>
                             <td
                               colSpan={4}
@@ -4084,25 +4357,49 @@ export default function AdminDashboard() {
                 {userLicenseDetails.length > 0 && (
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                      <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
+                      <label className="text-xs sm:text-sm text-slate-600">
+                        Rows:
+                      </label>
                       <select
                         value={licensePageSize}
-                        onChange={(e) => { setLicensePageSize(parseInt(e.target.value, 10)); setLicenseDetailsPage(1); }}
+                        onChange={(e) => {
+                          setLicensePageSize(parseInt(e.target.value, 10));
+                          setLicenseDetailsPage(1);
+                        }}
                         className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                       >
-                        {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                        {pageSizeOptions.map((size) => (
+                          <option key={size} value={size}>
+                            {size}
+                          </option>
+                        ))}
                       </select>
                       <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                        Showing {Math.min((licenseDetailsPage - 1) * licensePageSize + 1, userLicenseDetails.length)} to {Math.min(licenseDetailsPage * licensePageSize, userLicenseDetails.length)} of {userLicenseDetails.length}
+                        Showing{" "}
+                        {Math.min(
+                          (licenseDetailsPage - 1) * licensePageSize + 1,
+                          userLicenseDetails.length,
+                        )}{" "}
+                        to{" "}
+                        {Math.min(
+                          licenseDetailsPage * licensePageSize,
+                          userLicenseDetails.length,
+                        )}{" "}
+                        of {userLicenseDetails.length}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-3">
                       <span className="text-xs sm:text-sm text-slate-600">
-                        Page {licenseDetailsPage} of {Math.ceil(userLicenseDetails.length / licensePageSize)}
+                        Page {licenseDetailsPage} of{" "}
+                        {Math.ceil(userLicenseDetails.length / licensePageSize)}
                       </span>
                       <div className="flex gap-1 sm:gap-2">
                         <button
-                          onClick={() => setLicenseDetailsPage(prev => Math.max(prev - 1, 1))}
+                          onClick={() =>
+                            setLicenseDetailsPage((prev) =>
+                              Math.max(prev - 1, 1),
+                            )
+                          }
                           disabled={licenseDetailsPage === 1}
                           className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
@@ -4110,8 +4407,22 @@ export default function AdminDashboard() {
                           <span className="hidden sm:inline">Previous</span>
                         </button>
                         <button
-                          onClick={() => setLicenseDetailsPage(prev => Math.min(prev + 1, Math.ceil(userLicenseDetails.length / licensePageSize)))}
-                          disabled={licenseDetailsPage >= Math.ceil(userLicenseDetails.length / licensePageSize)}
+                          onClick={() =>
+                            setLicenseDetailsPage((prev) =>
+                              Math.min(
+                                prev + 1,
+                                Math.ceil(
+                                  userLicenseDetails.length / licensePageSize,
+                                ),
+                              ),
+                            )
+                          }
+                          disabled={
+                            licenseDetailsPage >=
+                            Math.ceil(
+                              userLicenseDetails.length / licensePageSize,
+                            )
+                          }
                           className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Next
@@ -4125,277 +4436,26 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {activeTab === "users" && (
-          <div className="space-y-6">
-            {/* Users Management */}
-            <div className="card">
-              <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
-                <div>
-                  <h2 className="font-semibold text-slate-900">Users</h2>
-                  <p className="text-sm text-slate-600 mt-1">
-                    Manage all users
-                  </p>
-                </div>
-                {/* Add User button */}
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <button
-                    onClick={handleAddUser}
-                    className="btn-primary text-sm px-4 py-2 flex items-center gap-2"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
-                    Add User
-                  </button>
-                </div>
-              </div>
-              <div className="p-6">
-                {/* Loading State */}
-                {usersDataLoading && (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="text-center">
-                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-                      <p className="mt-4 text-sm text-slate-600">
-                        Loading users data...
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Empty State - No users found */}
-                {!usersDataLoading && displaySubusersData.length === 0 && (
-                  <div className="text-center py-12">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
-                      <svg
-                        className="w-8 h-8 text-slate-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-medium text-slate-900 mb-2">
-                      No Users Found
-                    </h3>
-                    <p className="text-sm text-slate-600">
-                      {isCurrentUserSubuser
-                        ? "You don't have any subusers associated with your account."
-                        : "Click 'Manage Users' to load user data or create a new subuser."}
-                    </p>
-                  </div>
-                )}
-
-                {/* Users Table - Show for all users if data exists */}
-                {!usersDataLoading && displaySubusersData.length > 0 && (
+        {activeTab === "users" &&
+          (isSubusersEnabled ? (
+            <div className="space-y-6">
+              {/* Users Management */}
+              <div className="card">
+                <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                   <div>
-                    <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
-                      <table className="w-full">
-                        <thead className="sticky top-0 bg-white shadow-sm z-10">
-                          <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Email</th>
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Role</th>
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden md:table-cell">Department</th>
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Status</th>
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden lg:table-cell">Group</th>
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">Last Login</th>
-                            <th className="pb-3 font-medium whitespace-nowrap hidden xl:table-cell">
-                              License Allocation
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100">
-                          {subusersData
-                            .slice((usersPage - 1) * usersPageSize, usersPage * usersPageSize)
-                            .map((subuser, index) => {
-                              return (
-                                <tr
-                                  key={subuser.id || index}
-                                  className="hover:bg-slate-50"
-                                >
-                                  {/* Email */}
-                                  <td className="py-4 font-medium text-slate-900">
-                                    {subuser.subuser_email}
-                                  </td>
-
-                                  {/* Role */}
-                                  <td className="py-4">
-                                    <span
-                                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${(subuser as any).role === "admin" ||
-                                        (subuser as any).defaultRole === "admin"
-                                        ? "bg-purple-100 text-purple-800"
-                                        : (subuser as any).role === "manager" ||
-                                          (subuser as any).defaultRole ===
-                                          "manager"
-                                          ? "bg-blue-100 text-blue-800"
-                                          : "bg-slate-100 text-slate-800"
-                                        }`}
-                                    >
-                                      {(subuser as any).role ||
-                                        (subuser as any).defaultRole ||
-                                        "user"}
-                                    </span>
-                                  </td>
-
-                                  {/* Department */}
-                                  <td className="py-4 text-slate-600 hidden md:table-cell">
-                                    {(subuser as any).department || "-"}
-                                  </td>
-
-                                  {/* Status */}
-                                  <td className="py-4">
-                                    {subuser.status ? (
-                                      <span
-                                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${subuser.status === "active"
-                                          ? "bg-green-100 text-green-800"
-                                          : subuser.status === "inactive"
-                                            ? "bg-gray-100 text-gray-800"
-                                            : subuser.status === "suspended"
-                                              ? "bg-red-100 text-red-800"
-                                              : "bg-yellow-100 text-yellow-800"
-                                          }`}
-                                      >
-                                        {subuser.status}
-                                      </span>
-                                    ) : (
-                                      <span className="text-slate-400">-</span>
-                                    )}
-                                  </td>
-
-                                  {/* User Group */}
-                                  <td className="py-4 text-slate-600 hidden lg:table-cell">
-                                    {(subuser as any).subuser_group || "-"}
-                                  </td>
-
-                                  {/* Last Login */}
-                                  <td className="py-4 text-slate-600 text-sm hidden sm:table-cell">
-                                    <div className="flex flex-col">
-                                      <span className="font-medium">
-                                        {formatLastLogin(
-                                          (subuser as any).last_login
-                                        )}
-                                      </span>
-                                      {(subuser as any).last_login &&
-                                        (subuser as any).last_login !== "Never" &&
-                                        (subuser as any).last_login !== "-" && (
-                                          <span
-                                            className="text-xs text-slate-400 mt-0.5"
-                                            title={new Date(
-                                              (subuser as any).last_login
-                                            ).toLocaleString()}
-                                          >
-                                            {new Date(
-                                              (subuser as any).last_login
-                                            ).toLocaleString("en-IN", {
-                                              month: "short",
-                                              day: "numeric",
-                                              hour: "2-digit",
-                                              minute: "2-digit",
-                                            })}
-                                          </span>
-                                        )}
-                                    </div>
-                                  </td>
-
-                                  {/* License Allocation */}
-                                  <td className="py-4 hidden xl:table-cell">
-                                    {(subuser as any).license_allocation ? (
-                                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
-                                        {(subuser as any).license_allocation}
-                                      </span>
-                                    ) : (
-                                      <span className="text-slate-400">-</span>
-                                    )}
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
-                    </div>
-                    {/* Users Pagination - always show when data exists */}
-                    {displaySubusersData.length > 0 && (
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                          <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
-                          <select
-                            value={usersPageSize}
-                            onChange={(e) => { setUsersPageSize(parseInt(e.target.value, 10)); setUsersPage(1); }}
-                            className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
-                          >
-                            {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
-                          </select>
-                          <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                            Showing {Math.min((usersPage - 1) * usersPageSize + 1, displaySubusersData.length)} to {Math.min(usersPage * usersPageSize, displaySubusersData.length)} of {displaySubusersData.length}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <span className="text-xs sm:text-sm text-slate-600">
-                            Page {usersPage} of {Math.ceil(displaySubusersData.length / usersPageSize)}
-                          </span>
-                          <div className="flex gap-1 sm:gap-2">
-                            <button
-                              onClick={() => setUsersPage(prev => Math.max(prev - 1, 1))}
-                              disabled={usersPage === 1}
-                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              <span className="sm:hidden">Prev</span>
-                              <span className="hidden sm:inline">Previous</span>
-                            </button>
-                            <button
-                              onClick={() => setUsersPage(prev => Math.min(prev + 1, Math.ceil(displaySubusersData.length / usersPageSize)))}
-                              disabled={usersPage >= Math.ceil(displaySubusersData.length / usersPageSize)}
-                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              Next
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    <h2 className="font-semibold text-slate-900">Users</h2>
+                    <p className="text-sm text-slate-600 mt-1">
+                      Manage all users
+                    </p>
                   </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === "groups" && (
-          <div className="space-y-6">
-            {/* Groups Section */}
-            <div className="card">
-              <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
-                <div>
-                  <h2 className="font-semibold text-slate-900">Groups & Members</h2>
-                  <p className="text-sm text-slate-600 mt-1">
-                    View all groups and their members
-                  </p>
-                </div>
-              </div>
-              <div className="p-6">
-                {/* Loading State */}
-                {groupsLoading && (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="text-center">
-                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-                      <p className="mt-4 text-sm text-slate-600">
-                        Loading groups data...
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Empty State */}
-                {!groupsLoading && groupsWithUsers.length === 0 && (
-                  <div className="text-center py-12">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
+                  {/* Add User button */}
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <button
+                      onClick={handleAddUser}
+                      className="btn-primary text-sm px-4 py-2 flex items-center gap-2"
+                    >
                       <svg
-                        className="w-8 h-8 text-slate-400"
+                        className="w-4 h-4"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -4404,137 +4464,538 @@ export default function AdminDashboard() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          d="M12 4v16m8-8H4"
                         />
                       </svg>
-                    </div>
-                    <h3 className="text-lg font-medium text-slate-900 mb-2">
-                      No Groups Found
-                    </h3>
-                    <p className="text-sm text-slate-600">
-                      No groups are available in your organization.
-                    </p>
+                      Add User
+                    </button>
                   </div>
-                )}
+                </div>
+                <div className="p-6">
+                  {/* Loading State */}
+                  {usersDataLoading && (
+                    <div className="flex items-center justify-center py-12">
+                      <div className="text-center">
+                        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+                        <p className="mt-4 text-sm text-slate-600">
+                          Loading users data...
+                        </p>
+                      </div>
+                    </div>
+                  )}
 
-                {/* Groups List with Expandable Users */}
-                {!groupsLoading && groupsWithUsers.length > 0 && (
-                  <div className="space-y-4">
-                    {groupsWithUsers.map((group: any) => (
-                      <div key={group.id} className="card !p-0 overflow-hidden">
-                        {/* Group Header */}
-                        <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-                          <div className="flex items-center gap-4 flex-1">
-                            <button
-                              onClick={() => toggleGroup(group.id)}
-                              className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center text-white font-semibold hover:shadow-lg transition-shadow"
-                            >
-                              {group.name.charAt(0)}
-                            </button>
-                            <div className="flex-1">
-                              <h3 className="text-lg font-semibold text-slate-900">{group.name}</h3>
-                              <p className="text-sm text-slate-600">{group.description}</p>
-                            </div>
-                            <div className="flex items-center gap-4">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
-                                {group.users.length} users
-                              </span>
-                              <span className="text-sm text-slate-500">
-                                Created: {new Date(group.created).toLocaleDateString()}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2 ml-4">
-                            <button
-                              onClick={() => toggleGroup(group.id)}
-                              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-                            >
-                              <svg
-                                className={`w-5 h-5 text-slate-600 transition-transform ${expandedGroups.includes(group.id) ? 'rotate-180' : ''}`}
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
+                  {/* Empty State - No users found */}
+                  {!usersDataLoading && displaySubusersData.length === 0 && (
+                    <div className="text-center py-12">
+                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
+                        <svg
+                          className="w-8 h-8 text-slate-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="text-lg font-medium text-slate-900 mb-2">
+                        No Users Found
+                      </h3>
+                      <p className="text-sm text-slate-600">
+                        {isCurrentUserSubuser
+                          ? "You don't have any subusers associated with your account."
+                          : "Click 'Manage Users' to load user data or create a new subuser."}
+                      </p>
+                    </div>
+                  )}
 
-                        {/* Expandable Users Table */}
-                        {expandedGroups.includes(group.id) && (
-                          <div className="overflow-x-auto">
-                            <table className="w-full">
-                              <thead className="bg-slate-100 border-b border-slate-200">
-                                <tr>
-                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                    User Name
-                                  </th>
-                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                    Email
-                                  </th>
-                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                    Role
-                                  </th>
-                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                    License
-                                  </th>
-                                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                    Profile
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody className="bg-white divide-y divide-slate-200">
-                                {group.users.map((user: any) => (
-                                  <tr key={user.id} className="hover:bg-slate-50 transition-colors">
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                      <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                                          {user.name.charAt(0)}
-                                        </div>
-                                        <span className="font-medium text-slate-900">{user.name}</span>
+                  {/* Users Table - Show for all users if data exists */}
+                  {!usersDataLoading && displaySubusersData.length > 0 && (
+                    <div>
+                      <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                        <table className="w-full">
+                          <thead className="sticky top-0 bg-white shadow-sm z-10">
+                            <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
+                              <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                                Email
+                              </th>
+                              <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                                Role
+                              </th>
+                              <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden md:table-cell">
+                                Department
+                              </th>
+                              <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                                Status
+                              </th>
+                              <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden lg:table-cell">
+                                Group
+                              </th>
+                              <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">
+                                Last Login
+                              </th>
+                              <th className="pb-3 font-medium whitespace-nowrap hidden xl:table-cell">
+                                License Allocation
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-100">
+                            {subusersData
+                              .slice(
+                                (usersPage - 1) * usersPageSize,
+                                usersPage * usersPageSize,
+                              )
+                              .map((subuser, index) => {
+                                return (
+                                  <tr
+                                    key={subuser.id || index}
+                                    className="hover:bg-slate-50"
+                                  >
+                                    {/* Email */}
+                                    <td className="py-4 font-medium text-slate-900">
+                                      {subuser.subuser_email}
+                                    </td>
+
+                                    {/* Role */}
+                                    <td className="py-4">
+                                      <span
+                                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                          (subuser as any).role === "admin" ||
+                                          (subuser as any).defaultRole ===
+                                            "admin"
+                                            ? "bg-purple-100 text-purple-800"
+                                            : (subuser as any).role ===
+                                                  "manager" ||
+                                                (subuser as any).defaultRole ===
+                                                  "manager"
+                                              ? "bg-blue-100 text-blue-800"
+                                              : "bg-slate-100 text-slate-800"
+                                        }`}
+                                      >
+                                        {(subuser as any).role ||
+                                          (subuser as any).defaultRole ||
+                                          "user"}
+                                      </span>
+                                    </td>
+
+                                    {/* Department */}
+                                    <td className="py-4 text-slate-600 hidden md:table-cell">
+                                      {(subuser as any).department || "-"}
+                                    </td>
+
+                                    {/* Status */}
+                                    <td className="py-4">
+                                      {subuser.status ? (
+                                        <span
+                                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                            subuser.status === "active"
+                                              ? "bg-green-100 text-green-800"
+                                              : subuser.status === "inactive"
+                                                ? "bg-gray-100 text-gray-800"
+                                                : subuser.status === "suspended"
+                                                  ? "bg-red-100 text-red-800"
+                                                  : "bg-yellow-100 text-yellow-800"
+                                          }`}
+                                        >
+                                          {subuser.status}
+                                        </span>
+                                      ) : (
+                                        <span className="text-slate-400">
+                                          -
+                                        </span>
+                                      )}
+                                    </td>
+
+                                    {/* User Group */}
+                                    <td className="py-4 text-slate-600 hidden lg:table-cell">
+                                      {(subuser as any).subuser_group || "-"}
+                                    </td>
+
+                                    {/* Last Login */}
+                                    <td className="py-4 text-slate-600 text-sm hidden sm:table-cell">
+                                      <div className="flex flex-col">
+                                        <span className="font-medium">
+                                          {formatLastLogin(
+                                            (subuser as any).last_login,
+                                          )}
+                                        </span>
+                                        {(subuser as any).last_login &&
+                                          (subuser as any).last_login !==
+                                            "Never" &&
+                                          (subuser as any).last_login !==
+                                            "-" && (
+                                            <span
+                                              className="text-xs text-slate-400 mt-0.5"
+                                              title={new Date(
+                                                (subuser as any).last_login,
+                                              ).toLocaleString()}
+                                            >
+                                              {new Date(
+                                                (subuser as any).last_login,
+                                              ).toLocaleString("en-IN", {
+                                                month: "short",
+                                                day: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                              })}
+                                            </span>
+                                          )}
                                       </div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
-                                      {user.email}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                        user.role === 'User'
-                                          ? 'bg-blue-100 text-blue-800'
-                                          : 'bg-purple-100 text-purple-800'
-                                      }`}>
-                                        {user.role}
-                                      </span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                        user.license > 0
-                                          ? 'bg-emerald-100 text-emerald-800'
-                                          : 'bg-slate-100 text-slate-800'
-                                      }`}>
-                                        {user.license}
-                                      </span>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
-                                      {user.profile}
+
+                                    {/* License Allocation */}
+                                    <td className="py-4 hidden xl:table-cell">
+                                      {(subuser as any).license_allocation ? (
+                                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-100 text-blue-800">
+                                          {(subuser as any).license_allocation}
+                                        </span>
+                                      ) : (
+                                        <span className="text-slate-400">
+                                          -
+                                        </span>
+                                      )}
                                     </td>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        )}
+                                );
+                              })}
+                          </tbody>
+                        </table>
                       </div>
-                    ))}
-                  </div>
-                )}
+                      {/* Users Pagination - always show when data exists */}
+                      {displaySubusersData.length > 0 && (
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                            <label className="text-xs sm:text-sm text-slate-600">
+                              Rows:
+                            </label>
+                            <select
+                              value={usersPageSize}
+                              onChange={(e) => {
+                                setUsersPageSize(parseInt(e.target.value, 10));
+                                setUsersPage(1);
+                              }}
+                              className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                            >
+                              {pageSizeOptions.map((size) => (
+                                <option key={size} value={size}>
+                                  {size}
+                                </option>
+                              ))}
+                            </select>
+                            <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
+                              Showing{" "}
+                              {Math.min(
+                                (usersPage - 1) * usersPageSize + 1,
+                                displaySubusersData.length,
+                              )}{" "}
+                              to{" "}
+                              {Math.min(
+                                usersPage * usersPageSize,
+                                displaySubusersData.length,
+                              )}{" "}
+                              of {displaySubusersData.length}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            <span className="text-xs sm:text-sm text-slate-600">
+                              Page {usersPage} of{" "}
+                              {Math.ceil(
+                                displaySubusersData.length / usersPageSize,
+                              )}
+                            </span>
+                            <div className="flex gap-1 sm:gap-2">
+                              <button
+                                onClick={() =>
+                                  setUsersPage((prev) => Math.max(prev - 1, 1))
+                                }
+                                disabled={usersPage === 1}
+                                className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                <span className="sm:hidden">Prev</span>
+                                <span className="hidden sm:inline">
+                                  Previous
+                                </span>
+                              </button>
+                              <button
+                                onClick={() =>
+                                  setUsersPage((prev) =>
+                                    Math.min(
+                                      prev + 1,
+                                      Math.ceil(
+                                        displaySubusersData.length /
+                                          usersPageSize,
+                                      ),
+                                    ),
+                                  )
+                                }
+                                disabled={
+                                  usersPage >=
+                                  Math.ceil(
+                                    displaySubusersData.length / usersPageSize,
+                                  )
+                                }
+                                className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                Next
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+                <svg
+                  className="w-8 h-8 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">
+                Feature Disabled
+              </h3>
+              <p className="text-sm text-slate-600">
+                User management is currently disabled for your account.
+              </p>
+            </div>
+          ))}
 
-        {activeTab === "activity" && (
+        {activeTab === "groups" &&
+          (isGroupsEnabled ? (
+            <div className="space-y-6">
+              {/* Groups Section */}
+              <div className="card">
+                <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+                  <div>
+                    <h2 className="font-semibold text-slate-900">
+                      Groups & Members
+                    </h2>
+                    <p className="text-sm text-slate-600 mt-1">
+                      View all groups and their members
+                    </p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  {/* Loading State */}
+                  {groupsLoading && (
+                    <div className="flex items-center justify-center py-12">
+                      <div className="text-center">
+                        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+                        <p className="mt-4 text-sm text-slate-600">
+                          Loading groups data...
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Empty State */}
+                  {!groupsLoading && groupsWithUsers.length === 0 && (
+                    <div className="text-center py-12">
+                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
+                        <svg
+                          className="w-8 h-8 text-slate-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="text-lg font-medium text-slate-900 mb-2">
+                        No Groups Found
+                      </h3>
+                      <p className="text-sm text-slate-600">
+                        No groups are available in your organization.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Groups List with Expandable Users */}
+                  {!groupsLoading && groupsWithUsers.length > 0 && (
+                    <div className="space-y-4">
+                      {groupsWithUsers.map((group: any) => (
+                        <div
+                          key={group.id}
+                          className="card !p-0 overflow-hidden"
+                        >
+                          {/* Group Header */}
+                          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                            <div className="flex items-center gap-4 flex-1">
+                              <button
+                                onClick={() => toggleGroup(group.id)}
+                                className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center text-white font-semibold hover:shadow-lg transition-shadow"
+                              >
+                                {group.name.charAt(0)}
+                              </button>
+                              <div className="flex-1">
+                                <h3 className="text-lg font-semibold text-slate-900">
+                                  {group.name}
+                                </h3>
+                                <p className="text-sm text-slate-600">
+                                  {group.description}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-4">
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
+                                  {group.users.length} users
+                                </span>
+                                <span className="text-sm text-slate-500">
+                                  Created:{" "}
+                                  {new Date(group.created).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 ml-4">
+                              <button
+                                onClick={() => toggleGroup(group.id)}
+                                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                              >
+                                <svg
+                                  className={`w-5 h-5 text-slate-600 transition-transform ${expandedGroups.includes(group.id) ? "rotate-180" : ""}`}
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M19 9l-7 7-7-7"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Expandable Users Table */}
+                          {expandedGroups.includes(group.id) && (
+                            <div className="overflow-x-auto">
+                              <table className="w-full">
+                                <thead className="bg-slate-100 border-b border-slate-200">
+                                  <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                      User Name
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                      Email
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                      Role
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                      License
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                      Profile
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-slate-200">
+                                  {group.users.map((user: any) => (
+                                    <tr
+                                      key={user.id}
+                                      className="hover:bg-slate-50 transition-colors"
+                                    >
+                                      <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="flex items-center gap-3">
+                                          <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                            {user.name.charAt(0)}
+                                          </div>
+                                          <span className="font-medium text-slate-900">
+                                            {user.name}
+                                          </span>
+                                        </div>
+                                      </td>
+                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                        {user.email}
+                                      </td>
+                                      <td className="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                            user.role === "User"
+                                              ? "bg-blue-100 text-blue-800"
+                                              : "bg-purple-100 text-purple-800"
+                                          }`}
+                                        >
+                                          {user.role}
+                                        </span>
+                                      </td>
+                                      <td className="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                            user.license > 0
+                                              ? "bg-emerald-100 text-emerald-800"
+                                              : "bg-slate-100 text-slate-800"
+                                          }`}
+                                        >
+                                          {user.license}
+                                        </span>
+                                      </td>
+                                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                        {user.profile}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+                <svg
+                  className="w-8 h-8 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">
+                Feature Disabled
+              </h3>
+              <p className="text-sm text-slate-600">
+                Group management is currently disabled for your account.
+              </p>
+            </div>
+          ))}
+
+        {activeTab === "activity" && (isSubusersEnabled ?(
           <div className="card">
             <div className="px-6 py-5 border-b border-slate-200">
               <div>
@@ -4550,7 +5011,9 @@ export default function AdminDashboard() {
             <div className="p-6">
               {/* Use demo data when in demo mode, otherwise use API data */}
               {(() => {
-                const activityData = isDemo ? DEMO_USER_ACTIVITY : (dashboardData.activity || []);
+                const activityData = isDemo
+                  ? DEMO_USER_ACTIVITY
+                  : dashboardData.activity || [];
                 if (!activityData || activityData.length === 0) {
                   return (
                     <div className="text-center py-12">
@@ -4584,15 +5047,26 @@ export default function AdminDashboard() {
                       <table className="w-full">
                         <thead className="sticky top-0 bg-white shadow-sm z-10">
                           <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">User Email</th>
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">Login Time</th>
-                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">Logout Time</th>
-                            <th className="pb-3 font-medium whitespace-nowrap">Status</th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                              User Email
+                            </th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                              Login Time
+                            </th>
+                            <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">
+                              Logout Time
+                            </th>
+                            <th className="pb-3 font-medium whitespace-nowrap">
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200">
                           {activityData
-                            .slice((userActivityPage - 1) * activityPageSize, userActivityPage * activityPageSize)
+                            .slice(
+                              (userActivityPage - 1) * activityPageSize,
+                              userActivityPage * activityPageSize,
+                            )
                             .map((activity, index) => (
                               <tr key={index} className="hover:bg-slate-50">
                                 <td className="py-4 font-medium text-slate-900">
@@ -4606,16 +5080,18 @@ export default function AdminDashboard() {
                                 </td>
                                 <td className="py-4">
                                   <span
-                                    className={`inline-flex items-center gap-1 ${activity.status === "active"
-                                      ? "text-green-600"
-                                      : "text-slate-500"
-                                      }`}
+                                    className={`inline-flex items-center gap-1 ${
+                                      activity.status === "active"
+                                        ? "text-green-600"
+                                        : "text-slate-500"
+                                    }`}
                                   >
                                     <span
-                                      className={`w-2 h-2 rounded-full ${activity.status === "active"
-                                        ? "bg-green-400"
-                                        : "bg-slate-400"
-                                        }`}
+                                      className={`w-2 h-2 rounded-full ${
+                                        activity.status === "active"
+                                          ? "bg-green-400"
+                                          : "bg-slate-400"
+                                      }`}
                                     ></span>
                                     {activity.status}
                                   </span>
@@ -4629,25 +5105,49 @@ export default function AdminDashboard() {
                     {activityData.length > 0 && (
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                          <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
+                          <label className="text-xs sm:text-sm text-slate-600">
+                            Rows:
+                          </label>
                           <select
                             value={activityPageSize}
-                            onChange={(e) => { setActivityPageSize(parseInt(e.target.value, 10)); setUserActivityPage(1); }}
+                            onChange={(e) => {
+                              setActivityPageSize(parseInt(e.target.value, 10));
+                              setUserActivityPage(1);
+                            }}
                             className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                           >
-                            {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                            {pageSizeOptions.map((size) => (
+                              <option key={size} value={size}>
+                                {size}
+                              </option>
+                            ))}
                           </select>
                           <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                            Showing {Math.min((userActivityPage - 1) * activityPageSize + 1, activityData.length)} to {Math.min(userActivityPage * activityPageSize, activityData.length)} of {activityData.length}
+                            Showing{" "}
+                            {Math.min(
+                              (userActivityPage - 1) * activityPageSize + 1,
+                              activityData.length,
+                            )}{" "}
+                            to{" "}
+                            {Math.min(
+                              userActivityPage * activityPageSize,
+                              activityData.length,
+                            )}{" "}
+                            of {activityData.length}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 sm:gap-3">
                           <span className="text-xs sm:text-sm text-slate-600">
-                            Page {userActivityPage} of {Math.ceil(activityData.length / activityPageSize)}
+                            Page {userActivityPage} of{" "}
+                            {Math.ceil(activityData.length / activityPageSize)}
                           </span>
                           <div className="flex gap-1 sm:gap-2">
                             <button
-                              onClick={() => setUserActivityPage(prev => Math.max(prev - 1, 1))}
+                              onClick={() =>
+                                setUserActivityPage((prev) =>
+                                  Math.max(prev - 1, 1),
+                                )
+                              }
                               disabled={userActivityPage === 1}
                               className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
@@ -4655,8 +5155,22 @@ export default function AdminDashboard() {
                               <span className="hidden sm:inline">Previous</span>
                             </button>
                             <button
-                              onClick={() => setUserActivityPage(prev => Math.min(prev + 1, Math.ceil(activityData.length / activityPageSize)))}
-                              disabled={userActivityPage >= Math.ceil(activityData.length / activityPageSize)}
+                              onClick={() =>
+                                setUserActivityPage((prev) =>
+                                  Math.min(
+                                    prev + 1,
+                                    Math.ceil(
+                                      activityData.length / activityPageSize,
+                                    ),
+                                  ),
+                                )
+                              }
+                              disabled={
+                                userActivityPage >=
+                                Math.ceil(
+                                  activityData.length / activityPageSize,
+                                )
+                              }
                               className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               Next
@@ -4670,7 +5184,33 @@ export default function AdminDashboard() {
               })()}
             </div>
           </div>
-        )}
+        ):
+        (
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
+                <svg
+                  className="w-8 h-8 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">
+                Feature Disabled
+              </h3>
+              <p className="text-sm text-slate-600">
+                UserActivity is currently disabled for your account.
+              </p>
+            </div>
+          ))
+      }
 
         {activeTab === "reports" && (
           <div className="card">
@@ -4719,24 +5259,40 @@ export default function AdminDashboard() {
                     <table className="w-full">
                       <thead className="sticky top-0 bg-white shadow-sm z-10">
                         <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">Report ID</th>
-                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">Type</th>
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                            Report ID
+                          </th>
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                            Type
+                          </th>
                           {/* <th className="pb-3 font-medium">Devices</th> */}
-                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">Status</th>
-                          <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">Date</th>
-                          <th className="pb-3 font-medium whitespace-nowrap hidden md:table-cell">Method</th>
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap">
+                            Status
+                          </th>
+                          <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">
+                            Date
+                          </th>
+                          <th className="pb-3 font-medium whitespace-nowrap hidden md:table-cell">
+                            Method
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200">
                         {auditReports
-                          .slice((reportsPage - 1) * reportsPageSize, reportsPage * reportsPageSize)
+                          .slice(
+                            (reportsPage - 1) * reportsPageSize,
+                            reportsPage * reportsPageSize,
+                          )
                           .map((report) => (
                             <tr
                               key={report.report_id || report.id}
                               className="hover:bg-slate-50"
                             >
                               <td className="py-4 font-medium text-slate-900">
-                                #{report.report_id || report.reportId || report.id}
+                                #
+                                {report.report_id ||
+                                  report.reportId ||
+                                  report.id}
                               </td>
                               <td className="py-4 text-slate-600">
                                 {(() => {
@@ -4746,16 +5302,25 @@ export default function AdminDashboard() {
 
                                   if (reportWithDetails.report_details_json) {
                                     try {
-                                      const reportDetails = JSON.parse(reportWithDetails.report_details_json);
-                                      reportType = reportDetails?.report_type ||
+                                      const reportDetails = JSON.parse(
+                                        reportWithDetails.report_details_json,
+                                      );
+                                      reportType =
+                                        reportDetails?.report_type ||
                                         reportDetails?.Erasure_Type ||
                                         (report as any).erasure_type ||
                                         "Files and Folders";
                                     } catch (e) {
-                                      reportType = (report as any).reportType || (report as any).erasure_type || "Erasure";
+                                      reportType =
+                                        (report as any).reportType ||
+                                        (report as any).erasure_type ||
+                                        "Erasure";
                                     }
                                   } else {
-                                    reportType = (report as any).reportType || (report as any).erasure_type || "Erasure";
+                                    reportType =
+                                      (report as any).reportType ||
+                                      (report as any).erasure_type ||
+                                      "Erasure";
                                   }
 
                                   return (
@@ -4800,7 +5365,7 @@ export default function AdminDashboard() {
                                   if (reportWithDetails.report_details_json) {
                                     try {
                                       const reportDetails = JSON.parse(
-                                        reportWithDetails.report_details_json
+                                        reportWithDetails.report_details_json,
                                       );
                                       statusValue =
                                         reportDetails?.status?.toLowerCase() ||
@@ -4808,7 +5373,8 @@ export default function AdminDashboard() {
                                     } catch (e) {
                                       // If parsing fails, use report.status directly
                                       statusValue =
-                                        report.status?.toLowerCase() || "completed";
+                                        report.status?.toLowerCase() ||
+                                        "completed";
                                     }
                                   } else if (report.status) {
                                     statusValue = report.status.toLowerCase();
@@ -4816,30 +5382,32 @@ export default function AdminDashboard() {
 
                                   return (
                                     <span
-                                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusValue === "completed"
-                                        ? "bg-green-100 text-green-800"
-                                        : statusValue === "running" ||
-                                          statusValue === "pending"
-                                          ? "bg-blue-100 text-blue-800"
-                                          : statusValue === "warning"
-                                            ? "bg-yellow-100 text-yellow-800"
-                                            : statusValue === "failed"
-                                              ? "bg-red-100 text-red-800"
-                                              : "bg-slate-100 text-slate-800"
-                                        }`}
+                                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                                        statusValue === "completed"
+                                          ? "bg-green-100 text-green-800"
+                                          : statusValue === "running" ||
+                                              statusValue === "pending"
+                                            ? "bg-blue-100 text-blue-800"
+                                            : statusValue === "warning"
+                                              ? "bg-yellow-100 text-yellow-800"
+                                              : statusValue === "failed"
+                                                ? "bg-red-100 text-red-800"
+                                                : "bg-slate-100 text-slate-800"
+                                      }`}
                                     >
                                       <span
-                                        className={`w-2 h-2 rounded-full ${statusValue === "completed"
-                                          ? "bg-green-500"
-                                          : statusValue === "running" ||
-                                            statusValue === "pending"
-                                            ? "bg-blue-500"
-                                            : statusValue === "warning"
-                                              ? "bg-yellow-500"
-                                              : statusValue === "failed"
-                                                ? "bg-red-500"
-                                                : "bg-slate-500"
-                                          }`}
+                                        className={`w-2 h-2 rounded-full ${
+                                          statusValue === "completed"
+                                            ? "bg-green-500"
+                                            : statusValue === "running" ||
+                                                statusValue === "pending"
+                                              ? "bg-blue-500"
+                                              : statusValue === "warning"
+                                                ? "bg-yellow-500"
+                                                : statusValue === "failed"
+                                                  ? "bg-red-500"
+                                                  : "bg-slate-500"
+                                        }`}
                                       ></span>
                                       {statusValue}
                                     </span>
@@ -4847,14 +5415,16 @@ export default function AdminDashboard() {
                                 })()}
                               </td>
                               <td className="py-4 text-slate-600 hidden sm:table-cell">
-                                {(report.report_datetime || (report as any).report_date)
+                                {report.report_datetime ||
+                                (report as any).report_date
                                   ? new Date(
-                                    report.report_datetime || (report as any).report_date
-                                  ).toLocaleDateString("en-IN", {
-                                    year: "numeric",
-                                    month: "short",
-                                    day: "numeric",
-                                  })
+                                      report.report_datetime ||
+                                        (report as any).report_date,
+                                    ).toLocaleDateString("en-IN", {
+                                      year: "numeric",
+                                      month: "short",
+                                      day: "numeric",
+                                    })
                                   : "N/A"}
                               </td>
                               <td className="py-4 text-slate-600 hidden md:table-cell">
@@ -4869,25 +5439,47 @@ export default function AdminDashboard() {
                   {auditReports.length > 0 && (
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <label className="text-xs sm:text-sm text-slate-600">Rows:</label>
+                        <label className="text-xs sm:text-sm text-slate-600">
+                          Rows:
+                        </label>
                         <select
                           value={reportsPageSize}
-                          onChange={(e) => { setReportsPageSize(parseInt(e.target.value, 10)); setReportsPage(1); }}
+                          onChange={(e) => {
+                            setReportsPageSize(parseInt(e.target.value, 10));
+                            setReportsPage(1);
+                          }}
                           className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                         >
-                          {pageSizeOptions.map((size) => (<option key={size} value={size}>{size}</option>))}
+                          {pageSizeOptions.map((size) => (
+                            <option key={size} value={size}>
+                              {size}
+                            </option>
+                          ))}
                         </select>
                         <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                          Showing {Math.min((reportsPage - 1) * reportsPageSize + 1, auditReports.length)} to {Math.min(reportsPage * reportsPageSize, auditReports.length)} of {auditReports.length}
+                          Showing{" "}
+                          {Math.min(
+                            (reportsPage - 1) * reportsPageSize + 1,
+                            auditReports.length,
+                          )}{" "}
+                          to{" "}
+                          {Math.min(
+                            reportsPage * reportsPageSize,
+                            auditReports.length,
+                          )}{" "}
+                          of {auditReports.length}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 sm:gap-3">
                         <span className="text-xs sm:text-sm text-slate-600">
-                          Page {reportsPage} of {Math.ceil(auditReports.length / reportsPageSize)}
+                          Page {reportsPage} of{" "}
+                          {Math.ceil(auditReports.length / reportsPageSize)}
                         </span>
                         <div className="flex gap-1 sm:gap-2">
                           <button
-                            onClick={() => setReportsPage(prev => Math.max(prev - 1, 1))}
+                            onClick={() =>
+                              setReportsPage((prev) => Math.max(prev - 1, 1))
+                            }
                             disabled={reportsPage === 1}
                             className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
@@ -4895,8 +5487,20 @@ export default function AdminDashboard() {
                             <span className="hidden sm:inline">Previous</span>
                           </button>
                           <button
-                            onClick={() => setReportsPage(prev => Math.min(prev + 1, Math.ceil(auditReports.length / reportsPageSize)))}
-                            disabled={reportsPage >= Math.ceil(auditReports.length / reportsPageSize)}
+                            onClick={() =>
+                              setReportsPage((prev) =>
+                                Math.min(
+                                  prev + 1,
+                                  Math.ceil(
+                                    auditReports.length / reportsPageSize,
+                                  ),
+                                ),
+                              )
+                            }
+                            disabled={
+                              reportsPage >=
+                              Math.ceil(auditReports.length / reportsPageSize)
+                            }
                             className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Next
@@ -4906,7 +5510,8 @@ export default function AdminDashboard() {
                     </div>
                   )}
                 </>
-              )}</div>
+              )}
+            </div>
           </div>
         )}
 
@@ -4920,19 +5525,40 @@ export default function AdminDashboard() {
                   Performance
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">
-                  Monitor system performance and erasure metrics
+                  Monitor system performance and erasure metrics (Live Data)
                 </p>
               </div>
             </div>
 
-            {/* Check if performance data is available */}
-            {performanceData.monthlyErasures.length === 0 && performanceData.avgDuration.length === 0 && performanceData.throughput.length === 0 ? (
+            {erasureMetricsLoading ? (
+              <div className="flex items-center justify-center p-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
+              </div>
+            ) : erasureMetricsError ? (
+              <div className="bg-red-50 p-4 rounded-lg text-red-700">
+                Error loading performance data. Please try again later.
+              </div>
+            ) : !erasureMetrics ? (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-                <svg className="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                <svg
+                  className="w-16 h-16 text-slate-400 mx-auto mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
                 </svg>
-                <h3 className="text-lg font-medium text-slate-900 mb-2">No Data Available</h3>
-                <p className="text-slate-600">Performance data is not available from the server.</p>
+                <h3 className="text-lg font-medium text-slate-900 mb-2">
+                  No Data Available
+                </h3>
+                <p className="text-slate-600">
+                  Performance data is not available from the server.
+                </p>
               </div>
             ) : (
               <>
@@ -4942,18 +5568,15 @@ export default function AdminDashboard() {
                   <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <div className="mb-4">
                       <p className="text-sm text-slate-500 mb-1">
-                        Monthly erasures
+                        Total Erasures (Year {new Date().getFullYear()})
                       </p>
                       <p className="text-3xl font-bold text-slate-900">
-                        {performanceData.monthlyErasures.reduce(
-                          (sum, item) => sum + item.count,
-                          0
-                        )}
+                        {erasureMetrics.totalErasures.toLocaleString()}
                       </p>
                     </div>
                     <div className="h-24">
+                      {/* Simple Sparkline for Monthly Trend */}
                       <svg viewBox="0 0 300 80" className="w-full h-full">
-                        {/* Area gradient */}
                         <defs>
                           <linearGradient
                             id="areaGradient1"
@@ -4974,43 +5597,51 @@ export default function AdminDashboard() {
                             />
                           </linearGradient>
                         </defs>
-
-                        {/* Create path for area chart */}
-                        {performanceData.monthlyErasures.length > 0 && (
+                        {erasureMetrics.monthlyMetrics.length > 0 && (
                           <>
                             <path
-                              d={`M 0 80 ${performanceData.monthlyErasures
+                              d={`M 0 80 ${erasureMetrics.monthlyMetrics
                                 .map((item, index) => {
                                   const x =
                                     (index /
-                                      Math.max(performanceData.monthlyErasures.length - 1, 1)) *
+                                      Math.max(
+                                        erasureMetrics.monthlyMetrics.length -
+                                          1,
+                                        1,
+                                      )) *
                                     300;
                                   const maxCount = Math.max(
-                                    ...performanceData.monthlyErasures.map(
-                                      (i) => i.count
+                                    ...erasureMetrics.monthlyMetrics.map(
+                                      (i) => i.erasureCount,
                                     ),
-                                    1
+                                    1,
                                   );
-                                  const y = 80 - (item.count / maxCount) * 60;
+                                  const y =
+                                    80 - (item.erasureCount / maxCount) * 60;
                                   return `L ${x} ${y}`;
                                 })
                                 .join(" ")} L 300 80 Z`}
                               fill="url(#areaGradient1)"
                             />
                             <path
-                              d={`${performanceData.monthlyErasures
+                              d={`${erasureMetrics.monthlyMetrics
                                 .map((item, index) => {
                                   const x =
                                     (index /
-                                      Math.max(performanceData.monthlyErasures.length - 1, 1)) *
+                                      Math.max(
+                                        erasureMetrics.monthlyMetrics.length -
+                                          1,
+                                        1,
+                                      )) *
                                     300;
                                   const maxCount = Math.max(
-                                    ...performanceData.monthlyErasures.map(
-                                      (i) => i.count
+                                    ...erasureMetrics.monthlyMetrics.map(
+                                      (i) => i.erasureCount,
                                     ),
-                                    1
+                                    1,
                                   );
-                                  const y = 80 - (item.count / maxCount) * 60;
+                                  const y =
+                                    80 - (item.erasureCount / maxCount) * 60;
                                   return `${index === 0 ? "M" : "L"} ${x} ${y}`;
                                 })
                                 .join(" ")}`}
@@ -5027,117 +5658,32 @@ export default function AdminDashboard() {
                   {/* Average Duration */}
                   <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <div className="mb-4">
-                      <p className="text-sm text-slate-500 mb-1">Avg. duration</p>
+                      <p className="text-sm text-slate-500 mb-1">
+                        Avg. duration
+                      </p>
                       <p className="text-3xl font-bold text-slate-900">
-                        {(() => {
-                          const totalDuration = performanceData.avgDuration.reduce(
-                            (sum, item) => sum + item.duration,
-                            0
-                          );
-                          const avgSeconds =
-                            performanceData.avgDuration.length > 0
-                              ? totalDuration /
-                              performanceData.avgDuration.filter(
-                                (i) => i.duration > 0
-                              ).length
-                              : 0;
-                          const minutes = Math.floor(avgSeconds / 60);
-                          const seconds = Math.floor(avgSeconds % 60);
-                          return `${minutes}m ${seconds}s`;
-                        })()}
+                        {erasureMetrics.avgDuration || "00:00:00"}
                       </p>
                     </div>
-                    <div className="h-24">
-                      <svg viewBox="0 0 300 80" className="w-full h-full">
-                        <defs>
-                          <linearGradient
-                            id="areaGradient2"
-                            x1="0%"
-                            y1="0%"
-                            x2="0%"
-                            y2="100%"
-                          >
-                            <stop
-                              offset="0%"
-                              stopColor="#10B981"
-                              stopOpacity="0.3"
-                            />
-                            <stop
-                              offset="100%"
-                              stopColor="#10B981"
-                              stopOpacity="0.05"
-                            />
-                          </linearGradient>
-                        </defs>
-
-                        {performanceData.avgDuration.length > 0 && (
-                          <>
-                            <path
-                              d={`M 0 80 ${performanceData.avgDuration
-                                .map((item, index) => {
-                                  const x =
-                                    (index /
-                                      Math.max(performanceData.avgDuration.length - 1, 1)) *
-                                    300;
-                                  const maxDuration = Math.max(
-                                    ...performanceData.avgDuration.map(
-                                      (i) => i.duration
-                                    ),
-                                    1
-                                  );
-                                  const y = 80 - (item.duration / maxDuration) * 60;
-                                  return `L ${x} ${y}`;
-                                })
-                                .join(" ")} L 300 80 Z`}
-                              fill="url(#areaGradient2)"
-                            />
-                            <path
-                              d={`${performanceData.avgDuration
-                                .map((item, index) => {
-                                  const x =
-                                    (index /
-                                      Math.max(performanceData.avgDuration.length - 1, 1)) *
-                                    300;
-                                  const maxDuration = Math.max(
-                                    ...performanceData.avgDuration.map(
-                                      (i) => i.duration
-                                    ),
-                                    1
-                                  );
-                                  const y = 80 - (item.duration / maxDuration) * 60;
-                                  return `${index === 0 ? "M" : "L"} ${x} ${y}`;
-                                })
-                                .join(" ")}`}
-                              stroke="#10B981"
-                              strokeWidth="2"
-                              fill="none"
-                            />
-                          </>
-                        )}
-                      </svg>
+                    {/* Placeholder chart for duration distribution */}
+                    <div className="h-24 bg-slate-50 rounded-lg flex items-center justify-center text-slate-400 text-sm">
+                      Duration distribution
                     </div>
                   </div>
 
                   {/* Success Rate */}
                   <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <div className="mb-4">
-                      <p className="text-sm text-slate-500 mb-1">Success rate</p>
+                      <p className="text-sm text-slate-500 mb-1">
+                        Success rate
+                      </p>
                       <p className="text-3xl font-bold text-slate-900">
-                        {(() => {
-                          // Calculate total operations from monthly erasures
-                          const totalOperations =
-                            performanceData.monthlyErasures.reduce(
-                              (sum, item) => sum + item.count,
-                              0
-                            );
-                          // Show percentage only if there's data, otherwise 0%
-                          return totalOperations > 0 ? "99.2%" : "0%";
-                        })()}
+                        {erasureMetrics.successRate}%
                       </p>
                     </div>
                     <div className="h-24">
                       <svg viewBox="0 0 300 80" className="w-full h-full">
-                        <defs>
+                         <defs>
                           <linearGradient
                             id="areaGradient3"
                             x1="0%"
@@ -5157,68 +5703,39 @@ export default function AdminDashboard() {
                             />
                           </linearGradient>
                         </defs>
-
-                        {performanceData.monthlyErasures.reduce(
-                          (sum, item) => sum + item.count,
-                          0
-                        ) > 0 ? (
-                          <>
-                            {/* Flat 99.2% line - Only show if data exists */}
-                            <path
-                              d="M 0 80 L 0 20 L 300 20 L 300 80 Z"
-                              fill="url(#areaGradient3)"
-                            />
-                            <path
-                              d="M 0 20 L 300 20"
-                              stroke="#F59E0B"
-                              strokeWidth="2"
-                              fill="none"
-                            />
-                          </>
-                        ) : (
-                          <>
-                            {/* Flat 0% line - Show at bottom if no data */}
-                            <path
-                              d="M 0 80 L 300 80"
-                              stroke="#94A3B8"
-                              strokeWidth="2"
-                              fill="none"
-                              strokeDasharray="4 4"
-                            />
-                            <text
-                              x="150"
-                              y="40"
-                              textAnchor="middle"
-                              fill="#94A3B8"
-                              fontSize="12"
-                            >
-                              No data available
-                            </text>
-                          </>
-                        )}
+                        {/* Simple flat line for success rate or slight variation */}
+                         <path
+                            d={`M 0 80 L 0 ${80 - (erasureMetrics.successRate / 100) * 60} L 300 ${80 - (erasureMetrics.successRate / 100) * 60} L 300 80 Z`}
+                            fill="url(#areaGradient3)"
+                          />
+                          <path
+                            d={`M 0 ${80 - (erasureMetrics.successRate / 100) * 60} L 300 ${80 - (erasureMetrics.successRate / 100) * 60}`}
+                            stroke="#F59E0B"
+                            strokeWidth="2"
+                            fill="none"
+                          />
                       </svg>
                     </div>
                   </div>
                 </div>
 
-                {/* Throughput Chart */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                  <h3 className="text-lg font-semibold text-slate-900 mb-6">
-                    Throughput
-                  </h3>
-                  <div className="h-64">
-                    <svg viewBox="0 0 800 200" className="w-full h-full">
-                      {performanceData.throughput.length > 0 &&
-                        performanceData.throughput.map((item, index) => {
+                {/* Detailed Charts Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+                   {/* Monthly Trends Bar Chart */}
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-6">
+                      Monthly Erasure Trends
+                    </h3>
+                    <div className="h-64">
+                      <svg viewBox="0 0 800 200" className="w-full h-full">
+                        {erasureMetrics.monthlyMetrics.map((item, index, arr) => {
                           const maxCount = Math.max(
-                            ...performanceData.throughput.map((i) => i.count),
-                            1
+                            ...arr.map((i) => i.erasureCount),
+                            1,
                           );
-                          const barWidth =
-                            800 / performanceData.throughput.length - 10;
-                          const x =
-                            (index * 800) / performanceData.throughput.length + 5;
-                          const barHeight = (item.count / maxCount) * 160;
+                          const barWidth = 800 / arr.length - 10;
+                          const x = (index * 800) / arr.length + 5;
+                          const barHeight = (item.erasureCount / maxCount) * 160;
                           const y = 160 - barHeight;
 
                           return (
@@ -5242,11 +5759,33 @@ export default function AdminDashboard() {
                               >
                                 {item.month}
                               </text>
+                              {/* Value Label */}
+                               <text
+                                x={x + barWidth / 2}
+                                y={y - 5}
+                                textAnchor="middle"
+                                fill="#334155"
+                                fontSize="10"
+                                fontWeight="bold"
+                              >
+                                {item.erasureCount}
+                              </text>
                             </g>
                           );
                         })}
-                    </svg>
+                      </svg>
+                    </div>
                   </div>
+
+                  {/* Erasure By Method (Placeholder) */}
+                  {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-6">
+                      Erasure Methods
+                    </h3>
+                     <div className="flex items-center justify-center h-64 text-slate-500">
+                        Method breakdown not available
+                     </div>
+                  </div> */}
                 </div>
               </>
             )}
@@ -5461,21 +6000,49 @@ export default function AdminDashboard() {
                 {userLicenseDetails.length === 0 ? (
                   <div className="text-center py-12">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
-                      <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                      <svg
+                        className="w-8 h-8 text-slate-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                        />
                       </svg>
                     </div>
-                    <h3 className="text-lg font-medium text-slate-900 mb-2">No License Data Available</h3>
-                    <p className="text-slate-600">License audit data is not available from the server.</p>
+                    <h3 className="text-lg font-medium text-slate-900 mb-2">
+                      No License Data Available
+                    </h3>
+                    <p className="text-slate-600">
+                      License audit data is not available from the server.
+                    </p>
                   </div>
                 ) : (
                   <>
                     {/* Summary Cards - Dynamic Data */}
                     {(() => {
-                      const totalLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.total, 0);
-                      const consumedLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.consumed, 0);
-                      const availableLicenses = userLicenseDetails.reduce((sum, lic) => sum + lic.available, 0);
-                      const utilizationPercent = totalLicenses > 0 ? ((consumedLicenses / totalLicenses) * 100).toFixed(1) : 0;
+                      const totalLicenses = userLicenseDetails.reduce(
+                        (sum, lic) => sum + lic.total,
+                        0,
+                      );
+                      const consumedLicenses = userLicenseDetails.reduce(
+                        (sum, lic) => sum + lic.consumed,
+                        0,
+                      );
+                      const availableLicenses = userLicenseDetails.reduce(
+                        (sum, lic) => sum + lic.available,
+                        0,
+                      );
+                      const utilizationPercent =
+                        totalLicenses > 0
+                          ? ((consumedLicenses / totalLicenses) * 100).toFixed(
+                              1,
+                            )
+                          : 0;
 
                       return (
                         <>
@@ -5610,7 +6177,9 @@ export default function AdminDashboard() {
                               <div className="w-full bg-slate-200 rounded-full h-3">
                                 <div
                                   className="bg-gradient-to-r from-emerald-500 to-teal-500 h-3 rounded-full"
-                                  style={{ width: `${Math.min(Number(utilizationPercent), 100)}%` }}
+                                  style={{
+                                    width: `${Math.min(Number(utilizationPercent), 100)}%`,
+                                  }}
                                 ></div>
                               </div>
                               <div className="grid grid-cols-3 gap-4 text-sm">
@@ -5619,7 +6188,8 @@ export default function AdminDashboard() {
                                     Utilized
                                   </div>
                                   <div className="text-emerald-600 font-semibold">
-                                    {consumedLicenses.toLocaleString()} ({utilizationPercent}%)
+                                    {consumedLicenses.toLocaleString()} (
+                                    {utilizationPercent}%)
                                   </div>
                                 </div>
                                 <div className="text-center">
@@ -5627,7 +6197,13 @@ export default function AdminDashboard() {
                                     Available
                                   </div>
                                   <div className="text-orange-600 font-semibold">
-                                    {availableLicenses.toLocaleString()} ({totalLicenses > 0 ? (100 - Number(utilizationPercent)).toFixed(1) : 0}%)
+                                    {availableLicenses.toLocaleString()} (
+                                    {totalLicenses > 0
+                                      ? (
+                                          100 - Number(utilizationPercent)
+                                        ).toFixed(1)
+                                      : 0}
+                                    %)
                                   </div>
                                 </div>
                                 <div className="text-center">
@@ -5678,34 +6254,67 @@ export default function AdminDashboard() {
                           </thead>
                           <tbody>
                             {userLicenseDetails.map((license, index) => {
-                              const usagePercent = license.total > 0 ? (license.consumed / license.total) * 100 : 0;
-                              const statusColor = usagePercent > 80 ? 'red' : usagePercent > 60 ? 'orange' : 'blue';
-                              const statusText = usagePercent > 80 ? 'High Usage' : usagePercent > 60 ? 'Moderate' : 'Low Usage';
-                              const progressColor = usagePercent > 80 ? 'bg-red-500' : usagePercent > 60 ? 'bg-orange-500' : 'bg-blue-500';
+                              const usagePercent =
+                                license.total > 0
+                                  ? (license.consumed / license.total) * 100
+                                  : 0;
+                              const statusColor =
+                                usagePercent > 80
+                                  ? "red"
+                                  : usagePercent > 60
+                                    ? "orange"
+                                    : "blue";
+                              const statusText =
+                                usagePercent > 80
+                                  ? "High Usage"
+                                  : usagePercent > 60
+                                    ? "Moderate"
+                                    : "Low Usage";
+                              const progressColor =
+                                usagePercent > 80
+                                  ? "bg-red-500"
+                                  : usagePercent > 60
+                                    ? "bg-orange-500"
+                                    : "bg-blue-500";
 
                               return (
-                                <tr key={index} className="border-t border-slate-200">
+                                <tr
+                                  key={index}
+                                  className="border-t border-slate-200"
+                                >
                                   <td className="p-4 font-medium text-slate-900">
                                     {license.product}
                                   </td>
-                                  <td className="p-4 text-slate-600">{license.total.toLocaleString()}</td>
-                                  <td className="p-4 text-slate-600">{license.consumed.toLocaleString()}</td>
-                                  <td className="p-4 text-slate-600">{license.available.toLocaleString()}</td>
+                                  <td className="p-4 text-slate-600">
+                                    {license.total.toLocaleString()}
+                                  </td>
+                                  <td className="p-4 text-slate-600">
+                                    {license.consumed.toLocaleString()}
+                                  </td>
+                                  <td className="p-4 text-slate-600">
+                                    {license.available.toLocaleString()}
+                                  </td>
                                   <td className="p-4">
                                     <div className="flex items-center gap-2">
                                       <div className="w-16 bg-slate-200 rounded-full h-2">
                                         <div
                                           className={`${progressColor} h-2 rounded-full`}
-                                          style={{ width: `${Math.min(usagePercent, 100)}%` }}
+                                          style={{
+                                            width: `${Math.min(usagePercent, 100)}%`,
+                                          }}
                                         ></div>
                                       </div>
-                                      <span className={`text-sm font-medium text-${statusColor}-600`}>
+                                      <span
+                                        className={`text-sm font-medium text-${statusColor}-600`}
+                                      >
                                         {usagePercent.toFixed(0)}%
                                       </span>
                                     </div>
                                   </td>
                                   <td className="p-4">
-                                    <span className={`bg-${statusColor}-100 text-${statusColor}-700 px-2 py-1 rounded-full text-xs font-medium`}>
+                                    <span
+                                      className={`bg-${statusColor}-100 text-${statusColor}-700 px-2 py-1 rounded-full text-xs font-medium`}
+                                    >
                                       {statusText}
                                     </span>
                                   </td>
@@ -5725,7 +6334,7 @@ export default function AdminDashboard() {
                     onClick={() => {
                       showInfo(
                         "Report Exported",
-                        "Detailed license audit report has been sent to your email"
+                        "Detailed license audit report has been sent to your email",
                       );
                       setShowLicenseAuditModal(false);
                     }}
@@ -5750,7 +6359,7 @@ export default function AdminDashboard() {
                     onClick={() =>
                       showInfo(
                         "Optimization Report",
-                        "License optimization suggestions have been generated and will be sent to your email"
+                        "License optimization suggestions have been generated and will be sent to your email",
                       )
                     }
                     className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
@@ -5836,7 +6445,17 @@ export default function AdminDashboard() {
                           Name:
                         </span>
                         <span className="text-slate-900">
-                          {storedUserData?.name || storedUserData?.user_name || storedUserData?.subuser_name || profileData?.name || user?.name || getNameFromEmail(profileData?.email || storedUserData?.user_email || user?.email || "user@example.com")}
+                          {storedUserData?.name ||
+                            storedUserData?.user_name ||
+                            storedUserData?.subuser_name ||
+                            profileData?.name ||
+                            user?.name ||
+                            getNameFromEmail(
+                              profileData?.email ||
+                                storedUserData?.user_email ||
+                                user?.email ||
+                                "user@example.com",
+                            )}
                         </span>
                       </div>
 
@@ -5966,11 +6585,14 @@ export default function AdminDashboard() {
                           setIsEditingProfile(true);
                           setProfileEditForm({
                             user_name: profileData?.name || user?.name || "",
-                            phone_number: profileData?.phone || storedUserData?.phone_number || "",
+                            phone_number:
+                              profileData?.phone ||
+                              storedUserData?.phone_number ||
+                              "",
                             timezone:
                               profileData?.timezone ||
                               storedUserData?.timezone ||
-                              "Asia/Kolkata"
+                              "Asia/Kolkata",
                           });
                         }}
                         className="bg-brand hover:bg-brand-700 text-white px-6 py-2 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-2 mx-auto"
@@ -6020,29 +6642,23 @@ export default function AdminDashboard() {
                               timezone: profileEditForm.timezone,
                             });
 
-                          devLog(
-                            "📡 Profile API Response:",
-                            profileResponse
-                          );
+                          devLog("📡 Profile API Response:", profileResponse);
 
                           // 2. Update timezone via RoleBasedAuth/update-timezone
                           const timezoneResponse =
                             await apiClient.updateTimezone(
                               userEmail,
-                              profileEditForm.timezone
+                              profileEditForm.timezone,
                             );
 
-                          devLog(
-                            "📡 Timezone API Response:",
-                            timezoneResponse
-                          );
+                          devLog("📡 Timezone API Response:", timezoneResponse);
 
                           if (
                             profileResponse.success &&
                             timezoneResponse.success
                           ) {
                             devLog(
-                              "✅ Profile and timezone updated successfully in database"
+                              "✅ Profile and timezone updated successfully in database",
                             );
 
                             // Update local state with response data from server (handle both User and Subuser fields)
@@ -6070,26 +6686,26 @@ export default function AdminDashboard() {
                                 profileResponse.data?.user_name ||
                                 profileResponse.data?.subuser_name ||
                                 profileEditForm.user_name;
-                              storedData.phone_number =
+                              ((storedData.phone_number =
                                 profileResponse.data?.phone_number ||
                                 profileResponse.data?.phone ||
                                 profileResponse.data?.subuser_phone ||
-                                profileEditForm.phone_number,
-                                storedData.timezone =
-                                timezoneResponse.data?.timezone ||
-                                profileEditForm.timezone;
+                                profileEditForm.phone_number),
+                                (storedData.timezone =
+                                  timezoneResponse.data?.timezone ||
+                                  profileEditForm.timezone));
                               localStorage.setItem(
                                 "userData",
-                                JSON.stringify(storedData)
+                                JSON.stringify(storedData),
                               );
                               devLog(
-                                "💾 LocalStorage updated with server data"
+                                "💾 LocalStorage updated with server data",
                               );
                             }
 
                             showSuccess(
                               "Profile Updated",
-                              "Your profile and timezone have been updated successfully"
+                              "Your profile and timezone have been updated successfully",
                             );
                             setIsEditingProfile(false);
                           } else {
@@ -6104,7 +6720,7 @@ export default function AdminDashboard() {
                           devError("❌ Profile update error:", error);
                           showError(
                             "Update Failed",
-                            "An error occurred while updating profile"
+                            "An error occurred while updating profile",
                           );
                         } finally {
                           setProfileUpdateLoading(false);
@@ -6169,7 +6785,7 @@ export default function AdminDashboard() {
                               }));
                               showInfo(
                                 "Timezone Detected",
-                                `Automatically detected: ${detectedTimezone}`
+                                `Automatically detected: ${detectedTimezone}`,
                               );
                             }}
                             className="text-xs text-brand hover:text-brand-700 font-medium flex items-center gap-1"
@@ -6377,10 +6993,11 @@ export default function AdminDashboard() {
                 <div className="flex">
                   <button
                     onClick={() => setSettingsTab("billing")}
-                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${settingsTab === "billing"
-                      ? "text-brand border-b-2 border-brand bg-brand/5"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                      }`}
+                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${
+                      settingsTab === "billing"
+                        ? "text-brand border-b-2 border-brand bg-brand/5"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    }`}
                   >
                     <div className="flex items-center justify-center gap-2">
                       <svg
@@ -6401,10 +7018,11 @@ export default function AdminDashboard() {
                   </button>
                   <button
                     onClick={() => setSettingsTab("password")}
-                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${settingsTab === "password"
-                      ? "text-brand border-b-2 border-brand bg-brand/5"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                      }`}
+                    className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${
+                      settingsTab === "password"
+                        ? "text-brand border-b-2 border-brand bg-brand/5"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    }`}
                   >
                     <div className="flex items-center justify-center gap-2">
                       <svg
@@ -6439,20 +7057,53 @@ export default function AdminDashboard() {
                         onClick={() => {
                           // Get current user data for prefilling checkout
                           const userData = storedUserData || user;
-                          const firstName = userData?.user_name?.split(' ')[0] || userData?.name?.split(' ')[0] || '';
-                          const lastName = userData?.user_name?.split(' ').slice(1).join(' ') || userData?.name?.split(' ').slice(1).join(' ') || '';
-                          const email = userData?.user_email || userData?.email || '';
-                          const phone = userData?.phone_number || userData?.phone || '';
-                          const company = userData?.company || userData?.organization || userData?.department || '';
+                          const firstName =
+                            userData?.user_name?.split(" ")[0] ||
+                            userData?.name?.split(" ")[0] ||
+                            "";
+                          const lastName =
+                            userData?.user_name
+                              ?.split(" ")
+                              .slice(1)
+                              .join(" ") ||
+                            userData?.name?.split(" ").slice(1).join(" ") ||
+                            "";
+                          const email =
+                            userData?.user_email || userData?.email || "";
+                          const phone =
+                            userData?.phone_number || userData?.phone || "";
+                          const company =
+                            userData?.company ||
+                            userData?.organization ||
+                            userData?.department ||
+                            "";
 
                           // Get plan type and license count from billing details
-                          const planType = billingDetails?.planType || billingDetails?.activePlanTypes || billingDetails?.plan_type || 'Standard';
-                          const totalLicenses = billingDetails?.totalLicenses || billingDetails?.total_licenses || billingDetails?.purchase_details?.total_licenses || '1';
+                          const planType =
+                            billingDetails?.planType ||
+                            billingDetails?.activePlanTypes ||
+                            billingDetails?.plan_type ||
+                            "Standard";
+                          const totalLicenses =
+                            billingDetails?.totalLicenses ||
+                            billingDetails?.total_licenses ||
+                            billingDetails?.purchase_details?.total_licenses ||
+                            "1";
 
                           // Get price/amount from billing details
-                          const amount = billingDetails?.amount || billingDetails?.price || billingDetails?.unitPrice || '99';
-                          const validityYears = billingDetails?.validityYears || billingDetails?.validity_years || '1';
-                          const expiryDate = billingDetails?.expiryDate || billingDetails?.expiry_date || '';
+                          const amount =
+                            billingDetails?.amount ||
+                            billingDetails?.price ||
+                            billingDetails?.unitPrice ||
+                            "99";
+                          const validityYears =
+                            billingDetails?.validityYears ||
+                            billingDetails?.validity_years ||
+                            "1";
+                          const expiryDate =
+                            billingDetails?.expiryDate ||
+                            billingDetails?.expiry_date ||
+                            "";
 
                           // Build query params with user data and plan info
                           const params = new URLSearchParams({
@@ -6463,10 +7114,11 @@ export default function AdminDashboard() {
                             company: company,
                             planType: String(planType),
                             licenses: String(totalLicenses),
-                            price: String(amount).replace(/[^0-9.]/g, '') || '99',
+                            price:
+                              String(amount).replace(/[^0-9.]/g, "") || "99",
                             validityYears: String(validityYears),
                             expiryDate: String(expiryDate),
-                            renew: 'true',
+                            renew: "true",
                           });
 
                           // Navigate to checkout with prefilled data
@@ -6494,25 +7146,25 @@ export default function AdminDashboard() {
                     {(() => {
                       devLog(
                         "🔍 DEBUG RENDER: billingDetails:",
-                        billingDetails
+                        billingDetails,
                       );
                       devLog(
                         "🔍 DEBUG RENDER: billingDetails is truthy?",
-                        !!billingDetails
+                        !!billingDetails,
                       );
                       devLog(
                         "🔍 DEBUG RENDER: billingDetails type:",
-                        typeof billingDetails
+                        typeof billingDetails,
                       );
                       devLog(
                         "🔍 DEBUG RENDER: Object.keys(billingDetails):",
-                        billingDetails ? Object.keys(billingDetails) : "null"
+                        billingDetails ? Object.keys(billingDetails) : "null",
                       );
                       return null;
                     })()}
 
                     {billingDetails &&
-                      Object.keys(billingDetails).length > 0 ? (
+                    Object.keys(billingDetails).length > 0 ? (
                       <div className="space-y-4">
                         {/* Accordion 1: Active License Plan */}
                         <div className="bg-gradient-to-br from-brand/5 to-brand/10 rounded-lg border border-brand/20 overflow-hidden">
@@ -6551,8 +7203,9 @@ export default function AdminDashboard() {
                               </div>
                             </div>
                             <svg
-                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${billingAccordion.activePlan ? "rotate-180" : ""
-                                }`}
+                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${
+                                billingAccordion.activePlan ? "rotate-180" : ""
+                              }`}
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -6567,20 +7220,21 @@ export default function AdminDashboard() {
                           </button>
 
                           <div
-                            className={`transition-all duration-300 ease-in-out ${billingAccordion.activePlan
-                              ? "max-h-96 opacity-100"
-                              : "max-h-0 opacity-0 overflow-hidden"
-                              }`}
+                            className={`transition-all duration-300 ease-in-out ${
+                              billingAccordion.activePlan
+                                ? "max-h-96 opacity-100"
+                                : "max-h-0 opacity-0 overflow-hidden"
+                            }`}
                           >
                             <div className="px-6 pb-6">
                               {(() => {
                                 devLog(
                                   "🔍 DEBUG ACCORDION 1: billingDetails.activePlanTypes:",
-                                  billingDetails.activePlanTypes
+                                  billingDetails.activePlanTypes,
                                 );
                                 devLog(
                                   "🔍 DEBUG ACCORDION 1: billingDetails.totalPurchases:",
-                                  billingDetails.totalPurchases
+                                  billingDetails.totalPurchases,
                                 );
                                 return null;
                               })()}
@@ -6590,7 +7244,10 @@ export default function AdminDashboard() {
                                     Plan Type
                                   </p>
                                   <p className="text-lg font-bold text-brand">
-                                    {billingDetails.activePlanTypes || billingDetails.planType || billingDetails.plan_type || "N/A"}
+                                    {billingDetails.activePlanTypes ||
+                                      billingDetails.planType ||
+                                      billingDetails.plan_type ||
+                                      "N/A"}
                                   </p>
                                 </div>
                                 <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
@@ -6598,7 +7255,10 @@ export default function AdminDashboard() {
                                     Total Licenses
                                   </p>
                                   <p className="text-lg font-bold text-slate-900">
-                                    {billingDetails.purchase_details?.total_licenses || billingDetails.total_licenses || 0}
+                                    {billingDetails.purchase_details
+                                      ?.total_licenses ||
+                                      billingDetails.total_licenses ||
+                                      0}
                                   </p>
                                 </div>
                               </div>
@@ -6716,8 +7376,9 @@ export default function AdminDashboard() {
                               </div>
                             </div>
                             <svg
-                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${billingAccordion.planInfo ? "rotate-180" : ""
-                                }`}
+                              className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${
+                                billingAccordion.planInfo ? "rotate-180" : ""
+                              }`}
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -6732,10 +7393,11 @@ export default function AdminDashboard() {
                           </button>
 
                           <div
-                            className={`transition-all duration-300 ease-in-out ${billingAccordion.planInfo
-                              ? "max-h-[600px] opacity-100"
-                              : "max-h-0 opacity-0 overflow-hidden"
-                              }`}
+                            className={`transition-all duration-300 ease-in-out ${
+                              billingAccordion.planInfo
+                                ? "max-h-[600px] opacity-100"
+                                : "max-h-0 opacity-0 overflow-hidden"
+                            }`}
                           >
                             <div className="px-6 pb-6 space-y-4">
                               {/* Display parsed billing details - Filter sensitive data */}
@@ -6830,7 +7492,7 @@ export default function AdminDashboard() {
                                     (field) =>
                                       key
                                         .toLowerCase()
-                                        .includes(field.toLowerCase())
+                                        .includes(field.toLowerCase()),
                                   );
 
                                   // Skip sensitive fields
@@ -6863,8 +7525,8 @@ export default function AdminDashboard() {
                                       "postal",
                                     ].some((field) =>
                                       Object.keys(value).some((k) =>
-                                        k.toLowerCase().includes(field)
-                                      )
+                                        k.toLowerCase().includes(field),
+                                      ),
                                     );
 
                                     if (isAddress) {
@@ -6875,9 +7537,9 @@ export default function AdminDashboard() {
                                         addr.state || "",
                                         addr.country || "",
                                         addr.zipCode ||
-                                        addr.zip ||
-                                        addr.postalCode ||
-                                        "",
+                                          addr.zip ||
+                                          addr.postalCode ||
+                                          "",
                                       ]
                                         .filter(Boolean)
                                         .join(", ");
@@ -7051,13 +7713,19 @@ export default function AdminDashboard() {
                                   let displayValue = String(value);
 
                                   // Detect and format ISO date strings (e.g., 2024-12-01T10:05:00Z)
-                                  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
-                                  if (typeof value === 'string' && isoDateRegex.test(value)) {
+                                  const isoDateRegex =
+                                    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+                                  if (
+                                    typeof value === "string" &&
+                                    isoDateRegex.test(value)
+                                  ) {
                                     try {
-                                      displayValue = new Date(value).toLocaleDateString(undefined, {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric'
+                                      displayValue = new Date(
+                                        value,
+                                      ).toLocaleDateString(undefined, {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
                                       });
                                     } catch {
                                       // Keep original value if parsing fails
@@ -7065,10 +7733,11 @@ export default function AdminDashboard() {
                                   }
 
                                   if (key === "validityYears") {
-                                    displayValue = `${value} ${parseInt(String(value)) === 1
-                                      ? "Year"
-                                      : "Years"
-                                      }`;
+                                    displayValue = `${value} ${
+                                      parseInt(String(value)) === 1
+                                        ? "Year"
+                                        : "Years"
+                                    }`;
                                   }
 
                                   return (
@@ -7089,7 +7758,7 @@ export default function AdminDashboard() {
                                       </div>
                                     </div>
                                   );
-                                }
+                                },
                               )}
                             </div>
                           </div>
@@ -7138,7 +7807,7 @@ export default function AdminDashboard() {
                         if (changePasswordForm.newPassword.length < 6) {
                           showError(
                             "Weak Password",
-                            "Password must be at least 6 characters long"
+                            "Password must be at least 6 characters long",
                           );
                           return;
                         }
@@ -7154,13 +7823,13 @@ export default function AdminDashboard() {
 
                           const response = await apiClient.changePassword(
                             changePasswordForm.currentPassword,
-                            changePasswordForm.newPassword
+                            changePasswordForm.newPassword,
                           );
 
                           if (response.success) {
                             showSuccess(
                               "Password Changed",
-                              "Your password has been updated successfully"
+                              "Your password has been updated successfully",
                             );
                             setChangePasswordForm({
                               currentPassword: "",
@@ -7170,14 +7839,14 @@ export default function AdminDashboard() {
                           } else {
                             showError(
                               "Change Failed",
-                              response.error || "Failed to change password"
+                              response.error || "Failed to change password",
                             );
                           }
                         } catch (error) {
                           devError("Password change error:", error);
                           showError(
                             "Error",
-                            "An error occurred while changing password"
+                            "An error occurred while changing password",
                           );
                         } finally {
                           setPasswordChangeLoading(false);
@@ -7842,7 +8511,7 @@ export default function AdminDashboard() {
                   onClick={() => {
                     showSuccess(
                       "Settings Saved",
-                      "System settings have been updated successfully"
+                      "System settings have been updated successfully",
                     );
                     setShowSystemSettingsModal(false);
                   }}
@@ -7873,24 +8542,47 @@ export default function AdminDashboard() {
                   <div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-200 hover:border-emerald-400 hover:shadow-lg transition-all duration-200">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        <svg
+                          className="w-6 h-6 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-slate-900">File Eraser</h3>
+                        <h3 className="text-lg font-bold text-slate-900">
+                          File Eraser
+                        </h3>
                         <p className="text-xs text-slate-600">Version 2.0.1</p>
                       </div>
                     </div>
                     <p className="text-sm text-slate-700 mb-4">
-                      Securely erase files and folders with military-grade algorithms
+                      Securely erase files and folders with military-grade
+                      algorithms
                     </p>
                     <Link
                       to="/download?product=file-eraser"
                       className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 rounded-lg transition-all"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        />
                       </svg>
                       Download Now
                     </Link>
@@ -7900,12 +8592,24 @@ export default function AdminDashboard() {
                   <div className="group bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 hover:border-blue-400 hover:shadow-lg transition-all duration-200">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                        <svg
+                          className="w-6 h-6 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                          />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-slate-900">Drive Eraser</h3>
+                        <h3 className="text-lg font-bold text-slate-900">
+                          Drive Eraser
+                        </h3>
                         <p className="text-xs text-slate-600">Version 2.0.1</p>
                       </div>
                     </div>
@@ -7916,8 +8620,18 @@ export default function AdminDashboard() {
                       to="/download?product=drive-eraser"
                       className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg transition-all"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        />
                       </svg>
                       Download Now
                     </Link>
@@ -8000,8 +8714,18 @@ export default function AdminDashboard() {
               <div className="px-6 py-5 border-b border-slate-200 bg-gradient-to-r from-purple-500 to-purple-700">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-white/20 rounded-lg">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
+                      />
                     </svg>
                   </div>
                   <div>
@@ -8042,7 +8766,8 @@ export default function AdminDashboard() {
                 {/* Select Tables */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
-                    Select Tables to Sync <span className="text-red-500">*</span>
+                    Select Tables to Sync{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <div className="border border-slate-300 rounded-lg p-4 bg-slate-50 max-h-64 overflow-y-auto">
                     <div className="space-y-2">
@@ -8053,29 +8778,47 @@ export default function AdminDashboard() {
                         >
                           <input
                             type="checkbox"
-                            checked={privateCloudForm.selectedTables.includes(table)}
+                            checked={privateCloudForm.selectedTables.includes(
+                              table,
+                            )}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setPrivateCloudForm({
                                   ...privateCloudForm,
-                                  selectedTables: [...privateCloudForm.selectedTables, table],
+                                  selectedTables: [
+                                    ...privateCloudForm.selectedTables,
+                                    table,
+                                  ],
                                 });
                               } else {
                                 setPrivateCloudForm({
                                   ...privateCloudForm,
-                                  selectedTables: privateCloudForm.selectedTables.filter(
-                                    (t) => t !== table
-                                  ),
+                                  selectedTables:
+                                    privateCloudForm.selectedTables.filter(
+                                      (t) => t !== table,
+                                    ),
                                 });
                               }
                             }}
                             className="w-4 h-4 text-purple-600 border-slate-300 rounded focus:ring-purple-500"
                           />
                           <div className="flex items-center gap-2 flex-1">
-                            <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                            <svg
+                              className="w-4 h-4 text-slate-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                              />
                             </svg>
-                            <span className="text-sm font-medium text-slate-700">{table}</span>
+                            <span className="text-sm font-medium text-slate-700">
+                              {table}
+                            </span>
                           </div>
                         </label>
                       ))}
@@ -8091,8 +8834,18 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
                     <div className="flex-1">
                       <label className="flex items-center gap-2 text-sm font-medium text-slate-700 cursor-pointer">
-                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        <svg
+                          className="w-5 h-5 text-blue-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                          />
                         </svg>
                         Migrate Data
                       </label>
@@ -8122,8 +8875,18 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
                     <div className="flex-1">
                       <label className="flex items-center gap-2 text-sm font-medium text-slate-700 cursor-pointer">
-                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        <svg
+                          className="w-5 h-5 text-green-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                          />
                         </svg>
                         Migrate Tables
                       </label>
@@ -8151,14 +8914,32 @@ export default function AdminDashboard() {
                 {/* Info Box */}
                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                   <div className="flex gap-3">
-                    <svg className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    <svg
+                      className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                      />
                     </svg>
                     <div>
-                      <h4 className="text-sm font-medium text-amber-900 mb-1">Important Note</h4>
+                      <h4 className="text-sm font-medium text-amber-900 mb-1">
+                        Important Note
+                      </h4>
                       <ul className="text-xs text-amber-800 space-y-1">
-                        <li>• Ensure your connection string is correct before proceeding</li>
-                        <li>• Data migration may take time depending on data volume</li>
+                        <li>
+                          • Ensure your connection string is correct before
+                          proceeding
+                        </li>
+                        <li>
+                          • Data migration may take time depending on data
+                          volume
+                        </li>
                         <li>• Backup your data before migration</li>
                       </ul>
                     </div>
@@ -8186,11 +8967,17 @@ export default function AdminDashboard() {
                 <button
                   onClick={async () => {
                     if (!privateCloudForm.connectionString.trim()) {
-                      showError("Validation Error", "Please enter a connection string");
+                      showError(
+                        "Validation Error",
+                        "Please enter a connection string",
+                      );
                       return;
                     }
                     if (privateCloudForm.selectedTables.length === 0) {
-                      showError("Validation Error", "Please select at least one table");
+                      showError(
+                        "Validation Error",
+                        "Please select at least one table",
+                      );
                       return;
                     }
 
@@ -8199,11 +8986,11 @@ export default function AdminDashboard() {
                       // TODO: API call to setup private cloud
                       // await apiClient.setupPrivateCloud(privateCloudForm);
 
-                      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
+                      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate API call
 
                       showSuccess(
                         "Private Cloud Setup",
-                        `Successfully configured private cloud with ${privateCloudForm.selectedTables.length} table(s)`
+                        `Successfully configured private cloud with ${privateCloudForm.selectedTables.length} table(s)`,
                       );
                       setShowPrivateCloudModal(false);
                       setPrivateCloudForm({
@@ -8214,7 +9001,10 @@ export default function AdminDashboard() {
                       });
                     } catch (error) {
                       devError("Private cloud setup error:", error);
-                      showError("Setup Failed", "Failed to configure private cloud. Please try again.");
+                      showError(
+                        "Setup Failed",
+                        "Failed to configure private cloud. Please try again.",
+                      );
                     } finally {
                       setPrivateCloudLoading(false);
                     }
@@ -8224,9 +9014,24 @@ export default function AdminDashboard() {
                 >
                   {privateCloudLoading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Setting Up...
                     </span>
@@ -8238,7 +9043,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
-      </div >
+      </div>
     </>
   );
 }

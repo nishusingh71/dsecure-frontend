@@ -1,11 +1,11 @@
 {
-  "name": "D-Secure-frontend",
+  "name": "d-secure-frontend",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/update-sitemap.js && tsc -b && vite build",
     "preview": "vite preview",
     "upload-assets": "node scripts/upload-assets.js",
     "test-cloudinary": "node scripts/test-cloudinary.js",

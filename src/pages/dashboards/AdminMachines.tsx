@@ -1,60 +1,62 @@
-﻿import { useMemo, useState } from 'react'
+﻿import { useMemo, useState } from "react";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import { exportToCsv } from '@/utils/csv'
-import { Helmet } from 'react-helmet-async'
-import { useNotification } from '@/contexts/NotificationContext'
+import { exportToCsv } from "@/utils/csv";
+import { Helmet } from "react-helmet-async";
+import { useNotification } from "@/contexts/NotificationContext";
 
-import { Machine } from '@/utils/enhancedApiClient'
-import { useEffect } from 'react'
-import { apiClient } from '@/utils/enhancedApiClient'
-import { authService } from '@/utils/authService'
-import { isDemoMode, DEMO_MACHINES, DEMO_SUBUSERS } from '@/data/demoData'
-import { useSubusers } from '@/hooks/useSubusers'
-import { Group } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
+import { Machine } from "@/utils/enhancedApiClient";
+import { useEffect } from "react";
+import { apiClient } from "@/utils/enhancedApiClient";
+import { authService } from "@/utils/authService";
+import { isDemoMode, DEMO_MACHINES, DEMO_SUBUSERS } from "@/data/demoData";
+import { useSubusers } from "@/hooks/useSubusers";
+import { Group } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 // UI Machine interface for table display
 interface UIMachine {
-  hostname: string
-  eraseOption: string
-  license: string
-  status: string
-  machineId?: string
-  userEmail?: string
-  licenseActivated?: boolean
-  osVersion?: string
-  vmStatus?: string
-  totalLicenses?: number  // Total licenses available for this machine
-  fingerprintHash?: string  // Machine fingerprint hash
-  group?: string  // ✅ Group name for filtering
-  groupName?: string  // ✅ Alternative group name field
+  hostname: string;
+  eraseOption: string;
+  license: string;
+  status: string;
+  machineId?: string;
+  userEmail?: string;
+  licenseActivated?: boolean;
+  osVersion?: string;
+  vmStatus?: string;
+  totalLicenses?: number; // Total licenses available for this machine
+  fingerprintHash?: string; // Machine fingerprint hash
+  group?: string; // ✅ Group name for filtering
+  groupName?: string; // ✅ Alternative group name field
 }
 
 export default function AdminMachines() {
-  const { showSuccess, showError, showWarning, showInfo } = useNotification()
-  const [query, setQuery] = useState('')
-  const [page, setPage] = useState(1)
-  const [eraseFilter, setEraseFilter] = useState('')
-  const [licenseFilter, setLicenseFilter] = useState('')
-  const [statusFilter, setStatusFilter] = useState('')
-  const [groupFilter, setGroupFilter] = useState('')
-  const [showUniqueOnly, setShowUniqueOnly] = useState(false)
-  const [sortBy, setSortBy] = useState<keyof UIMachine>('hostname')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
-  const [subuserFilter, setSubuserFilter] = useState<string>("") // "" = my machines, email = subuser's machines, "all" = all machines
+  const { showSuccess, showError, showWarning, showInfo } = useNotification();
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [eraseFilter, setEraseFilter] = useState("");
+  const [licenseFilter, setLicenseFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [groupFilter, setGroupFilter] = useState("");
+  const [showUniqueOnly, setShowUniqueOnly] = useState(false);
+  const [sortBy, setSortBy] = useState<keyof UIMachine>("hostname");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [allReports, setAllReports] = useState<any[]>([]);
+
+  const [subuserFilter, setSubuserFilter] = useState<string>(""); // "" = my machines, email = subuser's machines, "all" = all machines
 
   // ✅ Get current user email for API calls
   const getUserEmail = (): string => {
-    const storedUser = localStorage.getItem('user_data');
-    const authUser = localStorage.getItem('authUser');
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
 
     let storedUserData = null;
     if (storedUser) {
       try {
         storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error('Error parsing user_data:', e);
+        console.error("Error parsing user_data:", e);
       }
     }
 
@@ -62,28 +64,81 @@ export default function AdminMachines() {
       try {
         storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error('Error parsing authUser:', e);
+        console.error("Error parsing authUser:", e);
       }
     }
 
     const jwtUser = authService.getUserFromToken();
-    return storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || '';
+    return (
+      storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || ""
+    );
   };
 
   const currentUserEmail = getUserEmail();
   const isDemo = isDemoMode();
 
+  // ✅ Fetch audit reports to map Hostname from details
+  useEffect(() => {
+    const fetchReportsForMapping = async () => {
+      if (isDemo) return;
+
+      try {
+        // Fetch all reports for this user to ensure we can map mac addresses
+        const response = await apiClient.getFilteredAuditReports({
+          userEmail: currentUserEmail,
+          // We fetch all to be safe, or we could fetch by active filters if we needed optimization
+        });
+
+        if (response.success && response.data) {
+          // Ensure we handle the response format (array vs object with reports array)
+          const responseData = response.data as any;
+          let reports = [];
+          if (responseData.reports && Array.isArray(responseData.reports)) {
+            reports = responseData.reports;
+          } else if (Array.isArray(response.data)) {
+            reports = response.data;
+          }
+
+          // Pre-parse details to avoid re-parsing in render loop
+          const parsedReports = reports.map((r: any) => {
+            let details = null;
+            if (r.report_details_json) {
+              try {
+                details =
+                  typeof r.report_details_json === "string"
+                    ? JSON.parse(r.report_details_json)
+                    : r.report_details_json;
+              } catch (e) {
+                /* ignore */
+              }
+            }
+            return {
+              ...r,
+              _details: details,
+            };
+          });
+
+          setAllReports(parsedReports);
+        }
+      } catch (error) {
+        console.error("Error fetching reports for machine mapping:", error);
+      }
+    };
+
+    fetchReportsForMapping();
+  }, [currentUserEmail, isDemo]);
+
   // ✅ Get user role for RBAC filtering
   const getUserRole = (): string => {
-    const storedUser = localStorage.getItem('user_data');
-    const authUser = localStorage.getItem('authUser');
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
 
     let storedUserData = null;
     if (storedUser) {
       try {
         storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error('Error parsing user_data:', e);
+        console.error("Error parsing user_data:", e);
       }
     }
 
@@ -91,25 +146,30 @@ export default function AdminMachines() {
       try {
         storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error('Error parsing authUser:', e);
+        console.error("Error parsing authUser:", e);
       }
     }
 
     const jwtUser = authService.getUserFromToken();
-    return storedUserData?.role || storedUserData?.user_role || jwtUser?.role || 'user';
+    return (
+      storedUserData?.role ||
+      storedUserData?.user_role ||
+      jwtUser?.role ||
+      "user"
+    );
   };
 
   // ✅ Get user's groupId for GroupAdmin filtering
   const getUserGroupId = (): string | null => {
-    const storedUser = localStorage.getItem('user_data');
-    const authUser = localStorage.getItem('authUser');
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
 
     let storedUserData = null;
     if (storedUser) {
       try {
         storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error('Error parsing user_data:', e);
+        console.error("Error parsing user_data:", e);
       }
     }
 
@@ -117,7 +177,7 @@ export default function AdminMachines() {
       try {
         storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error('Error parsing authUser:', e);
+        console.error("Error parsing authUser:", e);
       }
     }
 
@@ -126,12 +186,18 @@ export default function AdminMachines() {
 
   const currentUserRole = getUserRole().toLowerCase();
   const currentUserGroupId = getUserGroupId();
-  const isSuperAdmin = currentUserRole === 'superadmin';
-  const isGroupAdmin = currentUserRole === 'admin' || currentUserRole === 'administrator' || currentUserRole === 'groupadmin';
-  const isSubUser = currentUserRole === 'user';
+  const isSuperAdmin = currentUserRole === "superadmin";
+  const isGroupAdmin =
+    currentUserRole === "admin" ||
+    currentUserRole === "administrator" ||
+    currentUserRole === "groupadmin";
+  const isSubUser = currentUserRole === "user";
 
   // ✅ Fetch subusers for filter dropdown
-  const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
+  const { data: subusersData = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(
+    currentUserEmail,
+    !!currentUserEmail && !isDemo,
+  );
 
   // ✅ Fetch groups for filter dropdown - using same endpoint as AdminGroups
   const [groupsData, setGroupsData] = useState<any[]>([]);
@@ -142,9 +208,9 @@ export default function AdminMachines() {
     const fetchGroupsForFilter = async () => {
       if (isDemo) {
         setGroupsData([
-          { groupId: 1, groupName: 'Engineering Team' },
-          { groupId: 2, groupName: 'Marketing Team' },
-          { groupId: 3, groupName: 'Sales Team' }
+          { groupId: 1, groupName: "Engineering Team" },
+          { groupId: 2, groupName: "Marketing Team" },
+          { groupId: 3, groupName: "Sales Team" },
         ]);
         return;
       }
@@ -152,12 +218,12 @@ export default function AdminMachines() {
       try {
         setGroupsLoading(true);
         const response = await apiClient.getGroupsWithUsers();
-        
+
         if (response.success && response.data?.groups?.data) {
           setGroupsData(response.data.groups.data);
         }
       } catch (error) {
-        console.error('Error fetching groups for filter:', error);
+        console.error("Error fetching groups for filter:", error);
       } finally {
         setGroupsLoading(false);
       }
@@ -188,10 +254,13 @@ export default function AdminMachines() {
 
   const setCachedData = (key: string, data: any) => {
     try {
-      localStorage.setItem(`admin_cache_${key}`, JSON.stringify({
-        data,
-        timestamp: Date.now()
-      }));
+      localStorage.setItem(
+        `admin_cache_${key}`,
+        JSON.stringify({
+          data,
+          timestamp: Date.now(),
+        }),
+      );
       // console.log(`💾 Cached data for ${key}`);
     } catch (e) {
       console.warn(`⚠️ Cache write error for ${key}:`, e);
@@ -199,21 +268,27 @@ export default function AdminMachines() {
   };
 
   // ✅ Use React Query for machines data with automatic caching
-  const { data: machinesData, isLoading: loading, refetch: refetchMachines } = useQuery({
-    queryKey: ['machines', subuserFilter, groupFilter, query, licenseFilter],
+  const {
+    data: machinesData,
+    isLoading: loading,
+    refetch: refetchMachines,
+  } = useQuery({
+    queryKey: ["machines", subuserFilter, groupFilter, query, licenseFilter],
     queryFn: async () => {
       // 🎮 Demo Mode Check
       if (isDemoMode()) {
-        let demoMachines = DEMO_MACHINES
+        let demoMachines = DEMO_MACHINES;
         if (subuserFilter && subuserFilter !== "all") {
-          demoMachines = DEMO_MACHINES.filter((m: any) => m.userEmail === subuserFilter)
+          demoMachines = DEMO_MACHINES.filter(
+            (m: any) => m.userEmail === subuserFilter,
+          );
         }
-        return demoMachines
+        return demoMachines;
       }
 
       const userEmail = currentUserEmail;
       if (!userEmail) {
-        throw new Error('No user email found');
+        throw new Error("No user email found");
       }
 
       let targetEmail = userEmail;
@@ -226,7 +301,7 @@ export default function AdminMachines() {
       if (groupFilter) filters.groupName = groupFilter;
       if (licenseFilter) filters.licenseStatus = licenseFilter;
 
-      console.log('🖥️ Fetching filtered machines with:', filters)
+      console.log("🖥️ Fetching filtered machines with:", filters);
 
       const response = await apiClient.getFilteredMachines(filters);
 
@@ -235,138 +310,304 @@ export default function AdminMachines() {
         const responseData = response.data as any;
         if (responseData.machines && Array.isArray(responseData.machines)) {
           uniqueMachines = responseData.machines;
-          console.log(`📊 Total Machines: ${responseData.totalMachines}, Pages: ${responseData.totalPages}`);
+          console.log(
+            `📊 Total Machines: ${responseData.totalMachines}, Pages: ${responseData.totalPages}`,
+          );
         } else {
-          uniqueMachines = Array.isArray(response.data) ? response.data : [response.data];
+          uniqueMachines = Array.isArray(response.data)
+            ? response.data
+            : [response.data];
         }
       }
 
       if (subuserFilter === "all" && subusersData.length > 0) {
         const subuserPromises = subusersData.map((s: any) =>
-          apiClient.getFilteredMachines({ ...filters, userEmail: s.subuser_email })
+          apiClient.getFilteredMachines({
+            ...filters,
+            userEmail: s.subuser_email,
+          }),
         );
         const subuserResults = await Promise.all(subuserPromises);
-        
+
         subuserResults.forEach((res) => {
           if (res.success && res.data) {
             const resData = res.data as any;
-            const machinesArray = resData.machines && Array.isArray(resData.machines)
-              ? resData.machines
-              : (Array.isArray(res.data) ? res.data : [res.data]);
+            const machinesArray =
+              resData.machines && Array.isArray(resData.machines)
+                ? resData.machines
+                : Array.isArray(res.data)
+                  ? res.data
+                  : [res.data];
             uniqueMachines = [...uniqueMachines, ...machinesArray];
           }
         });
 
         uniqueMachines = Array.from(
-          new Map(uniqueMachines.map(machine => [machine.fingerprintHash || machine.fingerprint_hash, machine])).values()
+          new Map(
+            uniqueMachines.map((machine) => [
+              machine.fingerprintHash || machine.fingerprint_hash,
+              machine,
+            ]),
+          ).values(),
         );
       }
 
-      const machinesRes = { success: uniqueMachines.length > 0, data: uniqueMachines }
+      const machinesRes = {
+        success: uniqueMachines.length > 0,
+        data: uniqueMachines,
+      };
 
-      if (machinesRes.success && machinesRes.data && machinesRes.data.length > 0) {
+      if (
+        machinesRes.success &&
+        machinesRes.data &&
+        machinesRes.data.length > 0
+      ) {
         let filteredMachines = machinesRes.data;
 
         if (isGroupAdmin && currentUserGroupId && !subuserFilter) {
           filteredMachines = filteredMachines.filter((machine: any) => {
             const machineGroupId = machine.group_id || machine.groupId;
-            return machineGroupId === currentUserGroupId || machine.user_email === currentUserEmail || machine.userEmail === currentUserEmail;
+            return (
+              machineGroupId === currentUserGroupId ||
+              machine.user_email === currentUserEmail ||
+              machine.userEmail === currentUserEmail
+            );
           });
         }
 
         const uiMachines: UIMachine[] = filteredMachines.map((machine: any) => {
-          const hostname = machine.hostname ||
-            machine.macAddress || machine.mac_address ||
-            machine.fingerprintHash || machine.fingerprint_hash?.substring(0, 12) ||
-            'Unknown Device'
+          const hostname =
+            machine.hostname ||
+            machine.macAddress ||
+            machine.mac_address ||
+            machine.fingerprintHash ||
+            machine.fingerprint_hash?.substring(0, 12) ||
+            "Unknown Device";
 
-          let licenseDetails: any = null
-          let eraseOption = 'Standard Erase'
+          // ✅ Report Integration Logic
+          // Find report for this machine to get computer name
+          const machineMac = (machine.mac_address || machine.macAddress || "")
+            .toLowerCase()
+            .trim();
 
-          const licenseDetailsJson = machine.license_details_json || machine.licenseDetailsJson;
-          if (licenseDetailsJson) {
-            try {
-              licenseDetails = typeof licenseDetailsJson === 'string' 
-                ? JSON.parse(licenseDetailsJson) 
-                : licenseDetailsJson
+          let reportComputerName = null;
 
-              if (licenseDetails.erase_option) {
-                eraseOption = licenseDetails.erase_option
-              } else if (licenseDetails.features?.includes('advanced')) {
-                eraseOption = 'Advanced Erase'
-              } else if (licenseDetails.features?.includes('secure')) {
-                eraseOption = 'Secure Erase'
-              } else if (licenseDetails.license_type) {
-                eraseOption = licenseDetails.license_type
+          if (machineMac && allReports.length > 0) {
+            // Find report with matching MAC address
+            const matchingReport = allReports.find((report: any) => {
+              // Check direct mac_address field on report
+              const reportMacRaw = report.mac_address || report.macAddress;
+              if (
+                reportMacRaw &&
+                reportMacRaw.toLowerCase().trim() === machineMac
+              )
+                return true;
+
+              // Check inside report_details_json (parsed as _details)
+              const detailsMac =
+                report._details?.mac_address || report._details?.macAddress;
+              if (detailsMac && detailsMac.toLowerCase().trim() === machineMac)
+                return true;
+
+              return false;
+            });
+
+            if (matchingReport) {
+              // Try to get computer name from report details
+              reportComputerName =
+                matchingReport._details?.computer_name ||
+                matchingReport._details?.ComputerName ||
+                matchingReport.computer_name ||
+                matchingReport.computerName;
+
+              // Fallback: check erasure_log array
+              if (
+                !reportComputerName &&
+                matchingReport._details?.erasure_log &&
+                Array.isArray(matchingReport._details.erasure_log) &&
+                matchingReport._details.erasure_log.length > 0
+              ) {
+                reportComputerName =
+                  matchingReport._details.erasure_log[0].computer_name ||
+                  matchingReport._details.erasure_log[0].ComputerName;
               }
-            } catch (error) {
-              console.warn('⚠️ Failed to parse license_details_json:', error)
             }
           }
 
-          let license = 'No License'
-          let licenseLength = 0
+          // Prioritize report computer name, then existing hostname logic
+          const finalHostname = reportComputerName || hostname;
 
-          const isLicenseActivated = machine.licenseActivated ?? machine.license_activated;
+          let licenseDetails: any = null;
+          let eraseOption = "Standard Erase";
+
+          const licenseDetailsJson =
+            machine.license_details_json || machine.licenseDetailsJson;
+          if (licenseDetailsJson) {
+            try {
+              licenseDetails =
+                typeof licenseDetailsJson === "string"
+                  ? JSON.parse(licenseDetailsJson)
+                  : licenseDetailsJson;
+
+              if (licenseDetails.erase_option) {
+                eraseOption = licenseDetails.erase_option;
+              } else if (licenseDetails.features?.includes("advanced")) {
+                eraseOption = "Advanced Erase";
+              } else if (licenseDetails.features?.includes("secure")) {
+                eraseOption = "Secure Erase";
+              } else if (licenseDetails.license_type) {
+                eraseOption = licenseDetails.license_type;
+              }
+            } catch (error) {
+              console.warn("⚠️ Failed to parse license_details_json:", error);
+            }
+          }
+
+          let license = "No License";
+          let licenseLength = 0;
+
+          const isLicenseActivated =
+            machine.licenseActivated ?? machine.license_activated;
           if (isLicenseActivated) {
+            /* OLD LOGIC COMMENTED
             if (licenseDetails?.valid_until) {
-              const validUntil = new Date(licenseDetails.valid_until)
-              const now = new Date()
-              licenseLength = Math.ceil((validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+              const validUntil = new Date(licenseDetails.valid_until);
+              const now = new Date();
+              licenseLength = Math.ceil(
+                (validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+              );
             } else if (machine.licenseDaysValid ?? machine.license_days_valid) {
-              licenseLength = machine.licenseDaysValid ?? machine.license_days_valid
+              licenseLength =
+                machine.licenseDaysValid ?? machine.license_days_valid;
+            }
+            */
+
+            // NEW LOGIC: Calculate total license duration from activated_at to expiry_date
+            if (licenseDetails?.expiry_date && licenseDetails?.activated_at) {
+              const expiryDate = new Date(licenseDetails.expiry_date);
+              const activatedAt = new Date(licenseDetails.activated_at);
+              // Total duration = expiry - activated_at
+              licenseLength = Math.ceil(
+                (expiryDate.getTime() - activatedAt.getTime()) /
+                  (1000 * 60 * 60 * 24),
+              );
+            } else if (licenseDetails?.valid_until) {
+              const validUntil = new Date(licenseDetails.valid_until);
+              const now = new Date();
+              licenseLength = Math.ceil(
+                (validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+              );
+            } else if (machine.licenseDaysValid ?? machine.license_days_valid) {
+              licenseLength =
+                machine.licenseDaysValid ?? machine.license_days_valid;
             }
 
             if (licenseDetails?.license_key) {
-              license = licenseLength > 0
-                ? `Licensed (${licenseLength}d) - ${licenseDetails.license_key.substring(0, 8)}...`
-                : `Licensed - ${licenseDetails.license_key.substring(0, 8)}...`
+              license =
+                licenseLength > 0
+                  ? `${licenseDetails.license_key}`
+                  : `Licensed - ${licenseDetails.license_key}`;
             } else if (licenseDetails?.plan_name) {
-              license = licenseLength > 0
-                ? `${licenseDetails.plan_name} (${licenseLength}d)`
-                : licenseDetails.plan_name
-            } else if (machine.demo_usage_count && machine.demo_usage_count > 0) {
-              license = `Demo (${machine.demo_usage_count} uses)`
+              license =
+                licenseLength > 0
+                  ? `${licenseDetails.plan_name} (${licenseLength}d)`
+                  : licenseDetails.plan_name;
+            } else if (
+              machine.demo_usage_count &&
+              machine.demo_usage_count > 0
+            ) {
+              license = `Demo (${machine.demo_usage_count} uses)`;
             } else {
-              license = licenseLength > 0 ? `Licensed (${licenseLength}d)` : 'Licensed'
+              license =
+                licenseLength > 0 ? `Licensed (${licenseLength}d)` : "Licensed";
             }
           } else if (licenseDetails?.status) {
-            license = licenseDetails.status
+            license = licenseDetails.status;
           }
 
-          let status = 'Inactive'
-          const licenseDays = machine.licenseDaysValid ?? machine.license_days_valid;
+          let status = "Inactive";
+          const licenseDays =
+            machine.licenseDaysValid ?? machine.license_days_valid;
+          /* OLD LOGIC COMMENTED
           if (isLicenseActivated) {
             if (licenseDetails?.valid_until) {
-              const validUntil = new Date(licenseDetails.valid_until)
-              const now = new Date()
+              const validUntil = new Date(licenseDetails.valid_until);
+              const now = new Date();
               if (validUntil > now) {
-                const daysLeft = Math.ceil((validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
-                status = `Active (${daysLeft}d left)`
+                const daysLeft = Math.ceil(
+                  (validUntil.getTime() - now.getTime()) /
+                    (1000 * 60 * 60 * 24),
+                );
+                status = `Active (${daysLeft}d left)`;
               } else {
-                status = 'Expired'
+                // Keep showing as Active even if technically expired by date, if the flag says activated
+                const daysLeft = Math.ceil(
+                  (validUntil.getTime() - now.getTime()) /
+                    (1000 * 60 * 60 * 24),
+                );
+                status = `Active (${daysLeft}d left)`;
               }
             } else if (licenseDays && licenseDays > 0) {
-              status = `Active (${licenseDays}d left)`
+              status = `Active (${licenseDays}d left)`;
             } else if (licenseDays === 0) {
-              status = 'Expired'
+              // Same here, if activated flag is true, treat as Active
+              status = `Active (0d left)`;
             } else {
-              status = 'Active'
+              status = "Active";
             }
           } else if (licenseDetails?.active === false) {
-            status = 'Inactive'
+            status = "Inactive";
+          }
+          */
+
+          // NEW LOGIC
+          if (isLicenseActivated) {
+            if (licenseDetails?.expiry_date) {
+              const expiryDate = new Date(licenseDetails.expiry_date);
+              const now = new Date();
+              // Days left = expiry - now
+              const daysLeft = Math.ceil(
+                (expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+              );
+
+              if (daysLeft <= 0) {
+                status = "Expired";
+              } else {
+                status = `Active (${daysLeft}d left)`;
+              }
+            } else if (licenseDetails?.valid_until) {
+              const validUntil = new Date(licenseDetails.valid_until);
+              const now = new Date();
+              const daysLeft = Math.ceil(
+                (validUntil.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+              );
+
+              if (daysLeft <= 0) {
+                status = "Expired";
+              } else {
+                status = `Active (${daysLeft}d left)`;
+              }
+            } else if (licenseDays && licenseDays > 0) {
+              status = `Active (${licenseDays}d left)`;
+            } else if (licenseDays === 0) {
+              status = "Expired";
+            } else {
+              status = "Active";
+            }
+          } else if (licenseDetails?.active === false) {
+            status = "Inactive";
           }
 
           const vmStatus = machine.vmStatus || machine.vm_status;
           if (vmStatus) {
-            status = `${status} (VM: ${vmStatus})`
+            status = `${status} (VM: ${vmStatus})`;
           }
 
-          let totalLicenses = 1
+          let totalLicenses = 1;
           if (licenseDetails?.total_licenses) {
-            totalLicenses = licenseDetails.total_licenses
+            totalLicenses = licenseDetails.total_licenses;
           } else if (licenseDetails?.license_count) {
-            totalLicenses = licenseDetails.license_count
+            totalLicenses = licenseDetails.license_count;
           }
 
           return {
@@ -375,52 +616,64 @@ export default function AdminMachines() {
             license,
             status,
             machineId: machine.machineId || machine.machine_id || machine.id,
-            userEmail: machine.userEmail || machine.user_email || machine.subuserEmail || machine.subuser_email,
-            licenseActivated: machine.licenseActivated ?? machine.license_activated,
+            userEmail:
+              machine.userEmail ||
+              machine.user_email ||
+              machine.subuserEmail ||
+              machine.subuser_email,
+            licenseActivated:
+              machine.licenseActivated ?? machine.license_activated,
             osVersion: machine.osVersion || machine.os_version,
             vmStatus: machine.vmStatus || machine.vm_status,
             totalLicenses,
-            fingerprintHash: machine.fingerprintHash || machine.fingerprint_hash,
+            fingerprintHash:
+              machine.fingerprintHash || machine.fingerprint_hash,
             group: machine.groupName || machine.group || machine.group_name,
-            groupName: machine.groupName || machine.group || machine.group_name
-          }
-        })
+            groupName: machine.groupName || machine.group || machine.group_name,
+          };
+        });
 
-        return uiMachines
+        return uiMachines;
       }
 
-      return []
+      return [];
     },
     staleTime: 30 * 60 * 1000, // 30 minutes
     gcTime: 60 * 60 * 1000, // 1 hour (formerly cacheTime)
-    enabled: !!currentUserEmail && !isDemoMode() || isDemoMode()
-  })
+    enabled: (!!currentUserEmail && !isDemoMode()) || isDemoMode(),
+  });
 
-  const [allRows, setAllRows] = useState<UIMachine[]>([])
-  
-  // Update allRows when machinesData changes
-  useEffect(() => {
-    if (machinesData) {
-      setAllRows(machinesData)
-    }
-  }, [machinesData])
-  const [selectedMachineIds, setSelectedMachineIds] = useState<Set<string>>(new Set())
-  const [selectedMachineForModal, setSelectedMachineForModal] = useState<UIMachine | null>(null)
-  const [selectedMachinesForModal, setSelectedMachinesForModal] = useState<UIMachine[]>([])
-  const [showModal, setShowModal] = useState(false)
-  const [isBulkView, setIsBulkView] = useState(false)
-  const [showTransferModal, setShowTransferModal] = useState(false)
-  const [selectedSubuserForTransfer, setSelectedSubuserForTransfer] = useState<string>("")
-  const [transferLoading, setTransferLoading] = useState(false)
-  const [pageSize, setPageSize] = useState(5) // Default 10 rows per page
-  const pageSizeOptions = [5, 10, 25, 50, 100, 250]
+  const [allRows, setAllRows] = useState<UIMachine[]>([]);
 
   // Update allRows when machinesData changes
   useEffect(() => {
     if (machinesData) {
-      setAllRows(machinesData)
+      setAllRows(machinesData);
     }
-  }, [machinesData])
+  }, [machinesData]);
+  const [selectedMachineIds, setSelectedMachineIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [selectedMachineForModal, setSelectedMachineForModal] =
+    useState<UIMachine | null>(null);
+  const [selectedMachinesForModal, setSelectedMachinesForModal] = useState<
+    UIMachine[]
+  >([]);
+  const [showModal, setShowModal] = useState(false);
+  const [isBulkView, setIsBulkView] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [selectedSubuserForTransfer, setSelectedSubuserForTransfer] =
+    useState<string>("");
+  const [transferLoading, setTransferLoading] = useState(false);
+  const [pageSize, setPageSize] = useState(5); // Default 10 rows per page
+  const pageSizeOptions = [5, 10, 25, 50, 100, 250];
+
+  // Update allRows when machinesData changes
+  useEffect(() => {
+    if (machinesData) {
+      setAllRows(machinesData);
+    }
+  }, [machinesData]);
 
   // OLD: Manual data fetching replaced with React Query
   // Load machines data on component mount and when filters change
@@ -430,31 +683,37 @@ export default function AdminMachines() {
 
   // OLD loadMachinesData function removed - now using React Query above
 
-  const uniqueEraseOptions = useMemo(() => [...new Set(allRows.map((r: UIMachine) => r.eraseOption))], [allRows])
-  const uniqueLicenses = useMemo(() => [...new Set(allRows.map((r: UIMachine) => r.license))], [allRows])
-  const uniqueStatuses = useMemo(() => [...new Set(allRows.map((r: UIMachine) => r.status))], [allRows])
-  
+  const uniqueEraseOptions = useMemo(
+    () => [...new Set(allRows.map((r: UIMachine) => r.eraseOption))],
+    [allRows],
+  );
+  const uniqueLicenses = useMemo(
+    () => [...new Set(allRows.map((r: UIMachine) => r.license))],
+    [allRows],
+  );
+  const uniqueStatuses = useMemo(
+    () => [...new Set(allRows.map((r: UIMachine) => r.status))],
+    [allRows],
+  );
+
   // ✅ Use groups from API (same as AdminReports and AdminGroups) instead of extracting from machines
   // Sort groups alphabetically for better UX
-  const uniqueGroups = useMemo(
-    () => {
-      if (!groupsData || groupsData.length === 0) return [];
-      
-      // Extract groupName from API response (same structure as AdminGroups)
-      const groups = groupsData
-        .map((g: any) => g.groupName || g.name)
-        .filter(Boolean);
-      
-      // Sort alphabetically
-      return groups.sort((a: string, b: string) => a.localeCompare(b));
-    },
-    [groupsData]
-  );
+  const uniqueGroups = useMemo(() => {
+    if (!groupsData || groupsData.length === 0) return [];
+
+    // Extract groupName from API response (same structure as AdminGroups)
+    const groups = groupsData
+      .map((g: any) => g.groupName || g.name)
+      .filter(Boolean);
+
+    // Sort alphabetically
+    return groups.sort((a: string, b: string) => a.localeCompare(b));
+  }, [groupsData]);
 
   const filtered = useMemo(() => {
     // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
     // All filtering (query, erase option, license, status, group) is handled by the API endpoint
-    
+
     /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
     let result = allRows.filter(r => {
       const matchesQuery = r.hostname.toLowerCase().includes(query.toLowerCase()) ||
@@ -478,98 +737,105 @@ export default function AdminMachines() {
 
     // Remove duplicates if requested (UI-only feature)
     if (showUniqueOnly) {
-      const seen = new Set()
-      result = result.filter(r => {
-        const key = `${r.hostname}-${r.eraseOption}-${r.license}`
-        if (seen.has(key)) return false
-        seen.add(key)
-        return true
-      })
+      const seen = new Set();
+      result = result.filter((r) => {
+        const key = `${r.hostname}-${r.eraseOption}-${r.license}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
     }
 
     // Sort results (UI-only feature)
     result.sort((a, b) => {
-      const aVal = String(a[sortBy as keyof typeof a] || '')
-      const bVal = String(b[sortBy as keyof typeof b] || '')
-      const comparison = aVal.localeCompare(bVal)
-      return sortOrder === 'asc' ? comparison : -comparison
-    })
+      const aVal = String(a[sortBy as keyof typeof a] || "");
+      const bVal = String(b[sortBy as keyof typeof b] || "");
+      const comparison = aVal.localeCompare(bVal);
+      return sortOrder === "asc" ? comparison : -comparison;
+    });
 
-    return result
+    return result;
   }, [
-    allRows, 
+    allRows,
     // Removed filter dependencies - API handles all filtering
     // query, eraseFilter, licenseFilter, statusFilter, groupFilter,
-    showUniqueOnly, 
-    sortBy, 
-    sortOrder
-  ])
+    showUniqueOnly,
+    sortBy,
+    sortOrder,
+  ]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize))
-  const rows = filtered.slice((page - 1) * pageSize, page * pageSize)
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const rows = filtered.slice((page - 1) * pageSize, page * pageSize);
 
   const clearAllFilters = () => {
-    setQuery('')
-    setEraseFilter('')
-    setLicenseFilter('')
-    setStatusFilter('')
-    setGroupFilter('') // Reset group filter
-    setShowUniqueOnly(false)
-    setSubuserFilter('') // Reset subuser filter
-    setPage(1)
-  }
+    setQuery("");
+    setEraseFilter("");
+    setLicenseFilter("");
+    setStatusFilter("");
+    setGroupFilter(""); // Reset group filter
+    setShowUniqueOnly(false);
+    setSubuserFilter(""); // Reset subuser filter
+    setPage(1);
+  };
 
   // ✅ Toggle individual machine selection
   const toggleMachineSelection = (machineId: string) => {
-    const newSelection = new Set(selectedMachineIds)
+    const newSelection = new Set(selectedMachineIds);
     if (newSelection.has(machineId)) {
-      newSelection.delete(machineId)
+      newSelection.delete(machineId);
     } else {
-      newSelection.add(machineId)
+      newSelection.add(machineId);
     }
     // console.log('🔄 Selection updated:', newSelection.size, 'machines selected')
-    setSelectedMachineIds(newSelection)
-  }
+    setSelectedMachineIds(newSelection);
+  };
 
   // ✅ Toggle all machines on current page
   const toggleSelectAll = (currentPageMachines: UIMachine[]) => {
-    const currentPageIds = currentPageMachines.map((m) => m.machineId || m.hostname).filter(Boolean)
-    const allSelected = currentPageIds.every((id) => selectedMachineIds.has(id))
+    const currentPageIds = currentPageMachines
+      .map((m) => m.machineId || m.hostname)
+      .filter(Boolean);
+    const allSelected = currentPageIds.every((id) =>
+      selectedMachineIds.has(id),
+    );
 
-    const newSelection = new Set(selectedMachineIds)
+    const newSelection = new Set(selectedMachineIds);
     if (allSelected) {
       // Deselect all on current page
-      currentPageIds.forEach((id) => newSelection.delete(id))
+      currentPageIds.forEach((id) => newSelection.delete(id));
     } else {
       // Select all on current page
-      currentPageIds.forEach((id) => newSelection.add(id))
+      currentPageIds.forEach((id) => newSelection.add(id));
     }
     // console.log('🔄 Select All updated:', newSelection.size, 'machines selected')
-    setSelectedMachineIds(newSelection)
-  }
+    setSelectedMachineIds(newSelection);
+  };
 
   // Action functions
   const handleViewDetails = (machine: UIMachine) => {
-    setSelectedMachineForModal(machine)
-    setSelectedMachinesForModal([])
-    setIsBulkView(false)
-    setShowModal(true)
-  }
+    setSelectedMachineForModal(machine);
+    setSelectedMachinesForModal([]);
+    setIsBulkView(false);
+    setShowModal(true);
+  };
 
   const handleEditMachine = async (machine: UIMachine) => {
-    showInfo(`Edit mode enabled for ${machine.hostname}`)
+    showInfo(`Edit mode enabled for ${machine.hostname}`);
     // You can implement a modal or redirect to edit page here
-  }
+  };
 
   const handleDeleteMachine = async (machine: UIMachine) => {
     // Show confirmation using toast instead of prompt
     showInfo(
       `Delete Confirmation`,
-      `Ready to delete ${machine.hostname}. This action cannot be undone. Click "Delete" again to confirm.`
-    )
+      `Ready to delete ${machine.hostname}. This action cannot be undone. Click "Delete" again to confirm.`,
+    );
 
     try {
-      showInfo('Delete Machine', 'Machine deletion feature will be implemented with backend API')
+      showInfo(
+        "Delete Machine",
+        "Machine deletion feature will be implemented with backend API",
+      );
       // TODO: Implement delete API endpoint
       // const response = await apiClient.deleteMachine(machine.machineId)
       // if (response.success) {
@@ -577,18 +843,23 @@ export default function AdminMachines() {
       //   await loadMachinesData() // Refresh the list
       // }
     } catch (error) {
-      console.error('Error deleting machine:', error)
-      showError('Delete Failed', 'Failed to delete machine. Please try again.')
+      console.error("Error deleting machine:", error);
+      showError("Delete Failed", "Failed to delete machine. Please try again.");
     }
-  }
+  };
 
   const handleRestartMachine = async (machine: UIMachine) => {
-    if (machine.status.includes('Inactive') || machine.status.includes('Expired')) {
-      showWarning(`Cannot restart ${machine.hostname} - machine is ${machine.status}`)
-      return
+    if (
+      machine.status.includes("Inactive") ||
+      machine.status.includes("Expired")
+    ) {
+      showWarning(
+        `Cannot restart ${machine.hostname} - machine is ${machine.status}`,
+      );
+      return;
     }
     try {
-      showInfo('Restart Machine', `Restart initiated for ${machine.hostname}`)
+      showInfo("Restart Machine", `Restart initiated for ${machine.hostname}`);
       // TODO: Implement restart API endpoint
       // const response = await apiClient.restartMachine(machine.machineId)
       // if (response.success) {
@@ -596,18 +867,29 @@ export default function AdminMachines() {
       //   await loadMachinesData() // Refresh the list
       // }
     } catch (error) {
-      console.error('Error restarting machine:', error)
-      showError('Restart Failed', 'Failed to restart machine. Please try again.')
+      console.error("Error restarting machine:", error);
+      showError(
+        "Restart Failed",
+        "Failed to restart machine. Please try again.",
+      );
     }
-  }
+  };
 
   const handleRunErase = async (machine: UIMachine) => {
-    if (machine.status.includes('Inactive') || machine.status.includes('Expired')) {
-      showWarning(`Cannot run erase on ${machine.hostname} - machine is ${machine.status}`)
-      return
+    if (
+      machine.status.includes("Inactive") ||
+      machine.status.includes("Expired")
+    ) {
+      showWarning(
+        `Cannot run erase on ${machine.hostname} - machine is ${machine.status}`,
+      );
+      return;
     }
     try {
-      showInfo('Run Erase', `${machine.eraseOption} initiated on ${machine.hostname}`)
+      showInfo(
+        "Run Erase",
+        `${machine.eraseOption} initiated on ${machine.hostname}`,
+      );
       // TODO: Implement erase API endpoint
       // const response = await apiClient.runErase(machine.machineId, machine.eraseOption)
       // if (response.success) {
@@ -615,56 +897,71 @@ export default function AdminMachines() {
       //   await loadMachinesData() // Refresh the list
       // }
     } catch (error) {
-      console.error('Error running erase:', error)
-      showError('Erase Failed', 'Failed to initiate erase. Please try again.')
+      console.error("Error running erase:", error);
+      showError("Erase Failed", "Failed to initiate erase. Please try again.");
     }
-  }
+  };
 
   // ✅ Bulk Erase Multiple Machines
   const handleBulkErase = async () => {
     if (selectedMachineIds.size === 0) {
-      showWarning('No Machines Selected', 'Please select at least one machine to erase')
-      return
+      showWarning(
+        "No Machines Selected",
+        "Please select at least one machine to erase",
+      );
+      return;
     }
 
     // Get selected machines
     const selectedMachines = allRows.filter((machine) =>
-      selectedMachineIds.has(machine.machineId || machine.hostname)
-    )
+      selectedMachineIds.has(machine.machineId || machine.hostname),
+    );
 
     // Check if any selected machines are inactive or expired
-    const inactiveMachines = selectedMachines.filter((machine) =>
-      machine.status.includes('Inactive') || machine.status.includes('Expired')
-    )
+    const inactiveMachines = selectedMachines.filter(
+      (machine) =>
+        machine.status.includes("Inactive") ||
+        machine.status.includes("Expired"),
+    );
 
     if (inactiveMachines.length > 0) {
       showWarning(
-        'Some Machines Inactive',
-        `${inactiveMachines.length} selected machines are inactive/expired and will be skipped`
-      )
+        "Some Machines Inactive",
+        `${inactiveMachines.length} selected machines are inactive/expired and will be skipped`,
+      );
     }
 
-    const activeMachines = selectedMachines.filter((machine) =>
-      !machine.status.includes('Inactive') && !machine.status.includes('Expired')
-    )
+    const activeMachines = selectedMachines.filter(
+      (machine) =>
+        !machine.status.includes("Inactive") &&
+        !machine.status.includes("Expired"),
+    );
 
     if (activeMachines.length === 0) {
-      showError('No Active Machines', 'All selected machines are inactive or expired')
-      return
+      showError(
+        "No Active Machines",
+        "All selected machines are inactive or expired",
+      );
+      return;
     }
 
     // Show confirmation using toast instead of prompt
-    const machinesList = activeMachines.map(m => `${m.hostname} (${m.eraseOption})`).join(', ')
+    const machinesList = activeMachines
+      .map((m) => `${m.hostname} (${m.eraseOption})`)
+      .join(", ");
     showInfo(
       `Bulk Erase Confirmation`,
-      `Ready to erase ${activeMachines.length} machines: ${machinesList}. Click "Erase Selected" again to confirm.`
-    )
+      `Ready to erase ${activeMachines.length} machines: ${machinesList}. Click "Erase Selected" again to confirm.`,
+    );
 
     try {
-      showInfo(`Bulk Erase Started`, `Initiating erase on ${activeMachines.length} machines...`)
+      showInfo(
+        `Bulk Erase Started`,
+        `Initiating erase on ${activeMachines.length} machines...`,
+      );
 
-      let successCount = 0
-      let failedCount = 0
+      let successCount = 0;
+      let failedCount = 0;
 
       // Process each machine
       for (const machine of activeMachines) {
@@ -678,63 +975,74 @@ export default function AdminMachines() {
           // }
 
           // Simulate API call for now
-          await new Promise(resolve => setTimeout(resolve, 500))
-          successCount++
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          successCount++;
         } catch (error) {
-          console.error(`Error erasing machine ${machine.hostname}:`, error)
-          failedCount++
+          console.error(`Error erasing machine ${machine.hostname}:`, error);
+          failedCount++;
         }
       }
 
       // Clear selection
-      setSelectedMachineIds(new Set())
+      setSelectedMachineIds(new Set());
 
       if (failedCount > 0) {
         showWarning(
-          'Partial Success',
-          `Erase initiated on ${successCount} machines. ${failedCount} failed.`
-        )
+          "Partial Success",
+          `Erase initiated on ${successCount} machines. ${failedCount} failed.`,
+        );
       } else {
-        showSuccess(`Bulk Erase Complete`, `Successfully initiated erase on ${successCount} machines`)
+        showSuccess(
+          `Bulk Erase Complete`,
+          `Successfully initiated erase on ${successCount} machines`,
+        );
       }
 
       // Refresh the list with React Query
-      await refetchMachines()
+      await refetchMachines();
     } catch (error) {
-      console.error('Error in bulk erase:', error)
-      showError('Bulk Erase Failed', 'Failed to initiate bulk erase. Please try again.')
+      console.error("Error in bulk erase:", error);
+      showError(
+        "Bulk Erase Failed",
+        "Failed to initiate bulk erase. Please try again.",
+      );
     }
-  }
+  };
 
   // ✅ Bulk View Details
   const handleBulkViewDetails = () => {
     if (selectedMachineIds.size === 0) {
-      showWarning('No Machines Selected', 'Please select at least one machine to view details')
-      return
+      showWarning(
+        "No Machines Selected",
+        "Please select at least one machine to view details",
+      );
+      return;
     }
 
     const selectedMachines = allRows.filter((machine) =>
-      selectedMachineIds.has(machine.machineId || machine.hostname)
-    )
+      selectedMachineIds.has(machine.machineId || machine.hostname),
+    );
 
     // Use the same modal for bulk view
-    setSelectedMachinesForModal(selectedMachines)
-    setIsBulkView(true)
-    setShowModal(true)
-  }
+    setSelectedMachinesForModal(selectedMachines);
+    setIsBulkView(true);
+    setShowModal(true);
+  };
 
   // Modal Component - Simple clean design matching website theme
   const MachineDetailsModal = () => {
-    if (!showModal || (!selectedMachineForModal && !isBulkView)) return null
+    if (!showModal || (!selectedMachineForModal && !isBulkView)) return null;
 
     // Determine which machines to display
     const machinesToShow = isBulkView
       ? selectedMachinesForModal
-      : selectedMachineForModal ? [selectedMachineForModal] : []
+      : selectedMachineForModal
+        ? [selectedMachineForModal]
+        : [];
 
     const modalTitle = isBulkView
       ? `Machine Details (${machinesToShow.length} selected)`
-      : `Machine Details`
+      : `Machine Details`;
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4">
@@ -746,15 +1054,25 @@ export default function AdminMachines() {
             </h2>
             <button
               onClick={() => {
-                setShowModal(false)
-                setIsBulkView(false)
-                setSelectedMachinesForModal([])
-                setSelectedMachineForModal(null)
+                setShowModal(false);
+                setIsBulkView(false);
+                setSelectedMachinesForModal([]);
+                setSelectedMachineForModal(null);
               }}
               className="text-slate-400 hover:text-slate-600 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -764,25 +1082,45 @@ export default function AdminMachines() {
             {machinesToShow.map((machine, index) => (
               <div
                 key={machine.machineId || machine.hostname}
-                className={`bg-slate-50 rounded-lg p-4 ${index > 0 ? 'mt-4' : ''}`}
+                className={`bg-slate-50 rounded-lg p-4 ${index > 0 ? "mt-4" : ""}`}
               >
                 {/* Machine Header */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 rounded-lg">
-                      <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      <svg
+                        className="w-6 h-6 text-blue-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
                       </svg>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900">{machine.hostname}</h3>
-                      <p className="text-sm text-slate-500">{machine.userEmail || 'No user email'}</p>
+                      <h3 className="font-semibold text-slate-900">
+                        {machine.hostname}
+                      </h3>
+                      <p className="text-sm text-slate-500"></p>
+                      <p className="text-sm text-slate-500">
+                        {machine.userEmail || "No user email"}
+                      </p>
                     </div>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${machine.status.includes('Active') ? 'bg-green-100 text-green-800' :
-                    machine.status.includes('Expired') ? 'bg-red-100 text-red-800' :
-                      'bg-slate-200 text-slate-700'
-                    }`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      machine.status.includes("Active")
+                        ? "bg-green-100 text-green-800"
+                        : machine.status.includes("Expired")
+                          ? "bg-red-100 text-red-800"
+                          : "bg-slate-200 text-slate-700"
+                    }`}
+                  >
                     {machine.status}
                   </span>
                 </div>
@@ -795,36 +1133,56 @@ export default function AdminMachines() {
                   </div> */}
                   <div>
                     <p className="text-xs text-slate-500 mb-1">License</p>
-                    <span className={`text-sm font-medium ${machine.license.includes('Enterprise') ? 'text-purple-700' :
-                      machine.license.includes('Premium') ? 'text-blue-700' :
-                        machine.license.includes('Licensed') ? 'text-green-700' :
-                          'text-slate-700'
-                      }`}>
+                    <span
+                      className={`text-sm font-medium ${
+                        machine.license.includes("Enterprise")
+                          ? "text-purple-700"
+                          : machine.license.includes("Premium")
+                            ? "text-blue-700"
+                            : machine.license.includes("Licensed")
+                              ? "text-green-700"
+                              : "text-slate-700"
+                      }`}
+                    >
                       {machine.license}
                     </span>
                   </div>
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">Erase Option</p>
-                    <p className="text-sm font-medium text-slate-800">{machine.eraseOption}</p>
-                  </div>
+                  {/* <div>
+                    <p className="text-xs text-slate-500 mb-1">MAC Address</p>
+                    <p className="text-sm font-medium text-slate-800 font-mono break-all">
+                      {machine.eraseOption}
+                    </p>
+                  </div> */}
                   <div>
                     <p className="text-xs text-slate-500 mb-1">OS Version</p>
-                    <p className="text-sm font-medium text-slate-800">{machine.osVersion || 'N/A'}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1">License Status</p>
-                    <p className={`text-sm font-medium ${machine.licenseActivated ? 'text-green-700' : 'text-red-700'}`}>
-                      {machine.licenseActivated ? '✓ Active' : '✗ Inactive'}
+                    <p className="text-sm font-medium text-slate-800">
+                      {machine.osVersion || "N/A"}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500 mb-1">Total Licenses</p>
-                    <p className="text-sm font-medium text-slate-800">{machine.totalLicenses || 1}</p>
+                    <p className="text-xs text-slate-500 mb-1">
+                      License Status
+                    </p>
+                    <p
+                      className={`text-sm font-medium ${machine.licenseActivated ? "text-green-700" : "text-red-700"}`}
+                    >
+                      {machine.licenseActivated ? "✓ Active" : "✗ Inactive"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1">
+                      Total Licenses
+                    </p>
+                    <p className="text-sm font-medium text-slate-800">
+                      {machine.totalLicenses || 1}
+                    </p>
                   </div>
                   {machine.vmStatus && (
                     <div>
                       <p className="text-xs text-slate-500 mb-1">VM Status</p>
-                      <p className="text-sm font-medium text-slate-800">{machine.vmStatus}</p>
+                      <p className="text-sm font-medium text-slate-800">
+                        {machine.vmStatus}
+                      </p>
                     </div>
                   )}
                   {/* {machine.fingerprintHash && (
@@ -842,10 +1200,10 @@ export default function AdminMachines() {
           <div className="flex items-center justify-end gap-3 px-6 py-4 border-t bg-slate-50">
             <button
               onClick={() => {
-                setShowModal(false)
-                setIsBulkView(false)
-                setSelectedMachinesForModal([])
-                setSelectedMachineForModal(null)
+                setShowModal(false);
+                setIsBulkView(false);
+                setSelectedMachinesForModal([]);
+                setSelectedMachineForModal(null);
               }}
               className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors"
             >
@@ -854,68 +1212,88 @@ export default function AdminMachines() {
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   // Handle Transfer to Subuser
   const handleTransferMachines = async () => {
     if (!selectedSubuserForTransfer) {
-      showWarning("Select Subuser", "Please select a subuser to transfer machines to")
-      return
+      showWarning(
+        "Select Subuser",
+        "Please select a subuser to transfer machines to",
+      );
+      return;
     }
 
     if (selectedMachineIds.size === 0) {
-      showWarning("No Machines Selected", "Please select at least one machine to transfer")
-      return
+      showWarning(
+        "No Machines Selected",
+        "Please select at least one machine to transfer",
+      );
+      return;
     }
 
-    setTransferLoading(true)
+    setTransferLoading(true);
     try {
       // Get selected machines
       const selectedMachines = allRows.filter((machine) =>
-        selectedMachineIds.has(machine.machineId || machine.hostname)
-      )
+        selectedMachineIds.has(machine.machineId || machine.hostname),
+      );
 
       // Extract MAC addresses from selected machines
       // The hostname field contains the MAC address based on how machines are mapped
-      const macAddresses = selectedMachines.map((machine) => machine.hostname)
+      const macAddresses = selectedMachines.map((machine) => machine.hostname);
 
-      showInfo(`Transferring ${selectedMachines.length} machines to ${selectedSubuserForTransfer}...`)
+      showInfo(
+        `Transferring ${selectedMachines.length} machines to ${selectedSubuserForTransfer}...`,
+      );
 
       // Call the actual API endpoint
       const response = await apiClient.transferMachinesToSubuser(
         selectedSubuserForTransfer,
-        macAddresses
-      )
+        macAddresses,
+      );
 
       if (response.success) {
-        showSuccess(`Successfully transferred ${selectedMachines.length} machine(s) to ${selectedSubuserForTransfer}`)
+        showSuccess(
+          `Successfully transferred ${selectedMachines.length} machine(s) to ${selectedSubuserForTransfer}`,
+        );
 
         // Clear selection and close modal
-        setSelectedMachineIds(new Set())
-        setShowTransferModal(false)
-        setSelectedSubuserForTransfer("")
+        setSelectedMachineIds(new Set());
+        setShowTransferModal(false);
+        setSelectedSubuserForTransfer("");
 
         // Refresh data with React Query
-        await refetchMachines()
+        await refetchMachines();
       } else {
-        showError("Transfer Failed", response.error || response.message || "Failed to transfer machines. Please try again.")
+        showError(
+          "Transfer Failed",
+          response.error ||
+            response.message ||
+            "Failed to transfer machines. Please try again.",
+        );
       }
     } catch (error) {
-      console.error("Transfer error:", error)
-      showError("Transfer Failed", error instanceof Error ? error.message : "Failed to transfer machines. Please try again.")
+      console.error("Transfer error:", error);
+      showError(
+        "Transfer Failed",
+        error instanceof Error
+          ? error.message
+          : "Failed to transfer machines. Please try again.",
+      );
     } finally {
-      setTransferLoading(false)
+      setTransferLoading(false);
     }
-  }
+  };
 
   // Transfer Modal Component
   const TransferModal = () => {
-    if (!showTransferModal) return null
+    if (!showTransferModal) return null;
 
     const selectedMachines = allRows.filter((machine) =>
-      selectedMachineIds.has(machine.machineId || machine.hostname)
-    )
+      selectedMachineIds.has(machine.machineId || machine.hostname),
+    );
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-50 p-4">
@@ -927,13 +1305,23 @@ export default function AdminMachines() {
             </h2>
             <button
               onClick={() => {
-                setShowTransferModal(false)
-                setSelectedSubuserForTransfer("")
+                setShowTransferModal(false);
+                setSelectedSubuserForTransfer("");
               }}
               className="text-slate-400 hover:text-slate-600 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -941,7 +1329,11 @@ export default function AdminMachines() {
           {/* Modal Content */}
           <div className="p-6 space-y-4">
             <p className="text-sm text-slate-600">
-              Transfer <span className="font-semibold text-slate-900">{selectedMachines.length} machine(s)</span> to a subuser account.
+              Transfer{" "}
+              <span className="font-semibold text-slate-900">
+                {selectedMachines.length} machine(s)
+              </span>{" "}
+              to a subuser account.
             </p>
 
             {/* Subuser Selection */}
@@ -956,7 +1348,10 @@ export default function AdminMachines() {
               >
                 <option value="">-- Select a subuser --</option>
                 {subusersData.map((subuser: any) => (
-                  <option key={subuser.subuser_email} value={subuser.subuser_email}>
+                  <option
+                    key={subuser.subuser_email}
+                    value={subuser.subuser_email}
+                  >
                     {subuser.subuser_email}
                   </option>
                 ))}
@@ -965,10 +1360,15 @@ export default function AdminMachines() {
 
             {/* Selected Machines Preview */}
             <div className="bg-slate-50 rounded-lg p-3 max-h-40 overflow-y-auto">
-              <p className="text-xs text-slate-500 mb-2">Machines to transfer:</p>
+              <p className="text-xs text-slate-500 mb-2">
+                Machines to transfer:
+              </p>
               <div className="space-y-1">
                 {selectedMachines.map((machine) => (
-                  <div key={machine.machineId || machine.hostname} className="text-sm text-slate-700">
+                  <div
+                    key={machine.machineId || machine.hostname}
+                    className="text-sm text-slate-700"
+                  >
                     • {machine.hostname}
                   </div>
                 ))}
@@ -980,8 +1380,8 @@ export default function AdminMachines() {
           <div className="flex items-center justify-end gap-3 px-6 py-4 border-t bg-slate-50">
             <button
               onClick={() => {
-                setShowTransferModal(false)
-                setSelectedSubuserForTransfer("")
+                setShowTransferModal(false);
+                setSelectedSubuserForTransfer("");
               }}
               className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors"
             >
@@ -990,28 +1390,44 @@ export default function AdminMachines() {
             <button
               onClick={handleTransferMachines}
               disabled={!selectedSubuserForTransfer || transferLoading}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${!selectedSubuserForTransfer || transferLoading
-                ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                : 'bg-green-600 text-white hover:bg-green-700'
-                }`}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
+                !selectedSubuserForTransfer || transferLoading
+                  ? "bg-slate-300 text-slate-500 cursor-not-allowed"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
             >
               {transferLoading ? (
                 <>
-                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Transferring...
                 </>
               ) : (
-                'Transfer'
+                "Transfer"
               )}
             </button>
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -1025,7 +1441,9 @@ export default function AdminMachines() {
 
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/admin/machines" />
-        <title>D-SecureTech Compliance | Data Erasure Standards & Regulations</title>
+        <title>
+          D-SecureTech Compliance | Data Erasure Standards & Regulations
+        </title>
         <meta
           name="description"
           content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
@@ -1039,10 +1457,13 @@ export default function AdminMachines() {
       <div className="space-y-4 xs:space-y-6 sm:space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 xs:p-6 sm:p-6">
         <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">Machines</h1>
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">
+              Machines
+            </h1>
             {selectedMachineIds.size > 0 && (
               <p className="text-sm text-slate-600 mt-1">
-                {selectedMachineIds.size} machine{selectedMachineIds.size > 1 ? 's' : ''} selected
+                {selectedMachineIds.size} machine
+                {selectedMachineIds.size > 1 ? "s" : ""} selected
               </p>
             )}
           </div>
@@ -1125,7 +1546,6 @@ export default function AdminMachines() {
         </div> */}
         </div>
 
-
         {/* {!loading && !isUsingApi && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
           <div className="flex items-start space-x-3">
@@ -1148,7 +1568,9 @@ export default function AdminMachines() {
         {/* Advanced Filters */}
         <div className="card p-4 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-slate-900">Filters & Search</h3>
+            <h3 className="text-lg font-semibold text-slate-900">
+              Filters & Search
+            </h3>
             <button
               onClick={clearAllFilters}
               className="text-sm text-red-600 hover:text-red-800 font-medium"
@@ -1159,38 +1581,52 @@ export default function AdminMachines() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Machine Owner Filter - Show only if there are subusers */}
-            {subusersData && subusersData.length > 0 && (
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Machine Owner</label>
-                <select
-                  className="w-full border rounded px-3 py-2 text-sm"
-                  value={subuserFilter}
-                  onChange={(e) => { setSubuserFilter(e.target.value); setPage(1) }}
-                >
-                  <option value="">My Machines</option>
-                  <option value="all">All Machines (Me + Subusers)</option>
-                  <optgroup label="Subuser Machines">
-                    {subusersData.map((subuser: any) => (
-                      <option key={subuser.subuser_email} value={subuser.subuser_email}>
-                        {subuser.subuser_name || subuser.subuser_email}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-              </div>
-            )}
+
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Machine Owner
+              </label>
+              <select
+                className="w-full border rounded px-3 py-2 text-sm"
+                value={subuserFilter}
+                onChange={(e) => {
+                  setSubuserFilter(e.target.value);
+                  setPage(1);
+                }}
+              >
+                <option value="">My Machines</option>
+                <option value="all">All Machines (Me + Subusers)</option>
+                <optgroup label="Subuser Machines">
+                  {subusersData.map((subuser: any) => (
+                    <option
+                      key={subuser.subuser_email}
+                      value={subuser.subuser_email}
+                    >
+                      {subuser.subuser_name || subuser.subuser_email}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
 
             {/* Group Filter */}
             <div className="flex-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Group</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Group
+              </label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
                 value={groupFilter}
-                onChange={(e) => { setGroupFilter(e.target.value); setPage(1) }}
+                onChange={(e) => {
+                  setGroupFilter(e.target.value);
+                  setPage(1);
+                }}
               >
                 <option value="">All Groups</option>
                 {uniqueGroups.map((group: string) => (
-                  <option key={group} value={group}>{group}</option>
+                  <option key={group} value={group}>
+                    {group}
+                  </option>
                 ))}
               </select>
             </div>
@@ -1268,7 +1704,9 @@ export default function AdminMachines() {
             </div> */}
 
             <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-slate-700">Sort by:</label>
+              <label className="text-sm font-medium text-slate-700">
+                Sort by:
+              </label>
               <select
                 className="border rounded px-2 py-1 text-sm"
                 value={sortBy}
@@ -1280,10 +1718,12 @@ export default function AdminMachines() {
                 <option value="status">Status</option>
               </select>
               <button
-                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                onClick={() =>
+                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                }
                 className="px-2 py-1 border rounded text-sm hover:bg-slate-50"
               >
-                {sortOrder === 'asc' ? '↑' : '↓'}
+                {sortOrder === "asc" ? "↑" : "↓"}
               </button>
             </div>
 
@@ -1364,7 +1804,8 @@ export default function AdminMachines() {
                 <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 mb-4">
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-medium text-blue-800">
-                      {selectedMachineIds.size} machine{selectedMachineIds.size !== 1 ? 's' : ''} selected
+                      {selectedMachineIds.size} machine
+                      {selectedMachineIds.size !== 1 ? "s" : ""} selected
                     </span>
                     <button
                       onClick={() => setSelectedMachineIds(new Set())}
@@ -1381,8 +1822,18 @@ export default function AdminMachines() {
                         className="text-sm px-4 py-1.5 rounded border font-medium transition-colors bg-green-600 text-white hover:bg-green-700 border-green-600 flex items-center gap-2"
                         title={`Transfer ${selectedMachineIds.size} Selected Machines to Subuser`}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                          />
                         </svg>
                         Transfer
                       </button>
@@ -1392,9 +1843,24 @@ export default function AdminMachines() {
                       className="text-sm px-4 py-1.5 rounded border font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 border-blue-600 flex items-center gap-2"
                       title={`View ${selectedMachineIds.size} Selected Machines`}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
                       </svg>
                       View
                     </button>
@@ -1413,7 +1879,7 @@ export default function AdminMachines() {
                           checked={
                             rows.length > 0 &&
                             rows.every((m) =>
-                              selectedMachineIds.has(m.machineId || m.hostname)
+                              selectedMachineIds.has(m.machineId || m.hostname),
                             )
                           }
                           onChange={() => toggleSelectAll(rows)}
@@ -1423,7 +1889,7 @@ export default function AdminMachines() {
                       </th>
                       <th className="py-2">Hostname</th>
                       <th className="py-2">Assign Machine To</th>
-                      <th className="py-2">Erase Option</th>
+                      {/* <th className="py-2">MAC Address</th> */}
                       <th className="py-2">License</th>
                       <th className="py-2">Status</th>
                       {/* Actions column commented out - using bulk action bar instead */}
@@ -1432,37 +1898,63 @@ export default function AdminMachines() {
                   </thead>
                   <tbody>
                     {rows.map((row, i) => (
-                      <tr key={`${row.hostname}-${i}`} className="border-t hover:bg-slate-50">
+                      <tr
+                        key={`${row.hostname}-${i}`}
+                        className="border-t hover:bg-slate-50"
+                      >
                         <td className="py-2">
                           <input
                             type="checkbox"
-                            checked={selectedMachineIds.has(row.machineId || row.hostname)}
+                            checked={selectedMachineIds.has(
+                              row.machineId || row.hostname,
+                            )}
                             onChange={() =>
-                              toggleMachineSelection(row.machineId || row.hostname)
+                              toggleMachineSelection(
+                                row.machineId || row.hostname,
+                              )
                             }
                             className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
                           />
                         </td>
                         <td className="py-2 font-medium">{row.hostname}</td>
-                        <td className="py-2 text-sm text-slate-600">{row.userEmail || 'N/A'}</td>
-                        <td className="py-2">{row.eraseOption}</td>
+                        <td className="py-2 text-sm text-slate-600">
+                          {row.userEmail || "N/A"}
+                        </td>
+                        {/* <td className="py-2">{row.eraseOption}</td> */}
                         <td className="py-2">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${row.license === 'Enterprise' ? 'bg-purple-100 text-purple-800' :
-                            row.license === 'Premium' ? 'bg-blue-100 text-blue-800' :
-                              'bg-slate-100 text-slate-800'
-                            }`}>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              row.license === "Enterprise"
+                                ? "bg-purple-100 text-purple-800"
+                                : row.license === "Premium"
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "bg-slate-100 text-slate-800"
+                            }`}
+                          >
                             {row.license}
                           </span>
                         </td>
                         <td className="py-2">
-                          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${row.status === 'online' ? 'bg-green-100 text-green-800' :
-                            row.status === 'offline' ? 'bg-red-100 text-red-800' :
-                              'bg-yellow-100 text-yellow-800'
-                            }`}>
-                            <span className={`w-2 h-2 rounded-full ${row.status === 'online' ? 'bg-green-400' :
-                              row.status === 'offline' ? 'bg-red-400' :
-                                'bg-yellow-400'
-                              }`}></span>
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                              row.status === "online" ||
+                              row.status.includes("Active")
+                                ? "bg-green-100 text-green-800"
+                                : row.status === "offline"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            <span
+                              className={`w-2 h-2 rounded-full ${
+                                row.status === "online" ||
+                                row.status.includes("Active")
+                                  ? "bg-green-400"
+                                  : row.status === "offline"
+                                    ? "bg-red-400"
+                                    : "bg-yellow-400"
+                              }`}
+                            ></span>
                             {row.status}
                           </span>
                         </td>
@@ -1500,16 +1992,19 @@ export default function AdminMachines() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t">
                 {/* Left side - Rows per page selector */}
                 <div className="flex items-center gap-3">
-                  <label htmlFor="machinesPageSize" className="text-sm text-slate-600">
+                  <label
+                    htmlFor="machinesPageSize"
+                    className="text-sm text-slate-600"
+                  >
                     Rows per page:
                   </label>
                   <select
                     id="machinesPageSize"
                     value={pageSize}
                     onChange={(e) => {
-                      const newSize = parseInt(e.target.value, 10)
-                      setPageSize(newSize)
-                      setPage(1)
+                      const newSize = parseInt(e.target.value, 10);
+                      setPageSize(newSize);
+                      setPage(1);
                     }}
                     className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
                   >
@@ -1520,7 +2015,10 @@ export default function AdminMachines() {
                     ))}
                   </select>
                   <span className="text-sm text-slate-500">
-                    Showing {Math.min((page - 1) * pageSize + 1, filtered.length)} to {Math.min(page * pageSize, filtered.length)} of {filtered.length} records
+                    Showing{" "}
+                    {Math.min((page - 1) * pageSize + 1, filtered.length)} to{" "}
+                    {Math.min(page * pageSize, filtered.length)} of{" "}
+                    {filtered.length} records
                   </span>
                 </div>
 
@@ -1552,7 +2050,5 @@ export default function AdminMachines() {
         </div>
       </div>
     </>
-  )
+  );
 }
-
-

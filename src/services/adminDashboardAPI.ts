@@ -73,6 +73,8 @@ interface ProfileData {
   licenses?: number // For User stats - number of licenses assigned to user
   license_allocation?: string // License allocation count from user data
   is_private_cloud?: boolean // Private cloud access flag
+  is_groups_enabled?: boolean // Groups feature flag
+  is_subusers_enabled?: boolean // Subusers feature flag
 }
 
 // Additional interfaces for other admin pages
@@ -142,6 +144,26 @@ interface Report {
   method: string
   duration?: string
   size?: string
+}
+
+export interface ErasureMetricsRequest {
+  userEmails: string[];
+  year?: number;
+  fromDate?: string;
+  toDate?: string;
+}
+
+export interface MonthlyMetric {
+  month: string;
+  erasureCount: number;
+  year: number;
+}
+
+export interface ErasureMetricsResponse {
+  totalErasures: number;
+  avgDuration: string;
+  successRate: number;
+  monthlyMetrics: MonthlyMetric[];
 }
 
 // NOTE: All default/fallback data removed - All data must come from live API
@@ -359,7 +381,9 @@ export class AdminDashboardAPI {
         // phone: data.phone_number || data.phone || '', // Commented out
         department: data.department || '',
         avatar: data.avatar || '',
-        licenses: data.licenses || 0
+        licenses: data.licenses || 0,
+        is_groups_enabled: data.is_groups_enabled,
+        is_subusers_enabled: data.is_subusers_enabled
       };
 
       return {
@@ -431,7 +455,9 @@ export class AdminDashboardAPI {
         // phone: data.phone_number || data.phone || profileData.phone || '', // Commented out
         department: data.department || profileData.department || '',
         avatar: data.avatar || '',
-        licenses: data.licenses || 0
+        licenses: data.licenses || 0,
+        is_groups_enabled: data.is_groups_enabled,
+        is_subusers_enabled: data.is_subusers_enabled
       };
 
       // Update local storage with new data
@@ -441,7 +467,10 @@ export class AdminDashboardAPI {
         user_name: updatedProfile.name,
         user_email: updatedProfile.email,
         // phone_number: updatedProfile.phone, // Commented out
-        department: updatedProfile.department
+        department: updatedProfile.department,
+        is_groups_enabled: updatedProfile.is_groups_enabled,
+        is_subusers_enabled: updatedProfile.is_subusers_enabled,
+        is_private_cloud: updatedProfile.is_private_cloud
       };
       localStorage.setItem('user_data', JSON.stringify(updatedUserData));
       localStorage.setItem('authUser', JSON.stringify(updatedUserData));
@@ -608,6 +637,14 @@ export class AdminDashboardAPI {
       method: 'PUT',
       body: JSON.stringify(settings)
     })
+  }
+  // Erasure Metrics API
+  static async getErasureMetrics(data: ErasureMetricsRequest): Promise<ApiResponse<ErasureMetricsResponse>> {
+    const response = await apiCall<ErasureMetricsResponse>('/api/Performance/erasure-metrics', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    return response;
   }
 }
 

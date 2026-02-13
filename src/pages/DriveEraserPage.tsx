@@ -434,13 +434,12 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     <>
       <SEOHead
         seo={{
-          title:
-            "D-Secure Drive Eraser | Secure File & Folder Deletion Software",
+          title: "D-Secure Drive Eraser | Secure Disk & Drive Wiping Software",
           description:
-            "Permanently erase files, folders, system traces, and cloud data with D-Secure Drive Eraser. NIST 800-88 compliant data destruction for privacy and security.",
+            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Certified data destruction compliant with NIST 800-88, DoD, and GDPR.",
           keywords:
-            "Drive Eraser, secure delete, data destruction, file shredder, privacy software, NIST 800-88, GDPR compliance",
-          canonicalUrl: "https://dsecuretech.com/services/file-eraser",
+            "drive eraser, disk wiper, ssd secure erase, hard drive destruction, server wiping, NIST 800-88, data sanitization software",
+          canonicalUrl: "https://dsecuretech.com/products/drive-eraser",
         }}
       />
 
@@ -625,12 +624,21 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
                                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.2s' }}></div>
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" style={{ animationDelay: '0.4s' }}></div>
+                                <div
+                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
+                                  style={{ animationDelay: "0.2s" }}
+                                ></div>
+                                <div
+                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50"
+                                  style={{ animationDelay: "0.4s" }}
+                                ></div>
                               </div>
                               <div className="flex gap-0.5 sm:gap-1">
                                 {[...Array(4)].map((_, i) => (
-                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"></div>
+                                  <div
+                                    key={i}
+                                    className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"
+                                  ></div>
                                 ))}
                               </div>
                             </div>
@@ -644,13 +652,16 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                                   <ShieldIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
                                 </div>
                                 <div className="flex flex-col">
-                                  <span className="text-[8px] sm:text-[9px] lg:text-xs text-emerald-400 font-semibold">ERASING</span>
+                                  <span className="text-[8px] sm:text-[9px] lg:text-xs text-emerald-400 font-semibold">
+                                    ERASING
+                                  </span>
                                   <div className="w-12 sm:w-16 lg:w-24 h-1 sm:h-1.5 lg:h-2 bg-slate-600 rounded-full overflow-hidden">
-                                    <div 
+                                    <div
                                       className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
-                                      style={{ 
-                                        width: '75%',
-                                        animation: 'progressPulse 2s ease-in-out infinite'
+                                      style={{
+                                        width: "75%",
+                                        animation:
+                                          "progressPulse 2s ease-in-out infinite",
                                       }}
                                     ></div>
                                   </div>
@@ -658,7 +669,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                               </div>
                               <div className="flex gap-0.5 sm:gap-1">
                                 {[...Array(4)].map((_, i) => (
-                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-4 sm:h-5 lg:h-6 bg-slate-500/60 rounded-sm"></div>
+                                  <div
+                                    key={i}
+                                    className="w-0.5 sm:w-1 lg:w-1.5 h-4 sm:h-5 lg:h-6 bg-slate-500/60 rounded-sm"
+                                  ></div>
                                 ))}
                               </div>
                             </div>
@@ -669,12 +683,21 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
                                 <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></div>
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" style={{ animationDelay: '0.3s' }}></div>
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.6s' }}></div>
+                                <div
+                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50"
+                                  style={{ animationDelay: "0.3s" }}
+                                ></div>
+                                <div
+                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
+                                  style={{ animationDelay: "0.6s" }}
+                                ></div>
                               </div>
                               <div className="flex gap-0.5 sm:gap-1">
                                 {[...Array(4)].map((_, i) => (
-                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"></div>
+                                  <div
+                                    key={i}
+                                    className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"
+                                  ></div>
                                 ))}
                               </div>
                             </div>
@@ -684,13 +707,25 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 rounded-md sm:rounded-lg p-1.5 sm:p-2 lg:p-3 border border-slate-500/40 shadow-lg">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.5s' }}></div>
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" style={{ animationDelay: '0.7s' }}></div>
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" style={{ animationDelay: '0.9s' }}></div>
+                                <div
+                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
+                                  style={{ animationDelay: "0.5s" }}
+                                ></div>
+                                <div
+                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
+                                  style={{ animationDelay: "0.7s" }}
+                                ></div>
+                                <div
+                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50"
+                                  style={{ animationDelay: "0.9s" }}
+                                ></div>
                               </div>
                               <div className="flex gap-0.5 sm:gap-1">
                                 {[...Array(4)].map((_, i) => (
-                                  <div key={i} className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"></div>
+                                  <div
+                                    key={i}
+                                    className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"
+                                  ></div>
                                 ))}
                               </div>
                             </div>
@@ -809,179 +844,179 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
         {/* ================= VIDEO SECTION ================= */}
         <section
-                 id="demo"
-                 className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-emerald-50"
-               >
-                 <div className="container mx-auto px-4 max-w-6xl">
-                   <Reveal>
-                     <div className="text-center mb-6 sm:mb-10">
-                       <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
-                         See Drive Eraser in Action
-                       </h2>
-                       <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                         Watch how D-Secure Drive Eraser permanently destroys sensitive
-                         data with audit-ready documentation
-                       </p>
-                     </div>
-                   </Reveal>
-       
-                   {/* Media Grid - 1 Video + 2 Screenshots */}
-                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                     {/* Main Video Card */}
-                     <Reveal delayMs={100}>
-                       <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300">
-                         {/* Video Thumbnail */}
-                         <div className="relative aspect-video bg-gradient-to-br from-slate-800 to-slate-900">
-                           {/* Replace VIDEO_THUMBNAIL_URL with actual thumbnail */}
-                           <div className="absolute inset-0 flex flex-col items-center justify-center">
-                             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl cursor-pointer group-hover:scale-110 transition-transform">
-                               <svg
-                                 className="w-7 h-7 text-white ml-1"
-                                 fill="currentColor"
-                                 viewBox="0 0 24 24"
-                               >
-                                 <path d="M8 5v14l11-7z" />
-                               </svg>
-                             </div>
-                           </div>
-                           {/* Uncomment when video thumbnail ready: */}
-                           {/* <img 
+          id="demo"
+          className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-emerald-50"
+        >
+          <div className="container mx-auto px-4 max-w-6xl">
+            <Reveal>
+              <div className="text-center mb-6 sm:mb-10">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
+                  See Drive Eraser in Action
+                </h2>
+                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                  Watch how D-Secure Drive Eraser permanently destroys sensitive
+                  data with audit-ready documentation
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Media Grid - 1 Video + 2 Screenshots */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Main Video Card */}
+              <Reveal delayMs={100}>
+                <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300">
+                  {/* Video Thumbnail */}
+                  <div className="relative aspect-video bg-gradient-to-br from-slate-800 to-slate-900">
+                    {/* Replace VIDEO_THUMBNAIL_URL with actual thumbnail */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl cursor-pointer group-hover:scale-110 transition-transform">
+                        <svg
+                          className="w-7 h-7 text-white ml-1"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                    {/* Uncomment when video thumbnail ready: */}
+                    {/* <img 
                              src="VIDEO_THUMBNAIL_URL" 
                              alt="File Eraser Demo" 
                              className="w-full h-full object-cover"
                            /> */}
-                         </div>
-                         {/* Video Info */}
-                         <div className="p-5">
-                           <div className="flex items-center gap-2 mb-2">
-                             <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
-                               VIDEO
-                             </span>
-                             <span className="text-slate-400 text-xs">2:45</span>
-                           </div>
-                           <h3 className="font-bold text-slate-900 mb-1">
-                             Product Demo
-                           </h3>
-                           <p className="text-sm text-slate-500">
-                             Complete walkthrough of Drive Eraser features
-                           </p>
-                         </div>
-                       </div>
-                     </Reveal>
-       
-                     {/* Screenshot Cards Grid */}
-                     <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                       {/* Screenshot 1 */}
-                       <Reveal delayMs={150}>
-                         <div
-                           className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300"
-                         >
-                           <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                             <svg
-                               className="w-8 h-8 text-slate-500 mb-2"
-                               fill="none"
-                               stroke="currentColor"
-                               strokeWidth="1.5"
-                               viewBox="0 0 24 24"
-                             >
-                               <path
-                                 strokeLinecap="round"
-                                 strokeLinejoin="round"
-                                 d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                               />
-                             </svg>
-                             <span className="text-slate-400 text-xs font-medium">Coming Soon</span>
-                           </div>
-                           {/* <div className="p-3 text-center">
+                  </div>
+                  {/* Video Info */}
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
+                        VIDEO
+                      </span>
+                      <span className="text-slate-400 text-xs">2:45</span>
+                    </div>
+                    <h3 className="font-bold text-slate-900 mb-1">
+                      Product Demo
+                    </h3>
+                    <p className="text-sm text-slate-500">
+                      Complete walkthrough of Drive Eraser features
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Screenshot Cards Grid */}
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                {/* Screenshot 1 */}
+                <Reveal delayMs={150}>
+                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-slate-500 mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                        />
+                      </svg>
+                      <span className="text-slate-400 text-xs font-medium">
+                        Coming Soon
+                      </span>
+                    </div>
+                    {/* <div className="p-3 text-center">
                              <span className="text-xs font-medium text-slate-600">Dashboard View</span>
                            </div> */}
-                         </div>
-                       </Reveal>
-       
-                       {/* Screenshot 2 */}
-                       <Reveal delayMs={200}>
-                         <div
-                           className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300"
-                         >
-                           <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                             <svg
-                               className="w-8 h-8 text-slate-500 mb-2"
-                               fill="none"
-                               stroke="currentColor"
-                               strokeWidth="1.5"
-                               viewBox="0 0 24 24"
-                             >
-                               <path
-                                 strokeLinecap="round"
-                                 strokeLinejoin="round"
-                                 d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                               />
-                             </svg>
-                             <span className="text-slate-400 text-xs font-medium">Coming Soon</span>
-                           </div>
-                           {/* <div className="p-3 text-center">
+                  </div>
+                </Reveal>
+
+                {/* Screenshot 2 */}
+                <Reveal delayMs={200}>
+                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-slate-500 mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                        />
+                      </svg>
+                      <span className="text-slate-400 text-xs font-medium">
+                        Coming Soon
+                      </span>
+                    </div>
+                    {/* <div className="p-3 text-center">
                              <span className="text-xs font-medium text-slate-600">Erasure Report</span>
                            </div> */}
-                         </div>
-                       </Reveal>
-       
-                       {/* Screenshot 3 */}
-                       <Reveal delayMs={250}>
-                         <div
-                           className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300"
-                         >
-                           <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                             <svg
-                               className="w-8 h-8 text-slate-500 mb-2"
-                               fill="none"
-                               stroke="currentColor"
-                               strokeWidth="1.5"
-                               viewBox="0 0 24 24"
-                             >
-                               <path
-                                 strokeLinecap="round"
-                                 strokeLinejoin="round"
-                                 d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                               />
-                             </svg>
-                             <span className="text-slate-400 text-xs font-medium">Coming Soon</span>
-                           </div>
-                           {/* <div className="p-3 text-center">
+                  </div>
+                </Reveal>
+
+                {/* Screenshot 3 */}
+                <Reveal delayMs={250}>
+                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-slate-500 mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                        />
+                      </svg>
+                      <span className="text-slate-400 text-xs font-medium">
+                        Coming Soon
+                      </span>
+                    </div>
+                    {/* <div className="p-3 text-center">
                              <span className="text-xs font-medium text-slate-600">File Selection</span>
                            </div> */}
-                         </div>
-                       </Reveal>
-       
-                       {/* Screenshot 4 */}
-                       <Reveal delayMs={300}>
-                         <div
-                           className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300"
-                         >
-                           <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                             <svg
-                               className="w-8 h-8 text-slate-500 mb-2"
-                               fill="none"
-                               stroke="currentColor"
-                               strokeWidth="1.5"
-                               viewBox="0 0 24 24"
-                             >
-                               <path
-                                 strokeLinecap="round"
-                                 strokeLinejoin="round"
-                                 d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                               />
-                             </svg>
-                             <span className="text-slate-400 text-xs font-medium">Coming Soon</span>
-                           </div>
-                           {/* <div className="p-3 text-center">
+                  </div>
+                </Reveal>
+
+                {/* Screenshot 4 */}
+                <Reveal delayMs={300}>
+                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-slate-500 mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                        />
+                      </svg>
+                      <span className="text-slate-400 text-xs font-medium">
+                        Coming Soon
+                      </span>
+                    </div>
+                    {/* <div className="p-3 text-center">
                              <span className="text-xs font-medium text-slate-600">Erasure Progress</span>
                            </div> */}
-                         </div>
-                       </Reveal>
-                     </div>
-                   </div>
-                 </div>
-               </section>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* ================= HOW IT WORKS (Help Manual) ================= */}
         <section id="how-it-works" className="py-16 lg:py-24 bg-white">
@@ -1007,10 +1042,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <div className="relative max-w-5xl mx-auto">
                 {/* Connecting Line (Desktop) */}
                 <div className="hidden lg:block absolute top-24 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-emerald-200 via-emerald-300 to-emerald-200 z-0"></div>
-                
+
                 {/* Steps Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-                  
                   {/* Step 1: Download */}
                   <div className="group">
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center text-center relative overflow-hidden">
@@ -1020,18 +1054,42 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Icon */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100">
-                        <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        <svg
+                          className="w-8 h-8 text-emerald-600"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                          />
                         </svg>
                       </div>
                       {/* Title */}
-                      <h3 className="font-bold text-slate-900 mb-2">Download</h3>
-                      <p className="text-sm text-slate-500">Get the software from our secure portal</p>
+                      <h3 className="font-bold text-slate-900 mb-2">
+                        Download
+                      </h3>
+                      <p className="text-sm text-slate-500">
+                        Get the software from our secure portal
+                      </p>
                     </div>
                     {/* Arrow for mobile/tablet */}
                     <div className="flex justify-center py-3 lg:hidden">
-                      <svg className="w-6 h-6 text-emerald-300 rotate-90" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      <svg
+                        className="w-6 h-6 text-emerald-300 rotate-90"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
                       </svg>
                     </div>
                   </div>
@@ -1049,18 +1107,36 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">Deploy</h3>
-                      <p className="text-sm text-slate-500 mb-3">Multiple ways to deploy</p>
+                      <p className="text-sm text-slate-500 mb-3">
+                        Multiple ways to deploy
+                      </p>
                       {/* Tags */}
                       <div className="flex flex-wrap justify-center gap-1.5">
-                        <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">USB ISO</span>
-                        <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">PXE Boot</span>
-                        <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">MSI</span>
+                        <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
+                          USB ISO
+                        </span>
+                        <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
+                          PXE Boot
+                        </span>
+                        <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
+                          MSI
+                        </span>
                       </div>
                     </div>
                     {/* Arrow for mobile/tablet */}
                     <div className="flex justify-center py-3 lg:hidden">
-                      <svg className="w-6 h-6 text-emerald-300 rotate-90" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      <svg
+                        className="w-6 h-6 text-emerald-300 rotate-90"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
                       </svg>
                     </div>
                   </div>
@@ -1080,13 +1156,27 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         </div>
                       </div>
                       {/* Title */}
-                      <h3 className="font-bold text-slate-900 mb-2">Erase Devices</h3>
-                      <p className="text-sm text-slate-500">Securely wipe multiple devices simultaneously</p>
+                      <h3 className="font-bold text-slate-900 mb-2">
+                        Erase Devices
+                      </h3>
+                      <p className="text-sm text-slate-500">
+                        Securely wipe multiple devices simultaneously
+                      </p>
                     </div>
                     {/* Arrow for mobile/tablet */}
                     <div className="flex justify-center py-3 lg:hidden">
-                      <svg className="w-6 h-6 text-emerald-300 rotate-90" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      <svg
+                        className="w-6 h-6 text-emerald-300 rotate-90"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
                       </svg>
                     </div>
                   </div>
@@ -1106,8 +1196,12 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         </div>
                       </div>
                       {/* Title */}
-                      <h3 className="font-bold text-slate-900 mb-2">Save Reports</h3>
-                      <p className="text-sm text-slate-500">Store erasure certificates on cloud</p>
+                      <h3 className="font-bold text-slate-900 mb-2">
+                        Save Reports
+                      </h3>
+                      <p className="text-sm text-slate-500">
+                        Store erasure certificates on cloud
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1118,7 +1212,16 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal delayMs={200}>
               <div className="max-w-3xl mx-auto mt-12 text-center">
                 <p className="text-slate-600 leading-relaxed">
-                  <strong className="text-slate-900">D-Secure Drive Eraser</strong> offers the flexibility to wipe drives and devices in both internet-enabled locations and offline facilities. Deploy via <strong className="text-emerald-600">USB drive</strong>, <strong className="text-emerald-600">PXE boot</strong> over network, or <strong className="text-emerald-600">MSI package</strong> for remote wiping on Windows endpoints.
+                  <strong className="text-slate-900">
+                    D-Secure Drive Eraser
+                  </strong>{" "}
+                  offers the flexibility to wipe drives and devices in both
+                  internet-enabled locations and offline facilities. Deploy via{" "}
+                  <strong className="text-emerald-600">USB drive</strong>,{" "}
+                  <strong className="text-emerald-600">PXE boot</strong> over
+                  network, or{" "}
+                  <strong className="text-emerald-600">MSI package</strong> for
+                  remote wiping on Windows endpoints.
                 </p>
                 <p className="text-sm text-slate-500 mt-4">
                   *Offline variant available for Non-Internet locations
@@ -1154,7 +1257,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     <div className="w-10 h-10 sm:w-12 sm:h-12 mb-2 sm:mb-3 bg-emerald-500/20 rounded-full flex items-center justify-center flex-shrink-0">
                       <CheckIcon className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
                     </div>
-                    <h3 className="font-bold text-white mb-1 text-sm sm:text-base">{std.name}</h3>
+                    <h3 className="font-bold text-white mb-1 text-sm sm:text-base">
+                      {std.name}
+                    </h3>
                     <p className="text-[10px] sm:text-xs text-slate-400 line-clamp-2">
                       {std.desc}
                     </p>
@@ -1174,8 +1279,18 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4 border border-emerald-200">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+                    />
                   </svg>
                   Cross-Platform Native
                 </div>
@@ -1183,7 +1298,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   Multi-Architecture Support
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto px-2 sm:px-0">
-                  Native performance across all major CPU architectures and operating systems
+                  Native performance across all major CPU architectures and
+                  operating systems
                 </p>
               </div>
             </Reveal>
@@ -1196,19 +1312,36 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-emerald-100 to-transparent rounded-tr-xl sm:rounded-tr-2xl"></div>
                   <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                      <span className="text-white font-bold text-base sm:text-lg">x64</span>
+                      <span className="text-white font-bold text-base sm:text-lg">
+                        x64
+                      </span>
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 truncate">AMD64 / Intel 64</h3>
-                      <p className="text-xs sm:text-sm text-emerald-600">Most Common Architecture</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 truncate">
+                        AMD64 / Intel 64
+                      </h3>
+                      <p className="text-xs sm:text-sm text-emerald-600">
+                        Most Common Architecture
+                      </p>
                     </div>
                   </div>
-                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">Standard 64-bit processors from Intel & AMD used in most desktops, laptops, and servers.</p>
+                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
+                    Standard 64-bit processors from Intel & AMD used in most
+                    desktops, laptops, and servers.
+                  </p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">Intel Core</span>
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">AMD Ryzen</span>
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">Xeon</span>
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">EPYC</span>
+                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+                      Intel Core
+                    </span>
+                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+                      AMD Ryzen
+                    </span>
+                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+                      Xeon
+                    </span>
+                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+                      EPYC
+                    </span>
                   </div>
                 </div>
 
@@ -1217,19 +1350,36 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-teal-100 to-transparent rounded-tr-xl sm:rounded-tr-2xl"></div>
                   <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                      <span className="text-white font-bold text-xs sm:text-sm">ARM64</span>
+                      <span className="text-white font-bold text-xs sm:text-sm">
+                        ARM64
+                      </span>
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900">ARM64</h3>
-                      <p className="text-xs sm:text-sm text-teal-600">Growing Ecosystem</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                        ARM64
+                      </h3>
+                      <p className="text-xs sm:text-sm text-teal-600">
+                        Growing Ecosystem
+                      </p>
                     </div>
                   </div>
-                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">Modern ARM-based processors for power-efficient computing on mobile, Mac, and servers.</p>
+                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
+                    Modern ARM-based processors for power-efficient computing on
+                    mobile, Mac, and servers.
+                  </p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">Apple Silicon</span>
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">Snapdragon</span>
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">Graviton</span>
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">Ampere</span>
+                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+                      Apple Silicon
+                    </span>
+                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+                      Snapdragon
+                    </span>
+                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+                      Graviton
+                    </span>
+                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+                      Ampere
+                    </span>
                   </div>
                 </div>
 
@@ -1238,18 +1388,33 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-cyan-100 to-transparent rounded-tr-xl sm:rounded-tr-2xl"></div>
                   <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                      <span className="text-white font-bold text-base sm:text-lg">x86</span>
+                      <span className="text-white font-bold text-base sm:text-lg">
+                        x86
+                      </span>
                     </div>
                     <div className="min-w-0">
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900">x86 (32-bit)</h3>
-                      <p className="text-xs sm:text-sm text-cyan-600">Legacy Support</p>
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                        x86 (32-bit)
+                      </h3>
+                      <p className="text-xs sm:text-sm text-cyan-600">
+                        Legacy Support
+                      </p>
                     </div>
                   </div>
-                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">Legacy 32-bit processors for older systems still in enterprise use requiring secure erasure.</p>
+                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
+                    Legacy 32-bit processors for older systems still in
+                    enterprise use requiring secure erasure.
+                  </p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">Legacy Intel</span>
-                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">Pentium</span>
-                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">Atom</span>
+                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
+                      Legacy Intel
+                    </span>
+                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
+                      Pentium
+                    </span>
+                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
+                      Atom
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1258,12 +1423,18 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             {/* OS Compatibility Grid */}
             <Reveal delayMs={200}>
               <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200 shadow-lg">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 sm:mb-6 text-center">Operating System Compatibility</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 sm:mb-6 text-center">
+                  Operating System Compatibility
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                   {/* Windows */}
                   <div className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-blue-500 flex items-center justify-center bg-blue-50 rounded-lg sm:rounded-xl border border-blue-200">
-                      <svg className="w-6 h-6 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
+                      <svg
+                        className="w-6 h-6 sm:w-8 sm:h-8"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
                         <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
                       </svg>
                     </div>
@@ -1281,13 +1452,19 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   {/* macOS */}
                   <div className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-slate-700 flex items-center justify-center bg-slate-100 rounded-lg sm:rounded-xl border border-slate-300">
-                      <svg className="w-6 h-6 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
+                      <svg
+                        className="w-6 h-6 sm:w-8 sm:h-8"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
                         <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
                       </svg>
                     </div>
                     <div>
                       <h4 className="font-bold text-slate-900">macOS</h4>
-                      <p className="text-xs text-slate-500">x64, ARM64 (Apple Silicon)</p>
+                      <p className="text-xs text-slate-500">
+                        x64, ARM64 (Apple Silicon)
+                      </p>
                     </div>
                     <div className="ml-auto flex gap-1">
                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
@@ -1298,7 +1475,11 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   {/* Linux */}
                   <div className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-yellow-600 flex items-center justify-center bg-yellow-50 rounded-lg sm:rounded-xl border border-yellow-200">
-                      <svg className="w-6 h-6 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
+                      <svg
+                        className="w-6 h-6 sm:w-8 sm:h-8"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
                         <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489.117.779.456 1.456 1.003 1.959.508.466 1.17.77 1.924.888.75.12 1.56.083 2.4-.066.93-.164 1.88-.476 2.793-.873l.185-.078c.64-.27 1.29-.56 1.87-.9.574-.334 1.09-.704 1.5-1.128.406-.423.69-.907.815-1.463.124-.552.084-1.172-.128-1.863-.21-.688-.557-1.396-.99-2.112-.433-.718-.94-1.423-1.48-2.09-.107-.132-.218-.264-.33-.396.112-.134.225-.267.34-.4.56-.653 1.11-1.318 1.6-2.01.493-.694.92-1.414 1.23-2.173.156-.38.278-.77.353-1.172.074-.4.106-.815.08-1.244-.05-.857-.34-1.757-.9-2.524-.563-.773-1.376-1.39-2.338-1.77-.963-.38-2.058-.535-3.17-.478-.106.005-.21.015-.315.025V0z" />
                       </svg>
                     </div>
@@ -1546,7 +1727,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
         </section>
 
         {/* ================= ENQUIRY / CTA SECTION ================= */}
-        <section id="contact" className="py-12 sm:py-20 lg:py-28 bg-white border-t">
+        <section
+          id="contact"
+          className="py-12 sm:py-20 lg:py-28 bg-white border-t"
+        >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-14 items-center">
               <Reveal>

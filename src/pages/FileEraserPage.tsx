@@ -634,7 +634,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             "Permanently erase files, folders, system traces, and cloud data with D-Secure File Eraser. NIST 800-88 compliant data destruction for privacy and security.",
           keywords:
             "file eraser, secure delete, data destruction, file shredder, privacy software, NIST 800-88, GDPR compliance",
-          canonicalUrl: "https://dsecuretech.com/services/file-eraser",
+          canonicalUrl: "https://dsecuretech.com/products/file-eraser",
         }}
       />
 
