@@ -1,6 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiClient, type Machine } from '@/utils/enhancedApiClient'
 
+import { indexedDBService } from '@/services/indexedDBService'
+import { isDemoMode, DEMO_MACHINES } from '@/data/demoData'
+
 /**
  * Query keys for machines data caching
  */
@@ -27,11 +30,41 @@ export function useUserMachines(userEmail?: string, enabled: boolean = true) {
         throw new Error('User email is required')
       }
 
+      // Return demo data if in demo mode
+      if (isDemoMode()) {
+        console.log('🔹 Using DEMO machines data');
+        return DEMO_MACHINES;
+      }
+
+      // 1. Try IDB first
+      // ********** PURANA CODE (wrong store 'user_activity') **********
+      // const cached = await indexedDBService.get('user_activity', userEmail);
+      // *******************************************
+      // ********** NAYA CODE — Read from correct 'machines' store **********
+      try {
+        const cached = await indexedDBService.get('machines', userEmail);
+        if (cached && Array.isArray(cached) && cached.length > 0) {
+            console.log(`✅ Loaded machines for ${userEmail} from IndexedDB`);
+            return cached;
+        }
+      } catch (e) {
+         console.warn('IDB Read Failed: machines', e);
+      }
+      // *******************************************
+
       const response = await apiClient.getMachinesByEmail(userEmail)
 
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch machines')
       }
+
+      // 3. Update IDB
+      // ********** PURANA CODE (wrong store 'user_activity') **********
+      // indexedDBService.put('user_activity', userEmail, response.data).catch(e => console.error('IDB Write Failed: userMachines', e));
+      // *******************************************
+      // ********** NAYA CODE — Write to correct 'machines' store **********
+      indexedDBService.put('machines', userEmail, response.data).catch(e => console.error('IDB Write Failed: machines', e));
+      // *******************************************
 
       return response.data
     },

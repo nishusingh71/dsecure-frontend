@@ -13,6 +13,19 @@ import { useSubusers } from "@/hooks/useSubusers";
 import { authService } from "@/utils/authService";
 import { isDemoMode } from "@/data/demoData";
 import { encodeEmail } from "@/utils/encodeEmail";
+import { indexedDBService } from "@/services/indexedDBService";
+
+// ✅ Helper to suppress logs in demo mode
+const devLog = (...args: any[]) => {
+  if (!isDemoMode()) {
+    console.log(...args);
+  }
+};
+const devError = (...args: any[]) => {
+  if (!isDemoMode()) {
+    console.error(...args);
+  }
+};
 
 interface User {
   id: number;
@@ -109,7 +122,7 @@ export default function AdminGroups() {
     null,
   );
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState<string | null>(null);
   const [groupsCached, setGroupsCached] = useState(false); // ✅ Cache flag
 
   useEffect(() => {
@@ -119,6 +132,12 @@ export default function AdminGroups() {
     }
   }, [groupsCached]);
 
+  /* import { indexedDBService } from "@/services/indexedDBService"; */
+  /* Note: Assuming imports are at top, I will add import in a separate block or assuming user handles it. 
+     Wait, I can't add import here easily if I target this block. 
+     I will add import in a separate replace_file_content call first. 
+  */
+
   const fetchGroups = async (silent: boolean = false) => {
     // ✅ If already cached, skip fetching
     if (groupsCached && !silent) {
@@ -127,13 +146,14 @@ export default function AdminGroups() {
 
     if (!silent) {
       setIsLoading(true);
+      setIsError(null);
     }
 
     // Skip API calls for demo mode - use dummy data
     if (isDemo) {
       setIsLoading(false);
       setGroupsCached(true); // ✅ Mark as cached
-      setIsError(false);
+      setIsError(null);
       setGroups([
         {
           id: 1,
@@ -240,31 +260,69 @@ export default function AdminGroups() {
     try {
       if (!silent) {
         setIsLoading(true);
-        setIsError(false);
+        setIsError(null);
       }
 
-      // console.log(silent ? '🔄 Silently refreshing groups...' : '🔍 Dashboard: Fetching groups from /api/Group/with-users...');
-      const response = await apiClient.getGroupsWithUsers();
+      let groupsData = null;
 
-      // console.log('📥 Dashboard: API Response:', response);
+      // 1. Try IDB first (user-scoped, only if not forcing refresh via silent)
+      const groupsCacheKey = currentUserEmail
+        ? `groups_with_users_${currentUserEmail}`
+        : "groups_with_users";
 
-      if (!response.success) {
-        // console.error('❌ Dashboard: API returned error:', response.error || response.message);
-        setIsError(true);
+      // Only try cache if NOT silent (refresh)
+      if (!silent) {
+        try {
+          const cached = await indexedDBService.get("groups", groupsCacheKey);
+          if (cached) {
+            console.log(
+              "✅ Loaded groups from IndexedDB for",
+              currentUserEmail,
+            );
+            // Defensive: If cache is an array (legacy), wrap it in the expected structure
+            groupsData = Array.isArray(cached)
+              ? { groups: { data: cached } }
+              : cached;
+          }
+        } catch (e) {
+          console.warn("IDB Read Failed: groups", e);
+        }
+      } else {
+        console.log("🔄 Force refreshing groups (skipping cache)...");
+      }
+
+      // 2. Fetch from API if no cache
+      if (!groupsData) {
+        // console.log(silent ? '🔄 Silently refreshing groups...' : '🔍 Dashboard: Fetching groups from /api/Group/with-users...');
+        const response = await apiClient.getGroupsWithUsers();
+
+        // console.log('📥 Dashboard: API Response:', response);
+
+        if (!response.success) {
+          const err = response.message || "Failed to fetch groups from server";
+          setIsError(err);
+          console.error("❌ API Error:", err);
+          return;
+        }
+
+        groupsData = response.data;
+
+        // 3. Update IDB (user-scoped)
+        if (groupsData) {
+          indexedDBService
+            .put("groups", groupsCacheKey, groupsData)
+            .catch((e: any) => console.error("IDB Write Failed: groups", e));
+        }
+      }
+
+      if (!groupsData?.groups?.data || !Array.isArray(groupsData.groups.data)) {
+        console.error("❌ Unexpected response structure:", groupsData);
+        setIsError("Unexpected data format from server");
         return;
       }
 
-      if (
-        !response.data?.groups?.data ||
-        !Array.isArray(response.data.groups.data)
-      ) {
-        // console.error('❌ Dashboard: Unexpected response structure:', response.data);
-        setIsError(true);
-        return;
-      }
-
-      const apiGroups = response.data.groups.data;
-      const apiLicenseSummary = response.data.groups.licenseSummary;
+      const apiGroups = groupsData.groups.data;
+      const apiLicenseSummary = groupsData.groups.licenseSummary;
       // console.log('✅ Dashboard: Extracted API Groups:', apiGroups.length, 'groups');
       // console.log('📊 Dashboard: License Summary:', apiLicenseSummary);
 
@@ -315,7 +373,9 @@ export default function AdminGroups() {
     } catch (error: any) {
       // console.error('❌ Dashboard: Error fetching groups:', error);
       if (!silent) {
-        setIsError(true);
+        setIsError(
+          error.message || "An unexpected error occurred while loading groups",
+        );
       }
     } finally {
       if (!silent) {
@@ -327,6 +387,25 @@ export default function AdminGroups() {
   const fetchAvailableUsers = async () => {
     try {
       setIsLoadingUsers(true);
+
+      // Skip API calls for demo mode
+      if (isDemo) {
+        setAvailableUsers([
+          {
+            email: "john.doe@demo.com",
+            name: "John Doe (Demo)",
+            type: "Subuser",
+          },
+          {
+            email: "jane.smith@demo.com",
+            name: "Jane Smith (Demo)",
+            type: "Subuser",
+          },
+        ]);
+        setIsLoadingUsers(false);
+        return;
+      }
+
       // console.log('🔍 Fetching available users and subusers...');
 
       // Get current authenticated user email from AuthContext
@@ -450,7 +529,7 @@ export default function AdminGroups() {
     }
   }, [groups]);
 
-  const fetchMachinesAndReportsCount = async () => {
+  const fetchMachinesAndReportsCount = async (silent = false) => {
     // Skip API calls in demo mode - use static values
     if (isDemo) {
       setTotalMachines(47);
@@ -458,7 +537,24 @@ export default function AdminGroups() {
       return;
     }
 
+    const email = getUserEmail();
+    const cacheKey = email ? `group_metrics_${email}` : "group_metrics";
+
     try {
+      // 1. Try to load from IndexedDB first for instant UI response
+      if (!silent) {
+        try {
+          const cached = await indexedDBService.get("groups", cacheKey);
+          if (cached) {
+            devLog("✅ Dashboard: Loaded group metrics from IndexedDB");
+            setTotalMachines(cached.totalMachines || 0);
+            setTotalReports(cached.totalReports || 0);
+          }
+        } catch (e) {
+          console.warn("IDB Read Failed: group_metrics", e);
+        }
+      }
+
       let allMachines = 0;
       let allReports = 0;
 
@@ -499,6 +595,18 @@ export default function AdminGroups() {
 
       setTotalMachines(allMachines);
       setTotalReports(allReports);
+
+      // ✅ Update IndexedDB for persistence
+      try {
+        await indexedDBService.put("groups", cacheKey, {
+          totalMachines: allMachines,
+          totalReports: allReports,
+          updatedAt: new Date().toISOString(),
+        });
+        devLog("✅ Dashboard: Updated group metrics in IndexedDB");
+      } catch (e) {
+        console.error("IDB Write Failed: group_metrics", e);
+      }
     } catch (error) {
       console.error(
         "Error fetching group members machines/reports count:",
@@ -561,6 +669,23 @@ export default function AdminGroups() {
         createdAt: now,
         updatedAt: now,
       };
+
+      if (isDemo) {
+        // Simulate success for demo
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setShowAddModal(false);
+        setFormData({
+          name: "",
+          description: "",
+          licenseAllocation: 0,
+          permission: "",
+          status: "active",
+        });
+        setErrorMessage("");
+        // Manually update local state if needed for demo, or just trigger a "fake" refresh
+        await fetchGroups(true);
+        return;
+      }
 
       // console.log('📤 Creating group with payload:', payload);
       const response = await apiClient.createGroup(payload);
@@ -632,6 +757,23 @@ export default function AdminGroups() {
       };
 
       // console.log('📝 Updating group:', selectedGroup.id, 'Payload:', payload);
+
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setShowEditModal(false);
+        setErrorMessage("");
+        setSelectedGroup(null);
+        setFormData({
+          name: "",
+          description: "",
+          licenseAllocation: 0,
+          permission: "",
+          status: "active",
+        });
+        await fetchGroups(true);
+        return;
+      }
+
       const response = await apiClient.updateGroup(
         selectedGroup.id.toString(),
         payload,
@@ -683,6 +825,13 @@ export default function AdminGroups() {
 
       // console.log(`🗑️ Removing user ${userEmail} from group ${groupName}`);
 
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setRemovingUser(null);
+        await fetchGroups(true);
+        return;
+      }
+
       const response = await apiClient.removeUserFromGroupByEmail(
         groupId.toString(),
         userEmail,
@@ -716,6 +865,15 @@ export default function AdminGroups() {
       setErrorMessage("");
 
       // console.log('🗑️ Deleting group:', selectedGroup.id, selectedGroup.name);
+
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setShowDeleteModal(false);
+        setSelectedGroup(null);
+        await fetchGroups(true);
+        return;
+      }
+
       const response = await apiClient.deleteGroup(selectedGroup.id.toString());
 
       if (response.success) {
@@ -963,6 +1121,7 @@ export default function AdminGroups() {
       setSelectedLicenses([]);
       setSelectedTransferUser("");
       await fetchGroups(true);
+      await fetchMachinesAndReportsCount(true);
     } catch (error: any) {
       console.error("Transfer error:", error);
       setErrorMessage(error.message || "Failed to transfer assets");
@@ -1067,6 +1226,7 @@ export default function AdminGroups() {
       setSelectedRevokeLicenses([]);
       setSelectedRevokeUser("");
       await fetchGroups(true);
+      await fetchMachinesAndReportsCount(true);
     } catch (error: any) {
       console.error("Revoke error:", error);
       setErrorMessage(error.message || "Failed to revoke assets");
@@ -1289,10 +1449,26 @@ export default function AdminGroups() {
         {/* Error Message */}
         {isError && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-            <p className="font-medium">Failed to load groups</p>
+            <div className="flex items-center gap-2 mb-2">
+              <svg
+                className="w-5 h-5 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p className="font-medium">Failed to load groups</p>
+            </div>
+            <p className="text-sm opacity-90 mb-3">{isError}</p>
             <button
               onClick={() => fetchGroups()}
-              className="mt-2 text-sm font-medium text-red-600 hover:text-red-800"
+              className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors shadow-sm"
             >
               Try again
             </button>
@@ -1301,10 +1477,36 @@ export default function AdminGroups() {
 
         {/* Loading State */}
         {isLoading && groups.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
-            {/* <p className="text-slate-500 text-sm">Loading groups...</p> */}
+          /* ********** NAYA CODE — Shimmer Skeleton UI for Groups ********** */
+          <div className="animate-pulse space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="card !p-0 overflow-hidden">
+                {/* Group Header Skeleton */}
+                <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center gap-4">
+                  <div className="w-10 h-10 bg-slate-200 rounded-lg" />
+                  <div className="flex-1">
+                    <div className="h-5 bg-slate-200 rounded w-32 mb-2" />
+                    <div className="h-3 bg-slate-100 rounded w-48" />
+                  </div>
+                  <div className="h-8 bg-slate-200 rounded-lg w-20" />
+                </div>
+                {/* Group Members Skeleton */}
+                <div className="px-6 py-3 space-y-3">
+                  {[1, 2].map((j) => (
+                    <div key={j} className="flex items-center gap-3 py-2">
+                      <div className="w-8 h-8 bg-slate-200 rounded-full" />
+                      <div className="flex-1">
+                        <div className="h-4 bg-slate-200 rounded w-40 mb-1" />
+                        <div className="h-3 bg-slate-100 rounded w-28" />
+                      </div>
+                      <div className="h-6 bg-slate-100 rounded-full w-16" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
+          /* ********** END Shimmer UI ********** */
         )}
 
         {/* Groups List with Expandable Users */}

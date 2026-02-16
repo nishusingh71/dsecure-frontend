@@ -6,6 +6,7 @@ import { useNotification } from "@/contexts/NotificationContext";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { isDemoMode, DEMO_SESSIONS } from "@/data/demoData";
+import { indexedDBService } from "@/services/indexedDBService";
 
 // ✅ 1. Standardized Interface
 interface ActivityLogItem {
@@ -240,7 +241,7 @@ export default function AdminSessions() {
     loadData();
   }, [fromDate, toDate]);
 
-  // ✅ Auto-logout check: Monitor current user's session expiry
+  // ✅ Auto-logout check: Monitor current user's session expiry (max 15-min cap)
   useEffect(() => {
     const currentUserEmail =
       authService.getUserEmail?.() || localStorage.getItem("user_data")
@@ -248,6 +249,12 @@ export default function AdminSessions() {
         : null;
 
     if (!currentUserEmail || sessions.length === 0) return;
+
+    // Skip auto-logout in demo mode
+    if (isDemoMode()) return;
+
+    // Maximum session duration: 15 minutes (in ms)
+    const MAX_SESSION_MS = 15 * 60 * 1000;
 
     // Find current user's active session
     const currentSession = sessions.find(
@@ -263,19 +270,22 @@ export default function AdminSessions() {
     const now = Date.now();
     const timeUntilExpiry = expiryTime - now;
 
-    console.log(
-      `⏰ Session expires in ${Math.round(timeUntilExpiry / 1000 / 60)} minutes`,
-    );
-
     // If already expired, logout immediately
     if (timeUntilExpiry <= 0) {
       console.warn("🔴 Session already expired, logging out...");
       authService.clearTokens();
-      window.location.href = "/login?expired=true";
+      indexedDBService.clearAll().catch(() => {});
+      window.location.href = "/login";
       return;
     }
 
-    // Set timeout to logout when session expires
+    // Cap at 15 minutes max
+    const effectiveTimeout = Math.min(timeUntilExpiry, MAX_SESSION_MS);
+    console.log(
+      `⏰ Session auto-logout in ${Math.round(effectiveTimeout / 1000 / 60)} minutes`,
+    );
+
+    // Set timeout to logout when session expires (capped at 15 min)
     const logoutTimer = setTimeout(() => {
       console.warn("🔴 Session expired, auto-logout triggered");
       showError(
@@ -283,8 +293,9 @@ export default function AdminSessions() {
         "Your session has expired. Please login again.",
       );
       authService.clearTokens();
-      window.location.href = "/login?expired=true";
-    }, timeUntilExpiry);
+      indexedDBService.clearAll().catch(() => {});
+      window.location.href = "/login";
+    }, effectiveTimeout);
 
     return () => clearTimeout(logoutTimer);
   }, [sessions]);
@@ -305,14 +316,73 @@ export default function AdminSessions() {
     }
 
     try {
-      const response = await apiClient.getSessionsTimeline({
-        dateFrom: fromDate || undefined,
-        dateTo: toDate || undefined,
-      });
+      let timelineData = null;
+      const hasFilters = !!(fromDate || toDate);
 
-      if (response) {
-        const flatData = flattenTimelineData(response);
-        const mappedData = flatData.map(normalizeSession);
+      // ✅ User-scoped cache key — prevents cross-user data leakage
+      const currentEmail =
+        authService.getUserEmail?.() ||
+        (() => {
+          try {
+            return (
+              JSON.parse(localStorage.getItem("user_data") || "{}").email || ""
+            );
+          } catch {
+            return "";
+          }
+        })();
+      const cacheKey = currentEmail ? `timeline_${currentEmail}` : "timeline";
+
+      // 1. Try IDB first (only for default view/no filters)
+      if (!hasFilters) {
+        try {
+          const cached = await indexedDBService.get("sessions", cacheKey);
+          if (cached) {
+            // Validate cached data structure
+            const isCorrupted =
+              Array.isArray(cached) &&
+              cached.length > 0 &&
+              cached[0]?.success !== undefined;
+            if (isCorrupted) {
+              console.warn("⚠️ IDB sessions cache is corrupted, clearing...");
+              indexedDBService.delete("sessions", cacheKey).catch(() => {});
+            } else {
+              console.log(
+                "✅ Loaded sessions from IndexedDB for",
+                currentEmail,
+              );
+              timelineData = cached;
+            }
+          }
+        } catch (e) {
+          console.warn("IDB Read Failed: sessions", e);
+        }
+      }
+
+      // 2. Fallback to API
+      if (!timelineData) {
+        const response = await apiClient.getSessionsTimeline({
+          dateFrom: fromDate || undefined,
+          dateTo: toDate || undefined,
+        });
+
+        if (response) {
+          timelineData = response;
+
+          // 3. Update IDB (only for default view)
+          if (!hasFilters) {
+            indexedDBService
+              .put("sessions", cacheKey, response)
+              .catch((e: any) =>
+                console.error("IDB Write Failed: sessions", e),
+              );
+          }
+        }
+      }
+
+      if (timelineData) {
+        const flatData = flattenTimelineData(timelineData as any);
+        const mappedData = (flatData || []).map(normalizeSession);
 
         // Sort by Login Time (Newest First)
         mappedData.sort(
@@ -635,15 +705,51 @@ export default function AdminSessions() {
 
             <div className="divide-y divide-slate-100">
               {loading ? (
-                <div className="p-8 text-center">
-                  <div className="flex flex-col items-center justify-center py-8">
-                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
-                    <p className="text-slate-600 text-sm">
-                      Loading session data...
-                    </p>
-                  </div>
+                /* ********** NAYA CODE — Shimmer Skeleton UI for Sessions ********** */
+                <div className="animate-pulse space-y-0 divide-y divide-slate-100">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div
+                      key={i}
+                      className="grid grid-cols-12 gap-3 px-4 py-4 items-center"
+                    >
+                      {/* User email */}
+                      <div className="col-span-2">
+                        <div className="h-4 bg-slate-200 rounded w-3/4" />
+                      </div>
+                      {/* Login time */}
+                      <div className="col-span-2">
+                        <div className="h-4 bg-slate-100 rounded w-2/3" />
+                      </div>
+                      {/* Status */}
+                      <div className="col-span-1">
+                        <div className="h-6 bg-emerald-100 rounded-full w-16" />
+                      </div>
+                      {/* IP */}
+                      <div className="col-span-1">
+                        <div className="h-4 bg-slate-200 rounded w-20" />
+                      </div>
+                      {/* Device */}
+                      <div className="col-span-1">
+                        <div className="h-4 bg-slate-100 rounded w-16" />
+                      </div>
+                      {/* Duration */}
+                      <div className="col-span-1">
+                        <div className="h-4 bg-slate-200 rounded w-12" />
+                      </div>
+                      {/* Activity */}
+                      <div className="col-span-1">
+                        <div className="h-4 bg-slate-100 rounded w-14" />
+                      </div>
+                      {/* Activity Log */}
+                      <div className="col-span-3">
+                        <div className="h-4 bg-slate-200 rounded w-full" />
+                        <div className="h-3 bg-slate-100 rounded w-2/3 mt-1" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ) : sessions.length === 0 ? (
+              ) : /* ********** END Shimmer UI ********** */
+              sessions.length === 0 ? (
                 <div className="p-12 text-center text-slate-400 flex flex-col items-center">
                   <svg
                     className="w-12 h-12 mb-3 text-slate-200"

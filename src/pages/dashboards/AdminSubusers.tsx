@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSubusers } from "@/hooks/useSubusers";
 import { isDemoMode, DEMO_SUBUSERS } from "@/data/demoData";
+import { indexedDBService } from "@/services/indexedDBService";
 
 // Extended interface for table display
 interface SubuserTableRow {
@@ -177,9 +178,9 @@ export default function AdminSubusers() {
     const fetchGroupsForFilter = async () => {
       if (isDemo) {
         setGroupsData([
-          { groupId: 1, groupName: 'Engineering Team' },
-          { groupId: 2, groupName: 'Marketing Team' },
-          { groupId: 3, groupName: 'Sales Team' }
+          { groupId: 1, groupName: "Engineering Team" },
+          { groupId: 2, groupName: "Marketing Team" },
+          { groupId: 3, groupName: "Sales Team" },
         ]);
         return;
       }
@@ -187,12 +188,12 @@ export default function AdminSubusers() {
       try {
         setGroupsLoading(true);
         const response = await apiClient.getGroupsWithUsers();
-        
+
         if (response.success && response.data?.groups?.data) {
           setGroupsData(response.data.groups.data);
         }
       } catch (error) {
-        console.error('Error fetching groups for filter:', error);
+        console.error("Error fetching groups for filter:", error);
       } finally {
         setGroupsLoading(false);
       }
@@ -207,9 +208,11 @@ export default function AdminSubusers() {
 
   // Fetch current user's subusers (for the dropdown)
   const { data: currentUserSubusers = [] } = useSubusers(userEmail, !isDemo);
-  
+
   // ✅ For demo mode, use dummy subusers for the dropdown
-  const displayCurrentUserSubusers = isDemo ? DEMO_SUBUSERS : currentUserSubusers;
+  const displayCurrentUserSubusers = isDemo
+    ? DEMO_SUBUSERS
+    : currentUserSubusers;
 
   // Determine which email to fetch subusers for (current user or selected subuser)
   const emailToFetch = subuserOwnerFilter || userEmail;
@@ -229,6 +232,18 @@ export default function AdminSubusers() {
     group: groupFilter || undefined,
     search: query || searchFilter || undefined, // ✅ Use query as primary search
   });
+
+  // ✅ Manual Cache Invalidation Helper
+  const invalidateCache = async () => {
+    try {
+      if (userEmail) {
+        // Clear the cache for this user's subusers
+        await indexedDBService.delete("subusers", userEmail);
+      }
+    } catch (e) {
+      console.warn("Failed to clear cache:", e);
+    }
+  };
 
   // 🎭 Use DEMO_SUBUSERS in demo mode, otherwise use API data
   const subusersData = isDemo ? DEMO_SUBUSERS : apiSubusersData;
@@ -272,32 +287,29 @@ export default function AdminSubusers() {
   const allRows = useMemo<SubuserTableRow[]>(() => {
     return subusersData.map((subuser: any) => {
       // Handle multiple possible field names from different endpoints
-      const email = subuser.subuser_email || 
-                    subuser.SubuserEmail || 
-                    subuser.email || 
-                    subuser.Email || '';
-      
-      const role = subuser.role || 
-                   subuser.subuser_role || 
-                   subuser.Role || 
-                   subuser.SubuserRole ||
-                   subuser.defaultRole || 
-                   "user";
-      
-      const status = subuser.status || 
-                     subuser.Status || 
-                     subuser.activity_status ||
-                     "active";
-      
-      const department = subuser.department || 
-                         subuser.Department || 
-                         "N/A";
-      
-      const lastLogin = subuser.last_login || 
-                        subuser.LastLogin || 
-                        subuser.lastLogin ||
-                        "Never";
-      
+      const email =
+        subuser.subuser_email ||
+        subuser.SubuserEmail ||
+        subuser.email ||
+        subuser.Email ||
+        "";
+
+      const role =
+        subuser.role ||
+        subuser.subuser_role ||
+        subuser.Role ||
+        subuser.SubuserRole ||
+        subuser.defaultRole ||
+        "user";
+
+      const status =
+        subuser.status || subuser.Status || subuser.activity_status || "active";
+
+      const department = subuser.department || subuser.Department || "N/A";
+
+      const lastLogin =
+        subuser.last_login || subuser.LastLogin || subuser.lastLogin || "Never";
+
       return {
         subuser_email: email,
         roles: role,
@@ -321,25 +333,22 @@ export default function AdminSubusers() {
   );
 
   // Extract unique groups from subusers data
-  const uniqueGroups = useMemo(
-    () => {
-      if (!groupsData || groupsData.length === 0) return [];
-      
-      // Extract groupName from API response (same structure as AdminGroups)
-      const groups = groupsData
-        .map((g: any) => g.groupName || g.name)
-        .filter(Boolean);
-      
-      // Sort alphabetically
-      return groups.sort((a: string, b: string) => a.localeCompare(b));
-    },
-    [groupsData]
-  );
+  const uniqueGroups = useMemo(() => {
+    if (!groupsData || groupsData.length === 0) return [];
+
+    // Extract groupName from API response (same structure as AdminGroups)
+    const groups = groupsData
+      .map((g: any) => g.groupName || g.name)
+      .filter(Boolean);
+
+    // Sort alphabetically
+    return groups.sort((a: string, b: string) => a.localeCompare(b));
+  }, [groupsData]);
 
   const filtered = useMemo(() => {
     // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
     // All filtering (query, role, status, department) is handled by the API endpoint
-    
+
     /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
     let result = allRows.filter((r) => {
       const matchesQuery =
@@ -410,18 +419,22 @@ export default function AdminSubusers() {
   };
 
   const handleEditUser = async (user: SubuserTableRow) => {
-    console.log('✏️ handleEditUser called with:', user);
-    console.log('📊 Current subusersData length:', subusersData.length);
-    
+    console.log("✏️ handleEditUser called with:", user);
+    console.log("📊 Current subusersData length:", subusersData.length);
+
     // Find the original subuser data with flexible field matching
     const originalSubuser = subusersData.find((s: any) => {
-      const subuserEmail = s.subuser_email || s.SubuserEmail || s.email || s.Email || '';
+      const subuserEmail =
+        s.subuser_email || s.SubuserEmail || s.email || s.Email || "";
       return subuserEmail.toLowerCase() === user.subuser_email.toLowerCase();
     });
-    
-    console.log('🔍 Found subuser in data:', originalSubuser);
-    console.log('🔑 Available keys:', originalSubuser ? Object.keys(originalSubuser) : 'Not found');
-    
+
+    console.log("🔍 Found subuser in data:", originalSubuser);
+    console.log(
+      "🔑 Available keys:",
+      originalSubuser ? Object.keys(originalSubuser) : "Not found",
+    );
+
     // Open edit modal and fetch user data
     setEditModal({ show: true, user });
     setEditFetching(true);
@@ -450,12 +463,15 @@ export default function AdminSubusers() {
     // Fetch full enhanced subuser details from the API
     try {
       showInfo(`Fetching details for ${user.subuser_email}...`);
-      console.log('🔍 Calling getEnhancedSubuser with email:', user.subuser_email);
+      console.log(
+        "🔍 Calling getEnhancedSubuser with email:",
+        user.subuser_email,
+      );
       const res = await apiClient.getEnhancedSubuser(user.subuser_email);
-      console.log('📥 getEnhancedSubuser response:', res);
+      console.log("📥 getEnhancedSubuser response:", res);
 
       if (!res || !res.success || !res.data) {
-        console.error('❌ getEnhancedSubuser failed:', { res });
+        console.error("❌ getEnhancedSubuser failed:", { res });
         showError(
           "Fetch Failed",
           res?.error || "Could not retrieve user details",
@@ -514,12 +530,13 @@ export default function AdminSubusers() {
           licenceAllocation: editFormData.license_allocation,
           status: editFormData.status,
           ...(editFormData.password && { newPassword: editFormData.password }),
-        }
+        },
       );
 
       if (response.success) {
         showSuccess(`User ${editFormData.subuser_email} updated successfully`);
         setEditModal({ show: false, user: null });
+        await invalidateCache(); // Clear cache before refetch
         await refetch();
       } else {
         throw new Error(response.error || "Failed to update user");
@@ -536,17 +553,18 @@ export default function AdminSubusers() {
   };
 
   const handleDeleteUser = async (user: SubuserTableRow) => {
-    console.log('🗑️ handleDeleteUser called with:', user);
-    
+    console.log("🗑️ handleDeleteUser called with:", user);
+
     // Find the original subuser data
     const originalSubuser = subusersData.find((s: any) => {
-      const subuserEmail = s.subuser_email || s.SubuserEmail || s.email || s.Email || '';
+      const subuserEmail =
+        s.subuser_email || s.SubuserEmail || s.email || s.Email || "";
       return subuserEmail.toLowerCase() === user.subuser_email.toLowerCase();
     });
-    
-    console.log('🔍 Original subuser data:', originalSubuser);
-    console.log('📧 Email to delete:', user.subuser_email);
-    
+
+    console.log("🔍 Original subuser data:", originalSubuser);
+    console.log("📧 Email to delete:", user.subuser_email);
+
     setDeleteModal({ show: true, user });
   };
 
@@ -556,15 +574,16 @@ export default function AdminSubusers() {
 
     try {
       showInfo(`Deleting user ${user.subuser_email}...`);
-      console.log('🗑️ Calling deleteSubuser with email:', user.subuser_email);
+      console.log("🗑️ Calling deleteSubuser with email:", user.subuser_email);
 
       // Call delete API
       const response = await apiClient.deleteSubuser(user.subuser_email);
-      console.log('📥 deleteSubuser response:', response);
+      console.log("📥 deleteSubuser response:", response);
 
       if (response.success) {
         showSuccess(`User ${user.subuser_email} deleted successfully`);
         setDeleteModal({ show: false, user: null });
+        await invalidateCache(); // Clear cache before refetch
         await refetch(); // ✅ Use refetch from hook instead of loadUsersData
       } else {
         throw new Error(response.error || "Failed to delete user");
@@ -614,6 +633,7 @@ export default function AdminSubusers() {
       // await apiClient.updateSubuserStatus(user.subuser_email, newStatus)
 
       showSuccess(`User ${user.subuser_email} status changed to ${newStatus}`);
+      await invalidateCache(); // Clear cache before refetch
       await refetch(); // ✅ Use refetch from hook instead of loadUsersData
     } catch (error) {
       console.error("Error toggling status:", error);
@@ -1071,7 +1091,7 @@ export default function AdminSubusers() {
             </div> */}
 
             {/* Subuser Email Filter */}
-             {/* <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Subuser Email</label>
               <input
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1269,17 +1289,36 @@ export default function AdminSubusers() {
               </thead>
               <tbody>
                 {loading ? (
-                  <tr>
-                    <td colSpan={6} className="py-8 text-center">
-                      <div className="flex flex-col items-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
-                        <p className="text-slate-600 text-sm">
-                          Loading subusers...
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                ) : rows.length === 0 ? (
+                  /* ********** NAYA CODE — Shimmer Skeleton UI for Subusers ********** */
+                  <>
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <tr key={i} className="animate-pulse">
+                        <td className="py-3 px-2">
+                          <div className="h-4 bg-slate-200 rounded w-24" />
+                        </td>
+                        <td className="py-3 px-2">
+                          <div className="h-4 bg-slate-100 rounded w-36" />
+                        </td>
+                        <td className="py-3 px-2">
+                          <div className="h-6 bg-blue-100 rounded-full w-16" />
+                        </td>
+                        <td className="py-3 px-2">
+                          <div className="h-6 bg-green-100 rounded-full w-16" />
+                        </td>
+                        <td className="py-3 px-2">
+                          <div className="h-4 bg-slate-200 rounded w-28" />
+                        </td>
+                        <td className="py-3 px-2">
+                          <div className="flex gap-2">
+                            <div className="h-7 bg-slate-200 rounded w-14" />
+                            <div className="h-7 bg-slate-200 rounded w-14" />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                ) : /* ********** END Shimmer UI ********** */
+                rows.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-12 text-center">
                       <div className="flex flex-col items-center">

@@ -177,7 +177,7 @@ export default function AdminPerformance() {
     } else if (erasureMetrics) {
       // Map API response to component state
       setPerformanceData({
-        monthlyErasures: erasureMetrics.monthlyMetrics.map((m) => ({
+        monthlyErasures: erasureMetrics.monthlyMetrics.map((m: any) => ({
           month: m.month,
           count: m.erasureCount,
         })),
@@ -201,10 +201,204 @@ export default function AdminPerformance() {
   const loading = isDemo ? false : metricsLoading;
 
   if (loading) {
+    /* 
+    // ********** PURANA CODE (simple spinner) **********
+    // return (
+    //   <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    //     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
+    //   </div>
+    // );
+    // *******************************************
+    */
+
+    // ********** NAYA CODE — Shimmer Skeleton UI **********
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
+      <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6 animate-pulse">
+        {/* Header Skeleton */}
+        <div>
+          <div className="h-7 bg-slate-200 rounded w-40 mb-2" />
+          <div className="h-4 bg-slate-100 rounded w-64" />
+        </div>
+
+        {/* 3 Metric Cards Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+            >
+              <div className="h-4 bg-slate-200 rounded w-24 mb-3" />
+              <div className="h-8 bg-slate-200 rounded w-20 mb-4" />
+              <div className="h-16 bg-slate-100 rounded" />
+            </div>
+          ))}
+        </div>
+
+        {/* Chart Skeleton */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="h-5 bg-slate-200 rounded w-48 mb-6" />
+          <div className="h-64 bg-slate-100 rounded-lg" />
+        </div>
       </div>
+    );
+    // *******************************************
+  }
+
+  // Check for error or empty data state
+  const isDataEmpty =
+    !isDemo &&
+    (metricsError ||
+      !erasureMetrics ||
+      (erasureMetrics.totalErasures === 0 &&
+        !erasureMetrics.monthlyMetrics?.some((m: any) => m.erasureCount > 0)));
+
+  if (isDataEmpty) {
+    return (
+      <>
+        <SEOHead seo={getSEOForPage("admin-performance")} />
+        <Helmet>
+          <title>DSecureTech Performance | System Performance</title>
+        </Helmet>
+        <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
+          {/* Header & Filters (Still visible to allow changing filters) */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">Performance</h1>
+              <p className="text-sm text-slate-600 mt-1">
+                Monitor system performance and erasure metrics
+              </p>
+            </div>
+          </div>
+
+          {/* Filters Card - Matching AdminReports Style */}
+          {!isDemo && (
+            <div className="card p-4 space-y-4 bg-white rounded-xl shadow-sm border border-slate-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Filters & Search
+                </h3>
+                <button
+                  onClick={clearAllFilters}
+                  className="text-sm text-red-600 hover:text-red-800 font-medium"
+                >
+                  Clear All
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 xs:gap-4 sm:gap-4">
+                {/* User Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Report Owner
+                  </label>
+                  <select
+                    className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                    value={selectedUserEmail}
+                    onChange={(e) => setSelectedUserEmail(e.target.value)}
+                  >
+                    <option value="">My Reports</option>
+                    <option value="all">All Reports (Me + Subusers)</option>
+                    <optgroup label="Subuser Reports">
+                      {subusers.map((subuser: any) => (
+                        <option
+                          key={subuser.subuser_email || subuser.email}
+                          value={subuser.subuser_email || subuser.email}
+                        >
+                          {subuser.subuser_name ||
+                            subuser.name ||
+                            subuser.subuser_email ||
+                            subuser.email}
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+                </div>
+
+                {/* Year Selector */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Year
+                  </label>
+                  <select
+                    className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(Number(e.target.value))}
+                  >
+                    {Array.from(
+                      { length: 5 },
+                      (_, i) => new Date().getFullYear() - i,
+                    ).map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Date Range Filter */}
+                <CustomDateInput
+                  label="From Date"
+                  value={fromDate}
+                  onChange={(value) => {
+                    setFromDate(value);
+                    // Validate date range
+                    if (value && toDate && new Date(value) > new Date(toDate)) {
+                      setDateValidationError(
+                        "From date cannot be later than To date.",
+                      );
+                    } else {
+                      setDateValidationError("");
+                    }
+                  }}
+                />
+
+                {/* To Date Filter */}
+                <CustomDateInput
+                  label="To Date"
+                  value={toDate}
+                  onChange={(value) => {
+                    setToDate(value);
+                    // Validate date range
+                    if (
+                      value &&
+                      fromDate &&
+                      new Date(fromDate) > new Date(value)
+                    ) {
+                      setDateValidationError(
+                        "To date cannot be earlier than From date.",
+                      );
+                    } else {
+                      setDateValidationError("");
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center mt-6">
+            <svg
+              className="w-16 h-16 text-slate-400 mx-auto mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+            <h3 className="text-lg font-medium text-slate-900 mb-2">
+              No Performance Metrics Available
+            </h3>
+            <p className="text-slate-600">
+              There are no performance metrics to display for this account.
+            </p>
+          </div>
+        </div>
+      </>
     );
   }
 

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuditReports } from './useAuditReports'
 import { useUserMachines } from './useUserMachines'
 import { AdminDashboardAPI } from '@/services/adminDashboardAPI'
+import { isDemoMode, DEMO_PERFORMANCE_DATA } from '@/data/demoData'
 
 export interface PerformanceData {
   monthlyErasures: { month: string; count: number }[]
@@ -25,6 +26,12 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
   return useQuery({
     queryKey: performanceKeys.data(userEmail),
     queryFn: async (): Promise<PerformanceData> => {
+      // 0. Mock Data for Demo Mode
+      if (isDemoMode()) {
+        console.log('🔹 Using DEMO performance data');
+        return DEMO_PERFORMANCE_DATA;
+      }
+
       try {
         // console.log('?? Calculating performance metrics from cached data...')
         

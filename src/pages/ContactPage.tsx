@@ -1185,22 +1185,20 @@ function ContactPageContent() {
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
                               <option value="">Select Solution Type</option>
-                              <option value="device-erasure">
-                                Device Erasure
+                              <option value="drive-erasure">
+                                Drive Erasure
                               </option>
-                              <option value="network-erasure">
-                                Network Erasure
-                              </option>
-                              <option value="cloud-erasure">
+                              <option value="file-erasure">File Erasure</option>
+                              {/* <option value="cloud-erasure">
                                 Cloud Erasure
                               </option>
                               <option value="enterprise-suite">
                                 Enterprise Suite
-                              </option>
+                              </option> */}
                               <option value="personal-use">Personal Use</option>
-                              <option value="data-recovery">
+                              {/* <option value="data-recovery">
                                 Data Recovery
-                              </option>
+                              </option> */}
                               <option value="consultation">Consultation</option>
                               <option value="other">Other</option>
                             </select>

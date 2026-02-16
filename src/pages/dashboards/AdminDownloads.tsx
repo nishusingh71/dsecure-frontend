@@ -5,179 +5,283 @@ import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { apiClient } from '../../utils/enhancedApiClient';
 import { isDemoMode } from '@/data/demoData';
+import { indexedDBService } from "@/services/indexedDBService";
+import { authService } from "@/utils/authService";
 
 interface DownloadStats {
-    totalDownloads: number;
-    windowsDownloads: number;
-    macOsDownloads: number;
-    linuxDownloads: number;
-    todayDownloads: number;
-    thisWeekDownloads: number;
-    thisMonthDownloads: number;
+  totalDownloads: number;
+  windowsDownloads: number;
+  macOsDownloads: number;
+  linuxDownloads: number;
+  todayDownloads: number;
+  thisWeekDownloads: number;
+  thisMonthDownloads: number;
 }
 
 export default function AdminDownloads() {
-    const isDemo = isDemoMode();
-    
-    // Aggregated product stats
-    const [products, setProducts] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState<DownloadStats>({
-        totalDownloads: 0,
-        windowsDownloads: 0,
-        macOsDownloads: 0,
-        linuxDownloads: 0,
-        todayDownloads: 0,
-        thisWeekDownloads: 0,
-        thisMonthDownloads: 0
-    });
+  const isDemo = isDemoMode();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            // Skip API calls for demo mode - use dummy data
-            if (isDemo) {
-                setLoading(false);
-                setStats({
-                    totalDownloads: 1247,
-                    windowsDownloads: 845,
-                    macOsDownloads: 312,
-                    linuxDownloads: 90,
-                    todayDownloads: 23,
-                    thisWeekDownloads: 156,
-                    thisMonthDownloads: 687
-                });
-                setProducts([
-                    {
-                        id: 1,
-                        name: 'D-Secure Pro',
-                        version: '2.5.1',
-                        downloads: 523,
-                        lastDownload: new Date().toISOString(),
-                        platforms: { windows: 345, macos: 145, linux: 33 }
-                    },
-                    {
-                        id: 2,
-                        name: 'D-Secure Enterprise',
-                        version: '3.2.0',
-                        downloads: 412,
-                        lastDownload: new Date().toISOString(),
-                        platforms: { windows: 280, macos: 98, linux: 34 }
-                    },
-                    {
-                        id: 3,
-                        name: 'D-Secure Mobile',
-                        version: '1.8.5',
-                        downloads: 312,
-                        lastDownload: new Date().toISOString(),
-                        platforms: { windows: 220, macos: 69, linux: 23 }
-                    }
-                ]);
-                return;
-            }
-            
-            setLoading(true);
-            try {
-                // Fetch Global Stats
-                const statsResponse = await apiClient.get<DownloadStats>('/api/Download/stats');
-                if (statsResponse.success && statsResponse.data) {
-                    setStats(statsResponse.data);
-                }
+  // Aggregated product stats
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<DownloadStats>({
+    totalDownloads: 0,
+    windowsDownloads: 0,
+    macOsDownloads: 0,
+    linuxDownloads: 0,
+    todayDownloads: 0,
+    thisWeekDownloads: 0,
+    thisMonthDownloads: 0,
+  });
 
-                // Fetch Product Downloads List for Aggregation
-                // Note: Currently fetching page 1 with 100 items for overview. 
-                // For accurate all-time stats with large data, backend should provide a dedicated breakdown endpoint.
-                const listResponse = await apiClient.get<any>('/api/Download/all?page=1&pageSize=100');
-                if (listResponse.success && listResponse.data && Array.isArray(listResponse.data.downloads)) {
+  // ✅ Get current user email for robust cache scoping
+  const getUserEmail = (): string => {
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
 
-                    const rawDownloads = listResponse.data.downloads;
+    let storedUserData = null;
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {
+        console.error("Error parsing user_data:", e);
+      }
+    }
 
-                    // Aggregate data by product name
-                    const productMap = new Map<string, any>();
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {
+        console.error("Error parsing authUser:", e);
+      }
+    }
 
-                    rawDownloads.forEach((item: any) => {
-                        const name = item.productName || 'Unknown Product';
-
-                        if (!productMap.has(name)) {
-                            productMap.set(name, {
-                                id: item.id, // Use first ID found
-                                name: name,
-                                version: item.version,
-                                downloads: 0,
-                                lastDownload: item.downloadedAt,
-                                platforms: { windows: 0, macos: 0, linux: 0 }
-                            });
-                        }
-
-                        const product = productMap.get(name)!;
-                        product.downloads += 1; // Increment download count
-
-                        // Update last download date
-                        if (new Date(item.downloadedAt) > new Date(product.lastDownload)) {
-                            product.lastDownload = item.downloadedAt;
-                            product.version = item.version; // Assume latest download has latest version
-                        }
-
-                        // Count platforms (case-insensitive check)
-                        const platform = (item.platform || '').toLowerCase();
-                        if (platform.includes('win')) product.platforms.windows++;
-                        else if (platform.includes('mac') || platform.includes('osx') || platform.includes('apple')) product.platforms.macos++;
-                        else if (platform.includes('nux') || platform.includes('ubuntu') || platform.includes('debian')) product.platforms.linux++;
-                    });
-
-                    setProducts(Array.from(productMap.values()));
-                }
-
-            } catch (error) {
-                console.error('Failed to fetch download data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [isDemo]);
-
-    // Use API stats if available, otherwise 0 (initial state)
-    const totalDownloads = stats.totalDownloads;
-    const totalWindows = stats.windowsDownloads;
-    const totalMacOS = stats.macOsDownloads;
-    const totalLinux = stats.linuxDownloads;
-
+    const jwtUser = authService.getUserFromToken();
     return (
-        <>
+      storedUserData?.user_email ||
+      jwtUser?.user_email ||
+      jwtUser?.email ||
+      authService.getUserEmail() ||
+      ""
+    );
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // Skip API calls for demo mode - use dummy data
+      if (isDemo) {
+        setLoading(false);
+        setStats({
+          totalDownloads: 1247,
+          windowsDownloads: 845,
+          macOsDownloads: 312,
+          linuxDownloads: 90,
+          todayDownloads: 23,
+          thisWeekDownloads: 156,
+          thisMonthDownloads: 687,
+        });
+        setProducts([
+          {
+            id: 1,
+            name: "D-Secure Pro",
+            version: "2.5.1",
+            downloads: 523,
+            lastDownload: new Date().toISOString(),
+            platforms: { windows: 345, macos: 145, linux: 33 },
+          },
+          {
+            id: 2,
+            name: "D-Secure Enterprise",
+            version: "3.2.0",
+            downloads: 412,
+            lastDownload: new Date().toISOString(),
+            platforms: { windows: 280, macos: 98, linux: 34 },
+          },
+          {
+            id: 3,
+            name: "D-Secure Mobile",
+            version: "1.8.5",
+            downloads: 312,
+            lastDownload: new Date().toISOString(),
+            platforms: { windows: 220, macos: 69, linux: 23 },
+          },
+        ]);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        // 1. Try IDB cache first for instant display (user-scoped)
+        const dlEmail = getUserEmail();
+        const statsCacheKey = dlEmail ? `stats_${dlEmail}` : "stats";
+        const productsCacheKey = dlEmail ? `products_${dlEmail}` : "products";
+
+        try {
+          const cachedStats = await indexedDBService.get(
+            "downloads",
+            statsCacheKey,
+          );
+          const cachedProducts = await indexedDBService.get(
+            "downloads",
+            productsCacheKey,
+          );
+
+          if (cachedStats && cachedProducts) {
+            console.log("✅ Loaded downloads from IndexedDB for", dlEmail);
+            setStats(cachedStats);
+            setProducts(cachedProducts);
+            setLoading(false);
+            // ⚠️ RETURN EARLY: Stop background refresh if we have valid cache
+            // This ensures no loading flashes and reduces server load
+            return;
+          }
+        } catch (e) {
+          console.warn("⚠️ IDB Read Failed: downloads", e);
+        }
+
+        // 2. Fetch from API (background revalidation)
+        // Fetch Global Stats
+        const statsResponse = await apiClient.get<DownloadStats>(
+          "/api/Download/stats",
+        );
+        if (statsResponse.success && statsResponse.data) {
+          setStats(statsResponse.data);
+          // Update IDB cache for stats (user-scoped)
+          indexedDBService
+            .put("downloads", statsCacheKey, statsResponse.data)
+            .catch((e) =>
+              console.warn("⚠️ IDB Write Failed: downloads stats", e),
+            );
+        }
+
+        // Fetch Product Downloads List for Aggregation
+        // Note: Currently fetching page 1 with 100 items for overview.
+        // For accurate all-time stats with large data, backend should provide a dedicated breakdown endpoint.
+        const listResponse = await apiClient.get<any>(
+          "/api/Download/all?page=1&pageSize=100",
+        );
+        if (
+          listResponse.success &&
+          listResponse.data &&
+          Array.isArray(listResponse.data.downloads)
+        ) {
+          const rawDownloads = listResponse.data.downloads;
+
+          // Aggregate data by product name
+          const productMap = new Map<string, any>();
+
+          rawDownloads.forEach((item: any) => {
+            const name = item.productName || "Unknown Product";
+
+            if (!productMap.has(name)) {
+              productMap.set(name, {
+                id: item.id, // Use first ID found
+                name: name,
+                version: item.version,
+                downloads: 0,
+                lastDownload: item.downloadedAt,
+                platforms: { windows: 0, macos: 0, linux: 0 },
+              });
+            }
+
+            const product = productMap.get(name)!;
+            product.downloads += 1; // Increment download count
+
+            // Update last download date
+            if (new Date(item.downloadedAt) > new Date(product.lastDownload)) {
+              product.lastDownload = item.downloadedAt;
+              product.version = item.version; // Assume latest download has latest version
+            }
+
+            // Count platforms (case-insensitive check)
+            const platform = (item.platform || "").toLowerCase();
+            if (platform.includes("win")) product.platforms.windows++;
+            else if (
+              platform.includes("mac") ||
+              platform.includes("osx") ||
+              platform.includes("apple")
+            )
+              product.platforms.macos++;
+            else if (
+              platform.includes("nux") ||
+              platform.includes("ubuntu") ||
+              platform.includes("debian")
+            )
+              product.platforms.linux++;
+          });
+
+          setProducts(Array.from(productMap.values()));
+
+          // 3. Update IDB cache for products (user-scoped)
+          indexedDBService
+            .put("downloads", productsCacheKey, Array.from(productMap.values()))
+            .catch((e) =>
+              console.warn("⚠️ IDB Write Failed: downloads products", e),
+            );
+        }
+      } catch (error) {
+        console.error("Failed to fetch download data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [isDemo]);
+
+  // Use API stats if available, otherwise 0 (initial state)
+  const totalDownloads = stats.totalDownloads;
+  const totalWindows = stats.windowsDownloads;
+  const totalMacOS = stats.macOsDownloads;
+  const totalLinux = stats.linuxDownloads;
+
+  return (
+    <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-downloads")} />
-            <Helmet>
-                <title>Downloads - Admin Dashboard | D-Secure</title>
-            </Helmet>
+      <Helmet>
+        <title>Downloads - Admin Dashboard | D-Secure</title>
+      </Helmet>
 
-            <div className="space-y-6">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900">Downloads</h1>
-                        <p className="text-slate-600 mt-1">Software downloads overview and statistics</p>
-                    </div>
-                    <Link to="/download" className="btn-primary flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Go to Downloads
-                    </Link>
-                </div>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Downloads</h1>
+            <p className="text-slate-600 mt-1">
+              Software downloads overview and statistics
+            </p>
+          </div>
+          <Link to="/download" className="btn-primary flex items-center gap-2">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+            Go to Downloads
+          </Link>
+        </div>
 
-                {/* Custom Installer Note */}
-                <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
-                    <div className="flex items-start">
-                        <span className="text-blue-500 text-xl font-bold mr-2">*</span>
-                        <p className="text-sm text-blue-900 font-medium pt-0.5">
-                            For custom installer setup, please contact the support team.
-                        </p>
-                    </div>
-                </div>
+        {/* Custom Installer Note */}
+        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+          <div className="flex items-start">
+            <span className="text-blue-500 text-xl font-bold mr-2">*</span>
+            <p className="text-sm text-blue-900 font-medium pt-0.5">
+              For custom installer setup, please contact the support team.
+            </p>
+          </div>
+        </div>
 
-                {/* Stats Cards */}
-                {/* <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        {/* Stats Cards */}
+        {/* <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <div className="card !p-6">
                         <div className="flex items-center justify-between">
                             <div>
@@ -235,8 +339,8 @@ export default function AdminDownloads() {
                     </div>
                 </div> */}
 
-                {/* Period Stats Cards */}
-                {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Period Stats Cards */}
+        {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="card !p-6">
                         <div className="flex items-center justify-between">
                             <div>
@@ -278,83 +382,154 @@ export default function AdminDownloads() {
                     </div>
                 </div> */}
 
-                {/* Product Downloads */}
-                <div className="card !p-0 overflow-hidden">
-                    <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
-                        <h3 className="text-lg font-semibold text-slate-900">Product Downloads</h3>
+        {/* Product Downloads */}
+        <div className="card !p-0 overflow-hidden">
+          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+            <h3 className="text-lg font-semibold text-slate-900">
+              Product Downloads
+            </h3>
+          </div>
+          <div className="p-6 space-y-4">
+            {loading ? (
+              /* ********** NAYA CODE — Shimmer Skeleton UI for Downloads ********** */
+              <div className="animate-pulse space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="bg-white border border-slate-200 rounded-lg p-6"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <div className="h-5 bg-slate-200 rounded w-32 mb-2" />
+                        <div className="h-3 bg-slate-100 rounded w-20" />
+                      </div>
+                      <div className="text-right">
+                        <div className="h-7 bg-emerald-100 rounded w-16 mb-1" />
+                        <div className="h-3 bg-slate-100 rounded w-20" />
+                      </div>
                     </div>
-                    <div className="p-6 space-y-4">
-                        {loading ? (
-                            <div className="flex flex-col items-center justify-center py-12">
-                                <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
-                                <p className="text-slate-500 text-sm">Loading download data...</p>
-                            </div>
-                        ) : products.length === 0 ? (
-                            <div className="text-center py-8 text-slate-500">No download data available</div>
-                        ) : (
-                            products.map((product) => (
-                                <div key={product.id} className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div>
-                                            <h4 className="text-lg font-semibold text-slate-900">{product.name}</h4>
-                                            <p className="text-sm text-slate-600 mt-1">Version {product.version}</p>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="text-2xl font-bold text-emerald-600">{product.downloads.toLocaleString()}</p>
-                                            <p className="text-xs text-slate-500 mt-1">Total Downloads</p>
-                                        </div>
-                                    </div>
-
-                                    {/* Platform Breakdown */}
-                                    <div className="grid grid-cols-3 gap-4 mt-4">
-                                        <div className="bg-blue-50 rounded-lg p-3">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
-                                                </svg>
-                                                <span className="text-xs font-medium text-slate-700">Windows</span>
-                                            </div>
-                                            <p className="text-lg font-bold text-blue-600">{product.platforms.windows}</p>
-                                        </div>
-
-                                        <div className="bg-slate-50 rounded-lg p-3">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <svg className="w-4 h-4 text-slate-700" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                                                </svg>
-                                                <span className="text-xs font-medium text-slate-700">macOS</span>
-                                            </div>
-                                            <p className="text-lg font-bold text-slate-700">{product.platforms.macos}</p>
-                                        </div>
-
-                                        <div className="bg-orange-50 rounded-lg p-3">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <svg className="w-4 h-4 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z" />
-                                                </svg>
-                                                <span className="text-xs font-medium text-slate-700">Linux</span>
-                                            </div>
-                                            <p className="text-lg font-bold text-orange-600">{product.platforms.linux}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between">
-                                        <span className="text-sm text-slate-600">
-                                            Last download: {new Date(product.lastDownload).toLocaleDateString()}
-                                        </span>
-                                        <Link
-                                            to={`/download?product=${product.name.toLowerCase().replace(' ', '-')}`}
-                                            className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
-                                        >
-                                            View Details →
-                                        </Link>
-                                    </div>
-                                </div>
-                            ))
-                        )}
+                    <div className="grid grid-cols-3 gap-4 mt-4">
+                      <div className="bg-blue-50 rounded-lg p-3">
+                        <div className="h-3 bg-slate-200 rounded w-16 mb-2" />
+                        <div className="h-5 bg-blue-200 rounded w-10" />
+                      </div>
+                      <div className="bg-slate-50 rounded-lg p-3">
+                        <div className="h-3 bg-slate-200 rounded w-14 mb-2" />
+                        <div className="h-5 bg-slate-200 rounded w-10" />
+                      </div>
+                      <div className="bg-orange-50 rounded-lg p-3">
+                        <div className="h-3 bg-slate-200 rounded w-12 mb-2" />
+                        <div className="h-5 bg-orange-200 rounded w-10" />
+                      </div>
                     </div>
+                  </div>
+                ))}
+              </div>
+            ) : /* ********** END Shimmer UI ********** */
+            products.length === 0 ? (
+              <div className="text-center py-8 text-slate-500">
+                No download data available
+              </div>
+            ) : (
+              products.map((product) => (
+                <div
+                  key={product.id}
+                  className="bg-white border border-slate-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h4 className="text-lg font-semibold text-slate-900">
+                        {product.name}
+                      </h4>
+                      <p className="text-sm text-slate-600 mt-1">
+                        Version {product.version}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-emerald-600">
+                        {product.downloads.toLocaleString()}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Total Downloads
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Platform Breakdown */}
+                  <div className="grid grid-cols-3 gap-4 mt-4">
+                    <div className="bg-blue-50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <svg
+                          className="w-4 h-4 text-blue-600"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+                        </svg>
+                        <span className="text-xs font-medium text-slate-700">
+                          Windows
+                        </span>
+                      </div>
+                      <p className="text-lg font-bold text-blue-600">
+                        {product.platforms.windows}
+                      </p>
+                    </div>
+
+                    <div className="bg-slate-50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <svg
+                          className="w-4 h-4 text-slate-700"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                        </svg>
+                        <span className="text-xs font-medium text-slate-700">
+                          macOS
+                        </span>
+                      </div>
+                      <p className="text-lg font-bold text-slate-700">
+                        {product.platforms.macos}
+                      </p>
+                    </div>
+
+                    <div className="bg-orange-50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <svg
+                          className="w-4 h-4 text-orange-600"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z" />
+                        </svg>
+                        <span className="text-xs font-medium text-slate-700">
+                          Linux
+                        </span>
+                      </div>
+                      <p className="text-lg font-bold text-orange-600">
+                        {product.platforms.linux}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between">
+                    <span className="text-sm text-slate-600">
+                      Last download:{" "}
+                      {new Date(product.lastDownload).toLocaleDateString()}
+                    </span>
+                    <Link
+                      to={`/download?product=${product.name.toLowerCase().replace(" ", "-")}`}
+                      className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                    >
+                      View Details →
+                    </Link>
+                  </div>
                 </div>
-            </div>
-        </>
-    );
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

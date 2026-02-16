@@ -2,9 +2,14 @@ import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
 import { NavLink, Outlet } from 'react-router-dom'
+import { useEffect } from "react";
 
 import { useAuth } from "../../auth/AuthContext";
 import { isDemoMode } from "../../data/demoData";
+// ********** NAYA CODE — Phase 4: Global auto-logout imports **********
+import { authService } from "../../utils/authService";
+import { indexedDBService } from "../../services/indexedDBService";
+// *******************************************
 
 export default function AdminShell() {
   const { user } = useAuth();
@@ -44,6 +49,86 @@ export default function AdminShell() {
     storedUserData?.is_subusers_enabled ||
     storedUserData?.isSubusersEnabled ||
     false;
+
+  // ********** NAYA CODE — Phase 4: Global auto-logout (max 15-min session) **********
+  // ********** NAYA CODE — Phase 4: Global auto-logout (Idle Timeout) **********
+  useEffect(() => {
+    // Skip auto-logout in demo mode
+    if (isDemo) return;
+
+    // Idle timeout duration: 15 minutes (in ms)
+    const IDLE_TIMEOUT = 15 * 60 * 1000;
+    let logoutTimer: NodeJS.Timeout;
+
+    const performLogout = () => {
+      console.warn(
+        "🔴 Session expired due to inactivity, auto-logout triggered",
+      );
+      authService.clearTokens();
+      indexedDBService.clearAll().catch(() => {});
+      window.location.href = "/login";
+    };
+
+    const resetTimer = () => {
+      if (logoutTimer) clearTimeout(logoutTimer);
+      logoutTimer = setTimeout(performLogout, IDLE_TIMEOUT);
+    };
+
+    // Events that reset the timer
+    const events = [
+      "mousedown",
+      "keydown",
+      "scroll",
+      "touchstart",
+      "mousemove",
+      "click",
+    ];
+
+    // Throttle the event listener to avoid performance issues
+    let lastReset = Date.now();
+    const handleActivity = () => {
+      const now = Date.now();
+      // Only reset if more than 5 seconds passed since last reset (optimization)
+      if (now - lastReset > 5000) {
+        lastReset = now;
+        resetTimer();
+        // console.log("🔄 Session timer reset due to activity");
+      }
+    };
+
+    // Attach listeners
+    events.forEach((event) => document.addEventListener(event, handleActivity));
+
+    // Initial start
+    resetTimer();
+
+    // Still check JWT expiry separately in background
+    const checkJwtExpiry = () => {
+      const token = authService.getAccessToken();
+      if (!token) return; // Let auth guard handle missing token
+
+      const expiration = authService.getTokenExpiration(token);
+      if (!expiration) return;
+
+      if (Date.now() >= expiration.getTime()) {
+        console.warn("🔴 JWT token expired hard limit, auto-logout triggered");
+        performLogout();
+      }
+    };
+
+    const jwtCheckInterval = setInterval(checkJwtExpiry, 60 * 1000); // Check every minute
+
+    return () => {
+      if (logoutTimer) clearTimeout(logoutTimer);
+      clearInterval(jwtCheckInterval);
+      events.forEach((event) =>
+        document.removeEventListener(event, handleActivity),
+      );
+    };
+  }, [isDemo]);
+  // *******************************************
+  // *******************************************
+
   return (
     <>
       {/* SEO Meta Tags */}

@@ -243,7 +243,12 @@ function createApiInstance(): AxiosInstance {
           }));
           
           // Redirect to login page with expired flag
-          window.location.href = '/login?expired=true';
+          // But if it was a logout request, just redirect cleanly
+          if (error.config?.url?.includes('/logout')) {
+            window.location.href = '/login';
+          } else {
+            window.location.href = '/login';
+          }
         }
 
         // Try to parse error response

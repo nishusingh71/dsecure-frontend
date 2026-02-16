@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import BlogPage from "@/components/BlogPage";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
+import { useIdleTimer } from "@/hooks/useIdleTimer";
 
 export default function MainLayout() {
   const { user, logout } = useAuth();
@@ -61,6 +62,19 @@ export default function MainLayout() {
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, [productsDropdownOpen]);
+
+  // ? Idle Auto-Logout (15 minutes = 900,000 ms)
+  // Only active when user is logged in
+  useIdleTimer(
+    15 * 60 * 1000,
+    () => {
+      if (user) {
+        // console.log('? User idle for 15 minutes - auto logging out');
+        logout();
+      }
+    },
+    !!user,
+  );
 
   // Listen for sticky section nav visibility to hide main header
   useEffect(() => {

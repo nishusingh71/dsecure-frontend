@@ -1,4 +1,4 @@
-﻿import { ENV } from "@/config/env";
+import { ENV } from "@/config/env";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useMemo, useState, useRef, useCallback } from "react";
@@ -17,6 +17,8 @@ import { authService } from "@/utils/authService";
 import { useNavigate } from "react-router-dom";
 import { isDemoMode, DEMO_AUDIT_REPORTS, DEMO_SUBUSERS } from "@/data/demoData";
 import { useSubusers } from "@/hooks/useSubusers";
+import { indexedDBService } from "@/services/indexedDBService";
+import { Document, Page, pdfjs } from "react-pdf";
 
 // Extended AdminReport interface to include raw data
 interface ExtendedAdminReport extends AdminReport {
@@ -361,6 +363,13 @@ export default function AdminReports() {
     useState(false);
   const [scheduledReports, setScheduledReports] = useState<any[]>([]);
   const [loadingScheduledReports, setLoadingScheduledReports] = useState(false);
+
+  // ✅ Report Preview Modal State
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [previewReport, setPreviewReport] =
+    useState<ExtendedAdminReport | null>(null);
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+
   const [schedulerData, setSchedulerData] = useState({
     reportName: "",
     scheduleType: "once", // 'once', 'daily', 'weekly', 'monthly'
@@ -539,8 +548,10 @@ export default function AdminReports() {
 
             setPdfSettingsLoaded(true);
             setPdfSettingsLoading(false);
-            console.log("✅ PDF settings loaded from cache successfully");
-            return; // Don't make API call if cache exists
+            console.log(
+              "✅ PDF settings loaded from cache (will sync with server in background)",
+            );
+            // ⚠️ DO NOT RETURN - Continue to fetch from API to ensure sync
           } catch (e) {
             console.warn(
               "⚠️ Failed to parse cached settings, will fetch from API",
@@ -622,26 +633,46 @@ export default function AdminReports() {
                 "",
             };
 
+            // Get existing cache to preserve images if API returns null
+            const existingCache = localStorage.getItem(PDF_SETTINGS_CACHE_KEY);
+            const cachedData = existingCache ? JSON.parse(existingCache) : null;
+            const cachedImages = cachedData?.images || {};
+
             const imageSettings = {
               headerLeftLogo:
                 savedSettings.headerLeftLogoBase64 ||
                 savedSettings.HeaderLeftLogoBase64 ||
+                savedSettings.headerLeftLogo ||
+                savedSettings.HeaderLeftLogo ||
+                cachedImages.headerLeftLogo ||
                 null,
               headerRightLogo:
                 savedSettings.headerRightLogoBase64 ||
                 savedSettings.HeaderRightLogoBase64 ||
+                savedSettings.headerRightLogo ||
+                savedSettings.HeaderRightLogo ||
+                cachedImages.headerRightLogo ||
                 null,
               watermarkImage:
                 savedSettings.watermarkImageBase64 ||
                 savedSettings.WatermarkImageBase64 ||
+                savedSettings.watermarkImage ||
+                savedSettings.WatermarkImage ||
+                cachedImages.watermarkImage ||
                 null,
               technicianSignature:
                 savedSettings.technicianSignatureBase64 ||
                 savedSettings.TechnicianSignatureBase64 ||
+                savedSettings.technicianSignature ||
+                savedSettings.TechnicianSignature ||
+                cachedImages.technicianSignature ||
                 null,
               validatorSignature:
                 savedSettings.validatorSignatureBase64 ||
                 savedSettings.ValidatorSignatureBase64 ||
+                savedSettings.validatorSignature ||
+                savedSettings.ValidatorSignature ||
+                cachedImages.validatorSignature ||
                 null,
             };
 
@@ -1251,8 +1282,29 @@ export default function AdminReports() {
       return;
     }
 
-    // ✅ Generate cache key based on filters
+    // ✅ Generate cache key based on user email and filters
+    // PRIORITY: Get user email early for reliable scoping
+    const userEmail = getUserEmail();
+
+    if (!userEmail) {
+      console.error("❌ No user email found");
+      showError(
+        "Authentication Error",
+        "No user email found. Please login again.",
+      );
+      setAllRows([]);
+      setLoading(false);
+      return;
+    }
+
+    // Determine target email for cache scoping
+    let targetEmail = userEmail;
+    if (subuserFilter && subuserFilter !== "all") {
+      targetEmail = subuserFilter;
+    }
+
     const cacheKey = `reports_${JSON.stringify({
+      email: targetEmail, // ✅ Critical: Email is now part of the initial check key
       subuser: subuserFilter,
       query,
       status: statusFilter,
@@ -1262,65 +1314,21 @@ export default function AdminReports() {
       group: groupFilter,
     })}`;
 
-    // ✅ Check cache first for instant display with filter-specific key
-    const cachedReports = getCachedData(cacheKey);
-    if (cachedReports && cachedReports.length > 0) {
-      console.log("⚡ Displaying cached reports data for filters:", cacheKey);
-      setAllRows(cachedReports);
-      setLoading(false); // Hide loader since we have cached data
+    // ✅ Check IndexedDB cache first for instant display
+    try {
+      const cached = await indexedDBService.get("audit_reports", cacheKey);
+      if (cached && Array.isArray(cached) && cached.length > 0) {
+        console.log("⚡ Displaying cached reports from IndexedDB:", cacheKey);
+        setAllRows(cached);
+        setLoading(false);
+        // ⚠️ RETURN EARLY to prevent API call if cache hits
+        return;
+      }
+    } catch (error) {
+      console.warn("⚠️ Error reading from IndexedDB:", error);
     }
 
     try {
-      // Get user email - EXACT SAME PATTERN AS AdminDashboard & AdminMachines
-      // 1. Try localStorage 'user_data' key (not 'dsecure_user_data')
-      let storedUserData = null;
-      const storedUser = localStorage.getItem("user_data");
-      const authUser = localStorage.getItem("authUser");
-
-      if (storedUser) {
-        try {
-          storedUserData = JSON.parse(storedUser);
-          // console.log("💾 Parsed user_data from localStorage:", storedUserData);
-        } catch (e) {
-          console.error("Error parsing user_data:", e);
-        }
-      }
-
-      if (!storedUserData && authUser) {
-        try {
-          storedUserData = JSON.parse(authUser);
-          // console.log("💾 Parsed authUser from localStorage:", storedUserData);
-        } catch (e) {
-          console.error("Error parsing authUser:", e);
-        }
-      }
-
-      // 2. Get user from JWT token
-      const user = authService.getUserFromToken();
-      // console.log("👤 User from token:", user);
-
-      // 3. PRIORITY: Use user_email from localStorage user_data, then from token
-      const userEmail =
-        storedUserData?.user_email || user?.user_email || user?.email;
-      // console.log("📧 Final userEmail for reports:", userEmail);
-
-      if (!userEmail) {
-        console.error("❌ No user email found");
-        showError(
-          "Authentication Error",
-          "No user email found. Please login again.",
-        );
-        setAllRows([]);
-        setLoading(false);
-        return;
-      }
-
-      // ✅ Determine which email to use based on subuserFilter
-      let targetEmail = userEmail;
-      if (subuserFilter && subuserFilter !== "all") {
-        targetEmail = subuserFilter;
-      }
-
       // ✅ Build filters object for new API endpoint
       const filters: any = {
         userEmail: targetEmail,
@@ -1333,18 +1341,6 @@ export default function AdminReports() {
       if (toDate) filters.dateTo = toDate;
       if (reportTypeFilter) filters.reportType = reportTypeFilter;
       if (groupFilter) filters.groupName = groupFilter;
-
-      // ✅ Generate cache key based on filters
-      const cacheKey = `reports_${JSON.stringify({
-        email: targetEmail,
-        subuser: subuserFilter,
-        query,
-        status: statusFilter,
-        from: fromDate,
-        to: toDate,
-        type: reportTypeFilter,
-        group: groupFilter,
-      })}`;
 
       console.log("📋 Fetching filtered reports with:", filters);
 
@@ -1612,8 +1608,16 @@ export default function AdminReports() {
         console.log("final reports to show in table :", filteredReports);
         setAllRows(filteredReports);
         // ✅ Cache all filtered data with filter-specific key
-        console.log("💾 Caching filtered reports with key:", cacheKey);
-        setCachedData(cacheKey, filteredReports);
+        console.log(
+          "💾 Caching filtered reports to IndexedDB with key:",
+          cacheKey,
+        );
+        // setCachedData(cacheKey, filteredReports); // Old localStorage cache
+        await indexedDBService
+          .put("audit_reports", cacheKey, filteredReports)
+          .catch((err) => {
+            console.warn("⚠️ Failed to write to IndexedDB:", err);
+          });
       } else {
         showInfo("No Reports", "No audit reports found.");
         setAllRows([]);
@@ -2225,8 +2229,38 @@ export default function AdminReports() {
   };
 
   // ✅ Handle preview of selected reports - Opens PDFs in new tabs (supports multiple)
-  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+  // ✅ Handle preview of selected reports - Opens local modal instead of PDF
+  // const handlePreviewSelectedReports = () => {
+  //   if (selectedReportIds.size === 0) {
+  //     showWarning("No Report Selected", "Please select a report to preview");
+  //     return;
+  //   }
 
+  //   if (selectedReportIds.size > 1) {
+  //     showWarning(
+  //       "Multiple Selection",
+  //       "Please select only one report to preview details",
+  //     );
+  //     return;
+  //   }
+
+  //   const reportId = Array.from(selectedReportIds)[0];
+  //   const report = allRows.find((r) => String(r.id || "") === reportId);
+
+  //   if (report) {
+  //     setPreviewReport(report);
+  //     setShowPreviewModal(true);
+  //   } else {
+  //     showError("Error", "Selected report data not found");
+  //   }
+  // };
+  // ✅ Initialize PDF Worker
+  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+  const [previewBlobs, setPreviewBlobs] = useState<Blob[]>([]);
+  const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
+
+  // ✅ Handle preview of selected reports - Fetches PDF blobs for preview
   const handlePreviewSelectedReports = async () => {
     if (selectedReportIds.size === 0) {
       showWarning(
@@ -2242,7 +2276,7 @@ export default function AdminReports() {
       return;
     }
 
-    // Limit to prevent browser from blocking too many popups
+    // Limit to prevent performance issues
     const MAX_PREVIEW_TABS = 5;
     const selectedCount = selectedReportIds.size;
 
@@ -2254,23 +2288,26 @@ export default function AdminReports() {
       return;
     }
 
-    // Get all selected reports
-    const selectedReportsArray = allRows.filter((r) =>
-      selectedReportIds.has(String(r.id || "")),
-    );
-
-    if (selectedReportsArray.length === 0) {
-      showError("Reports Not Found", "Could not find the selected report data");
-      return;
-    }
-
     setIsPreviewLoading(true);
+    setPreviewBlobs([]);
+    setCurrentPreviewIndex(0);
 
     try {
-      let successCount = 0;
-      let failedCount = 0;
+      const selectedReportsArray = allRows.filter((r) =>
+        selectedReportIds.has(String(r.id || "")),
+      );
 
-      // Process each report sequentially to avoid overwhelming the browser
+      if (selectedReportsArray.length === 0) {
+        showError(
+          "Reports Not Found",
+          "Could not find the selected report data",
+        );
+        setIsPreviewLoading(false);
+        return;
+      }
+
+      const blobs: Blob[] = [];
+
       for (const selectedReport of selectedReportsArray) {
         try {
           const rawReport = selectedReport._raw;
@@ -2280,13 +2317,9 @@ export default function AdminReports() {
             rawReport?.report_id ||
             String(selectedReport.id || "");
 
-          if (!reportId) {
-            console.warn(`Skipping report - no ID found`);
-            failedCount++;
-            continue;
-          }
+          if (!reportId) continue;
 
-          // Create FormData for the request
+          // Create FormData for the request (same as download logic)
           const submitData = new FormData();
 
           // Add text fields
@@ -2350,7 +2383,11 @@ export default function AdminReports() {
           }
 
           const response = await fetch(
-            `${import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"}/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-files`,
+            `${
+              import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"
+            }/api/EnhancedAuditReports/${encodeURIComponent(
+              reportId,
+            )}/export-pdf-with-files`,
             {
               method: "POST",
               headers: {
@@ -2362,58 +2399,25 @@ export default function AdminReports() {
 
           if (response.ok) {
             const blob = await response.blob();
-            // Create object URL and open in new tab for preview
-            const pdfUrl = window.URL.createObjectURL(blob);
-            const newTab = window.open(pdfUrl, "_blank");
-
-            if (newTab) {
-              successCount++;
-            } else {
-              // Popup was blocked
-              console.warn(`Popup blocked for report ${reportId}`);
-              failedCount++;
+            if (blob.size > 0) {
+              blobs.push(blob);
             }
-
-            // Small delay between opening tabs to prevent browser blocking
-            if (selectedReportsArray.length > 1) {
-              await new Promise((resolve) => setTimeout(resolve, 300));
-            }
-          } else {
-            const errorText = await response.text();
-            console.error(
-              `PDF preview failed for report ${reportId}:`,
-              errorText,
-            );
-            failedCount++;
           }
         } catch (error) {
-          console.error(`Error generating PDF preview for report:`, error);
-          failedCount++;
+          console.error(`Error generating preview blob:`, error);
         }
       }
 
-      // Show final result
-      if (successCount === 0) {
-        showError(
-          "Preview Failed",
-          "No PDFs could be opened. Please check if popups are blocked.",
-        );
-      } else if (failedCount > 0) {
-        showWarning(
-          "Partial Success",
-          `Opened ${successCount} PDF${successCount > 1 ? "s" : ""}. ${failedCount} failed.`,
-        );
+      if (blobs.length === 0) {
+        showError("Preview Failed", "Could not generate PDF previews.");
       } else {
-        showSuccess(
-          `${successCount} PDF${successCount > 1 ? "s" : ""} opened in new tab${successCount > 1 ? "s" : ""}`,
-        );
+        setPreviewBlobs(blobs);
+        setShowPreviewModal(true); // Open the modal to show PDFs
+        showSuccess(`Generated ${blobs.length} preview(s)`);
       }
     } catch (error) {
-      console.error("Error generating PDF previews:", error);
-      showError(
-        "Preview Failed",
-        "Failed to generate PDF previews. Please try again.",
-      );
+      console.error("Error in preview generation:", error);
+      showError("Preview Error", "An unexpected error occurred.");
     } finally {
       setIsPreviewLoading(false);
     }
@@ -3087,11 +3091,58 @@ export default function AdminReports() {
         {/* Table - scroll applied to table body only via inner container */}
         <div className="card-content card-table card overflow-x-auto">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
-              <p className="text-slate-600 text-sm">Loading reports...</p>
+            /* ********** NAYA CODE — Shimmer Skeleton UI for Reports ********** */
+            <div className="animate-pulse">
+              {/* Table Header Skeleton */}
+              <div className="grid grid-cols-7 gap-3 px-4 py-3 bg-slate-50 border-b border-slate-200">
+                {["w-16", "w-24", "w-20", "w-32", "w-20", "w-16", "w-12"].map(
+                  (w, i) => (
+                    <div key={i} className={`h-4 bg-slate-200 rounded ${w}`} />
+                  ),
+                )}
+              </div>
+              {/* Table Rows Skeleton */}
+              <div className="divide-y divide-slate-100">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                  <div
+                    key={i}
+                    className="grid grid-cols-7 gap-3 px-4 py-4 items-center"
+                  >
+                    {/* Report ID */}
+                    <div>
+                      <div className="h-4 bg-slate-200 rounded w-20" />
+                    </div>
+                    {/* Machine Name */}
+                    <div>
+                      <div className="h-4 bg-slate-100 rounded w-28" />
+                    </div>
+                    {/* Method */}
+                    <div>
+                      <div className="h-6 bg-emerald-100 rounded-full w-20" />
+                    </div>
+                    {/* Date */}
+                    <div>
+                      <div className="h-4 bg-slate-200 rounded w-24" />
+                    </div>
+                    {/* Status */}
+                    <div>
+                      <div className="h-6 bg-green-100 rounded-full w-16" />
+                    </div>
+                    {/* User */}
+                    <div>
+                      <div className="h-4 bg-slate-100 rounded w-20" />
+                    </div>
+                    {/* Actions */}
+                    <div className="flex gap-2">
+                      <div className="h-8 bg-slate-200 rounded w-8" />
+                      <div className="h-8 bg-slate-200 rounded w-8" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          ) : allRows.length === 0 ? (
+          ) : /* ********** END Shimmer UI ********** */
+          allRows.length === 0 ? (
             <div className="text-center py-12">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
                 <svg
@@ -4707,6 +4758,170 @@ export default function AdminReports() {
           </div>
         </div>
       )} */}
+      {/* PDF Preview Modal using react-pdf */}
+      {showPreviewModal && previewBlobs.length > 0 && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[90vh] flex flex-col">
+            {/* Header / Controls */}
+            <div className="bg-slate-100 border-b px-4 py-3 flex items-center justify-between z-10 shrink-0">
+              <div className="flex items-center gap-4">
+                <h2 className="text-lg font-bold text-slate-900">
+                  Report Preview{" "}
+                  {previewBlobs.length > 1
+                    ? `(${currentPreviewIndex + 1} of ${previewBlobs.length})`
+                    : ""}
+                </h2>
+
+                {previewBlobs.length > 1 && (
+                  <div className="flex items-center gap-2 bg-white rounded-md border px-1 py-0.5">
+                    <button
+                      disabled={currentPreviewIndex === 0}
+                      onClick={() => setCurrentPreviewIndex((i) => i - 1)}
+                      className="p-1 hover:bg-slate-100 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                      title="Previous Report"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 19l-7-7 7-7"
+                        />
+                      </svg>
+                    </button>
+                    <span className="text-sm font-medium w-16 text-center">
+                      {currentPreviewIndex + 1} / {previewBlobs.length}
+                    </span>
+                    <button
+                      disabled={currentPreviewIndex === previewBlobs.length - 1}
+                      onClick={() => setCurrentPreviewIndex((i) => i + 1)}
+                      className="p-1 hover:bg-slate-100 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                      title="Next Report"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                {/* Download Button */}
+                <button
+                  onClick={() => {
+                    const blob = previewBlobs[currentPreviewIndex];
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `report-preview-${currentPreviewIndex + 1}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                  }}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                  Download
+                </button>
+
+                <button
+                  onClick={() => setShowPreviewModal(false)}
+                  className="text-slate-500 hover:text-slate-700 p-1 rounded hover:bg-slate-200 transition-colors"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Content Area - PDF Viewer */}
+            <div className="flex-1 bg-slate-500 overflow-auto flex justify-center p-4">
+              {previewBlobs[currentPreviewIndex] ? (
+                <Document
+                  file={previewBlobs[currentPreviewIndex]}
+                  onLoadError={(error) =>
+                    console.error("Error loading PDF:", error)
+                  }
+                  loading={
+                    <div className="flex items-center justify-center p-10 text-white">
+                      <svg
+                        className="animate-spin h-8 w-8 text-white mr-3"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Loading PDF...
+                    </div>
+                  }
+                  className="shadow-lg"
+                >
+                  <Page
+                    pageNumber={1}
+                    className="shadow-xl"
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    scale={1.2} // 120% zoom
+                  />
+                </Document>
+              ) : (
+                <div className="text-white text-lg">No PDF loaded</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

@@ -2,8 +2,14 @@ import React, { createContext, useContext, useEffect, useMemo, useState, useCall
 import { authService } from '../utils/authService'
 import { apiClient } from '../utils/enhancedApiClient'
 import type { User } from '../utils/enhancedApiClient'
+import { indexedDBService } from "../services/indexedDBService";
 
-export type Role = 'user' | 'admin' | 'manager' | 'administrator' | 'superadmin'
+export type Role =
+  | "user"
+  | "admin"
+  | "manager"
+  | "administrator"
+  | "superadmin";
 
 export interface AuthUser {
   id: string;
@@ -136,10 +142,10 @@ function convertJWTUserToAuthUser(jwtUser: any, token: string): AuthUser {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null)
-  const [isUsingApi] = useState(true) // Always use API with JWT
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isUsingApi] = useState(true); // Always use API with JWT
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Initialize authentication state on mount
   useEffect(() => {
@@ -148,439 +154,523 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // //console.log('Initializing auth...')
 
         // Check if in demo mode first
-        const isDemoMode = localStorage.getItem('demo_mode') === 'true'
+        const isDemoMode = localStorage.getItem("demo_mode") === "true";
         // //console.log('Demo mode:', isDemoMode)
 
         // Check for regular authentication (including demo tokens stored via authService)
         if (authService.isAuthenticated()) {
           // //console.log('AuthService says authenticated')
-          const jwtUser = authService.getUserFromToken()
-          const token = authService.getAccessToken()
+          const jwtUser = authService.getUserFromToken();
+          const token = authService.getAccessToken();
 
           if (jwtUser && token) {
             // //console.log('JWT user found:', jwtUser)
-            const authUser = convertJWTUserToAuthUser(jwtUser, token)
-            setUser(authUser)
+            const authUser = convertJWTUserToAuthUser(jwtUser, token);
+            setUser(authUser);
           } else {
             // //console.log('JWT parsing failed, clearing tokens')
             // If JWT parsing failed, clear tokens
-            authService.clearTokens()
+            authService.clearTokens();
+            localStorage.removeItem("demo_mode");
           }
         } else {
           // //console.log('Not authenticated')
         }
       } catch (error) {
         // console.error('Failed to initialize authentication:', error)
-        authService.clearTokens()
+        authService.clearTokens();
         // Clear demo data on error
-        localStorage.removeItem('demo_mode')
-        setError('Authentication initialization failed')
+        localStorage.removeItem("demo_mode");
+        setError("Authentication initialization failed");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    initializeAuth()
+    initializeAuth();
 
     // Listen for authentication events
     const handleTokenRefresh = (event: Event) => {
       try {
-        const customEvent = event as CustomEvent
+        const customEvent = event as CustomEvent;
         if (customEvent.detail?.token) {
-          const jwtUser = authService.getUserFromToken(customEvent.detail.token)
+          const jwtUser = authService.getUserFromToken(
+            customEvent.detail.token,
+          );
           if (jwtUser) {
-            const authUser = convertJWTUserToAuthUser(jwtUser, customEvent.detail.token)
-            setUser(authUser)
+            const authUser = convertJWTUserToAuthUser(
+              jwtUser,
+              customEvent.detail.token,
+            );
+            setUser(authUser);
 
             // Dispatch auth state change event
-            window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
+            window.dispatchEvent(
+              new CustomEvent("authStateChanged", { detail: authUser }),
+            );
           }
         }
       } catch (error) {
-        console.error('Token refresh handling failed:', error)
+        console.error("Token refresh handling failed:", error);
       }
-    }
+    };
 
     const handleAuthFailure = () => {
-      setUser(null)
-      setError('Authentication failed. Please login again.')
+      setUser(null);
+      setError("Authentication failed. Please login again.");
 
       // Dispatch auth state change event
-      window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
-    }
+      window.dispatchEvent(
+        new CustomEvent("authStateChanged", { detail: null }),
+      );
+    };
 
     // ? NEW: Handle authStateChanged event from LoginPage
     const handleAuthStateChange = (event: Event) => {
       try {
-        const customEvent = event as CustomEvent
+        const customEvent = event as CustomEvent;
         // console.log('?? AuthContext received authStateChanged event:', customEvent.detail);
 
         if (customEvent.detail?.authenticated && customEvent.detail?.token) {
           // User just logged in - update AuthContext
-          const jwtUser = authService.getUserFromToken(customEvent.detail.token)
+          const jwtUser = authService.getUserFromToken(
+            customEvent.detail.token,
+          );
           if (jwtUser) {
-            const authUser = convertJWTUserToAuthUser(jwtUser, customEvent.detail.token)
-            setUser(authUser)
+            const authUser = convertJWTUserToAuthUser(
+              jwtUser,
+              customEvent.detail.token,
+            );
+            setUser(authUser);
             // console.log('? AuthContext user updated after login:', authUser);
           }
         } else if (customEvent.detail === null) {
           // User just logged out
-          setUser(null)
+          setUser(null);
           // console.log('? AuthContext user cleared after logout');
         }
       } catch (error) {
-        console.error('Auth state change handling failed:', error)
+        console.error("Auth state change handling failed:", error);
       }
-    }
+    };
 
-    window.addEventListener('tokenRefreshed', handleTokenRefresh)
-    window.addEventListener('authenticationFailed', handleAuthFailure)
-    window.addEventListener('authStateChanged', handleAuthStateChange) // ? NEW!
+    window.addEventListener("tokenRefreshed", handleTokenRefresh);
+    window.addEventListener("authenticationFailed", handleAuthFailure);
+    window.addEventListener("authStateChanged", handleAuthStateChange); // ? NEW!
 
     return () => {
-      window.removeEventListener('tokenRefreshed', handleTokenRefresh)
-      window.removeEventListener('authenticationFailed', handleAuthFailure)
-      window.removeEventListener('authStateChanged', handleAuthStateChange) // ? NEW!
-    }
-  }, [])
+      window.removeEventListener("tokenRefreshed", handleTokenRefresh);
+      window.removeEventListener("authenticationFailed", handleAuthFailure);
+      window.removeEventListener("authStateChanged", handleAuthStateChange); // ? NEW!
+    };
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
 
     try {
-      const result = await apiClient.login({ email, password })
+      const result = await apiClient.login({ email, password });
 
       if (result.success && result.data) {
-        const { user: apiUser, token } = result.data
+        const { user: apiUser, token } = result.data;
 
         // Validate that we have required data
         if (!token) {
-          throw new Error('No authentication token received')
+          throw new Error("No authentication token received");
         }
 
         if (!apiUser) {
-          throw new Error('No user data received')
+          throw new Error("No user data received");
         }
 
-        const authUser = convertJWTUserToAuthUser(apiUser, token)
-        setUser(authUser)
+        const authUser = convertJWTUserToAuthUser(apiUser, token);
+        setUser(authUser);
 
         // Dispatch auth state change event
-        window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
+        window.dispatchEvent(
+          new CustomEvent("authStateChanged", { detail: authUser }),
+        );
 
-        return
+        return;
       } else {
-        throw new Error(result.error || 'Login failed')
+        throw new Error(result.error || "Login failed");
       }
-
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Login failed'
-      setError(errorMessage)
+      const errorMessage = err instanceof Error ? err.message : "Login failed";
+      setError(errorMessage);
 
       // Clear any partial authentication state
-      authService.clearTokens()
-      setUser(null)
+      authService.clearTokens();
+      setUser(null);
 
-      throw err
+      throw err;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   // Demo login function that bypasses all backend authentication
   // ? Demo user is SUPERADMIN with STATIC/DUMMY data only
   const demoLogin = useCallback(async () => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
 
     try {
       // //console.log('Starting demo login...')
 
+      // ? Clear existing data to prevent cross-contamination
+      await indexedDBService.clearAll().catch(() => {});
+      localStorage.removeItem("user_data");
+      localStorage.removeItem("authUser");
+
       // Create a dummy JWT token with SUPERADMIN role for demo account
       const dummyJWTPayload = {
-        sub: 'demo-superadmin-001',
-        id: 'demo-superadmin-001',
-        email: 'demo@D-Securetech.com',
-        user_name: 'Demo Super Administrator',
-        role: 'superadmin',  // ? SUPERADMIN role
-        userRole: 'superadmin',
-        user_role: 'superadmin',
-        permissions: ['superadmin', 'admin_dashboard', 'user_management', 'reports', 'audit_logs', 'system_settings', 'all_access'],
-        exp: Math.floor(Date.now() / 1000) + (365 * 24 * 60 * 60), // 1 year from now
+        sub: "demo-superadmin-001",
+        id: "demo-superadmin-001",
+        email: "demo@D-Securetech.com",
+        user_name: "Demo Super Administrator",
+        role: "superadmin", // ? SUPERADMIN role
+        userRole: "superadmin",
+        user_role: "superadmin",
+        permissions: [
+          "superadmin",
+          "admin_dashboard",
+          "user_management",
+          "reports",
+          "audit_logs",
+          "system_settings",
+          "all_access",
+        ],
+        exp: Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60, // 1 year from now
         iat: Math.floor(Date.now() / 1000),
-        iss: 'D-Secure-demo'
-      }
+        iss: "D-Secure-demo",
+      };
 
       // Create a fake JWT token (base64 encoded payload)
-      const header = btoa(JSON.stringify({ typ: 'JWT', alg: 'HS256' }))
-      const payload = btoa(JSON.stringify(dummyJWTPayload))
-      const signature = btoa('demo-signature')
-      const dummyToken = `${header}.${payload}.${signature}`
+      const header = btoa(JSON.stringify({ typ: "JWT", alg: "HS256" }));
+      const payload = btoa(JSON.stringify(dummyJWTPayload));
+      const signature = btoa("demo-signature");
+      const dummyToken = `${header}.${payload}.${signature}`;
 
       // //console.log('Generated demo token:', dummyToken)
 
       // Use authService to store the demo token properly
-      authService.setTokens(dummyToken, 'demo-refresh-token', false)
+      authService.setTokens(dummyToken, "demo-refresh-token", false);
 
       // Create AuthUser object with SUPERADMIN role
       const dummyAdminUser: AuthUser = {
-        id: 'demo-superadmin-001',
-        email: 'demo@D-Securetech.com',
-        name: 'Demo Super Administrator',
-        role: 'superadmin',  // ? SUPERADMIN role
+        id: "demo-superadmin-001",
+        email: "demo@D-Securetech.com",
+        name: "Demo Super Administrator",
+        role: "superadmin", // ? SUPERADMIN role
         token: dummyToken,
-        department: 'IT Administration',
-        user_group: 'Enterprise Admins',  // ? Added user_group
-        timezone: 'Asia/Kolkata',  // ? Added timezone
+        department: "IT Administration",
+        user_group: "Enterprise Admins", // ? Added user_group
+        timezone: "Asia/Kolkata", // ? Added timezone
         payment_details_json: JSON.stringify({
-          planType: 'enterprise',
-          status: 'active',
-          billingCycle: 'annual',
+          planType: "enterprise",
+          status: "active",
+          billingCycle: "annual",
           amount: 9999,
-          currency: 'USD'
+          currency: "USD",
         }),
         license_details_json: JSON.stringify({
-          licenseType: 'enterprise',
+          licenseType: "enterprise",
           maxUsers: 1000,
           maxDevices: 10000,
-          expiryDate: '2030-12-31',
-          features: ['superadmin', 'admin_dashboard', 'user_management', 'reports', 'audit_logs', 'system_settings']
+          expiryDate: "2030-12-31",
+          features: [
+            "superadmin",
+            "admin_dashboard",
+            "user_management",
+            "reports",
+            "audit_logs",
+            "system_settings",
+          ],
         }),
-        phone_number: '+91-9876543210',
+        phone_number: "+91-9876543210",
         is_private_cloud: true,
-        private_api: true
-      }
+        private_api: true,
+      };
 
       // Save user data to authService
-      authService.saveUserData(dummyAdminUser)
+      authService.saveUserData(dummyAdminUser);
 
       // ? Also save to localStorage directly for demo mode (getUserDataFromStorage reads from localStorage)
-      localStorage.setItem('user_data', JSON.stringify(dummyAdminUser))
+      // localStorage.setItem('user_data', JSON.stringify(dummyAdminUser))
 
       // Set the user in AuthContext
-      setUser(dummyAdminUser)
+      setUser(dummyAdminUser);
 
       // ? Mark as demo mode - this flag will be used to show static/dummy data
-      localStorage.setItem('demo_mode', 'true')
+      localStorage.setItem("demo_mode", "true");
 
       // //console.log('Demo login completed successfully')
 
       // ✅ Dispatch auth state change event to update header
-      window.dispatchEvent(new CustomEvent('authStateChanged', { 
-        detail: { 
-          user: dummyAdminUser,
-          isDemo: true 
-        } 
-      }))
-
+      window.dispatchEvent(
+        new CustomEvent("authStateChanged", {
+          detail: {
+            user: dummyAdminUser,
+            isDemo: true,
+          },
+        }),
+      );
     } catch (err) {
-      console.error('Demo login error:', err)
-      const errorMessage = 'Demo login failed'
-      setError(errorMessage)
-      throw new Error(errorMessage)
+      console.error("Demo login error:", err);
+      const errorMessage = "Demo login failed";
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
-  const register = useCallback(async (registrationData: {
-    user_name: string
-    user_email: string
-    user_password: string
-    phone_number: string
-    is_private_cloud: boolean
-    private_api: boolean
-    payment_details_json: string
-    license_details_json: string
-  }) => {
-    setLoading(true)
-    setError(null)
+  const register = useCallback(
+    async (registrationData: {
+      user_name: string;
+      user_email: string;
+      user_password: string;
+      phone_number: string;
+      is_private_cloud: boolean;
+      private_api: boolean;
+      payment_details_json: string;
+      license_details_json: string;
+    }) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const result = await apiClient.register(registrationData)
+      try {
+        const result = await apiClient.register(registrationData);
 
-      if (result.success && result.data) {
-        const { user: apiUser, token } = result.data
+        if (result.success && result.data) {
+          const { user: apiUser, token } = result.data;
 
-        // Validate that we have required data
-        if (!token) {
-          throw new Error('No authentication token received')
-        }
+          // Validate that we have required data
+          if (!token) {
+            throw new Error("No authentication token received");
+          }
 
-        if (!apiUser) {
-          throw new Error('No user data received')
-        }
+          if (!apiUser) {
+            throw new Error("No user data received");
+          }
 
-        const authUser = convertJWTUserToAuthUser(apiUser, token)
-        setUser(authUser)
+          const authUser = convertJWTUserToAuthUser(apiUser, token);
+          setUser(authUser);
 
-        // Dispatch auth state change event
-        window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
+          // Dispatch auth state change event
+          window.dispatchEvent(
+            new CustomEvent("authStateChanged", { detail: authUser }),
+          );
 
-        return
-      } else {
-        throw new Error(result.error || 'Registration failed')
-      }
-
-    } catch (err) {
-      let errorMessage = 'Registration failed'
-
-      if (err instanceof Error) {
-        if (err.message.includes('409') || err.message.toLowerCase().includes('already exists')) {
-          errorMessage = 'An account with this email already exists. Please try logging in instead.'
-        } else if (err.message.includes('400') || err.message.toLowerCase().includes('validation')) {
-          errorMessage = 'Please check your registration information and try again.'
+          return;
         } else {
-          errorMessage = err.message
+          throw new Error(result.error || "Registration failed");
         }
+      } catch (err) {
+        let errorMessage = "Registration failed";
+
+        if (err instanceof Error) {
+          if (
+            err.message.includes("409") ||
+            err.message.toLowerCase().includes("already exists")
+          ) {
+            errorMessage =
+              "An account with this email already exists. Please try logging in instead.";
+          } else if (
+            err.message.includes("400") ||
+            err.message.toLowerCase().includes("validation")
+          ) {
+            errorMessage =
+              "Please check your registration information and try again.";
+          } else {
+            errorMessage = err.message;
+          }
+        }
+
+        setError(errorMessage);
+
+        // Clear any partial authentication state
+        authService.clearTokens();
+        setUser(null);
+
+        throw new Error(errorMessage);
+      } finally {
+        setLoading(false);
       }
-
-      setError(errorMessage)
-
-      // Clear any partial authentication state
-      authService.clearTokens()
-      setUser(null)
-
-      throw new Error(errorMessage)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+    },
+    [],
+  );
 
   const logout = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
       // Check if in demo mode
-      const isDemoMode = localStorage.getItem('demo_mode') === 'true'
+      const isDemoMode = localStorage.getItem("demo_mode") === "true";
 
       if (isDemoMode) {
         // Clear demo mode data
-        localStorage.removeItem('demo_mode')
+        localStorage.removeItem("demo_mode");
         // Clear authService tokens
-        authService.clearTokens()
+        authService.clearTokens();
       } else {
         // Call API logout for real users
-        await apiClient.logout()
+        await apiClient.logout();
       }
 
       // ? Clear all user-related data from localStorage
-      localStorage.removeItem('user_data')
-      localStorage.removeItem('authUser')
-      localStorage.removeItem('userData')
+      localStorage.removeItem("user_data");
+      localStorage.removeItem("authUser");
+      localStorage.removeItem("userData");
+
+      // ? Clear IndexedDB to remove all cached data (sessions, reports, etc.)
+      await indexedDBService.clearAll().catch(() => {});
 
       // ? Clear all dashboard caches to prevent showing previous user's data
-      const keysToRemove: string[] = []
+      const keysToRemove: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && (key.startsWith('dashboard_cache_') || key.startsWith('admin_cache_'))) {
-          keysToRemove.push(key)
+        const key = localStorage.key(i);
+        if (
+          key &&
+          (key.startsWith("dashboard_cache_") || key.startsWith("admin_cache_"))
+        ) {
+          keysToRemove.push(key);
         }
       }
-      keysToRemove.forEach(key => localStorage.removeItem(key))
+      keysToRemove.forEach((key) => localStorage.removeItem(key));
 
       // console.log('? Logout successful - All user data and caches cleared')
     } catch (err) {
-      console.error('Logout error:', err)
+      console.error("Logout error:", err);
       // Even if API fails, clear all local data
-      localStorage.removeItem('user_data')
-      localStorage.removeItem('authUser')
-      localStorage.removeItem('userData')
+      localStorage.removeItem("authUser");
+      localStorage.removeItem("userData");
+
+      // Clear IndexedDB even on error
+      indexedDBService.clearAll().catch(() => {});
 
       // Clear caches even on error
-      const keysToRemove: string[] = []
+      const keysToRemove: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key && (key.startsWith('dashboard_cache_') || key.startsWith('admin_cache_'))) {
-          keysToRemove.push(key)
+        const key = localStorage.key(i);
+        if (
+          key &&
+          (key.startsWith("dashboard_cache_") || key.startsWith("admin_cache_"))
+        ) {
+          keysToRemove.push(key);
         }
       }
-      keysToRemove.forEach(key => localStorage.removeItem(key))
+      keysToRemove.forEach((key) => localStorage.removeItem(key));
     } finally {
-      setUser(null)
-      setError(null)
-      setLoading(false)
+      setUser(null);
+      setError(null);
+      setLoading(false);
 
       // Dispatch auth state change event to update header immediately
-      window.dispatchEvent(new CustomEvent('authStateChanged', { detail: null }))
+      window.dispatchEvent(
+        new CustomEvent("authStateChanged", { detail: null }),
+      );
 
       // console.log('?? Auth state changed - All caches cleared, ready for new user login')
     }
-  }, [])
+  }, []);
 
   const refreshToken = useCallback(async (): Promise<boolean> => {
     try {
-      const success = await authService.manualRefreshToken()
+      const success = await authService.manualRefreshToken();
 
       if (success) {
-        const jwtUser = authService.getUserFromToken()
-        const token = authService.getAccessToken()
+        const jwtUser = authService.getUserFromToken();
+        const token = authService.getAccessToken();
 
         if (jwtUser && token) {
-          const authUser = convertJWTUserToAuthUser(jwtUser, token)
-          setUser(authUser)
+          const authUser = convertJWTUserToAuthUser(jwtUser, token);
+          setUser(authUser);
 
           // Dispatch auth state change event
-          window.dispatchEvent(new CustomEvent('authStateChanged', { detail: authUser }))
+          window.dispatchEvent(
+            new CustomEvent("authStateChanged", { detail: authUser }),
+          );
         }
       }
 
-      return success
+      return success;
     } catch (error) {
-      console.error('Token refresh failed:', error)
-      return false
+      console.error("Token refresh failed:", error);
+      return false;
     }
-  }, [])
+  }, []);
 
   const isAuthenticated = useMemo(() => {
-    return authService.isAuthenticated()
-  }, [user])
+    return authService.isAuthenticated();
+  }, [user]);
 
   const hasRole = useCallback((role: string): boolean => {
-    return authService.hasRole(role)
-  }, [])
+    return authService.hasRole(role);
+  }, []);
 
   const hasPermission = useCallback((permission: string): boolean => {
-    return authService.hasPermission(permission)
-  }, [])
+    return authService.hasPermission(permission);
+  }, []);
 
   const hasValidPaymentDetails = useCallback((): boolean => {
-    return authService.hasValidPaymentDetails(user)
-  }, [user])
+    return authService.hasValidPaymentDetails(user);
+  }, [user]);
 
   const hasValidLicenseDetails = useCallback((): boolean => {
-    return authService.hasValidLicenseDetails(user)
-  }, [user])
+    return authService.hasValidLicenseDetails(user);
+  }, [user]);
 
   const isUserSetupComplete = useCallback((): boolean => {
-    return authService.isUserSetupComplete(user)
-  }, [user])
+    return authService.isUserSetupComplete(user);
+  }, [user]);
 
   const getSmartRedirectPath = useCallback((): string => {
-    return authService.getRedirectPath(user)
-  }, [user])
+    return authService.getRedirectPath(user);
+  }, [user]);
 
-  const value = useMemo(() => ({
-    user,
-    login,
-    demoLogin,
-    register,
-    logout,
-    isUsingApi,
-    loading,
-    error,
-    isAuthenticated,
-    hasRole,
-    hasPermission,
-    refreshToken,
-    hasValidPaymentDetails,
-    hasValidLicenseDetails,
-    isUserSetupComplete,
-    getSmartRedirectPath
-  }), [user, login, demoLogin, register, logout, isUsingApi, loading, error, isAuthenticated, hasRole, hasPermission, refreshToken, hasValidPaymentDetails, hasValidLicenseDetails, isUserSetupComplete, getSmartRedirectPath])
+  const value = useMemo(
+    () => ({
+      user,
+      login,
+      demoLogin,
+      register,
+      logout,
+      isUsingApi,
+      loading,
+      error,
+      isAuthenticated,
+      hasRole,
+      hasPermission,
+      refreshToken,
+      hasValidPaymentDetails,
+      hasValidLicenseDetails,
+      isUserSetupComplete,
+      getSmartRedirectPath,
+    }),
+    [
+      user,
+      login,
+      demoLogin,
+      register,
+      logout,
+      isUsingApi,
+      loading,
+      error,
+      isAuthenticated,
+      hasRole,
+      hasPermission,
+      refreshToken,
+      hasValidPaymentDetails,
+      hasValidLicenseDetails,
+      isUserSetupComplete,
+      getSmartRedirectPath,
+    ],
+  );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

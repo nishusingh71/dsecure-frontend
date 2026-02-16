@@ -1,5 +1,6 @@
 // JWT Authentication Service - Enhanced
 import { jwtDecode } from 'jwt-decode'
+import { indexedDBService } from '../services/indexedDBService'
 
 // Storage keys for different data types
 const STORAGE_KEYS = {
@@ -131,6 +132,13 @@ class AuthService {
     
     // Clear PDF export settings cache on logout
     localStorage.removeItem('pdfExportSettingsCache')
+
+    // ********** NAYA CODE — Phase 17: Clear IndexedDB on logout **********
+    // Ensure no sensitive data remains in the browser cache
+    indexedDBService.clearAll().catch(err => {
+      console.warn('Failed to clear IndexedDB on logout:', err);
+    });
+    // *******************************************
 
     // Clear the refresh timeout
     if (this.refreshTimeoutId) {

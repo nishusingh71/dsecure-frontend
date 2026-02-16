@@ -4,6 +4,7 @@ import { getSEOForPage } from "../../utils/seo";
 import { exportToCsv } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
+import { indexedDBService } from "@/services/indexedDBService";
 
 import { Machine } from "@/utils/enhancedApiClient";
 import { useEffect } from "react";
@@ -267,13 +268,20 @@ export default function AdminMachines() {
     }
   };
 
-  // ✅ Use React Query for machines data with automatic caching
+  // ✅ Use React Query for machines data with automatic caching + IndexedDB persistence
   const {
     data: machinesData,
     isLoading: loading,
     refetch: refetchMachines,
   } = useQuery({
-    queryKey: ["machines", subuserFilter, groupFilter, query, licenseFilter],
+    queryKey: [
+      "machines",
+      subuserFilter,
+      groupFilter,
+      query,
+      licenseFilter,
+      isDemo,
+    ],
     queryFn: async () => {
       // 🎮 Demo Mode Check
       if (isDemoMode()) {
@@ -289,6 +297,23 @@ export default function AdminMachines() {
       const userEmail = currentUserEmail;
       if (!userEmail) {
         throw new Error("No user email found");
+      }
+
+      // Generate a unique cache key based on filters
+      const cacheKey = `machines_${userEmail}_${subuserFilter}_${groupFilter}_${query}_${licenseFilter}`;
+
+      // 1?? Check IndexedDB Cache first
+      try {
+        const cachedData = await indexedDBService.getItem(cacheKey);
+        if (cachedData) {
+          // console.log(`? Serving Machines from IndexedDB cache: ${cacheKey}`);
+          // Return cached data immediately, React Query will serve this
+          // We can optionally trigger a background refresh if slightly stale,
+          // but for now we rely on explicit invalidation (write actions)
+          return cachedData;
+        }
+      } catch (err) {
+        console.warn("Error reading from IndexedDB:", err);
       }
 
       let targetEmail = userEmail;
@@ -633,13 +658,20 @@ export default function AdminMachines() {
           };
         });
 
+        // 2?? Save to IndexedDB Cache
+        try {
+          await indexedDBService.setItem(cacheKey, uiMachines);
+        } catch (err) {
+          console.warn("Error saving to IndexedDB:", err);
+        }
+
         return uiMachines;
       }
 
       return [];
     },
-    staleTime: 30 * 60 * 1000, // 30 minutes
-    gcTime: 60 * 60 * 1000, // 1 hour (formerly cacheTime)
+    staleTime: isDemo ? 0 : 30 * 60 * 1000,
+    gcTime: isDemo ? 0 : 24 * 60 * 60 * 1000, // Keep in memory for 24h (since we have disk cache)
     enabled: (!!currentUserEmail && !isDemoMode()) || isDemoMode(),
   });
 
@@ -1264,6 +1296,17 @@ export default function AdminMachines() {
         setShowTransferModal(false);
         setSelectedSubuserForTransfer("");
 
+        // ✅ Invalidate cache to force fresh fetch
+        try {
+          // Clear all machine-related caches for this user
+          await indexedDBService.deleteByPrefix(
+            "machines",
+            `machines_${currentUserEmail}`,
+          );
+        } catch (err) {
+          console.warn("Error invalidating cache:", err);
+        }
+
         // Refresh data with React Query
         await refetchMachines();
       } else {
@@ -1742,11 +1785,20 @@ export default function AdminMachines() {
         {/* Table - scroll applied to table body only */}
         <div className="card-content card-table card overflow-x-auto">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600 mb-4"></div>
-              <p className="text-slate-600 text-sm">Loading machines...</p>
+            /* ********** NAYA CODE — Shimmer Skeleton UI for Machines ********** */
+            <div className="animate-pulse divide-y divide-slate-100">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <div key={i} className="flex items-center gap-4 px-4 py-3">
+                  <div className="w-4 h-4 bg-slate-200 rounded" />
+                  <div className="h-4 bg-slate-200 rounded w-32" />
+                  <div className="h-4 bg-slate-100 rounded w-36" />
+                  <div className="h-6 bg-purple-100 rounded-full w-20" />
+                  <div className="h-6 bg-green-100 rounded-full w-16" />
+                </div>
+              ))}
             </div>
-          ) : allRows.length === 0 ? (
+          ) : /* ********** END Shimmer UI ********** */
+          allRows.length === 0 ? (
             <div className="text-center py-12">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
                 <svg

@@ -1,6 +1,9 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiClient, type AuditReport } from '@/utils/enhancedApiClient'
 
+import { indexedDBService } from '@/services/indexedDBService'
+import { isDemoMode, DEMO_AUDIT_REPORTS } from '@/data/demoData'
+
 /**
  * Query keys for audit reports caching
  */
@@ -27,11 +30,41 @@ export function useAuditReports(userEmail?: string, enabled: boolean = true) {
         throw new Error('User email is required')
       }
 
+      // Return demo data if in demo mode
+      if (isDemoMode()) {
+        console.log('🔹 Using DEMO audit reports data');
+        return DEMO_AUDIT_REPORTS;
+      }
+
+      // 1. Try IDB first
+      // ********** PURANA CODE (wrong store 'recent_reports' with userEmail key) **********
+      // const cached = await indexedDBService.get('recent_reports', userEmail);
+      // *******************************************
+      // ********** NAYA CODE — Read from correct 'audit_reports' store **********
+      try {
+        const cached = await indexedDBService.get('audit_reports', userEmail);
+        if (cached && Array.isArray(cached) && cached.length > 0) {
+            console.log(`✅ Loaded audit reports for ${userEmail} from IndexedDB`);
+            return cached;
+        }
+      } catch (e) {
+         console.warn('IDB Read Failed: audit_reports', e);
+      }
+      // *******************************************
+
       const response = await apiClient.getAuditReportsByEmail(userEmail)
 
       if (!response.success || !response.data) {
         throw new Error(response.message || 'Failed to fetch audit reports')
       }
+
+      // 3. Update IDB
+      // ********** PURANA CODE (wrong store 'recent_reports') **********
+      // indexedDBService.put('recent_reports', userEmail, response.data).catch(e => console.error('IDB Write Failed: auditReports', e));
+      // *******************************************
+      // ********** NAYA CODE — Write to correct 'audit_reports' store **********
+      indexedDBService.put('audit_reports', userEmail, response.data).catch(e => console.error('IDB Write Failed: audit_reports', e));
+      // *******************************************
 
       return response.data
     },

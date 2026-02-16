@@ -5,6 +5,12 @@ import { useState, useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { isDemoMode } from "@/data/demoData";
+import { indexedDBService } from "@/services/indexedDBService";
+import {
+  SkeletonStats,
+  SkeletonChart,
+  SkeletonTable,
+} from "../../components/Skeleton";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
@@ -290,7 +296,28 @@ export default function AdminLicenses() {
     setLoading(true);
     setError(null);
 
+    // ✅ Cache Versioning (v2): Force refresh to apply new visibility filters
+    const cacheKey = `licenses_v2_${currentUserEmail}`;
+
     try {
+      // 1. Try to load from cache first for instant UI response
+      try {
+        const cached = await indexedDBService.get("licenses", cacheKey);
+        if (cached && cached.list && cached.stats && cached.details) {
+          console.log("✅ Loaded licenses from IndexedDB");
+          setLicenses(cached.stats);
+          setLicenseList(cached.list);
+          setLicenseDetails(cached.details);
+          setLoading(false);
+          // ⚠️ RETURN EARLY: Stop background refresh if we have valid cache
+          // This ensures no loading flashes and reduces server load
+          // Only fetch fresh if cache is missing
+          return;
+        }
+      } catch (err) {
+        console.warn("⚠️ IDB Read Failed", err);
+      }
+
       // Fetch all data in parallel using enhancedApiClient
       // enhanceApiClient.get returns Promise<ApiResponse<T>> where data is in response.data
       const [statsRes, listRes, distributionRes] = await Promise.all([
@@ -467,6 +494,19 @@ export default function AdminLicenses() {
           setLicenseDetails(calculatedDistribution);
         } else {
           setLicenseDetails([]); // fallback to empty if no licenses
+        }
+
+        // ✅ Update Cache
+        try {
+          await indexedDBService.put("licenses", cacheKey, {
+            stats: newStats,
+            list: filteredList,
+            details:
+              calculatedDistribution.length > 0 ? calculatedDistribution : [],
+            timestamp: Date.now(),
+          });
+        } catch (err) {
+          console.warn("⚠️ IDB Write Failed", err);
         }
       }
 
@@ -821,6 +861,16 @@ export default function AdminLicenses() {
       const failures = results.filter((r) => !r.success);
 
       if (failures.length === 0) {
+        // Invalidate Cache
+        try {
+          await indexedDBService.delete(
+            "licenses",
+            `licenses_v2_${currentUserEmail}`,
+          );
+        } catch (e) {
+          console.warn("Failed to clear cache", e);
+        }
+
         await fetchLicenseData();
         setSelectedLicenses(new Set());
         // alert('Licenses revoked successfully');
@@ -984,137 +1034,141 @@ export default function AdminLicenses() {
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div className="card !p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Total Licenses</p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">
-                  {licenses.total.toLocaleString()}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-                  />
-                </svg>
+        {loading ? (
+          <SkeletonStats items={4} />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div className="card !p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Total Licenses</p>
+                  <p className="text-3xl font-bold text-slate-900 mt-1">
+                    {licenses.total.toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="card !p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Active</p>
-                <p className="text-3xl font-bold text-emerald-600 mt-1">
-                  {licenses.active.toLocaleString()}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-emerald-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+            <div className="card !p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Active</p>
+                  <p className="text-3xl font-bold text-emerald-600 mt-1">
+                    {licenses.active.toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-emerald-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="card !p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Inactive</p>
-                <p className="text-3xl font-bold text-orange-600 mt-1">
-                  {licenses.inactive.toLocaleString()}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-orange-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+            <div className="card !p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Inactive</p>
+                  <p className="text-3xl font-bold text-orange-600 mt-1">
+                    {licenses.inactive.toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-orange-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="card !p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Expired</p>
-                <p className="text-3xl font-bold text-red-600 mt-1">
-                  {licenses.expired.toLocaleString()}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-red-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+            <div className="card !p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Expired</p>
+                  <p className="text-3xl font-bold text-red-600 mt-1">
+                    {licenses.expired.toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-red-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="card !p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600">Revoked</p>
-                <p className="text-3xl font-bold text-rose-600 mt-1">
-                  {licenses.revoked.toLocaleString()}
-                </p>
-              </div>
-              <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-rose-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-                  />
-                </svg>
+            <div className="card !p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Revoked</p>
+                  <p className="text-3xl font-bold text-rose-600 mt-1">
+                    {licenses.revoked.toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-rose-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Pie Chart and Distribution Table */}
@@ -1125,9 +1179,7 @@ export default function AdminLicenses() {
             License Distribution
           </h3>
           {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-emerald-200 border-t-emerald-600"></div>
-            </div>
+            <SkeletonChart height="h-[300px]" />
           ) : licenseDetails.length > 0 ? (
             <>
               <div className="h-[300px] w-full">
@@ -1227,9 +1279,7 @@ export default function AdminLicenses() {
           </div>
           <div className="overflow-x-auto">
             {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-4 border-emerald-200 border-t-emerald-600"></div>
-              </div>
+              <SkeletonTable rows={4} columns={3} />
             ) : (
               <table className="w-full">
                 <thead className="bg-slate-50 border-b border-slate-200">
@@ -1282,7 +1332,7 @@ export default function AdminLicenses() {
                       {licenses.total.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-slate-900">
-                      100%
+                      {licenses.total > 0 ? "100%" : "0%"}
                     </td>
                   </tr>
                 </tbody>
@@ -1484,19 +1534,20 @@ export default function AdminLicenses() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td
-                    colSpan={7}
-                    className="px-4 py-12 text-center text-slate-500"
-                  >
-                    No licenses found matching your filters.
-                  </td>
-                </tr>
+                <></>
+                // <tr>
+                //   <td
+                //     colSpan={7}
+                //     className="px-4 py-12 text-center text-slate-500"
+                //   >
+                //     No licenses found matching your filters.
+                //   </td>
+                // </tr>
               )}
               {loading && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-4 text-center">
-                    <div className="inline-block animate-spin rounded-full h-6 w-6 border-4 border-slate-200 border-t-emerald-600"></div>
+                  <td colSpan={7} className="p-0">
+                    <SkeletonTable rows={10} columns={7} hasHeader={false} />
                   </td>
                 </tr>
               )}

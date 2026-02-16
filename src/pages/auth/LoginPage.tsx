@@ -7,6 +7,8 @@ import { getSEOForPage } from "@/utils/seo";
 import { api, setAuthToken } from "@/utils/apiClient";
 import { authService } from "@/utils/authService";
 
+import { isDemoMode } from "@/data/demoData";
+
 export default function LoginPage() {
   const { login, demoLogin, getSmartRedirectPath } = useAuth();
   const navigate = useNavigate();
@@ -42,20 +44,10 @@ export default function LoginPage() {
     setTimeout(() => setToast(null), 5000); // Auto hide after 5 seconds
   };
 
-  // ✅ Check for session expired query param
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get('expired') === 'true') {
-      showToast("Your session has expired. Please login again.", "error");
-      // Clean up the URL
-      window.history.replaceState({}, '', '/login');
-    }
-  }, [location.search]);
-
   // ✅ FormSubmit.co Email Service with Error Handling
   const sendEmailViaFormSubmit = async (
     toEmail: string,
-    otpCode: string
+    otpCode: string,
   ): Promise<{ success: boolean; error?: string }> => {
     try {
       // console.log("📧 Sending OTP via FormSubmit.co to:", toEmail);
@@ -67,12 +59,12 @@ export default function LoginPage() {
       formData.append("_notification", "false");
       formData.append(
         "_autoresponse",
-        "Thank you for your request. Your OTP has been sent. Used service is FormSubmit.co for email delivery. It may take a few minutes to arrive."
+        "Thank you for your request. Your OTP has been sent. Used service is FormSubmit.co for email delivery. It may take a few minutes to arrive.",
       );
       formData.append("OTP", otpCode);
       formData.append(
         "Message",
-        `Your OTP for password reset is: ${otpCode}. This OTP is valid for 10 minutes.`
+        `Your OTP for password reset is: ${otpCode}. This OTP is valid for 10 minutes.`,
       );
 
       // FormSubmit.co with timeout (15 seconds)
@@ -92,17 +84,20 @@ export default function LoginPage() {
         if (response.status === 429) {
           return {
             success: false,
-            error: "⚠️ Too many requests. Please wait a few minutes before trying again.",
+            error:
+              "⚠️ Too many requests. Please wait a few minutes before trying again.",
           };
         } else if (response.status >= 500) {
           return {
             success: false,
-            error: "⚠️ FormSubmit.co email service is temporarily down. Please try again later or contact support.",
+            error:
+              "⚠️ FormSubmit.co email service is temporarily down. Please try again later or contact support.",
           };
         } else if (response.status === 403) {
           return {
             success: false,
-            error: "⚠️ Email address not verified with FormSubmit.co. Please check your inbox for a verification email from FormSubmit or contact support.",
+            error:
+              "⚠️ Email address not verified with FormSubmit.co. Please check your inbox for a verification email from FormSubmit or contact support.",
           };
         } else {
           return {
@@ -121,17 +116,23 @@ export default function LoginPage() {
       if (error.name === "AbortError") {
         return {
           success: false,
-          error: "⚠️ Email service timeout. FormSubmit.co is taking too long to respond. Please try again.",
+          error:
+            "⚠️ Email service timeout. FormSubmit.co is taking too long to respond. Please try again.",
         };
-      } else if (error.message?.includes("Failed to fetch") || error.message?.includes("NetworkError")) {
+      } else if (
+        error.message?.includes("Failed to fetch") ||
+        error.message?.includes("NetworkError")
+      ) {
         return {
           success: false,
-          error: "⚠️ Network error. Please check your internet connection and try again.",
+          error:
+            "⚠️ Network error. Please check your internet connection and try again.",
         };
       } else if (error.message?.includes("CORS")) {
         return {
           success: false,
-          error: "⚠️ Email service blocked by browser security. Please try a different browser or contact support.",
+          error:
+            "⚠️ Email service blocked by browser security. Please try a different browser or contact support.",
         };
       } else {
         return {
@@ -157,7 +158,7 @@ export default function LoginPage() {
       const backendResponse = await api.post(
         "/api/ForgotPassword/request-otp",
         { email: forgotEmail },
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } },
       );
 
       // console.log("✅ Step 1 Backend Response:", backendResponse.data);
@@ -169,8 +170,9 @@ export default function LoginPage() {
         }
 
         showToast(
-          backendResponse.data.message || "OTP sent to your email successfully! Please check your inbox.",
-          "success"
+          backendResponse.data.message ||
+            "OTP sent to your email successfully! Please check your inbox.",
+          "success",
         );
 
         // Go directly to OTP verification step
@@ -189,17 +191,21 @@ export default function LoginPage() {
         // Server responded with error
         const status = err.response.status;
         if (status === 404) {
-          errorMsg = "❌ Email not found. Please check if you're registered with this email.";
+          errorMsg =
+            "❌ Email not found. Please check if you're registered with this email.";
         } else if (status === 429) {
-          errorMsg = "⚠️ Too many attempts. Please wait 5 minutes before trying again.";
+          errorMsg =
+            "⚠️ Too many attempts. Please wait 5 minutes before trying again.";
         } else if (status >= 500) {
-          errorMsg = "⚠️ Server error. Our backend is experiencing issues. Please try again later.";
+          errorMsg =
+            "⚠️ Server error. Our backend is experiencing issues. Please try again later.";
         } else {
           errorMsg = err.response.data?.message || `Server error (${status})`;
         }
       } else if (err.request) {
         // Network error - no response received
-        errorMsg = "⚠️ Cannot connect to server. Please check your internet connection.";
+        errorMsg =
+          "⚠️ Cannot connect to server. Please check your internet connection.";
       } else {
         errorMsg = err.message || "Unknown error occurred";
       }
@@ -214,10 +220,9 @@ export default function LoginPage() {
     try {
       // console.log("🔐 Step 2: Validating reset link with token:", token);
 
-      const response = await api.post(
-        "/api/ForgotPassword/verify-otp",
-        { resetToken: token }
-      );
+      const response = await api.post("/api/ForgotPassword/verify-otp", {
+        resetToken: token,
+      });
 
       // console.log("✅ Step 2 Response:", response.data);
 
@@ -225,12 +230,12 @@ export default function LoginPage() {
         // console.log("✅ Reset link validated successfully");
         showToast(
           "Reset link validated. Please verify OTP from your email.",
-          "success"
+          "success",
         );
         setForgotPasswordStep("otp");
       } else {
         throw new Error(
-          response.data.message || "Failed to validate reset link"
+          response.data.message || "Failed to validate reset link",
         );
       }
     } catch (err: any) {
@@ -258,13 +263,10 @@ export default function LoginPage() {
       // console.log("  - Email:", forgotEmail);
       // console.log("  - OTP:", otp);
 
-      const response = await api.post(
-        "/api/ForgotPassword/verify-otp",
-        {
-          email: forgotEmail,
-          otp: otp,
-        }
-      );
+      const response = await api.post("/api/ForgotPassword/verify-otp", {
+        email: forgotEmail,
+        otp: otp,
+      });
 
       // console.log("✅ Step 3 Response:", response.data);
 
@@ -272,7 +274,7 @@ export default function LoginPage() {
         // console.log("✅ OTP verified successfully");
         showToast(
           "OTP verified successfully! You can now reset your password.",
-          "success"
+          "success",
         );
         setForgotPasswordStep("newPassword");
       } else {
@@ -301,10 +303,9 @@ export default function LoginPage() {
     try {
       // console.log("🔄 Resending OTP for:", forgotEmail);
 
-      const response = await api.post(
-        "/api/ForgotPassword/resend-otp",
-        { email: forgotEmail }
-      );
+      const response = await api.post("/api/ForgotPassword/resend-otp", {
+        email: forgotEmail,
+      });
 
       // console.log("✅ Resend OTP Response:", response.data);
 
@@ -312,13 +313,13 @@ export default function LoginPage() {
         // ✅ Send OTP via FormSubmit.co with proper error handling
         const emailResult = await sendEmailViaFormSubmit(
           forgotEmail,
-          response.data.otp
+          response.data.otp,
         );
 
         if (emailResult.success) {
           showToast(
             "OTP resent successfully! Please check your email (may take 1-2 minutes).",
-            "success"
+            "success",
           );
         } else {
           // Show specific email service error
@@ -336,14 +337,16 @@ export default function LoginPage() {
       if (err.response) {
         const status = err.response.status;
         if (status === 429) {
-          errorMsg = "⚠️ Too many resend attempts. Please wait 2 minutes before trying again.";
+          errorMsg =
+            "⚠️ Too many resend attempts. Please wait 2 minutes before trying again.";
         } else if (status >= 500) {
           errorMsg = "⚠️ Server error. Please try again later.";
         } else {
           errorMsg = err.response.data?.message || `Error (${status})`;
         }
       } else if (err.request) {
-        errorMsg = "⚠️ Cannot connect to server. Check your internet connection.";
+        errorMsg =
+          "⚠️ Cannot connect to server. Check your internet connection.";
       } else {
         errorMsg = err.message || "Unknown error";
       }
@@ -374,15 +377,12 @@ export default function LoginPage() {
       // console.log("  - Reset Token:", resetToken);
       // console.log("  - New Password: ******");
 
-      const response = await api.post(
-        "/api/ForgotPassword/reset-password",
-        {
-          email: forgotEmail,
-          otp: otp,
-          resetToken: resetToken,
-          newPassword: newPassword,
-        }
-      );
+      const response = await api.post("/api/ForgotPassword/reset-password", {
+        email: forgotEmail,
+        otp: otp,
+        resetToken: resetToken,
+        newPassword: newPassword,
+      });
 
       // console.log("✅ Step 4 Response:", response.data);
 
@@ -390,7 +390,7 @@ export default function LoginPage() {
         // console.log("✅ Password reset successfully!");
         showToast(
           "Password reset successfully! Redirecting to login...",
-          "success"
+          "success",
         );
 
         // Reset all forgot password states
@@ -536,13 +536,10 @@ export default function LoginPage() {
 
     try {
       // Make API call to .NET backend (auto-decryption handled by interceptor)
-      const response = await api.post(
-        "/api/RoleBasedAuth/login",
-        {
-          email: email,
-          password: password,
-        }
-      );
+      const response = await api.post("/api/RoleBasedAuth/login", {
+        email: email,
+        password: password,
+      });
 
       const data = response.data;
       console.log("🚀 Login Response:", data);
@@ -600,6 +597,9 @@ export default function LoginPage() {
       localStorage.setItem("user_data", JSON.stringify(user));
       localStorage.setItem("authUser", JSON.stringify(user));
 
+      // ✅ CRITICAL: Ensure demo mode is cleared so live data is always fetched
+      localStorage.removeItem("demo_mode");
+
       // 🔐 Set auth token for all future API requests
       setAuthToken(data.token, rememberMe);
 
@@ -627,14 +627,40 @@ export default function LoginPage() {
       window.dispatchEvent(
         new CustomEvent("authStateChanged", {
           detail: { user, token: data.token, authenticated: true },
-        })
+        }),
       );
 
+      /* 
+      // ********** PURANA CODE (COMMENTED) **********
       // 🚀 Navigate immediately
       navigate(redirectPath, { replace: true });
+      // *******************************************
+      */
+
+      /* 
+      // ********** PURANA SYNC CODE (BLOCKING — login stuck hota tha) **********
+      // if (!isDemoMode()) {
+      //   try {
+      //     console.log("🔄 Starting background sync...");
+      //     await syncService.syncDashboardData(user.user_email);
+      //   } catch (syncError) {
+      //     console.error("⚠️ Background sync failed:", syncError);
+      //   }
+      // }
+      // navigate(redirectPath, { replace: true });
+      // *******************************************
+      */
+
+      // ********** NAYA CODE (FIRE-AND-FORGET) **********
+      // 🚀 Navigate IMMEDIATELY — don't block login on sync
+      navigate(redirectPath, { replace: true });
+
+      // 🔄 Sync removed: Let Dashboard hooks handle data fetching on demand
+      // This prevents double-fetching and speeds up the initial load
+      // *******************************************
     } catch (err: any) {
       // Log full error details to console for debugging
-      console.error('❌ Login Error:', {
+      console.error("❌ Login Error:", {
         message: err.message,
         status: err.response?.status,
         statusText: err.response?.statusText,
@@ -647,15 +673,18 @@ export default function LoginPage() {
 
       if (err.response) {
         const status = err.response.status;
-        const serverMessage = err.response.data?.message || err.response.data?.error;
+        const serverMessage =
+          err.response.data?.message || err.response.data?.error;
 
         // Show clean, user-friendly error messages
         if (status === 401 || status === 400) {
-          errorMessage = "Invalid email or password. Please check your credentials.";
+          errorMessage =
+            "Invalid email or password. Please check your credentials.";
         } else if (status === 404) {
           errorMessage = "User not found. Please register first.";
         } else if (status === 403) {
-          errorMessage = "Access denied. Your account may be suspended or inactive.";
+          errorMessage =
+            "Access denied. Your account may be suspended or inactive.";
         } else if (status >= 500) {
           errorMessage = "Server error. Please try again later.";
         } else if (serverMessage) {
@@ -665,7 +694,8 @@ export default function LoginPage() {
         }
       } else if (err.request) {
         // Network error
-        errorMessage = "Cannot connect to server. Please check your internet connection.";
+        errorMessage =
+          "Cannot connect to server. Please check your internet connection.";
       } else {
         errorMessage = "An unexpected error occurred. Please try again.";
       }
@@ -679,14 +709,15 @@ export default function LoginPage() {
   };
   return (
     <>
-      <SEOHead seo={getSEOForPage('login')} />
+      <SEOHead seo={getSEOForPage("login")} />
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 ${toast.type === "error"
-            ? "bg-red-50 border-red-200 text-red-800"
-            : "bg-green-50 border-green-200 text-green-800"
-            }`}
+          className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 ${
+            toast.type === "error"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : "bg-green-50 border-green-200 text-green-800"
+          }`}
         >
           <div className="flex items-center gap-3">
             {toast.type === "error" ? (
@@ -745,12 +776,14 @@ export default function LoginPage() {
         <div className="w-full max-w-md px-4 sm:px-8 py-8 sm:py-12 rounded-2xl bg-white/60 backdrop-blur-xl shadow-2xl shadow-slate-900/10 overflow-hidden">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">
-              {showForgotPassword ? t('auth.resetPassword') : t('auth.welcomeBack')}
+              {showForgotPassword
+                ? t("auth.resetPassword")
+                : t("auth.welcomeBack")}
             </h1>
             <p className="mt-3 text-sm text-slate-600">
               {showForgotPassword
-                ? t('auth.resetPasswordSubtitle')
-                : t('auth.loginSubtitle')}
+                ? t("auth.resetPasswordSubtitle")
+                : t("auth.loginSubtitle")}
             </p>
           </div>
 
@@ -778,7 +811,7 @@ export default function LoginPage() {
                           d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                         />
                       </svg>
-                      {t('auth.emailAddress')}
+                      {t("auth.emailAddress")}
                     </label>
                     <input
                       id="forgot-email"
@@ -786,14 +819,14 @@ export default function LoginPage() {
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.target.value)}
                       className="input-field"
-                      placeholder={t('auth.enterRegisteredEmail')}
+                      placeholder={t("auth.enterRegisteredEmail")}
                       required
                     />
                     <p className="text-xs text-slate-500 mt-2">
-                      {t('auth.otpVerifyIdentity')}
+                      {t("auth.otpVerifyIdentity")}
                     </p>
                     <p className="text-xs green-slate-500 mt-2">
-                      {t('auth.formSubmitNote')}
+                      {t("auth.formSubmitNote")}
                     </p>
                   </div>
 
@@ -803,7 +836,7 @@ export default function LoginPage() {
                       onClick={handleCancelForgotPassword}
                       className="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 font-medium transition-colors"
                     >
-                      {t('common.cancel')}
+                      {t("common.cancel")}
                     </button>
                     <button
                       type="button"
@@ -832,10 +865,10 @@ export default function LoginPage() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             />
                           </svg>
-                          {t('auth.sending')}
+                          {t("auth.sending")}
                         </>
                       ) : (
-                        t('auth.sendOtp')
+                        t("auth.sendOtp")
                       )}
                     </button>
                   </div>
@@ -863,7 +896,7 @@ export default function LoginPage() {
                           d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                         />
                       </svg>
-                      {t('auth.enterOtp')}
+                      {t("auth.enterOtp")}
                     </label>
                     <input
                       id="otp"
@@ -889,10 +922,10 @@ export default function LoginPage() {
                           d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                         />
                       </svg>
-                      {t('auth.otpSentTo')}
+                      {t("auth.otpSentTo")}
                     </p>
                     <p className="text-xs text-slate-500 mt-1">
-                      {t('auth.email')}: {forgotEmail}
+                      {t("auth.email")}: {forgotEmail}
                     </p>
 
                     {/* Resend OTP Link */}
@@ -903,7 +936,7 @@ export default function LoginPage() {
                         disabled={forgotPasswordLoading}
                         className="text-sm text-emerald-600 hover:text-emerald-700 font-medium underline disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {t('auth.resendOtp')}
+                        {t("auth.resendOtp")}
                       </button>
                     </div>
                   </div>
@@ -914,7 +947,7 @@ export default function LoginPage() {
                       onClick={() => setForgotPasswordStep("email")}
                       className="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 font-medium transition-colors"
                     >
-                      {t('common.back')}
+                      {t("common.back")}
                     </button>
                     <button
                       type="button"
@@ -943,10 +976,10 @@ export default function LoginPage() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             />
                           </svg>
-                          {t('auth.verifying')}
+                          {t("auth.verifying")}
                         </>
                       ) : (
-                        t('auth.verifyOtp')
+                        t("auth.verifyOtp")
                       )}
                     </button>
                   </div>
@@ -974,7 +1007,7 @@ export default function LoginPage() {
                           d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
                         />
                       </svg>
-                      {t('auth.newPassword')}
+                      {t("auth.newPassword")}
                     </label>
                     <input
                       id="new-password"
@@ -982,7 +1015,7 @@ export default function LoginPage() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       className="input-field"
-                      placeholder={t('auth.enterNewPasswordPlaceholder')}
+                      placeholder={t("auth.enterNewPasswordPlaceholder")}
                       minLength={6}
                       required
                     />
@@ -1006,7 +1039,7 @@ export default function LoginPage() {
                           d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                      {t('auth.confirmPassword')}
+                      {t("auth.confirmPassword")}
                     </label>
                     <input
                       id="confirm-password"
@@ -1014,13 +1047,13 @@ export default function LoginPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="input-field"
-                      placeholder={t('auth.reEnterNewPassword')}
+                      placeholder={t("auth.reEnterNewPassword")}
                       minLength={6}
                       required
                     />
                     {confirmPassword && newPassword !== confirmPassword && (
                       <p className="text-xs text-red-600 mt-1">
-                        {t('auth.passwordsDoNotMatch')}
+                        {t("auth.passwordsDoNotMatch")}
                       </p>
                     )}
                   </div>
@@ -1031,7 +1064,7 @@ export default function LoginPage() {
                       onClick={handleCancelForgotPassword}
                       className="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 font-medium transition-colors"
                     >
-                      {t('common.cancel')}
+                      {t("common.cancel")}
                     </button>
                     <button
                       type="button"
@@ -1062,10 +1095,10 @@ export default function LoginPage() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             />
                           </svg>
-                          {t('auth.resetting')}
+                          {t("auth.resetting")}
                         </>
                       ) : (
-                        t('auth.resetPassword')
+                        t("auth.resetPassword")
                       )}
                     </button>
                   </div>
@@ -1105,7 +1138,7 @@ export default function LoginPage() {
                       d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
                     />
                   </svg>
-                  {t('auth.emailAddress')}
+                  {t("auth.emailAddress")}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -1126,7 +1159,7 @@ export default function LoginPage() {
                   <input
                     id="email"
                     className="input-field pl-10"
-                    placeholder={t('auth.enterYourEmail')}
+                    placeholder={t("auth.enterYourEmail")}
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -1154,7 +1187,7 @@ export default function LoginPage() {
                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                     />
                   </svg>
-                  {t('auth.password')}
+                  {t("auth.password")}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -1175,7 +1208,7 @@ export default function LoginPage() {
                   <input
                     id="password"
                     className="input-field pl-10 pr-10"
-                    placeholder={t('auth.enterYourPassword')}
+                    placeholder={t("auth.enterYourPassword")}
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -1190,13 +1223,38 @@ export default function LoginPage() {
                     tabIndex={-1}
                   >
                     {showPassword ? (
-                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                        />
                       </svg>
                     ) : (
-                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <svg
+                        className="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
                       </svg>
                     )}
                   </button>
@@ -1250,7 +1308,7 @@ export default function LoginPage() {
                   onClick={() => setShowForgotPassword(true)}
                   className="text-sm font-medium text-brand hover:text-brand-600 transition-colors"
                 >
-                  {t('auth.forgotPassword')}
+                  {t("auth.forgotPassword")}
                 </button>
               </div>
 
@@ -1290,7 +1348,7 @@ export default function LoginPage() {
                     />
                   </svg>
                 )}
-                {loading ? t('common.loading') : t('common.login')}
+                {loading ? t("common.loading") : t("common.login")}
               </button>
 
               <div className="relative my-8">
@@ -1298,7 +1356,9 @@ export default function LoginPage() {
                   <div className="w-full border-t border-slate-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-slate-500">{t('auth.orContinueWith')}</span>
+                  <span className="px-4 bg-white text-slate-500">
+                    {t("auth.orContinueWith")}
+                  </span>
                 </div>
               </div>
               <button
@@ -1320,12 +1380,13 @@ export default function LoginPage() {
                   } catch (error) {
                     // console.error('Demo login error:', error)
                     setError(
-                      t('auth.demoModeFailed') + ": " +
-                      (error instanceof Error
-                        ? error.message
-                        : t('auth.unknownError'))
+                      t("auth.demoModeFailed") +
+                        ": " +
+                        (error instanceof Error
+                          ? error.message
+                          : t("auth.unknownError")),
                     );
-                    showToast(t('auth.demoLoginFailed'), "error");
+                    showToast(t("auth.demoLoginFailed"), "error");
                   } finally {
                     setLoading(false);
                   }
@@ -1338,7 +1399,7 @@ export default function LoginPage() {
                 >
                   <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm0-8a1 1 0 011 1v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H7a1 1 0 110-2h2V9a1 1 0 011-1z" />
                 </svg>
-                {t('auth.demoMode')}
+                {t("auth.demoMode")}
               </button>
             </form>
           )}
