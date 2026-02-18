@@ -308,4 +308,4 @@ const DoDWipingStandardBlog: React.FC = () => {
     );
 };
 
-export default React.memo(DoDWipingStandardBlog);
+export default DoDWipingStandardBlog;

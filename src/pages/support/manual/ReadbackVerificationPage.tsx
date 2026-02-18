@@ -45,4 +45,4 @@ const ReadbackVerificationPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(ReadbackVerificationPage);
+export default ReadbackVerificationPage;

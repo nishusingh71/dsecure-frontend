@@ -261,4 +261,4 @@ const CertifiedITADReasonsBlog: React.FC = () => {
 
 };
 
-export default React.memo(CertifiedITADReasonsBlog);
+export default CertifiedITADReasonsBlog;

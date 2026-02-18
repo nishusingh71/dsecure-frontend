@@ -120,7 +120,7 @@ const ITADChallengesBlog: React.FC = () => {
 
 };
 
-export default React.memo(ITADChallengesBlog);
+export default ITADChallengesBlog;
 
 
 

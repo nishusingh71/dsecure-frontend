@@ -297,4 +297,4 @@ const ErasureBestPracticesBlog: React.FC = () => {
   );
 };
 
-export default React.memo(ErasureBestPracticesBlog);
+export default ErasureBestPracticesBlog;

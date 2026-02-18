@@ -2,8 +2,12 @@ import React from 'react';
 
 // Performance optimization utilities
 export const preloadCriticalResources = () => {
-  // Inter font is now self-hosted via /public/fonts/ and loaded via CSS @font-face
-  // No external Google Fonts request needed
+  // Load fonts directly instead of preloading
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+  fontLink.crossOrigin = 'anonymous';
+  document.head.appendChild(fontLink);
 };
 
 // Optimize images with WebP support
@@ -68,13 +72,18 @@ export const inlineCriticalCSS = (css: string) => {
 // Resource hints
 export const addResourceHints = () => {
   const hints = [
+    { rel: 'dns-prefetch', href: '//fonts.googleapis.com' },
     { rel: 'dns-prefetch', href: '//res.cloudinary.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' }
   ];
 
   hints.forEach(hint => {
     const link = document.createElement('link');
     link.rel = hint.rel;
     link.href = hint.href;
+    if (hint.crossOrigin) {
+      link.crossOrigin = hint.crossOrigin;
+    }
     document.head.appendChild(link);
   });
 };

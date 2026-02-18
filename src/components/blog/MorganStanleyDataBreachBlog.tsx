@@ -264,4 +264,4 @@ const MorganStanleyDataBreachBlog: React.FC = () => {
 
 };
 
-export default React.memo(MorganStanleyDataBreachBlog);
+export default MorganStanleyDataBreachBlog;

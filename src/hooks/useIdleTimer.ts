@@ -1,88 +1,87 @@
 import { useEffect, useRef, useCallback } from 'react';
 
-export interface UseIdleTimerOptions {
-  timeout?: number;
-  onIdle: () => void;
-  isActive?: boolean;
-  events?: string[];
-}
-
 /**
- * Hook to detect user inactivity and trigger a callback.
- * Uses a polling mechanism (setInterval) to be robust against browser throttling.
+ * Hook to detect user inactivity and trigger a callback
+ * @param timeout Timeout in milliseconds (default: 15 minutes)
+ * @param onIdle Callback function to execute when user is idle
+ * @param isActive Whether the timer should be active (e.g., only when logged in)
  */
-export function useIdleTimer({
-  timeout = 15 * 60 * 1000,
-  onIdle,
-  isActive = true,
-  events = [
-    'mousedown',
-    'keydown',
-    'keypress',
-    'scroll',
-    'touchstart',
-    'click',
-    // Note: 'mousemove' is intentionally excluded by default to prevent 
-    // "phantom" activity (e.g. slight vibrations) from keeping the session alive.
-    // If needed, it can be passed in via the 'events' prop.
-  ]
-}: UseIdleTimerOptions) {
+export function useIdleTimer(
+  timeout: number = 15 * 60 * 1000, 
+  onIdle: () => void,
+  isActive: boolean = true
+) {
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const lastActivityRef = useRef<number>(Date.now());
-  const onIdleRef = useRef(onIdle);
 
-  // Keep onIdle fresh without restarting the effect
-  useEffect(() => {
-    onIdleRef.current = onIdle;
-  }, [onIdle]);
-
-  const updateActivity = useCallback(() => {
-    lastActivityRef.current = Date.now();
-  }, []);
-
-  useEffect(() => {
+  const resetTimer = useCallback(() => {
     if (!isActive) return;
-
-    // Set initial activity
+    
     lastActivityRef.current = Date.now();
+    
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    
+    timerRef.current = setTimeout(() => {
+      onIdle();
+    }, timeout);
+  }, [isActive, timeout, onIdle]);
 
-    // Polling interval to check for inactivity
-    // Checking every 5 seconds is frequent enough for a 15 min timeout
-    const intervalId = setInterval(() => {
-      const now = Date.now();
-      const timeSinceLastActivity = now - lastActivityRef.current;
-
-      if (timeSinceLastActivity >= timeout) {
-        onIdleRef.current();
-        // Reset activity so we don't spam the callback immediately again? 
-        // Or maybe we rely on the callback to handle logic (like logging out which changes isActive)
-        // Let's verify: usually if onIdle logs out, isActive becomes false.
+  useEffect(() => {
+    if (!isActive) {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
       }
-    }, 5000); 
+      return;
+    }
 
-    // Event listeners to update activity timestamp
-    const handleEvent = () => {
-      // Simple throttling: only update if > 1s has passed since last update
-      // to avoid spamming the ref update (though refs are cheap)
-      const now = Date.now();
-      if (now - lastActivityRef.current > 1000) {
-        updateActivity();
+    // Events that reset the timer
+    const events = [
+      'mousemove', 
+      'mousedown', 
+      'keypress', 
+      'DOMMouseScroll', 
+      'mousewheel', 
+      'touchmove', 
+      'MSPointerMove',
+      'click',
+      'scroll'
+    ];
+
+    // Throttle the event listener to avoid performance issues
+    let throttleTimeout: NodeJS.Timeout | null = null;
+    
+    const handleActivity = () => {
+      if (!throttleTimeout) {
+        resetTimer();
+        throttleTimeout = setTimeout(() => {
+          throttleTimeout = null;
+        }, 1000); // Throttle to once per second
       }
     };
 
+    // Attach listeners
     events.forEach(event => {
-      window.addEventListener(event, handleEvent);
+      window.addEventListener(event, handleActivity);
     });
 
+    // Initial start
+    resetTimer();
+
+    // Cleanup
     return () => {
-      clearInterval(intervalId);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+      if (throttleTimeout) {
+        clearTimeout(throttleTimeout);
+      }
       events.forEach(event => {
-        window.removeEventListener(event, handleEvent);
+        window.removeEventListener(event, handleActivity);
       });
     };
-  }, [isActive, timeout, updateActivity, events]);
+  }, [isActive, resetTimer]);
 
-  return { 
-    resetTimer: updateActivity,
-    getLastActivity: () => lastActivityRef.current
-  };
+  return { resetTimer };
 }

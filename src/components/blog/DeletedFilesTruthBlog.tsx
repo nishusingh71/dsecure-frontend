@@ -305,4 +305,4 @@ const DeletedFilesTruthBlog: React.FC = () => {
     );
 };
 
-export default React.memo(DeletedFilesTruthBlog);
+export default DeletedFilesTruthBlog;

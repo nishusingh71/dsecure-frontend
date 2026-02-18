@@ -264,4 +264,4 @@ const SecureITAssetDisposalBlog: React.FC = () => {
 
 };
 
-export default React.memo(SecureITAssetDisposalBlog);
+export default SecureITAssetDisposalBlog;

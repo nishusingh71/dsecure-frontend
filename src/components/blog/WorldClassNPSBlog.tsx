@@ -314,7 +314,7 @@ const WorldClassNPSBlog: React.FC = () => {
     );
 };
 
-export default React.memo(WorldClassNPSBlog);
+export default WorldClassNPSBlog;
 
 
 

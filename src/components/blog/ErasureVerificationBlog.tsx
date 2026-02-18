@@ -292,7 +292,7 @@ const ErasureVerificationBlog: React.FC = () => {
     );
 };
 
-export default React.memo(ErasureVerificationBlog);
+export default ErasureVerificationBlog;
 
 
 

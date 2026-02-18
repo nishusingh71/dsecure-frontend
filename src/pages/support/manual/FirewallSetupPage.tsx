@@ -10,11 +10,10 @@ const FirewallSetupPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-firewall-setup")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Firewall Setup | D-Secure Network Protection Configuration</title>
         <meta name="description" content="Customize network traffic permissions and firewall settings for optimal D-Secure protection." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -166,4 +165,4 @@ const FirewallSetupPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(FirewallSetupPage);
+export default FirewallSetupPage;

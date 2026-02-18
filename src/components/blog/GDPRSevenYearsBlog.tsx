@@ -299,7 +299,7 @@ const GDPRSevenYearsBlog: React.FC = () => {
     );
 };
 
-export default React.memo(GDPRSevenYearsBlog);
+export default GDPRSevenYearsBlog;
 
 
 

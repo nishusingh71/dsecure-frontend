@@ -288,7 +288,7 @@ const DigitalProtectionSolutions: React.FC = () => {
                     {
                       industry: "Healthcare",
                       desc: "Protecting patient data and medical records with HIPAA-compliant solutions, ensuring confidentiality whilst enabling seamless care delivery.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093103/cp7t7nascrxgvlbjxj7t.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093103/cp7t7nascrxgvlbjxj7t.jpg",
                     },
                     {
                       industry: "Financial Services",
@@ -298,12 +298,12 @@ const DigitalProtectionSolutions: React.FC = () => {
                     {
                       industry: "Education",
                       desc: "Securing student data and institutional systems whilst maintaining accessibility for learning and research activities.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093103/fqyls0ledhjwmgoph0bq.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093103/fqyls0ledhjwmgoph0bq.jpg",
                     },
                     {
                       industry: "E-Commerce",
                       desc: "Protecting customer transactions and business data, building trust and ensuring compliance with payment security standards.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093292/c3s2iz7zd1g5qmnpkw6d.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093292/c3s2iz7zd1g5qmnpkw6d.jpg",
                     },
                   ].map((application, i) => (
                     <div
@@ -388,10 +388,7 @@ const DigitalProtectionSolutions: React.FC = () => {
                   {/* <button className="bg-white text-slate-800 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors">
                     Schedule Consultation
                   </button> */}
-                  <Link
-                    to={"/contact"}
-                    className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
-                  >
+                  <Link to={'/contact'} className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
                     Request Demo
                   </Link>
                   {/* <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">

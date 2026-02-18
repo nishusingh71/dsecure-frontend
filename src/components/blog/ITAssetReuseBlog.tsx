@@ -168,7 +168,7 @@ const ITAssetReuseBlog: React.FC = () => {
 
 };
 
-export default React.memo(ITAssetReuseBlog);
+export default ITAssetReuseBlog;
 
 
 

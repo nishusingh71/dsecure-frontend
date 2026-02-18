@@ -249,4 +249,4 @@ const MediaSanitizationNeedBlog: React.FC = () => {
     );
 };
 
-export default React.memo(MediaSanitizationNeedBlog);
+export default MediaSanitizationNeedBlog;

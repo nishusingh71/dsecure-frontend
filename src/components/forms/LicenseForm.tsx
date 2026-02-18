@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { useForm, validationRules } from "@/hooks";
 import { useEnhancedForm, formConfigurations, showGlobalToast, FORMSUBMIT_ENDPOINT } from "@/utils/enhancedFormSystem";
-import GlobalTimezone from "@/components/GlobalTimezone";
 
 // Form input components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -13,16 +12,7 @@ const FormInput: React.FC<{
   placeholder: string;
   required?: boolean;
   hasError?: boolean;
-}> = ({
-  type,
-  name,
-  value,
-  onChange,
-  className,
-  placeholder,
-  required,
-  hasError,
-}) => (
+}> = ({ type, name, value, onChange, className, placeholder, required, hasError }) => (
   <input
     type={type}
     name={name}
@@ -91,9 +81,9 @@ const FormRadio: React.FC<{
 );
 
 // Modal wrapper component - moved outside to prevent recreation on every render
-const ModalWrapper: React.FC<{
-  isModal: boolean;
-  children: React.ReactNode;
+const ModalWrapper: React.FC<{ 
+  isModal: boolean; 
+  children: React.ReactNode 
 }> = ({ isModal, children }) => {
   if (!isModal) return <>{children}</>;
 
@@ -153,7 +143,7 @@ export const defaultLicenseFormData: LicenseFormData = {
 export const licenseValidationRules = {
   fullName: [validationRules.required("Full Name")],
   email: [validationRules.required("Email"), validationRules.email()],
-  phone: [validationRules.phone()], // Added phone validation
+  phone: [validationRules.phone()],  // Added phone validation
   company: [validationRules.required("Company")],
   country: [validationRules.required("Country")],
   eraseOption: [validationRules.required("Erase Option")],
@@ -196,125 +186,62 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
         licenseForm.resetForm();
       },
       onError: (error: any) => {
-        console.error("License form submission error:", error);
-        showGlobalToast(
-          "Failed to submit license request. Please try again.",
-          "error",
-        );
-      },
-    },
+        console.error('License form submission error:', error);
+        showGlobalToast('Failed to submit license request. Please try again.', 'error');
+      }
+    }
   );
 
   // Handle form submission
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
 
-      // Validate form first
-      const isValid = licenseForm.validateForm(licenseValidationRules);
-      if (!isValid) {
-        showGlobalToast(
-          "Please fix the form errors before submitting.",
-          "error",
-        );
-        return;
-      }
+    // Validate form first
+    const isValid = licenseForm.validateForm(licenseValidationRules);
+    if (!isValid) {
+      showGlobalToast('Please fix the form errors before submitting.', 'error');
+      return;
+    }
 
-      // Submit using enhanced form system with toast notifications
-      const success = await submitForm(licenseForm.formData);
-      if (!success) {
-        showGlobalToast("Please check your inputs and try again.", "error");
-      }
-    },
-    [licenseForm, submitForm],
-  );
+    // Submit using enhanced form system with toast notifications
+    const success = await submitForm(licenseForm.formData);
+    if (!success) {
+      showGlobalToast('Please check your inputs and try again.', 'error');
+    }
+  }, [licenseForm, submitForm]);
 
   // Memoized country options
-  const countryOptions = useMemo(
-    () => [
-      "United States",
-      "United Kingdom",
-      "Canada",
-      "Australia",
-      "Germany",
-      "France",
-      "India",
-      "China",
-      "Japan",
-      "South Korea",
-      "Singapore",
-      "Netherlands",
-      "Switzerland",
-      "Sweden",
-      "Norway",
-      "Denmark",
-      "Italy",
-      "Spain",
-      "Brazil",
-      "Mexico",
-      "Russia",
-      "Turkey",
-      "South Africa",
-      "United Arab Emirates",
-      "Saudi Arabia",
-      "Hong Kong",
-      "Other",
-    ],
-    [],
-  );
+  const countryOptions = useMemo(() => [
+    "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
+    "India", "China", "Japan", "South Korea", "Singapore", "Netherlands",
+    "Switzerland", "Sweden", "Norway", "Denmark", "Italy", "Spain", "Brazil",
+    "Mexico", "Russia", "Turkey", "South Africa", "United Arab Emirates",
+    "Saudi Arabia", "Hong Kong", "Other"
+  ], []);
 
   // Memoized business type options
-  const businessTypeOptions = useMemo(
-    () => [
-      "Technology/Software",
-      "Healthcare",
-      "Finance/Banking",
-      "Education",
-      "Government",
-      "Manufacturing",
-      "Retail",
-      "Consulting",
-      "Non-profit",
-      "Legal",
-      "Real Estate",
-      "Other",
-    ],
-    [],
-  );
+  const businessTypeOptions = useMemo(() => [
+    "Technology/Software", "Healthcare", "Finance/Banking", "Education",
+    "Government", "Manufacturing", "Retail", "Consulting", "Non-profit",
+    "Legal", "Real Estate", "Other"
+  ], []);
 
   // Memoized compliance options
-  const complianceOptions = useMemo(
-    () => [
-      "GDPR",
-      "HIPAA",
-      "SOX",
-      "PCI DSS",
-      "ISO 27001",
-      "Other",
-      "Not Required",
-    ],
-    [],
-  );
+  const complianceOptions = useMemo(() => [
+    "GDPR", "HIPAA", "SOX", "PCI DSS", "ISO 27001", "Other", "Not Required"
+  ], []);
 
   // Memoized erase options
-  const eraseOptions = useMemo(
-    () => [
-      "DoD 5220.22-M (3-pass)",
-      "DoD 5220.22-M (7-pass)",
-      "NIST 800-88",
-      "Gutmann (35-pass)",
-      "Random Data (1-pass)",
-      "Zero Fill (1-pass)",
-      "Custom Pattern",
-    ],
-    [],
-  );
+  const eraseOptions = useMemo(() => [
+    "DoD 5220.22-M (3-pass)", "DoD 5220.22-M (7-pass)", "NIST 800-88",
+    "Gutmann (35-pass)", "Random Data (1-pass)", "Zero Fill (1-pass)",
+    "Custom Pattern"
+  ], []);
 
   // Memoized device count options
-  const deviceCountOptions = useMemo(
-    () => ["1-10", "11-50", "51-100", "101-500", "501-1000", "1000+"],
-    [],
-  );
+  const deviceCountOptions = useMemo(() => [
+    "1-10", "11-50", "51-100", "101-500", "501-1000", "1000+"
+  ], []);
 
   return (
     <ModalWrapper isModal={isModal}>
@@ -350,9 +277,6 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
           >
             {/* Usage Type */}
             <div className="text-center mb-8">
-              {/* <div className="mb-6 text-left">
-                <GlobalTimezone />
-              </div> */}
               {/* <label className="block text-lg font-semibold text-gray-700 mb-4">Usage:</label> */}
               <div className="flex items-center justify-center gap-8">
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -474,7 +398,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
               >
                 <option value="">Business Type</option>
-                {businessTypeOptions.map((option) => (
+                {businessTypeOptions.map(option => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -614,6 +538,8 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
               )}
             </div>
 
+
+
             {/* Privacy Policy */}
             {showPrivacyPolicy && (
               <div className="text-sm text-gray-600">
@@ -634,7 +560,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 disabled={formState.isSubmitting}
                 className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 disabled:cursor-not-allowed text-white py-4 px-6 rounded-lg transition-all duration-300 font-bold text-lg"
               >
-                {formState.isSubmitting ? "Submitting..." : submitButtonText}
+                {formState.isSubmitting ? 'Submitting...' : submitButtonText}
               </button>
               <p className="text-sm text-gray-500 mt-2 text-center">
                 *Required

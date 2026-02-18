@@ -151,4 +151,4 @@ const NCUAThirdPartyDataDisposalBlog: React.FC = () => {
   );
 };
 
-export default React.memo(NCUAThirdPartyDataDisposalBlog);
+export default NCUAThirdPartyDataDisposalBlog;

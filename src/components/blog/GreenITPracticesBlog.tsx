@@ -165,7 +165,7 @@ const GreenITPracticesBlog: React.FC = () => {
 
 };
 
-export default React.memo(GreenITPracticesBlog);
+export default GreenITPracticesBlog;
 
 
 

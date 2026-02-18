@@ -272,7 +272,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-physical-destruction")} />
-      {/* <Helmet>
+      <Helmet>
         <link
           rel="canonical"
           href="https://dsecuretech.com/support/physical-destruction"
@@ -289,8 +289,7 @@ const PhysicalDestructionPage: React.FC = memo(() => {
           content="physical destruction, data destruction, degaussing, shredding, crushing, incineration, data disposal"
         />
         <meta name="robots" content="index, follow" />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -954,4 +953,4 @@ const PhysicalDestructionPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(PhysicalDestructionPage);
+export default PhysicalDestructionPage;

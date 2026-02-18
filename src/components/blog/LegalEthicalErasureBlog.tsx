@@ -178,7 +178,7 @@ const LegalEthicalErasureBlog: React.FC = () => {
 
 };
 
-export default React.memo(LegalEthicalErasureBlog);
+export default LegalEthicalErasureBlog;
 
 
 

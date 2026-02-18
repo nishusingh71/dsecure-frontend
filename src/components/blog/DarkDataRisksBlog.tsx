@@ -303,4 +303,4 @@ const DarkDataRisksBlog: React.FC = () => {
 
 };
 
-export default React.memo(DarkDataRisksBlog);
+export default DarkDataRisksBlog;

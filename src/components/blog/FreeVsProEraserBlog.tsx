@@ -256,4 +256,4 @@ const FreeVsProEraserBlog: React.FC = () => {
 
 };
 
-export default React.memo(FreeVsProEraserBlog);
+export default FreeVsProEraserBlog;

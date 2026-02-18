@@ -270,7 +270,7 @@ const MarriottSettlementBlog: React.FC = () => {
     );
 };
 
-export default React.memo(MarriottSettlementBlog);
+export default MarriottSettlementBlog;
 
 
 

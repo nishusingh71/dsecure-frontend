@@ -324,4 +324,4 @@ const SecureFileEraseBlog: React.FC = () => {
 
 };
 
-export default React.memo(SecureFileEraseBlog);
+export default SecureFileEraseBlog;

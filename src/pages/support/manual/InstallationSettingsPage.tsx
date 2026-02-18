@@ -94,4 +94,4 @@ const InstallationSettingsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(InstallationSettingsPage);
+export default InstallationSettingsPage;

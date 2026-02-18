@@ -309,11 +309,10 @@ function PricingPageContent() {
         <div className="mt-5 container-app bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl p-8 md:p-12 mb-12">
           <div className="text-center">
             <h2 className="text-3xl font-bold mb-4">
-              🎉 {t("home.enterpriseTrialTitle")}
+              🎉 {t('home.enterpriseTrialTitle')}
             </h2>
             <p className="text-xl mb-6 opacity-90">
-              {t("home.enterpriseTrialSubtitle")} -{" "}
-              {t("home.enterpriseTrialNote")}
+              {t('home.enterpriseTrialSubtitle')} - {t('home.enterpriseTrialNote')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -326,7 +325,7 @@ function PricingPageContent() {
                 to="/contact"
                 className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
               >
-                {t("home.enterpriseTrialContact")}
+                {t('home.enterpriseTrialContact')}
               </Link>
             </div>
           </div>
@@ -342,7 +341,7 @@ function PricingPageContent() {
             <div className="inline-flex items-center gap-3 bg-white/60 backdrop-blur-sm px-6 py-3 rounded-full border border-white/40 mb-6">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm font-medium text-slate-700 uppercase tracking-wider">
-                {t("products.feature")}
+                {t('products.feature')}
               </span>
             </div>
 
@@ -350,7 +349,7 @@ function PricingPageContent() {
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 <span>
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
                     alt=""
                     className="w-10 h-10 inline-block -mt-1"
                   />
@@ -365,14 +364,12 @@ function PricingPageContent() {
             </h2>
 
             <p className="text-lg text-slate-600 max-w-4xl mx-auto leading-relaxed">
-              Comprehensive comparison of all data erasure features across our
-              complete product lineup. Explore detailed capabilities, platform
-              support, enterprise-grade security features, and compliance
-              standards for device, network, and cloud erasure solutions.
+              Comprehensive comparison of all data erasure features across our complete product lineup.
+              Explore detailed capabilities, platform support, enterprise-grade security features,
+              and compliance standards for device, network, and cloud erasure solutions.
               <br />
               <span className="text-purple-600 font-medium">
-                Professional data sanitization with verifiable compliance
-                reporting • Custom enterprise pricing available
+                Professional data sanitization with verifiable compliance reporting • Custom enterprise pricing available
               </span>
             </p>
 
@@ -502,9 +499,7 @@ function PricingPageContent() {
                           </th>
                           <th className="text-center p-3 xl:p-4 font-semibold text-slate-900 min-w-[120px] bg-gradient-to-r from-purple-50 to-purple-100 border-l-2 border-purple-200">
                             <div className="flex flex-col items-center">
-                              <span className="text-purple-800">
-                                Enterprise
-                              </span>
+                              <span className="text-purple-800">Enterprise</span>
                               <span className="text-xs text-purple-600 font-normal">
                                 Premium
                               </span>
@@ -521,42 +516,42 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-lite",
+                              "windows-lite"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-basic",
+                              "windows-basic"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-standard",
+                              "windows-standard"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-pro",
+                              "windows-pro"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-premium",
+                              "windows-premium"
                             )}
                           </td>
                           <td className="text-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 border-l-2 border-purple-200">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-enterprise",
+                              "windows-enterprise"
                             )}
                           </td>
                         </tr>
@@ -568,42 +563,42 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "🚫",
                               "legend-not-included",
-                              "linux-lite",
+                              "linux-lite"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-basic",
+                              "linux-basic"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-standard",
+                              "linux-standard"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-pro",
+                              "linux-pro"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-premium",
+                              "linux-premium"
                             )}
                           </td>
                           <td className="text-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 border-l-2 border-purple-200">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-enterprise",
+                              "linux-enterprise"
                             )}
                           </td>
                         </tr>
@@ -615,42 +610,42 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "🚫",
                               "legend-not-included",
-                              "macos-lite",
+                              "macos-lite"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-basic",
+                              "macos-basic"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-standard",
+                              "macos-standard"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-pro",
+                              "macos-pro"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-premium",
+                              "macos-premium"
                             )}
                           </td>
                           <td className="text-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 border-l-2 border-purple-200">
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-enterprise",
+                              "macos-enterprise"
                             )}
                           </td>
                         </tr>
@@ -662,42 +657,42 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-lite",
+                              "multilang-lite"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-basic",
+                              "multilang-basic"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-standard",
+                              "multilang-standard"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-pro",
+                              "multilang-pro"
                             )}
                           </td>
                           <td className="text-center p-4">
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-premium",
+                              "multilang-premium"
                             )}
                           </td>
                           <td className="text-center p-3 xl:p-4 bg-gradient-to-r from-purple-50 to-purple-100 border-l-2 border-purple-200">
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-enterprise",
+                              "multilang-enterprise"
                             )}
                           </td>
                         </tr>
@@ -717,14 +712,12 @@ function PricingPageContent() {
                     <div className="p-4">
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Base
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Base</div>
                           <div>
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-lite-mobile",
+                              "windows-lite-mobile"
                             )}
                           </div>
                         </div>
@@ -736,19 +729,17 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-basic-mobile",
+                              "windows-basic-mobile"
                             )}
                           </div>
                         </div>
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Cloud
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Cloud</div>
                           <div>
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-standard-mobile",
+                              "windows-standard-mobile"
                             )}
                           </div>
                         </div>
@@ -760,7 +751,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-pro-mobile",
+                              "windows-pro-mobile"
                             )}
                           </div>
                         </div>
@@ -770,7 +761,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-premium-mobile",
+                              "windows-premium-mobile"
                             )}
                           </div>
                         </div>
@@ -782,7 +773,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "windows-enterprise-mobile",
+                              "windows-enterprise-mobile"
                             )}
                           </div>
                         </div>
@@ -799,14 +790,12 @@ function PricingPageContent() {
                     <div className="p-4">
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Base
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Base</div>
                           <div>
                             {addLegendTooltip(
                               "🚫",
                               "legend-not-included",
-                              "linux-lite-mobile",
+                              "linux-lite-mobile"
                             )}
                           </div>
                         </div>
@@ -818,19 +807,17 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-basic-mobile",
+                              "linux-basic-mobile"
                             )}
                           </div>
                         </div>
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Cloud
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Cloud</div>
                           <div>
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-standard-mobile",
+                              "linux-standard-mobile"
                             )}
                           </div>
                         </div>
@@ -842,7 +829,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-pro-mobile",
+                              "linux-pro-mobile"
                             )}
                           </div>
                         </div>
@@ -852,7 +839,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-premium-mobile",
+                              "linux-premium-mobile"
                             )}
                           </div>
                         </div>
@@ -864,7 +851,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "linux-enterprise-mobile",
+                              "linux-enterprise-mobile"
                             )}
                           </div>
                         </div>
@@ -881,14 +868,12 @@ function PricingPageContent() {
                     <div className="p-4">
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Base
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Base</div>
                           <div>
                             {addLegendTooltip(
                               "🚫",
                               "legend-not-included",
-                              "macos-lite-mobile",
+                              "macos-lite-mobile"
                             )}
                           </div>
                         </div>
@@ -900,19 +885,17 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-basic-mobile",
+                              "macos-basic-mobile"
                             )}
                           </div>
                         </div>
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Cloud
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Cloud</div>
                           <div>
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-standard-mobile",
+                              "macos-standard-mobile"
                             )}
                           </div>
                         </div>
@@ -924,7 +907,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-pro-mobile",
+                              "macos-pro-mobile"
                             )}
                           </div>
                         </div>
@@ -934,7 +917,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-premium-mobile",
+                              "macos-premium-mobile"
                             )}
                           </div>
                         </div>
@@ -946,7 +929,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "✅",
                               "legend-included",
-                              "macos-enterprise-mobile",
+                              "macos-enterprise-mobile"
                             )}
                           </div>
                         </div>
@@ -963,14 +946,12 @@ function PricingPageContent() {
                     <div className="p-4">
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Base
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Base</div>
                           <div>
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-lite-mobile",
+                              "multilang-lite-mobile"
                             )}
                           </div>
                         </div>
@@ -982,19 +963,17 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-basic-mobile",
+                              "multilang-basic-mobile"
                             )}
                           </div>
                         </div>
                         <div className="text-center p-3 bg-slate-50 rounded-lg">
-                          <div className="text-xs text-slate-600 mb-1">
-                            Cloud
-                          </div>
+                          <div className="text-xs text-slate-600 mb-1">Cloud</div>
                           <div>
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-standard-mobile",
+                              "multilang-standard-mobile"
                             )}
                           </div>
                         </div>
@@ -1006,7 +985,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-pro-mobile",
+                              "multilang-pro-mobile"
                             )}
                           </div>
                         </div>
@@ -1016,7 +995,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-premium-mobile",
+                              "multilang-premium-mobile"
                             )}
                           </div>
                         </div>
@@ -1028,7 +1007,7 @@ function PricingPageContent() {
                             {addLegendTooltip(
                               "⏳",
                               "legend-coming-soon",
-                              "multilang-enterprise-mobile",
+                              "multilang-enterprise-mobile"
                             )}
                           </div>
                         </div>
@@ -1121,50 +1100,49 @@ function PricingPageContent() {
                       <tr className="border-b border-slate-100 hover:bg-slate-50">
                         <td className="p-4 font-medium text-slate-900">
                           <span>
-                            30+ International Algorithms (SSD Trim, Crypto
-                            Erase)
+                            30+ International Algorithms (SSD Trim, Crypto Erase)
                           </span>
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "algorithms-lite",
+                            "algorithms-lite"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "algorithms-basic",
+                            "algorithms-basic"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "algorithms-standard",
+                            "algorithms-standard"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "algorithms-pro",
+                            "algorithms-pro"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "algorithms-premium",
+                            "algorithms-premium"
                           )}
                         </td>
                         <td className="text-center p-4 bg-purple-50">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "algorithms-enterprise",
+                            "algorithms-enterprise"
                           )}
                         </td>
                       </tr>
@@ -1176,51 +1154,49 @@ function PricingPageContent() {
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "file-folder-lite",
+                            "file-folder-lite"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "file-folder-basic",
+                            "file-folder-basic"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "file-folder-standard",
+                            "file-folder-standard"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "file-folder-pro",
+                            "file-folder-pro"
                           )}
                         </td>
                         <td className="text-center p-4">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "file-folder-premium",
+                            "file-folder-premium"
                           )}
                         </td>
                         <td className="text-center p-4 bg-purple-50">
                           {addLegendTooltip(
                             "✅",
                             "legend-included",
-                            "file-folder-enterprise",
+                            "file-folder-enterprise"
                           )}
                         </td>
                       </tr>
                       <tr className="border-b border-slate-100 hover:bg-slate-50">
                         <td className="p-4 font-medium text-slate-900 relative">
                           <div className="flex items-center gap-2">
-                            <span>
-                              Erase Traces (Browser, System, App data)
-                            </span>
+                            <span>Erase Traces (Browser, System, App data)</span>
                             <div
                               className="relative"
                               onMouseEnter={() => showTooltip("erase-traces")}
@@ -1339,9 +1315,7 @@ function PricingPageContent() {
                             <span>Scheduled Erase</span>
                             <div
                               className="relative"
-                              onMouseEnter={() =>
-                                showTooltip("scheduled-erase")
-                              }
+                              onMouseEnter={() => showTooltip("scheduled-erase")}
                               onMouseLeave={hideTooltip}
                             >
                               <span className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full text-xs flex items-center justify-center cursor-help">
@@ -1623,9 +1597,7 @@ function PricingPageContent() {
                             <span>Audit-Grade Regulatory Documents</span>
                             <div
                               className="relative"
-                              onMouseEnter={() =>
-                                showTooltip("compliance-certs")
-                              }
+                              onMouseEnter={() => showTooltip("compliance-certs")}
                               onMouseLeave={hideTooltip}
                             >
                               <span className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full text-xs flex items-center justify-center cursor-help">
@@ -1819,14 +1791,10 @@ function PricingPageContent() {
                       <tr className="border-b border-slate-100 hover:bg-slate-50">
                         <td className="p-4 font-medium text-slate-900 relative">
                           <div className="flex items-center gap-2">
-                            <span>
-                              Custom Installer (auto-register machine)
-                            </span>
+                            <span>Custom Installer (auto-register machine)</span>
                             <div
                               className="relative"
-                              onMouseEnter={() =>
-                                showTooltip("custom-installer")
-                              }
+                              onMouseEnter={() => showTooltip("custom-installer")}
                               onMouseLeave={hideTooltip}
                             >
                               <span className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full text-xs flex items-center justify-center cursor-help">
@@ -1929,9 +1897,7 @@ function PricingPageContent() {
                             <span>Multi-Level User Logs</span>
                             <div
                               className="relative"
-                              onMouseEnter={() =>
-                                showTooltip("multi-level-logs")
-                              }
+                              onMouseEnter={() => showTooltip("multi-level-logs")}
                               onMouseLeave={hideTooltip}
                             >
                               <span className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full text-xs flex items-center justify-center cursor-help">
@@ -1959,9 +1925,7 @@ function PricingPageContent() {
                             <span>White-Label Dashboard</span>
                             <div
                               className="relative"
-                              onMouseEnter={() =>
-                                showTooltip("white-label-dash")
-                              }
+                              onMouseEnter={() => showTooltip("white-label-dash")}
                               onMouseLeave={hideTooltip}
                             >
                               <span className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full text-xs flex items-center justify-center cursor-help">
@@ -2102,9 +2066,7 @@ function PricingPageContent() {
                             <span>Additional Volume Erasure Licenses</span>
                             <div
                               className="relative"
-                              onMouseEnter={() =>
-                                showTooltip("volume-licenses")
-                              }
+                              onMouseEnter={() => showTooltip("volume-licenses")}
                               onMouseLeave={hideTooltip}
                             >
                               <span className="w-4 h-4 bg-blue-100 text-blue-600 rounded-full text-xs flex items-center justify-center cursor-help">
@@ -2350,8 +2312,8 @@ function PricingPageContent() {
                 🎉 Limited Time: 14-Day Enterprise Trial
               </h2>
               <p className="text-xl mb-6 opacity-90">
-                Test all Enterprise features FREE on 1 device - No credit card,
-                No purchase required
+                Test all Enterprise features FREE on 1 device - No credit card, No
+                purchase required
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link

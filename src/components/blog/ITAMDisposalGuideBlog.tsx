@@ -298,4 +298,4 @@ const ITAMDisposalGuideBlog: React.FC = () => {
   );
 };
 
-export default React.memo(ITAMDisposalGuideBlog);
+export default ITAMDisposalGuideBlog;

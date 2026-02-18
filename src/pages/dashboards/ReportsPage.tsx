@@ -30,159 +30,115 @@ const ReportsPage: React.FC = () => {
   }, [])
 
   const loadReportsData = async () => {
-    setLoading(true);
+    setLoading(true)
 
     // ✅ DEMO MODE GUARD: Use static data in demo mode
     if (isDemoMode()) {
-      setReports(DEMO_REPORTS as Report[]);
-      setLoading(false);
-      return;
+      setReports(DEMO_REPORTS as Report[])
+      setLoading(false)
+      return
     }
 
-    // [PERF-FIX] Commented out — /reports endpoint does not exist (404)
-    // Reports are available via AdminReports page using real /api/EnhancedAuditReports endpoint
-    // try {
-    //   const response = await AdminDashboardAPI.getReports()
-    //   if (response.success) {
-    //     setReports(response.data)
-    //   } else {
-    //     throw new Error(response.error || 'Failed to load reports')
-    //   }
-    // } catch (error) {
-    //   devError('Error loading reports:', error)
-    //   showError('Data Loading Error', 'Failed to load report data. Using default values.')
-    // } finally {
-    //   setLoading(false)
-    // }
-    setLoading(false);
-  };
+    try {
+      const response = await AdminDashboardAPI.getReports()
+      if (response.success) {
+        setReports(response.data)
+      } else {
+        throw new Error(response.error || 'Failed to load reports')
+      }
+    } catch (error) {
+      devError('Error loading reports:', error)
+      showError('Data Loading Error', 'Failed to load report data. Using default values.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  const filteredReports = reports.filter((report) => {
-    const matchesTab = activeTab === "all" || report.status === activeTab;
-    const matchesSearch =
-      report.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+
+
+  const filteredReports = reports.filter(report => {
+    const matchesTab = activeTab === 'all' || report.status === activeTab
+    const matchesSearch = report.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       report.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      report.method.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesTab && matchesSearch;
-  });
+      report.method.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesTab && matchesSearch
+  })
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800";
-      case "running":
-        return "bg-blue-100 text-blue-800";
-      case "failed":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
+      case 'completed': return 'bg-green-100 text-green-800'
+      case 'running': return 'bg-blue-100 text-blue-800'
+      case 'failed': return 'bg-red-100 text-red-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "completed":
+      case 'completed':
         return (
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-        );
-      case "running":
+        )
+      case 'running':
         return (
-          <svg
-            className="w-4 h-4 animate-spin"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
+          <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-        );
-      case "failed":
+        )
+      case 'failed':
         return (
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const downloadReport = async (reportId: string) => {
     // ✅ DEMO MODE GUARD: Show info in demo mode
     if (isDemoMode()) {
-      showSuccess(`Demo: Report ${reportId} download simulated`);
-      return;
+      showSuccess(`Demo: Report ${reportId} download simulated`)
+      return
     }
 
-    // [PERF-FIX] Commented out — /reports/{id}/download endpoint does not exist (404)
-    // try {
-    //   const response = await AdminDashboardAPI.downloadReport(reportId)
-    //   if (response.success) {
-    //     showSuccess(`Report ${reportId} download initiated`)
-    //   } else {
-    //     throw new Error(response.error || 'Download failed')
-    //   }
-    // } catch (error) {
-    //   devError('Error downloading report:', error)
-    //   showError('Download Failed', 'Failed to download report. Please try again.')
-    // }
-    showError(
-      "Not Available",
-      "Report download is not available. Use the Reports tab in Dashboard instead.",
-    );
-  };
+    try {
+      const response = await AdminDashboardAPI.downloadReport(reportId)
+      if (response.success) {
+        showSuccess(`Report ${reportId} download initiated`)
+        // Handle actual file download here if needed
+      } else {
+        throw new Error(response.error || 'Download failed')
+      }
+    } catch (error) {
+      devError('Error downloading report:', error)
+      showError('Download Failed', 'Failed to download report. Please try again.')
+    }
+  }
 
   const exportAllReports = async () => {
     // ✅ DEMO MODE GUARD: Show info in demo mode
     if (isDemoMode()) {
-      showSuccess("Demo: All reports export simulated");
-      return;
+      showSuccess('Demo: All reports export simulated')
+      return
     }
 
-    // [PERF-FIX] Commented out — /reports/export endpoint does not exist (404)
-    // try {
-    //   const response = await AdminDashboardAPI.exportReports('csv')
-    //   if (response.success) {
-    //     showSuccess('All reports exported successfully')
-    //   } else {
-    //     throw new Error(response.error || 'Export failed')
-    //   }
-    // } catch (error) {
-    //   devError('Error exporting reports:', error)
-    //   showError('Export Failed', 'Failed to export reports. Please try again.')
-    // }
-    showError(
-      "Not Available",
-      "Report export is not available. Use the Reports tab in Dashboard instead.",
-    );
-  };
+    try {
+      const response = await AdminDashboardAPI.exportReports('csv')
+      if (response.success) {
+        showSuccess('All reports exported successfully')
+        // Handle actual file download here if needed
+      } else {
+        throw new Error(response.error || 'Export failed')
+      }
+    } catch (error) {
+      devError('Error exporting reports:', error)
+      showError('Export Failed', 'Failed to export reports. Please try again.')
+    }
+  }
 
   if (loading) {
     return (

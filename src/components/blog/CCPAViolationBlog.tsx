@@ -277,4 +277,4 @@ const CCPAViolationBlog: React.FC = () => {
 
 };
 
-export default React.memo(CCPAViolationBlog);
+export default CCPAViolationBlog;

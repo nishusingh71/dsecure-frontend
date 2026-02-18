@@ -302,7 +302,7 @@ const RemoteWipingSoftwareBlog: React.FC = () => {
 
 };
 
-export default React.memo(RemoteWipingSoftwareBlog);
+export default RemoteWipingSoftwareBlog;
 
 
 

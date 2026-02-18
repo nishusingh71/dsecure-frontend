@@ -349,7 +349,7 @@ const GovernmentDeviceTheftBlog: React.FC = () => {
     );
 };
 
-export default React.memo(GovernmentDeviceTheftBlog);
+export default GovernmentDeviceTheftBlog;
 
 
 

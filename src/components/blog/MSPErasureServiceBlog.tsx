@@ -337,7 +337,7 @@ const MSPErasureServiceBlog: React.FC = () => {
 
 };
 
-export default React.memo(MSPErasureServiceBlog);
+export default MSPErasureServiceBlog;
 
 
 

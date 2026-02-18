@@ -10,11 +10,10 @@ const DeviceSelectionPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-device-selection")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Device Discovery & Selection | D-Secure</title>
         <meta name="description" content="Advanced device detection, filtering, and selection for targeted erasure operations." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
@@ -74,4 +73,4 @@ const DeviceSelectionPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(DeviceSelectionPage);
+export default DeviceSelectionPage;

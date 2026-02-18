@@ -10,11 +10,10 @@ const LicenseActivationPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-license-activation")} />
-      {/* <Helmet>
+      <Helmet>
         <title>License Key Activation | D-Secure Subscription Verification</title>
         <meta name="description" content="How to activate your D-Secure license key and verify your subscription for data erasure software." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -104,4 +103,4 @@ const LicenseActivationPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(LicenseActivationPage);
+export default LicenseActivationPage;

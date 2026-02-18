@@ -276,4 +276,4 @@ const LooseDrivesErasureGuideBlog: React.FC = () => {
     );
 };
 
-export default React.memo(LooseDrivesErasureGuideBlog);
+export default LooseDrivesErasureGuideBlog;

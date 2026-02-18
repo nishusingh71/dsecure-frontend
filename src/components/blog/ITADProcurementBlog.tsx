@@ -250,7 +250,7 @@ const ITADProcurementBlog: React.FC = () => {
     );
 };
 
-export default React.memo(ITADProcurementBlog);
+export default ITADProcurementBlog;
 
 
 

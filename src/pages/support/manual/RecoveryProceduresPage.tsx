@@ -9,14 +9,13 @@ const RecoveryProceduresPage: React.FC = memo(() => {
  <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("recovery-procedures")} />
- {/* <Helmet>
+ <Helmet>
  <title>Recovery Procedures | D-Secure Manual</title>
  <meta
  name="description"
  content="D-Secure recovery procedures guide for handling failed or interrupted erasure operations."
  />
- </Helmet> 
- */}
+ </Helmet>
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">
@@ -136,4 +135,4 @@ const RecoveryProceduresPage: React.FC = memo(() => {
  );
 });
 
-export default React.memo(RecoveryProceduresPage);
+export default RecoveryProceduresPage;

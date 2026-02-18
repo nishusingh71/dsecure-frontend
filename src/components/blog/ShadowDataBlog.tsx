@@ -322,7 +322,7 @@ const ShadowDataBlog: React.FC = () => {
     );
 };
 
-export default React.memo(ShadowDataBlog);
+export default ShadowDataBlog;
 
 
 

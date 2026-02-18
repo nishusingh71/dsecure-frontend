@@ -43,4 +43,4 @@ const BitraserIntegrationPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(BitraserIntegrationPage);
+export default BitraserIntegrationPage;

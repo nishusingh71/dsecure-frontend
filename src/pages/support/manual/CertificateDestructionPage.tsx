@@ -43,4 +43,4 @@ const CertificateDestructionPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(CertificateDestructionPage);
+export default CertificateDestructionPage;

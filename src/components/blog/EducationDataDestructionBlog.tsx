@@ -247,4 +247,4 @@ const EducationDataDestructionBlog: React.FC = () => {
 
 };
 
-export default React.memo(EducationDataDestructionBlog);
+export default EducationDataDestructionBlog;

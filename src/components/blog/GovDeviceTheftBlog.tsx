@@ -242,4 +242,4 @@ const GovDeviceTheftBlog: React.FC = () => {
   );
 };
 
-export default React.memo(GovDeviceTheftBlog);
+export default GovDeviceTheftBlog;

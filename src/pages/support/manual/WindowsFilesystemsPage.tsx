@@ -10,11 +10,10 @@ const WindowsFilesystemsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-filesystems")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Windows File Systems Overview | NTFS, FAT32, exFAT Erasure</title>
         <meta name="description" content="Understanding Windows file systems (NTFS, FAT32, exFAT) and their implications for secure data erasure." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -104,4 +103,4 @@ const WindowsFilesystemsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(WindowsFilesystemsPage);
+export default WindowsFilesystemsPage;

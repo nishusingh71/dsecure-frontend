@@ -316,7 +316,7 @@ const DegaussingRisksBlog: React.FC = () => {
 
 };
 
-export default React.memo(DegaussingRisksBlog);
+export default DegaussingRisksBlog;
 
 
 

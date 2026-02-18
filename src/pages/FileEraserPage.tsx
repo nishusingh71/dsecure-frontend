@@ -43,111 +43,111 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
   // Gallery images array for lightbox navigation
   const galleryImages = [
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615235/wyano4in32dsvwrjfose.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/wyano4in32dsvwrjfose.png",
       alt: "Dashboard View",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615235/kwmr1zmohxlsvu7mewu6.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/kwmr1zmohxlsvu7mewu6.png",
       alt: "Erasure Report",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615235/gw3zeqnncwvnn1hnlekg.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/gw3zeqnncwvnn1hnlekg.png",
       alt: "File Selection",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615235/m0m1b2hqj9tl6g9gmhgz.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/m0m1b2hqj9tl6g9gmhgz.png",
       alt: "Erasure Progress",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615235/zulpnihjrlfuoitqaizh.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/zulpnihjrlfuoitqaizh.png",
       alt: "File Eraser Screenshot 5",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615235/a31wp92vyyeh2j2hu9zc.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/a31wp92vyyeh2j2hu9zc.png",
       alt: "File Eraser Screenshot 6",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615236/s18pgdvgux4dye0fmscy.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/s18pgdvgux4dye0fmscy.png",
       alt: "File Eraser Screenshot 7",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615236/iyavx0ommailpdkcxng5.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/iyavx0ommailpdkcxng5.png",
       alt: "File Eraser Screenshot 8",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615236/uxdebjbpxhj9s4e9f2a5.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/uxdebjbpxhj9s4e9f2a5.png",
       alt: "File Eraser Screenshot 9",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615236/h71mhoxgsxhsmftagfui.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/h71mhoxgsxhsmftagfui.png",
       alt: "File Eraser Screenshot 10",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615236/zx7c8pmkp59la8bat6co.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/zx7c8pmkp59la8bat6co.png",
       alt: "File Eraser Screenshot 11",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615236/f3brvyeayc1gjvvbhycn.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/f3brvyeayc1gjvvbhycn.png",
       alt: "File Eraser Screenshot 12",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/k5qipygfaw0nczflr3zz.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/k5qipygfaw0nczflr3zz.png",
       alt: "File Eraser Screenshot 13",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/ju9tjx02ffgsyg7hytqm.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/ju9tjx02ffgsyg7hytqm.png",
       alt: "File Eraser Screenshot 14",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/vytjbf7yigyyo6nc5qhv.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/vytjbf7yigyyo6nc5qhv.png",
       alt: "File Eraser Screenshot 15",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/mu4inz3sickwxfbtduzn.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mu4inz3sickwxfbtduzn.png",
       alt: "File Eraser Screenshot 16",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/smkmqfqk7dw0xwmfl4xa.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/smkmqfqk7dw0xwmfl4xa.png",
       alt: "File Eraser Screenshot 17",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/trcabsasqpewodfyrykl.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/trcabsasqpewodfyrykl.png",
       alt: "File Eraser Screenshot 18",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615238/qnl0maavgwb12eyx9drx.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qnl0maavgwb12eyx9drx.png",
       alt: "File Eraser Screenshot 19",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/y20i3mvvbzzddrzjnunf.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/y20i3mvvbzzddrzjnunf.png",
       alt: "File Eraser Screenshot 20",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615238/g59dppsz6gyjm10rf5lo.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/g59dppsz6gyjm10rf5lo.png",
       alt: "File Eraser Screenshot 21",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/mx6or4o6uenf3q42ipqg.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mx6or4o6uenf3q42ipqg.png",
       alt: "File Eraser Screenshot 22",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615238/bj1yo6ykwgxvkp9bbmlm.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/bj1yo6ykwgxvkp9bbmlm.png",
       alt: "File Eraser Screenshot 23",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615238/iuvskkxwxsawnvvk8i4l.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/iuvskkxwxsawnvvk8i4l.png",
       alt: "File Eraser Screenshot 24",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615238/nalxxlyfrewjxtpptplf.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/nalxxlyfrewjxtpptplf.png",
       alt: "File Eraser Screenshot 25",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615238/qxrifgrivw11cqhuegx0.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qxrifgrivw11cqhuegx0.png",
       alt: "File Eraser Screenshot 26",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615238/pb9yo6kfjwz8z4shw2vz.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/pb9yo6kfjwz8z4shw2vz.png",
       alt: "File Eraser Screenshot 27",
     },
   ];
@@ -1051,7 +1051,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1769790692/x2bqsc3nxzdfns3nyb5r.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/x2bqsc3nxzdfns3nyb5r.png"
                         alt="Dashboard View"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1105,7 +1105,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1769790691/y0qoxkpzqqxw8f0vibb8.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/y0qoxkpzqqxw8f0vibb8.png"
                         alt="Erasure Report"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1159,7 +1159,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1769790691/bdacwvgixrbp512igxz0.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/bdacwvgixrbp512igxz0.png"
                         alt="File Selection"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1213,7 +1213,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1769790692/cfpwnf2ii0sjjkknhdjl.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/cfpwnf2ii0sjjkknhdjl.png"
                         alt="Erasure Progress"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />

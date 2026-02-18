@@ -319,4 +319,4 @@ const ITADMarketGrowthBlog: React.FC = () => {
 
 };
 
-export default React.memo(ITADMarketGrowthBlog);
+export default ITADMarketGrowthBlog;

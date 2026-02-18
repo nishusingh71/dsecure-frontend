@@ -197,7 +197,7 @@ function ServicesPageContent() {
 
   return (
     <>
-      <SEOHead seo={getSEOForPage("services")} />
+      <SEOHead seo={getSEOForPage('services')} />
       <div className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 w-full overflow-hidden">
         {/* Hero Section */}
         <section>
@@ -210,9 +210,8 @@ function ServicesPageContent() {
               </Reveal>
               <Reveal delayMs={10}>
                 <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                  Military-grade data sanitization for devices, servers, and
-                  cloud platforms. Trusted by enterprises worldwide for secure,
-                  compliant data destruction.
+                  Military-grade data sanitization for devices, servers, and cloud platforms.
+                  Trusted by enterprises worldwide for secure, compliant data destruction.
                 </p>
               </Reveal>
               <Reveal delayMs={20}>
@@ -230,12 +229,9 @@ function ServicesPageContent() {
         <section className="py-16 md:py-24">
           <div className="container-app">
             <div className="text-center mb-8 xs:mb-10 sm:mb-12 md:mb-12 lg:mb-12 xl:mb-14 xxl:mb-16">
-              <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl xxl:text-5xl font-bold text-slate-900 mb-3 xs:mb-4 sm:mb-4 md:mb-4 lg:mb-4 xl:mb-5 xxl:mb-6">
-                Choose Your Service
-              </h2>
+              <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl xxl:text-5xl font-bold text-slate-900 mb-3 xs:mb-4 sm:mb-4 md:mb-4 lg:mb-4 xl:mb-5 xxl:mb-6">Choose Your Service</h2>
               <p className="text-base xs:text-lg sm:text-lg md:text-xl lg:text-xl xl:text-xl xxl:text-2xl text-slate-600 max-w-xl xs:max-w-2xl sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl xxl:max-w-5xl mx-auto">
-                Select the right data erasure service for your specific needs
-                and infrastructure.
+                Select the right data erasure service for your specific needs and infrastructure.
               </p>
             </div>
 
@@ -246,19 +242,14 @@ function ServicesPageContent() {
                   <button
                     key={key}
                     onClick={() => setActiveTab(key as TabType)}
-                    className={`flex items-center justify-center gap-2 xs:gap-3 sm:gap-3 md:gap-3 lg:gap-3 xl:gap-4 xxl:gap-4 px-3 xs:px-4 sm:px-4 md:px-4 lg:px-6 xl:px-6 xxl:px-8 py-2 xs:py-3 sm:py-3 md:py-3 lg:py-3 xl:py-4 xxl:py-4 rounded-md xs:rounded-lg sm:rounded-lg md:rounded-lg lg:rounded-lg xl:rounded-lg xxl:rounded-lg text-xs xs:text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base xxl:text-base font-medium transition-all duration-200 whitespace-nowrap flex-1 sm:flex-none ${
-                      activeTab === key
-                        ? "bg-white text-brand shadow-sm"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
+                    className={`flex items-center justify-center gap-2 xs:gap-3 sm:gap-3 md:gap-3 lg:gap-3 xl:gap-4 xxl:gap-4 px-3 xs:px-4 sm:px-4 md:px-4 lg:px-6 xl:px-6 xxl:px-8 py-2 xs:py-3 sm:py-3 md:py-3 lg:py-3 xl:py-4 xxl:py-4 rounded-md xs:rounded-lg sm:rounded-lg md:rounded-lg lg:rounded-lg xl:rounded-lg xxl:rounded-lg text-xs xs:text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base xxl:text-base font-medium transition-all duration-200 whitespace-nowrap flex-1 sm:flex-none ${activeTab === key
+                      ? 'bg-white text-brand shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                      }`}
                   >
-                    <span className="w-5 h-5 flex-shrink-0 mb-2">
-                      {service.icon}
-                    </span>
+                    <span className="w-5 h-5 flex-shrink-0 mb-2">{service.icon}</span>
                     <span className="hidden sm:inline">{service.title}</span>
-                    <span className="sm:hidden text-xs">
-                      {service.title.split(" ")[0]}
-                    </span>
+                    <span className="sm:hidden text-xs">{service.title.split(' ')[0]}</span>
                   </button>
                 ))}
               </div>
@@ -283,19 +274,12 @@ function ServicesPageContent() {
                     </p>
 
                     <div className="space-y-3">
-                      <h4 className="font-semibold text-slate-900">
-                        Key Features:
-                      </h4>
+                      <h4 className="font-semibold text-slate-900">Key Features:</h4>
                       <div className="grid grid-cols-1 gap-3">
                         {services[activeTab].features.map((feature, index) => (
                           <div key={index} className="flex items-start gap-3">
                             <HoverIcon>
-                              {(filled) => (
-                                <CheckIcon
-                                  className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5"
-                                  filled={filled}
-                                />
-                              )}
+                              {(filled) => <CheckIcon className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" filled={filled} />}
                             </HoverIcon>
                             <span className="text-slate-700">{feature}</span>
                           </div>
@@ -305,21 +289,12 @@ function ServicesPageContent() {
                   </div>
 
                   <div className="bg-slate-50 rounded-xl p-4 lg:p-6">
-                    <h4 className="font-semibold text-slate-900 mb-4 lg:mb-6">
-                      Technical Specifications
-                    </h4>
+                    <h4 className="font-semibold text-slate-900 mb-4 lg:mb-6">Technical Specifications</h4>
                     <div className="space-y-3 lg:space-y-4">
                       {services[activeTab].specs.map((spec, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-slate-200 last:border-b-0 gap-1 sm:gap-0"
-                        >
-                          <span className="text-slate-600 text-sm lg:text-base">
-                            {spec.label}
-                          </span>
-                          <span className="font-medium text-slate-900 text-sm lg:text-base">
-                            {spec.value}
-                          </span>
+                        <div key={index} className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 border-b border-slate-200 last:border-b-0 gap-1 sm:gap-0">
+                          <span className="text-slate-600 text-sm lg:text-base">{spec.label}</span>
+                          <span className="font-medium text-slate-900 text-sm lg:text-base">{spec.value}</span>
                         </div>
                       ))}
                     </div>
@@ -329,10 +304,7 @@ function ServicesPageContent() {
                         <Link to="/contact" className="btn-primary text-center">
                           Request Quote
                         </Link>
-                        <Link
-                          to="/resources"
-                          className="btn-secondary text-center"
-                        >
+                        <Link to="/resources" className="btn-secondary text-center">
                           Documentation
                         </Link>
                       </div>
@@ -344,46 +316,37 @@ function ServicesPageContent() {
                 <div className="flex items-center justify-between p-4 md:p-6 border-t border-slate-200/60 bg-slate-50/50">
                   <button
                     onClick={() => {
-                      const tabs: TabType[] = ["device", "network", "cloud"];
+                      const tabs: TabType[] = ['device', 'network', 'cloud'];
                       const currentIndex = tabs.indexOf(activeTab);
-                      const prevIndex =
-                        currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+                      const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
                       setActiveTab(tabs[prevIndex]);
                     }}
                     className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-brand transition-colors rounded-lg hover:bg-white/80"
                   >
                     <HoverIcon>
-                      {(filled) => (
-                        <ArrowLeftIcon className="w-4 h-4" filled={filled} />
-                      )}
+                      {(filled) => <ArrowLeftIcon className="w-4 h-4" filled={filled} />}
                     </HoverIcon>
-                    <span className="text-sm font-medium">
-                      Previous Service
-                    </span>
+                    <span className="text-sm font-medium">Previous Service</span>
                   </button>
 
                   <div className="text-center">
                     <div className="text-xs text-slate-400">
-                      {["device", "network", "cloud"].indexOf(activeTab) + 1} of
-                      3
+                      {['device', 'network', 'cloud'].indexOf(activeTab) + 1} of 3
                     </div>
                   </div>
 
                   <button
                     onClick={() => {
-                      const tabs: TabType[] = ["device", "network", "cloud"];
+                      const tabs: TabType[] = ['device', 'network', 'cloud'];
                       const currentIndex = tabs.indexOf(activeTab);
-                      const nextIndex =
-                        currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
+                      const nextIndex = currentIndex === tabs.length - 1 ? 0 : currentIndex + 1;
                       setActiveTab(tabs[nextIndex]);
                     }}
                     className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-brand transition-colors rounded-lg hover:bg-white/80"
                   >
                     <span className="text-sm font-medium">Next Service</span>
                     <HoverIcon>
-                      {(filled) => (
-                        <ArrowRightIcon className="w-4 h-4" filled={filled} />
-                      )}
+                      {(filled) => <ArrowRightIcon className="w-4 h-4" filled={filled} />}
                     </HoverIcon>
                   </button>
                 </div>
@@ -403,45 +366,29 @@ function ServicesPageContent() {
               <div className="relative text-center">
                 <div className="inline-flex items-center gap-3 bg-white/60 backdrop-blur-sm px-6 py-3 rounded-full border border-white/40 mb-6">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-slate-700 uppercase tracking-wider">
-                    Service Plans Overview
-                  </span>
+                  <span className="text-sm font-medium text-slate-700 uppercase tracking-wider">Service Plans Overview</span>
                 </div>
 
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                   <span className="bg-gradient-to-r from-green-600 via-blue-600 to-teal-600 bg-clip-text text-transparent">
-                    <span>
-                      <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
-                        alt=""
-                        className="w-10 h-10 inline-block -mt-1"
-                      />
-                    </span>{" "}
-                    D-SecureErase
+                    <span><img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg" alt="" className='w-10 h-10 inline-block -mt-1' /></span> D-SecureErase
                   </span>
                   <br />
-                  <span className="text-2xl md:text-3xl text-slate-800">
-                    Complete Service Plan Comparison
-                  </span>
+                  <span className="text-2xl md:text-3xl text-slate-800">Complete Service Plan Comparison</span>
                 </h2>
 
                 <p className="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                  Choose the perfect service plan for your security needs. From
-                  individual users to enterprise deployments, we have solutions
-                  that scale with your requirements.
+                  Choose the perfect service plan for your security needs. From individual users to enterprise deployments,
+                  we have solutions that scale with your requirements.
                 </p>
 
                 {/* Plan quick info */}
                 <div className="flex flex-wrap justify-center gap-4 mt-6">
                   <div className="bg-white/70 backdrop-blur-sm px-3 py-2 rounded-full border border-white/40">
-                    <span className="text-sm text-slate-600">
-                      6 Service Plans
-                    </span>
+                    <span className="text-sm text-slate-600">6 Service Plans</span>
                   </div>
                   <div className="bg-white/70 backdrop-blur-sm px-3 py-2 rounded-full border border-white/40">
-                    <span className="text-sm text-slate-600">
-                      All Platforms
-                    </span>
+                    <span className="text-sm text-slate-600">All Platforms</span>
                   </div>
                   <div className="bg-white/70 backdrop-blur-sm px-3 py-2 rounded-full border border-white/40">
                     <span className="text-sm text-slate-600">Scalable</span>
@@ -452,19 +399,12 @@ function ServicesPageContent() {
 
             <Reveal>
               <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden">
+
                 {/* Free Enterprise Trial Banner */}
                 <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 text-center">
-                  <h3 className="text-xl font-bold mb-2">
-                    🎉 Try Enterprise FREE for 14 Days
-                  </h3>
-                  <p className="mb-4">
-                    Test all Enterprise features on 1 device - No credit card
-                    required
-                  </p>
-                  <Link
-                    to="/contact"
-                    className="bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-                  >
+                  <h3 className="text-xl font-bold mb-2">🎉 Try Enterprise FREE for 14 Days</h3>
+                  <p className="mb-4">Test all Enterprise features on 1 device - No credit card required</p>
+                  <Link to="/contact" className="bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
                     Start Free Trial
                   </Link>
                 </div>
@@ -473,45 +413,29 @@ function ServicesPageContent() {
                 <div className="mb-4">
                   <div
                     className="group cursor-pointer bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100 hover:border-green-200 transition-all duration-300 hover:shadow-lg"
-                    onClick={() => toggleSection("capabilities")}
+                    onClick={() => toggleSection('capabilities')}
                   >
                     <div className="p-4 md:p-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <ShieldIcon
-                              className="w-6 h-6 text-white"
-                              filled={true}
-                            />
+                            <ShieldIcon className="w-6 h-6 text-white" filled={true} />
                           </div>
                           <div>
-                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-green-700 transition-colors">
-                              Core Erasure Capabilities
-                            </h3>
-                            <p className="text-sm text-slate-600 mt-1">
-                              Advanced data destruction and security erasure
-                              methods
-                            </p>
+                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-green-700 transition-colors">Core Erasure Capabilities</h3>
+                            <p className="text-sm text-slate-600 mt-1">Advanced data destruction and security erasure methods</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-medium text-slate-600 group-hover:text-green-700 transition-colors">
-                            {expandedSections.capabilities ? "Hide" : "Show"}
+                            {expandedSections.capabilities ? 'Hide' : 'Show'}
                           </span>
                           <div className="w-8 h-8 bg-white/70 rounded-lg flex items-center justify-center group-hover:bg-white transition-colors">
                             <HoverIcon>
                               {(filled) =>
-                                expandedSections.capabilities ? (
-                                  <ArrowDownIcon
-                                    className="w-5 h-5 text-green-600"
-                                    filled={filled}
-                                  />
-                                ) : (
-                                  <ArrowRightIcon
-                                    className="w-5 h-5 text-green-600"
-                                    filled={filled}
-                                  />
-                                )
+                                expandedSections.capabilities ?
+                                  <ArrowDownIcon className="w-5 h-5 text-green-600" filled={filled} /> :
+                                  <ArrowRightIcon className="w-5 h-5 text-green-600" filled={filled} />
                               }
                             </HoverIcon>
                           </div>
@@ -525,141 +449,38 @@ function ServicesPageContent() {
                       <table className="w-full">
                         <thead className="bg-slate-50">
                           <tr>
-                            <th className="text-left p-4 font-semibold text-slate-900">
-                              Feature
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Base
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Standard
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Cloud
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Network
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Pro
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900 bg-purple-50">
-                              Enterprise
-                            </th>
+                            <th className="text-left p-4 font-semibold text-slate-900">Feature</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Base</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Standard</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Cloud</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Network</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Pro</th>
+                            <th className="text-center p-4 font-semibold text-slate-900 bg-purple-50">Enterprise</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200">
                           {[
-                            [
-                              "30+ International Algorithms (SSD Trim, Crypto Erase)",
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "File & Folder Erase",
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Erase Traces (Browser, System, App data)",
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Erase Deleted Data / Free Space",
-                              false,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Erase Volume",
-                              false,
-                              false,
-                              false,
-                              "paid",
-                              "paid",
-                              "5 included",
-                            ],
-                            [
-                              "Erase Disk (Full Device)",
-                              false,
-                              false,
-                              false,
-                              "paid",
-                              "paid",
-                              "1 included",
-                            ],
-                            [
-                              "Scheduled Erase",
-                              "limited",
-                              "expanded",
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Cloud Storage Erase (Google Drive)",
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                          ].map(
-                            (
-                              [
-                                feature,
-                                base,
-                                standard,
-                                cloud,
-                                network,
-                                pro,
-                                enterprise,
-                              ],
-                              index,
-                            ) => (
-                              <tr key={index} className="hover:bg-slate-50/50">
-                                <td className="p-4 font-medium text-slate-900">
-                                  {feature}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(base)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(standard)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(cloud)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(network)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(pro)}
-                                </td>
-                                <td className="p-4 text-center bg-purple-50">
-                                  {renderFeatureIcon(enterprise, true)}
-                                </td>
-                              </tr>
-                            ),
-                          )}
+                            ['30+ International Algorithms (SSD Trim, Crypto Erase)', true, true, true, true, true, true],
+                            ['File & Folder Erase', true, true, true, true, true, true],
+                            ['Erase Traces (Browser, System, App data)', true, true, true, true, true, true],
+                            ['Erase Deleted Data / Free Space', false, true, true, true, true, true],
+                            ['Erase Volume', false, false, false, 'paid', 'paid', '5 included'],
+                            ['Erase Disk (Full Device)', false, false, false, 'paid', 'paid', '1 included'],
+                            ['Scheduled Erase', 'limited', 'expanded', true, true, true, true],
+                            ['Cloud Storage Erase (Google Drive)', true, true, true, true, true, true]
+                          ].map(([feature, base, standard, cloud, network, pro, enterprise], index) => (
+                            <tr key={index} className="hover:bg-slate-50/50">
+                              <td className="p-4 font-medium text-slate-900">
+                                {feature}
+                              </td>
+                              <td className="p-4 text-center">{renderFeatureIcon(base)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(standard)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(cloud)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(network)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(pro)}</td>
+                              <td className="p-4 text-center bg-purple-50">{renderFeatureIcon(enterprise, true)}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -670,45 +491,29 @@ function ServicesPageContent() {
                 <div className="mb-4">
                   <div
                     className="group cursor-pointer bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100 hover:border-blue-200 transition-all duration-300 hover:shadow-lg"
-                    onClick={() => toggleSection("platform")}
+                    onClick={() => toggleSection('platform')}
                   >
                     <div className="p-4 md:p-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <MobileIcon
-                              className="w-6 h-6 text-white"
-                              filled={true}
-                            />
+                            <MobileIcon className="w-6 h-6 text-white" filled={true} />
                           </div>
                           <div>
-                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-blue-700 transition-colors">
-                              Platform & OS Support
-                            </h3>
-                            <p className="text-sm text-slate-600 mt-1">
-                              Cross-platform compatibility and operating system
-                              support
-                            </p>
+                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-blue-700 transition-colors">Platform & OS Support</h3>
+                            <p className="text-sm text-slate-600 mt-1">Cross-platform compatibility and operating system support</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-medium text-slate-600 group-hover:text-blue-700 transition-colors">
-                            {expandedSections.platform ? "Hide" : "Show"}
+                            {expandedSections.platform ? 'Hide' : 'Show'}
                           </span>
                           <div className="w-8 h-8 bg-white/70 rounded-lg flex items-center justify-center group-hover:bg-white transition-colors">
                             <HoverIcon>
                               {(filled) =>
-                                expandedSections.platform ? (
-                                  <ArrowDownIcon
-                                    className="w-5 h-5 text-blue-600"
-                                    filled={filled}
-                                  />
-                                ) : (
-                                  <ArrowRightIcon
-                                    className="w-5 h-5 text-blue-600"
-                                    filled={filled}
-                                  />
-                                )
+                                expandedSections.platform ?
+                                  <ArrowDownIcon className="w-5 h-5 text-blue-600" filled={filled} /> :
+                                  <ArrowRightIcon className="w-5 h-5 text-blue-600" filled={filled} />
                               }
                             </HoverIcon>
                           </div>
@@ -722,105 +527,34 @@ function ServicesPageContent() {
                       <table className="w-full">
                         <thead className="bg-slate-50">
                           <tr>
-                            <th className="text-left p-4 font-semibold text-slate-900">
-                              Feature
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Base
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Standard
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Cloud
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Network
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900">
-                              Pro
-                            </th>
-                            <th className="text-center p-4 font-semibold text-slate-900 bg-purple-50">
-                              Enterprise
-                            </th>
+                            <th className="text-left p-4 font-semibold text-slate-900">Feature</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Base</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Standard</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Cloud</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Network</th>
+                            <th className="text-center p-4 font-semibold text-slate-900">Pro</th>
+                            <th className="text-center p-4 font-semibold text-slate-900 bg-purple-50">Enterprise</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200">
                           {[
-                            [
-                              "Windows Support",
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Linux Support",
-                              false,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "macOS Support",
-                              false,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Multi-language UI & Reports (17+)",
-                              "coming",
-                              "coming",
-                              "coming",
-                              "coming",
-                              "coming",
-                              "coming",
-                            ],
-                          ].map(
-                            (
-                              [
-                                feature,
-                                base,
-                                standard,
-                                cloud,
-                                network,
-                                pro,
-                                enterprise,
-                              ],
-                              index,
-                            ) => (
-                              <tr key={index} className="hover:bg-slate-50/50">
-                                <td className="p-4 font-medium text-slate-900">
-                                  <span>{feature}</span>
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(base)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(standard)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(cloud)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(network)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(pro)}
-                                </td>
-                                <td className="p-4 text-center bg-purple-50">
-                                  {renderFeatureIcon(enterprise, true)}
-                                </td>
-                              </tr>
-                            ),
-                          )}
+                            ['Windows Support', true, true, true, true, true, true],
+                            ['Linux Support', false, true, true, true, true, true],
+                            ['macOS Support', false, true, true, true, true, true],
+                            ['Multi-language UI & Reports (17+)', 'coming', 'coming', 'coming', 'coming', 'coming', 'coming']
+                          ].map(([feature, base, standard, cloud, network, pro, enterprise], index) => (
+                            <tr key={index} className="hover:bg-slate-50/50">
+                              <td className="p-4 font-medium text-slate-900">
+                                <span>{feature}</span>
+                              </td>
+                              <td className="p-4 text-center">{renderFeatureIcon(base)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(standard)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(cloud)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(network)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(pro)}</td>
+                              <td className="p-4 text-center bg-purple-50">{renderFeatureIcon(enterprise, true)}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -831,45 +565,29 @@ function ServicesPageContent() {
                 <div className="mb-4">
                   <div
                     className="group cursor-pointer bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl border border-purple-100 hover:border-purple-200 transition-all duration-300 hover:shadow-lg"
-                    onClick={() => toggleSection("reporting")}
+                    onClick={() => toggleSection('reporting')}
                   >
                     <div className="p-4 md:p-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <DatabaseIcon
-                              className="w-6 h-6 text-white"
-                              filled={true}
-                            />
+                            <DatabaseIcon className="w-6 h-6 text-white" filled={true} />
                           </div>
                           <div>
-                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-purple-700 transition-colors">
-                              Reporting & Compliance
-                            </h3>
-                            <p className="text-sm text-slate-600 mt-1">
-                              Audit trails, compliance regulatory documents, and
-                              detailed reporting
-                            </p>
+                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-purple-700 transition-colors">Reporting & Compliance</h3>
+                            <p className="text-sm text-slate-600 mt-1">Audit trails, compliance regulatory documents, and detailed reporting</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-medium text-slate-600 group-hover:text-purple-700 transition-colors">
-                            {expandedSections.reporting ? "Hide" : "Show"}
+                            {expandedSections.reporting ? 'Hide' : 'Show'}
                           </span>
                           <div className="w-8 h-8 bg-white/70 rounded-lg flex items-center justify-center group-hover:bg-white transition-colors">
                             <HoverIcon>
                               {(filled) =>
-                                expandedSections.reporting ? (
-                                  <ArrowDownIcon
-                                    className="w-5 h-5 text-purple-600"
-                                    filled={filled}
-                                  />
-                                ) : (
-                                  <ArrowRightIcon
-                                    className="w-5 h-5 text-purple-600"
-                                    filled={filled}
-                                  />
-                                )
+                                expandedSections.reporting ?
+                                  <ArrowDownIcon className="w-5 h-5 text-purple-600" filled={filled} /> :
+                                  <ArrowRightIcon className="w-5 h-5 text-purple-600" filled={filled} />
                               }
                             </HoverIcon>
                           </div>
@@ -882,98 +600,23 @@ function ServicesPageContent() {
                       <table className="w-full">
                         <tbody className="divide-y divide-slate-200">
                           {[
-                            [
-                              "Local PDF Reports",
-                              false,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "White-Label Reports",
-                              false,
-                              false,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Cloud Report Upload/Sync",
-                              false,
-                              false,
-                              "slow",
-                              "improved",
-                              "fast",
-                              "fastest",
-                            ],
-                            [
-                              "XML Report Format",
-                              false,
-                              false,
-                              false,
-                              false,
-                              "coming",
-                              true,
-                            ],
-                            [
-                              "Audit-Grade Regulatory Documents",
-                              false,
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "User/Action Logs",
-                              false,
-                              false,
-                              false,
-                              true,
-                              true,
-                              true,
-                            ],
-                          ].map(
-                            (
-                              [
-                                feature,
-                                base,
-                                standard,
-                                cloud,
-                                network,
-                                pro,
-                                enterprise,
-                              ],
-                              index,
-                            ) => (
-                              <tr key={index} className="hover:bg-slate-50/50">
-                                <td className="p-4 font-medium text-slate-900">
-                                  {feature}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(base)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(standard)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(cloud)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(network)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(pro)}
-                                </td>
-                                <td className="p-4 text-center bg-purple-50">
-                                  {renderFeatureIcon(enterprise, true)}
-                                </td>
-                              </tr>
-                            ),
-                          )}
+                            ['Local PDF Reports', false, true, true, true, true, true],
+                            ['White-Label Reports', false, false, true, true, true, true],
+                            ['Cloud Report Upload/Sync', false, false, 'slow', 'improved', 'fast', 'fastest'],
+                            ['XML Report Format', false, false, false, false, 'coming', true],
+                            ['Audit-Grade Regulatory Documents', false, true, true, true, true, true],
+                            ['User/Action Logs', false, false, false, true, true, true]
+                          ].map(([feature, base, standard, cloud, network, pro, enterprise], index) => (
+                            <tr key={index} className="hover:bg-slate-50/50">
+                              <td className="p-4 font-medium text-slate-900">{feature}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(base)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(standard)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(cloud)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(network)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(pro)}</td>
+                              <td className="p-4 text-center bg-purple-50">{renderFeatureIcon(enterprise, true)}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -984,45 +627,29 @@ function ServicesPageContent() {
                 <div className="mb-4">
                   <div
                     className="group cursor-pointer bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl border border-orange-100 hover:border-orange-200 transition-all duration-300 hover:shadow-lg"
-                    onClick={() => toggleSection("services")}
+                    onClick={() => toggleSection('services')}
                   >
                     <div className="p-4 md:p-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <GearIcon
-                              className="w-6 h-6 text-white"
-                              filled={true}
-                            />
+                            <GearIcon className="w-6 h-6 text-white" filled={true} />
                           </div>
                           <div>
-                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-orange-700 transition-colors">
-                              Services & Management
-                            </h3>
-                            <p className="text-sm text-slate-600 mt-1">
-                              Cloud services, remote management, and
-                              administrative tools
-                            </p>
+                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-orange-700 transition-colors">Services & Management</h3>
+                            <p className="text-sm text-slate-600 mt-1">Cloud services, remote management, and administrative tools</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
                           <span className="text-sm font-medium text-slate-600 group-hover:text-orange-700 transition-colors">
-                            {expandedSections.services ? "Hide" : "Show"}
+                            {expandedSections.services ? 'Hide' : 'Show'}
                           </span>
                           <div className="w-8 h-8 bg-white/70 rounded-lg flex items-center justify-center group-hover:bg-white transition-colors">
                             <HoverIcon>
                               {(filled) =>
-                                expandedSections.services ? (
-                                  <ArrowDownIcon
-                                    className="w-5 h-5 text-orange-600"
-                                    filled={filled}
-                                  />
-                                ) : (
-                                  <ArrowRightIcon
-                                    className="w-5 h-5 text-orange-600"
-                                    filled={filled}
-                                  />
-                                )
+                                expandedSections.services ?
+                                  <ArrowDownIcon className="w-5 h-5 text-orange-600" filled={filled} /> :
+                                  <ArrowRightIcon className="w-5 h-5 text-orange-600" filled={filled} />
                               }
                             </HoverIcon>
                           </div>
@@ -1035,89 +662,22 @@ function ServicesPageContent() {
                       <table className="w-full">
                         <tbody className="divide-y divide-slate-200">
                           {[
-                            [
-                              "Web Dashboard",
-                              "limited",
-                              true,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Cloud Commands (Remote Jobs)",
-                              false,
-                              false,
-                              false,
-                              true,
-                              true,
-                              true,
-                            ],
-                            [
-                              "Custom Installer (auto-register machine)",
-                              "paid",
-                              "paid",
-                              "paid",
-                              "paid",
-                              "1 free",
-                              "5 free",
-                            ],
-                            [
-                              "Private Cloud Support",
-                              false,
-                              false,
-                              false,
-                              false,
-                              "1 free",
-                              "1 free",
-                            ],
-                            [
-                              "White-Label Dashboard",
-                              false,
-                              false,
-                              true,
-                              true,
-                              true,
-                              true,
-                            ],
-                          ].map(
-                            (
-                              [
-                                feature,
-                                base,
-                                standard,
-                                cloud,
-                                network,
-                                pro,
-                                enterprise,
-                              ],
-                              index,
-                            ) => (
-                              <tr key={index} className="hover:bg-slate-50/50">
-                                <td className="p-4 font-medium text-slate-900">
-                                  {feature}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(base)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(standard)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(cloud)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(network)}
-                                </td>
-                                <td className="p-4 text-center">
-                                  {renderFeatureIcon(pro)}
-                                </td>
-                                <td className="p-4 text-center bg-purple-50">
-                                  {renderFeatureIcon(enterprise, true)}
-                                </td>
-                              </tr>
-                            ),
-                          )}
+                            ['Web Dashboard', 'limited', true, true, true, true, true],
+                            ['Cloud Commands (Remote Jobs)', false, false, false, true, true, true],
+                            ['Custom Installer (auto-register machine)', 'paid', 'paid', 'paid', 'paid', '1 free', '5 free'],
+                            ['Private Cloud Support', false, false, false, false, '1 free', '1 free'],
+                            ['White-Label Dashboard', false, false, true, true, true, true]
+                          ].map(([feature, base, standard, cloud, network, pro, enterprise], index) => (
+                            <tr key={index} className="hover:bg-slate-50/50">
+                              <td className="p-4 font-medium text-slate-900">{feature}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(base)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(standard)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(cloud)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(network)}</td>
+                              <td className="p-4 text-center">{renderFeatureIcon(pro)}</td>
+                              <td className="p-4 text-center bg-purple-50">{renderFeatureIcon(enterprise, true)}</td>
+                            </tr>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -1131,11 +691,11 @@ function ServicesPageContent() {
                     <div className="flex items-center gap-2">
                       <div
                         className="relative cursor-help"
-                        onMouseEnter={() => showTooltip("included")}
+                        onMouseEnter={() => showTooltip('included')}
                         onMouseLeave={hideTooltip}
                       >
                         <span className="text-green-600">✅</span>
-                        {activeTooltip === "included" && (
+                        {activeTooltip === 'included' && (
                           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-lg">
                             {featureDescriptions.included}
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 -translate-y-1 w-2 h-2 bg-slate-900 rotate-45"></div>
@@ -1147,13 +707,13 @@ function ServicesPageContent() {
                     <div className="flex items-center gap-2">
                       <div
                         className="relative cursor-help"
-                        onMouseEnter={() => showTooltip("not-included")}
+                        onMouseEnter={() => showTooltip('not-included')}
                         onMouseLeave={hideTooltip}
                       >
                         <span>🚫</span>
-                        {activeTooltip === "not-included" && (
+                        {activeTooltip === 'not-included' && (
                           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-lg">
-                            {featureDescriptions["not-included"]}
+                            {featureDescriptions['not-included']}
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 -translate-y-1 w-2 h-2 bg-slate-900 rotate-45"></div>
                           </div>
                         )}
@@ -1163,13 +723,13 @@ function ServicesPageContent() {
                     <div className="flex items-center gap-2">
                       <div
                         className="relative cursor-help"
-                        onMouseEnter={() => showTooltip("addon-paid")}
+                        onMouseEnter={() => showTooltip('addon-paid')}
                         onMouseLeave={hideTooltip}
                       >
                         <span>🔒</span>
-                        {activeTooltip === "addon-paid" && (
+                        {activeTooltip === 'addon-paid' && (
                           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-lg max-w-xs">
-                            {featureDescriptions["addon-paid"]}
+                            {featureDescriptions['addon-paid']}
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 -translate-y-1 w-2 h-2 bg-slate-900 rotate-45"></div>
                           </div>
                         )}
@@ -1179,13 +739,13 @@ function ServicesPageContent() {
                     <div className="flex items-center gap-2">
                       <div
                         className="relative cursor-help"
-                        onMouseEnter={() => showTooltip("coming-soon")}
+                        onMouseEnter={() => showTooltip('coming-soon')}
                         onMouseLeave={hideTooltip}
                       >
                         <span className="text-orange-600">⏳</span>
-                        {activeTooltip === "coming-soon" && (
+                        {activeTooltip === 'coming-soon' && (
                           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-lg">
-                            {featureDescriptions["coming-soon"]}
+                            {featureDescriptions['coming-soon']}
                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 -translate-y-1 w-2 h-2 bg-slate-900 rotate-45"></div>
                           </div>
                         )}
@@ -1196,16 +756,15 @@ function ServicesPageContent() {
                   <div className="mt-4">
                     <div
                       className="relative cursor-help inline-block"
-                      onMouseEnter={() => showTooltip("enterprise-free")}
+                      onMouseEnter={() => showTooltip('enterprise-free')}
                       onMouseLeave={hideTooltip}
                     >
                       <p className="text-xs text-slate-600">
-                        <strong>Bold</strong> = Enterprise free allowances
-                        (disk/volume/installers/private cloud)
+                        <strong>Bold</strong> = Enterprise free allowances (disk/volume/installers/private cloud)
                       </p>
-                      {activeTooltip === "enterprise-free" && (
+                      {activeTooltip === 'enterprise-free' && (
                         <div className="absolute bottom-full mb-2 left-0 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-lg max-w-xs">
-                          {featureDescriptions["enterprise-free"]}
+                          {featureDescriptions['enterprise-free']}
                           <div className="absolute top-full left-4 transform -translate-y-1 w-2 h-2 bg-slate-900 rotate-45"></div>
                         </div>
                       )}
@@ -1215,24 +774,13 @@ function ServicesPageContent() {
 
                 {/* Contact Sales CTA */}
                 <div className="bg-gradient-to-r from-brand to-brand/80 p-8 text-center text-white">
-                  <h3 className="text-xl font-bold mb-4">
-                    Ready to Choose Your Service Plan?
-                  </h3>
-                  <p className="mb-6 opacity-90">
-                    Contact our sales team for custom pricing and enterprise
-                    quotes
-                  </p>
+                  <h3 className="text-xl font-bold mb-4">Ready to Choose Your Service Plan?</h3>
+                  <p className="mb-6 opacity-90">Contact our sales team for custom pricing and enterprise quotes</p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link
-                      to="/contact"
-                      className="bg-white text-brand px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-                    >
+                    <Link to="/contact" className="bg-white text-brand px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
                       Contact Sales for Quote
                     </Link>
-                    <Link
-                      to="/contact"
-                      className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
-                    >
+                    <Link to="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
                       Schedule Demo
                     </Link>
                   </div>
@@ -1247,12 +795,9 @@ function ServicesPageContent() {
           <div className="container-app">
             <div className="text-center mb-12">
               <Reveal>
-                <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                  Ready to Get Started?
-                </h2>
+                <h2 className="text-3xl font-bold text-slate-900 mb-4">Ready to Get Started?</h2>
                 <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                  Contact our sales team for custom pricing, enterprise quotes,
-                  and personalized service deployment strategies.
+                  Contact our sales team for custom pricing, enterprise quotes, and personalized service deployment strategies.
                 </p>
               </Reveal>
             </div>
@@ -1260,24 +805,15 @@ function ServicesPageContent() {
             {/* Enterprise Trial Banner */}
             <Reveal delayMs={20}>
               <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl p-8 mb-8 text-center">
-                <h3 className="text-2xl font-bold mb-4">
-                  🎉 Try Enterprise FREE for 14 Days
-                </h3>
+                <h3 className="text-2xl font-bold mb-4">🎉 Try Enterprise FREE for 14 Days</h3>
                 <p className="text-lg mb-6 opacity-90">
-                  Test all Enterprise features on 1 device - No credit card
-                  required, No purchase needed
+                  Test all Enterprise features on 1 device - No credit card required, No purchase needed
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/contact"
-                    className="bg-white text-green-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition-colors"
-                  >
+                  <Link to="/contact" className="bg-white text-green-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition-colors">
                     🚀 Start Free Enterprise Trial
                   </Link>
-                  <Link
-                    to="/contact"
-                    className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
-                  >
+                  <Link to="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
                     📞 Contact Sales Team
                   </Link>
                 </div>
@@ -1289,12 +825,9 @@ function ServicesPageContent() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white rounded-xl p-6 border border-slate-200 text-center">
                   <div className="text-3xl mb-4">💬</div>
-                  <h3 className="font-semibold text-slate-900 mb-3">
-                    Request Custom Quote
-                  </h3>
+                  <h3 className="font-semibold text-slate-900 mb-3">Request Custom Quote</h3>
                   <p className="text-sm text-slate-600 mb-4">
-                    Get personalized pricing based on your organization's
-                    specific needs and deployment size.
+                    Get personalized pricing based on your organization's specific needs and deployment size.
                   </p>
                   <Link to="/contact" className="btn-primary text-sm">
                     Get Quote
@@ -1302,12 +835,9 @@ function ServicesPageContent() {
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-slate-200 text-center">
                   <div className="text-3xl mb-4">📅</div>
-                  <h3 className="font-semibold text-slate-900 mb-3">
-                    Schedule Demo
-                  </h3>
+                  <h3 className="font-semibold text-slate-900 mb-3">Schedule Demo</h3>
                   <p className="text-sm text-slate-600 mb-4">
-                    See D-SecureErase in action with a personalized demo
-                    tailored to your use case.
+                    See D-SecureErase in action with a personalized demo tailored to your use case.
                   </p>
                   <Link to="/contact" className="btn-secondary text-sm">
                     Book Demo
@@ -1315,12 +845,9 @@ function ServicesPageContent() {
                 </div>
                 <div className="bg-white rounded-xl p-6 border border-slate-200 text-center">
                   <div className="text-3xl mb-4">🏢</div>
-                  <h3 className="font-semibold text-slate-900 mb-3">
-                    Enterprise Consultation
-                  </h3>
+                  <h3 className="font-semibold text-slate-900 mb-3">Enterprise Consultation</h3>
                   <p className="text-sm text-slate-600 mb-4">
-                    Discuss enterprise deployment strategies and custom
-                    integration requirements.
+                    Discuss enterprise deployment strategies and custom integration requirements.
                   </p>
                   <Link to="/contact" className="btn-secondary text-sm">
                     Consult Now
@@ -1336,18 +863,13 @@ function ServicesPageContent() {
           <div className="container-app">
             <Reveal>
               <div className="bg-gradient-to-r from-brand to-brand/80 rounded-2xl p-8 md:p-12 text-center text-white">
-                <h2 className="text-3xl font-bold mb-4">
-                  Ready to Secure Your Data?
-                </h2>
+                <h2 className="text-3xl font-bold mb-4">Ready to Secure Your Data?</h2>
                 <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Join thousands of organizations who trust D-Secure for their
-                  data erasure needs. Start with a free demo today.
+                  Join thousands of organizations who trust D-Secure for their data erasure needs.
+                  Start with a free demo today.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <a
-                    href="/contact"
-                    className="bg-white text-brand px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
-                  >
+                  <a href="/contact" className="bg-white text-brand px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors">
                     Schedule Demo
                   </a>
                 </div>
@@ -1357,7 +879,7 @@ function ServicesPageContent() {
         </section>
       </div>
     </>
-  );
+  )
 }
 
 

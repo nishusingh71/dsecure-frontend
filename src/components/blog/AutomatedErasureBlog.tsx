@@ -283,4 +283,4 @@ const AutomatedErasureBlog: React.FC = () => {
   );
 };
 
-export default React.memo(AutomatedErasureBlog);
+export default AutomatedErasureBlog;

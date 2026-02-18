@@ -300,40 +300,7 @@ export const DEMO_PERFORMANCE_DATA = {
   ],
   successRate: '99.2%',
   successCount: 156,
-  failureCount: 2,
-  methodMetrics: [
-    {
-      methodName: "NIST SP 800-88 Rev1",
-      "count": 30,
-      "successRate": 100,
-      "avgDuration": "0m 15s"
-    },
-    {
-      methodName: "DoD 5220.22-M",
-      "count": 45,
-      "successRate": 98,
-      "avgDuration": "1m 30s"
-    },
-    {
-      methodName: "Gutmann 35-Pass",
-      "count": 12,
-      "successRate": 95,
-      "avgDuration": "4m 15s"
-    },
-    {
-      methodName: "Random Data",
-      "count": 69,
-      "successRate": 99,
-      "avgDuration": "0m 45s"
-    }
-  ],
-  erasureLog: [
-    { user_email: 'alice@demo.com', method: 'DoD 5220.22-M', timestamp: '2024-11-28 10:30:00', status: 'Completed' },
-    { user_email: 'bob@demo.com', method: 'NIST 800-88', timestamp: '2024-11-28 09:15:00', status: 'Completed' },
-    { user_email: 'charlie@demo.com', method: 'Gutmann 35-Pass', timestamp: '2024-11-27 16:45:00', status: 'Running' },
-    { user_email: 'diana@demo.com', method: 'DoD 5220.22-M', timestamp: '2024-11-26 14:20:00', status: 'Completed' },
-    { user_email: 'edward@demo.com', method: 'Random Data', timestamp: '2024-11-25 12:30:00', status: 'Failed' },
-  ]
+  failureCount: 2
 }
 
 // Demo Audit Reports - Detailed for AdminReports page

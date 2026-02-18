@@ -799,11 +799,11 @@ class EnhancedApiClient {
     return this.request<User>('/api/Users/me')
   }
 
-  // async getDashboardStats(): Promise<ApiResponse<any>> {
-  //   return this.request<any>('/api/dashboard/stats', {
-  //     method: 'GET'
-  //   })
-  // }
+  async getDashboardStats(): Promise<ApiResponse<any>> {
+    return this.request<any>('/api/dashboard/stats', {
+      method: 'GET'
+    })
+  }
 
   // Check if user setup is complete
   isPaymentSetupComplete(): boolean {

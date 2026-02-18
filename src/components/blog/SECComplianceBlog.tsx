@@ -268,4 +268,4 @@ const SECComplianceBlog: React.FC = () => {
   );
 };
 
-export default React.memo(SECComplianceBlog);
+export default SECComplianceBlog;

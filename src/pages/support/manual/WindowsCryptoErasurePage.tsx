@@ -10,11 +10,10 @@ const WindowsCryptoErasurePage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-crypto-erasure")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Windows Cryptographic Erasure | BitLocker & SED Key Destruction</title>
         <meta name="description" content="Cryptographic erasure methods for Windows including BitLocker key destruction and self-encrypting drive procedures." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -64,4 +63,4 @@ manage-bde -protectors -delete C: -type all`}
   );
 });
 
-export default React.memo(WindowsCryptoErasurePage);
+export default WindowsCryptoErasurePage;

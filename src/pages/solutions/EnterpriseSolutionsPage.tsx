@@ -86,7 +86,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                     {
                       title: "Tamper-Proof Audit Trail",
                       desc: "Digitally signed reports providing complete chain of custody documentation for compliance.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
                     },
                     {
                       title: "Asset Management Platform",

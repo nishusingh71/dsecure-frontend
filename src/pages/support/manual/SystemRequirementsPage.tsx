@@ -10,11 +10,10 @@ const SystemRequirementsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-system-requirements")} />
-      {/* <Helmet>
+      <Helmet>
         <title>System Requirements | D-Secure Hardware & Software Specifications</title>
         <meta name="description" content="Verify your device meets minimum OS and hardware specifications for D-Secure data erasure software." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -285,4 +284,4 @@ const SystemRequirementsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(SystemRequirementsPage);
+export default SystemRequirementsPage;

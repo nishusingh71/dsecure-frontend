@@ -367,4 +367,4 @@ const DataSanitizationComplianceBlog: React.FC = () => {
   );
 };
 
-export default React.memo(DataSanitizationComplianceBlog);
+export default DataSanitizationComplianceBlog;

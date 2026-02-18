@@ -10,11 +10,10 @@ const MainDashboardPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-main-dashboard")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Main Dashboard | D-Secure User Interface Guide</title>
         <meta name="description" content="Master the D-Secure main dashboard interface for efficient data erasure operations and system monitoring." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
@@ -77,4 +76,4 @@ const MainDashboardPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(MainDashboardPage);
+export default MainDashboardPage;

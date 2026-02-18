@@ -295,7 +295,7 @@ const SSDWipeBIOSBlog: React.FC = () => {
 
 };
 
-export default React.memo(SSDWipeBIOSBlog);
+export default SSDWipeBIOSBlog;
 
 
 

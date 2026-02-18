@@ -249,4 +249,4 @@ const MobileDiagnosticsBenefitsBlog: React.FC = () => {
 
 };
 
-export default React.memo(MobileDiagnosticsBenefitsBlog);
+export default MobileDiagnosticsBenefitsBlog;

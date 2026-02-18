@@ -10,11 +10,10 @@ const DownloadInstallerPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-download-installer")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Download & Run Installer | D-Secure Installation Guide</title>
         <meta name="description" content="Step-by-step guide to downloading and running the D-Secure installer safely and securely." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -95,4 +94,4 @@ const DownloadInstallerPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(DownloadInstallerPage);
+export default DownloadInstallerPage;

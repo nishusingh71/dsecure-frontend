@@ -160,4 +160,4 @@ const ReturningLeasedITHardwareDosAndDonts: React.FC = () => {
   );
 };
 
-export default React.memo(ReturningLeasedITHardwareDosAndDonts);
+export default ReturningLeasedITHardwareDosAndDonts;

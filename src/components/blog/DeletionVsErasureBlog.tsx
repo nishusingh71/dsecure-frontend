@@ -303,4 +303,4 @@ const DeletionVsErasureBlog: React.FC = () => {
     );
 };
 
-export default React.memo(DeletionVsErasureBlog);
+export default DeletionVsErasureBlog;

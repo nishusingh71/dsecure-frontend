@@ -2,19 +2,10 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import BarChart from "@/components/BarChart";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNotification } from "@/contexts/NotificationContext";
 import { useAuth } from "@/auth/AuthContext";
 import { apiClient } from "@/utils/enhancedApiClient";
-import { ErasureLogEntry, MethodMetric } from "@/services/adminDashboardAPI";
 import { usePerformanceData } from "@/hooks/usePerformanceData";
 import { useErasureMetrics } from "@/hooks/useErasureMetrics";
 import { useSubusers } from "@/hooks/useSubusers";
@@ -35,26 +26,9 @@ interface PerformanceData {
   successRate: string;
   successCount: number;
   failureCount: number;
-  erasureLog?: ErasureLogEntry[];
-  methodMetrics?: MethodMetric[];
 }
 
 // ✅ Date Helper Functions
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884d8",
-  "#82ca9d",
-];
-
-const getPreviousMonthDate = () => {
-  const date = new Date();
-  date.setMonth(date.getMonth() - 1);
-  return date;
-};
-
 const formatDateToYYYYMMDD = (date: Date): string => {
   return date.toISOString().split("T")[0]; // Returns YYYY-MM-DD format
 };
@@ -90,7 +64,7 @@ const CustomDateInput = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         // Use max to prevent future dates if needed, or min for past
-        max="9999-12-31"
+        max="9999-12-31" 
       />
     </div>
   );
@@ -179,14 +153,7 @@ export default function AdminPerformance() {
       fromDate: fromDate || undefined,
       toDate: toDate || undefined,
     };
-  }, [
-    selectedUserEmail,
-    selectedYear,
-    fromDate,
-    toDate,
-    currentUserEmail,
-    subusers,
-  ]);
+  }, [selectedUserEmail, selectedYear, fromDate, toDate, currentUserEmail, subusers]);
 
   const {
     data: erasureMetrics,
@@ -219,8 +186,6 @@ export default function AdminPerformance() {
         successRate: `${erasureMetrics.successRate}%`,
         successCount: 0, // Not explicitly in new response
         failureCount: 0,
-        erasureLog: erasureMetrics.erasureLog || [],
-        methodMetrics: erasureMetrics.methodMetrics || [],
       });
     }
   }, [isDemo, erasureMetrics]);
@@ -582,172 +547,68 @@ export default function AdminPerformance() {
         )}
 
         {/* Top 3 Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-          {/* Erasure Method Distribution (Pie Chart) */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col h-full min-h-[400px]">
-            <div className="mb-6">
-              <p className="text-base md:text-lg text-slate-500 mb-2 font-medium">
-                Erasure Method Distribution
-              </p>
-              <p className="text-3xl md:text-4xl font-bold text-slate-900">
-                {performanceData.methodMetrics &&
-                performanceData.methodMetrics.length > 0
-                  ? performanceData.methodMetrics
-                      .reduce((acc, curr) => acc + curr.count, 0)
-                      .toLocaleString()
-                  : 0}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Monthly Erasures */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="mb-4">
+              <p className="text-sm text-slate-500 mb-1">Total Erasures</p>
+              <p className="text-3xl font-bold text-slate-900">
+                {totalErasures.toLocaleString()}
               </p>
             </div>
-            <div className="flex-1 w-full relative">
-              <ResponsiveContainer width="100%" height="100%" minHeight={300}>
-                <PieChart>
-                  <Pie
-                    data={(performanceData.methodMetrics || []) as any}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius="60%"
-                    outerRadius="80%"
-                    paddingAngle={5}
-                    dataKey="count"
-                    nameKey="methodName"
+            {/* Simple sparkline visualization */}
+            <div className="h-16 flex items-end gap-1">
+              {performanceData.monthlyErasures.map((m, i) => {
+                const max = Math.max(
+                  ...performanceData.monthlyErasures.map((x) => x.count),
+                  1,
+                );
+                const height = Math.max((m.count / max) * 100, 5); // min 5% height
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 bg-blue-100 rounded-t hover:bg-blue-200 transition-colors relative group"
                   >
-                    {(performanceData.methodMetrics || []).map(
-                      (entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                          strokeWidth={2}
-                          stroke="#fff"
-                        />
-                      ),
-                    )}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.95)",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                      border: "1px solid #e2e8f0",
-                      fontSize: "14px",
-                    }}
-                    itemStyle={{ color: "#1e293b" }}
-                    formatter={(value: any, name: any, props: any) => {
-                      const total =
-                        performanceData.methodMetrics?.reduce(
-                          (acc, curr) => acc + curr.count,
-                          0,
-                        ) || 1;
-                      const percent = ((value / total) * 100).toFixed(1);
-                      return [`${value} (${percent}%)`, name];
-                    }}
-                  />
-                  <Legend
-                    verticalAlign="bottom"
-                    height={36}
-                    iconType="circle"
-                    iconSize={10}
-                    wrapperStyle={{
-                      fontSize: "14px",
-                      paddingTop: "20px",
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+                    <div
+                      style={{ height: `${height}%` }}
+                      className="bg-blue-500 rounded-t w-full bottom-0 absolute"
+                    ></div>
+                    <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded z-10 pointer-events-none">
+                      {m.month}: {m.count}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col">
+          {/* Average Duration */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="mb-4">
-              <p className="text-sm text-slate-500 mb-1">
-                Erasure Method Distribution
+              <p className="text-sm text-slate-500 mb-1">Avg. Duration</p>
+              <p className="text-3xl font-bold text-slate-900">
+                {avgDurationDisplay}
               </p>
-              {performanceData.methodMetrics &&
-                performanceData.methodMetrics.length > 0 && (
-                  <p className="text-2xl font-bold text-slate-900">
-                    {performanceData.methodMetrics.reduce(
-                      (acc, curr) => acc + curr.count,
-                      0,
-                    )}
-                  </p>
-                )}
             </div>
-            <div className="flex-1 overflow-y-auto max-h-48 pr-2 space-y-3 custom-scrollbar">
-              {performanceData.methodMetrics &&
-              performanceData.methodMetrics.length > 0 ? (
-                performanceData.methodMetrics.map((metric, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col text-sm border-b border-slate-50 pb-3 last:border-0 last:pb-0"
-                  >
-                    <div className="flex justify-between items-center mb-2">
-                      <span
-                        className="font-medium text-slate-700 truncate max-w-[150px]"
-                        title={metric.methodName}
-                      >
-                        {metric.methodName}
-                      </span>
-                      <span className="font-bold text-slate-900">
-                        {metric.count}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs text-slate-400 mb-1">
-                      <span>Avg: {metric.avgDuration}</span>
-                      <span className="text-green-600 font-medium">
-                        {metric.successRate}% Success
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-100 rounded-full h-1.5">
-                      <div
-                        className="bg-green-500 h-1.5 rounded-full"
-                        style={{ width: `${metric.successRate}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))
-              ) : performanceData.erasureLog &&
-                performanceData.erasureLog.length > 0 ? (
-                // Fallback to erasureLog if methodMetrics not available (backend backward compatibility)
-                performanceData.erasureLog.slice(0, 5).map((log, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between text-sm border-b border-slate-50 pb-2 last:border-0 last:pb-0"
-                  >
-                    <div className="flex flex-col">
-                      <span
-                        className="font-medium text-slate-700 truncate max-w-[120px]"
-                        title={log.user_email}
-                      >
-                        {log.user_email.split("@")[0]}
-                      </span>
-                      <span className="text-xs text-slate-400">
-                        {new Date(log.timestamp).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          log.method.includes("DoD")
-                            ? "bg-blue-100 text-blue-700"
-                            : log.method.includes("NIST")
-                              ? "bg-purple-100 text-purple-700"
-                              : "bg-slate-100 text-slate-700"
-                        }`}
-                      >
-                        {log.method}
-                      </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="h-full flex items-center justify-center text-slate-400 text-sm italic">
-                  No erasure data found
-                </div>
-              )}
+            <div className="h-16 flex items-center justify-center text-slate-300">
+              <svg
+                className="w-12 h-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
             </div>
-          </div> */}
+          </div>
 
           {/* Success Rate */}
-          {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="mb-4">
               <p className="text-sm text-slate-500 mb-1">Success Rate</p>
               <p className="text-3xl font-bold text-slate-900">{successRate}</p>
@@ -758,11 +619,11 @@ export default function AdminPerformance() {
                 style={{ width: successRate }}
               ></div>
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* Throughput Chart (Monthly breakdown) */}
-        {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <h3 className="text-lg font-semibold text-slate-900 mb-6">
             Erasure Trends ({selectedYear})
           </h3>
@@ -785,7 +646,7 @@ export default function AdminPerformance() {
                         style={{ height: `${barHeight}%` }}
                         className="w-full max-w-[40px] bg-blue-500 rounded-t-md transition-all duration-300 group-hover:bg-blue-600"
                       >
-                        
+                        {/* Tooltip */}
                         <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs py-1 px-2 rounded whitespace-nowrap transition-opacity pointer-events-none z-10">
                           {item.count} Erasures
                         </div>
@@ -803,7 +664,7 @@ export default function AdminPerformance() {
               </div>
             )}
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   );

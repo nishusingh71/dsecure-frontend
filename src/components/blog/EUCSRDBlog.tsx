@@ -339,7 +339,7 @@ const EUCSRDBlog: React.FC = () => {
     );
 };
 
-export default React.memo(EUCSRDBlog);
+export default EUCSRDBlog;
 
 
 

@@ -10,11 +10,10 @@ const WindowsBuiltinToolsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-builtin-tools")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Windows Built-in Erasure Tools | D-Secure Manual</title>
         <meta name="description" content="Guide to Windows built-in data erasure tools including Reset this PC and BitLocker removal procedures." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -140,4 +139,4 @@ const WindowsBuiltinToolsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(WindowsBuiltinToolsPage);
+export default WindowsBuiltinToolsPage;

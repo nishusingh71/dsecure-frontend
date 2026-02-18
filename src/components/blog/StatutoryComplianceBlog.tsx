@@ -163,7 +163,7 @@ const StatutoryComplianceBlog: React.FC = () => {
 
 };
 
-export default React.memo(StatutoryComplianceBlog);
+export default StatutoryComplianceBlog;
 
 
 

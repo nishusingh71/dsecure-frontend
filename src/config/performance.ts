@@ -81,7 +81,7 @@ export const BUNDLE_CONFIG = {
   VENDOR_CHUNKS: {
     'react-vendor': ['react', 'react-dom'],
     'router': ['react-router-dom'],
-    'ui': ['@headlessui/react'], // [PERF-H3] Removed 'framer-motion' — not imported anywhere
+    'ui': ['@headlessui/react', 'framer-motion'],
     'utils': ['lodash', 'date-fns'],
   },
 

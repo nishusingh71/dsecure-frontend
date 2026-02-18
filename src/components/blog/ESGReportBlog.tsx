@@ -297,7 +297,7 @@ const ESGReportBlog: React.FC = () => {
     );
 };
 
-export default React.memo(ESGReportBlog);
+export default ESGReportBlog;
 
 
 

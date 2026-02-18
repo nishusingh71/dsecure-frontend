@@ -265,4 +265,4 @@ const MobileErasureGuideBlog: React.FC = () => {
   );
 };
 
-export default React.memo(MobileErasureGuideBlog);
+export default MobileErasureGuideBlog;

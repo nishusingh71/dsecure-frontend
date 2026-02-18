@@ -159,4 +159,4 @@ const DellDataWipeVsDSecureBlog: React.FC = () => {
   );
 };
 
-export default React.memo(DellDataWipeVsDSecureBlog);
+export default DellDataWipeVsDSecureBlog;

@@ -320,7 +320,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("mac-ossystems")} />
-      {/* <Helmet>
+      <Helmet>
         <link
           rel="canonical"
           href="https://dsecuretech.com/support/macos-systems"
@@ -337,8 +337,7 @@ const MacOSSystemsPage: React.FC = memo(() => {
           content="macOS data erasure, Apple Silicon erasure, M1 Mac secure delete, FileVault erasure, macOS SSD erasure"
         />
         <meta name="robots" content="index, follow" />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -851,4 +850,4 @@ const MacOSSystemsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(MacOSSystemsPage);
+export default MacOSSystemsPage;

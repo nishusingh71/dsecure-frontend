@@ -292,4 +292,4 @@ const EraseMacDataSafelyUsingDSecureBlog: React.FC = () => {
   );
 };
 
-export default React.memo(EraseMacDataSafelyUsingDSecureBlog);
+export default EraseMacDataSafelyUsingDSecureBlog;

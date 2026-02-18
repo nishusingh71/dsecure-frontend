@@ -299,4 +299,4 @@ const CaptionCallFCCSettlementBlog: React.FC = () => {
   );
 };
 
-export default React.memo(CaptionCallFCCSettlementBlog);
+export default CaptionCallFCCSettlementBlog;

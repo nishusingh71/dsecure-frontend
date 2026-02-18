@@ -143,4 +143,4 @@ const RemoteWorkDataErasureBestPracticesBlog: React.FC = () => {
   );
 };
 
-export default React.memo(RemoteWorkDataErasureBestPracticesBlog);
+export default RemoteWorkDataErasureBestPracticesBlog;

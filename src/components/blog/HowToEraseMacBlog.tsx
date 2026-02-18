@@ -406,7 +406,7 @@ const HowToEraseMacBlog: React.FC = () => {
     );
 };
 
-export default React.memo(HowToEraseMacBlog);
+export default HowToEraseMacBlog;
 
 
 

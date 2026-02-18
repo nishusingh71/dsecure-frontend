@@ -233,7 +233,40 @@ export default function AdminMachines() {
     fetchGroupsForFilter();
   }, [isDemo]);
 
-  // ✅ Caching handled by IndexedDB (indexedDBService) inside React Query's queryFn
+  // ✅ Cache Helper Functions
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+  const getCachedData = (key: string) => {
+    try {
+      const cached = localStorage.getItem(`admin_cache_${key}`);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          // console.log(`✅ Using cached data for ${key}`);
+          return data;
+        }
+        localStorage.removeItem(`admin_cache_${key}`);
+      }
+    } catch (e) {
+      console.warn(`⚠️ Cache read error for ${key}:`, e);
+    }
+    return null;
+  };
+
+  const setCachedData = (key: string, data: any) => {
+    try {
+      localStorage.setItem(
+        `admin_cache_${key}`,
+        JSON.stringify({
+          data,
+          timestamp: Date.now(),
+        }),
+      );
+      // console.log(`💾 Cached data for ${key}`);
+    } catch (e) {
+      console.warn(`⚠️ Cache write error for ${key}:`, e);
+    }
+  };
 
   // ✅ Use React Query for machines data with automatic caching + IndexedDB persistence
   const {

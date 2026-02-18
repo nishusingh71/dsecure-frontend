@@ -10,10 +10,9 @@ const ParentalControlsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-parental-controls")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Parental Controls | D-Secure</title>
-      </Helmet> 
-      */}
+      </Helmet>
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
           <div className="container mx-auto px-4 max-w-7xl">
@@ -49,4 +48,4 @@ const ParentalControlsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(ParentalControlsPage);
+export default ParentalControlsPage;

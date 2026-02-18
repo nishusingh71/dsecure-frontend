@@ -11,9 +11,10 @@ import {
   SkeletonChart,
   SkeletonTable,
 } from "../../components/Skeleton";
-// [PERF-P1] ExcelJS, file-saver, jsPDF, jspdf-autotable are now
-// dynamically imported inside handleExportExcel / handleExportPDF
-// to avoid bundling ~1100KB of export libs on page load.
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   PieChart,
   Pie,
@@ -587,10 +588,6 @@ export default function AdminLicenses() {
       }
 
       try {
-        // [PERF-P1] Dynamic import — only load when user actually exports
-        const ExcelJS = (await import("exceljs")).default;
-        const { saveAs } = await import("file-saver");
-
         // Create workbook and worksheet
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Licenses");
@@ -698,10 +695,6 @@ export default function AdminLicenses() {
       }
 
       try {
-        // [PERF-P1] Dynamic import — only load when user actually exports
-        const { jsPDF } = await import("jspdf");
-        const autoTable = (await import("jspdf-autotable")).default;
-
         const doc = new jsPDF();
 
         doc.setFontSize(20);

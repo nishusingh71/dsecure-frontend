@@ -10,11 +10,10 @@ const InstallationProgressPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-installation-progress")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Installation Progress & Completion | D-Secure Setup Monitoring</title>
         <meta name="description" content="Monitoring installation progress and finalizing D-Secure data erasure software setup." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -99,4 +98,4 @@ const InstallationProgressPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(InstallationProgressPage);
+export default InstallationProgressPage;

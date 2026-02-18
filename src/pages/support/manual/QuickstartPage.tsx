@@ -249,4 +249,4 @@ const QuickStartTutorial: React.FC = memo(() => {
   );
 });
 
-export default React.memo(QuickStartTutorial);
+export default QuickStartTutorial;

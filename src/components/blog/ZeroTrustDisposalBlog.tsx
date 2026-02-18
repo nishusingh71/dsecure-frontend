@@ -284,4 +284,4 @@ const ZeroTrustDisposalBlog: React.FC = () => {
   );
 };
 
-export default React.memo(ZeroTrustDisposalBlog);
+export default ZeroTrustDisposalBlog;

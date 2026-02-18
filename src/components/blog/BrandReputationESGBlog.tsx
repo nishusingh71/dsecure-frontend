@@ -277,4 +277,4 @@ const BrandReputationESGBlog: React.FC = () => {
   );
 };
 
-export default React.memo(BrandReputationESGBlog);
+export default BrandReputationESGBlog;

@@ -237,4 +237,4 @@ const CorporateITAssetRisksBlog: React.FC = () => {
 
 };
 
-export default React.memo(CorporateITAssetRisksBlog);
+export default CorporateITAssetRisksBlog;

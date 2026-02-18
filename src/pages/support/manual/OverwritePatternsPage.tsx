@@ -252,7 +252,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-overwrite-patterns")} />
-      {/* <Helmet>
+      <Helmet>
         <link
           rel="canonical"
           href="https://dsecuretech.com/support/overwrite-patterns"
@@ -269,8 +269,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
           content="overwrite patterns, data sanitization, DoD 5220.22-M, NIST SP 800-88, secure erasure, data destruction"
         />
         <meta name="robots" content="index, follow" />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -1045,4 +1044,4 @@ const OverwritePatternsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(OverwritePatternsPage);
+export default OverwritePatternsPage;

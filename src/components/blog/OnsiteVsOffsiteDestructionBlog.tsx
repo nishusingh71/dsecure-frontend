@@ -262,4 +262,4 @@ const OnsiteVsOffsiteDestructionBlog: React.FC = () => {
     );
 };
 
-export default React.memo(OnsiteVsOffsiteDestructionBlog);
+export default OnsiteVsOffsiteDestructionBlog;

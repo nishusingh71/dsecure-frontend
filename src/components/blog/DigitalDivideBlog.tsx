@@ -220,7 +220,7 @@ const DigitalDivideBlog: React.FC = () => {
     );
 };
 
-export default React.memo(DigitalDivideBlog);
+export default DigitalDivideBlog;
 
 
 

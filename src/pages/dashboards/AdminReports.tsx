@@ -1,14 +1,7 @@
 import { ENV } from "@/config/env";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import {
-  useMemo,
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  Suspense,
-} from "react";
+import { useMemo, useState, useRef, useCallback } from "react";
 import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
@@ -17,23 +10,15 @@ import { useAuth } from "@/auth/AuthContext";
 
 import { AdminDashboardAPI, AdminReport } from "@/services/adminDashboardAPI";
 import { useUserMachines } from "@/hooks/useUserMachines";
-// [PERF-FIX] Removed unused import — useGroups hits /admin/dashboard/groups (404)
-// import { useGroups } from "@/hooks/useDashboardData";
+import { useGroups } from "@/hooks/useDashboardData";
+import { useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { useNavigate } from "react-router-dom";
 import { isDemoMode, DEMO_AUDIT_REPORTS, DEMO_SUBUSERS } from "@/data/demoData";
 import { useSubusers } from "@/hooks/useSubusers";
 import { indexedDBService } from "@/services/indexedDBService";
-import { pdfjs } from "react-pdf";
-
-// [PERF-P2] Dynamically import PDF components to save ~60KB on initial load
-const LazyDocument = React.lazy(() =>
-  import("react-pdf").then((m) => ({ default: m.Document })),
-);
-const LazyPage = React.lazy(() =>
-  import("react-pdf").then((m) => ({ default: m.Page })),
-);
+import { Document, Page, pdfjs } from "react-pdf";
 
 // Extended AdminReport interface to include raw data
 interface ExtendedAdminReport extends AdminReport {
@@ -71,7 +56,40 @@ export default function AdminReports() {
 
   const navigate = useNavigate();
 
-  // ✅ Caching handled by IndexedDB (indexedDBService) inside loadReportsData
+  // ✅ Cache Helper Functions
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+  const getCachedData = (key: string) => {
+    try {
+      const cached = localStorage.getItem(`admin_cache_${key}`);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          // console.log(`✅ Using cached data for ${key}`);
+          return data;
+        }
+        localStorage.removeItem(`admin_cache_${key}`);
+      }
+    } catch (e) {
+      console.warn(`⚠️ Cache read error for ${key}:`, e);
+    }
+    return null;
+  };
+
+  const setCachedData = (key: string, data: any) => {
+    try {
+      localStorage.setItem(
+        `admin_cache_${key}`,
+        JSON.stringify({
+          data,
+          timestamp: Date.now(),
+        }),
+      );
+      // console.log(`💾 Cached data for ${key}`);
+    } catch (e) {
+      console.warn(`⚠️ Cache write error for ${key}:`, e);
+    }
+  };
 
   // ✅ Date Helper Functions
   const formatDateToYYYYMMDD = (date: Date): string => {
@@ -320,7 +338,9 @@ export default function AdminReports() {
 
   // console.log('🔍 User MAC Addresses for filtering:', userMacAddresses);
 
-  const [allRows, setAllRows] = useState<ExtendedAdminReport[]>([]);
+  const [allRows, setAllRows] = useState<ExtendedAdminReport[]>(
+    () => getCachedData("reports") || [],
+  );
   const [loading, setLoading] = useState(true);
   const [selectedReportIds, setSelectedReportIds] = useState<Set<string>>(
     new Set(),
@@ -467,14 +487,6 @@ export default function AdminReports() {
 
     const loadSavedSettings = async () => {
       if (!isMounted) return;
-
-      // Skip API call in demo mode — use cache or defaults only
-      if (isDemoMode()) {
-        console.log("🎮 Demo mode — skipping export-settings API call");
-        setPdfSettingsLoading(false);
-        setPdfSettingsLoaded(true);
-        return;
-      }
 
       setPdfSettingsLoading(true);
 
@@ -717,11 +729,6 @@ export default function AdminReports() {
 
   // Save PDF settings to API using FormData (server expects multipart/form-data)
   const savePdfSettingsToServer = useCallback(async (): Promise<boolean> => {
-    // ✅ DEMO MODE GUARD: Skip API save in demo mode
-    if (isDemo) {
-      console.log("🎮 Demo mode — skipping export-settings save");
-      return true; // Pretend success
-    }
     try {
       const API_BASE = ENV.API_BASE_URL;
 
@@ -1819,11 +1826,6 @@ export default function AdminReports() {
   // };
 
   const handleDownloadReport = async (report: ExtendedAdminReport) => {
-    // ✅ DEMO MODE GUARD: Prevent PDF download API call in demo mode
-    if (isDemo) {
-      showInfo("Demo Mode", "PDF download is disabled in demo mode");
-      return;
-    }
     try {
       showInfo(`Preparing PDF download for report ${report.id}...`);
 
@@ -2012,11 +2014,6 @@ export default function AdminReports() {
 
   // ✅ Bulk Download Multiple Reports as ZIP
   const handleBulkDownload = async () => {
-    // ✅ DEMO MODE GUARD: Prevent bulk download API call in demo mode
-    if (isDemo) {
-      showInfo("Demo Mode", "Bulk download is disabled in demo mode");
-      return;
-    }
     if (selectedReportIds.size === 0) {
       showWarning(
         "No Reports Selected",
@@ -2265,11 +2262,6 @@ export default function AdminReports() {
 
   // ✅ Handle preview of selected reports - Fetches PDF blobs for preview
   const handlePreviewSelectedReports = async () => {
-    // ✅ DEMO MODE GUARD: Prevent preview API call in demo mode
-    if (isDemo) {
-      showInfo("Demo Mode", "PDF preview is disabled in demo mode");
-      return;
-    }
     if (selectedReportIds.size === 0) {
       showWarning(
         "No Reports Selected",
@@ -4885,54 +4877,44 @@ export default function AdminReports() {
             {/* Content Area - PDF Viewer */}
             <div className="flex-1 bg-slate-500 overflow-auto flex justify-center p-4">
               {previewBlobs[currentPreviewIndex] ? (
-                <Suspense
-                  fallback={
+                <Document
+                  file={previewBlobs[currentPreviewIndex]}
+                  onLoadError={(error) =>
+                    console.error("Error loading PDF:", error)
+                  }
+                  loading={
                     <div className="flex items-center justify-center p-10 text-white">
-                      Loading PDF Viewer...
+                      <svg
+                        className="animate-spin h-8 w-8 text-white mr-3"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Loading PDF...
                     </div>
                   }
+                  className="shadow-lg"
                 >
-                  <LazyDocument
-                    file={URL.createObjectURL(
-                      previewBlobs[currentPreviewIndex],
-                    )}
-                    onLoadError={(error: Error) =>
-                      console.error("Error loading PDF:", error)
-                    }
-                    loading={
-                      <div className="flex items-center justify-center p-10 text-white">
-                        <svg
-                          className="animate-spin h-8 w-8 text-white mr-3"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Loading PDF...
-                      </div>
-                    }
-                    className="shadow-lg"
-                  >
-                    <LazyPage
-                      pageNumber={1}
-                      className="shadow-xl"
-                      renderAnnotationLayer={false}
-                      renderTextLayer={false}
-                      scale={1.2} // 120% zoom
-                    />
-                  </LazyDocument>
-                </Suspense>
+                  <Page
+                    pageNumber={1}
+                    className="shadow-xl"
+                    renderAnnotationLayer={false}
+                    renderTextLayer={false}
+                    scale={1.2} // 120% zoom
+                  />
+                </Document>
               ) : (
                 <div className="text-white text-lg">No PDF loaded</div>
               )}

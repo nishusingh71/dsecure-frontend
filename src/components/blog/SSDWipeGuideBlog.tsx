@@ -329,4 +329,4 @@ const SSDWipeGuideBlog: React.FC = () => {
   );
 };
 
-export default React.memo(SSDWipeGuideBlog);
+export default SSDWipeGuideBlog;

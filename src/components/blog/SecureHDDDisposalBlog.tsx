@@ -301,7 +301,7 @@ const SecureHDDDisposalBlog: React.FC = () => {
     );
 };
 
-export default React.memo(SecureHDDDisposalBlog);
+export default SecureHDDDisposalBlog;
 
 
 

@@ -211,7 +211,7 @@ const InstallationPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("installation")} />
-      {/* <Helmet>
+      <Helmet>
         <link
           rel="canonical"
           href="https://dsecuretech.com/support/installation"
@@ -226,8 +226,7 @@ const InstallationPage: React.FC = memo(() => {
           content="D-Secure installation, setup guide, security software installation, D-Secure manual"
         />
         <meta name="robots" content="index, follow" />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -749,4 +748,4 @@ const InstallationPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(InstallationPage);
+export default InstallationPage;

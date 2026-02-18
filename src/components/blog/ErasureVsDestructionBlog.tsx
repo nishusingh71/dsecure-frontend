@@ -317,4 +317,4 @@ const ErasureVsDestructionBlog: React.FC = () => {
   );
 };
 
-export default React.memo(ErasureVsDestructionBlog);
+export default ErasureVsDestructionBlog;

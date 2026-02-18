@@ -87,7 +87,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
   }) => (
     <div className={`comment-card ${depth > 0 ? "reply" : ""}`}>
       <div className="comment-head">
-        <div className="avatar">{comment.author.charAt(0).toUpperCase()}</div>
+        <div className="avatar">
+          {comment.author.charAt(0).toUpperCase()}
+        </div>
         <div>
           <div className="author">{comment.author}</div>
           <div className="date">{comment.date}</div>
@@ -97,18 +99,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
       <p className="comment-text">{comment.content}</p>
 
       <div className="comment-actions">
-        <button
-          onClick={() => handleLike(comment.id)}
-          aria-label={`Like comment by ${comment.author}`}
-        >
+        <button onClick={() => handleLike(comment.id)}>
           ❤️ {comment.likes}
         </button>
-        <button
-          onClick={() => setActiveReplyId(comment.id)}
-          aria-label={`Reply to ${comment.author}`}
-        >
-          Reply
-        </button>
+        <button onClick={() => setActiveReplyId(comment.id)}>Reply</button>
       </div>
 
       {activeReplyId === comment.id && (
@@ -132,7 +126,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
               list.map((c) =>
                 c.id === comment.id
                   ? { ...c, replies: [...c.replies, reply] }
-                  : { ...c, replies: addReply(c.replies || []) },
+                  : { ...c, replies: addReply(c.replies || []) }
               );
 
             saveComments(addReply(comments));
@@ -146,7 +140,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
             placeholder="Write your reply…"
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
-            aria-label="Write your reply"
           />
 
           <div className="form-row">
@@ -154,14 +147,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
               placeholder="Name *"
               value={replyAuthorName}
               onChange={(e) => setReplyAuthorName(e.target.value)}
-              aria-label="Your name"
             />
             <input
               type="email"
               placeholder="Email (optional)"
               value={replyAuthorEmail}
               onChange={(e) => setReplyAuthorEmail(e.target.value)}
-              aria-label="Your email (optional)"
             />
           </div>
 
@@ -182,8 +173,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
       </h3>
 
       <p className="comment-note">
-        Your email address will not be published. Providing an email is
-        optional.
+        Your email address will not be published. Providing an email is optional.
       </p>
 
       <form className="comment-form" onSubmit={handlePostComment}>
@@ -192,7 +182,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           required
-          aria-label="Write your comment"
         />
 
         <div className="form-row">
@@ -201,14 +190,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId }) => {
             value={authorName}
             onChange={(e) => setAuthorName(e.target.value)}
             required
-            aria-label="Your name"
           />
           <input
             type="email"
             placeholder="Email (optional)"
             value={authorEmail}
             onChange={(e) => setAuthorEmail(e.target.value)}
-            aria-label="Your email (optional)"
           />
         </div>
 

@@ -43,4 +43,4 @@ const WindowsVerificationPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(WindowsVerificationPage);
+export default WindowsVerificationPage;

@@ -273,4 +273,4 @@ const NISTTestedErasureSoftwareBlog: React.FC = () => {
     );
 };
 
-export default React.memo(NISTTestedErasureSoftwareBlog);
+export default NISTTestedErasureSoftwareBlog;

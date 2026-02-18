@@ -182,7 +182,7 @@ const DeploymentOptionsBlog: React.FC = () => {
 
 };
 
-export default React.memo(DeploymentOptionsBlog);
+export default DeploymentOptionsBlog;
 
 
 

@@ -10,11 +10,10 @@ const StatusIndicatorsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-status-indicators")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Status Indicators & Alerts | D-Secure</title>
         <meta name="description" content="Understanding system alerts, warning indicators, and notification management in D-Secure." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
@@ -75,4 +74,4 @@ const StatusIndicatorsPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(StatusIndicatorsPage);
+export default StatusIndicatorsPage;

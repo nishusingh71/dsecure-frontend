@@ -229,4 +229,4 @@ const ITADSelectionGuideBlog: React.FC = () => {
   );
 };
 
-export default React.memo(ITADSelectionGuideBlog);
+export default ITADSelectionGuideBlog;

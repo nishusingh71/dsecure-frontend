@@ -9,14 +9,13 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-scripting-automation")} />
- {/* <Helmet>
+ <Helmet>
  <title>Scripting & Automation | D-Secure Manual</title>
  <meta
  name="description"
  content="D-Secure scripting and automation guide for command-line tools, batch processing, and workflow automation."
  />
- </Helmet> 
- */}
+ </Helmet>
 
  <div className="min-h-screen bg-slate-50">
  {/* Header */}
@@ -245,4 +244,4 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  );
 });
 
-export default React.memo(ScriptingAutomationPage);
+export default ScriptingAutomationPage;

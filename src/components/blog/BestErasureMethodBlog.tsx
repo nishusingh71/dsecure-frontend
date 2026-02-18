@@ -261,4 +261,4 @@ const BestErasureMethodBlog: React.FC = () => {
   );
 };
 
-export default React.memo(BestErasureMethodBlog);
+export default BestErasureMethodBlog;

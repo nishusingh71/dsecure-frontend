@@ -10,11 +10,10 @@ const WindowsTroubleshootingPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-troubleshooting")} />
-      {/* <Helmet>
+      <Helmet>
         <title>Windows Troubleshooting | D-Secure Manual</title>
         <meta name="description" content="Common Windows erasure issues and solutions for D-Secure operations." />
-      </Helmet> 
-      */}
+      </Helmet>
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -108,4 +107,4 @@ const WindowsTroubleshootingPage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(WindowsTroubleshootingPage);
+export default WindowsTroubleshootingPage;

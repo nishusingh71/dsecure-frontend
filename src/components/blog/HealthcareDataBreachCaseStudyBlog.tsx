@@ -285,4 +285,4 @@ const HealthcareDataBreachCaseStudyBlog: React.FC = () => {
     );
 };
 
-export default React.memo(HealthcareDataBreachCaseStudyBlog);
+export default HealthcareDataBreachCaseStudyBlog;

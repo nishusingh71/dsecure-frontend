@@ -9,14 +9,13 @@ const AuditTrailsPage: React.FC = memo(() => {
  <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-audit-trails")} />
- {/* <Helmet>
+ <Helmet>
  <title>Audit Trails | D-Secure Manual</title>
  <meta
  name="description"
  content="D-Secure audit trails guide for maintaining detailed logs for compliance and forensic purposes."
  />
- </Helmet> 
- */}
+ </Helmet>
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">
@@ -127,4 +126,4 @@ const AuditTrailsPage: React.FC = memo(() => {
  );
 });
 
-export default React.memo(AuditTrailsPage);
+export default AuditTrailsPage;

@@ -409,7 +409,7 @@ const NISTClearPurgeBlog: React.FC = () => {
 
 };
 
-export default React.memo(NISTClearPurgeBlog);
+export default NISTClearPurgeBlog;
 
 
 

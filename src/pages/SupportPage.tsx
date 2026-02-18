@@ -1,7 +1,6 @@
 ﻿import React, { useState, useCallback, useMemo, memo } from "react";
 import SEOHead from '@/components/SEOHead';
-import GlobalTimezone from "@/components/GlobalTimezone";
-import { getSEOForPage } from "@/utils/seo";
+import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -9,6 +8,7 @@ import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
+
 
 // Form components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -19,22 +19,30 @@ const FormInput: React.FC<{
   required?: boolean;
   placeholder: string;
   label: string;
-}> = ({ type, name, value, onChange, required, placeholder, label }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label} {required && "*"}
-    </label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-      placeholder={placeholder}
-    />
-  </div>
-);
+}> = ({
+  type,
+  name,
+  value,
+  onChange,
+  required,
+  placeholder,
+  label
+}) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {label} {required && '*'}
+      </label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+        placeholder={placeholder}
+      />
+    </div>
+  );
 
 const FormTextarea: React.FC<{
   name: string;
@@ -44,22 +52,30 @@ const FormTextarea: React.FC<{
   placeholder: string;
   label: string;
   rows: number;
-}> = ({ name, value, onChange, required, placeholder, label, rows }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label} {required && "*"}
-    </label>
-    <textarea
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-      rows={rows}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
-      placeholder={placeholder}
-    />
-  </div>
-);
+}> = ({
+  name,
+  value,
+  onChange,
+  required,
+  placeholder,
+  label,
+  rows
+}) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {label} {required && '*'}
+      </label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        rows={rows}
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+        placeholder={placeholder}
+      />
+    </div>
+  );
 
 const FormSelect: React.FC<{
   name: string;
@@ -67,25 +83,31 @@ const FormSelect: React.FC<{
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   options: { value: string; label: string }[];
-}> = ({ name, value, onChange, label, options }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-2">
-      {label}
-    </label>
-    <select
-      name={name}
-      value={value}
-      onChange={onChange}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
-    >
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-  </div>
-);
+}> = ({
+  name,
+  value,
+  onChange,
+  label,
+  options
+}) => (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {label}
+      </label>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
+      >
+        {options.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 
 // Support Ticket Modal Component - removed memo for consistency
 const SupportTicketModal: React.FC<{
@@ -99,11 +121,7 @@ const SupportTicketModal: React.FC<{
     category: string;
     description: string;
   };
-  onInputChange: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => void;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   priorityOptions: { value: string; label: string }[];
   categoryOptions: { value: string; label: string }[];
@@ -114,116 +132,113 @@ const SupportTicketModal: React.FC<{
   onInputChange,
   onSubmit,
   priorityOptions,
-  categoryOptions,
+  categoryOptions
 }) => {
-  if (!isOpen) return null;
+    if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-        {/* Fixed Header */}
-        <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
-            <button
-              onClick={onClose}
-              className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
-            >
-              ×
-            </button>
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+          {/* Fixed Header */}
+          <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
+              <button
+                onClick={onClose}
+                className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
+              >
+                ×
+              </button>
+            </div>
+            <p className="mt-2 text-emerald-100">
+              We'll get back to you as soon as possible!
+            </p>
           </div>
-          <p className="mt-2 text-emerald-100">
-            We'll get back to you as soon as possible!
-          </p>
-        </div>
 
-        {/* Scrollable Form Content */}
-        <div className="flex-1 overflow-y-auto modal-scroll-container">
-          <form onSubmit={onSubmit} className="p-6 space-y-6 modal-scroll">
-            {/* <div className="mb-4">
-              <GlobalTimezone />
-            </div> */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto modal-scroll-container">
+            <form onSubmit={onSubmit} className="p-6 space-y-6 modal-scroll">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormInput
+                  type="text"
+                  name="name"
+                  value={ticketForm.name}
+                  onChange={onInputChange}
+                  required
+                  placeholder="Enter your full name"
+                  label="Full Name"
+                />
+
+                <FormInput
+                  type="email"
+                  name="email"
+                  value={ticketForm.email}
+                  onChange={onInputChange}
+                  required
+                  placeholder="Enter your email address"
+                  label="Email Address"
+                />
+              </div>
+
               <FormInput
                 type="text"
-                name="name"
-                value={ticketForm.name}
+                name="subject"
+                value={ticketForm.subject}
                 onChange={onInputChange}
                 required
-                placeholder="Enter your full name"
-                label="Full Name"
+                placeholder="Brief description of your issue"
+                label="Subject"
               />
 
-              <FormInput
-                type="email"
-                name="email"
-                value={ticketForm.email}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormSelect
+                  name="priority"
+                  value={ticketForm.priority}
+                  onChange={onInputChange}
+                  label="Priority"
+                  options={priorityOptions}
+                />
+
+                <FormSelect
+                  name="category"
+                  value={ticketForm.category}
+                  onChange={onInputChange}
+                  label="Category"
+                  options={categoryOptions}
+                />
+              </div>
+
+              <FormTextarea
+                name="description"
+                value={ticketForm.description}
                 onChange={onInputChange}
                 required
-                placeholder="Enter your email address"
-                label="Email Address"
-              />
-            </div>
-
-            <FormInput
-              type="text"
-              name="subject"
-              value={ticketForm.subject}
-              onChange={onInputChange}
-              required
-              placeholder="Brief description of your issue"
-              label="Subject"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormSelect
-                name="priority"
-                value={ticketForm.priority}
-                onChange={onInputChange}
-                label="Priority"
-                options={priorityOptions}
+                rows={1}
+                placeholder="Please provide detailed information about your issue or question..."
+                label="Description"
               />
 
-              <FormSelect
-                name="category"
-                value={ticketForm.category}
-                onChange={onInputChange}
-                label="Category"
-                options={categoryOptions}
-              />
-            </div>
-
-            <FormTextarea
-              name="description"
-              value={ticketForm.description}
-              onChange={onInputChange}
-              required
-              rows={1}
-              placeholder="Please provide detailed information about your issue or question..."
-              label="Description"
-            />
-
-            <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
-              <button
-                type="submit"
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
-              >
-                Submit Ticket
-              </button>
-              {/* <button
+              <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
+                >
+                  Submit Ticket
+                </button>
+                {/* <button
                 type="button"
                 onClick={onClose}
                 className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
               >
                 Cancel
               </button> */}
-            </div>
-          </form>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 const SupportPage: React.FC = () => {
   const { toast, showToast, hideToast } = useToast();

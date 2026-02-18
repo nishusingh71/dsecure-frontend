@@ -133,4 +133,4 @@ const WindowsEnterprisePage: React.FC = memo(() => {
   );
 });
 
-export default React.memo(WindowsEnterprisePage);
+export default WindowsEnterprisePage;

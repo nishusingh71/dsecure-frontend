@@ -241,4 +241,4 @@ const WipeComputerDonatingBlog: React.FC = () => {
 
 };
 
-export default React.memo(WipeComputerDonatingBlog);
+export default WipeComputerDonatingBlog;

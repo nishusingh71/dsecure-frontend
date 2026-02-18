@@ -274,4 +274,4 @@ const DumpsterDivingDataBreachBlog: React.FC = () => {
     );
 };
 
-export default React.memo(DumpsterDivingDataBreachBlog);
+export default DumpsterDivingDataBreachBlog;

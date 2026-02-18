@@ -207,7 +207,7 @@ export function getPolarCheckoutUrl(
     }
 ): string {
     // Using org slug format with product ID as query param
-    const baseUrl = `https://polar.sh/dsecuretech/checkout`;
+    const baseUrl = `https://polar.sh/D-Securetech/checkout`;
 
     // Add query parameters
     const params = new URLSearchParams();
@@ -294,7 +294,7 @@ export function openPolarCheckoutInNewTab(
         return;
     }
 
-    const checkoutUrl = `https://polar.sh/dsecuretech/checkout?products=${productId}`;
+    const checkoutUrl = `https://polar.sh/D-Securetech/checkout?products=${productId}`;
     window.open(checkoutUrl, '_blank');
 }
 

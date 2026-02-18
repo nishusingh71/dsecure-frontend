@@ -294,4 +294,4 @@ const MSPDataErasureBlog: React.FC = () => {
   );
 };
 
-export default React.memo(MSPDataErasureBlog);
+export default MSPDataErasureBlog;

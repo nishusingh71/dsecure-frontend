@@ -217,4 +217,4 @@ const ITADEnvironmentalBlog: React.FC = () => {
 
 };
 
-export default React.memo(ITADEnvironmentalBlog);
+export default ITADEnvironmentalBlog;
