@@ -311,7 +311,7 @@ const NISTVsIEEEBlog: React.FC = () => {
 
 };
 
-export default NISTVsIEEEBlog;
+export default React.memo(NISTVsIEEEBlog);
 
 
 

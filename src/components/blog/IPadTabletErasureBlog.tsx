@@ -337,7 +337,7 @@ const IPadTabletErasureBlog: React.FC = () => {
     );
 };
 
-export default IPadTabletErasureBlog;
+export default React.memo(IPadTabletErasureBlog);
 
 
 

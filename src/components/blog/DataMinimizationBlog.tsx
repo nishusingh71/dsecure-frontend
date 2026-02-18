@@ -238,4 +238,4 @@ const DataMinimizationBlog: React.FC = () => {
   );
 };
 
-export default DataMinimizationBlog;
+export default React.memo(DataMinimizationBlog);

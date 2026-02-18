@@ -155,7 +155,7 @@ const PHIErasureBlog: React.FC = () => {
 
 };
 
-export default PHIErasureBlog;
+export default React.memo(PHIErasureBlog);
 
 
 

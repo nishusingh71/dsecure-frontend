@@ -9,6 +9,7 @@ import {
   type Group as APIGroup,
   type GroupUser,
 } from "@/utils/enhancedApiClient";
+import { indexedDBService } from "@/services/indexedDBService";
 
 interface Group {
   id: string;
@@ -136,6 +137,24 @@ export default function AdminGroups() {
       setIsLoadingGroups(true);
       setIsError(false);
 
+      // ✅ 1. Try IndexedDB cache first for instant display (user-scoped)
+      const cacheKey = currentUserEmail
+        ? `groups_${currentUserEmail}`
+        : "groups";
+      try {
+        const cached = await indexedDBService.get("groups", cacheKey);
+        if (cached && Array.isArray(cached) && cached.length > 0) {
+          console.log("✅ Loaded groups from IndexedDB for", currentUserEmail);
+          setGroups(cached);
+          setIsLoadingGroups(false);
+          // ⚠️ RETURN EARLY: Use cached data, no API call needed
+          return;
+        }
+      } catch (e) {
+        console.warn("⚠️ IDB Read Failed: groups", e);
+      }
+
+      // ✅ 2. Fetch from API (no cache found)
       console.log("🔍 Fetching groups from /api/Group/with-users...");
       const response = await apiClient.getGroupsWithUsers();
 
@@ -221,6 +240,11 @@ export default function AdminGroups() {
       setGroups(filteredGroups);
       console.log("✅ Groups loaded successfully:", transformedGroups.length);
       console.log("📊 Transformed groups:", transformedGroups);
+
+      // ✅ 3. Save to IndexedDB cache (user-scoped)
+      indexedDBService
+        .put("groups", cacheKey, filteredGroups)
+        .catch((e: any) => console.warn("⚠️ IDB Write Failed: groups", e));
     } catch (error: any) {
       console.error("❌ Error fetching groups:", error);
       console.error("❌ Error details:", {

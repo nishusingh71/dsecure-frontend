@@ -257,4 +257,4 @@ const DataPrivacyObligationsBlog: React.FC = () => {
     );
 };
 
-export default DataPrivacyObligationsBlog;
+export default React.memo(DataPrivacyObligationsBlog);

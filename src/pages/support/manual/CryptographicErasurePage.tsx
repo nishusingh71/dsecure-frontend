@@ -708,4 +708,4 @@ const CryptographicErasurePage: React.FC = memo(() => {
   );
 });
 
-export default CryptographicErasurePage;
+export default React.memo(CryptographicErasurePage);

@@ -194,4 +194,4 @@ const EnterpriseServersPage: React.FC = memo(() => {
     );
 });
 
-export default EnterpriseServersPage;
+export default React.memo(EnterpriseServersPage);

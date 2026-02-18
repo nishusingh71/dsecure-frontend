@@ -1,5 +1,6 @@
 import Reveal from "@/components/Reveal";
 import React, { useState } from "react";
+// import GlobalTimezone from "@/components/GlobalTimezone";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -409,7 +410,7 @@ function ContactPageContent() {
       // Company Information
       company: {
         name: "InfoTree Computers LLC",
-        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
+        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
         website: "https://infotreeit.com",
         established: "2015",
       },
@@ -456,7 +457,7 @@ function ContactPageContent() {
       id: 2,
       company: {
         name: "D-Secure Technologies",
-        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
+        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
         website: "https://dsecuretech.com",
         established: "2025",
       },
@@ -718,6 +719,8 @@ function ContactPageContent() {
                   <h2 className="text-2xl font-bold text-slate-900 mb-6 text-center">
                     Submit Enquiry
                   </h2>
+
+                  {/* <GlobalTimezone /> */}
 
                   {/* Usage Type Toggle */}
                   <div className="mb-8">
@@ -1311,7 +1314,28 @@ function ContactPageContent() {
                         </svg>
                       </div>
                       <span className="text-slate-700">
-                        Response within 12 hours
+                        Response within 12 Business Hours
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg
+                          className="w-4 h-4 text-green-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle cx="12" cy="12" r="9" strokeWidth={2} />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 7v5l3 3"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-slate-700">
+                        (9 AM - 6 PM ) [03:30 - 12:30 UTC]
                       </span>
                     </div>
                     <div className="flex items-center gap-3">

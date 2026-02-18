@@ -240,4 +240,4 @@ const DataRemanenceBlog: React.FC = () => {
 
 };
 
-export default DataRemanenceBlog;
+export default React.memo(DataRemanenceBlog);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { createContext, useContext, useState, useCallback, useMemo, ReactNode } from 'react'
 
 export interface Toast {
   id: string
@@ -35,12 +35,17 @@ interface NotificationProviderProps {
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([])
 
-  const showToast = (toast: Omit<Toast, 'id'>) => {
+  const removeToast = useCallback((id: string) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id))
+  }, [])
+
+  const showToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const id = Math.random().toString(36).substr(2, 9)
+    const duration = toast.duration || 5000
     const newToast: Toast = {
       ...toast,
       id,
-      duration: toast.duration || 5000
+      duration
     }
     
     setToasts(prev => [...prev, newToast])
@@ -48,41 +53,37 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     // Auto remove after duration
     setTimeout(() => {
       removeToast(id)
-    }, newToast.duration)
-  }
+    }, duration)
+  }, [removeToast])
 
-  const removeToast = (id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id))
-  }
-
-  const showSuccess = (title: string, message?: string) => {
+  const showSuccess = useCallback((title: string, message?: string) => {
     showToast({ type: 'success', title, message })
-  }
+  }, [showToast])
 
-  const showError = (title: string, message?: string) => {
+  const showError = useCallback((title: string, message?: string) => {
     showToast({ type: 'error', title, message })
-  }
+  }, [showToast])
 
-  const showWarning = (title: string, message?: string) => {
+  const showWarning = useCallback((title: string, message?: string) => {
     showToast({ type: 'warning', title, message })
-  }
+  }, [showToast])
 
-  const showInfo = (title: string, message?: string) => {
+  const showInfo = useCallback((title: string, message?: string) => {
     showToast({ type: 'info', title, message })
-  }
+  }, [showToast])
+
+  const value = useMemo(() => ({
+    toasts,
+    showToast,
+    removeToast,
+    showSuccess,
+    showError,
+    showWarning,
+    showInfo
+  }), [toasts, showToast, removeToast, showSuccess, showError, showWarning, showInfo])
 
   return (
-    <NotificationContext.Provider 
-      value={{ 
-        toasts, 
-        showToast, 
-        removeToast, 
-        showSuccess, 
-        showError, 
-        showWarning, 
-        showInfo 
-      }}
-    >
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   )

@@ -169,7 +169,7 @@ const DataHoardingBlog: React.FC = () => {
 
 };
 
-export default DataHoardingBlog;
+export default React.memo(DataHoardingBlog);
 
 
 

@@ -339,12 +339,14 @@ export function useAdminProfile(userEmail: string, enabled: boolean = true) {
  * @returns Object containing all dashboard data with loading/error states
  */
 export function useDashboardData(userEmail: string, enabled: boolean = true) {
-  const statsQuery = useDashboardStats(userEmail, enabled)
-  const activityQuery = useUserActivity(userEmail, enabled)
-  const groupsQuery = useGroups(userEmail, enabled)
-  const licenseQuery = useLicenseData(userEmail, enabled)
-  const reportsQuery = useRecentReports(userEmail, enabled)
-  const profileQuery = useAdminProfile(userEmail, enabled)
+  // [PERF-FIX] Disabled 4 hooks that hit non-existent /admin/dashboard/* routes (404 in Network tab)
+  // Real data comes from separate hooks: useAllLicenses, useUserMachines, useSubusers, useAuditReports, fetchGroupsWithUsers
+  const statsQuery = useDashboardStats(userEmail, false)       // [DISABLED] /admin/dashboard/stats → 404
+  const activityQuery = useUserActivity(userEmail, enabled)    // ✅ /api/UserActivity/... → real API
+  const groupsQuery = useGroups(userEmail, false)              // [DISABLED] /admin/dashboard/groups → 404
+  const licenseQuery = useLicenseData(userEmail, false)        // [DISABLED] /admin/dashboard/license-data → 404
+  const reportsQuery = useRecentReports(userEmail, false)      // [DISABLED] /admin/dashboard/recent-reports → 404
+  const profileQuery = useAdminProfile(userEmail, enabled)     // ✅ /api/Users/... → real API
 
   return {
     // Data
@@ -355,19 +357,13 @@ export function useDashboardData(userEmail: string, enabled: boolean = true) {
     reports: reportsQuery.data || [],
     profile: profileQuery.data || null,
 
-    // Loading states
-    isLoading: statsQuery.isLoading || activityQuery.isLoading ||
-      groupsQuery.isLoading || licenseQuery.isLoading ||
-      reportsQuery.isLoading || profileQuery.isLoading,
+    // Loading states — only check active queries
+    isLoading: activityQuery.isLoading || profileQuery.isLoading,
 
-    isRefetching: statsQuery.isRefetching || activityQuery.isRefetching ||
-      groupsQuery.isRefetching || licenseQuery.isRefetching ||
-      reportsQuery.isRefetching || profileQuery.isRefetching,
+    isRefetching: activityQuery.isRefetching || profileQuery.isRefetching,
 
-    // Error states
-    hasError: statsQuery.isError || activityQuery.isError ||
-      groupsQuery.isError || licenseQuery.isError ||
-      reportsQuery.isError || profileQuery.isError,
+    // Error states — only check active queries
+    hasError: activityQuery.isError || profileQuery.isError,
 
     errors: {
       stats: statsQuery.error,
@@ -378,13 +374,9 @@ export function useDashboardData(userEmail: string, enabled: boolean = true) {
       profile: profileQuery.error,
     },
 
-    // Refetch functions
+    // Refetch functions — only refetch active queries
     refetch: () => {
-      statsQuery.refetch()
       activityQuery.refetch()
-      groupsQuery.refetch()
-      licenseQuery.refetch()
-      reportsQuery.refetch()
       profileQuery.refetch()
     },
 

@@ -125,7 +125,7 @@ const RightToRepairBlog: React.FC = () => {
 
 };
 
-export default RightToRepairBlog;
+export default React.memo(RightToRepairBlog);
 
 
 

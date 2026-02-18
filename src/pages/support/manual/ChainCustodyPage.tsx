@@ -9,13 +9,14 @@ const ChainCustodyPage: React.FC = memo(() => {
  <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-chain-custody")} />
- <Helmet>
+ {/* <Helmet>
  <title>Chain of Custody | D-Secure Manual</title>
  <meta
  name="description"
  content="D-Secure chain of custody guide for documenting device handling throughout the erasure process."
  />
- </Helmet>
+ </Helmet> 
+ */}
 
  <div className="min-h-screen bg-slate-50">
  <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 lg:py-24">
@@ -139,4 +140,4 @@ const ChainCustodyPage: React.FC = memo(() => {
  );
 });
 
-export default ChainCustodyPage;
+export default React.memo(ChainCustodyPage);

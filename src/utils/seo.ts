@@ -27,9 +27,9 @@ export interface SEOMetadata {
 // Base configuration
 export const SEO_CONFIG = {
   siteName: 'D-Secure Tech',
-  baseUrl: 'https://D-Securetech.com',
-  defaultImage: 'https://D-Securetech.com/logo-white.svg',
-  author: 'D-Secure Tech',
+  baseUrl: 'https://dsecuretech.com',
+  defaultImage: 'https://dsecuretech.com/logo-white.svg',
+  author: 'D-Secure Technologies Pvt Ltd.',
   language: 'en',
   locale: 'en_US',
   twitterHandle: '@D-Securetech',
@@ -970,7 +970,7 @@ export const getDefaultSEO = (): SEOMetadata => ({
 // Page-specific SEO configurations with EXTENSIVE additional keywords
 export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   home: {
-    title: 'Eraser – Secure Erase Files from Hard Drives',
+    title: 'Eraser – Secure Erase Files from Hard Drives | D-Secure Tech',
     description: 'Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times',
     keywords: generateKeywords([
       'data erasure software download',
@@ -1517,7 +1517,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'mac-erase-guide': {
-    title: 'Mac Data Erasure Guide - Secure Mac Hard Drive Wiping',
+    title: 'Mac Data Erasure Guide - Secure Mac Hard Drive Wiping | D-Secure Tech',
     description: 'Step-by-step guide for securely erasing Mac hard drives and SSDs. Complete data destruction for macOS systems.',
     keywords: generateKeywords([
       'Mac data erasure',
@@ -1555,7 +1555,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'overwrite-guide': {
-    title: 'Data Overwrite Guide - Secure Data Destruction Methods',
+    title: 'Data Overwrite Guide - Secure Data Destruction Methods | D-Secure Tech',
     description: 'Comprehensive guide to data overwriting techniques and secure data destruction methods for various storage devices.',
     keywords: generateKeywords([
       'data overwrite guide',
@@ -1593,7 +1593,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'ssd-cryptographic-erasure-guide': {
-    title: 'SSD Cryptographic Erasure Guide - CryptoEraseSSD',
+    title: 'SSD Cryptographic Erasure Guide - CryptoEraseSSD | D-Secure Tech',
     description: 'Step-by-step cryptographic erasure guide for SSDs to meet enterprise security and compliance requirements.',
     keywords: generateKeywords([
       'SSD cryptographic erase',
@@ -1631,7 +1631,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'cloud-console-guide': {
-    title: 'Cloud Console Guide - Remote Data Erasure Management',
+    title: 'Cloud Console Guide - Remote Data Erasure Management | D-Secure Tech',
     description: 'Learn to use D-Secure cloud console for remote data erasure management and enterprise deployment.',
     keywords: generateKeywords([
       'cloud console guide',
@@ -1669,7 +1669,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   'secure-erase-hdd-ssd': {
-    title: 'HDD & SSD Secure Erase Guide - Hard Drive Data Destruction',
+    title: 'HDD & SSD Secure Erase Guide - Hard Drive Data Destruction | D-Secure Tech',
     description: 'Complete guide to securely erasing HDDs and SSDs. Hardware-based and software-based data destruction methods.',
     keywords: generateKeywords([
       'HDD secure erase',
@@ -1850,7 +1850,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: Data Sanitization Compliance
   'blog-data-sanitization-compliance': {
-    title: 'GDPR, HIPAA, PCI-DSS Data Sanitization Compliance Guide 2025',
+    title: 'GDPR, HIPAA, PCI-DSS Data Sanitization Compliance Guide 2025 | D-Secure Tech',
     description: 'Complete guide to data sanitization compliance for GDPR, HIPAA, PCI-DSS & NIST 800-88. Avoid fines up to €20M with certified erasure methods and audit-ready documentation.',
     keywords: generateKeywords([
       'data sanitization compliance',
@@ -1887,7 +1887,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: Best Erasure Methods
   'blog-best-erasure-method': {
-    title: 'Best Data Erasure Methods Compared: Overwriting vs Degaussing vs Shredding',
+    title: 'Best Data Erasure Methods Compared: Overwriting vs Degaussing vs Shredding | D-Secure Tech',
     description: 'Expert comparison of data erasure methods: software overwriting, degaussing, and physical destruction. Learn which method fits your compliance needs and preserves asset value.',
     keywords: generateKeywords([
       'best data erasure method',
@@ -1924,7 +1924,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: SSD Wipe Guide
   'blog-ssd-wipe-guide': {
-    title: 'How to Securely Wipe SSD: NVMe & SATA Secure Erase Guide 2025',
+    title: 'How to Securely Wipe SSD: NVMe & SATA Secure Erase Guide 2025 | D-Secure Tech',
     description: 'Technical guide to SSD secure erasure. Learn why traditional overwriting fails on flash storage and how to use ATA Secure Erase, NVMe SANITIZE, and cryptographic erasure.',
     keywords: generateKeywords([
       'SSD secure erase guide',
@@ -1963,7 +1963,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: Mobile Erasure Guide
   'blog-mobile-erasure-guide': {
-    title: 'iOS & Android Mobile Device Erasure: Complete ITAD Guide 2025',
+    title: 'iOS & Android Mobile Device Erasure: Complete ITAD Guide 2025 | D-Secure Tech',
     description: 'Enterprise guide to mobile device data erasure for iOS and Android. Learn crypto-shredding, factory reset limitations, IMEI verification, and ADISA-certified processes.',
     keywords: generateKeywords([
       'mobile device erasure',
@@ -2000,7 +2000,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: ESG Data Erasure
   'blog-esg-data-erasure': {
-    title: 'ESG Reporting & ITAD: Measuring CO2 Reduction from Data Erasure',
+    title: 'ESG Reporting & ITAD: Measuring CO2 Reduction from Data Erasure | D-Secure Tech',
     description: 'Calculate carbon savings from IT asset reuse vs recycling. Learn EPA WARM methodology, GHG Protocol Scope 3 reporting, and how ITAD supports your ESG goals.',
     keywords: generateKeywords([
       'ESG data erasure',
@@ -2074,7 +2074,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: Automated Erasure (PXE)
   'blog-automated-erasure-pxe': {
-    title: 'PXE Network Boot Data Erasure: Automate 500+ Servers at Once',
+    title: 'PXE Network Boot Data Erasure: Automate 500+ Servers at Once | D-Secure Tech',
     description: 'Technical guide to automating data center erasure via PXE boot. DHCP/TFTP configuration, Wake-on-LAN, zero-touch wiping, and 93% labor cost reduction.',
     keywords: generateKeywords([
       'PXE data erasure',
@@ -2112,7 +2112,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: Zero Trust Disposal
   'blog-zero-trust-disposal': {
-    title: 'Zero Trust IT Asset Disposal: Never Trust, Always Verify Erasure',
+    title: 'Zero Trust IT Asset Disposal: Never Trust, Always Verify Erasure | D-Secure Tech',
     description: 'Apply Zero Trust principles to IT disposal. Verify every device, cryptographic audit trails, tamper-proof certificates, and continuous monitoring for NIST compliance.',
     keywords: generateKeywords([
       'Zero Trust disposal',
@@ -2149,7 +2149,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: Government Device Theft
   'blog-gov-device-theft': {
-    title: 'Government Device Theft Prevention: Military-Grade Data Erasure',
+    title: 'Government Device Theft Prevention: Military-Grade Data Erasure | D-Secure Tech',
     description: 'Prevent data breaches from stolen government devices. DoD 5220.22-M erasure, classified data destruction, CMMC compliance, and federal security protocols.',
     keywords: generateKeywords([
       'government device theft',
@@ -2186,7 +2186,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   // Blog: ITAM Disposal Guide
   'blog-itam-disposal-guide': {
-    title: 'ITAM Integration: Complete IT Asset Disposal Lifecycle Guide',
+    title: 'ITAM Integration: Complete IT Asset Disposal Lifecycle Guide | D-Secure Tech',
     description: 'Integrate data erasure into your ITAM workflow. Asset tracking, ServiceNow integration, disposal automation, compliance reporting, and circular economy strategies.',
     keywords: generateKeywords([
       'ITAM disposal',
@@ -4460,7 +4460,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   // ========================
   'support-help-manual': {
     title: 'Support Help Manual | D-Secure Tech',
-    description: 'Learn about support help manual. D-Secure provides comprehensive data erasure solutions and documentation for support help manual.',
+    description: 'Comprehensive guide to support help manual for secure data erasure. Learn how to implement support help manual and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4471,7 +4471,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-help-manual-complete-manual': {
     title: 'Support Help Manual Complete Manual | D-Secure Tech',
-    description: 'Learn about support help manual complete manual. D-Secure provides comprehensive data erasure solutions and documentation for support help manual complete manual.',
+    description: 'Comprehensive guide to support help manual complete manual for secure data erasure. Learn how to implement support help manual complete manual and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4483,7 +4483,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-help-manual-complete-network-manual': {
     title: 'Support Help Manual Complete Network Manual | D-Secure Tech',
-    description: 'Learn about support help manual complete network manual. D-Secure provides comprehensive data erasure solutions and documentation for support help manual complete network manual.',
+    description: 'Comprehensive guide to support help manual complete network manual for secure data erasure. Learn how to implement support help manual complete network manual and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4495,7 +4495,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-help-manual-faqs': {
     title: 'Support Help Manual Faqs | D-Secure Tech',
-    description: 'Learn about support help manual faqs. D-Secure provides comprehensive data erasure solutions and documentation for support help manual faqs.',
+    description: 'Comprehensive guide to support help manual faqs for secure data erasure. Learn how to implement support help manual faqs and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4507,7 +4507,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-help-manual-network-file': {
     title: 'Support Help Manual Network File | D-Secure Tech',
-    description: 'Learn about support help manual network file. D-Secure provides comprehensive data erasure solutions and documentation for support help manual network file.',
+    description: 'Comprehensive guide to support help manual network file for secure data erasure. Learn how to implement support help manual network file and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4519,7 +4519,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-help-manual-report-management': {
     title: 'Support Help Manual Report Management | D-Secure Tech',
-    description: 'Learn about support help manual report management. D-Secure provides comprehensive data erasure solutions and documentation for support help manual report management.',
+    description: 'Comprehensive guide to support help manual report management for secure data erasure. Learn how to implement support help manual report management and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4531,7 +4531,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-help-manual-schedule-settings': {
     title: 'Support Help Manual Schedule Settings | D-Secure Tech',
-    description: 'Learn about support help manual schedule settings. D-Secure provides comprehensive data erasure solutions and documentation for support help manual schedule settings.',
+    description: 'Comprehensive guide to support help manual schedule settings for secure data erasure. Learn how to implement support help manual schedule settings and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4543,7 +4543,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-help-manual-working-guide': {
     title: 'Support Help Manual Working Guide | D-Secure Tech',
-    description: 'Learn about support help manual working guide. D-Secure provides comprehensive data erasure solutions and documentation for support help manual working guide.',
+    description: 'Comprehensive guide to support help manual working guide for secure data erasure. Learn how to implement support help manual working guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'help',
@@ -4554,8 +4554,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/help-manual/working-guide',
   },
   'support-manual-access-verification': {
-    title: 'Support Manual Access Verification | D-Secure Tech',
-    description: 'Learn about support manual access verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual access verification.',
+    title: 'Access Verification | D-Secure Tech',
+    description: 'Comprehensive guide to access verification for secure data erasure. Learn how to implement access verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4566,8 +4566,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/access-verification',
   },
   'support-manual-activation-key': {
-    title: 'Support Manual Activation Key | D-Secure Tech',
-    description: 'Learn about support manual activation key. D-Secure provides comprehensive data erasure solutions and documentation for support manual activation key.',
+    title: 'Activation Key | D-Secure Tech',
+    description: 'Comprehensive guide to activation key for secure data erasure. Learn how to implement activation key and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4578,8 +4578,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/activation-key',
   },
   'support-manual-api-integration': {
-    title: 'Support Manual Api Integration | D-Secure Tech',
-    description: 'Learn about support manual api integration. D-Secure provides comprehensive data erasure solutions and documentation for support manual api integration.',
+    title: 'API Integration | D-Secure Tech',
+    description: 'Comprehensive guide to api integration for secure data erasure. Learn how to implement api integration and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4590,8 +4590,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/api-integration',
   },
   'support-manual-audit-preparation': {
-    title: 'Support Manual Audit Preparation | D-Secure Tech',
-    description: 'Learn about support manual audit preparation. D-Secure provides comprehensive data erasure solutions and documentation for support manual audit preparation.',
+    title: 'Audit Preparation | D-Secure Tech',
+    description: 'Comprehensive guide to audit preparation for secure data erasure. Learn how to implement audit preparation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4602,8 +4602,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/audit-preparation',
   },
   'support-manual-audit-trails': {
-    title: 'Support Manual Audit Trails | D-Secure Tech',
-    description: 'Learn about support manual audit trails. D-Secure provides comprehensive data erasure solutions and documentation for support manual audit trails.',
+    title: 'Audit Trails | D-Secure Tech',
+    description: 'Comprehensive guide to audit trails for secure data erasure. Learn how to implement audit trails and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4614,8 +4614,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/audit-trails',
   },
   'support-manual-audit-verification': {
-    title: 'Support Manual Audit Verification | D-Secure Tech',
-    description: 'Learn about support manual audit verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual audit verification.',
+    title: 'Audit Verification | D-Secure Tech',
+    description: 'Comprehensive guide to audit verification for secure data erasure. Learn how to implement audit verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4626,8 +4626,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/audit-verification',
   },
   'support-manual-auto-updates': {
-    title: 'Support Manual Auto Updates | D-Secure Tech',
-    description: 'Learn about support manual auto updates. D-Secure provides comprehensive data erasure solutions and documentation for support manual auto updates.',
+    title: 'Auto Updates | D-Secure Tech',
+    description: 'Comprehensive guide to auto updates for secure data erasure. Learn how to implement auto updates and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4638,8 +4638,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/auto-updates',
   },
   'support-manual-banking-finance': {
-    title: 'Support Manual Banking Finance | D-Secure Tech',
-    description: 'Learn about support manual banking finance. D-Secure provides comprehensive data erasure solutions and documentation for support manual banking finance.',
+    title: 'Banking Finance | D-Secure Tech',
+    description: 'Comprehensive guide to banking finance for secure data erasure. Learn how to implement banking finance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4650,8 +4650,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/banking-finance',
   },
   'support-manual-banking-mode': {
-    title: 'Support Manual Banking Mode | D-Secure Tech',
-    description: 'Learn about support manual banking mode. D-Secure provides comprehensive data erasure solutions and documentation for support manual banking mode.',
+    title: 'Banking Mode | D-Secure Tech',
+    description: 'Comprehensive guide to banking mode for secure data erasure. Learn how to implement banking mode and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4662,8 +4662,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/banking-mode',
   },
   'support-manual-batch-operations': {
-    title: 'Support Manual Batch Operations | D-Secure Tech',
-    description: 'Learn about support manual batch operations. D-Secure provides comprehensive data erasure solutions and documentation for support manual batch operations.',
+    title: 'Batch Operations | D-Secure Tech',
+    description: 'Comprehensive guide to batch operations for secure data erasure. Learn how to implement batch operations and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4674,8 +4674,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/batch-operations',
   },
   'support-manual-best-practices': {
-    title: 'Support Manual Best Practices | D-Secure Tech',
-    description: 'Learn about support manual best practices. D-Secure provides comprehensive data erasure solutions and documentation for support manual best practices.',
+    title: 'Best Practices | D-Secure Tech',
+    description: 'Comprehensive guide to best practices for secure data erasure. Learn how to implement best practices and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4686,8 +4686,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/best-practices',
   },
   'support-manual-bitraser-integration': {
-    title: 'Support Manual Bitraser Integration | D-Secure Tech',
-    description: 'Learn about support manual bitraser integration. D-Secure provides comprehensive data erasure solutions and documentation for support manual bitraser integration.',
+    title: 'Bitraser Integration | D-Secure Tech',
+    description: 'Comprehensive guide to bitraser integration for secure data erasure. Learn how to implement bitraser integration and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4698,8 +4698,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/bitraser-integration',
   },
   'support-manual-certificate-destruction': {
-    title: 'Support Manual Certificate Destruction | D-Secure Tech',
-    description: 'Learn about support manual certificate destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual certificate destruction.',
+    title: 'Certificate Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to certificate destruction for secure data erasure. Learn how to implement certificate destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4710,8 +4710,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/certificate-destruction',
   },
   'support-manual-certificate-generation': {
-    title: 'Support Manual Certificate Generation | D-Secure Tech',
-    description: 'Learn about support manual certificate generation. D-Secure provides comprehensive data erasure solutions and documentation for support manual certificate generation.',
+    title: 'Certificate Generation | D-Secure Tech',
+    description: 'Comprehensive guide to certificate generation for secure data erasure. Learn how to implement certificate generation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4722,8 +4722,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/certificate-generation',
   },
   'support-manual-certificates': {
-    title: 'Support Manual Certificates | D-Secure Tech',
-    description: 'Learn about support manual certificates. D-Secure provides comprehensive data erasure solutions and documentation for support manual certificates.',
+    title: 'Certificates | D-Secure Tech',
+    description: 'Comprehensive guide to certificates for secure data erasure. Learn how to implement certificates and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4733,8 +4733,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/certificates',
   },
   'support-manual-chain-custody': {
-    title: 'Support Manual Chain Custody | D-Secure Tech',
-    description: 'Learn about support manual chain custody. D-Secure provides comprehensive data erasure solutions and documentation for support manual chain custody.',
+    title: 'Chain Custody | D-Secure Tech',
+    description: 'Comprehensive guide to chain custody for secure data erasure. Learn how to implement chain custody and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4745,8 +4745,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/chain-custody',
   },
   'support-manual-cloud-console': {
-    title: 'Support Manual Cloud Console | D-Secure Tech',
-    description: 'Learn about support manual cloud console. D-Secure provides comprehensive data erasure solutions and documentation for support manual cloud console.',
+    title: 'Cloud Console | D-Secure Tech',
+    description: 'Comprehensive guide to cloud console for secure data erasure. Learn how to implement cloud console and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4757,8 +4757,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/cloud-console',
   },
   'support-manual-common-issues': {
-    title: 'Support Manual Common Issues | D-Secure Tech',
-    description: 'Learn about support manual common issues. D-Secure provides comprehensive data erasure solutions and documentation for support manual common issues.',
+    title: 'Common Issues | D-Secure Tech',
+    description: 'Comprehensive guide to common issues for secure data erasure. Learn how to implement common issues and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4769,8 +4769,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/common-issues',
   },
   'support-manual-comparison-table': {
-    title: 'Support Manual Comparison Table | D-Secure Tech',
-    description: 'Learn about support manual comparison table. D-Secure provides comprehensive data erasure solutions and documentation for support manual comparison table.',
+    title: 'Comparison Table | D-Secure Tech',
+    description: 'Comprehensive guide to comparison table for secure data erasure. Learn how to implement comparison table and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4781,8 +4781,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/comparison-table',
   },
   'support-manual-compliance': {
-    title: 'Support Manual Compliance | D-Secure Tech',
-    description: 'Learn about support manual compliance. D-Secure provides comprehensive data erasure solutions and documentation for support manual compliance.',
+    title: 'Compliance | D-Secure Tech',
+    description: 'Comprehensive guide to compliance for secure data erasure. Learn how to implement compliance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4792,8 +4792,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/compliance',
   },
   'support-manual-compliance-export': {
-    title: 'Support Manual Compliance Export | D-Secure Tech',
-    description: 'Learn about support manual compliance export. D-Secure provides comprehensive data erasure solutions and documentation for support manual compliance export.',
+    title: 'Compliance Export | D-Secure Tech',
+    description: 'Comprehensive guide to compliance export for secure data erasure. Learn how to implement compliance export and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4804,8 +4804,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/compliance-export',
   },
   'support-manual-crushing-method': {
-    title: 'Support Manual Crushing Method | D-Secure Tech',
-    description: 'Learn about support manual crushing method. D-Secure provides comprehensive data erasure solutions and documentation for support manual crushing method.',
+    title: 'Crushing Method | D-Secure Tech',
+    description: 'Comprehensive guide to crushing method for secure data erasure. Learn how to implement crushing method and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4816,8 +4816,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/crushing-method',
   },
   'support-manual-crypto-benefits': {
-    title: 'Support Manual Crypto Benefits | D-Secure Tech',
-    description: 'Learn about support manual crypto benefits. D-Secure provides comprehensive data erasure solutions and documentation for support manual crypto benefits.',
+    title: 'Crypto Benefits | D-Secure Tech',
+    description: 'Comprehensive guide to crypto benefits for secure data erasure. Learn how to implement crypto benefits and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4828,8 +4828,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/crypto-benefits',
   },
   'support-manual-cryptographic-erasure': {
-    title: 'Support Manual Cryptographic Erasure | D-Secure Tech',
-    description: 'Learn about support manual cryptographic erasure. D-Secure provides comprehensive data erasure solutions and documentation for support manual cryptographic erasure.',
+    title: 'Cryptographic Erasure | D-Secure Tech',
+    description: 'Comprehensive guide to cryptographic erasure for secure data erasure. Learn how to implement cryptographic erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4840,8 +4840,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/cryptographic-erasure',
   },
   'support-manual-crypto-importance': {
-    title: 'Support Manual Crypto Importance | D-Secure Tech',
-    description: 'Learn about support manual crypto importance. D-Secure provides comprehensive data erasure solutions and documentation for support manual crypto importance.',
+    title: 'Crypto Importance | D-Secure Tech',
+    description: 'Comprehensive guide to crypto importance for secure data erasure. Learn how to implement crypto importance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4852,8 +4852,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/crypto-importance',
   },
   'support-manual-crypto-process': {
-    title: 'Support Manual Crypto Process | D-Secure Tech',
-    description: 'Learn about support manual crypto process. D-Secure provides comprehensive data erasure solutions and documentation for support manual crypto process.',
+    title: 'Crypto Process | D-Secure Tech',
+    description: 'Comprehensive guide to crypto process for secure data erasure. Learn how to implement crypto process and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4864,8 +4864,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/crypto-process',
   },
   'support-manual-crypto-verification': {
-    title: 'Support Manual Crypto Verification | D-Secure Tech',
-    description: 'Learn about support manual crypto verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual crypto verification.',
+    title: 'Crypto Verification | D-Secure Tech',
+    description: 'Comprehensive guide to crypto verification for secure data erasure. Learn how to implement crypto verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4876,8 +4876,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/crypto-verification',
   },
   'support-manual-custom-algorithms': {
-    title: 'Support Manual Custom Algorithms | D-Secure Tech',
-    description: 'Learn about support manual custom algorithms. D-Secure provides comprehensive data erasure solutions and documentation for support manual custom algorithms.',
+    title: 'Custom Algorithms | D-Secure Tech',
+    description: 'Comprehensive guide to custom algorithms for secure data erasure. Learn how to implement custom algorithms and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4888,8 +4888,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/custom-algorithms',
   },
   'support-manual-custom-configs': {
-    title: 'Support Manual Custom Configs | D-Secure Tech',
-    description: 'Learn about support manual custom configs. D-Secure provides comprehensive data erasure solutions and documentation for support manual custom configs.',
+    title: 'Custom Configs | D-Secure Tech',
+    description: 'Comprehensive guide to custom configs for secure data erasure. Learn how to implement custom configs and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4900,8 +4900,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/custom-configs',
   },
   'support-manual-custom-configurations': {
-    title: 'Support Manual Custom Configurations | D-Secure Tech',
-    description: 'Learn about support manual custom configurations. D-Secure provides comprehensive data erasure solutions and documentation for support manual custom configurations.',
+    title: 'Custom Configurations | D-Secure Tech',
+    description: 'Comprehensive guide to custom configurations for secure data erasure. Learn how to implement custom configurations and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4912,8 +4912,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/custom-configurations',
   },
   'support-manual-custom-dashboards': {
-    title: 'Support Manual Custom Dashboards | D-Secure Tech',
-    description: 'Learn about support manual custom dashboards. D-Secure provides comprehensive data erasure solutions and documentation for support manual custom dashboards.',
+    title: 'Custom Dashboards | D-Secure Tech',
+    description: 'Comprehensive guide to custom dashboards for secure data erasure. Learn how to implement custom dashboards and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4924,8 +4924,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/custom-dashboards',
   },
   'support-manual-degaussing-method': {
-    title: 'Support Manual Degaussing Method | D-Secure Tech',
-    description: 'Learn about support manual degaussing method. D-Secure provides comprehensive data erasure solutions and documentation for support manual degaussing method.',
+    title: 'Degaussing Method | D-Secure Tech',
+    description: 'Comprehensive guide to degaussing method for secure data erasure. Learn how to implement degaussing method and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4936,8 +4936,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/degaussing-method',
   },
   'support-manual-destruction-quality': {
-    title: 'Support Manual Destruction Quality | D-Secure Tech',
-    description: 'Learn about support manual destruction quality. D-Secure provides comprehensive data erasure solutions and documentation for support manual destruction quality.',
+    title: 'Destruction Quality | D-Secure Tech',
+    description: 'Comprehensive guide to destruction quality for secure data erasure. Learn how to implement destruction quality and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4948,8 +4948,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/destruction-quality',
   },
   'support-manual-destruction-standards': {
-    title: 'Support Manual Destruction Standards | D-Secure Tech',
-    description: 'Learn about support manual destruction standards. D-Secure provides comprehensive data erasure solutions and documentation for support manual destruction standards.',
+    title: 'Destruction Standards | D-Secure Tech',
+    description: 'Comprehensive guide to destruction standards for secure data erasure. Learn how to implement destruction standards and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4960,8 +4960,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/destruction-standards',
   },
   'support-manual-destruction-use-cases': {
-    title: 'Support Manual Destruction Use Cases | D-Secure Tech',
-    description: 'Learn about support manual destruction use cases. D-Secure provides comprehensive data erasure solutions and documentation for support manual destruction use cases.',
+    title: 'Destruction Use Cases | D-Secure Tech',
+    description: 'Comprehensive guide to destruction use cases for secure data erasure. Learn how to implement destruction use cases and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4972,8 +4972,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/destruction-use-cases',
   },
   'support-manual-device-selection': {
-    title: 'Support Manual Device Selection | D-Secure Tech',
-    description: 'Learn about support manual device selection. D-Secure provides comprehensive data erasure solutions and documentation for support manual device selection.',
+    title: 'Device Selection | D-Secure Tech',
+    description: 'Comprehensive guide to device selection for secure data erasure. Learn how to implement device selection and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4984,8 +4984,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/device-selection',
   },
   'support-manual-dod-3pass': {
-    title: 'Support Manual Dod 3pass | D-Secure Tech',
-    description: 'Learn about support manual dod 3pass. D-Secure provides comprehensive data erasure solutions and documentation for support manual dod 3pass.',
+    title: 'DoD 3pass | D-Secure Tech',
+    description: 'Comprehensive guide to dod 3pass for secure data erasure. Learn how to implement dod 3pass and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -4996,8 +4996,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/dod-3pass',
   },
   'support-manual-dod-7pass': {
-    title: 'Support Manual Dod 7pass | D-Secure Tech',
-    description: 'Learn about support manual dod 7pass. D-Secure provides comprehensive data erasure solutions and documentation for support manual dod 7pass.',
+    title: 'DoD 7pass | D-Secure Tech',
+    description: 'Comprehensive guide to dod 7pass for secure data erasure. Learn how to implement dod 7pass and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5008,8 +5008,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/dod-7pass',
   },
   'support-manual-dod-standards': {
-    title: 'Support Manual Dod Standards | D-Secure Tech',
-    description: 'Learn about support manual dod standards. D-Secure provides comprehensive data erasure solutions and documentation for support manual dod standards.',
+    title: 'DoD Standards | D-Secure Tech',
+    description: 'Comprehensive guide to dod standards for secure data erasure. Learn how to implement dod standards and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5020,8 +5020,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/dod-standards',
   },
   'support-manual-download-installer': {
-    title: 'Support Manual Download Installer | D-Secure Tech',
-    description: 'Learn about support manual download installer. D-Secure provides comprehensive data erasure solutions and documentation for support manual download installer.',
+    title: 'Download Installer | D-Secure Tech',
+    description: 'Comprehensive guide to download installer for secure data erasure. Learn how to implement download installer and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5032,8 +5032,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/download-installer',
   },
   'support-manual-enterprise-benefits': {
-    title: 'Support Manual Enterprise Benefits | D-Secure Tech',
-    description: 'Learn about support manual enterprise benefits. D-Secure provides comprehensive data erasure solutions and documentation for support manual enterprise benefits.',
+    title: 'Enterprise Benefits | D-Secure Tech',
+    description: 'Comprehensive guide to enterprise benefits for secure data erasure. Learn how to implement enterprise benefits and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5044,8 +5044,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/enterprise-benefits',
   },
   'support-manual-enterprise-integration': {
-    title: 'Support Manual Enterprise Integration | D-Secure Tech',
-    description: 'Learn about support manual enterprise integration. D-Secure provides comprehensive data erasure solutions and documentation for support manual enterprise integration.',
+    title: 'Enterprise Integration | D-Secure Tech',
+    description: 'Comprehensive guide to enterprise integration for secure data erasure. Learn how to implement enterprise integration and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5056,8 +5056,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/enterprise-integration',
   },
   'support-manual-environmental-considerations': {
-    title: 'Support Manual Environmental Considerations | D-Secure Tech',
-    description: 'Learn about support manual environmental considerations. D-Secure provides comprehensive data erasure solutions and documentation for support manual environmental considerations.',
+    title: 'Environmental Considerations | D-Secure Tech',
+    description: 'Comprehensive guide to environmental considerations for secure data erasure. Learn how to implement environmental considerations and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5068,8 +5068,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/environmental-considerations',
   },
   'support-manual-environmental-impact': {
-    title: 'Support Manual Environmental Impact | D-Secure Tech',
-    description: 'Learn about support manual environmental impact. D-Secure provides comprehensive data erasure solutions and documentation for support manual environmental impact.',
+    title: 'Environmental Impact | D-Secure Tech',
+    description: 'Comprehensive guide to environmental impact for secure data erasure. Learn how to implement environmental impact and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5080,8 +5080,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/environmental-impact',
   },
   'support-manual-erasure-preferences': {
-    title: 'Support Manual Erasure Preferences | D-Secure Tech',
-    description: 'Learn about support manual erasure preferences. D-Secure provides comprehensive data erasure solutions and documentation for support manual erasure preferences.',
+    title: 'Erasure Preferences | D-Secure Tech',
+    description: 'Comprehensive guide to erasure preferences for secure data erasure. Learn how to implement erasure preferences and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5092,8 +5092,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/erasure-preferences',
   },
   'support-manual-erasure-process': {
-    title: 'Support Manual Erasure Process | D-Secure Tech',
-    description: 'Learn about support manual erasure process. D-Secure provides comprehensive data erasure solutions and documentation for support manual erasure process.',
+    title: 'Erasure Process | D-Secure Tech',
+    description: 'Comprehensive guide to erasure process for secure data erasure. Learn how to implement erasure process and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5104,8 +5104,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/erasure-process',
   },
   'support-manual-erasure-reports': {
-    title: 'Support Manual Erasure Reports | D-Secure Tech',
-    description: 'Learn about support manual erasure reports. D-Secure provides comprehensive data erasure solutions and documentation for support manual erasure reports.',
+    title: 'Erasure Reports | D-Secure Tech',
+    description: 'Comprehensive guide to erasure reports for secure data erasure. Learn how to implement erasure reports and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5116,8 +5116,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/erasure-reports',
   },
   'support-manual-error-codes': {
-    title: 'Support Manual Error Codes | D-Secure Tech',
-    description: 'Learn about support manual error codes. D-Secure provides comprehensive data erasure solutions and documentation for support manual error codes.',
+    title: 'Error Codes | D-Secure Tech',
+    description: 'Comprehensive guide to error codes for secure data erasure. Learn how to implement error codes and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5128,8 +5128,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/error-codes',
   },
   'support-manual-faqs': {
-    title: 'Support Manual Faqs | D-Secure Tech',
-    description: 'Learn about support manual faqs. D-Secure provides comprehensive data erasure solutions and documentation for support manual faqs.',
+    title: 'Faqs | D-Secure Tech',
+    description: 'Comprehensive guide to faqs for secure data erasure. Learn how to implement faqs and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5139,8 +5139,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/faqs',
   },
   'support-manual-financial-verification': {
-    title: 'Support Manual Financial Verification | D-Secure Tech',
-    description: 'Learn about support manual financial verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual financial verification.',
+    title: 'Financial Verification | D-Secure Tech',
+    description: 'Comprehensive guide to financial verification for secure data erasure. Learn how to implement financial verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5151,8 +5151,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/financial-verification',
   },
   'support-manual-firewall-config': {
-    title: 'Support Manual Firewall Config | D-Secure Tech',
-    description: 'Learn about support manual firewall config. D-Secure provides comprehensive data erasure solutions and documentation for support manual firewall config.',
+    title: 'Firewall Config | D-Secure Tech',
+    description: 'Comprehensive guide to firewall config for secure data erasure. Learn how to implement firewall config and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5163,8 +5163,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/firewall-config',
   },
   'support-manual-firewall-setup': {
-    title: 'Support Manual Firewall Setup | D-Secure Tech',
-    description: 'Learn about support manual firewall setup. D-Secure provides comprehensive data erasure solutions and documentation for support manual firewall setup.',
+    title: 'Firewall Setup | D-Secure Tech',
+    description: 'Comprehensive guide to firewall setup for secure data erasure. Learn how to implement firewall setup and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5175,8 +5175,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/firewall-setup',
   },
   'support-manual-first-run': {
-    title: 'Support Manual First Run | D-Secure Tech',
-    description: 'Learn about support manual first run. D-Secure provides comprehensive data erasure solutions and documentation for support manual first run.',
+    title: 'First Run | D-Secure Tech',
+    description: 'Comprehensive guide to first run for secure data erasure. Learn how to implement first run and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5187,8 +5187,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/first-run',
   },
   'support-manual-first-scan': {
-    title: 'Support Manual First Scan | D-Secure Tech',
-    description: 'Learn about support manual first scan. D-Secure provides comprehensive data erasure solutions and documentation for support manual first scan.',
+    title: 'First Scan | D-Secure Tech',
+    description: 'Comprehensive guide to first scan for secure data erasure. Learn how to implement first scan and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5199,8 +5199,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/first-scan',
   },
   'support-manual-first-time-setup': {
-    title: 'Support Manual First Time Setup | D-Secure Tech',
-    description: 'Learn about support manual first time setup. D-Secure provides comprehensive data erasure solutions and documentation for support manual first time setup.',
+    title: 'First Time Setup | D-Secure Tech',
+    description: 'Comprehensive guide to first time setup for secure data erasure. Learn how to implement first time setup and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5211,8 +5211,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/first-time-setup',
   },
   'support-manual-fragment-verification': {
-    title: 'Support Manual Fragment Verification | D-Secure Tech',
-    description: 'Learn about support manual fragment verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual fragment verification.',
+    title: 'Fragment Verification | D-Secure Tech',
+    description: 'Comprehensive guide to fragment verification for secure data erasure. Learn how to implement fragment verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5223,8 +5223,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/fragment-verification',
   },
   'support-manual-future-trends': {
-    title: 'Support Manual Future Trends | D-Secure Tech',
-    description: 'Learn about support manual future trends. D-Secure provides comprehensive data erasure solutions and documentation for support manual future trends.',
+    title: 'Future Trends | D-Secure Tech',
+    description: 'Comprehensive guide to future trends for secure data erasure. Learn how to implement future trends and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5235,8 +5235,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/future-trends',
   },
   'support-manual-gdpr-verification': {
-    title: 'Support Manual Gdpr Verification | D-Secure Tech',
-    description: 'Learn about support manual gdpr verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual gdpr verification.',
+    title: 'GDPR Verification | D-Secure Tech',
+    description: 'Comprehensive guide to gdpr verification for secure data erasure. Learn how to implement gdpr verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5247,8 +5247,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/gdpr-verification',
   },
   'support-manual-general-settings': {
-    title: 'Support Manual General Settings | D-Secure Tech',
-    description: 'Learn about support manual general settings. D-Secure provides comprehensive data erasure solutions and documentation for support manual general settings.',
+    title: 'General Settings | D-Secure Tech',
+    description: 'Comprehensive guide to general settings for secure data erasure. Learn how to implement general settings and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5259,8 +5259,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/general-settings',
   },
   'support-manual-government-defense': {
-    title: 'Support Manual Government Defense | D-Secure Tech',
-    description: 'Learn about support manual government defense. D-Secure provides comprehensive data erasure solutions and documentation for support manual government defense.',
+    title: 'Government Defense | D-Secure Tech',
+    description: 'Comprehensive guide to government defense for secure data erasure. Learn how to implement government defense and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5271,8 +5271,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/government-defense',
   },
   'support-manual-government-verification': {
-    title: 'Support Manual Government Verification | D-Secure Tech',
-    description: 'Learn about support manual government verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual government verification.',
+    title: 'Government Verification | D-Secure Tech',
+    description: 'Comprehensive guide to government verification for secure data erasure. Learn how to implement government verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5283,8 +5283,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/government-verification',
   },
   'support-manual-hardware-sanitization': {
-    title: 'Support Manual Hardware Sanitization | D-Secure Tech',
-    description: 'Learn about support manual hardware sanitization. D-Secure provides comprehensive data erasure solutions and documentation for support manual hardware sanitization.',
+    title: 'Hardware Sanitization | D-Secure Tech',
+    description: 'Comprehensive guide to hardware sanitization for secure data erasure. Learn how to implement hardware sanitization and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5295,8 +5295,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/hardware-sanitization',
   },
   'support-manual-hdd-destruction': {
-    title: 'Support Manual Hdd Destruction | D-Secure Tech',
-    description: 'Learn about support manual hdd destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual hdd destruction.',
+    title: 'HDD Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to hdd destruction for secure data erasure. Learn how to implement hdd destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5307,8 +5307,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/hdd-destruction',
   },
   'support-manual-healthcare-destruction': {
-    title: 'Support Manual Healthcare Destruction | D-Secure Tech',
-    description: 'Learn about support manual healthcare destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual healthcare destruction.',
+    title: 'Healthcare Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to healthcare destruction for secure data erasure. Learn how to implement healthcare destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5319,8 +5319,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/healthcare-destruction',
   },
   'support-manual-healthcare-verification': {
-    title: 'Support Manual Healthcare Verification | D-Secure Tech',
-    description: 'Learn about support manual healthcare verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual healthcare verification.',
+    title: 'Healthcare Verification | D-Secure Tech',
+    description: 'Comprehensive guide to healthcare verification for secure data erasure. Learn how to implement healthcare verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5331,8 +5331,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/healthcare-verification',
   },
   'support-manual-implementation-considerations': {
-    title: 'Support Manual Implementation Considerations | D-Secure Tech',
-    description: 'Learn about support manual implementation considerations. D-Secure provides comprehensive data erasure solutions and documentation for support manual implementation considerations.',
+    title: 'Implementation Considerations | D-Secure Tech',
+    description: 'Comprehensive guide to implementation considerations for secure data erasure. Learn how to implement implementation considerations and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5343,8 +5343,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/implementation-considerations',
   },
   'support-manual-implementation-practices': {
-    title: 'Support Manual Implementation Practices | D-Secure Tech',
-    description: 'Learn about support manual implementation practices. D-Secure provides comprehensive data erasure solutions and documentation for support manual implementation practices.',
+    title: 'Implementation Practices | D-Secure Tech',
+    description: 'Comprehensive guide to implementation practices for secure data erasure. Learn how to implement implementation practices and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5355,8 +5355,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/implementation-practices',
   },
   'support-manual-incineration-method': {
-    title: 'Support Manual Incineration Method | D-Secure Tech',
-    description: 'Learn about support manual incineration method. D-Secure provides comprehensive data erasure solutions and documentation for support manual incineration method.',
+    title: 'Incineration Method | D-Secure Tech',
+    description: 'Comprehensive guide to incineration method for secure data erasure. Learn how to implement incineration method and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5367,8 +5367,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/incineration-method',
   },
   'support-manual-industry-applications': {
-    title: 'Support Manual Industry Applications | D-Secure Tech',
-    description: 'Learn about support manual industry applications. D-Secure provides comprehensive data erasure solutions and documentation for support manual industry applications.',
+    title: 'Industry Applications | D-Secure Tech',
+    description: 'Comprehensive guide to industry applications for secure data erasure. Learn how to implement industry applications and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5379,8 +5379,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/industry-applications',
   },
   'support-manual-industry-use-cases': {
-    title: 'Support Manual Industry Use Cases | D-Secure Tech',
-    description: 'Learn about support manual industry use cases. D-Secure provides comprehensive data erasure solutions and documentation for support manual industry use cases.',
+    title: 'Industry Use Cases | D-Secure Tech',
+    description: 'Comprehensive guide to industry use cases for secure data erasure. Learn how to implement industry use cases and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5391,8 +5391,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/industry-use-cases',
   },
   'support-manual-installation': {
-    title: 'Support Manual Installation | D-Secure Tech',
-    description: 'Learn about support manual installation. D-Secure provides comprehensive data erasure solutions and documentation for support manual installation.',
+    title: 'Installation | D-Secure Tech',
+    description: 'Comprehensive guide to installation for secure data erasure. Learn how to implement installation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5402,8 +5402,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/installation',
   },
   'support-manual-installation-guide': {
-    title: 'Support Manual Installation Guide | D-Secure Tech',
-    description: 'Learn about support manual installation guide. D-Secure provides comprehensive data erasure solutions and documentation for support manual installation guide.',
+    title: 'Installation Guide | D-Secure Tech',
+    description: 'Comprehensive guide to installation guide for secure data erasure. Learn how to implement installation guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5414,8 +5414,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/installation-guide',
   },
   'support-manual-installation-path': {
-    title: 'Support Manual Installation Path | D-Secure Tech',
-    description: 'Learn about support manual installation path. D-Secure provides comprehensive data erasure solutions and documentation for support manual installation path.',
+    title: 'Installation Path | D-Secure Tech',
+    description: 'Comprehensive guide to installation path for secure data erasure. Learn how to implement installation path and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5426,8 +5426,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/installation-path',
   },
   'support-manual-installation-progress': {
-    title: 'Support Manual Installation Progress | D-Secure Tech',
-    description: 'Learn about support manual installation progress. D-Secure provides comprehensive data erasure solutions and documentation for support manual installation progress.',
+    title: 'Installation Progress | D-Secure Tech',
+    description: 'Comprehensive guide to installation progress for secure data erasure. Learn how to implement installation progress and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5438,8 +5438,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/installation-progress',
   },
   'support-manual-installation-settings': {
-    title: 'Support Manual Installation Settings | D-Secure Tech',
-    description: 'Learn about support manual installation settings. D-Secure provides comprehensive data erasure solutions and documentation for support manual installation settings.',
+    title: 'Installation Settings | D-Secure Tech',
+    description: 'Comprehensive guide to installation settings for secure data erasure. Learn how to implement installation settings and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5450,8 +5450,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/installation-settings',
   },
   'support-manual-internet-requirements': {
-    title: 'Support Manual Internet Requirements | D-Secure Tech',
-    description: 'Learn about support manual internet requirements. D-Secure provides comprehensive data erasure solutions and documentation for support manual internet requirements.',
+    title: 'Internet Requirements | D-Secure Tech',
+    description: 'Comprehensive guide to internet requirements for secure data erasure. Learn how to implement internet requirements and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5462,8 +5462,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/internet-requirements',
   },
   'support-manual-itad-datacenters': {
-    title: 'Support Manual Itad Datacenters | D-Secure Tech',
-    description: 'Learn about support manual itad datacenters. D-Secure provides comprehensive data erasure solutions and documentation for support manual itad datacenters.',
+    title: 'Itad Datacenters | D-Secure Tech',
+    description: 'Comprehensive guide to itad datacenters for secure data erasure. Learn how to implement itad datacenters and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5474,8 +5474,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/itad-datacenters',
   },
   'support-manual-key-activation': {
-    title: 'Support Manual Key Activation | D-Secure Tech',
-    description: 'Learn about support manual key activation. D-Secure provides comprehensive data erasure solutions and documentation for support manual key activation.',
+    title: 'Key Activation | D-Secure Tech',
+    description: 'Comprehensive guide to key activation for secure data erasure. Learn how to implement key activation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5486,8 +5486,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/key-activation',
   },
   'support-manual-keyboard-shortcuts': {
-    title: 'Support Manual Keyboard Shortcuts | D-Secure Tech',
-    description: 'Learn about support manual keyboard shortcuts. D-Secure provides comprehensive data erasure solutions and documentation for support manual keyboard shortcuts.',
+    title: 'Keyboard Shortcuts | D-Secure Tech',
+    description: 'Comprehensive guide to keyboard shortcuts for secure data erasure. Learn how to implement keyboard shortcuts and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5498,8 +5498,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/keyboard-shortcuts',
   },
   'support-manual-key-destruction-verify': {
-    title: 'Support Manual Key Destruction Verify | D-Secure Tech',
-    description: 'Learn about support manual key destruction verify. D-Secure provides comprehensive data erasure solutions and documentation for support manual key destruction verify.',
+    title: 'Key Destruction Verify | D-Secure Tech',
+    description: 'Comprehensive guide to key destruction verify for secure data erasure. Learn how to implement key destruction verify and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5510,8 +5510,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/key-destruction-verify',
   },
   'support-manual-license-activation': {
-    title: 'Support Manual License Activation | D-Secure Tech',
-    description: 'Learn about support manual license activation. D-Secure provides comprehensive data erasure solutions and documentation for support manual license activation.',
+    title: 'License Activation | D-Secure Tech',
+    description: 'Comprehensive guide to license activation for secure data erasure. Learn how to implement license activation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5522,8 +5522,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/license-activation',
   },
   'support-manual-license-agreement': {
-    title: 'Support Manual License Agreement | D-Secure Tech',
-    description: 'Learn about support manual license agreement. D-Secure provides comprehensive data erasure solutions and documentation for support manual license agreement.',
+    title: 'License Agreement | D-Secure Tech',
+    description: 'Comprehensive guide to license agreement for secure data erasure. Learn how to implement license agreement and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5534,8 +5534,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/license-agreement',
   },
   'support-manual-license-troubleshooting': {
-    title: 'Support Manual License Troubleshooting | D-Secure Tech',
-    description: 'Learn about support manual license troubleshooting. D-Secure provides comprehensive data erasure solutions and documentation for support manual license troubleshooting.',
+    title: 'License Troubleshooting | D-Secure Tech',
+    description: 'Comprehensive guide to license troubleshooting for secure data erasure. Learn how to implement license troubleshooting and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5546,8 +5546,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/license-troubleshooting',
   },
   'support-manual-limitations': {
-    title: 'Support Manual Limitations | D-Secure Tech',
-    description: 'Learn about support manual limitations. D-Secure provides comprehensive data erasure solutions and documentation for support manual limitations.',
+    title: 'Limitations | D-Secure Tech',
+    description: 'Comprehensive guide to limitations for secure data erasure. Learn how to implement limitations and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5557,8 +5557,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/limitations',
   },
   'support-manual-linux': {
-    title: 'Support Manual Linux | D-Secure Tech',
-    description: 'Learn about support manual linux. D-Secure provides comprehensive data erasure solutions and documentation for support manual linux.',
+    title: 'Linux | D-Secure Tech',
+    description: 'Comprehensive guide to linux for secure data erasure. Learn how to implement linux and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5568,8 +5568,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/linux',
   },
   'support-manual-macos': {
-    title: 'Support Manual Macos | D-Secure Tech',
-    description: 'Learn about support manual macos. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos.',
+    title: 'macOS | D-Secure Tech',
+    description: 'Comprehensive guide to macos for secure data erasure. Learn how to implement macos and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5579,8 +5579,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos',
   },
   'support-manual-macos-apple-silicon': {
-    title: 'Support Manual Macos Apple Silicon | D-Secure Tech',
-    description: 'Learn about support manual macos apple silicon. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos apple silicon.',
+    title: 'macOS Apple Silicon | D-Secure Tech',
+    description: 'Comprehensive guide to macos apple silicon for secure data erasure. Learn how to implement macos apple silicon and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5591,8 +5591,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-apple-silicon',
   },
   'support-manual-macos-architecture': {
-    title: 'Support Manual Macos Architecture | D-Secure Tech',
-    description: 'Learn about support manual macos architecture. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos architecture.',
+    title: 'macOS Architecture | D-Secure Tech',
+    description: 'Comprehensive guide to macos architecture for secure data erasure. Learn how to implement macos architecture and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5603,8 +5603,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-architecture',
   },
   'support-manual-macos-best-practices': {
-    title: 'Support Manual Macos Best Practices | D-Secure Tech',
-    description: 'Learn about support manual macos best practices. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos best practices.',
+    title: 'macOS Best Practices | D-Secure Tech',
+    description: 'Comprehensive guide to macos best practices for secure data erasure. Learn how to implement macos best practices and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5615,8 +5615,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-best-practices',
   },
   'support-manual-macos-builtin-tools': {
-    title: 'Support Manual Macos Builtin Tools | D-Secure Tech',
-    description: 'Learn about support manual macos builtin tools. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos builtin tools.',
+    title: 'macOS Builtin Tools | D-Secure Tech',
+    description: 'Comprehensive guide to macos builtin tools for secure data erasure. Learn how to implement macos builtin tools and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5627,8 +5627,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-builtin-tools',
   },
   'support-manual-macos-compliance': {
-    title: 'Support Manual Macos Compliance | D-Secure Tech',
-    description: 'Learn about support manual macos compliance. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos compliance.',
+    title: 'macOS Compliance | D-Secure Tech',
+    description: 'Comprehensive guide to macos compliance for secure data erasure. Learn how to implement macos compliance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5639,8 +5639,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-compliance',
   },
   'support-manual-macos-crypto-erasure': {
-    title: 'Support Manual Macos Crypto Erasure | D-Secure Tech',
-    description: 'Learn about support manual macos crypto erasure. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos crypto erasure.',
+    title: 'macOS Crypto Erasure | D-Secure Tech',
+    description: 'Comprehensive guide to macos crypto erasure for secure data erasure. Learn how to implement macos crypto erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5651,8 +5651,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-crypto-erasure',
   },
   'support-manual-macos-encryption': {
-    title: 'Support Manual Macos Encryption | D-Secure Tech',
-    description: 'Learn about support manual macos encryption. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos encryption.',
+    title: 'macOS Encryption | D-Secure Tech',
+    description: 'Comprehensive guide to macos encryption for secure data erasure. Learn how to implement macos encryption and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5663,8 +5663,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-encryption',
   },
   'support-manual-macos-enterprise': {
-    title: 'Support Manual Macos Enterprise | D-Secure Tech',
-    description: 'Learn about support manual macos enterprise. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos enterprise.',
+    title: 'macOS Enterprise | D-Secure Tech',
+    description: 'Comprehensive guide to macos enterprise for secure data erasure. Learn how to implement macos enterprise and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5675,8 +5675,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-enterprise',
   },
   'support-manual-macos-external-media': {
-    title: 'Support Manual Macos External Media | D-Secure Tech',
-    description: 'Learn about support manual macos external media. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos external media.',
+    title: 'macOS External Media | D-Secure Tech',
+    description: 'Comprehensive guide to macos external media for secure data erasure. Learn how to implement macos external media and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5687,8 +5687,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-external-media',
   },
   'support-manual-macos-faq': {
-    title: 'Support Manual Macos Faq | D-Secure Tech',
-    description: 'Learn about support manual macos faq. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos faq.',
+    title: 'macOS FAQ | D-Secure Tech',
+    description: 'Comprehensive guide to macos faq for secure data erasure. Learn how to implement macos faq and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5699,8 +5699,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-faq',
   },
   'support-manual-macos-filesystems': {
-    title: 'Support Manual Macos Filesystems | D-Secure Tech',
-    description: 'Learn about support manual macos filesystems. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos filesystems.',
+    title: 'macOS Filesystems | D-Secure Tech',
+    description: 'Comprehensive guide to macos filesystems for secure data erasure. Learn how to implement macos filesystems and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5711,8 +5711,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-filesystems',
   },
   'support-manual-macos-filevault': {
-    title: 'Support Manual Macos Filevault | D-Secure Tech',
-    description: 'Learn about support manual macos filevault. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos filevault.',
+    title: 'macOS Filevault | D-Secure Tech',
+    description: 'Comprehensive guide to macos filevault for secure data erasure. Learn how to implement macos filevault and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5723,8 +5723,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-filevault',
   },
   'support-manual-macos-intel-procedures': {
-    title: 'Support Manual Macos Intel Procedures | D-Secure Tech',
-    description: 'Learn about support manual macos intel procedures. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos intel procedures.',
+    title: 'macOS Intel Procedures | D-Secure Tech',
+    description: 'Comprehensive guide to macos intel procedures for secure data erasure. Learn how to implement macos intel procedures and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5735,8 +5735,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-intel-procedures',
   },
   'support-manual-macos-introduction': {
-    title: 'Support Manual Macos Introduction | D-Secure Tech',
-    description: 'Learn about support manual macos introduction. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos introduction.',
+    title: 'macOS Introduction | D-Secure Tech',
+    description: 'Comprehensive guide to macos introduction for secure data erasure. Learn how to implement macos introduction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5747,8 +5747,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-introduction',
   },
   'support-manual-macos-methods-comparison': {
-    title: 'Support Manual Macos Methods Comparison | D-Secure Tech',
-    description: 'Learn about support manual macos methods comparison. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos methods comparison.',
+    title: 'macOS Methods Comparison | D-Secure Tech',
+    description: 'Comprehensive guide to macos methods comparison for secure data erasure. Learn how to implement macos methods comparison and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5759,8 +5759,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-methods-comparison',
   },
   'support-manual-macos-preparation': {
-    title: 'Support Manual Macos Preparation | D-Secure Tech',
-    description: 'Learn about support manual macos preparation. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos preparation.',
+    title: 'macOS Preparation | D-Secure Tech',
+    description: 'Comprehensive guide to macos preparation for secure data erasure. Learn how to implement macos preparation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5771,8 +5771,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-preparation',
   },
   'support-manual-macos-resources': {
-    title: 'Support Manual Macos Resources | D-Secure Tech',
-    description: 'Learn about support manual macos resources. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos resources.',
+    title: 'macOS Resources | D-Secure Tech',
+    description: 'Comprehensive guide to macos resources for secure data erasure. Learn how to implement macos resources and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5783,8 +5783,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-resources',
   },
   'support-manual-macos-risks': {
-    title: 'Support Manual Macos Risks | D-Secure Tech',
-    description: 'Learn about support manual macos risks. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos risks.',
+    title: 'macOS Risks | D-Secure Tech',
+    description: 'Comprehensive guide to macos risks for secure data erasure. Learn how to implement macos risks and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5795,8 +5795,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-risks',
   },
   'support-manual-macos-software-erasure': {
-    title: 'Support Manual Macos Software Erasure | D-Secure Tech',
-    description: 'Learn about support manual macos software erasure. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos software erasure.',
+    title: 'macOS Software Erasure | D-Secure Tech',
+    description: 'Comprehensive guide to macos software erasure for secure data erasure. Learn how to implement macos software erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5807,8 +5807,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-software-erasure',
   },
   'support-manual-macos-ssd-considerations': {
-    title: 'Support Manual Macos Ssd Considerations | D-Secure Tech',
-    description: 'Learn about support manual macos ssd considerations. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos ssd considerations.',
+    title: 'macOS SSD Considerations | D-Secure Tech',
+    description: 'Comprehensive guide to macos ssd considerations for secure data erasure. Learn how to implement macos ssd considerations and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5819,8 +5819,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-ssd-considerations',
   },
   'support-manual-macos-storage': {
-    title: 'Support Manual Macos Storage | D-Secure Tech',
-    description: 'Learn about support manual macos storage. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos storage.',
+    title: 'macOS Storage | D-Secure Tech',
+    description: 'Comprehensive guide to macos storage for secure data erasure. Learn how to implement macos storage and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5831,8 +5831,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-storage',
   },
   'support-manual-macos-system-drive': {
-    title: 'Support Manual Macos System Drive | D-Secure Tech',
-    description: 'Learn about support manual macos system drive. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos system drive.',
+    title: 'macOS System Drive | D-Secure Tech',
+    description: 'Comprehensive guide to macos system drive for secure data erasure. Learn how to implement macos system drive and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5843,8 +5843,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-system-drive',
   },
   'support-manual-macos-third-party': {
-    title: 'Support Manual Macos Third Party | D-Secure Tech',
-    description: 'Learn about support manual macos third party. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos third party.',
+    title: 'macOS Third Party | D-Secure Tech',
+    description: 'Comprehensive guide to macos third party for secure data erasure. Learn how to implement macos third party and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5855,8 +5855,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-third-party',
   },
   'support-manual-macos-tool-selection': {
-    title: 'Support Manual Macos Tool Selection | D-Secure Tech',
-    description: 'Learn about support manual macos tool selection. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos tool selection.',
+    title: 'macOS Tool Selection | D-Secure Tech',
+    description: 'Comprehensive guide to macos tool selection for secure data erasure. Learn how to implement macos tool selection and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5867,8 +5867,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-tool-selection',
   },
   'support-manual-macos-troubleshooting': {
-    title: 'Support Manual Macos Troubleshooting | D-Secure Tech',
-    description: 'Learn about support manual macos troubleshooting. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos troubleshooting.',
+    title: 'macOS Troubleshooting | D-Secure Tech',
+    description: 'Comprehensive guide to macos troubleshooting for secure data erasure. Learn how to implement macos troubleshooting and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5879,8 +5879,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-troubleshooting',
   },
   'support-manual-macos-verification': {
-    title: 'Support Manual Macos Verification | D-Secure Tech',
-    description: 'Learn about support manual macos verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual macos verification.',
+    title: 'macOS Verification | D-Secure Tech',
+    description: 'Comprehensive guide to macos verification for secure data erasure. Learn how to implement macos verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5891,8 +5891,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/macos-verification',
   },
   'support-manual-main-dashboard': {
-    title: 'Support Manual Main Dashboard | D-Secure Tech',
-    description: 'Learn about support manual main dashboard. D-Secure provides comprehensive data erasure solutions and documentation for support manual main dashboard.',
+    title: 'Main Dashboard | D-Secure Tech',
+    description: 'Comprehensive guide to main dashboard for secure data erasure. Learn how to implement main dashboard and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5903,8 +5903,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/main-dashboard',
   },
   'support-manual-mobile': {
-    title: 'Support Manual Mobile | D-Secure Tech',
-    description: 'Learn about support manual mobile. D-Secure provides comprehensive data erasure solutions and documentation for support manual mobile.',
+    title: 'Mobile | D-Secure Tech',
+    description: 'Comprehensive guide to mobile for secure data erasure. Learn how to implement mobile and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5914,8 +5914,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/mobile',
   },
   'support-manual-mobile-destruction': {
-    title: 'Support Manual Mobile Destruction | D-Secure Tech',
-    description: 'Learn about support manual mobile destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual mobile destruction.',
+    title: 'Mobile Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to mobile destruction for secure data erasure. Learn how to implement mobile destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5926,8 +5926,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/mobile-destruction',
   },
   'support-manual-navigation': {
-    title: 'Support Manual Navigation | D-Secure Tech',
-    description: 'Learn about support manual navigation. D-Secure provides comprehensive data erasure solutions and documentation for support manual navigation.',
+    title: 'Navigation | D-Secure Tech',
+    description: 'Comprehensive guide to navigation for secure data erasure. Learn how to implement navigation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5937,8 +5937,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/navigation',
   },
   'support-manual-nist-800-88': {
-    title: 'Support Manual Nist 800 88 | D-Secure Tech',
-    description: 'Learn about support manual nist 800 88. D-Secure provides comprehensive data erasure solutions and documentation for support manual nist 800 88.',
+    title: 'NIST 800 88 | D-Secure Tech',
+    description: 'Comprehensive guide to nist 800 88 for secure data erasure. Learn how to implement nist 800 88 and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5949,8 +5949,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/nist-800-88',
   },
   'support-manual-nist-guidelines': {
-    title: 'Support Manual Nist Guidelines | D-Secure Tech',
-    description: 'Learn about support manual nist guidelines. D-Secure provides comprehensive data erasure solutions and documentation for support manual nist guidelines.',
+    title: 'NIST Guidelines | D-Secure Tech',
+    description: 'Comprehensive guide to nist guidelines for secure data erasure. Learn how to implement nist guidelines and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5961,8 +5961,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/nist-guidelines',
   },
   'support-manual-nist-modern-storage': {
-    title: 'Support Manual Nist Modern Storage | D-Secure Tech',
-    description: 'Learn about support manual nist modern storage. D-Secure provides comprehensive data erasure solutions and documentation for support manual nist modern storage.',
+    title: 'NIST Modern Storage | D-Secure Tech',
+    description: 'Comprehensive guide to nist modern storage for secure data erasure. Learn how to implement nist modern storage and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5973,8 +5973,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/nist-modern-storage',
   },
   'support-manual-onsite-offsite': {
-    title: 'Support Manual Onsite Offsite | D-Secure Tech',
-    description: 'Learn about support manual onsite offsite. D-Secure provides comprehensive data erasure solutions and documentation for support manual onsite offsite.',
+    title: 'Onsite Offsite | D-Secure Tech',
+    description: 'Comprehensive guide to onsite offsite for secure data erasure. Learn how to implement onsite offsite and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5985,8 +5985,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/onsite-offsite',
   },
   'support-manual-operation-history': {
-    title: 'Support Manual Operation History | D-Secure Tech',
-    description: 'Learn about support manual operation history. D-Secure provides comprehensive data erasure solutions and documentation for support manual operation history.',
+    title: 'Operation History | D-Secure Tech',
+    description: 'Comprehensive guide to operation history for secure data erasure. Learn how to implement operation history and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -5997,8 +5997,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/operation-history',
   },
   'support-manual-optical-tape-destruction': {
-    title: 'Support Manual Optical Tape Destruction | D-Secure Tech',
-    description: 'Learn about support manual optical tape destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual optical tape destruction.',
+    title: 'Optical Tape Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to optical tape destruction for secure data erasure. Learn how to implement optical tape destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6009,8 +6009,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/optical-tape-destruction',
   },
   'support-manual-overwrite-introduction': {
-    title: 'Support Manual Overwrite Introduction | D-Secure Tech',
-    description: 'Learn about support manual overwrite introduction. D-Secure provides comprehensive data erasure solutions and documentation for support manual overwrite introduction.',
+    title: 'Overwrite Introduction | D-Secure Tech',
+    description: 'Comprehensive guide to overwrite introduction for secure data erasure. Learn how to implement overwrite introduction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6021,8 +6021,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/overwrite-introduction',
   },
   'support-manual-overwrite-patterns': {
-    title: 'Support Manual Overwrite Patterns | D-Secure Tech',
-    description: 'Learn about support manual overwrite patterns. D-Secure provides comprehensive data erasure solutions and documentation for support manual overwrite patterns.',
+    title: 'Overwrite Patterns | D-Secure Tech',
+    description: 'Comprehensive guide to overwrite patterns for secure data erasure. Learn how to implement overwrite patterns and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6033,8 +6033,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/overwrite-patterns',
   },
   'support-manual-overwrite-risks': {
-    title: 'Support Manual Overwrite Risks | D-Secure Tech',
-    description: 'Learn about support manual overwrite risks. D-Secure provides comprehensive data erasure solutions and documentation for support manual overwrite risks.',
+    title: 'Overwrite Risks | D-Secure Tech',
+    description: 'Comprehensive guide to overwrite risks for secure data erasure. Learn how to implement overwrite risks and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6045,8 +6045,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/overwrite-risks',
   },
   'support-manual-parental-controls': {
-    title: 'Support Manual Parental Controls | D-Secure Tech',
-    description: 'Learn about support manual parental controls. D-Secure provides comprehensive data erasure solutions and documentation for support manual parental controls.',
+    title: 'Parental Controls | D-Secure Tech',
+    description: 'Comprehensive guide to parental controls for secure data erasure. Learn how to implement parental controls and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6057,8 +6057,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/parental-controls',
   },
   'support-manual-pattern-selection': {
-    title: 'Support Manual Pattern Selection | D-Secure Tech',
-    description: 'Learn about support manual pattern selection. D-Secure provides comprehensive data erasure solutions and documentation for support manual pattern selection.',
+    title: 'Pattern Selection | D-Secure Tech',
+    description: 'Comprehensive guide to pattern selection for secure data erasure. Learn how to implement pattern selection and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6069,8 +6069,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/pattern-selection',
   },
   'support-manual-performance': {
-    title: 'Support Manual Performance | D-Secure Tech',
-    description: 'Learn about support manual performance. D-Secure provides comprehensive data erasure solutions and documentation for support manual performance.',
+    title: 'Performance | D-Secure Tech',
+    description: 'Comprehensive guide to performance for secure data erasure. Learn how to implement performance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6080,8 +6080,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/performance',
   },
   'support-manual-performance-analysis': {
-    title: 'Support Manual Performance Analysis | D-Secure Tech',
-    description: 'Learn about support manual performance analysis. D-Secure provides comprehensive data erasure solutions and documentation for support manual performance analysis.',
+    title: 'Performance Analysis | D-Secure Tech',
+    description: 'Comprehensive guide to performance analysis for secure data erasure. Learn how to implement performance analysis and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6092,8 +6092,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/performance-analysis',
   },
   'support-manual-performance-optimization': {
-    title: 'Support Manual Performance Optimization | D-Secure Tech',
-    description: 'Learn about support manual performance optimization. D-Secure provides comprehensive data erasure solutions and documentation for support manual performance optimization.',
+    title: 'Performance Optimization | D-Secure Tech',
+    description: 'Comprehensive guide to performance optimization for secure data erasure. Learn how to implement performance optimization and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6104,8 +6104,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/performance-optimization',
   },
   'support-manual-performance-tradeoffs': {
-    title: 'Support Manual Performance Tradeoffs | D-Secure Tech',
-    description: 'Learn about support manual performance tradeoffs. D-Secure provides comprehensive data erasure solutions and documentation for support manual performance tradeoffs.',
+    title: 'Performance Tradeoffs | D-Secure Tech',
+    description: 'Comprehensive guide to performance tradeoffs for secure data erasure. Learn how to implement performance tradeoffs and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6116,8 +6116,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/performance-tradeoffs',
   },
   'support-manual-performance-troubleshooting': {
-    title: 'Support Manual Performance Troubleshooting | D-Secure Tech',
-    description: 'Learn about support manual performance troubleshooting. D-Secure provides comprehensive data erasure solutions and documentation for support manual performance troubleshooting.',
+    title: 'Performance Troubleshooting | D-Secure Tech',
+    description: 'Comprehensive guide to performance troubleshooting for secure data erasure. Learn how to implement performance troubleshooting and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6128,8 +6128,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/performance-troubleshooting',
   },
   'support-manual-performance-tuning': {
-    title: 'Support Manual Performance Tuning | D-Secure Tech',
-    description: 'Learn about support manual performance tuning. D-Secure provides comprehensive data erasure solutions and documentation for support manual performance tuning.',
+    title: 'Performance Tuning | D-Secure Tech',
+    description: 'Comprehensive guide to performance tuning for secure data erasure. Learn how to implement performance tuning and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6140,8 +6140,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/performance-tuning',
   },
   'support-manual-physical-destruction': {
-    title: 'Support Manual Physical Destruction | D-Secure Tech',
-    description: 'Learn about support manual physical destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual physical destruction.',
+    title: 'Physical Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to physical destruction for secure data erasure. Learn how to implement physical destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6152,8 +6152,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/physical-destruction',
   },
   'support-manual-physical-destruction-overview': {
-    title: 'Support Manual Physical Destruction Overview | D-Secure Tech',
-    description: 'Learn about support manual physical destruction overview. D-Secure provides comprehensive data erasure solutions and documentation for support manual physical destruction overview.',
+    title: 'Physical Destruction Overview | D-Secure Tech',
+    description: 'Comprehensive guide to physical destruction overview for secure data erasure. Learn how to implement physical destruction overview and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6164,8 +6164,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/physical-destruction-overview',
   },
   'support-manual-physical-inspection': {
-    title: 'Support Manual Physical Inspection | D-Secure Tech',
-    description: 'Learn about support manual physical inspection. D-Secure provides comprehensive data erasure solutions and documentation for support manual physical inspection.',
+    title: 'Physical Inspection | D-Secure Tech',
+    description: 'Comprehensive guide to physical inspection for secure data erasure. Learn how to implement physical inspection and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6176,8 +6176,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/physical-inspection',
   },
   'support-manual-post-install-optimization': {
-    title: 'Support Manual Post Install Optimization | D-Secure Tech',
-    description: 'Learn about support manual post install optimization. D-Secure provides comprehensive data erasure solutions and documentation for support manual post install optimization.',
+    title: 'Post Install Optimization | D-Secure Tech',
+    description: 'Comprehensive guide to post install optimization for secure data erasure. Learn how to implement post install optimization and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6188,8 +6188,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/post-install-optimization',
   },
   'support-manual-pre-installation': {
-    title: 'Support Manual Pre Installation | D-Secure Tech',
-    description: 'Learn about support manual pre installation. D-Secure provides comprehensive data erasure solutions and documentation for support manual pre installation.',
+    title: 'Pre Installation | D-Secure Tech',
+    description: 'Comprehensive guide to pre installation for secure data erasure. Learn how to implement pre installation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6200,8 +6200,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/pre-installation',
   },
   'support-manual-progress-monitoring': {
-    title: 'Support Manual Progress Monitoring | D-Secure Tech',
-    description: 'Learn about support manual progress monitoring. D-Secure provides comprehensive data erasure solutions and documentation for support manual progress monitoring.',
+    title: 'Progress Monitoring | D-Secure Tech',
+    description: 'Comprehensive guide to progress monitoring for secure data erasure. Learn how to implement progress monitoring and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6212,8 +6212,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/progress-monitoring',
   },
   'support-manual-quickstart': {
-    title: 'Support Manual Quickstart | D-Secure Tech',
-    description: 'Learn about support manual quickstart. D-Secure provides comprehensive data erasure solutions and documentation for support manual quickstart.',
+    title: 'Quickstart | D-Secure Tech',
+    description: 'Comprehensive guide to quickstart for secure data erasure. Learn how to implement quickstart and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6223,8 +6223,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/quickstart',
   },
   'support-manual-readback-verification': {
-    title: 'Support Manual Readback Verification | D-Secure Tech',
-    description: 'Learn about support manual readback verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual readback verification.',
+    title: 'Readback Verification | D-Secure Tech',
+    description: 'Comprehensive guide to readback verification for secure data erasure. Learn how to implement readback verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6235,8 +6235,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/readback-verification',
   },
   'support-manual-real-time-monitoring': {
-    title: 'Support Manual Real Time Monitoring | D-Secure Tech',
-    description: 'Learn about support manual real time monitoring. D-Secure provides comprehensive data erasure solutions and documentation for support manual real time monitoring.',
+    title: 'Real Time Monitoring | D-Secure Tech',
+    description: 'Comprehensive guide to real time monitoring for secure data erasure. Learn how to implement real time monitoring and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6247,8 +6247,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/real-time-monitoring',
   },
   'support-manual-realtime-protection': {
-    title: 'Support Manual Realtime Protection | D-Secure Tech',
-    description: 'Learn about support manual realtime protection. D-Secure provides comprehensive data erasure solutions and documentation for support manual realtime protection.',
+    title: 'Realtime Protection | D-Secure Tech',
+    description: 'Comprehensive guide to realtime protection for secure data erasure. Learn how to implement realtime protection and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6259,8 +6259,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/realtime-protection',
   },
   'support-manual-recovery': {
-    title: 'Support Manual Recovery | D-Secure Tech',
-    description: 'Learn about support manual recovery. D-Secure provides comprehensive data erasure solutions and documentation for support manual recovery.',
+    title: 'Recovery | D-Secure Tech',
+    description: 'Comprehensive guide to recovery for secure data erasure. Learn how to implement recovery and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6270,8 +6270,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/recovery',
   },
   'support-manual-regulatory-compliance': {
-    title: 'Support Manual Regulatory Compliance | D-Secure Tech',
-    description: 'Learn about support manual regulatory compliance. D-Secure provides comprehensive data erasure solutions and documentation for support manual regulatory compliance.',
+    title: 'Regulatory Compliance | D-Secure Tech',
+    description: 'Comprehensive guide to regulatory compliance for secure data erasure. Learn how to implement regulatory compliance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6282,8 +6282,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/regulatory-compliance',
   },
   'support-manual-remote-management': {
-    title: 'Support Manual Remote Management | D-Secure Tech',
-    description: 'Learn about support manual remote management. D-Secure provides comprehensive data erasure solutions and documentation for support manual remote management.',
+    title: 'Remote Management | D-Secure Tech',
+    description: 'Comprehensive guide to remote management for secure data erasure. Learn how to implement remote management and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6294,8 +6294,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/remote-management',
   },
   'support-manual-sampling-methodology': {
-    title: 'Support Manual Sampling Methodology | D-Secure Tech',
-    description: 'Learn about support manual sampling methodology. D-Secure provides comprehensive data erasure solutions and documentation for support manual sampling methodology.',
+    title: 'Sampling Methodology | D-Secure Tech',
+    description: 'Comprehensive guide to sampling methodology for secure data erasure. Learn how to implement sampling methodology and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6306,8 +6306,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/sampling-methodology',
   },
   'support-manual-sanitization-concepts': {
-    title: 'Support Manual Sanitization Concepts | D-Secure Tech',
-    description: 'Learn about support manual sanitization concepts. D-Secure provides comprehensive data erasure solutions and documentation for support manual sanitization concepts.',
+    title: 'Sanitization Concepts | D-Secure Tech',
+    description: 'Comprehensive guide to sanitization concepts for secure data erasure. Learn how to implement sanitization concepts and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6318,8 +6318,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/sanitization-concepts',
   },
   'support-manual-scan-exclusions': {
-    title: 'Support Manual Scan Exclusions | D-Secure Tech',
-    description: 'Learn about support manual scan exclusions. D-Secure provides comprehensive data erasure solutions and documentation for support manual scan exclusions.',
+    title: 'Scan Exclusions | D-Secure Tech',
+    description: 'Comprehensive guide to scan exclusions for secure data erasure. Learn how to implement scan exclusions and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6330,8 +6330,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/scan-exclusions',
   },
   'support-manual-scan-results': {
-    title: 'Support Manual Scan Results | D-Secure Tech',
-    description: 'Learn about support manual scan results. D-Secure provides comprehensive data erasure solutions and documentation for support manual scan results.',
+    title: 'Scan Results | D-Secure Tech',
+    description: 'Comprehensive guide to scan results for secure data erasure. Learn how to implement scan results and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6342,8 +6342,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/scan-results',
   },
   'support-manual-scan-scheduling': {
-    title: 'Support Manual Scan Scheduling | D-Secure Tech',
-    description: 'Learn about support manual scan scheduling. D-Secure provides comprehensive data erasure solutions and documentation for support manual scan scheduling.',
+    title: 'Scan Scheduling | D-Secure Tech',
+    description: 'Comprehensive guide to scan scheduling for secure data erasure. Learn how to implement scan scheduling and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6354,8 +6354,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/scan-scheduling',
   },
   'support-manual-scripting': {
-    title: 'Support Manual Scripting | D-Secure Tech',
-    description: 'Learn about support manual scripting. D-Secure provides comprehensive data erasure solutions and documentation for support manual scripting.',
+    title: 'Scripting | D-Secure Tech',
+    description: 'Comprehensive guide to scripting for secure data erasure. Learn how to implement scripting and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6365,8 +6365,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/scripting',
   },
   'support-manual-scripting-automation': {
-    title: 'Support Manual Scripting Automation | D-Secure Tech',
-    description: 'Learn about support manual scripting automation. D-Secure provides comprehensive data erasure solutions and documentation for support manual scripting automation.',
+    title: 'Scripting Automation | D-Secure Tech',
+    description: 'Comprehensive guide to scripting automation for secure data erasure. Learn how to implement scripting automation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6377,8 +6377,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/scripting-automation',
   },
   'support-manual-security-assurance': {
-    title: 'Support Manual Security Assurance | D-Secure Tech',
-    description: 'Learn about support manual security assurance. D-Secure provides comprehensive data erasure solutions and documentation for support manual security assurance.',
+    title: 'Security Assurance | D-Secure Tech',
+    description: 'Comprehensive guide to security assurance for secure data erasure. Learn how to implement security assurance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6389,8 +6389,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/security-assurance',
   },
   'support-manual-security-protocols': {
-    title: 'Support Manual Security Protocols | D-Secure Tech',
-    description: 'Learn about support manual security protocols. D-Secure provides comprehensive data erasure solutions and documentation for support manual security protocols.',
+    title: 'Security Protocols | D-Secure Tech',
+    description: 'Comprehensive guide to security protocols for secure data erasure. Learn how to implement security protocols and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6401,8 +6401,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/security-protocols',
   },
   'support-manual-servers': {
-    title: 'Support Manual Servers | D-Secure Tech',
-    description: 'Learn about support manual servers. D-Secure provides comprehensive data erasure solutions and documentation for support manual servers.',
+    title: 'Servers | D-Secure Tech',
+    description: 'Comprehensive guide to servers for secure data erasure. Learn how to implement servers and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6412,8 +6412,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/servers',
   },
   'support-manual-service-workflow': {
-    title: 'Support Manual Service Workflow | D-Secure Tech',
-    description: 'Learn about support manual service workflow. D-Secure provides comprehensive data erasure solutions and documentation for support manual service workflow.',
+    title: 'Service Workflow | D-Secure Tech',
+    description: 'Comprehensive guide to service workflow for secure data erasure. Learn how to implement service workflow and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6424,8 +6424,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/service-workflow',
   },
   'support-manual-setup-wizard': {
-    title: 'Support Manual Setup Wizard | D-Secure Tech',
-    description: 'Learn about support manual setup wizard. D-Secure provides comprehensive data erasure solutions and documentation for support manual setup wizard.',
+    title: 'Setup Wizard | D-Secure Tech',
+    description: 'Comprehensive guide to setup wizard for secure data erasure. Learn how to implement setup wizard and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6436,8 +6436,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/setup-wizard',
   },
   'support-manual-shredding-method': {
-    title: 'Support Manual Shredding Method | D-Secure Tech',
-    description: 'Learn about support manual shredding method. D-Secure provides comprehensive data erasure solutions and documentation for support manual shredding method.',
+    title: 'Shredding Method | D-Secure Tech',
+    description: 'Comprehensive guide to shredding method for secure data erasure. Learn how to implement shredding method and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6448,8 +6448,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/shredding-method',
   },
   'support-manual-software-supported-media': {
-    title: 'Support Manual Software Supported Media | D-Secure Tech',
-    description: 'Learn about support manual software supported media. D-Secure provides comprehensive data erasure solutions and documentation for support manual software supported media.',
+    title: 'Software Supported Media | D-Secure Tech',
+    description: 'Comprehensive guide to software supported media for secure data erasure. Learn how to implement software supported media and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6460,8 +6460,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/software-supported-media',
   },
   'support-manual-software-verification': {
-    title: 'Support Manual Software Verification | D-Secure Tech',
-    description: 'Learn about support manual software verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual software verification.',
+    title: 'Software Verification | D-Secure Tech',
+    description: 'Comprehensive guide to software verification for secure data erasure. Learn how to implement software verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6472,8 +6472,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/software-verification',
   },
   'support-manual-ssd-challenges': {
-    title: 'Support Manual Ssd Challenges | D-Secure Tech',
-    description: 'Learn about support manual ssd challenges. D-Secure provides comprehensive data erasure solutions and documentation for support manual ssd challenges.',
+    title: 'SSD Challenges | D-Secure Tech',
+    description: 'Comprehensive guide to ssd challenges for secure data erasure. Learn how to implement ssd challenges and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6484,8 +6484,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/ssd-challenges',
   },
   'support-manual-ssd-destruction': {
-    title: 'Support Manual Ssd Destruction | D-Secure Tech',
-    description: 'Learn about support manual ssd destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual ssd destruction.',
+    title: 'SSD Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to ssd destruction for secure data erasure. Learn how to implement ssd destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6496,8 +6496,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/ssd-destruction',
   },
   'support-manual-standards-comparison': {
-    title: 'Support Manual Standards Comparison | D-Secure Tech',
-    description: 'Learn about support manual standards comparison. D-Secure provides comprehensive data erasure solutions and documentation for support manual standards comparison.',
+    title: 'Standards Comparison | D-Secure Tech',
+    description: 'Comprehensive guide to standards comparison for secure data erasure. Learn how to implement standards comparison and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6508,8 +6508,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/standards-comparison',
   },
   'support-manual-start-erasure': {
-    title: 'Support Manual Start Erasure | D-Secure Tech',
-    description: 'Learn about support manual start erasure. D-Secure provides comprehensive data erasure solutions and documentation for support manual start erasure.',
+    title: 'Start Erasure | D-Secure Tech',
+    description: 'Comprehensive guide to start erasure for secure data erasure. Learn how to implement start erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6520,8 +6520,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/start-erasure',
   },
   'support-manual-statistical-confidence': {
-    title: 'Support Manual Statistical Confidence | D-Secure Tech',
-    description: 'Learn about support manual statistical confidence. D-Secure provides comprehensive data erasure solutions and documentation for support manual statistical confidence.',
+    title: 'Statistical Confidence | D-Secure Tech',
+    description: 'Comprehensive guide to statistical confidence for secure data erasure. Learn how to implement statistical confidence and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6532,8 +6532,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/statistical-confidence',
   },
   'support-manual-status-indicators': {
-    title: 'Support Manual Status Indicators | D-Secure Tech',
-    description: 'Learn about support manual status indicators. D-Secure provides comprehensive data erasure solutions and documentation for support manual status indicators.',
+    title: 'Status Indicators | D-Secure Tech',
+    description: 'Comprehensive guide to status indicators for secure data erasure. Learn how to implement status indicators and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6544,8 +6544,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/status-indicators',
   },
   'support-manual-supported-devices': {
-    title: 'Support Manual Supported Devices | D-Secure Tech',
-    description: 'Learn about support manual supported devices. D-Secure provides comprehensive data erasure solutions and documentation for support manual supported devices.',
+    title: 'Supported Devices | D-Secure Tech',
+    description: 'Comprehensive guide to supported devices for secure data erasure. Learn how to implement supported devices and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6556,8 +6556,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/supported-devices',
   },
   'support-manual-supported-encryption': {
-    title: 'Support Manual Supported Encryption | D-Secure Tech',
-    description: 'Learn about support manual supported encryption. D-Secure provides comprehensive data erasure solutions and documentation for support manual supported encryption.',
+    title: 'Supported Encryption | D-Secure Tech',
+    description: 'Comprehensive guide to supported encryption for secure data erasure. Learn how to implement supported encryption and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6568,8 +6568,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/supported-encryption',
   },
   'support-manual-system-requirements': {
-    title: 'Support Manual System Requirements | D-Secure Tech',
-    description: 'Learn about support manual system requirements. D-Secure provides comprehensive data erasure solutions and documentation for support manual system requirements.',
+    title: 'System Requirements | D-Secure Tech',
+    description: 'Comprehensive guide to system requirements for secure data erasure. Learn how to implement system requirements and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6580,8 +6580,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/system-requirements',
   },
   'support-manual-system-scanning': {
-    title: 'Support Manual System Scanning | D-Secure Tech',
-    description: 'Learn about support manual system scanning. D-Secure provides comprehensive data erasure solutions and documentation for support manual system scanning.',
+    title: 'System Scanning | D-Secure Tech',
+    description: 'Comprehensive guide to system scanning for secure data erasure. Learn how to implement system scanning and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6592,8 +6592,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/system-scanning',
   },
   'support-manual-system-setup': {
-    title: 'Support Manual System Setup | D-Secure Tech',
-    description: 'Learn about support manual system setup. D-Secure provides comprehensive data erasure solutions and documentation for support manual system setup.',
+    title: 'System Setup | D-Secure Tech',
+    description: 'Comprehensive guide to system setup for secure data erasure. Learn how to implement system setup and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6604,8 +6604,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/system-setup',
   },
   'support-manual-use-cases': {
-    title: 'Support Manual Use Cases | D-Secure Tech',
-    description: 'Learn about support manual use cases. D-Secure provides comprehensive data erasure solutions and documentation for support manual use cases.',
+    title: 'Use Cases | D-Secure Tech',
+    description: 'Comprehensive guide to use cases for secure data erasure. Learn how to implement use cases and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6616,8 +6616,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/use-cases',
   },
   'support-manual-user-interface': {
-    title: 'Support Manual User Interface | D-Secure Tech',
-    description: 'Learn about support manual user interface. D-Secure provides comprehensive data erasure solutions and documentation for support manual user interface.',
+    title: 'User Interface | D-Secure Tech',
+    description: 'Comprehensive guide to user interface for secure data erasure. Learn how to implement user interface and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6628,8 +6628,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/user-interface',
   },
   'support-manual-user-management': {
-    title: 'Support Manual User Management | D-Secure Tech',
-    description: 'Learn about support manual user management. D-Secure provides comprehensive data erasure solutions and documentation for support manual user management.',
+    title: 'User Management | D-Secure Tech',
+    description: 'Comprehensive guide to user management for secure data erasure. Learn how to implement user management and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6640,8 +6640,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/user-management',
   },
   'support-manual-user-profile': {
-    title: 'Support Manual User Profile | D-Secure Tech',
-    description: 'Learn about support manual user profile. D-Secure provides comprehensive data erasure solutions and documentation for support manual user profile.',
+    title: 'User Profile | D-Secure Tech',
+    description: 'Comprehensive guide to user profile for secure data erasure. Learn how to implement user profile and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6652,8 +6652,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/user-profile',
   },
   'support-manual-verification-challenges': {
-    title: 'Support Manual Verification Challenges | D-Secure Tech',
-    description: 'Learn about support manual verification challenges. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification challenges.',
+    title: 'Verification Challenges | D-Secure Tech',
+    description: 'Comprehensive guide to verification challenges for secure data erasure. Learn how to implement verification challenges and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6664,8 +6664,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-challenges',
   },
   'support-manual-verification-importance': {
-    title: 'Support Manual Verification Importance | D-Secure Tech',
-    description: 'Learn about support manual verification importance. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification importance.',
+    title: 'Verification Importance | D-Secure Tech',
+    description: 'Comprehensive guide to verification importance for secure data erasure. Learn how to implement verification importance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6676,8 +6676,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-importance',
   },
   'support-manual-verification-logs': {
-    title: 'Support Manual Verification Logs | D-Secure Tech',
-    description: 'Learn about support manual verification logs. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification logs.',
+    title: 'Verification Logs | D-Secure Tech',
+    description: 'Comprehensive guide to verification logs for secure data erasure. Learn how to implement verification logs and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6688,8 +6688,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-logs',
   },
   'support-manual-verification-methods': {
-    title: 'Support Manual Verification Methods | D-Secure Tech',
-    description: 'Learn about support manual verification methods. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification methods.',
+    title: 'Verification Methods | D-Secure Tech',
+    description: 'Comprehensive guide to verification methods for secure data erasure. Learn how to implement verification methods and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6700,8 +6700,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-methods',
   },
   'support-manual-verification-overview': {
-    title: 'Support Manual Verification Overview | D-Secure Tech',
-    description: 'Learn about support manual verification overview. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification overview.',
+    title: 'Verification Overview | D-Secure Tech',
+    description: 'Comprehensive guide to verification overview for secure data erasure. Learn how to implement verification overview and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6712,8 +6712,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-overview',
   },
   'support-manual-verification-risks': {
-    title: 'Support Manual Verification Risks | D-Secure Tech',
-    description: 'Learn about support manual verification risks. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification risks.',
+    title: 'Verification Risks | D-Secure Tech',
+    description: 'Comprehensive guide to verification risks for secure data erasure. Learn how to implement verification risks and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6724,8 +6724,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-risks',
   },
   'support-manual-verification-standards': {
-    title: 'Support Manual Verification Standards | D-Secure Tech',
-    description: 'Learn about support manual verification standards. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification standards.',
+    title: 'Verification Standards | D-Secure Tech',
+    description: 'Comprehensive guide to verification standards for secure data erasure. Learn how to implement verification standards and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6736,8 +6736,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-standards',
   },
   'support-manual-verification-techniques': {
-    title: 'Support Manual Verification Techniques | D-Secure Tech',
-    description: 'Learn about support manual verification techniques. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification techniques.',
+    title: 'Verification Techniques | D-Secure Tech',
+    description: 'Comprehensive guide to verification techniques for secure data erasure. Learn how to implement verification techniques and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6748,8 +6748,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-techniques',
   },
   'support-manual-verification-tools': {
-    title: 'Support Manual Verification Tools | D-Secure Tech',
-    description: 'Learn about support manual verification tools. D-Secure provides comprehensive data erasure solutions and documentation for support manual verification tools.',
+    title: 'Verification Tools | D-Secure Tech',
+    description: 'Comprehensive guide to verification tools for secure data erasure. Learn how to implement verification tools and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6760,8 +6760,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/verification-tools',
   },
   'support-manual-virus-definitions': {
-    title: 'Support Manual Virus Definitions | D-Secure Tech',
-    description: 'Learn about support manual virus definitions. D-Secure provides comprehensive data erasure solutions and documentation for support manual virus definitions.',
+    title: 'Virus Definitions | D-Secure Tech',
+    description: 'Comprehensive guide to virus definitions for secure data erasure. Learn how to implement virus definitions and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6772,8 +6772,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/virus-definitions',
   },
   'support-manual-visual-confirmation': {
-    title: 'Support Manual Visual Confirmation | D-Secure Tech',
-    description: 'Learn about support manual visual confirmation. D-Secure provides comprehensive data erasure solutions and documentation for support manual visual confirmation.',
+    title: 'Visual Confirmation | D-Secure Tech',
+    description: 'Comprehensive guide to visual confirmation for secure data erasure. Learn how to implement visual confirmation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6784,8 +6784,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/visual-confirmation',
   },
   'support-manual-vpn-setup': {
-    title: 'Support Manual Vpn Setup | D-Secure Tech',
-    description: 'Learn about support manual vpn setup. D-Secure provides comprehensive data erasure solutions and documentation for support manual vpn setup.',
+    title: 'VPN Setup | D-Secure Tech',
+    description: 'Comprehensive guide to vpn setup for secure data erasure. Learn how to implement vpn setup and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6796,8 +6796,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/vpn-setup',
   },
   'support-manual-why-physical-destruction': {
-    title: 'Support Manual Why Physical Destruction | D-Secure Tech',
-    description: 'Learn about support manual why physical destruction. D-Secure provides comprehensive data erasure solutions and documentation for support manual why physical destruction.',
+    title: 'Why Physical Destruction | D-Secure Tech',
+    description: 'Comprehensive guide to why physical destruction for secure data erasure. Learn how to implement why physical destruction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6808,8 +6808,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/why-physical-destruction',
   },
   'support-manual-windows': {
-    title: 'Support Manual Windows | D-Secure Tech',
-    description: 'Learn about support manual windows. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows.',
+    title: 'Windows | D-Secure Tech',
+    description: 'Comprehensive guide to windows for secure data erasure. Learn how to implement windows and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6819,8 +6819,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows',
   },
   'support-manual-windows-best-practices': {
-    title: 'Support Manual Windows Best Practices | D-Secure Tech',
-    description: 'Learn about support manual windows best practices. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows best practices.',
+    title: 'Windows Best Practices | D-Secure Tech',
+    description: 'Comprehensive guide to windows best practices for secure data erasure. Learn how to implement windows best practices and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6831,8 +6831,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-best-practices',
   },
   'support-manual-windows-bitlocker': {
-    title: 'Support Manual Windows Bitlocker | D-Secure Tech',
-    description: 'Learn about support manual windows bitlocker. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows bitlocker.',
+    title: 'Windows BitLocker | D-Secure Tech',
+    description: 'Comprehensive guide to windows bitlocker for secure data erasure. Learn how to implement windows bitlocker and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6843,8 +6843,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-bitlocker',
   },
   'support-manual-windows-bootable-usb': {
-    title: 'Support Manual Windows Bootable Usb | D-Secure Tech',
-    description: 'Learn about support manual windows bootable usb. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows bootable usb.',
+    title: 'Windows Bootable USB | D-Secure Tech',
+    description: 'Comprehensive guide to windows bootable usb for secure data erasure. Learn how to implement windows bootable usb and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6855,8 +6855,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-bootable-usb',
   },
   'support-manual-windows-builtin-tools': {
-    title: 'Support Manual Windows Builtin Tools | D-Secure Tech',
-    description: 'Learn about support manual windows builtin tools. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows builtin tools.',
+    title: 'Windows Builtin Tools | D-Secure Tech',
+    description: 'Comprehensive guide to windows builtin tools for secure data erasure. Learn how to implement windows builtin tools and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6867,8 +6867,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-builtin-tools',
   },
   'support-manual-windows-command-line': {
-    title: 'Support Manual Windows Command Line | D-Secure Tech',
-    description: 'Learn about support manual windows command line. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows command line.',
+    title: 'Windows Command Line | D-Secure Tech',
+    description: 'Comprehensive guide to windows command line for secure data erasure. Learn how to implement windows command line and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6879,8 +6879,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-command-line',
   },
   'support-manual-windows-compliance': {
-    title: 'Support Manual Windows Compliance | D-Secure Tech',
-    description: 'Learn about support manual windows compliance. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows compliance.',
+    title: 'Windows Compliance | D-Secure Tech',
+    description: 'Comprehensive guide to windows compliance for secure data erasure. Learn how to implement windows compliance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6891,8 +6891,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-compliance',
   },
   'support-manual-windows-crypto-erasure': {
-    title: 'Support Manual Windows Crypto Erasure | D-Secure Tech',
-    description: 'Learn about support manual windows crypto erasure. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows crypto erasure.',
+    title: 'Windows Crypto Erasure | D-Secure Tech',
+    description: 'Comprehensive guide to windows crypto erasure for secure data erasure. Learn how to implement windows crypto erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6903,8 +6903,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-crypto-erasure',
   },
   'support-manual-windows-d-secure-eraser': {
-    title: 'Support Manual Windows D Secure Eraser | D-Secure Tech',
-    description: 'Learn about support manual windows d secure eraser. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows d secure eraser.',
+    title: 'Windows D Secure Eraser | D-Secure Tech',
+    description: 'Comprehensive guide to windows d secure eraser for secure data erasure. Learn how to implement windows d secure eraser and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6915,8 +6915,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-D-Secure-eraser',
   },
   'support-manual-windows-enterprise': {
-    title: 'Support Manual Windows Enterprise | D-Secure Tech',
-    description: 'Learn about support manual windows enterprise. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows enterprise.',
+    title: 'Windows Enterprise | D-Secure Tech',
+    description: 'Comprehensive guide to windows enterprise for secure data erasure. Learn how to implement windows enterprise and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6927,8 +6927,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-enterprise',
   },
   'support-manual-windows-faq': {
-    title: 'Support Manual Windows Faq | D-Secure Tech',
-    description: 'Learn about support manual windows faq. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows faq.',
+    title: 'Windows FAQ | D-Secure Tech',
+    description: 'Comprehensive guide to windows faq for secure data erasure. Learn how to implement windows faq and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6939,8 +6939,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-faq',
   },
   'support-manual-windows-filesystems': {
-    title: 'Support Manual Windows Filesystems | D-Secure Tech',
-    description: 'Learn about support manual windows filesystems. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows filesystems.',
+    title: 'Windows Filesystems | D-Secure Tech',
+    description: 'Comprehensive guide to windows filesystems for secure data erasure. Learn how to implement windows filesystems and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6951,8 +6951,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-filesystems',
   },
   'support-manual-windows-introduction': {
-    title: 'Support Manual Windows Introduction | D-Secure Tech',
-    description: 'Learn about support manual windows introduction. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows introduction.',
+    title: 'Windows Introduction | D-Secure Tech',
+    description: 'Comprehensive guide to windows introduction for secure data erasure. Learn how to implement windows introduction and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6963,8 +6963,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-introduction',
   },
   'support-manual-windows-methods-comparison': {
-    title: 'Support Manual Windows Methods Comparison | D-Secure Tech',
-    description: 'Learn about support manual windows methods comparison. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows methods comparison.',
+    title: 'Windows Methods Comparison | D-Secure Tech',
+    description: 'Comprehensive guide to windows methods comparison for secure data erasure. Learn how to implement windows methods comparison and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6975,8 +6975,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-methods-comparison',
   },
   'support-manual-windows-preparation': {
-    title: 'Support Manual Windows Preparation | D-Secure Tech',
-    description: 'Learn about support manual windows preparation. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows preparation.',
+    title: 'Windows Preparation | D-Secure Tech',
+    description: 'Comprehensive guide to windows preparation for secure data erasure. Learn how to implement windows preparation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6987,8 +6987,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-preparation',
   },
   'support-manual-windows-residual-data': {
-    title: 'Support Manual Windows Residual Data | D-Secure Tech',
-    description: 'Learn about support manual windows residual data. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows residual data.',
+    title: 'Windows Residual Data | D-Secure Tech',
+    description: 'Comprehensive guide to windows residual data for secure data erasure. Learn how to implement windows residual data and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -6999,8 +6999,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-residual-data',
   },
   'support-manual-windows-resources': {
-    title: 'Support Manual Windows Resources | D-Secure Tech',
-    description: 'Learn about support manual windows resources. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows resources.',
+    title: 'Windows Resources | D-Secure Tech',
+    description: 'Comprehensive guide to windows resources for secure data erasure. Learn how to implement windows resources and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7011,8 +7011,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-resources',
   },
   'support-manual-windows-risks': {
-    title: 'Support Manual Windows Risks | D-Secure Tech',
-    description: 'Learn about support manual windows risks. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows risks.',
+    title: 'Windows Risks | D-Secure Tech',
+    description: 'Comprehensive guide to windows risks for secure data erasure. Learn how to implement windows risks and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7023,8 +7023,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-risks',
   },
   'support-manual-windows-sed-drives': {
-    title: 'Support Manual Windows Sed Drives | D-Secure Tech',
-    description: 'Learn about support manual windows sed drives. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows sed drives.',
+    title: 'Windows SED Drives | D-Secure Tech',
+    description: 'Comprehensive guide to windows sed drives for secure data erasure. Learn how to implement windows sed drives and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7035,8 +7035,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-sed-drives',
   },
   'support-manual-windows-software-erasure': {
-    title: 'Support Manual Windows Software Erasure | D-Secure Tech',
-    description: 'Learn about support manual windows software erasure. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows software erasure.',
+    title: 'Windows Software Erasure | D-Secure Tech',
+    description: 'Comprehensive guide to windows software erasure for secure data erasure. Learn how to implement windows software erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7047,8 +7047,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-software-erasure',
   },
   'support-manual-windows-ssd-erasure': {
-    title: 'Support Manual Windows Ssd Erasure | D-Secure Tech',
-    description: 'Learn about support manual windows ssd erasure. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows ssd erasure.',
+    title: 'Windows SSD Erasure | D-Secure Tech',
+    description: 'Comprehensive guide to windows ssd erasure for secure data erasure. Learn how to implement windows ssd erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7059,8 +7059,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-ssd-erasure',
   },
   'support-manual-windows-storage': {
-    title: 'Support Manual Windows Storage | D-Secure Tech',
-    description: 'Learn about support manual windows storage. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows storage.',
+    title: 'Windows Storage | D-Secure Tech',
+    description: 'Comprehensive guide to windows storage for secure data erasure. Learn how to implement windows storage and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7071,8 +7071,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-storage',
   },
   'support-manual-windows-system-files': {
-    title: 'Support Manual Windows System Files | D-Secure Tech',
-    description: 'Learn about support manual windows system files. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows system files.',
+    title: 'Windows System Files | D-Secure Tech',
+    description: 'Comprehensive guide to windows system files for secure data erasure. Learn how to implement windows system files and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7083,8 +7083,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-system-files',
   },
   'support-manual-windows-third-party': {
-    title: 'Support Manual Windows Third Party | D-Secure Tech',
-    description: 'Learn about support manual windows third party. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows third party.',
+    title: 'Windows Third Party | D-Secure Tech',
+    description: 'Comprehensive guide to windows third party for secure data erasure. Learn how to implement windows third party and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7095,8 +7095,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-third-party',
   },
   'support-manual-windows-troubleshooting': {
-    title: 'Support Manual Windows Troubleshooting | D-Secure Tech',
-    description: 'Learn about support manual windows troubleshooting. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows troubleshooting.',
+    title: 'Windows Troubleshooting | D-Secure Tech',
+    description: 'Comprehensive guide to windows troubleshooting for secure data erasure. Learn how to implement windows troubleshooting and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7107,8 +7107,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-troubleshooting',
   },
   'support-manual-windows-verification': {
-    title: 'Support Manual Windows Verification | D-Secure Tech',
-    description: 'Learn about support manual windows verification. D-Secure provides comprehensive data erasure solutions and documentation for support manual windows verification.',
+    title: 'Windows Verification | D-Secure Tech',
+    description: 'Comprehensive guide to windows verification for secure data erasure. Learn how to implement windows verification and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7119,8 +7119,8 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: 'https://dsecuretech.com/support/manual/windows-verification',
   },
   'support-manual-working-with-d-secure': {
-    title: 'Support Manual Working With D Secure | D-Secure Tech',
-    description: 'Learn about support manual working with d secure. D-Secure provides comprehensive data erasure solutions and documentation for support manual working with d secure.',
+    title: 'Working With D Secure | D-Secure Tech',
+    description: 'Comprehensive guide to working with d secure for secure data erasure. Learn how to implement working with d secure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'manual',
@@ -7133,7 +7133,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
 
   'cloud-integration': {
     title: 'Cloud Integration | D-Secure Tech',
-    description: 'Learn about cloud integration. D-Secure provides comprehensive data erasure solutions and documentation for cloud integration.',
+    description: 'Comprehensive guide to cloud integration for secure data erasure. Learn how to implement cloud integration and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'cloud',
       'integration',
@@ -7143,7 +7143,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'connecting-domain': {
     title: 'Connecting Domain | D-Secure Tech',
-    description: 'Learn about connecting domain. D-Secure provides comprehensive data erasure solutions and documentation for connecting domain.',
+    description: 'Comprehensive guide to connecting domain for secure data erasure. Learn how to implement connecting domain and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'connecting',
       'domain',
@@ -7153,7 +7153,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'downloads': {
     title: 'Downloads | D-Secure Tech',
-    description: 'Learn about downloads. D-Secure provides comprehensive data erasure solutions and documentation for downloads.',
+    description: 'Comprehensive guide to downloads for secure data erasure. Learn how to implement downloads and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'downloads',
       'data erasure',
@@ -7162,7 +7162,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'edit-subuser': {
     title: 'Edit Subuser | D-Secure Tech',
-    description: 'Learn about edit subuser. D-Secure provides comprehensive data erasure solutions and documentation for edit subuser.',
+    description: 'Comprehensive guide to edit subuser for secure data erasure. Learn how to implement edit subuser and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'edit',
       'subuser',
@@ -7172,7 +7172,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'erasing-files': {
     title: 'Erasing Files | D-Secure Tech',
-    description: 'Learn about erasing files. D-Secure provides comprehensive data erasure solutions and documentation for erasing files.',
+    description: 'Comprehensive guide to erasing files for secure data erasure. Learn how to implement erasing files and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'erasing',
       'files',
@@ -7182,7 +7182,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'erasing-traces': {
     title: 'Erasing Traces | D-Secure Tech',
-    description: 'Learn about erasing traces. D-Secure provides comprehensive data erasure solutions and documentation for erasing traces.',
+    description: 'Comprehensive guide to erasing traces for secure data erasure. Learn how to implement erasing traces and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'erasing',
       'traces',
@@ -7192,7 +7192,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'faq': {
     title: 'Faq | D-Secure Tech',
-    description: 'Learn about faq. D-Secure provides comprehensive data erasure solutions and documentation for faq.',
+    description: 'Comprehensive guide to faq for secure data erasure. Learn how to implement faq and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'faq',
       'data erasure',
@@ -7201,7 +7201,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'groups': {
     title: 'Groups | D-Secure Tech',
-    description: 'Learn about groups. D-Secure provides comprehensive data erasure solutions and documentation for groups.',
+    description: 'Comprehensive guide to groups for secure data erasure. Learn how to implement groups and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'groups',
       'data erasure',
@@ -7210,7 +7210,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'groups-add': {
     title: 'Groups Add | D-Secure Tech',
-    description: 'Learn about groups add. D-Secure provides comprehensive data erasure solutions and documentation for groups add.',
+    description: 'Comprehensive guide to groups add for secure data erasure. Learn how to implement groups add and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'groups',
       'add',
@@ -7220,7 +7220,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'installation': {
     title: 'Installation | D-Secure Tech',
-    description: 'Learn about installation. D-Secure provides comprehensive data erasure solutions and documentation for installation.',
+    description: 'Comprehensive guide to installation for secure data erasure. Learn how to implement installation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'installation',
       'data erasure',
@@ -7229,7 +7229,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'licenses': {
     title: 'Licenses | D-Secure Tech',
-    description: 'Learn about licenses. D-Secure provides comprehensive data erasure solutions and documentation for licenses.',
+    description: 'Comprehensive guide to licenses for secure data erasure. Learn how to implement licenses and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'licenses',
       'data erasure',
@@ -7238,7 +7238,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'licensing': {
     title: 'Licensing | D-Secure Tech',
-    description: 'Learn about licensing. D-Secure provides comprehensive data erasure solutions and documentation for licensing.',
+    description: 'Comprehensive guide to licensing for secure data erasure. Learn how to implement licensing and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'licensing',
       'data erasure',
@@ -7247,7 +7247,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'machines': {
     title: 'Machines | D-Secure Tech',
-    description: 'Learn about machines. D-Secure provides comprehensive data erasure solutions and documentation for machines.',
+    description: 'Comprehensive guide to machines for secure data erasure. Learn how to implement machines and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'machines',
       'data erasure',
@@ -7256,7 +7256,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'performance': {
     title: 'Performance | D-Secure Tech',
-    description: 'Learn about performance. D-Secure provides comprehensive data erasure solutions and documentation for performance.',
+    description: 'Comprehensive guide to performance for secure data erasure. Learn how to implement performance and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'performance',
       'data erasure',
@@ -7265,7 +7265,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'private-cloud-setup': {
     title: 'Private Cloud Setup | D-Secure Tech',
-    description: 'Learn about private cloud setup. D-Secure provides comprehensive data erasure solutions and documentation for private cloud setup.',
+    description: 'Comprehensive guide to private cloud setup for secure data erasure. Learn how to implement private cloud setup and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'private',
       'cloud',
@@ -7276,7 +7276,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'products-mobile-erasure': {
     title: 'Products Mobile Erasure | D-Secure Tech',
-    description: 'Learn about products mobile erasure. D-Secure provides comprehensive data erasure solutions and documentation for products mobile erasure.',
+    description: 'Comprehensive guide to products mobile erasure for secure data erasure. Learn how to implement products mobile erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'products',
       'mobile',
@@ -7287,7 +7287,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'profile-edit': {
     title: 'Profile Edit | D-Secure Tech',
-    description: 'Learn about profile edit. D-Secure provides comprehensive data erasure solutions and documentation for profile edit.',
+    description: 'Comprehensive guide to profile edit for secure data erasure. Learn how to implement profile edit and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'profile',
       'edit',
@@ -7297,7 +7297,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'quick-overview': {
     title: 'Quick Overview | D-Secure Tech',
-    description: 'Learn about quick overview. D-Secure provides comprehensive data erasure solutions and documentation for quick overview.',
+    description: 'Comprehensive guide to quick overview for secure data erasure. Learn how to implement quick overview and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'quick',
       'overview',
@@ -7307,7 +7307,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'report-management': {
     title: 'Report Management | D-Secure Tech',
-    description: 'Learn about report management. D-Secure provides comprehensive data erasure solutions and documentation for report management.',
+    description: 'Comprehensive guide to report management for secure data erasure. Learn how to implement report management and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'report',
       'management',
@@ -7317,7 +7317,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'reports': {
     title: 'Reports | D-Secure Tech',
-    description: 'Learn about reports. D-Secure provides comprehensive data erasure solutions and documentation for reports.',
+    description: 'Comprehensive guide to reports for secure data erasure. Learn how to implement reports and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'reports',
       'data erasure',
@@ -7326,7 +7326,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'reports-admin': {
     title: 'Reports Admin | D-Secure Tech',
-    description: 'Learn about reports admin. D-Secure provides comprehensive data erasure solutions and documentation for reports admin.',
+    description: 'Comprehensive guide to reports admin for secure data erasure. Learn how to implement reports admin and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'reports',
       'admin',
@@ -7336,7 +7336,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'reports-generate': {
     title: 'Reports Generate | D-Secure Tech',
-    description: 'Learn about reports generate. D-Secure provides comprehensive data erasure solutions and documentation for reports generate.',
+    description: 'Comprehensive guide to reports generate for secure data erasure. Learn how to implement reports generate and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'reports',
       'generate',
@@ -7346,7 +7346,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'resources-case-studies': {
     title: 'Resources Case Studies | D-Secure Tech',
-    description: 'Learn about resources case studies. D-Secure provides comprehensive data erasure solutions and documentation for resources case studies.',
+    description: 'Comprehensive guide to resources case studies for secure data erasure. Learn how to implement resources case studies and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'resources',
       'case',
@@ -7357,7 +7357,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'resources-documentation': {
     title: 'Resources Documentation | D-Secure Tech',
-    description: 'Learn about resources documentation. D-Secure provides comprehensive data erasure solutions and documentation for resources documentation.',
+    description: 'Comprehensive guide to resources documentation for secure data erasure. Learn how to implement resources documentation and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'resources',
       'documentation',
@@ -7367,7 +7367,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'resources-whitepapers': {
     title: 'Resources Whitepapers | D-Secure Tech',
-    description: 'Learn about resources whitepapers. D-Secure provides comprehensive data erasure solutions and documentation for resources whitepapers.',
+    description: 'Comprehensive guide to resources whitepapers for secure data erasure. Learn how to implement resources whitepapers and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'resources',
       'whitepapers',
@@ -7377,7 +7377,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'scheduling-tasks': {
     title: 'Scheduling Tasks | D-Secure Tech',
-    description: 'Learn about scheduling tasks. D-Secure provides comprehensive data erasure solutions and documentation for scheduling tasks.',
+    description: 'Comprehensive guide to scheduling tasks for secure data erasure. Learn how to implement scheduling tasks and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'scheduling',
       'tasks',
@@ -7387,7 +7387,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'search-demo': {
     title: 'Search Demo | D-Secure Tech',
-    description: 'Learn about search demo. D-Secure provides comprehensive data erasure solutions and documentation for search demo.',
+    description: 'Comprehensive guide to search demo for secure data erasure. Learn how to implement search demo and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'search',
       'demo',
@@ -7397,7 +7397,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'services-cloud-erasure': {
     title: 'Services Cloud Erasure | D-Secure Tech',
-    description: 'Learn about services cloud erasure. D-Secure provides comprehensive data erasure solutions and documentation for services cloud erasure.',
+    description: 'Comprehensive guide to services cloud erasure for secure data erasure. Learn how to implement services cloud erasure and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'services',
       'cloud',
@@ -7408,7 +7408,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'sessions': {
     title: 'Sessions | D-Secure Tech',
-    description: 'Learn about sessions. D-Secure provides comprehensive data erasure solutions and documentation for sessions.',
+    description: 'Comprehensive guide to sessions for secure data erasure. Learn how to implement sessions and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'sessions',
       'data erasure',
@@ -7417,7 +7417,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'settings': {
     title: 'Settings | D-Secure Tech',
-    description: 'Learn about settings. D-Secure provides comprehensive data erasure solutions and documentation for settings.',
+    description: 'Comprehensive guide to settings for secure data erasure. Learn how to implement settings and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'settings',
       'data erasure',
@@ -7426,7 +7426,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-education': {
     title: 'Solutions Education | D-Secure Tech',
-    description: 'Learn about solutions education. D-Secure provides comprehensive data erasure solutions and documentation for solutions education.',
+    description: 'Comprehensive guide to solutions education for secure data erasure. Learn how to implement solutions education and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'education',
@@ -7436,7 +7436,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-enterprise': {
     title: 'Solutions Enterprise | D-Secure Tech',
-    description: 'Learn about solutions enterprise. D-Secure provides comprehensive data erasure solutions and documentation for solutions enterprise.',
+    description: 'Comprehensive guide to solutions enterprise for secure data erasure. Learn how to implement solutions enterprise and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'enterprise',
@@ -7446,7 +7446,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-financial': {
     title: 'Solutions Financial | D-Secure Tech',
-    description: 'Learn about solutions financial. D-Secure provides comprehensive data erasure solutions and documentation for solutions financial.',
+    description: 'Comprehensive guide to solutions financial for secure data erasure. Learn how to implement solutions financial and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'financial',
@@ -7456,7 +7456,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-financial-services': {
     title: 'Solutions Financial Services | D-Secure Tech',
-    description: 'Learn about solutions financial services. D-Secure provides comprehensive data erasure solutions and documentation for solutions financial services.',
+    description: 'Comprehensive guide to solutions financial services for secure data erasure. Learn how to implement solutions financial services and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'financial',
@@ -7467,7 +7467,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-government': {
     title: 'Solutions Government | D-Secure Tech',
-    description: 'Learn about solutions government. D-Secure provides comprehensive data erasure solutions and documentation for solutions government.',
+    description: 'Comprehensive guide to solutions government for secure data erasure. Learn how to implement solutions government and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'government',
@@ -7477,7 +7477,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-healthcare': {
     title: 'Solutions Healthcare | D-Secure Tech',
-    description: 'Learn about solutions healthcare. D-Secure provides comprehensive data erasure solutions and documentation for solutions healthcare.',
+    description: 'Comprehensive guide to solutions healthcare for secure data erasure. Learn how to implement solutions healthcare and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'healthcare',
@@ -7487,7 +7487,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-itad': {
     title: 'Solutions Itad | D-Secure Tech',
-    description: 'Learn about solutions itad. D-Secure provides comprehensive data erasure solutions and documentation for solutions itad.',
+    description: 'Comprehensive guide to solutions itad for secure data erasure. Learn how to implement solutions itad and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'itad',
@@ -7497,7 +7497,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'solutions-service-providers': {
     title: 'Solutions Service Providers | D-Secure Tech',
-    description: 'Learn about solutions service providers. D-Secure provides comprehensive data erasure solutions and documentation for solutions service providers.',
+    description: 'Comprehensive guide to solutions service providers for secure data erasure. Learn how to implement solutions service providers and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'solutions',
       'service',
@@ -7508,7 +7508,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'subusers': {
     title: 'Subusers | D-Secure Tech',
-    description: 'Learn about subusers. D-Secure provides comprehensive data erasure solutions and documentation for subusers.',
+    description: 'Comprehensive guide to subusers for secure data erasure. Learn how to implement subusers and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'subusers',
       'data erasure',
@@ -7517,7 +7517,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-cloud-console-guide': {
     title: 'Support Cloud Console Guide | D-Secure Tech',
-    description: 'Learn about support cloud console guide. D-Secure provides comprehensive data erasure solutions and documentation for support cloud console guide.',
+    description: 'Comprehensive guide to support cloud console guide for secure data erasure. Learn how to implement support cloud console guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'cloud',
@@ -7529,7 +7529,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-faqs': {
     title: 'Support Faqs | D-Secure Tech',
-    description: 'Learn about support faqs. D-Secure provides comprehensive data erasure solutions and documentation for support faqs.',
+    description: 'Comprehensive guide to support faqs for secure data erasure. Learn how to implement support faqs and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'faqs',
@@ -7539,7 +7539,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-file-eraser-guide': {
     title: 'Support File Eraser Guide | D-Secure Tech',
-    description: 'Learn about support file eraser guide. D-Secure provides comprehensive data erasure solutions and documentation for support file eraser guide.',
+    description: 'Comprehensive guide to support file eraser guide for secure data erasure. Learn how to implement support file eraser guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'file',
@@ -7551,7 +7551,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-get-started': {
     title: 'Support Get Started | D-Secure Tech',
-    description: 'Learn about support get started. D-Secure provides comprehensive data erasure solutions and documentation for support get started.',
+    description: 'Comprehensive guide to support get started for secure data erasure. Learn how to implement support get started and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'get',
@@ -7562,7 +7562,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-knowledge-base': {
     title: 'Support Knowledge Base | D-Secure Tech',
-    description: 'Learn about support knowledge base. D-Secure provides comprehensive data erasure solutions and documentation for support knowledge base.',
+    description: 'Comprehensive guide to support knowledge base for secure data erasure. Learn how to implement support knowledge base and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'knowledge',
@@ -7573,7 +7573,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-mac-eraser-guide': {
     title: 'Support Mac Eraser Guide | D-Secure Tech',
-    description: 'Learn about support mac eraser guide. D-Secure provides comprehensive data erasure solutions and documentation for support mac eraser guide.',
+    description: 'Comprehensive guide to support mac eraser guide for secure data erasure. Learn how to implement support mac eraser guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'mac',
@@ -7585,7 +7585,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-mac-wipe-guide': {
     title: 'Support Mac Wipe Guide | D-Secure Tech',
-    description: 'Learn about support mac wipe guide. D-Secure provides comprehensive data erasure solutions and documentation for support mac wipe guide.',
+    description: 'Comprehensive guide to support mac wipe guide for secure data erasure. Learn how to implement support mac wipe guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'mac',
@@ -7597,7 +7597,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-overwrite-guide': {
     title: 'Support Overwrite Guide | D-Secure Tech',
-    description: 'Learn about support overwrite guide. D-Secure provides comprehensive data erasure solutions and documentation for support overwrite guide.',
+    description: 'Comprehensive guide to support overwrite guide for secure data erasure. Learn how to implement support overwrite guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'overwrite',
@@ -7608,7 +7608,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-product-videos': {
     title: 'Support Product Videos | D-Secure Tech',
-    description: 'Learn about support product videos. D-Secure provides comprehensive data erasure solutions and documentation for support product videos.',
+    description: 'Comprehensive guide to support product videos for secure data erasure. Learn how to implement support product videos and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'product',
@@ -7619,7 +7619,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-retain-os-guide': {
     title: 'Support Retain Os Guide | D-Secure Tech',
-    description: 'Learn about support retain os guide. D-Secure provides comprehensive data erasure solutions and documentation for support retain os guide.',
+    description: 'Comprehensive guide to support retain os guide for secure data erasure. Learn how to implement support retain os guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'retain',
@@ -7630,7 +7630,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-sas-wipe-guide': {
     title: 'Support Sas Wipe Guide | D-Secure Tech',
-    description: 'Learn about support sas wipe guide. D-Secure provides comprehensive data erasure solutions and documentation for support sas wipe guide.',
+    description: 'Comprehensive guide to support sas wipe guide for secure data erasure. Learn how to implement support sas wipe guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'sas',
@@ -7642,7 +7642,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-secure-erase-hddssd': {
     title: 'Support Secure Erase Hddssd | D-Secure Tech',
-    description: 'Learn about support secure erase hddssd. D-Secure provides comprehensive data erasure solutions and documentation for support secure erase hddssd.',
+    description: 'Comprehensive guide to support secure erase hddssd for secure data erasure. Learn how to implement support secure erase hddssd and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'secure',
@@ -7654,7 +7654,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-ssd-cryptographic-erasure-guide': {
     title: 'Support Ssd Cryptographic Erasure Guide | D-Secure Tech',
-    description: 'Learn about support ssd cryptographic erasure guide. D-Secure provides comprehensive data erasure solutions and documentation for support ssd cryptographic erasure guide.',
+    description: 'Comprehensive guide to support ssd cryptographic erasure guide for secure data erasure. Learn how to implement support ssd cryptographic erasure guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'ssd',
@@ -7666,7 +7666,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'support-wipe-guide': {
     title: 'Support Wipe Guide | D-Secure Tech',
-    description: 'Learn about support wipe guide. D-Secure provides comprehensive data erasure solutions and documentation for support wipe guide.',
+    description: 'Comprehensive guide to support wipe guide for secure data erasure. Learn how to implement support wipe guide and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'support',
       'wipe',
@@ -7677,7 +7677,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'user-interface': {
     title: 'User Interface | D-Secure Tech',
-    description: 'Learn about user interface. D-Secure provides comprehensive data erasure solutions and documentation for user interface.',
+    description: 'Comprehensive guide to user interface for secure data erasure. Learn how to implement user interface and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'user',
       'interface',
@@ -7687,7 +7687,7 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'users': {
     title: 'Users | D-Secure Tech',
-    description: 'Learn about users. D-Secure provides comprehensive data erasure solutions and documentation for users.',
+    description: 'Comprehensive guide to users for secure data erasure. Learn how to implement users and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'users',
       'data erasure',
@@ -7696,13 +7696,134 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
   'users-add': {
     title: 'Users Add | D-Secure Tech',
-    description: 'Learn about users add. D-Secure provides comprehensive data erasure solutions and documentation for users add.',
+    description: 'Comprehensive guide to users add for secure data erasure. Learn how to implement users add and ensure compliance with D-Secure.',
     keywords: generateKeywords([
       'users',
       'add',
       'data erasure',
     ]),
     canonicalUrl: 'https://dsecuretech.com/users/add',
+  },
+  'cryptographic-erasure': {
+    title: 'Cryptographic Erasure Guide | D-Secure Tech',
+    description: 'Comprehensive guide to cryptographic erasure for secure data erasure. Learn how to implement cryptographic erasure and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'cryptographic erasure',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/cryptographic-erasure',
+  },
+  'dod3pass': {
+    title: 'DoD 3-Pass Guide | D-Secure Tech',
+    description: 'Comprehensive guide to dod 3-pass for secure data erasure. Learn how to implement dod 3-pass and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'dod 3-pass',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/dod3pass',
+  },
+  'dod7pass': {
+    title: 'DoD 7-Pass Guide | D-Secure Tech',
+    description: 'Comprehensive guide to dod 7-pass for secure data erasure. Learn how to implement dod 7-pass and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'dod 7-pass',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/dod7pass',
+  },
+  'linux-systems': {
+    title: 'Linux Systems Guide | D-Secure Tech',
+    description: 'Comprehensive guide to linux systems for secure data erasure. Learn how to implement linux systems and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'linux systems',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/linux-systems',
+  },
+  'mac-ossystems': {
+    title: 'Mac Ossystems Guide | D-Secure Tech',
+    description: 'Comprehensive guide to mac ossystems for secure data erasure. Learn how to implement mac ossystems and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'mac ossystems',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/mac-ossystems',
+  },
+  'mobile-devices': {
+    title: 'Mobile Devices Guide | D-Secure Tech',
+    description: 'Comprehensive guide to mobile devices for secure data erasure. Learn how to implement mobile devices and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'mobile devices',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/mobile-devices',
+  },
+  'nist80088': {
+    title: 'NIST 800-88 Guide | D-Secure Tech',
+    description: 'Comprehensive guide to nist 800-88 for secure data erasure. Learn how to implement nist 800-88 and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'nist 800-88',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/nist80088',
+  },
+  'recovery-procedures': {
+    title: 'Recovery Procedures Guide | D-Secure Tech',
+    description: 'Comprehensive guide to recovery procedures for secure data erasure. Learn how to implement recovery procedures and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'recovery procedures',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/recovery-procedures',
+  },
+  'windows-dsecure-eraser': {
+    title: 'Windows D-Secure Eraser Guide | D-Secure Tech',
+    description: 'Comprehensive guide to windows d-secure eraser for secure data erasure. Learn how to implement windows d-secure eraser and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'windows d-secure eraser',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/windows-dsecure-eraser',
+  },
+  'windows-systems': {
+    title: 'Windows Systems Guide | D-Secure Tech',
+    description: 'Comprehensive guide to windows systems for secure data erasure. Learn how to implement windows systems and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'windows systems',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/windows-systems',
+  },
+  'windows-verification': {
+    title: 'Windows Verification Guide | D-Secure Tech',
+    description: 'Comprehensive guide to windows verification for secure data erasure. Learn how to implement windows verification and ensure compliance with D-Secure.',
+    keywords: generateKeywords([
+      'support',
+      'manual',
+      'windows verification',
+      'data erasure',
+    ]),
+    canonicalUrl: 'https://dsecuretech.com/support/manual/windows-verification',
   },
 };
 

@@ -212,4 +212,4 @@ const EraseDataPcLaptopDesktopBlog: React.FC = () => {
   );
 };
 
-export default EraseDataPcLaptopDesktopBlog;
+export default React.memo(EraseDataPcLaptopDesktopBlog);

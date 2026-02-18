@@ -238,4 +238,4 @@ const SecureSmartphoneErasureBlog: React.FC = () => {
 
 };
 
-export default SecureSmartphoneErasureBlog;
+export default React.memo(SecureSmartphoneErasureBlog);

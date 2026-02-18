@@ -265,4 +265,4 @@ const ITAMDataBreachBlog: React.FC = () => {
 
 };
 
-export default ITAMDataBreachBlog;
+export default React.memo(ITAMDataBreachBlog);

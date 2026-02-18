@@ -10,10 +10,11 @@ const WindowsRisksPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-risks")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Windows Security Risks & Compliance | D-Secure Data Erasure</title>
         <meta name="description" content="Understanding Windows data security risks, compliance violations, and threat prevention through secure data erasure." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -100,4 +101,4 @@ const WindowsRisksPage: React.FC = memo(() => {
   );
 });
 
-export default WindowsRisksPage;
+export default React.memo(WindowsRisksPage);

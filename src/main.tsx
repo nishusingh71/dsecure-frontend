@@ -6,9 +6,9 @@ import App from "./App";
 import "./index.css";
 import "./critical.css";
 import "./responsive.css";
+import "./styles/fonts.css"; // Self-hosted Inter font — no Google Fonts network request
 import { HelmetProvider } from "react-helmet-async";
-import { ToastProvider } from './components/Toast';
-import { preloadCriticalResources } from './utils/performanceOptimizer';
+import { ToastProvider } from "./components/Toast";
 import './utils/internationalization'; // Initialize i18n
 
 // -------------------------------------------------------------------------------
@@ -26,8 +26,7 @@ if (!ENABLE_CONSOLE) {
 }
 // -------------------------------------------------------------------------------
 
-// Preload critical resources
-preloadCriticalResources();
+
 
 // Optimized performance monitoring
 if ("performance" in window && ENV.IS_PROD) {

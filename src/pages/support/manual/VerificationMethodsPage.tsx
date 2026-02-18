@@ -324,7 +324,7 @@ const VerificationMethodsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-verification-methods")} />
-      <Helmet>
+      {/* <Helmet>
         <link
           rel="canonical"
           href="https://dsecuretech.com/support/verification-methods"
@@ -341,7 +341,8 @@ const VerificationMethodsPage: React.FC = memo(() => {
           content="data erasure verification, software verification, physical inspection, cryptographic verification, NIST verification"
         />
         <meta name="robots" content="index, follow" />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -831,4 +832,4 @@ const VerificationMethodsPage: React.FC = memo(() => {
   );
 });
 
-export default VerificationMethodsPage;
+export default React.memo(VerificationMethodsPage);

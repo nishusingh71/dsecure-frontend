@@ -286,4 +286,4 @@ const UserInterfacePage: React.FC = memo(() => {
   );
 });
 
-export default UserInterfacePage;
+export default React.memo(UserInterfacePage);

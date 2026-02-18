@@ -167,7 +167,7 @@ const HardwareDiagnosticsBlog: React.FC = () => {
 
 };
 
-export default HardwareDiagnosticsBlog;
+export default React.memo(HardwareDiagnosticsBlog);
 
 
 

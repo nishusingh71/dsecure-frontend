@@ -317,7 +317,7 @@ const VMErasureBlog: React.FC = () => {
     );
 };
 
-export default VMErasureBlog;
+export default React.memo(VMErasureBlog);
 
 
 

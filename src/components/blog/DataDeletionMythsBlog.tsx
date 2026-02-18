@@ -283,4 +283,4 @@ const DataDeletionMythsBlog: React.FC = () => {
   );
 };
 
-export default DataDeletionMythsBlog;
+export default React.memo(DataDeletionMythsBlog);

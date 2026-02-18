@@ -12,7 +12,7 @@
 import { useState, useCallback } from 'react';
 
 // Centralized FormSubmit endpoint
-export const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@D-Securetech.com';
+export const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@dsecuretech.com';
 
 // Toast notification system
 export interface ToastMessage {

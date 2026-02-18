@@ -202,4 +202,4 @@ const CustomConfigurationsPage: React.FC = memo(() => {
     );
 });
 
-export default CustomConfigurationsPage;
+export default React.memo(CustomConfigurationsPage);

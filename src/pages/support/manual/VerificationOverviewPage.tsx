@@ -57,4 +57,4 @@ const VerificationOverviewPage: React.FC = memo(() => {
   );
 });
 
-export default VerificationOverviewPage;
+export default React.memo(VerificationOverviewPage);

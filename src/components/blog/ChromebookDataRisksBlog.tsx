@@ -257,4 +257,4 @@ const ChromebookDataRisksBlog: React.FC = () => {
     );
 };
 
-export default ChromebookDataRisksBlog;
+export default React.memo(ChromebookDataRisksBlog);

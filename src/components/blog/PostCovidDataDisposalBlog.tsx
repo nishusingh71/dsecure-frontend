@@ -221,4 +221,4 @@ const PostCovidDataDisposalBlog: React.FC = () => {
 
 };
 
-export default PostCovidDataDisposalBlog;
+export default React.memo(PostCovidDataDisposalBlog);

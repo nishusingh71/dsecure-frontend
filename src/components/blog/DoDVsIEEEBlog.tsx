@@ -419,7 +419,7 @@ const DoDVsIEEEBlog: React.FC = () => {
 
 };
 
-export default DoDVsIEEEBlog;
+export default React.memo(DoDVsIEEEBlog);
 
 
 

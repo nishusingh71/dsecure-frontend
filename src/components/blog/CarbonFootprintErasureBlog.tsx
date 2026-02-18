@@ -270,4 +270,4 @@ const CarbonFootprintErasureBlog: React.FC = () => {
   );
 };
 
-export default CarbonFootprintErasureBlog;
+export default React.memo(CarbonFootprintErasureBlog);

@@ -304,4 +304,4 @@ const HIPAAComplianceErasureBlog: React.FC = () => {
 
 };
 
-export default HIPAAComplianceErasureBlog;
+export default React.memo(HIPAAComplianceErasureBlog);

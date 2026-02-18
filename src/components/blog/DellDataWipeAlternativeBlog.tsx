@@ -220,4 +220,4 @@ const DellDataWipeAlternativeBlog: React.FC = () => {
 
 };
 
-export default DellDataWipeAlternativeBlog;
+export default React.memo(DellDataWipeAlternativeBlog);

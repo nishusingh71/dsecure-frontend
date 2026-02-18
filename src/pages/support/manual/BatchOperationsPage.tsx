@@ -9,13 +9,14 @@ const BatchOperationsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-batch-operations")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Batch Operations | D-Secure Manual</title>
         <meta
           name="description"
           content="D-Secure batch operations guide for automating erasure across multiple devices simultaneously with enterprise-grade efficiency."
         />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         {/* Header */}
@@ -366,4 +367,4 @@ const BatchOperationsPage: React.FC = memo(() => {
   );
 });
 
-export default BatchOperationsPage;
+export default React.memo(BatchOperationsPage);

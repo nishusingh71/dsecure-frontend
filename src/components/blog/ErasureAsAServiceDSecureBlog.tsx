@@ -207,4 +207,4 @@ const ErasureAsAServiceDSecureBlog: React.FC = () => {
   );
 };
 
-export default ErasureAsAServiceDSecureBlog;
+export default React.memo(ErasureAsAServiceDSecureBlog);

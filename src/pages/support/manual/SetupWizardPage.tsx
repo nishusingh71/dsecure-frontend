@@ -10,10 +10,11 @@ const SetupWizardPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-setup-wizard")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Setup Wizard | D-Secure Installation Process</title>
         <meta name="description" content="Execute D-Secure installer and follow on-screen instructions for complete setup and configuration." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -352,4 +353,4 @@ const SetupWizardPage: React.FC = memo(() => {
   );
 });
 
-export default SetupWizardPage;
+export default React.memo(SetupWizardPage);

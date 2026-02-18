@@ -296,4 +296,4 @@ const WipeSSDFromBIOSGuide: React.FC = () => {
   );
 };
 
-export default WipeSSDFromBIOSGuide;
+export default React.memo(WipeSSDFromBIOSGuide);

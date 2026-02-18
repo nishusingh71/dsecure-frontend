@@ -227,12 +227,8 @@ class SEOMonitor {
       // Determine if this is a bounce (less than 10 seconds and no interactions)
       this.behaviorMetrics.bounceRate = timeOnPage < 10000 && this.interactions === 0;
 
-      navigator.sendBeacon('/analytics', JSON.stringify({
-        timeOnPage,
-        bounceRate: this.behaviorMetrics.bounceRate,
-        scrollDepth: this.behaviorMetrics.scrollDepth,
-        interactions: this.interactions
-      }));
+      // [PERF-N5] Removed sendBeacon('/analytics') — no backend route exists for this
+      // endpoint, causing 405 errors. GA and Clarity already capture this data.
     });
   }
 
@@ -366,13 +362,14 @@ export const seoMonitor = new SEOMonitor();
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export function useSEOMonitoring() {
+export function useSEOMonitoring(options: { disabled?: boolean } = {}) {
   const location = useLocation();
 
   useEffect(() => {
+    if (options.disabled) return;
     // Track page view on route change
     seoMonitor.trackPageView(location.pathname + location.search, document.title);
-  }, [location]);
+  }, [location, options.disabled]);
 
   return {
     trackBusinessGoal: seoMonitor.trackBusinessGoal.bind(seoMonitor),

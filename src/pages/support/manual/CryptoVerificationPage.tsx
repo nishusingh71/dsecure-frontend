@@ -10,9 +10,10 @@ const CryptoVerificationPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-crypto-verification")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Crypto Verification | D-Secure</title>
-      </Helmet>
+      </Helmet> 
+      */}
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
           <div className="container mx-auto px-4 max-w-7xl">
@@ -48,4 +49,4 @@ const CryptoVerificationPage: React.FC = memo(() => {
   );
 });
 
-export default CryptoVerificationPage;
+export default React.memo(CryptoVerificationPage);

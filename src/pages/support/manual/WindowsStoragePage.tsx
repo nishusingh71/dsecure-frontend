@@ -10,10 +10,11 @@ const WindowsStoragePage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-storage")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Windows Storage Architecture | D-Secure Manual</title>
         <meta name="description" content="Understanding Windows storage architecture for effective D-Secure data erasure." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -107,4 +108,4 @@ const WindowsStoragePage: React.FC = memo(() => {
   );
 });
 
-export default WindowsStoragePage;
+export default React.memo(WindowsStoragePage);

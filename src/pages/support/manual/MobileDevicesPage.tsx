@@ -265,4 +265,4 @@ const MobileDevicesPage: React.FC = memo(() => {
  );
 });
 
-export default MobileDevicesPage;
+export default React.memo(MobileDevicesPage);

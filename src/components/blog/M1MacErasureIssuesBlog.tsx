@@ -268,7 +268,7 @@ const M1MacErasureIssuesBlog: React.FC = () => {
 
 };
 
-export default M1MacErasureIssuesBlog;
+export default React.memo(M1MacErasureIssuesBlog);
 
 
 

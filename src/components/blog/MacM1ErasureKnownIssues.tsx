@@ -289,4 +289,4 @@ const MacM1ErasureKnownIssues: React.FC = () => {
   );
 };
 
-export default MacM1ErasureKnownIssues;
+export default React.memo(MacM1ErasureKnownIssues);

@@ -244,7 +244,7 @@ const DSecureOperationsBlog: React.FC = () => {
     );
 };
 
-export default DSecureOperationsBlog;
+export default React.memo(DSecureOperationsBlog);
 
 
 

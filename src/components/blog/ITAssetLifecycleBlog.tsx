@@ -315,7 +315,7 @@ const ITAssetLifecycleBlog: React.FC = () => {
 
 };
 
-export default ITAssetLifecycleBlog;
+export default React.memo(ITAssetLifecycleBlog);
 
 
 

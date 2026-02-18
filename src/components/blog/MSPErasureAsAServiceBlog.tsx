@@ -161,4 +161,4 @@ const MSPErasureAsAServiceBlog: React.FC = () => {
   );
 };
 
-export default MSPErasureAsAServiceBlog;
+export default React.memo(MSPErasureAsAServiceBlog);

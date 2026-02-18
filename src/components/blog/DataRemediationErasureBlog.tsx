@@ -253,4 +253,4 @@ const DataRemediationErasureBlog: React.FC = () => {
 
 };
 
-export default DataRemediationErasureBlog;
+export default React.memo(DataRemediationErasureBlog);

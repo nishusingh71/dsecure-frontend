@@ -314,4 +314,4 @@ const DataDestructionBestPracticesBlog: React.FC = () => {
     );
 };
 
-export default DataDestructionBestPracticesBlog;
+export default React.memo(DataDestructionBestPracticesBlog);

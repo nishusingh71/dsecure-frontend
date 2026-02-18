@@ -317,4 +317,4 @@ const PIIDisposalBreachBlog: React.FC = () => {
 
 };
 
-export default PIIDisposalBreachBlog;
+export default React.memo(PIIDisposalBreachBlog);

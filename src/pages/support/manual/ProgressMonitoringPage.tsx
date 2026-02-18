@@ -10,10 +10,11 @@ const ProgressMonitoringPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-progress-monitoring")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Real-Time Progress Monitoring | D-Secure</title>
         <meta name="description" content="Track erasure progress, performance metrics, and estimated completion times." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 md:py-24">
@@ -74,4 +75,4 @@ const ProgressMonitoringPage: React.FC = memo(() => {
   );
 });
 
-export default ProgressMonitoringPage;
+export default React.memo(ProgressMonitoringPage);

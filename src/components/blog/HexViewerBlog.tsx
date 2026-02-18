@@ -125,7 +125,7 @@ const HexViewerBlog: React.FC = () => {
 
 };
 
-export default HexViewerBlog;
+export default React.memo(HexViewerBlog);
 
 
 

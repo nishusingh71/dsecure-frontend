@@ -79,4 +79,4 @@ const StartErasurePage: React.FC = memo(() => {
   );
 });
 
-export default StartErasurePage;
+export default React.memo(StartErasurePage);

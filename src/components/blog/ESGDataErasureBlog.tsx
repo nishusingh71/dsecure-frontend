@@ -277,4 +277,4 @@ const ESGDataErasureBlog: React.FC = () => {
   );
 };
 
-export default ESGDataErasureBlog;
+export default React.memo(ESGDataErasureBlog);

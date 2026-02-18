@@ -3,10 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="D-Secure - Secure data erasure and device sanitization platform for enterprises"
-    />
+    <title>D-Secure - Best Data Erasure Software | Secure Tech for Enterprise Data Wiping</title>
+    <!-- [PERF-H2] Removed duplicate meta description — kept the more detailed one below -->
     <meta
       name="title"
       content="Eraser – Secure Erase Files from Hard Drives | D-Secure"
@@ -27,11 +25,10 @@
     <meta name="googlebot" content="index, follow" />
     <meta name="bingbot" content="index, follow" />
 
-    <!-- Critical performance optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-    <link rel="dns-prefetch" href="//res.cloudinary.com" />
+    <!-- [LCP-FIX] Font preloads — critical weights only, self-hosted WOFF2 -->
+    <link rel="preload" href="/fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-700.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- [LCP-FIX] Removed stale preconnects to fonts.googleapis.com — fonts are self-hosted -->
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="preconnect" href="https://www.google-analytics.com" />
 
@@ -76,19 +73,12 @@
     <meta name="geo.region" content="IN" />
     <meta name="geo.placename" content="India" />
 
-    <!-- Critical performance optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-    <link rel="dns-prefetch" href="//res.cloudinary.com" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <!-- [PERF-H2] Removed: entire duplicate preconnect block (was identical to lines 30-36) -->
 
     <!-- Favicon -->
-    <link
-      rel="icon"
-      href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
-    />
+    <!-- [PERF-H2] Changed favicon from Cloudinary CDN to local asset -->
+    <!-- Old: href="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg" -->
+    <link rel="icon" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#059669" />
 
@@ -216,6 +206,77 @@
           padding: 0 2rem;
         }
       }
+      /* [LCP-FIX] Pre-rendered hero shell — appears before React loads */
+      .hero-shell {
+        background: linear-gradient(to bottom right, #ecfdf5, rgba(240,253,250,0.3), #ecfeff);
+        padding: 3rem 1rem;
+      }
+      .header-shell { height: 72px; border-bottom: 1px solid #f1f5f9; background: #fff; }
+      .logo-placeholder { font-weight:800; font-size:1.25rem; color:#0f172a; letter-spacing:-0.025em; font-family: sans-serif; }
+      .nav-placeholder span { margin: 0 1rem; color: #64748b; font-size: 0.875rem; font-weight: 500; font-family: sans-serif; }
+      .btn-placeholder { background:#059669; color:#fff; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 600; font-family: sans-serif; }
+      .hidden-mobile { display: flex; }
+      @media (max-width: 768px) { .hidden-mobile { display: none; } }
+      .hero-shell h1 {
+        font-size: clamp(1.5rem, 5vw, 3.75rem);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.1;
+        color: #0f172a;
+        margin-bottom: 1.5rem;
+      }
+      .hero-shell .highlight {
+        background: linear-gradient(to right, #059669, #0d9488);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-shell p {
+        font-size: clamp(1rem, 2.5vw, 1.25rem);
+        color: #475569;
+        line-height: 1.6;
+        max-width: 36rem;
+      }
+      .hero-shell .cta-row {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+      .hero-shell .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-decoration: none;
+        color: #fff;
+      }
+      .hero-shell .cta-primary { background: linear-gradient(to right, #059669, #0d9488); }
+      .hero-shell .cta-secondary { background: linear-gradient(to right, #0d9488, #06b6d4); }
+      .hero-shell .badges {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+        font-size: 0.875rem;
+        color: #64748b;
+      }
+      .hero-shell .badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .hero-shell .badge-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        background: #10b981;
+        border-radius: 50%;
+      }
+      @media (min-width: 1024px) {
+        .hero-shell { padding: 5rem 2rem; }
+      }
     </style>
 
     <!-- Defer non-critical scripts -->
@@ -229,32 +290,57 @@
         }
       })();
 
-      // Only load analytics in production (not on localhost)
-      if (
-        window.location.hostname !== "localhost" &&
-        window.location.hostname !== "127.0.0.1"
-      ) {
-        // Defer Google Analytics
-        window.addEventListener("load", function () {
-          var script = document.createElement("script");
-          script.async = true;
-          script.src =
-            "https://www.googletagmanager.com/gtag/js?id=G-6B20XY3K81";
-          document.head.appendChild(script);
-
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag("js", new Date());
-          gtag("config", "G-6B20XY3K81");
-        });
-      }
+                      // [PERF-H2] Removed duplicate GA loading — analytics.ts handles this via useGoogleAnalytics()
+                      // GA was being initialized TWICE: once here and once in analytics.ts
     </script>
   </head>
 
   <body>
-    <div id="root"></div>
+    <noscript>
+      <div style="padding:2rem;text-align:center;font-family:system-ui,sans-serif">
+        <h1>JavaScript Required</h1>
+        <p>Please enable JavaScript to use D-Secure. <a href="https://dsecuretech.com">Learn more</a>.</p>
+      </div>
+    </noscript>
+    <!-- [LCP-FIX] Pre-rendered hero shell — React's createRoot() will replace this on mount.
+                                 The h1 below IS the LCP element. It paints with just HTML+CSS (~500ms)
+                                 instead of waiting for JS download+parse+render (~7s on mobile). -->
+    <div id="root">
+      <!-- Header Shell for instant paint -->
+      <div class="header-shell">
+        <div
+          style="max-width:80rem;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;">
+          <div class="logo-placeholder">D-SECURE</div>
+          <div class="nav-placeholder hidden-mobile">
+            <span>Products</span>
+            <span>Solutions</span>
+            <span>Resources</span>
+          </div>
+          <div class="btn-placeholder">Login</div>
+        </div>
+      </div>
+    
+      <section class="hero-shell" aria-label="Hero">
+        <div style="max-width:80rem;margin:0 auto">
+          <h1>
+            Secure Data Erasure for
+            <span class="highlight">Modern Enterprises</span>
+          </h1>
+          <p>D-Secure helps organizations permanently erase sensitive data with certified methods that meet global
+            compliance standards.</p>
+          <div class="cta-row">
+            <a href="/products" class="cta-btn cta-primary">Explore Products</a>
+            <a href="/pricing-and-plan" class="cta-btn cta-secondary">Buy Now</a>
+          </div>
+          <div class="badges">
+            <span class="badge"><span class="badge-dot"></span>ISO 27001</span>
+            <span class="badge"><span class="badge-dot"></span>NIST 800-88</span>
+            <span class="badge"><span class="badge-dot"></span>GDPR</span>
+            <span class="badge"><span class="badge-dot"></span>SOC 2</span>
+          </div>
+        </div>
+      </section>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

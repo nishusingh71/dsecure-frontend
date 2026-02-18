@@ -315,4 +315,4 @@ const DataErasureMythsBlog: React.FC = () => {
     );
 };
 
-export default DataErasureMythsBlog;
+export default React.memo(DataErasureMythsBlog);

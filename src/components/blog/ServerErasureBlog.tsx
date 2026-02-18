@@ -226,4 +226,4 @@ const ServerErasureBlog: React.FC = () => {
 
 };
 
-export default ServerErasureBlog;
+export default React.memo(ServerErasureBlog);

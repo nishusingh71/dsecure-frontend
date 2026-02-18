@@ -228,4 +228,4 @@ const ChainOfCustodyBlog: React.FC = () => {
 
 };
 
-export default ChainOfCustodyBlog;
+export default React.memo(ChainOfCustodyBlog);

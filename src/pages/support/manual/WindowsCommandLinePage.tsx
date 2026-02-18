@@ -10,10 +10,11 @@ const WindowsCommandLinePage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-command-line")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Windows Command Line Erasure | Cipher, Diskpart, PowerShell</title>
         <meta name="description" content="Command line erasure methods for Windows using Cipher, Diskpart, and PowerShell scripting techniques." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -69,4 +70,4 @@ Remove-Item "C:\\temp\\*" -Recurse -Force`}
   );
 });
 
-export default WindowsCommandLinePage;
+export default React.memo(WindowsCommandLinePage);

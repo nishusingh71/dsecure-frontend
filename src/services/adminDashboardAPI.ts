@@ -159,11 +159,27 @@ export interface MonthlyMetric {
   year: number;
 }
 
+export interface ErasureLogEntry {
+  user_email: string;
+  method: string;
+  timestamp: string;
+  status: string;
+}
+
+export interface MethodMetric {
+  methodName: string;
+  count: number;
+  successRate: number;
+  avgDuration: string;
+}
+
 export interface ErasureMetricsResponse {
   totalErasures: number;
   avgDuration: string;
   successRate: number;
   monthlyMetrics: MonthlyMetric[];
+  methodMetrics?: MethodMetric[];
+  erasureLog?: ErasureLogEntry[];
 }
 
 // NOTE: All default/fallback data removed - All data must come from live API

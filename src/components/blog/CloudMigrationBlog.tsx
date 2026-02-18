@@ -120,7 +120,7 @@ const CloudMigrationBlog: React.FC = () => {
 
 };
 
-export default CloudMigrationBlog;
+export default React.memo(CloudMigrationBlog);
 
 
 

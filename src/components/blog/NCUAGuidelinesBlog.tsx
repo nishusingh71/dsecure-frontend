@@ -350,7 +350,7 @@ const NCUAGuidelinesBlog: React.FC = () => {
 
 };
 
-export default NCUAGuidelinesBlog;
+export default React.memo(NCUAGuidelinesBlog);
 
 
 

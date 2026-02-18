@@ -10,10 +10,11 @@ const FirstScanPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-first-scan")} />
-      <Helmet>
+      {/* <Helmet>
         <title>First System Scan | D-Secure Initial Security Baseline</title>
         <meta name="description" content="Run initial full system scan to establish baseline security and identify existing threats with D-Secure." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -182,4 +183,4 @@ const FirstScanPage: React.FC = memo(() => {
   );
 });
 
-export default FirstScanPage;
+export default React.memo(FirstScanPage);

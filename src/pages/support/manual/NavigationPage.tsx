@@ -75,4 +75,4 @@ const NavigationPage: React.FC = memo(() => {
   );
 });
 
-export default NavigationPage;
+export default React.memo(NavigationPage);

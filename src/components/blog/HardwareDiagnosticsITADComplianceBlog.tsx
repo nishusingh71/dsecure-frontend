@@ -161,4 +161,4 @@ const HardwareDiagnosticsITADComplianceBlog: React.FC = () => {
   );
 };
 
-export default HardwareDiagnosticsITADComplianceBlog;
+export default React.memo(HardwareDiagnosticsITADComplianceBlog);

@@ -47,7 +47,8 @@ export default defineConfig({
   },
   // Enhanced performance optimizations
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'framer-motion', '@tanstack/react-query', 'react-helmet-async'],
+    // [PERF-H3] Removed 'framer-motion' — zero direct imports found in codebase
+    include: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query', 'react-helmet-async'],
     exclude: ['@vite/client', '@vite/env']
   },
 
@@ -62,7 +63,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     // Reduce chunk size warning limit
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 1000,
     // Enhanced minification
     minify: 'esbuild',
     // Target modern browsers for better performance
@@ -75,26 +76,43 @@ export default defineConfig({
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // Disabled manual chunking - using Vite's default automatic chunking to avoid dependency issues
-        // manualChunks: (id) => {
-        //   if (id.includes('node_modules')) {
-        //     // Core UI dependencies (React + UI libraries) - must be together to avoid initialization errors
-        //     if (id.includes('react') || id.includes('react-dom') || id.includes('react-router') ||
-        //       id.includes('lucide-react') || id.includes('framer-motion') || id.includes('@tanstack')) {
-        //       return 'vendor-ui'
-        //     }
-        //     // Heavy charting libraries - split out for dashboards only
-        //     if (id.includes('recharts') || id.includes('d3')) {
-        //       return 'vendor-charts'
-        //     }
-        //     // PDF/Excel generation - split out for export functionality only
-        //     if (id.includes('jspdf') || id.includes('exceljs') || id.includes('jszip') || id.includes('file-saver') || id.includes('pako')) {
-        //       return 'vendor-export'
-        //     }
-        //     // Everything else together
-        //     return 'vendor-other'
-        //   }
-        // },
+        // [PERF-C5] Granular vendor chunking strategy
+        // Split the 1577KB monolith into parallel-loadable smaller chunks.
+        // React core stays together; other libs split for parallel download.
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            // Heavy libs — stay out so Vite bundles them into lazy-loaded page chunks
+            if (
+              id.includes('jspdf') || id.includes('exceljs') ||
+              id.includes('jszip') || id.includes('file-saver') || id.includes('pako') ||
+              id.includes('recharts') || id.includes('d3-') || id.includes('d3/') ||
+              (id.includes('/leaflet/') && !id.includes('react-leaflet')) ||
+              id.includes('lucide-react') || id.includes('@cloudinary') ||
+              id.includes('pdfjs-dist') || id.includes('react-pdf') ||
+              id.includes('date-fns') || id.includes('@reduxjs') || id.includes('@polar-sh')
+            ) {
+              return; // Let Vite handle — they'll end up in lazy chunks
+            }
+
+            // Data-fetching: only needed by pages with API calls
+            if (id.includes('@tanstack/react-query') || id.includes('@tanstack/query-core')) {
+              return 'vendor-query';
+            }
+
+            // i18n: can load in parallel, not needed for first paint
+            if (id.includes('i18next') || id.includes('i18next-browser-languagedetector')) {
+              return 'vendor-i18n';
+            }
+
+            // HTTP/crypto libs: only needed when API calls start
+            if (id.includes('axios') || id.includes('crypto-js')) {
+              return 'vendor-http';
+            }
+
+            // React core + router + everything else React-dependent stays together
+            return 'vendor-react';
+          }
+        },
 
         // Optimize file names for caching
         chunkFileNames: 'js/[name]-[hash].js',

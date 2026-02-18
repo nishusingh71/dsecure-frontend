@@ -299,4 +299,4 @@ const DataErasureForNonProfits: React.FC = () => {
   );
 };
 
-export default DataErasureForNonProfits;
+export default React.memo(DataErasureForNonProfits);

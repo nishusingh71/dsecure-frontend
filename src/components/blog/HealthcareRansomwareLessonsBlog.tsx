@@ -294,4 +294,4 @@ const HealthcareRansomwareLessonsBlog: React.FC = () => {
   );
 };
 
-export default HealthcareRansomwareLessonsBlog;
+export default React.memo(HealthcareRansomwareLessonsBlog);

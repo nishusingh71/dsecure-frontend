@@ -10,10 +10,11 @@ const WindowsIntroductionPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-introduction")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Windows Data Erasure Introduction | D-Secure Manual</title>
         <meta name="description" content="Introduction to secure data erasure in Windows environments with D-Secure solutions." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -103,4 +104,4 @@ const WindowsIntroductionPage: React.FC = memo(() => {
   );
 });
 
-export default WindowsIntroductionPage;
+export default React.memo(WindowsIntroductionPage);

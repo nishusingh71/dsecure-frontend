@@ -253,4 +253,4 @@ const FinancialDataBreachCaseStudyBlog: React.FC = () => {
     );
 };
 
-export default FinancialDataBreachCaseStudyBlog;
+export default React.memo(FinancialDataBreachCaseStudyBlog);

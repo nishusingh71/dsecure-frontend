@@ -259,4 +259,4 @@ const ShadowDataRisksBlog: React.FC = () => {
   );
 };
 
-export default ShadowDataRisksBlog;
+export default React.memo(ShadowDataRisksBlog);

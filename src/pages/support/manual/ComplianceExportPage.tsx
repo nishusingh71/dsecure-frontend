@@ -42,4 +42,4 @@ const ComplianceExportPage: React.FC = memo(() => {
   );
 });
 
-export default ComplianceExportPage;
+export default React.memo(ComplianceExportPage);

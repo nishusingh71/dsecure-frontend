@@ -319,7 +319,7 @@ const HiddenDiskAreasBlog: React.FC = () => {
     );
 };
 
-export default HiddenDiskAreasBlog;
+export default React.memo(HiddenDiskAreasBlog);
 
 
 

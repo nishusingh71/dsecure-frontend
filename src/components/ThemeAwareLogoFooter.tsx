@@ -56,9 +56,10 @@ const ThemeAwareLogoFooter = memo(({
       className={logoClassName}
       width={logoWidth}
       height={logoHeight}
-      style={{ filter: 'brightness(0) invert(1)' }} // Ensure visibility on dark background
+      loading="lazy"
+      style={{ filter: "brightness(0) invert(1)" }} // Ensure visibility on dark background
     />
-  )
+  );
 })
 
 ThemeAwareLogoFooter.displayName = 'ThemeAwareLogoFooter'

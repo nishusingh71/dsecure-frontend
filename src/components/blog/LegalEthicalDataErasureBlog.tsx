@@ -219,4 +219,4 @@ const LegalEthicalDataErasureBlog: React.FC = () => {
   );
 };
 
-export default LegalEthicalDataErasureBlog;
+export default React.memo(LegalEthicalDataErasureBlog);

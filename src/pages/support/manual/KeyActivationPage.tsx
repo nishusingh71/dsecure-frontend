@@ -10,10 +10,11 @@ const KeyActivationPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-key-activation")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Key Activation | D-Secure License Activation Process</title>
         <meta name="description" content="Enter 25-digit activation key to unlock premium D-Secure features and complete license activation." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -115,4 +116,4 @@ const KeyActivationPage: React.FC = memo(() => {
   );
 });
 
-export default KeyActivationPage;
+export default React.memo(KeyActivationPage);

@@ -277,7 +277,7 @@ const Windows10EOSBlog: React.FC = () => {
     );
 };
 
-export default Windows10EOSBlog;
+export default React.memo(Windows10EOSBlog);
 
 
 

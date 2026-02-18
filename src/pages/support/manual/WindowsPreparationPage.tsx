@@ -10,10 +10,11 @@ const WindowsPreparationPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-preparation")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Windows Pre-Erasure Preparation | D-Secure Manual</title>
         <meta name="description" content="Essential preparation steps before Windows data erasure with D-Secure." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -94,4 +95,4 @@ const WindowsPreparationPage: React.FC = memo(() => {
   );
 });
 
-export default WindowsPreparationPage;
+export default React.memo(WindowsPreparationPage);

@@ -22,7 +22,7 @@ export interface UseFormSubmissionResult {
 }
 
 // FIXED: Single FormSubmit endpoint for all forms
-const DEFAULT_FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@D-Securetech.com';
+const DEFAULT_FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@dsecuretech.com';
 
 /**
  * Custom hook for form submission with FormSubmit.co

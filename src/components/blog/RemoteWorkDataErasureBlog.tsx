@@ -307,7 +307,7 @@ const RemoteWorkDataErasureBlog: React.FC = () => {
 
 };
 
-export default RemoteWorkDataErasureBlog;
+export default React.memo(RemoteWorkDataErasureBlog);
 
 
 

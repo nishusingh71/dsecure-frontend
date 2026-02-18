@@ -228,7 +228,7 @@ const UltratestComparisonBlog: React.FC = () => {
     );
 };
 
-export default UltratestComparisonBlog;
+export default React.memo(UltratestComparisonBlog);
 
 
 

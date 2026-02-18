@@ -255,4 +255,4 @@ const Scope3EmissionsBlog: React.FC = () => {
   );
 };
 
-export default Scope3EmissionsBlog;
+export default React.memo(Scope3EmissionsBlog);

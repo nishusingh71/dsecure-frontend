@@ -202,4 +202,4 @@ const SustainableITReuseBlog: React.FC = () => {
   );
 };
 
-export default SustainableITReuseBlog;
+export default React.memo(SustainableITReuseBlog);

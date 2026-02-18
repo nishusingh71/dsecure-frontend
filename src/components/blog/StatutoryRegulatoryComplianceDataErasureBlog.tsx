@@ -255,4 +255,4 @@ const StatutoryRegulatoryComplianceDataErasureBlog: React.FC = () => {
     );
 };
 
-export default StatutoryRegulatoryComplianceDataErasureBlog;
+export default React.memo(StatutoryRegulatoryComplianceDataErasureBlog);

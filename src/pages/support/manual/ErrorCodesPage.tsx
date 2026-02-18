@@ -284,13 +284,14 @@ const ErrorCodesPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-error-codes")} />
-      <Helmet>
+      {/* <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/support/manual/error-codes" />
         <title>D-Secure Error Codes | Complete Reference Guide & Solutions</title>
         <meta name="description" content="Complete reference guide for D-Secure error codes with detailed explanations, step-by-step solutions, and prevention tips for all error conditions." />
         <meta name="keywords" content="D-Secure error codes, error messages, troubleshooting, support reference, error solutions, DSE codes" />
         <meta name="robots" content="index, follow" />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-8 sm:py-12 md:py-16 lg:py-24">
@@ -561,4 +562,4 @@ const ErrorCodesPage: React.FC = memo(() => {
   );
 });
 
-export default ErrorCodesPage;
+export default React.memo(ErrorCodesPage);

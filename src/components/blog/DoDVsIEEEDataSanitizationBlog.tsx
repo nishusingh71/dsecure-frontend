@@ -161,4 +161,4 @@ const DoDVsIEEEDataSanitizationBlog: React.FC = () => {
   );
 };
 
-export default DoDVsIEEEDataSanitizationBlog;
+export default React.memo(DoDVsIEEEDataSanitizationBlog);

@@ -271,4 +271,4 @@ const SecurePHIePHIErasureBlog: React.FC = () => {
     );
 };
 
-export default SecurePHIePHIErasureBlog;
+export default React.memo(SecurePHIePHIErasureBlog);

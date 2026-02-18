@@ -294,4 +294,4 @@ const DataRetentionPrivacyBlog: React.FC = () => {
 
 };
 
-export default DataRetentionPrivacyBlog;
+export default React.memo(DataRetentionPrivacyBlog);

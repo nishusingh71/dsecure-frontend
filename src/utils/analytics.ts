@@ -34,7 +34,15 @@ class GoogleAnalytics {
   // Initialize Google Analytics
   init(): void {
     if (typeof window === 'undefined') return;
+    
+    // [PERF-Phase3] Skip initialization in development to reduce network noise
+    if (ENV.IS_DEV) {
+      if (this.debug) console.log('? GA Initialization skipped in Development');
+      this.isInitialized = true;
+      return;
+    }
 
+    /* [PERF-Phase5] Temporarily disabled Google Analytics network calls as per user request
     // Load gtag script
     const script = document.createElement('script');
     script.async = true;
@@ -54,6 +62,7 @@ class GoogleAnalytics {
       page_location: window.location.href,
       custom_parameter: 'D-Secure_website'
     });
+    */
 
     this.isInitialized = true;
 
@@ -82,7 +91,7 @@ class GoogleAnalytics {
 
   // Track custom events
   trackEvent(event: GAEvent): void {
-    if (!this.isInitialized || typeof window === 'undefined') return;
+    if (!this.isInitialized || typeof window === 'undefined' || ENV.IS_DEV) return;
 
     const gtag = window.gtag;
     if (gtag) {

@@ -8,6 +8,23 @@ import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884d8",
+  "#82ca9d",
+];
+import {
   AdminDashboardAPI,
   type DashboardStats,
   type UserActivity,
@@ -15,6 +32,8 @@ import {
   type LicenseData,
   type RecentReport,
   type ProfileData,
+  type ErasureLogEntry,
+  type MethodMetric,
 } from "@/services/adminDashboardAPI";
 import RoleBased from "@/components/RoleBased";
 import {
@@ -42,6 +61,17 @@ import {
 } from "@/hooks/useSubusers";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import {
+  Roles,
+  type RoleType,
+  type CurrentUser,
+  buildWhereClause,
+  buildReportFilter,
+  buildMachineFilter,
+  buildSessionFilter,
+  buildLicenseFilter,
+  buildPerformanceFilter,
+} from "@/utils/rbacFilters";
+import {
   useUserMachines,
   useActiveLicensesCount,
 } from "@/hooks/useUserMachines";
@@ -55,294 +85,8 @@ import { useSessions } from "@/hooks/useSessions";
 import authService from "@/utils/authService";
 // ********** NAYA CODE — Phase 3: Import IDB service for IDB-first reads **********
 import { indexedDBService } from "@/services/indexedDBService";
+import { useAllLicenses, type License } from "@/hooks/useAllLicenses";
 // *******************************************
-
-// ============================================================================
-// 🏗️ RBAC ARCHITECTURE: Hierarchical Role-Based Access Control System
-// ============================================================================
-
-/**
- * Role Hierarchy Definition
- * Descending order of access privileges
- */
-export const Roles = {
-  SUPER_ADMIN: "SuperAdmin",
-  GROUP_ADMIN: "GroupAdmin",
-  ADMIN: "Admin",
-  USER: "User",
-  SUB_USER: "SubUser",
-} as const;
-
-type RoleType = (typeof Roles)[keyof typeof Roles];
-
-/**
- * User Interface for Filter Building
- */
-interface CurrentUser {
-  id: string;
-  email: string;
-  role: RoleType;
-  groupId?: string;
-  parentUserId?: string;
-  departmentId?: string;
-}
-
-/**
- * Universal WHERE Clause Generator (Frontend → Backend Parity)
- * Centralized filter builder matching backend SQL WHERE clauses
- *
- * @param user - Current authenticated user
- * @returns Base filter object for API queries
- */
-export const buildWhereClause = (user: Partial<CurrentUser>) => {
-  const base = { isDeleted: false };
-
-  switch (user.role) {
-    case Roles.SUPER_ADMIN:
-      // SuperAdmin: No restrictions (see ALL data)
-      return base;
-
-    case Roles.GROUP_ADMIN:
-    case Roles.ADMIN:
-      // GroupAdmin/Admin: WHERE group_id = currentUser.groupId
-      return {
-        ...base,
-        groupId: user.groupId,
-      };
-
-    case Roles.USER:
-      // User: WHERE owner_id = currentUser.id
-      return {
-        ...base,
-        ownerId: user.id,
-      };
-
-    case Roles.SUB_USER:
-      // SubUser: WHERE owner_id = parentUserId AND sub_user_id = userId AND department_id = departmentId
-      return {
-        ...base,
-        ownerId: user.parentUserId,
-        subUserId: user.id,
-        departmentId: user.departmentId,
-      };
-
-    default:
-      // Fallback: Most restrictive (own data only)
-      return {
-        ...base,
-        ownerId: user.id,
-      };
-  }
-};
-
-/**
- * Filter Builder: Audit Reports & Reports
- * Includes advanced filters: date range, report type, erase type, status, department, email
- */
-export const buildReportFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    groupId?: string;
-    machineId?: string;
-    reportType?: string;
-    eraseType?: string;
-    eraseStatus?: string;
-    fromDate?: string;
-    toDate?: string;
-    departmentId?: string;
-    subUserId?: string;
-    email?: string;
-  },
-) => {
-  return {
-    ...buildWhereClause(user),
-    ...filters,
-  };
-};
-
-/**
- * Filter Builder: Machines
- * Includes: group, subUser, isErased, eraseType, licenseStatus
- */
-export const buildMachineFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    groupId?: string;
-    subUserId?: string;
-    isErased?: boolean;
-    eraseType?: string;
-    licenseStatus?: string;
-  },
-) => {
-  return {
-    ...buildWhereClause(user),
-    ...filters,
-  };
-};
-
-/**
- * Filter Builder: Session Logs
- * Includes: owner, role, subUser, date range
- */
-export const buildSessionFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    subUserId?: string;
-    fromDate?: string;
-    toDate?: string;
-  },
-) => {
-  return {
-    ownerId: user.id,
-    role: user.role,
-    ...filters,
-  };
-};
-
-/**
- * Filter Builder: License Distribution
- * Includes: status array, assigned user
- */
-export const buildLicenseFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    status?: string[];
-    assignedTo?: string;
-  },
-) => {
-  return {
-    ...buildWhereClause(user),
-    status: filters.status || ["Active", "Expired", "Revoked"],
-    assignedTo: filters.assignedTo,
-  };
-};
-
-/**
- * Filter Builder: Performance Dashboard
- * Includes: group, department, date range, role
- */
-export const buildPerformanceFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    groupId?: string;
-    departmentId?: string;
-    fromDate?: string;
-    toDate?: string;
-  },
-) => {
-  return {
-    groupId: filters.groupId,
-    departmentId: filters.departmentId,
-    fromDate: filters.fromDate,
-    toDate: filters.toDate,
-    role: user.role,
-  };
-};
-
-// ============================================================================
-// 🔗 API Integration Pattern (Best Practice)
-// ============================================================================
-
-/**
- * Example API Call Pattern with Centralized Filters
- *
- * Usage in Component:
- * ```typescript
- * // 1. Build filter object using useMemo
- * const reportFilter = useMemo(() =>
- *   buildReportFilter(currentUser, {
- *     groupId: selectedGroup,
- *     reportType,
- *     eraseStatus,
- *     fromDate,
- *     toDate
- *   }),
- *   [currentUser, selectedGroup, reportType, eraseStatus, fromDate, toDate]
- * );
- *
- * // 2. Pass filter to API call
- * useEffect(() => {
- *   fetchAuditReports(reportFilter).then(setAuditData);
- * }, [reportFilter]);
- * ```
- *
- * Backend SQL Pattern (MySQL Example):
- * ```sql
- * SELECT * FROM AuditReports
- * WHERE
- *   (:role = 'SuperAdmin')
- *   OR (:role = 'GroupAdmin' AND GroupId = :groupId)
- *   OR (:role = 'Admin' AND GroupId = :groupId)
- *   OR (:role = 'User' AND OwnerId = :userId)
- *   OR (:role = 'SubUser' AND OwnerId = :parentId AND SubUserId = :userId)
- * AND
- *   (:fromDate IS NULL OR CreatedOn >= :fromDate)
- * AND
- *   (:toDate IS NULL OR CreatedOn <= :toDate)
- * AND
- *   (:eraseType IS NULL OR EraseType = :eraseType)
- * AND
- *   (:status IS NULL OR Status = :status);
- * ```
- *
- * API Service Example (Axios):
- * ```typescript
- * export const fetchAuditReports = async (filters: ReturnType<typeof buildReportFilter>) => {
- *   return axios.post("/api/audit/search", filters);
- * };
- *
- * export const fetchMachines = async (filters: ReturnType<typeof buildMachineFilter>) => {
- *   return axios.post("/api/machines/search", filters);
- * };
- *
- * export const fetchSessions = async (filters: ReturnType<typeof buildSessionFilter>) => {
- *   return axios.post("/api/sessions/search", filters);
- * };
- * ```
- */
-
-// ============================================================================
-// 📤 Export Filter Builders for Reuse in Other Components
-// ============================================================================
-
-/**
- * Export these functions to use in other admin components:
- *
- * ```typescript
- * import {
- *   Roles,
- *   buildWhereClause,
- *   buildReportFilter,
- *   buildMachineFilter,
- *   buildSessionFilter,
- *   buildLicenseFilter,
- *   buildPerformanceFilter
- * } from '@/pages/dashboards/AdminDashboard';
- * ```
- *
- * Then use in any component:
- * ```typescript
- * const currentUser = {
- *   id: userId,
- *   email: userEmail,
- *   role: Roles.GROUP_ADMIN,
- *   groupId: userGroupId
- * };
- *
- * const filters = buildReportFilter(currentUser, {
- *   fromDate: '2025-01-01',
- *   toDate: '2025-01-16',
- *   eraseType: 'DoD 5220.22-M'
- * });
- *
- * // Use filters in API call
- * const reports = await fetchReports(filters);
- * ```
- */
-
-// ============================================================================
-// End of RBAC Architecture
-// ============================================================================
 
 // ✅ Import Demo Data for "Try Demo Account" mode
 import {
@@ -831,7 +575,8 @@ export default function AdminDashboard() {
   }, [isDemo, userEmail]); // Run only on mount/email change
 
   // ✅ React Query: Fetch dashboard data with automatic caching
-  const dashboardDataEnabled = activeTab === "overview" || activeTab === "licenses";
+  const dashboardDataEnabled =
+    activeTab === "overview" || activeTab === "licenses";
   const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
 
   // ✅ Check if current user is a subuser
@@ -940,6 +685,10 @@ export default function AdminDashboard() {
     !!userEmail && activeTab === "overview" && !isDemo,
   );
 
+  // ✅ React Query: Fetch All Licenses (Detailed) for accurate count and list
+  const allLicensesQuery = useAllLicenses(userEmail, !!userEmail && !isDemo);
+  const allLicensesLoading = allLicensesQuery.isLoading && !isDemo;
+
   // ✅ React Query: Fetch Erasure Metrics for Performance Tab
   const [erasureMetricsFilters, setErasureMetricsFilters] = useState<{
     year: number;
@@ -1002,7 +751,6 @@ export default function AdminDashboard() {
   const createSubuserMutation = useCreateSubuser();
   const updateSubuserMutation = useUpdateSubuser();
   const deleteSubuserMutation = useDeleteSubuser();
-
 
   // ✅ RBAC: currentUserRole, isSuperAdmin, isGroupAdmin, isSubUser are already defined above (lines 155-160)
   // Role-based permissions (using the RBAC currentUserRole from above)
@@ -1114,45 +862,37 @@ export default function AdminDashboard() {
   // ✅ React Query provides data directly - no need for useEffect with object dependencies
   // Using dashboardQuery.activity directly in UI to avoid "Maximum update depth" error
 
-
   // loading state is now reactive to React Query
   const dataLoading = dashboardQuery.isLoading && !isDemo;
 
   useEffect(() => {
     if (isDemo) return; // Skip in demo mode
 
-    // Sync stats
-    if (dashboardQuery.stats) {
-      setDashboardStats(dashboardQuery.stats);
-    }
+    // [PERF-FIX] Commented out sync for stats/groups/licenses/reports — those hooks are disabled (404 endpoints)
+    // Real data comes from separate hooks: useAllLicenses, useUserMachines, useSubusers, useAuditReports
 
-    // Sync groups
-    if (dashboardQuery.groups && dashboardQuery.groups.length > 0) {
-      setGroups(dashboardQuery.groups);
-    }
-
-    // Sync license data (from React Query cache)
-    if (dashboardQuery.licenses && dashboardQuery.licenses.length > 0) {
-      setLicenseData(dashboardQuery.licenses);
-      setUserLicenseDetails(dashboardQuery.licenses);
-      devLog(
-        "✅ License data synced from React Query cache:",
-        dashboardQuery.licenses.length,
-        "items",
-      );
-    }
-
-    // Sync reports
-    if (dashboardQuery.reports && dashboardQuery.reports.length > 0) {
-      setRecentReports(dashboardQuery.reports);
-    }
-
-    // Sync system logs
-    // if (dashboardData.systemLogs && dashboardData.systemLogs.length > 0) {
-    //   setRecentSystemLogs(dashboardData.systemLogs);
+    // // Sync stats — DISABLED: /admin/dashboard/stats does not exist
+    // if (dashboardQuery.stats) {
+    //   setDashboardStats(dashboardQuery.stats);
     // }
 
-    // Sync profile data and flags
+    // // Sync groups — DISABLED: /admin/dashboard/groups does not exist (real: fetchGroupsWithUsers)
+    // if (dashboardQuery.groups && dashboardQuery.groups.length > 0) {
+    //   setGroups(dashboardQuery.groups);
+    // }
+
+    // // Sync license data — DISABLED: /admin/dashboard/license-data does not exist (real: useAllLicenses)
+    // if (dashboardQuery.licenses && dashboardQuery.licenses.length > 0) {
+    //   setLicenseData(dashboardQuery.licenses);
+    //   setUserLicenseDetails(dashboardQuery.licenses);
+    // }
+
+    // // Sync reports — DISABLED: /admin/dashboard/recent-reports does not exist (real: useAuditReports)
+    // if (dashboardQuery.reports && dashboardQuery.reports.length > 0) {
+    //   setRecentReports(dashboardQuery.reports);
+    // }
+
+    // Sync profile data and flags — ✅ ACTIVE: /api/Users/{email} is a real endpoint
     if (dashboardQuery.profile) {
       setProfileData(dashboardQuery.profile);
 
@@ -1176,12 +916,11 @@ export default function AdminDashboard() {
       }
     }
   }, [
-    dashboardQuery.stats,
-    dashboardQuery.groups,
-    dashboardQuery.licenses,
-    dashboardQuery.reports,
+    // dashboardQuery.stats,    // DISABLED
+    // dashboardQuery.groups,   // DISABLED
+    // dashboardQuery.licenses, // DISABLED
+    // dashboardQuery.reports,  // DISABLED
     dashboardQuery.profile,
-    // dashboardQuery.systemLogs,
     isDemo,
   ]);
 
@@ -1429,10 +1168,10 @@ export default function AdminDashboard() {
           const cached = await indexedDBService.get("groups", groupsCacheKey);
           if (cached) {
             // Handle both legacy array format and new object format
-            const cachedArray = Array.isArray(cached) 
-              ? cached 
-              : (cached.groups?.data || []);
-            
+            const cachedArray = Array.isArray(cached)
+              ? cached
+              : cached.groups?.data || [];
+
             if (cachedArray.length > 0) {
               devLog("✅ Dashboard: Loaded groups from IndexedDB");
               setGroupsWithUsers(cachedArray);
@@ -1784,7 +1523,11 @@ export default function AdminDashboard() {
     return [
       {
         label: "Total Licenses",
-        value: statsData.totalLicenses || (statsData as any).total_licenses || "0",
+        value:
+          allLicensesQuery.data?.stats?.total?.toString() ||
+          statsData.totalLicenses ||
+          (statsData as any).total_licenses ||
+          "0",
         change: statsData.changes?.totalLicenses?.value || "0",
         trend: statsData.changes?.totalLicenses?.trend || "up",
         color: "bg-blue-500",
@@ -1846,52 +1589,52 @@ export default function AdminDashboard() {
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const response = await AdminDashboardAPI.assignBulkLicenses(
-        Number(bulkUserCount),
-        Number(bulkLicenseCount),
-      );
-
-      if (response.success) {
-        const totalLicenses = Number(bulkUserCount) * Number(bulkLicenseCount);
-        showSuccess(
-          "Licenses Assigned Successfully",
-          `Assigned ${bulkLicenseCount} licenses to ${bulkUserCount} users. Total licenses assigned: ${totalLicenses}`,
-        );
-
-        // Refresh dashboard data after successful assignment
-        dashboardQuery.refetch();
-
-        setShowBulkLicenseModal(false);
-        setBulkUserCount("10");
-        setBulkLicenseCount("5");
-      } else {
-        throw new Error(response.error || "Assignment failed");
-      }
-    } catch (error) {
-      devError("Bulk license assignment error:", error);
-      showError(
-        "Assignment Failed",
-        "Failed to assign licenses. Please try again.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    // [PERF-FIX] Commented out — /admin/licenses/bulk-assign endpoint does not exist (404)
+    // setIsLoading(true);
+    // try {
+    //   const response = await AdminDashboardAPI.assignBulkLicenses(
+    //     Number(bulkUserCount),
+    //     Number(bulkLicenseCount),
+    //   );
+    //   if (response.success) {
+    //     const totalLicenses = Number(bulkUserCount) * Number(bulkLicenseCount);
+    //     showSuccess(
+    //       "Licenses Assigned Successfully",
+    //       `Assigned ${bulkLicenseCount} licenses to ${bulkUserCount} users. Total licenses assigned: ${totalLicenses}`,
+    //     );
+    //     dashboardQuery.refetch();
+    //     setShowBulkLicenseModal(false);
+    //     setBulkUserCount("10");
+    //     setBulkLicenseCount("5");
+    //   } else {
+    //     throw new Error(response.error || "Assignment failed");
+    //   }
+    // } catch (error) {
+    //   devError("Bulk license assignment error:", error);
+    //   showError(
+    //     "Assignment Failed",
+    //     "Failed to assign licenses. Please try again.",
+    //   );
+    // } finally {
+    //   setIsLoading(false);
+    // }
+    showInfo("Not Available", "Bulk license assignment is not available.");
+    setShowBulkLicenseModal(false);
   };
 
   const handleLicenseAudit = async () => {
     setShowLicenseAuditModal(true);
 
-    // Load fresh license audit data when modal opens
-    try {
-      const response = await AdminDashboardAPI.getLicenseAudit();
-      if (response.success) {
-        setLicenseData(response.data);
-      }
-    } catch (error) {
-      devError("License audit data loading error:", error);
-    }
+    // [PERF-FIX] Commented out — /admin/licenses/audit endpoint does not exist (404)
+    // License data is already available from useAllLicenses hook
+    // try {
+    //   const response = await AdminDashboardAPI.getLicenseAudit();
+    //   if (response.success) {
+    //     setLicenseData(response.data);
+    //   }
+    // } catch (error) {
+    //   devError("License audit data loading error:", error);
+    // }
   };
 
   // New handler functions for buttons and actions
@@ -2018,27 +1761,32 @@ export default function AdminDashboard() {
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const response = await AdminDashboardAPI.createGroup(newGroupForm);
-
-      if (response.success) {
-        showSuccess(
-          "Group Created",
-          `Group ${newGroupForm.name} created successfully`,
-        );
-        setShowAddGroupModal(false);
-        setNewGroupForm({ name: "", description: "", licenses: 0 });
-        // loadDashboardData(); // Refresh dashboard data
-      } else {
-        throw new Error(response.error || "Group creation failed");
-      }
-    } catch (error) {
-      devError("Group creation error:", error);
-      showError("Creation Failed", "Failed to create group. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    // [PERF-FIX] Commented out — /admin/groups (POST) endpoint does not exist (404)
+    // Groups are managed via AdminGroups page using real /api/Groups endpoint
+    // setIsLoading(true);
+    // try {
+    //   const response = await AdminDashboardAPI.createGroup(newGroupForm);
+    //   if (response.success) {
+    //     showSuccess(
+    //       "Group Created",
+    //       `Group ${newGroupForm.name} created successfully`,
+    //     );
+    //     setShowAddGroupModal(false);
+    //     setNewGroupForm({ name: "", description: "", licenses: 0 });
+    //   } else {
+    //     throw new Error(response.error || "Group creation failed");
+    //   }
+    // } catch (error) {
+    //   devError("Group creation error:", error);
+    //   showError("Creation Failed", "Failed to create group. Please try again.");
+    // } finally {
+    //   setIsLoading(false);
+    // }
+    showInfo(
+      "Not Available",
+      "Group creation is available via the Groups tab.",
+    );
+    setShowAddGroupModal(false);
   };
 
   const handleManageUsers = () => {
@@ -2139,38 +1887,39 @@ export default function AdminDashboard() {
       return;
     }
 
-    setIsLoading(true);
-    try {
-      const response = await AdminDashboardAPI.assignLicensesToGroup(
-        selectedGroupForLicenses.name, // Using name as ID for demo
-        assignLicensesForm,
-      );
-
-      if (response.success) {
-        showSuccess(
-          "Licenses Assigned",
-          `${assignLicensesForm.licenseCount} licenses assigned to ${selectedGroupForLicenses.name}`,
-        );
-        setShowAssignLicensesModal(false);
-        setSelectedGroupForLicenses(null);
-        setAssignLicensesForm({
-          licenseCount: 10,
-          expiryDate: "",
-          licenseType: "basic",
-        });
-        dashboardQuery.refetch(); // Refresh dashboard data
-      } else {
-        throw new Error(response.error || "License assignment failed");
-      }
-    } catch (error) {
-      devError("License assignment error:", error);
-      showError(
-        "Assignment Failed",
-        "Failed to assign licenses. Please try again.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    // [PERF-FIX] Commented out — /admin/groups/{id}/assign-licenses endpoint does not exist (404)
+    // setIsLoading(true);
+    // try {
+    //   const response = await AdminDashboardAPI.assignLicensesToGroup(
+    //     selectedGroupForLicenses.name,
+    //     assignLicensesForm,
+    //   );
+    //   if (response.success) {
+    //     showSuccess(
+    //       "Licenses Assigned",
+    //       `${assignLicensesForm.licenseCount} licenses assigned to ${selectedGroupForLicenses.name}`,
+    //     );
+    //     setShowAssignLicensesModal(false);
+    //     setSelectedGroupForLicenses(null);
+    //     setAssignLicensesForm({ licenseCount: 10, expiryDate: "", licenseType: "basic" });
+    //     dashboardQuery.refetch();
+    //   } else {
+    //     throw new Error(response.error || "License assignment failed");
+    //   }
+    // } catch (error) {
+    //   devError("License assignment error:", error);
+    //   showError(
+    //     "Assignment Failed",
+    //     "Failed to assign licenses. Please try again.",
+    //   );
+    // } finally {
+    //   setIsLoading(false);
+    // }
+    showInfo(
+      "Not Available",
+      "License assignment to groups is not available via this route.",
+    );
+    setShowAssignLicensesModal(false);
   };
 
   // All data is now loaded from API and stored in state
@@ -3668,89 +3417,196 @@ export default function AdminDashboard() {
                         <table className="min-w-full">
                           <thead className="sticky top-0 bg-white shadow-sm z-10">
                             <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                              <th className="pb-3 font-medium whitespace-nowrap">
+                              <th className="pb-3 font-medium whitespace-nowrap px-4">
+                                License Key
+                              </th>
+                              <th className="pb-3 font-medium whitespace-nowrap px-4">
                                 Product
                               </th>
-                              <th className="pb-3 font-medium whitespace-nowrap">
-                                Total Available
+                              <th className="pb-3 font-medium whitespace-nowrap px-4">
+                                User
                               </th>
-                              <th className="pb-3 font-medium whitespace-nowrap">
-                                Total Consumed
+                              <th className="pb-3 font-medium whitespace-nowrap px-4">
+                                Status
                               </th>
-                              <th className="pb-3 font-medium whitespace-nowrap">
-                                Usage
+                              <th className="pb-3 font-medium whitespace-nowrap px-4 w-1/3 min-w-[200px]">
+                                Validity / Progress
                               </th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-200">
-                            {(Array.isArray(userLicenseDetails)
-                              ? userLicenseDetails
-                              : []
-                            )
-                              .slice(
-                                (licenseDetailsPage - 1) * licensePageSize,
-                                licenseDetailsPage * licensePageSize,
-                              )
-                              .map((license, index) => {
-                                const usagePercent =
-                                  license.total > 0
-                                    ? (license.consumed / license.total) * 100
-                                    : 0;
-                                return (
-                                  <tr key={index} className="hover:bg-slate-50">
-                                    <td className="py-4 font-medium text-slate-900 whitespace-nowrap">
-                                      {license.product}
-                                    </td>
-                                    <td className="py-4 text-slate-600">
-                                      {license.total}
-                                    </td>
-                                    <td className="py-4 text-slate-600">
-                                      {license.consumed}
-                                    </td>
-                                    <td className="py-4">
-                                      <div className="flex items-center gap-3">
-                                        <div className="flex-1 bg-slate-200 rounded-full h-2 min-w-[80px]">
-                                          <div
-                                            className={`h-2 rounded-full ${
-                                              usagePercent > 80
-                                                ? "bg-red-500"
-                                                : usagePercent > 60
-                                                  ? "bg-yellow-500"
-                                                  : "bg-green-500"
-                                            }`}
-                                            style={{
-                                              width: `${Math.min(
-                                                usagePercent,
-                                                100,
-                                              )}%`,
-                                            }}
-                                          ></div>
-                                        </div>
-                                        <span className="text-sm text-slate-600 min-w-[50px] text-right">
-                                          {usagePercent.toFixed(1)}%
-                                        </span>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                            {(!Array.isArray(userLicenseDetails) ||
-                              userLicenseDetails.length === 0) && (
+                            {allLicensesLoading ? (
+                              // Skeleton Loading
+                              Array.from({ length: 5 }).map((_, i) => (
+                                <tr key={i}>
+                                  <td className="p-4">
+                                    <div className="h-4 bg-slate-200 rounded w-32 animate-pulse"></div>
+                                  </td>
+                                  <td className="p-4">
+                                    <div className="h-4 bg-slate-200 rounded w-24 animate-pulse"></div>
+                                  </td>
+                                  <td className="p-4">
+                                    <div className="h-4 bg-slate-200 rounded w-32 animate-pulse"></div>
+                                  </td>
+                                  <td className="p-4">
+                                    <div className="h-6 bg-slate-200 rounded-full w-20 animate-pulse"></div>
+                                  </td>
+                                  <td className="p-4">
+                                    <div className="h-4 bg-slate-200 rounded w-full animate-pulse"></div>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                                allLicensesQuery.data?.licenses ||
+                                userLicenseDetails ||
+                                []
+                              ).length === 0 ? (
                               <tr>
                                 <td
-                                  colSpan={4}
+                                  colSpan={5}
                                   className="py-8 text-center text-slate-500"
                                 >
-                                  No license data available
+                                  No licenses found
                                 </td>
                               </tr>
+                            ) : (
+                              (allLicensesQuery.data?.licenses || [])
+                                .slice(
+                                  (licenseDetailsPage - 1) * licensePageSize,
+                                  licenseDetailsPage * licensePageSize,
+                                )
+                                .map((license: License, index: number) => {
+                                  // Progress Calculation
+                                  const now = new Date();
+                                  const created = new Date(
+                                    license.created_at || Date.now(),
+                                  );
+                                  const expires = new Date(
+                                    license.expires_at ||
+                                      Date.now() + 31536000000,
+                                  ); // Default 1 year if missing
+                                  const totalDuration = Math.max(
+                                    1,
+                                    expires.getTime() - created.getTime(),
+                                  );
+                                  const elapsed = Math.max(
+                                    0,
+                                    now.getTime() - created.getTime(),
+                                  );
+                                  const remaining =
+                                    expires.getTime() - now.getTime();
+                                  const daysRemaining = Math.ceil(
+                                    remaining / (1000 * 60 * 60 * 24),
+                                  );
+
+                                  const isActive =
+                                    license.status === "Active" ||
+                                    license.status === "In_Use" ||
+                                    license.status === "IN_USE" ||
+                                    license.status === "Activated";
+                                  const isExpired =
+                                    remaining <= 0 ||
+                                    license.status === "Expired";
+
+                                  // Percentage of TIME used (for active/unactivated tracking)
+                                  const percentageUsed = Math.min(
+                                    100,
+                                    Math.max(
+                                      0,
+                                      (elapsed / totalDuration) * 100,
+                                    ),
+                                  );
+                                  // Percentage of validity remaining (inverse)
+                                  // const percentageRemaining = 100 - percentageUsed;
+
+                                  let statusColor =
+                                    "bg-slate-100 text-slate-800";
+                                  if (isActive)
+                                    statusColor = "bg-green-100 text-green-800";
+                                  else if (isExpired)
+                                    statusColor = "bg-red-100 text-red-800";
+                                  else if (license.status === "Revoked")
+                                    statusColor =
+                                      "bg-orange-100 text-orange-800";
+                                  else if (license.status === "Inactive")
+                                    statusColor =
+                                      "bg-yellow-100 text-yellow-800";
+
+                                  return (
+                                    <tr
+                                      key={index}
+                                      className="hover:bg-slate-50"
+                                    >
+                                      <td className="py-4 px-4 font-medium text-slate-900 whitespace-nowrap font-mono text-xs">
+                                        {license.license_key}
+                                      </td>
+                                      <td className="py-4 px-4 text-slate-600">
+                                        {license.license_type}
+                                      </td>
+                                      <td className="py-4 px-4 text-slate-600">
+                                        <div className="flex flex-col">
+                                          <span className="text-sm text-slate-900">
+                                            {getNameFromEmail(
+                                              license.user_email,
+                                            )}
+                                          </span>
+                                          <span className="text-xs text-slate-500">
+                                            {license.user_email}
+                                          </span>
+                                        </div>
+                                      </td>
+                                      <td className="py-4 px-4">
+                                        <span
+                                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColor}`}
+                                        >
+                                          {license.status === "In_Use"
+                                            ? "Active"
+                                            : license.status}
+                                        </span>
+                                      </td>
+                                      <td className="py-4 px-4 align-middle">
+                                        <div className="w-full max-w-xs">
+                                          <div className="flex justify-between text-xs mb-1 text-slate-600">
+                                            <span>
+                                              {isActive ? "Usage" : "Validity"}
+                                            </span>
+                                            <span>
+                                              {isExpired
+                                                ? "Expired"
+                                                : `${daysRemaining} days left`}
+                                            </span>
+                                          </div>
+                                          <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                                            <div
+                                              className={`h-2 rounded-full transition-all duration-500 ${
+                                                isExpired
+                                                  ? "bg-red-500"
+                                                  : percentageUsed > 90
+                                                    ? "bg-red-500"
+                                                    : percentageUsed > 75
+                                                      ? "bg-orange-400"
+                                                      : "bg-emerald-500"
+                                              }`}
+                                              style={{
+                                                width: `${isActive ? percentageUsed : 100 - percentageUsed}%`,
+                                              }} // If active, show elapsed. If inactive, show remaining? Actually usually "progress" means "consumed".
+                                              // Plan: "Unactivated: Progress bar representing time from created_at to expires_at (showing time remaining)." -> 100% full means full time remaining? No, usually 0% progress implies nothing consumed.
+                                              // Let's stick to "Consumed Time" paradigm. 0% used = fresh. 100% used = expired.
+                                              // So width = percentageUsed.
+                                            ></div>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  );
+                                })
                             )}
                           </tbody>
                         </table>
                       </div>
                     </div>
                     {/* License Details Pagination - always show when data exists */}
-                    {userLicenseDetails.length > 0 && (
+                    {(allLicensesQuery.data?.licenses || []).length > 0 && (
                       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                           <label className="text-xs sm:text-sm text-slate-600">
@@ -3774,21 +3630,22 @@ export default function AdminDashboard() {
                             Showing{" "}
                             {Math.min(
                               (licenseDetailsPage - 1) * licensePageSize + 1,
-                              userLicenseDetails.length,
+                              (allLicensesQuery.data?.licenses || []).length,
                             )}{" "}
                             to{" "}
                             {Math.min(
                               licenseDetailsPage * licensePageSize,
-                              userLicenseDetails.length,
+                              (allLicensesQuery.data?.licenses || []).length,
                             )}{" "}
-                            of {userLicenseDetails.length}
+                            of {(allLicensesQuery.data?.licenses || []).length}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 sm:gap-3">
                           <span className="text-xs sm:text-sm text-slate-600">
                             Page {licenseDetailsPage} of{" "}
                             {Math.ceil(
-                              userLicenseDetails.length / licensePageSize,
+                              (allLicensesQuery.data?.licenses || []).length /
+                                licensePageSize,
                             )}
                           </span>
                           <div className="flex gap-1 sm:gap-2">
@@ -3810,8 +3667,8 @@ export default function AdminDashboard() {
                                   Math.min(
                                     prev + 1,
                                     Math.ceil(
-                                      userLicenseDetails.length /
-                                        licensePageSize,
+                                      (allLicensesQuery.data?.licenses || [])
+                                        .length / licensePageSize,
                                     ),
                                   ),
                                 )
@@ -3819,7 +3676,8 @@ export default function AdminDashboard() {
                               disabled={
                                 licenseDetailsPage >=
                                 Math.ceil(
-                                  userLicenseDetails.length / licensePageSize,
+                                  (allLicensesQuery.data?.licenses || [])
+                                    .length / licensePageSize,
                                 )
                               }
                               className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -4347,17 +4205,17 @@ export default function AdminDashboard() {
                                             {user.email}
                                           </td>
                                           <td className="px-6 py-4 whitespace-nowrap">
-                                              <span
-                                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                                  user.role === "User"
-                                                    ? "bg-blue-100 text-blue-800"
-                                                    : user.role === "Group Admin"
-                                                      ? "bg-amber-100 text-amber-800"
-                                                      : "bg-purple-100 text-purple-800"
-                                                }`}
-                                              >
-                                                {user.role}
-                                              </span>
+                                            <span
+                                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                                user.role === "User"
+                                                  ? "bg-blue-100 text-blue-800"
+                                                  : user.role === "Group Admin"
+                                                    ? "bg-amber-100 text-amber-800"
+                                                    : "bg-purple-100 text-purple-800"
+                                              }`}
+                                            >
+                                              {user.role}
+                                            </span>
                                           </td>
                                           <td className="px-6 py-4 whitespace-nowrap">
                                             <span
@@ -4993,125 +4851,211 @@ export default function AdminDashboard() {
                       No Performance Metrics Available
                     </h3>
                     <p className="text-slate-600">
-                      There are no performance metrics to display for this account.
+                      There are no performance metrics to display for this
+                      account.
                     </p>
                   </div>
                 ) : (
                   <>
                     {/* Top 3 Metric Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {/* Monthly Erasures */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                        <div className="mb-4">
-                          <p className="text-sm text-slate-500 mb-1">
-                            Total Erasures (Year {new Date().getFullYear()})
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                      {/* Erasure Method Distribution (Pie Chart) */}
+                      {/* Erasure Method Distribution (Pie Chart) */}
+                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col h-full min-h-[400px]">
+                        <div className="mb-6">
+                          <p className="text-base md:text-lg text-slate-500 mb-2 font-medium">
+                            Erasure Method Breakdown
                           </p>
-                          <p className="text-3xl font-bold text-slate-900">
-                            {displayErasureMetrics.totalErasures.toLocaleString()}
+                          <p className="text-3xl md:text-4xl font-bold text-slate-900">
+                            {displayErasureMetrics.methodMetrics &&
+                            displayErasureMetrics.methodMetrics.length > 0
+                              ? displayErasureMetrics.methodMetrics
+                                  .reduce(
+                                    (acc: number, curr: MethodMetric) =>
+                                      acc + curr.count,
+                                    0,
+                                  )
+                                  .toLocaleString()
+                              : 0}
                           </p>
                         </div>
-                        <div className="h-24">
-                          {/* Simple Sparkline for Monthly Trend */}
-                          <svg viewBox="0 0 300 80" className="w-full h-full">
-                            <defs>
-                              <linearGradient
-                                id="areaGradient1"
-                                x1="0%"
-                                y1="0%"
-                                x2="0%"
-                                y2="100%"
+                        <div className="flex-1 w-full relative">
+                          <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            minHeight={300}
+                          >
+                            <PieChart>
+                              <Pie
+                                data={displayErasureMetrics.methodMetrics || []}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius="60%"
+                                outerRadius="80%"
+                                paddingAngle={5}
+                                dataKey="count"
+                                nameKey="methodName"
                               >
-                                <stop
-                                  offset="0%"
-                                  stopColor="#3B82F6"
-                                  stopOpacity="0.3"
-                                />
-                                <stop
-                                  offset="100%"
-                                  stopColor="#3B82F6"
-                                  stopOpacity="0.05"
-                                />
-                              </linearGradient>
-                            </defs>
-                            {displayErasureMetrics.monthlyMetrics.length >
-                              0 && (
-                              <>
-                                <path
-                                  d={`M 0 80 ${displayErasureMetrics.monthlyMetrics
-                                    .map((item: any, index: number) => {
-                                      const x =
-                                        (index /
-                                          Math.max(
-                                            displayErasureMetrics.monthlyMetrics
-                                              .length - 1,
-                                            1,
-                                          )) *
-                                        300;
-                                      const maxCount = Math.max(
-                                        ...displayErasureMetrics.monthlyMetrics.map(
-                                          (i: any) => i.erasureCount,
-                                        ),
-                                        1,
-                                      );
-                                      const y =
-                                        80 -
-                                        (item.erasureCount / maxCount) * 60;
-                                      return `L ${x} ${y}`;
-                                    })
-                                    .join(" ")} L 300 80 Z`}
-                                  fill="url(#areaGradient1)"
-                                />
-                                <path
-                                  d={`${displayErasureMetrics.monthlyMetrics
-                                    .map((item: any, index: number) => {
-                                      const x =
-                                        (index /
-                                          Math.max(
-                                            displayErasureMetrics.monthlyMetrics
-                                              .length - 1,
-                                            1,
-                                          )) *
-                                        300;
-                                      const maxCount = Math.max(
-                                        ...displayErasureMetrics.monthlyMetrics.map(
-                                          (i: any) => i.erasureCount,
-                                        ),
-                                        1,
-                                      );
-                                      const y =
-                                        80 -
-                                        (item.erasureCount / maxCount) * 60;
-                                      return `${index === 0 ? "M" : "L"} ${x} ${y}`;
-                                    })
-                                    .join(" ")}`}
-                                  stroke="#3B82F6"
-                                  strokeWidth="2"
-                                  fill="none"
-                                />
-                              </>
-                            )}
-                          </svg>
+                                {(
+                                  displayErasureMetrics.methodMetrics || []
+                                ).map((entry: MethodMetric, index: number) => (
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={COLORS[index % COLORS.length]}
+                                    strokeWidth={2}
+                                    stroke="#fff"
+                                  />
+                                ))}
+                              </Pie>
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                                  borderRadius: "8px",
+                                  boxShadow:
+                                    "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                                  border: "1px solid #e2e8f0",
+                                  fontSize: "14px",
+                                }}
+                                itemStyle={{ color: "#1e293b" }}
+                                formatter={(
+                                  value: any,
+                                  name: any,
+                                  props: any,
+                                ) => {
+                                  const numericValue = Number(value);
+                                  const total =
+                                    displayErasureMetrics.methodMetrics?.reduce(
+                                      (acc: number, curr: MethodMetric) =>
+                                        acc + curr.count,
+                                      0,
+                                    ) || 1;
+                                  const percent = (
+                                    (numericValue / total) *
+                                    100
+                                  ).toFixed(1);
+                                  return [
+                                    `${numericValue} (${percent}%)`,
+                                    name,
+                                  ];
+                                }}
+                              />
+                              <Legend
+                                verticalAlign="bottom"
+                                height={36}
+                                iconType="circle"
+                                iconSize={10}
+                                wrapperStyle={{
+                                  fontSize: "14px",
+                                  paddingTop: "20px",
+                                }}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
                         </div>
                       </div>
 
-                      {/* Average Duration */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      {/* Erasure Method Distribution */}
+                      {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col">
                         <div className="mb-4">
                           <p className="text-sm text-slate-500 mb-1">
-                            Avg. duration
+                            Erasure Method Distribution
                           </p>
-                          <p className="text-3xl font-bold text-slate-900">
-                            {displayErasureMetrics.avgDuration || "00:00:00"}
-                          </p>
+                          {displayErasureMetrics.methodMetrics &&
+                            displayErasureMetrics.methodMetrics.length > 0 && (
+                              <p className="text-2xl font-bold text-slate-900">
+                                {displayErasureMetrics.methodMetrics.reduce(
+                                  (acc: number, curr: MethodMetric) =>
+                                    acc + curr.count,
+                                  0,
+                                )}
+                              </p>
+                            )}
                         </div>
-                        {/* Placeholder chart for duration distribution */}
-                        <div className="h-24 bg-slate-50 rounded-lg flex items-center justify-center text-slate-400 text-sm">
-                          Duration distribution
+                        <div className="flex-1 overflow-y-auto max-h-48 pr-2 space-y-3 custom-scrollbar">
+                          {displayErasureMetrics.methodMetrics &&
+                          displayErasureMetrics.methodMetrics.length > 0 ? (
+                            displayErasureMetrics.methodMetrics.map(
+                              (metric: MethodMetric, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className="flex flex-col text-sm border-b border-slate-50 pb-3 last:border-0 last:pb-0"
+                                >
+                                  <div className="flex justify-between items-center mb-2">
+                                    <span
+                                      className="font-medium text-slate-700 truncate max-w-[150px]"
+                                      title={metric.methodName}
+                                    >
+                                      {metric.methodName}
+                                    </span>
+                                    <span className="font-bold text-slate-900">
+                                      {metric.count}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center text-xs text-slate-400 mb-1">
+                                    <span>Avg: {metric.avgDuration}</span>
+                                    <span className="text-green-600 font-medium">
+                                      {metric.successRate}% Success
+                                    </span>
+                                  </div>
+                                  <div className="w-full bg-slate-100 rounded-full h-1.5">
+                                    <div
+                                      className="bg-green-500 h-1.5 rounded-full"
+                                      style={{
+                                        width: `${metric.successRate}%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              ),
+                            )
+                          ) : displayErasureMetrics.erasureLog &&
+                            displayErasureMetrics.erasureLog.length > 0 ? (
+                            // Fallback to erasureLog if methodMetrics not available (backend backward compatibility)
+                            displayErasureMetrics.erasureLog
+                              .slice(0, 5)
+                              .map((log: ErasureLogEntry, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className="flex items-center justify-between text-sm border-b border-slate-50 pb-2 last:border-0 last:pb-0"
+                                >
+                                  <div className="flex flex-col">
+                                    <span
+                                      className="font-medium text-slate-700 truncate max-w-[120px]"
+                                      title={log.user_email}
+                                    >
+                                      {log.user_email.split("@")[0]}
+                                    </span>
+                                    <span className="text-xs text-slate-400">
+                                      {new Date(
+                                        log.timestamp,
+                                      ).toLocaleDateString()}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center">
+                                    <span
+                                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                        log.method.includes("DoD")
+                                          ? "bg-blue-100 text-blue-700"
+                                          : log.method.includes("NIST")
+                                            ? "bg-purple-100 text-purple-700"
+                                            : "bg-slate-100 text-slate-700"
+                                      }`}
+                                    >
+                                      {log.method}
+                                    </span>
+                                  </div>
+                                </div>
+                              ))
+                          ) : (
+                            <div className="h-full flex items-center justify-center text-slate-400 text-sm italic">
+                              No erasure data found
+                            </div>
+                          )}
                         </div>
-                      </div>
+                      </div> */}
 
                       {/* Success Rate */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                         <div className="mb-4">
                           <p className="text-sm text-slate-500 mb-1">
                             Success rate
@@ -5142,7 +5086,7 @@ export default function AdminDashboard() {
                                 />
                               </linearGradient>
                             </defs>
-                            {/* Simple flat line for success rate or slight variation */}
+                           
                             <path
                               d={`M 0 80 L 0 ${80 - (displayErasureMetrics.successRate / 100) * 60} L 300 ${80 - (displayErasureMetrics.successRate / 100) * 60} L 300 80 Z`}
                               fill="url(#areaGradient3)"
@@ -5155,13 +5099,12 @@ export default function AdminDashboard() {
                             />
                           </svg>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Detailed Charts Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-                      {/* Monthly Trends Bar Chart */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                         <h3 className="text-lg font-semibold text-slate-900 mb-6">
                           Monthly Erasure Trends
                         </h3>
@@ -5181,7 +5124,7 @@ export default function AdminDashboard() {
 
                                 return (
                                   <g key={index}>
-                                    {/* Bar */}
+                                    
                                     <rect
                                       x={x}
                                       y={y}
@@ -5190,7 +5133,7 @@ export default function AdminDashboard() {
                                       fill="#3B82F6"
                                       rx="4"
                                     />
-                                    {/* Month label */}
+                                    
                                     <text
                                       x={x + barWidth / 2}
                                       y="185"
@@ -5200,7 +5143,7 @@ export default function AdminDashboard() {
                                     >
                                       {item.month}
                                     </text>
-                                    {/* Value Label */}
+                                  
                                     <text
                                       x={x + barWidth / 2}
                                       y={y - 5}
@@ -5217,7 +5160,7 @@ export default function AdminDashboard() {
                             )}
                           </svg>
                         </div>
-                      </div>
+                      </div> */}
 
                       {/* Erasure By Method (Placeholder) */}
                       {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">

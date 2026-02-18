@@ -280,4 +280,4 @@ const GovernmentITDisposalBlog: React.FC = () => {
 
 };
 
-export default GovernmentITDisposalBlog;
+export default React.memo(GovernmentITDisposalBlog);

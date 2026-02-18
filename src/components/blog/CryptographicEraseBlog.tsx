@@ -167,7 +167,7 @@ const CryptographicEraseBlog: React.FC = () => {
 
 };
 
-export default CryptographicEraseBlog;
+export default React.memo(CryptographicEraseBlog);
 
 
 

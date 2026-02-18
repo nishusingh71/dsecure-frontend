@@ -272,4 +272,4 @@ const EndOfLifeDataSecurityBlog: React.FC = () => {
     );
 };
 
-export default EndOfLifeDataSecurityBlog;
+export default React.memo(EndOfLifeDataSecurityBlog);

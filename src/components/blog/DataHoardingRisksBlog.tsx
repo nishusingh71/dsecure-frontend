@@ -244,4 +244,4 @@ const RisksOfDataHoardingBlog: React.FC = () => {
   );
 };
 
-export default RisksOfDataHoardingBlog;
+export default React.memo(RisksOfDataHoardingBlog);

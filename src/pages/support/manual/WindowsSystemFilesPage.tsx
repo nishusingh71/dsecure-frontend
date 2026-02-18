@@ -10,10 +10,11 @@ const WindowsSystemFilesPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-system-files")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Windows System Files & Caches | Pagefile, Hibernation, Restore Points</title>
         <meta name="description" content="Managing Windows system files including pagefile, hibernation files, and system restore points for secure data erasure." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -106,4 +107,4 @@ powercfg /availablesleepstates`}
   );
 });
 
-export default WindowsSystemFilesPage;
+export default React.memo(WindowsSystemFilesPage);

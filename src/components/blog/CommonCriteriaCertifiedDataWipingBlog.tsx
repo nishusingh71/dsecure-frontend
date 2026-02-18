@@ -204,4 +204,4 @@ const CommonCriteriaCertifiedDataWipingBlog: React.FC = () => {
   );
 };
 
-export default CommonCriteriaCertifiedDataWipingBlog;
+export default React.memo(CommonCriteriaCertifiedDataWipingBlog);

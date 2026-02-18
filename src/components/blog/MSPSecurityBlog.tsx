@@ -186,4 +186,4 @@ const MSPSecurityBlog: React.FC = () => {
   );
 };
 
-export default MSPSecurityBlog;
+export default React.memo(MSPSecurityBlog);

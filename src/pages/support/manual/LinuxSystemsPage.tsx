@@ -236,11 +236,12 @@ const LinuxSystemsPage: React.FC = memo(() => {
         <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("linux-systems")} />
-            <Helmet>
+            {/* <Helmet>
                 <title>D-Secure Linux Systems Data Erasure | Linux Secure Wipe Guide</title>
                 <meta name="description" content="Complete guide to secure data erasure on Linux systems with D-Secure. Procedures for all major distributions, file systems, and enterprise environments." />
                 <meta name="keywords" content="D-Secure Linux data erasure, Linux secure delete, dd shred commands, LUKS erasure, enterprise Linux security" />
-            </Helmet>
+            </Helmet> 
+            */}
 
             <div className="min-h-screen bg-slate-50">
                 <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-8 sm:py-12 md:py-16 lg:py-24">
@@ -479,4 +480,4 @@ const LinuxSystemsPage: React.FC = memo(() => {
     );
 });
 
-export default LinuxSystemsPage;
+export default React.memo(LinuxSystemsPage);

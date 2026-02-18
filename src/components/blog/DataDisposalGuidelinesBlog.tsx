@@ -243,4 +243,4 @@ const DataDisposalGuidelinesBlog: React.FC = () => {
     );
 };
 
-export default DataDisposalGuidelinesBlog;
+export default React.memo(DataDisposalGuidelinesBlog);

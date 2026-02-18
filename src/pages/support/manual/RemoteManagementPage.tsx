@@ -208,4 +208,4 @@ const RemoteManagementPage: React.FC = memo(() => {
     );
 });
 
-export default RemoteManagementPage;
+export default React.memo(RemoteManagementPage);

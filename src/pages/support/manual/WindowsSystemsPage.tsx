@@ -310,7 +310,7 @@ const WindowsSystemsPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("windows-systems")} />
-      <Helmet>
+      {/* <Helmet>
         <link
           rel="canonical"
           href="https://dsecuretech.com/support/windows-systems"
@@ -327,7 +327,8 @@ const WindowsSystemsPage: React.FC = memo(() => {
           content="Windows data erasure, BitLocker erasure, Windows SSD wipe, secure delete Windows, Windows enterprise erasure"
         />
         <meta name="robots" content="index, follow" />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -838,4 +839,4 @@ const WindowsSystemsPage: React.FC = memo(() => {
   );
 });
 
-export default WindowsSystemsPage;
+export default React.memo(WindowsSystemsPage);

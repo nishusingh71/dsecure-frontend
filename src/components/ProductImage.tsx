@@ -40,7 +40,8 @@ export const ProductImage = memo<ProductImageProps>(({
           onError={(e) => {
             // Fallback to Cloudinary image if icon fails to load
             const target = e.target as HTMLImageElement;
-            target.src = 'https://res.cloudinary.com/dhwi5wevf/image/upload/v1759928831/bwsswefvwhdvuy8yrplk.png';
+            target.src =
+              "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759928831/bwsswefvwhdvuy8yrplk.png";
           }}
         />
       </div>

@@ -266,4 +266,4 @@ const CybersecurityDataDestructionBlog: React.FC = () => {
     );
 };
 
-export default CybersecurityDataDestructionBlog;
+export default React.memo(CybersecurityDataDestructionBlog);

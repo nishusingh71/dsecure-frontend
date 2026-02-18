@@ -227,4 +227,4 @@ const CommonCriteriaBlog: React.FC = () => {
 
 };
 
-export default CommonCriteriaBlog;
+export default React.memo(CommonCriteriaBlog);

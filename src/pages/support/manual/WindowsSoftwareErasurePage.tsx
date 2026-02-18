@@ -12,10 +12,11 @@ const WindowsSoftwareErasurePage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-windows-software-erasure")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Windows Page | D-Secure Manual</title>
         <meta name="description" content="Windows data erasure procedures and methods." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -56,4 +57,4 @@ const WindowsSoftwareErasurePage: React.FC = memo(() => {
   );
 });
 
-export default WindowsSoftwareErasurePage;
+export default React.memo(WindowsSoftwareErasurePage);

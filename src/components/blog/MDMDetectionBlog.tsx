@@ -282,4 +282,4 @@ const MDMDetectionBlog: React.FC = () => {
 
 };
 
-export default MDMDetectionBlog;
+export default React.memo(MDMDetectionBlog);

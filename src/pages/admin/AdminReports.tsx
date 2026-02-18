@@ -4,7 +4,7 @@ import { useAuth } from '@/auth/AuthContext'
 import { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
-import { Roles, buildReportFilter } from '@/pages/dashboards/AdminDashboard'
+import { Roles, buildReportFilter } from "@/utils/rbacFilters";
 
 type RoleType = typeof Roles[keyof typeof Roles];
 

@@ -246,7 +246,7 @@ const DiagnosticsErasureITADBlog: React.FC = () => {
     );
 };
 
-export default DiagnosticsErasureITADBlog;
+export default React.memo(DiagnosticsErasureITADBlog);
 
 
 

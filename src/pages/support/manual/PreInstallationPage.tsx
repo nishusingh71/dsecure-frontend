@@ -10,10 +10,11 @@ const PreInstallationPage: React.FC = memo(() => {
     <>
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support-manual-pre-installation")} />
-      <Helmet>
+      {/* <Helmet>
         <title>Pre-Installation Checklist | D-Secure System Requirements</title>
         <meta name="description" content="System requirements and preparation steps before installing D-Secure data erasure software." />
-      </Helmet>
+      </Helmet> 
+      */}
 
       <div className="min-h-screen bg-slate-50">
         <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-16 lg:py-24">
@@ -265,4 +266,4 @@ const PreInstallationPage: React.FC = memo(() => {
   );
 });
 
-export default PreInstallationPage;
+export default React.memo(PreInstallationPage);

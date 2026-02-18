@@ -120,7 +120,7 @@ const ResellerProfitsBlog: React.FC = () => {
 
 };
 
-export default ResellerProfitsBlog;
+export default React.memo(ResellerProfitsBlog);
 
 
 

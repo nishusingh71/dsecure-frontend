@@ -316,7 +316,7 @@ const ChangeHealthcareAttackBlog: React.FC = () => {
 
 };
 
-export default ChangeHealthcareAttackBlog;
+export default React.memo(ChangeHealthcareAttackBlog);
 
 
 

@@ -310,7 +310,7 @@ const PrivateCloudBlog: React.FC = () => {
     );
 };
 
-export default PrivateCloudBlog;
+export default React.memo(PrivateCloudBlog);
 
 
 

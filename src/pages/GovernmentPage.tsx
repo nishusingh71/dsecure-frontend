@@ -89,7 +89,7 @@ const GovernmentSecuritySolutions: React.FC = () => {
                     {
                       title: "Data Protection",
                       desc: "End-to-end encryption and secure storage solutions ensuring confidentiality of sensitive governmental information.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
                     },
                     {
                       title: "Physical Security",
@@ -315,7 +315,10 @@ const GovernmentSecuritySolutions: React.FC = () => {
                   your agency's security posture.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to={'/contact'} className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                  <Link
+                    to={"/contact"}
+                    className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+                  >
                     Schedule Consultation
                   </Link>
                   {/* <button className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">

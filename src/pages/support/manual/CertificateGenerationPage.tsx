@@ -269,4 +269,4 @@ const CertificateGenerationPage: React.FC = memo(() => {
   );
 });
 
-export default CertificateGenerationPage;
+export default React.memo(CertificateGenerationPage);

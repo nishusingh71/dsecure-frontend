@@ -274,4 +274,4 @@ const FutureOfDataDestructionBlog: React.FC = () => {
   );
 };
 
-export default FutureOfDataDestructionBlog;
+export default React.memo(FutureOfDataDestructionBlog);

@@ -322,4 +322,4 @@ const OverwriteGuideBlog: React.FC = () => {
   );
 };
 
-export default OverwriteGuideBlog;
+export default React.memo(OverwriteGuideBlog);
