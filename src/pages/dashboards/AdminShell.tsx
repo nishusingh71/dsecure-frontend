@@ -134,7 +134,7 @@ export default function AdminShell() {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-shell")} />
       <Helmet>
-        + <link rel="canonical" href="https://dsecuretech.com/admin" />
+        <link rel="canonical" href="https://dsecuretech.com/admin" />
         <title>
           DSecureTech Compliance | Data Erasure Standards & Regulations
         </title>

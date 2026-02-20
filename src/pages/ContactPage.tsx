@@ -15,6 +15,35 @@ import {
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { ENV } from "@/config/env";
+
+// Mapping of country codes to their respective country names
+const COUNTRY_CODE_MAP: Record<string, string> = {
+  "+1": "United States",
+  "+44": "United Kingdom",
+  "+91": "India",
+  "+86": "China",
+  "+49": "Germany",
+  "+33": "France",
+  "+81": "Japan",
+  "+61": "Australia",
+  "+39": "Italy",
+  "+34": "Spain",
+  "+31": "Netherlands",
+  "+41": "Switzerland",
+  "+46": "Sweden",
+  "+47": "Norway",
+  "+45": "Denmark",
+  "+82": "South Korea",
+  "+65": "Singapore",
+  "+852": "Hong Kong",
+  "+971": "UAE",
+  "+966": "Saudi Arabia",
+  "+55": "Brazil",
+  "+52": "Mexico",
+  "+7": "Russia",
+  "+90": "Turkey",
+  "+27": "South Africa",
+};
 export default function ContactPage() {
   return (
     <>
@@ -389,7 +418,45 @@ function ContactPageContent() {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    // Sanitize phone number: allow only numbers and '+' (only at the start)
+    if (name === "phone") {
+      // Remove all characters except digits and '+'
+      value = value.replace(/[^\d+]/g, "");
+      // Ensure '+' only appears at the very beginning
+      if (value.indexOf("+") > 0) {
+        value = value.charAt(0) + value.slice(1).replace(/\+/g, "");
+      }
+    }
+
+    // Auto-detect country code if the name is 'phone'
+    if (name === "phone" && (value.startsWith("+") || /^\d{2,4}/.test(value))) {
+      // Find matching country code from our map
+      // Check for longest matches first (e.g., +852 before +8)
+      const sortedCodes = Object.keys(COUNTRY_CODE_MAP).sort(
+        (a, b) => b.length - a.length,
+      );
+
+      for (const code of sortedCodes) {
+        // Match both "+91" and "91" (if user starts typing without +)
+        const pureCode = code.replace("+", "");
+        if (value.startsWith(code) || value.startsWith(pureCode)) {
+          const matchedCountry = COUNTRY_CODE_MAP[code];
+
+          // Auto update country and countryCode dropdowns
+          setFormData((prev) => ({
+            ...prev,
+            [name]: value.startsWith(code)
+              ? value.slice(code.length).trim()
+              : value.slice(pureCode.length).trim(),
+            countryCode: code,
+            country: matchedCountry,
+          }));
+          return;
+        }
+      }
+    }
 
     setFormData((prev) => ({
       ...prev,
@@ -1311,7 +1378,28 @@ function ContactPageContent() {
                         </svg>
                       </div>
                       <span className="text-slate-700">
-                        Response within 12 hours
+                        Response within 12 Business Hours
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <svg
+                          className="w-4 h-4 text-green-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle cx="12" cy="12" r="9" strokeWidth={2} />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 7v5l3 3"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-slate-700">
+                        (9 AM - 6 PM ) [03:30 - 12:30 UTC]
                       </span>
                     </div>
                     <div className="flex items-center gap-3">

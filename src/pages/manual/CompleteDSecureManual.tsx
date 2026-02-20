@@ -1311,7 +1311,7 @@
 
 //             <footer className="mt-20 pt-8 border-t border-gray-200 text-center">
 //               <p className="text-gray-500 mb-2">Need further assistance?</p>
-//               <a href="mailto:support@D-Securetech.com" className="text-blue-600 font-medium hover:underline">
+//               <a href="mailto:support@dsecuretech.com" className="text-blue-600 font-medium hover:underline">
 //                 Contact Support
 //               </a>
 //               <p className="text-sm text-gray-400 mt-8">

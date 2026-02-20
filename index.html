@@ -165,7 +165,7 @@
         line-height: 1.5;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+        background: #ffffff;
         min-height: 100vh;
       }
       #root {
@@ -173,48 +173,127 @@
         flex-direction: column;
         min-height: 100vh;
       }
-      /* Loading state - prevents layout shift */
-      .loading-container {
+
+      /* Skeleton UI Styles */
+      .skeleton-header {
+        height: 72px;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(8px);
         display: flex;
         align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        background: #f8fafc;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        max-width: 1280px;
+        margin: 0 auto;
+        width: 100%;
       }
-      .loading-spinner {
-        width: 40px;
-        height: 40px;
-        border: 3px solid #e2e8f0;
-        border-top-color: #059669;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
+      .skeleton-logo {
+        width: 140px;
+        height: 32px;
+        background: #f1f5f9;
+        border-radius: 8px;
       }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+      .skeleton-nav {
+        display: flex;
+        gap: 1.5rem;
       }
-      /* Hero section placeholder to prevent CLS */
-      .hero-section {
-        min-height: 70vh;
-        contain: layout style paint;
+      .skeleton-nav-item {
+        width: 70px;
+        height: 14px;
+        background: #f1f5f9;
+        border-radius: 4px;
       }
+      .skeleton-hero {
+        padding: 60px 1.5rem;
+        max-width: 1280px;
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+      }
+      .skeleton-content-side {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .skeleton-image-side {
+        width: 100%;
+        aspect-ratio: 16/10;
+        background: #f1f5f9;
+        border-radius: 20px;
+      }
+      .skeleton-title {
+        width: 90%;
+        height: 56px;
+        background: #f1f5f9;
+        border-radius: 12px;
+      }
+      .skeleton-text {
+        width: 100%;
+        height: 16px;
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+      .skeleton-btns {
+        display: flex;
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .skeleton-btn {
+        width: 140px;
+        height: 48px;
+        background: #f1f5f9;
+        border-radius: 10px;
+      }
+
+      /* Shimmer Animation */
+      .shimmer {
+        position: relative;
+        overflow: hidden;
+      }
+      .shimmer::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background-image: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0,
+          rgba(255, 255, 255, 0.4) 30%,
+          rgba(255, 255, 255, 0.8) 50%,
+          rgba(255, 255, 255, 0.4) 70%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        animation: shimmer 1.5s infinite linear;
+      }
+      @keyframes shimmer {
+        100% { transform: translateX(100%); }
+      }
+
+      /* Mobile Hidden */
+      @media (max-width: 768px) {
+        .skeleton-nav, .skeleton-image-side { display: none; }
+        .skeleton-hero { grid-template-columns: 1fr; padding: 40px 1.5rem; text-align: center; }
+        .skeleton-content-side { align-items: center; }
+        .skeleton-btns { flex-direction: column; width: 100%; }
+        .skeleton-btn { width: 100%; }
+      }
+
       /* Container defaults */
       .container-app {
         width: 100%;
         max-width: 1280px;
         margin: 0 auto;
         padding: 0 1rem;
-      }
-      @media (min-width: 640px) {
-        .container-app {
-          padding: 0 1.5rem;
-        }
-      }
-      @media (min-width: 1024px) {
-        .container-app {
-          padding: 0 2rem;
-        }
       }
     </style>
 
@@ -254,7 +333,31 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Initial Skeleton UI -->
+      <div class="skeleton-header">
+        <div class="skeleton-logo shimmer"></div>
+        <div class="skeleton-nav">
+          <div class="skeleton-nav-item shimmer"></div>
+          <div class="skeleton-nav-item shimmer"></div>
+          <div class="skeleton-nav-item shimmer"></div>
+          <div class="skeleton-nav-item shimmer"></div>
+        </div>
+      </div>
+      <div class="skeleton-hero">
+        <div class="skeleton-content-side">
+          <div class="skeleton-title shimmer"></div>
+          <div class="skeleton-text shimmer"></div>
+          <div class="skeleton-text shimmer" style="width: 80%"></div>
+          <div class="skeleton-text shimmer" style="width: 90%"></div>
+          <div class="skeleton-btns">
+            <div class="skeleton-btn shimmer"></div>
+            <div class="skeleton-btn shimmer" style="background: transparent; border: 2px solid #f1f5f9;"></div>
+          </div>
+        </div>
+        <div class="skeleton-image-side shimmer"></div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -8,6 +8,22 @@ import { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884d8",
+  "#82ca9d",
+];
+import {
   AdminDashboardAPI,
   type DashboardStats,
   type UserActivity,
@@ -15,6 +31,7 @@ import {
   type LicenseData,
   type RecentReport,
   type ProfileData,
+  type MethodMetric,
 } from "@/services/adminDashboardAPI";
 import RoleBased from "@/components/RoleBased";
 import {
@@ -831,7 +848,8 @@ export default function AdminDashboard() {
   }, [isDemo, userEmail]); // Run only on mount/email change
 
   // ✅ React Query: Fetch dashboard data with automatic caching
-  const dashboardDataEnabled = activeTab === "overview" || activeTab === "licenses";
+  const dashboardDataEnabled =
+    activeTab === "overview" || activeTab === "licenses";
   const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
 
   // ✅ Check if current user is a subuser
@@ -985,8 +1003,10 @@ export default function AdminDashboard() {
         })),
         avgDuration: "00:45:00", // Static for demo
         successRate: parseFloat(DEMO_PERFORMANCE_DATA.successRate), // "99.2%" -> 99.2
+        methodMetrics: DEMO_PERFORMANCE_DATA.methodMetrics || [],
       };
     }
+    console.log("Dashboard Display Metrics:", erasureMetrics?.methodMetrics);
     return erasureMetrics;
   }, [erasureMetrics]);
 
@@ -1002,7 +1022,6 @@ export default function AdminDashboard() {
   const createSubuserMutation = useCreateSubuser();
   const updateSubuserMutation = useUpdateSubuser();
   const deleteSubuserMutation = useDeleteSubuser();
-
 
   // ✅ RBAC: currentUserRole, isSuperAdmin, isGroupAdmin, isSubUser are already defined above (lines 155-160)
   // Role-based permissions (using the RBAC currentUserRole from above)
@@ -1113,7 +1132,6 @@ export default function AdminDashboard() {
 
   // ✅ React Query provides data directly - no need for useEffect with object dependencies
   // Using dashboardQuery.activity directly in UI to avoid "Maximum update depth" error
-
 
   // loading state is now reactive to React Query
   const dataLoading = dashboardQuery.isLoading && !isDemo;
@@ -1429,10 +1447,10 @@ export default function AdminDashboard() {
           const cached = await indexedDBService.get("groups", groupsCacheKey);
           if (cached) {
             // Handle both legacy array format and new object format
-            const cachedArray = Array.isArray(cached) 
-              ? cached 
-              : (cached.groups?.data || []);
-            
+            const cachedArray = Array.isArray(cached)
+              ? cached
+              : cached.groups?.data || [];
+
             if (cachedArray.length > 0) {
               devLog("✅ Dashboard: Loaded groups from IndexedDB");
               setGroupsWithUsers(cachedArray);
@@ -1784,7 +1802,8 @@ export default function AdminDashboard() {
     return [
       {
         label: "Total Licenses",
-        value: statsData.totalLicenses || (statsData as any).total_licenses || "0",
+        value:
+          statsData.totalLicenses || (statsData as any).total_licenses || "0",
         change: statsData.changes?.totalLicenses?.value || "0",
         trend: statsData.changes?.totalLicenses?.trend || "up",
         color: "bg-blue-500",
@@ -4347,17 +4366,17 @@ export default function AdminDashboard() {
                                             {user.email}
                                           </td>
                                           <td className="px-6 py-4 whitespace-nowrap">
-                                              <span
-                                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                                  user.role === "User"
-                                                    ? "bg-blue-100 text-blue-800"
-                                                    : user.role === "Group Admin"
-                                                      ? "bg-amber-100 text-amber-800"
-                                                      : "bg-purple-100 text-purple-800"
-                                                }`}
-                                              >
-                                                {user.role}
-                                              </span>
+                                            <span
+                                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                                user.role === "User"
+                                                  ? "bg-blue-100 text-blue-800"
+                                                  : user.role === "Group Admin"
+                                                    ? "bg-amber-100 text-amber-800"
+                                                    : "bg-purple-100 text-purple-800"
+                                              }`}
+                                            >
+                                              {user.role}
+                                            </span>
                                           </td>
                                           <td className="px-6 py-4 whitespace-nowrap">
                                             <span
@@ -4993,125 +5012,211 @@ export default function AdminDashboard() {
                       No Performance Metrics Available
                     </h3>
                     <p className="text-slate-600">
-                      There are no performance metrics to display for this account.
+                      There are no performance metrics to display for this
+                      account.
                     </p>
                   </div>
                 ) : (
                   <>
                     {/* Top 3 Metric Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {/* Monthly Erasures */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                        <div className="mb-4">
-                          <p className="text-sm text-slate-500 mb-1">
-                            Total Erasures (Year {new Date().getFullYear()})
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+                      {/* Erasure Method Distribution (Pie Chart) */}
+                      {/* Erasure Method Distribution (Pie Chart) */}
+                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col h-full min-h-[400px]">
+                        <div className="mb-6">
+                          <p className="text-base md:text-lg text-slate-500 mb-2 font-medium">
+                            Erasure Method Breakdown
                           </p>
-                          <p className="text-3xl font-bold text-slate-900">
-                            {displayErasureMetrics.totalErasures.toLocaleString()}
+                          <p className="text-3xl md:text-4xl font-bold text-slate-900">
+                            {displayErasureMetrics.methodMetrics &&
+                            displayErasureMetrics.methodMetrics.length > 0
+                              ? displayErasureMetrics.methodMetrics
+                                  .reduce(
+                                    (acc: number, curr: MethodMetric) =>
+                                      acc + curr.count,
+                                    0,
+                                  )
+                                  .toLocaleString()
+                              : 0}
                           </p>
                         </div>
-                        <div className="h-24">
-                          {/* Simple Sparkline for Monthly Trend */}
-                          <svg viewBox="0 0 300 80" className="w-full h-full">
-                            <defs>
-                              <linearGradient
-                                id="areaGradient1"
-                                x1="0%"
-                                y1="0%"
-                                x2="0%"
-                                y2="100%"
+                        <div className="flex-1 w-full relative">
+                          <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                            minHeight={300}
+                          >
+                            <PieChart>
+                              <Pie
+                                data={displayErasureMetrics.methodMetrics || []}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius="60%"
+                                outerRadius="80%"
+                                paddingAngle={5}
+                                dataKey="count"
+                                nameKey="methodName"
                               >
-                                <stop
-                                  offset="0%"
-                                  stopColor="#3B82F6"
-                                  stopOpacity="0.3"
-                                />
-                                <stop
-                                  offset="100%"
-                                  stopColor="#3B82F6"
-                                  stopOpacity="0.05"
-                                />
-                              </linearGradient>
-                            </defs>
-                            {displayErasureMetrics.monthlyMetrics.length >
-                              0 && (
-                              <>
-                                <path
-                                  d={`M 0 80 ${displayErasureMetrics.monthlyMetrics
-                                    .map((item: any, index: number) => {
-                                      const x =
-                                        (index /
-                                          Math.max(
-                                            displayErasureMetrics.monthlyMetrics
-                                              .length - 1,
-                                            1,
-                                          )) *
-                                        300;
-                                      const maxCount = Math.max(
-                                        ...displayErasureMetrics.monthlyMetrics.map(
-                                          (i: any) => i.erasureCount,
-                                        ),
-                                        1,
-                                      );
-                                      const y =
-                                        80 -
-                                        (item.erasureCount / maxCount) * 60;
-                                      return `L ${x} ${y}`;
-                                    })
-                                    .join(" ")} L 300 80 Z`}
-                                  fill="url(#areaGradient1)"
-                                />
-                                <path
-                                  d={`${displayErasureMetrics.monthlyMetrics
-                                    .map((item: any, index: number) => {
-                                      const x =
-                                        (index /
-                                          Math.max(
-                                            displayErasureMetrics.monthlyMetrics
-                                              .length - 1,
-                                            1,
-                                          )) *
-                                        300;
-                                      const maxCount = Math.max(
-                                        ...displayErasureMetrics.monthlyMetrics.map(
-                                          (i: any) => i.erasureCount,
-                                        ),
-                                        1,
-                                      );
-                                      const y =
-                                        80 -
-                                        (item.erasureCount / maxCount) * 60;
-                                      return `${index === 0 ? "M" : "L"} ${x} ${y}`;
-                                    })
-                                    .join(" ")}`}
-                                  stroke="#3B82F6"
-                                  strokeWidth="2"
-                                  fill="none"
-                                />
-                              </>
-                            )}
-                          </svg>
+                                {(
+                                  displayErasureMetrics.methodMetrics || []
+                                ).map((entry: MethodMetric, index: number) => (
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={COLORS[index % COLORS.length]}
+                                    strokeWidth={2}
+                                    stroke="#fff"
+                                  />
+                                ))}
+                              </Pie>
+                              <Tooltip
+                                contentStyle={{
+                                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                                  borderRadius: "8px",
+                                  boxShadow:
+                                    "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                                  border: "1px solid #e2e8f0",
+                                  fontSize: "14px",
+                                }}
+                                itemStyle={{ color: "#1e293b" }}
+                                formatter={(
+                                  value: any,
+                                  name: any,
+                                  props: any,
+                                ) => {
+                                  const numericValue = Number(value);
+                                  const total =
+                                    displayErasureMetrics.methodMetrics?.reduce(
+                                      (acc: number, curr: MethodMetric) =>
+                                        acc + curr.count,
+                                      0,
+                                    ) || 1;
+                                  const percent = (
+                                    (numericValue / total) *
+                                    100
+                                  ).toFixed(1);
+                                  return [
+                                    `${numericValue} (${percent}%)`,
+                                    name,
+                                  ];
+                                }}
+                              />
+                              <Legend
+                                verticalAlign="bottom"
+                                height={36}
+                                iconType="circle"
+                                iconSize={10}
+                                wrapperStyle={{
+                                  fontSize: "14px",
+                                  paddingTop: "20px",
+                                }}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
                         </div>
                       </div>
 
-                      {/* Average Duration */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      {/* Erasure Method Distribution */}
+                      {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col">
                         <div className="mb-4">
                           <p className="text-sm text-slate-500 mb-1">
-                            Avg. duration
+                            Erasure Method Distribution
                           </p>
-                          <p className="text-3xl font-bold text-slate-900">
-                            {displayErasureMetrics.avgDuration || "00:00:00"}
-                          </p>
+                          {displayErasureMetrics.methodMetrics &&
+                            displayErasureMetrics.methodMetrics.length > 0 && (
+                              <p className="text-2xl font-bold text-slate-900">
+                                {displayErasureMetrics.methodMetrics.reduce(
+                                  (acc: number, curr: MethodMetric) =>
+                                    acc + curr.count,
+                                  0,
+                                )}
+                              </p>
+                            )}
                         </div>
-                        {/* Placeholder chart for duration distribution */}
-                        <div className="h-24 bg-slate-50 rounded-lg flex items-center justify-center text-slate-400 text-sm">
-                          Duration distribution
+                        <div className="flex-1 overflow-y-auto max-h-48 pr-2 space-y-3 custom-scrollbar">
+                          {displayErasureMetrics.methodMetrics &&
+                          displayErasureMetrics.methodMetrics.length > 0 ? (
+                            displayErasureMetrics.methodMetrics.map(
+                              (metric: MethodMetric, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className="flex flex-col text-sm border-b border-slate-50 pb-3 last:border-0 last:pb-0"
+                                >
+                                  <div className="flex justify-between items-center mb-2">
+                                    <span
+                                      className="font-medium text-slate-700 truncate max-w-[150px]"
+                                      title={metric.methodName}
+                                    >
+                                      {metric.methodName}
+                                    </span>
+                                    <span className="font-bold text-slate-900">
+                                      {metric.count}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center text-xs text-slate-400 mb-1">
+                                    <span>Avg: {metric.avgDuration}</span>
+                                    <span className="text-green-600 font-medium">
+                                      {metric.successRate}% Success
+                                    </span>
+                                  </div>
+                                  <div className="w-full bg-slate-100 rounded-full h-1.5">
+                                    <div
+                                      className="bg-green-500 h-1.5 rounded-full"
+                                      style={{
+                                        width: `${metric.successRate}%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              ),
+                            )
+                          ) : displayErasureMetrics.erasureLog &&
+                            displayErasureMetrics.erasureLog.length > 0 ? (
+                            // Fallback to erasureLog if methodMetrics not available (backend backward compatibility)
+                            displayErasureMetrics.erasureLog
+                              .slice(0, 5)
+                              .map((log: ErasureLogEntry, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className="flex items-center justify-between text-sm border-b border-slate-50 pb-2 last:border-0 last:pb-0"
+                                >
+                                  <div className="flex flex-col">
+                                    <span
+                                      className="font-medium text-slate-700 truncate max-w-[120px]"
+                                      title={log.user_email}
+                                    >
+                                      {log.user_email.split("@")[0]}
+                                    </span>
+                                    <span className="text-xs text-slate-400">
+                                      {new Date(
+                                        log.timestamp,
+                                      ).toLocaleDateString()}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center">
+                                    <span
+                                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                        log.method.includes("DoD")
+                                          ? "bg-blue-100 text-blue-700"
+                                          : log.method.includes("NIST")
+                                            ? "bg-purple-100 text-purple-700"
+                                            : "bg-slate-100 text-slate-700"
+                                      }`}
+                                    >
+                                      {log.method}
+                                    </span>
+                                  </div>
+                                </div>
+                              ))
+                          ) : (
+                            <div className="h-full flex items-center justify-center text-slate-400 text-sm italic">
+                              No erasure data found
+                            </div>
+                          )}
                         </div>
-                      </div>
+                      </div> */}
 
                       {/* Success Rate */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                         <div className="mb-4">
                           <p className="text-sm text-slate-500 mb-1">
                             Success rate
@@ -5142,7 +5247,7 @@ export default function AdminDashboard() {
                                 />
                               </linearGradient>
                             </defs>
-                            {/* Simple flat line for success rate or slight variation */}
+                           
                             <path
                               d={`M 0 80 L 0 ${80 - (displayErasureMetrics.successRate / 100) * 60} L 300 ${80 - (displayErasureMetrics.successRate / 100) * 60} L 300 80 Z`}
                               fill="url(#areaGradient3)"
@@ -5155,13 +5260,12 @@ export default function AdminDashboard() {
                             />
                           </svg>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Detailed Charts Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-                      {/* Monthly Trends Bar Chart */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                         <h3 className="text-lg font-semibold text-slate-900 mb-6">
                           Monthly Erasure Trends
                         </h3>
@@ -5181,7 +5285,7 @@ export default function AdminDashboard() {
 
                                 return (
                                   <g key={index}>
-                                    {/* Bar */}
+                                    
                                     <rect
                                       x={x}
                                       y={y}
@@ -5190,7 +5294,7 @@ export default function AdminDashboard() {
                                       fill="#3B82F6"
                                       rx="4"
                                     />
-                                    {/* Month label */}
+                                    
                                     <text
                                       x={x + barWidth / 2}
                                       y="185"
@@ -5200,7 +5304,7 @@ export default function AdminDashboard() {
                                     >
                                       {item.month}
                                     </text>
-                                    {/* Value Label */}
+                                  
                                     <text
                                       x={x + barWidth / 2}
                                       y={y - 5}
@@ -5217,7 +5321,7 @@ export default function AdminDashboard() {
                             )}
                           </svg>
                         </div>
-                      </div>
+                      </div> */}
 
                       {/* Erasure By Method (Placeholder) */}
                       {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">

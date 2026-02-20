@@ -12,7 +12,12 @@ import { Suspense, lazy, useEffect } from "react";
 import { useGoogleAnalytics } from "./utils/analytics";
 import { useMicrosoftClarity } from "./utils/microsoftClarity";
 import { useSEOMonitoring } from "./utils/seoMonitor";
-import TechnicalDocumentation from "./components/TechnicalDocumentation";
+import NetworkStatus from "./components/NetworkStatus";
+// [OLD CODE PRESERVED AS COMMENT]
+// import TechnicalDocumentation from "./components/TechnicalDocumentation";
+const TechnicalDocumentation = lazy(
+  () => import("./components/TechnicalDocumentation"),
+);
 
 // Lazy pages
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -128,11 +133,20 @@ const NetworkFileManualLayout = lazy(
 );
 // Network file pages - keep as namespace import since components are accessed via NetworkFilePages.ComponentName
 import * as NetworkFilePages from "./pages/manual/network-file";
-import FailurePage from "./pages/FailurePage";
-import FileEraserPage from "./pages/FileEraserPage";
-import DataGuardianAwardPage from "./pages/DataGuardianAwardPage";
-import CompleteDSecureDriveManual from "./pages/manual/CompleteDSecureDriveManual";
+// [OLD CODE PRESERVED AS COMMENT]
+// import FailurePage from "./pages/FailurePage";
+// import FileEraserPage from "./pages/FileEraserPage";
+// import DataGuardianAwardPage from "./pages/DataGuardianAwardPage";
+// import CompleteDSecureDriveManual from "./pages/manual/CompleteDSecureDriveManual";
 
+const FailurePage = lazy(() => import("./pages/FailurePage"));
+const FileEraserPage = lazy(() => import("./pages/FileEraserPage"));
+const DataGuardianAwardPage = lazy(
+  () => import("./pages/DataGuardianAwardPage"),
+);
+const CompleteDSecureDriveManual = lazy(
+  () => import("./pages/manual/CompleteDSecureDriveManual"),
+);
 
 const HealthcareSolutionsPage = lazy(
   () => import("./pages/solutions/HealthcareSolutionsPage"),
@@ -1237,6 +1251,7 @@ export default function App() {
           <NotificationProvider>
             <AnalyticsWrapper>
               <ScrollToTop />
+              <NetworkStatus />
               <ToastContainer />
               <Suspense fallback={<PageLoadingSkeleton />}>
                 <Routes>
@@ -1318,8 +1333,14 @@ export default function App() {
                       element={<PricingAndPlanPage />}
                     />
                     <Route path="download" element={<DownloadPage />} />
-                    <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
-                     <Route path="/products/file-eraser" element={<FileEraserPage />} />
+                    <Route
+                      path="/products/drive-eraser"
+                      element={<DriveEraserPage />}
+                    />
+                    <Route
+                      path="/products/file-eraser"
+                      element={<FileEraserPage />}
+                    />
                     <Route path="checkout" element={<CheckoutPage />} />
                     <Route
                       path="order-success"
@@ -1328,152 +1349,560 @@ export default function App() {
                     <Route path="order-failure" element={<FailurePage />} />
                     <Route path="payment" element={<PaymentPage />} />
                     <Route path="diagnostics" element={<DiagnosticsPage />} />
-                    
+
                     {/* New Blog Routes */}
                     <Route path="blog" element={<BlogPage />} />
-                    <Route path="blog/overwrite-guide" element={<OverwriteGuideBlog />} />
-                    <Route path="blog/ssd-wipe-guide" element={<SSDWipeGuideBlog />} />
-                    <Route path="blog/erasure-vs-destruction" element={<ErasureVsDestructionBlog />} />
-                    <Route path="blog/data-deletion-myths" element={<DataDeletionMythsBlog />} />
-                    <Route path="blog/data-sanitization-compliance" element={<DataSanitizationComplianceBlog />} />
-                    
-                    <Route path="blog/best-data-erasure-methods" element={<BestErasureMethodBlog />} />
-                    <Route path="blog/erasure-best-practices" element={<ErasureBestPracticesBlog />} />
-                    <Route path="blog/automate-data-erasure" element={<AutomatedErasureBlog />} />
-                    <Route path="blog/mobile-erasure-guide" element={<MobileErasureGuideBlog />} />
-                    <Route path="blog/zero-trust-disposal" element={<ZeroTrustDisposalBlog />} />
-                    <Route path="blog/msp-data-erasure" element={<MSPSecurityBlog />} />
-                    <Route path="blog/sec-compliance" element={<SECComplianceBlog />} />
-                    <Route path="blog/itam-disposal-guide" element={<ITAMDisposalGuideBlog />} />
-                    <Route path="blog/data-hoarding-risks" element={<DataHoardingRisksBlog />} />
-                    <Route path="blog/shadow-data-risks" element={<ShadowDataRisksBlog />} />
-                    <Route path="blog/esg-data-erasure" element={<ESGDataErasureBlog />} />
-                    <Route path="blog/sustainable-it-reuse" element={<SustainableITReuseBlog />} />
-                    <Route path="blog/reduce-carbon-footprint" element={<CarbonFootprintErasureBlog />} />
-                    <Route path="blog/scope-3-emissions-reuse" element={<Scope3EmissionsBlog />} />
-                    <Route path="blog/erasure-verification-process" element={<ErasureVerificationBlog />} />
-                    <Route path="blog/hardware-diagnostics" element={<HardwareDiagnosticsBlog />} />
-                    <Route path="blog/data-minimization" element={<DataMinimizationBlog />} />
-                    <Route path="blog/government-device-theft" element={<GovDeviceTheftBlog />} />
-                    <Route path="blog/itad-selection-guide" element={<ITADSelectionGuideBlog />} />
-                    <Route path="blog/brand-reputation-esg" element={<BrandReputationESGBlog />} />
-                    <Route path="blog/msp-data-erasure" element={<MSPDataErasureBlog />} />
-                    <Route path="blog/cryptographic-erase-nist" element={<CryptographicEraseNISTBlog />} />
-                    <Route path="blog/secure-phi-erasure" element={<SecurePHIePHIErasureBlog />} />
-                    <Route path="blog/statutory-regulatory-compliance-data-erasure" element={<StatutoryRegulatoryComplianceDataErasureBlog />} />
-                    <Route path="blog/legal-ethical-data-erasure" element={<LegalEthicalDataErasureBlog />} />
-                    <Route path="blog/caption-call-fcc-settlement" element={<CaptionCallFCCSettlementBlog />} />
-                    <Route path="blog/hardware-diagnostics-itad-compliance" element={<HardwareDiagnosticsITADComplianceBlog />} />
-                    <Route path="blog/future-of-data-destruction" element={<FutureOfDataDestructionBlog />} />
-                    <Route path="blog/dod-vs-ieee-data-sanitization" element={<DoDVsIEEEDataSanitizationBlog />} />
-                    <Route path="blog/remote-work-data-erasure-best-practices" element={<RemoteWorkDataErasureBestPracticesBlog />} />
-                    <Route path="blog/ncua-third-party-data-disposal" element={<NCUAThirdPartyDataDisposalBlog />} />
-                    <Route path="blog/msp-erasure-as-a-service" element={<MSPErasureAsAServiceBlog />} />
-                    <Route path="blog/dell-data-wipe-vs-dsecure" element={<DellDataWipeVsDSecureBlog />} />
-                    <Route path="blog/common-criteria-certified-data-wiping" element={<CommonCriteriaCertifiedDataWipingBlog />} />
-                    <Route path="blog/erasure-as-a-service-dsecure" element={<ErasureAsAServiceDSecureBlog />} />
-                    <Route path="blog/returning-leased-it-hardware-dos-and-donts" element={<ReturningLeasedITHardwareDosAndDontsBlog />} />
-                    <Route path="blog/healthcare-ransomware-lessons" element={<HealthcareRansomwareLessonsBlog />} />  
-                    <Route path="blog/mac-m1-erasure-known-issues" element={<MacM1ErasureKnownIssuesBlog/>} />
-                    <Route path="blog/wipe-ssd-from-bios-guide" element={<WipeSSDFromBIOSGuideBlog/>} />
-                    <Route path="blog/data-erasure-for-non-profits" element={<DataErasureForNonProfitsBlog/>} />
-                    <Route path="blog/erase-mac-data-safely-using-dsecure" element={<EraseMacDataSafelyUsingDSecureBlog/>} />
-                    <Route path="blog/erase-data-pc-laptop-desktop" element={<EraseDataPcLaptopDesktopBlog/>} />
+                    <Route
+                      path="blog/overwrite-guide"
+                      element={<OverwriteGuideBlog />}
+                    />
+                    <Route
+                      path="blog/ssd-wipe-guide"
+                      element={<SSDWipeGuideBlog />}
+                    />
+                    <Route
+                      path="blog/erasure-vs-destruction"
+                      element={<ErasureVsDestructionBlog />}
+                    />
+                    <Route
+                      path="blog/data-deletion-myths"
+                      element={<DataDeletionMythsBlog />}
+                    />
+                    <Route
+                      path="blog/data-sanitization-compliance"
+                      element={<DataSanitizationComplianceBlog />}
+                    />
+
+                    <Route
+                      path="blog/best-data-erasure-methods"
+                      element={<BestErasureMethodBlog />}
+                    />
+                    <Route
+                      path="blog/erasure-best-practices"
+                      element={<ErasureBestPracticesBlog />}
+                    />
+                    <Route
+                      path="blog/automate-data-erasure"
+                      element={<AutomatedErasureBlog />}
+                    />
+                    <Route
+                      path="blog/mobile-erasure-guide"
+                      element={<MobileErasureGuideBlog />}
+                    />
+                    <Route
+                      path="blog/zero-trust-disposal"
+                      element={<ZeroTrustDisposalBlog />}
+                    />
+                    <Route
+                      path="blog/msp-data-erasure"
+                      element={<MSPSecurityBlog />}
+                    />
+                    <Route
+                      path="blog/sec-compliance"
+                      element={<SECComplianceBlog />}
+                    />
+                    <Route
+                      path="blog/itam-disposal-guide"
+                      element={<ITAMDisposalGuideBlog />}
+                    />
+                    <Route
+                      path="blog/data-hoarding-risks"
+                      element={<DataHoardingRisksBlog />}
+                    />
+                    <Route
+                      path="blog/shadow-data-risks"
+                      element={<ShadowDataRisksBlog />}
+                    />
+                    <Route
+                      path="blog/esg-data-erasure"
+                      element={<ESGDataErasureBlog />}
+                    />
+                    <Route
+                      path="blog/sustainable-it-reuse"
+                      element={<SustainableITReuseBlog />}
+                    />
+                    <Route
+                      path="blog/reduce-carbon-footprint"
+                      element={<CarbonFootprintErasureBlog />}
+                    />
+                    <Route
+                      path="blog/scope-3-emissions-reuse"
+                      element={<Scope3EmissionsBlog />}
+                    />
+                    <Route
+                      path="blog/erasure-verification-process"
+                      element={<ErasureVerificationBlog />}
+                    />
+                    <Route
+                      path="blog/hardware-diagnostics"
+                      element={<HardwareDiagnosticsBlog />}
+                    />
+                    <Route
+                      path="blog/data-minimization"
+                      element={<DataMinimizationBlog />}
+                    />
+                    <Route
+                      path="blog/government-device-theft"
+                      element={<GovDeviceTheftBlog />}
+                    />
+                    <Route
+                      path="blog/itad-selection-guide"
+                      element={<ITADSelectionGuideBlog />}
+                    />
+                    <Route
+                      path="blog/brand-reputation-esg"
+                      element={<BrandReputationESGBlog />}
+                    />
+                    <Route
+                      path="blog/msp-data-erasure"
+                      element={<MSPDataErasureBlog />}
+                    />
+                    <Route
+                      path="blog/cryptographic-erase-nist"
+                      element={<CryptographicEraseNISTBlog />}
+                    />
+                    <Route
+                      path="blog/secure-phi-erasure"
+                      element={<SecurePHIePHIErasureBlog />}
+                    />
+                    <Route
+                      path="blog/statutory-regulatory-compliance-data-erasure"
+                      element={<StatutoryRegulatoryComplianceDataErasureBlog />}
+                    />
+                    <Route
+                      path="blog/legal-ethical-data-erasure"
+                      element={<LegalEthicalDataErasureBlog />}
+                    />
+                    <Route
+                      path="blog/caption-call-fcc-settlement"
+                      element={<CaptionCallFCCSettlementBlog />}
+                    />
+                    <Route
+                      path="blog/hardware-diagnostics-itad-compliance"
+                      element={<HardwareDiagnosticsITADComplianceBlog />}
+                    />
+                    <Route
+                      path="blog/future-of-data-destruction"
+                      element={<FutureOfDataDestructionBlog />}
+                    />
+                    <Route
+                      path="blog/dod-vs-ieee-data-sanitization"
+                      element={<DoDVsIEEEDataSanitizationBlog />}
+                    />
+                    <Route
+                      path="blog/remote-work-data-erasure-best-practices"
+                      element={<RemoteWorkDataErasureBestPracticesBlog />}
+                    />
+                    <Route
+                      path="blog/ncua-third-party-data-disposal"
+                      element={<NCUAThirdPartyDataDisposalBlog />}
+                    />
+                    <Route
+                      path="blog/msp-erasure-as-a-service"
+                      element={<MSPErasureAsAServiceBlog />}
+                    />
+                    <Route
+                      path="blog/dell-data-wipe-vs-dsecure"
+                      element={<DellDataWipeVsDSecureBlog />}
+                    />
+                    <Route
+                      path="blog/common-criteria-certified-data-wiping"
+                      element={<CommonCriteriaCertifiedDataWipingBlog />}
+                    />
+                    <Route
+                      path="blog/erasure-as-a-service-dsecure"
+                      element={<ErasureAsAServiceDSecureBlog />}
+                    />
+                    <Route
+                      path="blog/returning-leased-it-hardware-dos-and-donts"
+                      element={<ReturningLeasedITHardwareDosAndDontsBlog />}
+                    />
+                    <Route
+                      path="blog/healthcare-ransomware-lessons"
+                      element={<HealthcareRansomwareLessonsBlog />}
+                    />
+                    <Route
+                      path="blog/mac-m1-erasure-known-issues"
+                      element={<MacM1ErasureKnownIssuesBlog />}
+                    />
+                    <Route
+                      path="blog/wipe-ssd-from-bios-guide"
+                      element={<WipeSSDFromBIOSGuideBlog />}
+                    />
+                    <Route
+                      path="blog/data-erasure-for-non-profits"
+                      element={<DataErasureForNonProfitsBlog />}
+                    />
+                    <Route
+                      path="blog/erase-mac-data-safely-using-dsecure"
+                      element={<EraseMacDataSafelyUsingDSecureBlog />}
+                    />
+                    <Route
+                      path="blog/erase-data-pc-laptop-desktop"
+                      element={<EraseDataPcLaptopDesktopBlog />}
+                    />
 
                     {/* Newly copied blog routes */}
-                    <Route path="blog/ccpa-violation" element={<CCPAViolationBlog />} />
-                    <Route path="blog/certified-itad-reasons" element={<CertifiedITADReasonsBlog />} />
-                    <Route path="blog/chain-of-custody" element={<ChainOfCustodyBlog />} />
-                    <Route path="blog/change-healthcare-attack" element={<ChangeHealthcareAttackBlog />} />
-                    <Route path="blog/chromebook-data-risks" element={<ChromebookDataRisksBlog />} />
-                    <Route path="blog/cloud-migration" element={<CloudMigrationBlog />} />
-                    <Route path="blog/common-criteria" element={<CommonCriteriaBlog />} />
-                    <Route path="blog/corporate-it-asset-risks" element={<CorporateITAssetRisksBlog />} />
-                    <Route path="blog/cryptographic-erase" element={<CryptographicEraseBlog />} />
-                    <Route path="blog/cybersecurity-data-destruction" element={<CybersecurityDataDestructionBlog />} />
-                    <Route path="blog/dsecure-operations" element={<DSecureOperationsBlog />} />
-                    <Route path="blog/dark-data-risks" element={<DarkDataRisksBlog />} />
-                    <Route path="blog/data-destruction-best-practices" element={<DataDestructionBestPracticesBlog />} />
-                    <Route path="blog/data-disposal-guidelines" element={<DataDisposalGuidelinesBlog />} />
-                    <Route path="blog/data-erasure-disaster-recovery" element={<DataErasureDisasterRecoveryBlog />} />
-                    <Route path="blog/data-erasure-myths" element={<DataErasureMythsBlog />} />
-                    <Route path="blog/data-hoarding" element={<DataHoardingBlog />} />
-                    <Route path="blog/data-privacy-obligations" element={<DataPrivacyObligationsBlog />} />
-                    <Route path="blog/data-remanence" element={<DataRemanenceBlog />} />
-                    <Route path="blog/data-remediation-erasure" element={<DataRemediationErasureBlog />} />
-                    <Route path="blog/data-retention-privacy" element={<DataRetentionPrivacyBlog />} />
-                    <Route path="blog/degaussing-risks" element={<DegaussingRisksBlog />} />
-                    <Route path="blog/deleted-files-truth" element={<DeletedFilesTruthBlog />} />
-                    <Route path="blog/deletion-vs-erasure" element={<DeletionVsErasureBlog />} />
-                    <Route path="blog/dell-data-wipe-alternative" element={<DellDataWipeAlternativeBlog />} />
-                    <Route path="blog/deployment-options" element={<DeploymentOptionsBlog />} />
-                    <Route path="blog/diagnostics-erasure-itad" element={<DiagnosticsErasureITADBlog />} />
-                    <Route path="blog/digital-divide" element={<DigitalDivideBlog />} />
-                    <Route path="blog/dod-vs-ieee" element={<DoDVsIEEEBlog />} />
-                    <Route path="blog/dod-wiping-standard" element={<DoDWipingStandardBlog />} />
-                    <Route path="blog/dumpster-diving-data-breach" element={<DumpsterDivingDataBreachBlog />} />
+                    <Route
+                      path="blog/ccpa-violation"
+                      element={<CCPAViolationBlog />}
+                    />
+                    <Route
+                      path="blog/certified-itad-reasons"
+                      element={<CertifiedITADReasonsBlog />}
+                    />
+                    <Route
+                      path="blog/chain-of-custody"
+                      element={<ChainOfCustodyBlog />}
+                    />
+                    <Route
+                      path="blog/change-healthcare-attack"
+                      element={<ChangeHealthcareAttackBlog />}
+                    />
+                    <Route
+                      path="blog/chromebook-data-risks"
+                      element={<ChromebookDataRisksBlog />}
+                    />
+                    <Route
+                      path="blog/cloud-migration"
+                      element={<CloudMigrationBlog />}
+                    />
+                    <Route
+                      path="blog/common-criteria"
+                      element={<CommonCriteriaBlog />}
+                    />
+                    <Route
+                      path="blog/corporate-it-asset-risks"
+                      element={<CorporateITAssetRisksBlog />}
+                    />
+                    <Route
+                      path="blog/cryptographic-erase"
+                      element={<CryptographicEraseBlog />}
+                    />
+                    <Route
+                      path="blog/cybersecurity-data-destruction"
+                      element={<CybersecurityDataDestructionBlog />}
+                    />
+                    <Route
+                      path="blog/dsecure-operations"
+                      element={<DSecureOperationsBlog />}
+                    />
+                    <Route
+                      path="blog/dark-data-risks"
+                      element={<DarkDataRisksBlog />}
+                    />
+                    <Route
+                      path="blog/data-destruction-best-practices"
+                      element={<DataDestructionBestPracticesBlog />}
+                    />
+                    <Route
+                      path="blog/data-disposal-guidelines"
+                      element={<DataDisposalGuidelinesBlog />}
+                    />
+                    <Route
+                      path="blog/data-erasure-disaster-recovery"
+                      element={<DataErasureDisasterRecoveryBlog />}
+                    />
+                    <Route
+                      path="blog/data-erasure-myths"
+                      element={<DataErasureMythsBlog />}
+                    />
+                    <Route
+                      path="blog/data-hoarding"
+                      element={<DataHoardingBlog />}
+                    />
+                    <Route
+                      path="blog/data-privacy-obligations"
+                      element={<DataPrivacyObligationsBlog />}
+                    />
+                    <Route
+                      path="blog/data-remanence"
+                      element={<DataRemanenceBlog />}
+                    />
+                    <Route
+                      path="blog/data-remediation-erasure"
+                      element={<DataRemediationErasureBlog />}
+                    />
+                    <Route
+                      path="blog/data-retention-privacy"
+                      element={<DataRetentionPrivacyBlog />}
+                    />
+                    <Route
+                      path="blog/degaussing-risks"
+                      element={<DegaussingRisksBlog />}
+                    />
+                    <Route
+                      path="blog/deleted-files-truth"
+                      element={<DeletedFilesTruthBlog />}
+                    />
+                    <Route
+                      path="blog/deletion-vs-erasure"
+                      element={<DeletionVsErasureBlog />}
+                    />
+                    <Route
+                      path="blog/dell-data-wipe-alternative"
+                      element={<DellDataWipeAlternativeBlog />}
+                    />
+                    <Route
+                      path="blog/deployment-options"
+                      element={<DeploymentOptionsBlog />}
+                    />
+                    <Route
+                      path="blog/diagnostics-erasure-itad"
+                      element={<DiagnosticsErasureITADBlog />}
+                    />
+                    <Route
+                      path="blog/digital-divide"
+                      element={<DigitalDivideBlog />}
+                    />
+                    <Route
+                      path="blog/dod-vs-ieee"
+                      element={<DoDVsIEEEBlog />}
+                    />
+                    <Route
+                      path="blog/dod-wiping-standard"
+                      element={<DoDWipingStandardBlog />}
+                    />
+                    <Route
+                      path="blog/dumpster-diving-data-breach"
+                      element={<DumpsterDivingDataBreachBlog />}
+                    />
                     <Route path="blog/esg-report" element={<ESGReportBlog />} />
                     <Route path="blog/eu-csrd" element={<EUCSRDBlog />} />
-                    <Route path="blog/education-data-destruction" element={<EducationDataDestructionBlog />} />
-                    <Route path="blog/end-of-life-data-security" element={<EndOfLifeDataSecurityBlog />} />
-                    <Route path="blog/financial-data-breach-case-study" element={<FinancialDataBreachCaseStudyBlog />} />
-                    <Route path="blog/free-vs-pro-eraser" element={<FreeVsProEraserBlog />} />
-                    <Route path="blog/future-data-destruction" element={<FutureDataDestructionBlog />} />
-                    <Route path="blog/gdpr-seven-years" element={<GDPRSevenYearsBlog />} />
-                    <Route path="blog/government-device-theft-case-study" element={<GovernmentDeviceTheftBlog />} />
-                    <Route path="blog/government-it-disposal" element={<GovernmentITDisposalBlog />} />
-                    <Route path="blog/green-it-practices" element={<GreenITPracticesBlog />} />
-                    <Route path="blog/hipaa-compliance-erasure" element={<HIPAAComplianceErasureBlog />} />
-                    <Route path="blog/healthcare-data-breach-case-study" element={<HealthcareDataBreachCaseStudyBlog />} />
+                    <Route
+                      path="blog/education-data-destruction"
+                      element={<EducationDataDestructionBlog />}
+                    />
+                    <Route
+                      path="blog/end-of-life-data-security"
+                      element={<EndOfLifeDataSecurityBlog />}
+                    />
+                    <Route
+                      path="blog/financial-data-breach-case-study"
+                      element={<FinancialDataBreachCaseStudyBlog />}
+                    />
+                    <Route
+                      path="blog/free-vs-pro-eraser"
+                      element={<FreeVsProEraserBlog />}
+                    />
+                    <Route
+                      path="blog/future-data-destruction"
+                      element={<FutureDataDestructionBlog />}
+                    />
+                    <Route
+                      path="blog/gdpr-seven-years"
+                      element={<GDPRSevenYearsBlog />}
+                    />
+                    <Route
+                      path="blog/government-device-theft-case-study"
+                      element={<GovernmentDeviceTheftBlog />}
+                    />
+                    <Route
+                      path="blog/government-it-disposal"
+                      element={<GovernmentITDisposalBlog />}
+                    />
+                    <Route
+                      path="blog/green-it-practices"
+                      element={<GreenITPracticesBlog />}
+                    />
+                    <Route
+                      path="blog/hipaa-compliance-erasure"
+                      element={<HIPAAComplianceErasureBlog />}
+                    />
+                    <Route
+                      path="blog/healthcare-data-breach-case-study"
+                      element={<HealthcareDataBreachCaseStudyBlog />}
+                    />
                     <Route path="blog/hex-viewer" element={<HexViewerBlog />} />
-                    <Route path="blog/hidden-disk-areas" element={<HiddenDiskAreasBlog />} />
-                    <Route path="blog/how-to-erase-mac" element={<HowToEraseMacBlog />} />
-                    <Route path="blog/ipad-tablet-erasure" element={<IPadTabletErasureBlog />} />
-                    <Route path="blog/itad-challenges" element={<ITADChallengesBlog />} />
-                    <Route path="blog/itad-environmental" element={<ITADEnvironmentalBlog />} />
-                    <Route path="blog/itad-market-growth" element={<ITADMarketGrowthBlog />} />
-                    <Route path="blog/itad-procurement" element={<ITADProcurementBlog />} />
-                    <Route path="blog/itam-data-breach" element={<ITAMDataBreachBlog />} />
-                    <Route path="blog/it-asset-lifecycle" element={<ITAssetLifecycleBlog />} />
-                    <Route path="blog/it-asset-reuse" element={<ITAssetReuseBlog />} />
-                    <Route path="blog/legal-ethical-erasure" element={<LegalEthicalErasureBlog />} />
-                    <Route path="blog/loose-drives-erasure-guide" element={<LooseDrivesErasureGuideBlog />} />
-                    <Route path="blog/m1-mac-erasure-issues" element={<M1MacErasureIssuesBlog />} />
-                    <Route path="blog/mdm-detection" element={<MDMDetectionBlog />} />
-                    <Route path="blog/msp-erasure-service" element={<MSPErasureServiceBlog />} />
-                    <Route path="blog/marriott-settlement" element={<MarriottSettlementBlog />} />
-                    <Route path="blog/media-sanitization-need" element={<MediaSanitizationNeedBlog />} />
-                    <Route path="blog/mobile-diagnostics-benefits" element={<MobileDiagnosticsBenefitsBlog />} />
-                    <Route path="blog/mobile-diagnostics-revolution" element={<MobileDiagnosticsRevolutionBlog />} />
-                    <Route path="blog/morgan-stanley-data-breach" element={<MorganStanleyDataBreachBlog />} />
-                    <Route path="blog/morgan-stanley-fine" element={<MorganStanleyFineBlog />} />
-                    <Route path="blog/ncua-guidelines" element={<NCUAGuidelinesBlog />} />
-                    <Route path="blog/nist-clear-purge" element={<NISTClearPurgeBlog />} />
-                    <Route path="blog/nist-tested-erasure-software" element={<NISTTestedErasureSoftwareBlog />} />
-                    <Route path="blog/nist-vs-ieee" element={<NISTVsIEEEBlog />} />
-                    <Route path="blog/onsite-vs-offsite-destruction" element={<OnsiteVsOffsiteDestructionBlog />} />
-                    <Route path="blog/phi-erasure" element={<PHIErasureBlog />} />
-                    <Route path="blog/pii-disposal-breach" element={<PIIDisposalBreachBlog />} />
-                    <Route path="blog/post-covid-data-disposal" element={<PostCovidDataDisposalBlog />} />
-                    <Route path="blog/private-cloud" element={<PrivateCloudBlog />} />
-                    <Route path="blog/remote-wiping-software" element={<RemoteWipingSoftwareBlog />} />
-                    <Route path="blog/remote-work-data-erasure" element={<RemoteWorkDataErasureBlog />} />
-                    <Route path="blog/reseller-profits" element={<ResellerProfitsBlog />} />
-                    <Route path="blog/right-to-repair" element={<RightToRepairBlog />} />
-                    <Route path="blog/ssd-wipe-bios" element={<SSDWipeBIOSBlog />} />
-                    <Route path="blog/secure-file-erase" element={<SecureFileEraseBlog />} />
-                    <Route path="blog/secure-hdd-disposal" element={<SecureHDDDisposalBlog />} />
-                    <Route path="blog/secure-it-asset-disposal" element={<SecureITAssetDisposalBlog />} />
-                    <Route path="blog/secure-smartphone-erasure" element={<SecureSmartphoneErasureBlog />} />
-                    <Route path="blog/server-erasure" element={<ServerErasureBlog />} />
-                    <Route path="blog/shadow-data" element={<ShadowDataBlog />} />
-                    <Route path="blog/statutory-compliance" element={<StatutoryComplianceBlog />} />
-                    <Route path="blog/ultratest-comparison" element={<UltratestComparisonBlog />} />
+                    <Route
+                      path="blog/hidden-disk-areas"
+                      element={<HiddenDiskAreasBlog />}
+                    />
+                    <Route
+                      path="blog/how-to-erase-mac"
+                      element={<HowToEraseMacBlog />}
+                    />
+                    <Route
+                      path="blog/ipad-tablet-erasure"
+                      element={<IPadTabletErasureBlog />}
+                    />
+                    <Route
+                      path="blog/itad-challenges"
+                      element={<ITADChallengesBlog />}
+                    />
+                    <Route
+                      path="blog/itad-environmental"
+                      element={<ITADEnvironmentalBlog />}
+                    />
+                    <Route
+                      path="blog/itad-market-growth"
+                      element={<ITADMarketGrowthBlog />}
+                    />
+                    <Route
+                      path="blog/itad-procurement"
+                      element={<ITADProcurementBlog />}
+                    />
+                    <Route
+                      path="blog/itam-data-breach"
+                      element={<ITAMDataBreachBlog />}
+                    />
+                    <Route
+                      path="blog/it-asset-lifecycle"
+                      element={<ITAssetLifecycleBlog />}
+                    />
+                    <Route
+                      path="blog/it-asset-reuse"
+                      element={<ITAssetReuseBlog />}
+                    />
+                    <Route
+                      path="blog/legal-ethical-erasure"
+                      element={<LegalEthicalErasureBlog />}
+                    />
+                    <Route
+                      path="blog/loose-drives-erasure-guide"
+                      element={<LooseDrivesErasureGuideBlog />}
+                    />
+                    <Route
+                      path="blog/m1-mac-erasure-issues"
+                      element={<M1MacErasureIssuesBlog />}
+                    />
+                    <Route
+                      path="blog/mdm-detection"
+                      element={<MDMDetectionBlog />}
+                    />
+                    <Route
+                      path="blog/msp-erasure-service"
+                      element={<MSPErasureServiceBlog />}
+                    />
+                    <Route
+                      path="blog/marriott-settlement"
+                      element={<MarriottSettlementBlog />}
+                    />
+                    <Route
+                      path="blog/media-sanitization-need"
+                      element={<MediaSanitizationNeedBlog />}
+                    />
+                    <Route
+                      path="blog/mobile-diagnostics-benefits"
+                      element={<MobileDiagnosticsBenefitsBlog />}
+                    />
+                    <Route
+                      path="blog/mobile-diagnostics-revolution"
+                      element={<MobileDiagnosticsRevolutionBlog />}
+                    />
+                    <Route
+                      path="blog/morgan-stanley-data-breach"
+                      element={<MorganStanleyDataBreachBlog />}
+                    />
+                    <Route
+                      path="blog/morgan-stanley-fine"
+                      element={<MorganStanleyFineBlog />}
+                    />
+                    <Route
+                      path="blog/ncua-guidelines"
+                      element={<NCUAGuidelinesBlog />}
+                    />
+                    <Route
+                      path="blog/nist-clear-purge"
+                      element={<NISTClearPurgeBlog />}
+                    />
+                    <Route
+                      path="blog/nist-tested-erasure-software"
+                      element={<NISTTestedErasureSoftwareBlog />}
+                    />
+                    <Route
+                      path="blog/nist-vs-ieee"
+                      element={<NISTVsIEEEBlog />}
+                    />
+                    <Route
+                      path="blog/onsite-vs-offsite-destruction"
+                      element={<OnsiteVsOffsiteDestructionBlog />}
+                    />
+                    <Route
+                      path="blog/phi-erasure"
+                      element={<PHIErasureBlog />}
+                    />
+                    <Route
+                      path="blog/pii-disposal-breach"
+                      element={<PIIDisposalBreachBlog />}
+                    />
+                    <Route
+                      path="blog/post-covid-data-disposal"
+                      element={<PostCovidDataDisposalBlog />}
+                    />
+                    <Route
+                      path="blog/private-cloud"
+                      element={<PrivateCloudBlog />}
+                    />
+                    <Route
+                      path="blog/remote-wiping-software"
+                      element={<RemoteWipingSoftwareBlog />}
+                    />
+                    <Route
+                      path="blog/remote-work-data-erasure"
+                      element={<RemoteWorkDataErasureBlog />}
+                    />
+                    <Route
+                      path="blog/reseller-profits"
+                      element={<ResellerProfitsBlog />}
+                    />
+                    <Route
+                      path="blog/right-to-repair"
+                      element={<RightToRepairBlog />}
+                    />
+                    <Route
+                      path="blog/ssd-wipe-bios"
+                      element={<SSDWipeBIOSBlog />}
+                    />
+                    <Route
+                      path="blog/secure-file-erase"
+                      element={<SecureFileEraseBlog />}
+                    />
+                    <Route
+                      path="blog/secure-hdd-disposal"
+                      element={<SecureHDDDisposalBlog />}
+                    />
+                    <Route
+                      path="blog/secure-it-asset-disposal"
+                      element={<SecureITAssetDisposalBlog />}
+                    />
+                    <Route
+                      path="blog/secure-smartphone-erasure"
+                      element={<SecureSmartphoneErasureBlog />}
+                    />
+                    <Route
+                      path="blog/server-erasure"
+                      element={<ServerErasureBlog />}
+                    />
+                    <Route
+                      path="blog/shadow-data"
+                      element={<ShadowDataBlog />}
+                    />
+                    <Route
+                      path="blog/statutory-compliance"
+                      element={<StatutoryComplianceBlog />}
+                    />
+                    <Route
+                      path="blog/ultratest-comparison"
+                      element={<UltratestComparisonBlog />}
+                    />
                     <Route path="blog/vm-erasure" element={<VMErasureBlog />} />
-                    <Route path="blog/windows-10-eos" element={<Windows10EOSBlog />} />
-                    <Route path="blog/wipe-computer-donating" element={<WipeComputerDonatingBlog />} />
-                    <Route path="blog/world-class-nps" element={<WorldClassNPSBlog />} />
-                    <Route path="blog/caption-call-settlement" element={<CaptionCallSettlementBlog />} />
+                    <Route
+                      path="blog/windows-10-eos"
+                      element={<Windows10EOSBlog />}
+                    />
+                    <Route
+                      path="blog/wipe-computer-donating"
+                      element={<WipeComputerDonatingBlog />}
+                    />
+                    <Route
+                      path="blog/world-class-nps"
+                      element={<WorldClassNPSBlog />}
+                    />
+                    <Route
+                      path="blog/caption-call-settlement"
+                      element={<CaptionCallSettlementBlog />}
+                    />
 
                     <Route path="privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="legal-policy" element={<LegalPolicy />} />

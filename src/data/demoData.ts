@@ -300,7 +300,13 @@ export const DEMO_PERFORMANCE_DATA = {
   ],
   successRate: '99.2%',
   successCount: 156,
-  failureCount: 2
+  failureCount: 2,
+  methodMetrics: [
+    { methodName: 'DoD 5220.22-M', count: 85, successRate: 98.5, avgDuration: '2h 15m' },
+    { methodName: 'NIST 800-88', count: 42, successRate: 100, avgDuration: '1h 45m' },
+    { methodName: 'Gutmann', count: 18, successRate: 94.4, avgDuration: '4h 30m' },
+    { methodName: 'Secure Erase', count: 13, successRate: 100, avgDuration: '0h 45m' }
+  ]
 }
 
 // Demo Audit Reports - Detailed for AdminReports page

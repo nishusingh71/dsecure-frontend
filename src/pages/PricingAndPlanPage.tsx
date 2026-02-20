@@ -560,6 +560,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
       imageCategory: "drive-eraser",
       version: "V1.0.0.0 Enterprise",
       basePrice: 20,
+      originalPrice: 40,
+      discountPercentage: "50% OFF",
       selectionLabel: "Number of Licenses:",
       selectionNote: "(Pay Per Use)",
       options: [
@@ -583,6 +585,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
       imageCategory: "file-eraser",
       version: "Professional",
       basePrice: 40,
+      originalPrice: 60,
+      discountPercentage: "33% OFF",
       selectionLabel: "Number of Licenses:",
       selectionNote: "(Pay Per License)",
       options: [
@@ -1046,9 +1050,31 @@ const PricingAndPlanPage: React.FC = memo(() => {
             <div className="lg:col-span-1">
               <div className="bg-gradient-to-br from-white to-blue-50 rounded-2xl p-6 xs:p-8 sm:p-8 shadow-xl border-2 border-blue-100 lg:sticky lg:top-8">
                 {/* Price Display */}
-                <div className="text-center mb-6 xs:mb-8 sm:mb-8">
-                  <div className="text-3xl xs:text-4xl sm:text-5xl md:text-5xl font-bold bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent mb-2 xs:mb-3 sm:mb-3">
-                    {getDisplayPrice()}
+                <div className="text-center mb-6 xs:mb-8 sm:mb-8 relative">
+                  {/* Early Bird Offer Label */}
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-md animate-bounce whitespace-nowrap">
+                    Early Bird Offer - {getCurrentProduct().discountPercentage}
+                  </div>
+
+                  <div className="flex flex-col items-center justify-center mb-2">
+                    {selectedLicenses !== "custom" &&
+                      selectedPlan !== "custom" && (
+                        <div className="text-gray-400 text-lg line-through mb-1">
+                          $
+                          {(
+                            getCurrentProduct().originalPrice *
+                            (selectedLicenses === "custom"
+                              ? 0
+                              : parseInt(selectedLicenses)) *
+                            (selectedCategory === "file-eraser"
+                              ? parseInt(selectedYears)
+                              : 1)
+                          ).toFixed(2)}
+                        </div>
+                      )}
+                    <div className="text-3xl xs:text-4xl sm:text-5xl md:text-5xl font-bold bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent">
+                      {getDisplayPrice()}
+                    </div>
                   </div>
                   <div className="text-sm text-teal-500 font-semibold bg-teal-50 px-3 py-1 rounded-full inline-block mb-2">
                     {getPriceSubtitle()}

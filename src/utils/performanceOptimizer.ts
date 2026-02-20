@@ -2,12 +2,7 @@ import React from 'react';
 
 // Performance optimization utilities
 export const preloadCriticalResources = () => {
-  // Load fonts directly instead of preloading
-  const fontLink = document.createElement('link');
-  fontLink.rel = 'stylesheet';
-  fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
-  fontLink.crossOrigin = 'anonymous';
-  document.head.appendChild(fontLink);
+  // Fonts are now preloaded/linked in index.html for better performance
 };
 
 // Optimize images with WebP support

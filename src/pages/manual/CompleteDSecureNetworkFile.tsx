@@ -137,8 +137,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "This user guide contains steps to assist you through various functions of DSecure File Eraser Network. Each function is explained in detail in the corresponding sections.",
+            text: "This user guide contains steps to assist you through various functions of DSecure File Eraser Network. Each function is explained in detail in the corresponding sections.",
           },
           {
             type: "bullets",
@@ -188,18 +187,15 @@ const sections: Section[] = [
           },
           {
             type: "step",
-            text:
-              "Double-click the DSecureFileEraserNetwork.exe to launch setup, accept the license, choose destination, and additional tasks.",
+            text: "Double-click the DSecureFileEraserNetwork.exe to launch setup, accept the license, choose destination, and additional tasks.",
           },
           {
             type: "step",
-            text:
-              "Download & install MariaDB (set Root Password) or use Skip if already installed.",
+            text: "Download & install MariaDB (set Root Password) or use Skip if already installed.",
           },
           {
             type: "step",
-            text:
-              "Complete the wizard and click Finish (uncheck “Launch app” if you don’t want to open immediately).",
+            text: "Complete the wizard and click Finish (uncheck “Launch app” if you don’t want to open immediately).",
           },
         ],
       },
@@ -209,13 +205,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Home, Tools, Help, Buy Now, and Activation ribbons. Home includes Connect Domain, Reports, Schedule Task, Settings, Connect to Cloud, and Search.",
+            text: "Home, Tools, Help, Buy Now, and Activation ribbons. Home includes Connect Domain, Reports, Schedule Task, Settings, Connect to Cloud, and Search.",
           },
           {
             type: "img",
-            alt:
-              "UI overview (if you need to place an image, map its URL in `src`)",
+            alt: "UI overview (if you need to place an image, map its URL in `src`)",
           },
         ],
       },
@@ -247,8 +241,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Purchase via the Buy Now ribbon → Buy Online. After order confirmation, you receive an Activation Key via email.",
+            text: "Purchase via the Buy Now ribbon → Buy Online. After order confirmation, you receive an Activation Key via email.",
           },
         ],
       },
@@ -271,13 +264,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Online: Activation ribbon → Add Licenses → enter Activation Key → Activate.",
+            text: "Online: Activation ribbon → Add Licenses → enter Activation Key → Activate.",
           },
           {
             type: "step",
-            text:
-              "Offline: Get Registration ID → email support → receive License Key → Activate.",
+            text: "Offline: Get Registration ID → email support → receive License Key → Activate.",
           },
         ],
       },
@@ -287,8 +278,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "View pools, activation/expiry, used/available counts. Deactivate computers or extend validity as needed.",
+            text: "View pools, activation/expiry, used/available counts. Deactivate computers or extend validity as needed.",
           },
         ],
       },
@@ -299,13 +289,11 @@ const sections: Section[] = [
           { type: "step", text: "Activation → Manage Licenses." },
           {
             type: "step",
-            text:
-              "Select a pool → View Computers → choose a computer → Deactivate License.",
+            text: "Select a pool → View Computers → choose a computer → Deactivate License.",
           },
           {
             type: "note",
-            text:
-              "You can save the updated list as CSV after deactivation.",
+            text: "You can save the updated list as CSV after deactivation.",
           },
         ],
       },
@@ -315,8 +303,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Pools expiring soon are highlighted. Extend validity using a new Activation Key. Behavior differs if additional, equal, or fewer licenses are purchased.",
+            text: "Pools expiring soon are highlighted. Extend validity using a new Activation Key. Behavior differs if additional, equal, or fewer licenses are purchased.",
           },
         ],
       },
@@ -340,13 +327,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Home → Settings → General. Select Network Connection Status check, choose Erasure Algorithm and Verification Method.",
+            text: "Home → Settings → General. Select Network Connection Status check, choose Erasure Algorithm and Verification Method.",
           },
           {
             type: "step",
-            text:
-              "Toggle Confirm to Proceed and Show File Size in Details Pane as needed.",
+            text: "Toggle Confirm to Proceed and Show File Size in Details Pane as needed.",
           },
         ],
       },
@@ -388,13 +373,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Settings → Ignore File List → Add file types (.pdf etc.), file names, or folder names you want to exclude from erasure.",
+            text: "Settings → Ignore File List → Add file types (.pdf etc.), file names, or folder names you want to exclude from erasure.",
           },
           {
             type: "note",
-            text:
-              "Use Remove Items to take entries out of the ignore list.",
+            text: "Use Remove Items to take entries out of the ignore list.",
           },
         ],
       },
@@ -404,8 +387,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Automatic or manual updates via Tools → Update Wizard. Disable auto-check at startup if desired.",
+            text: "Automatic or manual updates via Tools → Update Wizard. Disable auto-check at startup if desired.",
           },
           {
             type: "bullets",
@@ -447,13 +429,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Only domain administrators can access and run erasures. D-Secure aligns with AD and lists OUs and computers.",
+            text: "Only domain administrators can access and run erasures. D-Secure aligns with AD and lists OUs and computers.",
           },
           {
             type: "note",
-            text:
-              "You can skip network check; disconnected machines are listed but cannot be erased until reconnected.",
+            text: "You can skip network check; disconnected machines are listed but cannot be erased until reconnected.",
           },
         ],
       },
@@ -463,8 +443,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Home → Connect to Cloud → enter User ID & Password (URL prefilled).",
+            text: "Home → Connect to Cloud → enter User ID & Password (URL prefilled).",
           },
           { type: "step", text: "Click Login → status changes to Connected." },
         ],
@@ -475,18 +454,15 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Connect domain → select computer → Erase Files & Folders.",
+            text: "Connect domain → select computer → Erase Files & Folders.",
           },
           {
             type: "step",
-            text:
-              "Optionally adjust Settings (algorithm/verification), select items, click Erase Data, confirm.",
+            text: "Optionally adjust Settings (algorithm/verification), select items, click Erase Data, confirm.",
           },
           {
             type: "step",
-            text:
-              "View progress → Process Completed with Erasure Summary.",
+            text: "View progress → Process Completed with Erasure Summary.",
           },
         ],
       },
@@ -496,15 +472,13 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Select computer → Erase Traces → Settings → pick categories (Internet, Application, System).",
+            text: "Select computer → Erase Traces → Settings → pick categories (Internet, Application, System).",
           },
           { type: "step", text: "Click Scan → review results → select items." },
           { type: "step", text: "Click Erase Traces → confirm → complete." },
           {
             type: "note",
-            text:
-              "Close running applications before erasure for best results.",
+            text: "Close running applications before erasure for best results.",
           },
         ],
       },
@@ -514,8 +488,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Predefine tasks (Once/Daily/Weekly/Monthly/Every Boot) to erase traces or files/folders.",
+            text: "Predefine tasks (Once/Daily/Weekly/Monthly/Every Boot) to erase traces or files/folders.",
           },
         ],
       },
@@ -525,18 +498,15 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Home → Schedule Task (Erase Traces tab). Choose frequency, date/time → Next.",
+            text: "Home → Schedule Task (Erase Traces tab). Choose frequency, date/time → Next.",
           },
           {
             type: "step",
-            text:
-              "Select OU & Computer → Save. Task Status appears (export CSV if needed).",
+            text: "Select OU & Computer → Save. Task Status appears (export CSV if needed).",
           },
           {
             type: "note",
-            text:
-              "Uncheck 'Show erasure activity...' for silent execution.",
+            text: "Uncheck 'Show erasure activity...' for silent execution.",
           },
         ],
       },
@@ -546,13 +516,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Open Schedule Task → select task in summary → Edit or Delete.",
+            text: "Open Schedule Task → select task in summary → Edit or Delete.",
           },
           {
             type: "step",
-            text:
-              "Choose computers/OU → Next (for edit) or Delete (to remove). Review Task Status and save CSV.",
+            text: "Choose computers/OU → Next (for edit) or Delete (to remove). Review Task Status and save CSV.",
           },
         ],
       },
@@ -562,8 +530,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Create, edit, or delete scheduled tasks to erase the selected file/folder paths.",
+            text: "Create, edit, or delete scheduled tasks to erase the selected file/folder paths.",
           },
         ],
       },
@@ -573,23 +540,19 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Schedule Task → Erase Files & Folders tab → New Task → Task Name.",
+            text: "Schedule Task → Erase Files & Folders tab → New Task → Task Name.",
           },
           {
             type: "step",
-            text:
-              "Add Path(s) under Choose Items. Add multiple paths as needed.",
+            text: "Add Path(s) under Choose Items. Add multiple paths as needed.",
           },
           {
             type: "note",
-            text:
-              "If two computers share same path but you only want one deleted, create separate tasks.",
+            text: "If two computers share same path but you only want one deleted, create separate tasks.",
           },
           {
             type: "step",
-            text:
-              "Select frequency (Once/Daily/Weekly/Monthly/Every Boot), set Start From date/time.",
+            text: "Select frequency (Once/Daily/Weekly/Monthly/Every Boot), set Start From date/time.",
           },
           {
             type: "step",
@@ -603,13 +566,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Schedule Task → Erase Files & Folders → Existing Task → choose task → Edit.",
+            text: "Schedule Task → Erase Files & Folders → Existing Task → choose task → Edit.",
           },
           {
             type: "step",
-            text:
-              "Adjust OUs/computers, frequency, and start time → OK → Task Status.",
+            text: "Adjust OUs/computers, frequency, and start time → OK → Task Status.",
           },
         ],
       },
@@ -619,13 +580,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Schedule Task → Erase Files & Folders → Existing Task → select task → Delete → confirm list → Delete.",
+            text: "Schedule Task → Erase Files & Folders → Existing Task → select task → Delete → confirm list → Delete.",
           },
           {
             type: "step",
-            text:
-              "Review Task Status (export CSV) → confirmation dialog appears.",
+            text: "Review Task Status (export CSV) → confirmation dialog appears.",
           },
         ],
       },
@@ -635,8 +594,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "Reports show successful/failed processes. Filter/sort, preview, export, send to cloud, and customize settings.",
+            text: "Reports show successful/failed processes. Filter/sort, preview, export, send to cloud, and customize settings.",
           },
         ],
       },
@@ -646,13 +604,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "step",
-            text:
-              "Home → Reports → set date range and type filter (All / Erase Traces / Erase Files & Folders).",
+            text: "Home → Reports → set date range and type filter (All / Erase Traces / Erase Files & Folders).",
           },
           {
             type: "step",
-            text:
-              "Sort columns; Action tab offers Preview and Send to Cloud; Save exports PDF/XML.",
+            text: "Sort columns; Action tab offers Preview and Send to Cloud; Save exports PDF/XML.",
           },
         ],
       },
@@ -663,8 +619,7 @@ const sections: Section[] = [
           { type: "step", text: "Action → Preview (one at a time)." },
           {
             type: "step",
-            text:
-              "Select the report → Save → choose PDF or XML → pick location → Save.",
+            text: "Select the report → Save → choose PDF or XML → pick location → Save.",
           },
         ],
       },
@@ -674,13 +629,11 @@ const sections: Section[] = [
         blocks: [
           {
             type: "note",
-            text:
-              "Ensure you are logged into D-Secure Cloud before sending.",
+            text: "Ensure you are logged into D-Secure Cloud before sending.",
           },
           {
             type: "step",
-            text:
-              "Click Send to Cloud on the report → a Report ID is generated and uploaded to Cloud Console.",
+            text: "Click Send to Cloud on the report → a Report ID is generated and uploaded to Cloud Console.",
           },
         ],
       },
@@ -699,8 +652,7 @@ const sections: Section[] = [
           },
           {
             type: "note",
-            text:
-              "Size must match exactly; else previous images remain. Reset restores defaults. Changes reflect on newly generated reports.",
+            text: "Size must match exactly; else previous images remain. Reset restores defaults. Changes reflect on newly generated reports.",
           },
         ],
       },
@@ -720,9 +672,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "D-Secure File Eraser Network is a comprehensive data erasure solution for network environments. It allows IT administrators to permanently erase files, folders, and digital traces from multiple networked computers simultaneously from a central console. The software uses advanced overwriting algorithms to ensure that deleted data cannot be recovered, even with sophisticated data recovery tools."
-          }
-        ]
+            text: "D-Secure File Eraser Network is a comprehensive data erasure solution for network environments. It allows IT administrators to permanently erase files, folders, and digital traces from multiple networked computers simultaneously from a central console. The software uses advanced overwriting algorithms to ensure that deleted data cannot be recovered, even with sophisticated data recovery tools.",
+          },
+        ],
       },
       {
         id: "faq-2",
@@ -730,9 +682,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Yes, absolutely. When you use D-Secure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations."
-          }
-        ]
+            text: "Yes, absolutely. When you use D-Secure File Eraser Network with regulated erasure algorithms, the data is permanently destroyed and cannot be recovered. The software overwrites data multiple times with random patterns, making recovery impossible even with specialized forensic tools. All erasure standards used (DoD 5220.22-M, NIST 800-88, Gutmann, etc.) are industry-recognized and comply with international data destruction regulations.",
+          },
+        ],
       },
       {
         id: "faq-3",
@@ -740,19 +692,20 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "The choice depends on your security requirements and available time. For most business use: DoD 5220.22-M (3 passes) or DoD 7-pass provides excellent security with reasonable speed. For highly sensitive government or military data: Use Gutmann (35 passes) or DoD 7-pass for maximum security. For compliance with modern standards: NIST 800-88 Clear is recommended. For quick internal cleanups: 1-pass Zeroes is sufficient. Higher pass counts increase security but also increase the time required for erasure."
-          }
-        ]
+            text: "The choice depends on your security requirements and available time. For most business use: DoD 5220.22-M (3 passes) or DoD 7-pass provides excellent security with reasonable speed. For highly sensitive government or military data: Use Gutmann (35 passes) or DoD 7-pass for maximum security. For compliance with modern standards: NIST 800-88 Clear is recommended. For quick internal cleanups: 1-pass Zeroes is sufficient. Higher pass counts increase security but also increase the time required for erasure.",
+          },
+        ],
       },
       {
         id: "faq-4",
-        title: "Why are administrator credentials required for domain connection?",
+        title:
+          "Why are administrator credentials required for domain connection?",
         blocks: [
           {
             type: "p",
-            text: "Administrator credentials are necessary because D-Secure File Eraser Network needs elevated permissions to access remote computers on the network, read their file systems, and perform permanent erasure operations. Only domain administrators have the necessary rights to execute these operations across multiple computers. This security measure prevents unauthorized users from erasing data on network computers."
-          }
-        ]
+            text: "Administrator credentials are necessary because D-Secure File Eraser Network needs elevated permissions to access remote computers on the network, read their file systems, and perform permanent erasure operations. Only domain administrators have the necessary rights to execute these operations across multiple computers. This security measure prevents unauthorized users from erasing data on network computers.",
+          },
+        ],
       },
       {
         id: "faq-5",
@@ -760,9 +713,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "It's recommended to check network connection status before scheduling erasure tasks. This ensures that computers are online and accessible. However, you can skip this check if you're scheduling tasks for later execution. Offline computers will appear in the list but cannot be erased until they're reconnected to the network. The software automatically handles reconnections for scheduled tasks."
-          }
-        ]
+            text: "It's recommended to check network connection status before scheduling erasure tasks. This ensures that computers are online and accessible. However, you can skip this check if you're scheduling tasks for later execution. Offline computers will appear in the list but cannot be erased until they're reconnected to the network. The software automatically handles reconnections for scheduled tasks.",
+          },
+        ],
       },
       {
         id: "faq-6",
@@ -770,9 +723,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "This can happen for several reasons: the computer was turned off or went to sleep mode, network connectivity was lost, the computer was removed from the domain, firewall settings were changed to block access, or the user's session credentials expired. Check the computer's power status, network connection, and domain membership. If the issue persists, verify firewall rules and refresh your domain connection in the application."
-          }
-        ]
+            text: "This can happen for several reasons: the computer was turned off or went to sleep mode, network connectivity was lost, the computer was removed from the domain, firewall settings were changed to block access, or the user's session credentials expired. Check the computer's power status, network connection, and domain membership. If the issue persists, verify firewall rules and refresh your domain connection in the application.",
+          },
+        ],
       },
       {
         id: "faq-7",
@@ -780,19 +733,20 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "D-Secure File Eraser Network is specifically designed for domain environments and requires Active Directory integration. For standalone computers not joined to a domain, you would need to use the standalone version of D-Secure File Eraser. The network version relies on domain infrastructure for authentication, computer discovery, and remote access."
-          }
-        ]
+            text: "D-Secure File Eraser Network is specifically designed for domain environments and requires Active Directory integration. For standalone computers not joined to a domain, you would need to use the standalone version of D-Secure File Eraser. The network version relies on domain infrastructure for authentication, computer discovery, and remote access.",
+          },
+        ],
       },
       {
         id: "faq-8",
-        title: "If a computer disconnects after scheduling a task, will the task still run?",
+        title:
+          "If a computer disconnects after scheduling a task, will the task still run?",
         blocks: [
           {
             type: "p",
-            text: "Scheduled tasks are stored on each individual computer, not centrally. If a computer is offline when the scheduled time arrives, the task will execute when the computer comes back online (for tasks like 'Every Boot') or will be skipped for time-specific tasks. It's best practice to ensure computers remain connected for scheduled erasure tasks to execute as planned."
-          }
-        ]
+            text: "Scheduled tasks are stored on each individual computer, not centrally. If a computer is offline when the scheduled time arrives, the task will execute when the computer comes back online (for tasks like 'Every Boot') or will be skipped for time-specific tasks. It's best practice to ensure computers remain connected for scheduled erasure tasks to execute as planned.",
+          },
+        ],
       },
       {
         id: "faq-9",
@@ -800,9 +754,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Use the offline activation method: Generate a Registration ID from the application, email it to techsupport@dsecuretech.com along with your Activation Key, receive a License Key file from support (usually within one business day), and import the License Key file into the application to complete activation. See the Licensing section for detailed step-by-step instructions."
-          }
-        ]
+            text: "Use the offline activation method: Generate a Registration ID from the application, email it to techsupport@dsecuretech.com along with your Activation Key, receive a License Key file from support (usually within one business day), and import the License Key file into the application to complete activation. See the Licensing section for detailed step-by-step instructions.",
+          },
+        ],
       },
       {
         id: "faq-10",
@@ -810,9 +764,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Go to Activation → Manage Licenses. License pools that are expiring soon are highlighted with warning colors in the list. The interface shows the exact expiry date for each pool. You can sort by expiry date to see which licenses need renewal first. It's recommended to set calendar reminders 30 days before expiration."
-          }
-        ]
+            text: "Go to Activation → Manage Licenses. License pools that are expiring soon are highlighted with warning colors in the list. The interface shows the exact expiry date for each pool. You can sort by expiry date to see which licenses need renewal first. It's recommended to set calendar reminders 30 days before expiration.",
+          },
+        ],
       },
       {
         id: "faq-11",
@@ -820,9 +774,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Yes, absolutely. When you click Erase Traces → Settings, you can choose exactly which types of internet activity to erase for each installed browser. Options include browsing history, cache, cookies, download history, saved passwords, form data, and more. You can also select specific browsers (Chrome, Firefox, Edge, etc.) rather than erasing traces from all browsers."
-          }
-        ]
+            text: "Yes, absolutely. When you click Erase Traces → Settings, you can choose exactly which types of internet activity to erase for each installed browser. Options include browsing history, cache, cookies, download history, saved passwords, form data, and more. You can also select specific browsers (Chrome, Firefox, Edge, etc.) rather than erasing traces from all browsers.",
+          },
+        ],
       },
       {
         id: "faq-12",
@@ -830,9 +784,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Some system traces may persist if: applications are currently running and have locked access to their trace files, you don't have sufficient permissions to erase certain system files, Windows is actively using the files, or the files are recreated immediately after erasure by running processes. Close all applications before erasing traces and ensure you have administrator privileges for best results."
-          }
-        ]
+            text: "Some system traces may persist if: applications are currently running and have locked access to their trace files, you don't have sufficient permissions to erase certain system files, Windows is actively using the files, or the files are recreated immediately after erasure by running processes. Close all applications before erasing traces and ensure you have administrator privileges for best results.",
+          },
+        ],
       },
       {
         id: "faq-13",
@@ -840,9 +794,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Yes, use the Ignore File List feature. Go to Home → Settings → Ignore File List. Here you can add file types (extensions like .pdf, .docx), specific file names, or entire folder names. Any items matching the ignore list will automatically be skipped during erasure operations, even if they're selected. This protects critical files from accidental deletion."
-          }
-        ]
+            text: "Yes, use the Ignore File List feature. Go to Home → Settings → Ignore File List. Here you can add file types (extensions like .pdf, .docx), specific file names, or entire folder names. Any items matching the ignore list will automatically be skipped during erasure operations, even if they're selected. This protects critical files from accidental deletion.",
+          },
+        ],
       },
       {
         id: "faq-14",
@@ -850,9 +804,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "No, each scheduled task must have a unique name. The software prevents duplicate task names to avoid confusion and management issues. Choose descriptive names like 'Daily Temp File Cleanup - Sales Dept' or 'Weekly Browser History Erasure - Legal' to clearly identify each task's purpose and scope."
-          }
-        ]
+            text: "No, each scheduled task must have a unique name. The software prevents duplicate task names to avoid confusion and management issues. Choose descriptive names like 'Daily Temp File Cleanup - Sales Dept' or 'Weekly Browser History Erasure - Legal' to clearly identify each task's purpose and scope.",
+          },
+        ],
       },
       {
         id: "faq-15",
@@ -860,9 +814,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Go to Home → Settings → General Settings. Uncheck the option 'Confirm to Proceed' or 'Show Confirmation Dialog'. After disabling, erasure operations will begin immediately when you click the Erase button without showing a confirmation prompt. Use this feature only if you're confident in your selections, as it removes the final safety check."
-          }
-        ]
+            text: "Go to Home → Settings → General Settings. Uncheck the option 'Confirm to Proceed' or 'Show Confirmation Dialog'. After disabling, erasure operations will begin immediately when you click the Erase button without showing a confirmation prompt. Use this feature only if you're confident in your selections, as it removes the final safety check.",
+          },
+        ],
       },
       {
         id: "faq-16",
@@ -870,9 +824,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Yes. Go to Activation → Manage Licenses, select the license pool, click View Computers, select the computer you want to deactivate, and click Deactivate License. This frees up one license in the pool that can be used to activate another computer. This is useful when replacing computers or redistributing licenses across your organization."
-          }
-        ]
+            text: "Yes. Go to Activation → Manage Licenses, select the license pool, click View Computers, select the computer you want to deactivate, and click Deactivate License. This frees up one license in the pool that can be used to activate another computer. This is useful when replacing computers or redistributing licenses across your organization.",
+          },
+        ],
       },
       {
         id: "faq-17",
@@ -880,9 +834,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Erasure reports are automatically generated after every erasure operation. Access them by clicking Home → Reports. You can filter reports by date range and type (Erase Files & Folders or Erase Traces). Each report includes details like computer name, files erased, algorithm used, time taken, success/failure counts, and a unique Report ID for tracking."
-          }
-        ]
+            text: "Erasure reports are automatically generated after every erasure operation. Access them by clicking Home → Reports. You can filter reports by date range and type (Erase Files & Folders or Erase Traces). Each report includes details like computer name, files erased, algorithm used, time taken, success/failure counts, and a unique Report ID for tracking.",
+          },
+        ],
       },
       {
         id: "faq-18",
@@ -890,9 +844,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Yes. In the Reports section, select any report and click Action → Preview to view it on-screen. To save, select the report, click Save, choose PDF or XML format, select a destination folder, and click Save. PDF reports are formatted for printing and sharing, while XML reports can be imported into other systems for analysis."
-          }
-        ]
+            text: "Yes. In the Reports section, select any report and click Action → Preview to view it on-screen. To save, select the report, click Save, choose PDF or XML format, select a destination folder, and click Save. PDF reports are formatted for printing and sharing, while XML reports can be imported into other systems for analysis.",
+          },
+        ],
       },
       {
         id: "faq-19",
@@ -900,9 +854,9 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "Currently, reports must be saved individually—you cannot batch-export multiple reports in one operation. To save multiple reports, select and save each one separately. Alternatively, you can send reports to D-Secure Cloud in batch, which provides centralized storage and management of all your erasure reports."
-          }
-        ]
+            text: "Currently, reports must be saved individually—you cannot batch-export multiple reports in one operation. To save multiple reports, select and save each one separately. Alternatively, you can send reports to D-Secure Cloud in batch, which provides centralized storage and management of all your erasure reports.",
+          },
+        ],
       },
       {
         id: "faq-20",
@@ -910,10 +864,10 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text: "If you've been uploading reports to D-Secure Cloud, you can access them from the Cloud Console at any time. If you haven't been using Cloud integration, local reports lost due to database corruption or system failure cannot be recovered. To prevent data loss: regularly back up your MariaDB database, enable D-Secure Cloud integration and upload reports regularly, export critical reports to PDF and store in a separate location, and configure automated database backups as part of your IT maintenance routine."
-          }
-        ]
-      }
+            text: "If you've been uploading reports to D-Secure Cloud, you can access them from the Cloud Console at any time. If you haven't been using Cloud integration, local reports lost due to database corruption or system failure cannot be recovered. To prevent data loss: regularly back up your MariaDB database, enable D-Secure Cloud integration and upload reports regularly, export critical reports to PDF and store in a separate location, and configure automated database backups as part of your IT maintenance routine.",
+          },
+        ],
+      },
     ],
   },
 
@@ -923,7 +877,7 @@ const sections: Section[] = [
     icon: Building,
     title: "about D-SecureTech",
     summary:
-      "D-Secure is a global Data Care organization: Recovery, Email Repair & Conversion, File/DB Repair, and Data Erasure.",
+      "D-SecureTech is a global Data Care organization: Recovery, Email Repair & Conversion, File/DB Repair, and Data Erasure.",
     subsections: [
       {
         id: "D-Secure-overview",
@@ -931,8 +885,7 @@ const sections: Section[] = [
         blocks: [
           {
             type: "p",
-            text:
-              "D-Secure provides 100+ proprietary tools used by enterprises, IT service providers, and individuals in 190+ countries, with presence in USA, Europe, and Asia.",
+            text: "D-Secure provides 100+ proprietary tools used by enterprises, IT service providers, and individuals in 190+ countries, with presence in USA, Europe, and Asia.",
           },
         ],
       },

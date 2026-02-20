@@ -494,7 +494,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   </div>
 
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
-                    D-Secure
+                    D-Secure{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                       Drive Eraser
                     </span>
@@ -524,7 +524,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link
-                      to="pricing-and-plan"
+                      to=""
                       className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                     >
                       <HoverIcon>

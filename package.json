@@ -5,14 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/update-sitemap.js && tsc -b && vite build",
+    "build": "node scripts/update-sitemap.js && vite build",
+    "type-check": "tsc -b",
+    "full-build": "node scripts/update-sitemap.js && tsc -b && vite build",
     "preview": "vite preview",
     "upload-assets": "node scripts/upload-assets.js",
     "test-cloudinary": "node scripts/test-cloudinary.js",
     "verify-assets": "node scripts/verify-assets.js",
     "cloudinary:setup": "echo 'Run: npm run test-cloudinary' && echo 'Then: npm run upload-assets' && echo 'Finally: Set VITE_CLOUDINARY_CLOUD_NAME in your Vercel environment variables'",
     "update-sitemap": "node scripts/update-sitemap.js",
-    "seo:check": "echo 'SEO Status Check...' && echo 'Sitemap: https://www.D-Securetech.com/sitemap.xml' && echo 'Robots: https://www.D-Securetech.com/robots.txt'",
+    "seo:check": "echo 'SEO Status Check...' && echo 'Sitemap: https://dsecuretech.com/sitemap.xml' && echo 'Robots: https://dsecuretech.com/robots.txt'",
     "analytics:verify": "echo 'Analytics Verification...' && echo 'GA4: G-6B20XY3K81' && echo 'Clarity: tkbibktdah'",
     "test": "vitest",
     "test:run": "vitest run"

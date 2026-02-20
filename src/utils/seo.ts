@@ -27,8 +27,8 @@ export interface SEOMetadata {
 // Base configuration
 export const SEO_CONFIG = {
   siteName: 'D-Secure Tech',
-  baseUrl: 'https://D-Securetech.com',
-  defaultImage: 'https://D-Securetech.com/logo-white.svg',
+  baseUrl: 'https://dsecuretech.com',
+  defaultImage: 'https://dsecuretech.com/logo-white.svg',
   author: 'D-Secure Tech',
   language: 'en',
   locale: 'en_US',

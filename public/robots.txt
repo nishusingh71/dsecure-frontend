@@ -158,7 +158,7 @@ Allow: /api-documentation
 Disallow: /api/
 
 # Sitemap location for search engines
-Sitemap: https://D-Securetech.com/sitemap.xml
+Sitemap: https://dsecuretech.com/sitemap.xml
 
 # Crawl delay for polite crawling (1 second)
 Crawl-delay: 1
@@ -178,4 +178,4 @@ Disallow: /user/
 Disallow: /checkout
 Disallow: /search-demo
 
-# Last updated: 2026-02-16
+# Last updated: 2026-02-20

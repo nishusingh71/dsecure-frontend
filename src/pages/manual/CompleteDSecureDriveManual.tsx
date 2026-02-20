@@ -1275,7 +1275,10 @@ const CompleteDSecureManual: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <Helmet>
         <title>Complete D-Secure Drive Manual</title>
-        <meta name="description" content="Complete D-Secure Drive Eraser Network Manual" />
+        <meta
+          name="description"
+          content="Complete D-Secure Drive Eraser Network Manual"
+        />
       </Helmet>
 
       <style>{`
@@ -1291,7 +1294,9 @@ const CompleteDSecureManual: React.FC = () => {
           <aside className="hidden lg:block lg:w-72 shrink-0">
             <div className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto sidebar-scroll pr-2">
               <div className="mb-6">
-                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-bold mb-4">Table of Contents</h3>
+                <h3 className="text-sm uppercase tracking-wider text-gray-500 font-bold mb-4">
+                  Table of Contents
+                </h3>
                 <nav className="space-y-1">
                   {navigationTree.map((item) => (
                     <SidebarItem
@@ -1317,14 +1322,17 @@ const CompleteDSecureManual: React.FC = () => {
             </div>
 
             <div className="space-y-16">
-              {navigationTree.map(item => (
+              {navigationTree.map((item) => (
                 <ContentSection key={item.id} item={item} />
               ))}
             </div>
 
             <footer className="mt-20 pt-8 border-t border-gray-200 text-center">
               <p className="text-gray-500 mb-2">Need further assistance?</p>
-              <a href="mailto:support@D-Securetech.com" className="text-blue-600 font-medium hover:underline">
+              <a
+                href="mailto:support@dsecuretech.com"
+                className="text-blue-600 font-medium hover:underline"
+              >
                 Contact Support
               </a>
               <p className="text-sm text-gray-400 mt-8">
@@ -1337,12 +1345,14 @@ const CompleteDSecureManual: React.FC = () => {
 
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 p-3 rounded-full bg-blue-600 text-white shadow-lg transition-all transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 z-50 ${shouldShowScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
-          }`}
+        className={`fixed bottom-8 right-8 p-3 rounded-full bg-blue-600 text-white shadow-lg transition-all transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 z-50 ${
+          shouldShowScrollTop
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
       >
         <ArrowUp className="w-6 h-6" />
       </button>
-
     </div>
   );
 };

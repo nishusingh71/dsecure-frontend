@@ -4,6 +4,8 @@ import path from 'node:path'
 import fs from 'node:fs'
 import viteCompression from 'vite-plugin-compression'
 import { createHtmlPlugin } from 'vite-plugin-html'
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 // Read critical CSS for inlining
 const criticalCSS = fs.existsSync('./src/critical.css')
@@ -23,13 +25,14 @@ export default defineConfig({
       threshold: 1024,
       deleteOriginFile: false
     }),
-    // Brotli compression (better compression ratio)
-    viteCompression({
-      algorithm: 'brotliCompress',
-      ext: '.br',
-      threshold: 1024,
-      deleteOriginFile: false
-    }),
+    // [OLD CODE PRESERVED AS COMMENT]
+    // Brotli compression (better compression ratio) - Disabled for faster builds, Cloudflare handles this at the edge
+    // viteCompression({
+    //   algorithm: 'brotliCompress',
+    //   ext: '.br',
+    //   threshold: 1024,
+    //   deleteOriginFile: false
+    // }),
     // HTML plugin for critical CSS inlining and minification
     createHtmlPlugin({
       minify: true,
@@ -38,7 +41,19 @@ export default defineConfig({
           criticalCSS: criticalCSS
         }
       }
-    })
+    }),
+    // [NEW] Bundle visualization - generates stats.html on build
+    {
+      ...require('rollup-plugin-visualizer').visualizer({
+        filename: 'stats.html',
+        title: 'D-Secure Bundle Stats',
+        template: 'treemap',
+        gzipSize: true,
+        brotliSize: true,
+        open: false
+      }),
+      apply: 'build'
+    }
   ],
   resolve: {
     alias: {
@@ -75,7 +90,7 @@ export default defineConfig({
     rollupOptions: {
       treeshake: 'recommended',
       output: {
-        // Disabled manual chunking - using Vite's default automatic chunking to avoid dependency issues
+        // [OLD CODE PRESERVED AS COMMENT]
         // manualChunks: (id) => {
         //   if (id.includes('node_modules')) {
         //     // Core UI dependencies (React + UI libraries) - must be together to avoid initialization errors
@@ -95,6 +110,29 @@ export default defineConfig({
         //     return 'vendor-other'
         //   }
         // },
+
+        // [MINIMALIST SAFER CHUNKING]
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            // ONLY isolate the truly massive standalone libraries.
+            // DO NOT split React, Lucide, Framer, or anything else framework-related.
+            
+            // 1. Heavy standalone docs/zip libs
+            if (id.includes('jspdf') || id.includes('exceljs') || id.includes('jszip') || id.includes('pako')) {
+              return 'vendor-heavy-utils'
+            }
+            // 2. Maps (Standalone)
+            if (id.includes('leaflet')) {
+              return 'vendor-maps'
+            }
+            // 3. Charts (Standalone)
+            if (id.includes('recharts') || id.includes('d3')) {
+              return 'vendor-viz'
+            }
+            
+            // Everything else stays in the main vendor or is managed by Vite defaults.
+          }
+        },
 
         // Optimize file names for caching
         chunkFileNames: 'js/[name]-[hash].js',
