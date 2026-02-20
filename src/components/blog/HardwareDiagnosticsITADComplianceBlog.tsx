@@ -107,7 +107,7 @@ const HardwareDiagnosticsITADComplianceBlog: React.FC = () => {
               achieve R2v3 and e-Stewards compliance while maximizing asset value and reducing e-waste.
             </p>
             <Link
-              to="/products"
+              to="/#products"
               className="inline-block bg-white text-emerald-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
             >
               Explore Diagnostics Solutions

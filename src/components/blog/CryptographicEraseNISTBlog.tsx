@@ -191,7 +191,7 @@ const CryptographicEraseNISTBlog: React.FC = () => {
                             efficient media sanitization.
                         </p>
                         <Link
-                            to="/products"
+                            to="/#products"
                             className="inline-flex items-center bg-white text-emerald-700 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
                         >
                             Explore Certified Data Erasure Solutions

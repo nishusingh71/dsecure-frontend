@@ -237,7 +237,7 @@ const CaptionCallFCCSettlementBlog: React.FC = () => {
                     FCC enforcement cases like CaptionCall demonstrate that regulators are actively monitoring data handling practices. Proactive investment in certified data disposal processes is far less costly than reactive responses to enforcement actions. Learn from others' mistakes—implement compliant data erasure now.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-red-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

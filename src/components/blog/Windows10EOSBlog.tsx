@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
@@ -188,7 +188,7 @@ const Windows10EOSBlog: React.FC = () => {
                             Organizations must take proactive measures now: backup critical data, evaluate alternative operating systems, and most importantly, <strong>securely erase sensitive data from decommissioned devices</strong> to mitigate risks and ensure smoother transitions.
                         </p>
                         <Link
-                            to="/products"
+                            to="/#products"
                             className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                         >
                             Explore D-Secure Data Erasure Solutions

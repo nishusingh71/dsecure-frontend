@@ -222,7 +222,7 @@ const ZeroTrustDisposalBlog: React.FC = () => {
                     In a Zero Trust world, assumptions are vulnerabilities. Apply the same rigor to data disposal that you apply to network security. Verify every identity, every device, every process, and every document. Trust is earned through evidence, not assertions.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-rose-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

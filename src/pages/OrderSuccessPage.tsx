@@ -226,16 +226,30 @@ export default function OrderSuccessPage() {
           {/* Success Header */}
           <div className="text-center mb-10">
             <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6 shadow-lg">
-              <svg className="h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="h-12 w-12 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">Order Confirmed!</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+              Order Confirmed!
+            </h1>
             <p className="text-lg text-gray-600 mb-2">
-              Thank you for your purchase, <span className="font-semibold">{customer_info.name}</span>!
+              Thank you for your purchase,{" "}
+              <span className="font-semibold">{customer_info.name}</span>!
             </p>
             <p className="text-gray-500">
-              A confirmation email has been sent to <span className="font-medium">{customer_info.email}</span>
+              A confirmation email has been sent to{" "}
+              <span className="font-medium">{customer_info.email}</span>
             </p>
           </div>
 
@@ -247,8 +261,16 @@ export default function OrderSuccessPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Order Details
                   </h2>
@@ -257,24 +279,33 @@ export default function OrderSuccessPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <span className="text-sm text-gray-500">Order ID</span>
-                      <p className="font-mono font-semibold text-gray-900">#{order_details.order_id}</p>
+                      <p className="font-mono font-semibold text-gray-900">
+                        #{order_details.order_id}
+                      </p>
                     </div>
                     <div>
                       <span className="text-sm text-gray-500">Order Date</span>
-                      <p className="font-medium text-gray-900">{formatDate(order_details.order_date)}</p>
+                      <p className="font-medium text-gray-900">
+                        {formatDate(order_details.order_date)}
+                      </p>
                     </div>
                     <div>
                       <span className="text-sm text-gray-500">Status</span>
                       <p>
-                        <span className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(order_details.status)}`}>
+                        <span
+                          className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(order_details.status)}`}
+                        >
                           {order_details.status.toUpperCase()}
                         </span>
                       </p>
                     </div>
                     <div>
                       <span className="text-sm text-gray-500">Payment ID</span>
-                      <p className="font-mono text-sm text-gray-700 truncate" title={order_details.dodo_payment_id}>
-                        {order_details.dodo_payment_id || 'N/A'}
+                      <p
+                        className="font-mono text-sm text-gray-700 truncate"
+                        title={order_details.dodo_payment_id}
+                      >
+                        {order_details.dodo_payment_id || "N/A"}
                       </p>
                     </div>
                   </div>
@@ -285,9 +316,17 @@ export default function OrderSuccessPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M10 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                      <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                      <path
+                        fillRule="evenodd"
+                        d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Product Details
                   </h2>
@@ -302,21 +341,43 @@ export default function OrderSuccessPage() {
                       className="flex-shrink-0"
                     />
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-gray-900">{product_details.name}</h3>
-                      <p className="text-gray-600 text-sm mt-1">{product_details.summary}</p>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {product_details.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm mt-1">
+                        {product_details.summary}
+                      </p>
                       <div className="mt-3 flex flex-wrap gap-3">
                         <span className="inline-flex items-center px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium">
-                          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                          <svg
+                            className="w-4 h-4 mr-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                              clipRule="evenodd"
+                            />
                           </svg>
-                          {product_details.duration_years} Year{product_details.duration_years > 1 ? 's' : ''}
+                          {product_details.duration_years} Year
+                          {product_details.duration_years > 1 ? "s" : ""}
                         </span>
                         <span className="inline-flex items-center px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
-                          <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <svg
+                            className="w-4 h-4 mr-1"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
                             <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                            <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                            <path
+                              fillRule="evenodd"
+                              d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                              clipRule="evenodd"
+                            />
                           </svg>
-                          {product_details.quantity} License{product_details.quantity > 1 ? 's' : ''}
+                          {product_details.quantity} License
+                          {product_details.quantity > 1 ? "s" : ""}
                         </span>
                       </div>
                     </div>
@@ -328,8 +389,16 @@ export default function OrderSuccessPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-gray-700 to-gray-800 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Customer Information
                   </h2>
@@ -338,28 +407,40 @@ export default function OrderSuccessPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <span className="text-sm text-gray-500">Name</span>
-                      <p className="font-medium text-gray-900">{customer_info.name}</p>
+                      <p className="font-medium text-gray-900">
+                        {customer_info.name}
+                      </p>
                     </div>
                     <div>
                       <span className="text-sm text-gray-500">Email</span>
-                      <p className="font-medium text-gray-900">{customer_info.email}</p>
+                      <p className="font-medium text-gray-900">
+                        {customer_info.email}
+                      </p>
                     </div>
                     {customer_info.phone && (
                       <div>
                         <span className="text-sm text-gray-500">Phone</span>
-                        <p className="font-medium text-gray-900">{customer_info.phone}</p>
+                        <p className="font-medium text-gray-900">
+                          {customer_info.phone}
+                        </p>
                       </div>
                     )}
                     {customer_info.company_name && (
                       <div>
                         <span className="text-sm text-gray-500">Company</span>
-                        <p className="font-medium text-gray-900">{customer_info.company_name}</p>
+                        <p className="font-medium text-gray-900">
+                          {customer_info.company_name}
+                        </p>
                       </div>
                     )}
                     {customer_info.billing_address?.formatted && (
                       <div className="sm:col-span-2">
-                        <span className="text-sm text-gray-500">Billing Address</span>
-                        <p className="font-medium text-gray-900">{customer_info.billing_address.formatted}</p>
+                        <span className="text-sm text-gray-500">
+                          Billing Address
+                        </span>
+                        <p className="font-medium text-gray-900">
+                          {customer_info.billing_address.formatted}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -373,7 +454,11 @@ export default function OrderSuccessPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
                     </svg>
                     Payment Summary
@@ -382,11 +467,19 @@ export default function OrderSuccessPage() {
                 <div className="p-6">
                   <div className="text-center mb-6">
                     <div className="text-4xl font-bold text-gray-900">
-                      {formatCurrency(payment_info.amount, payment_info.currency)}
+                      {formatCurrency(
+                        payment_info.amount,
+                        payment_info.currency,
+                      )}
                     </div>
                     {payment_info.tax_amount > 0 && (
                       <p className="text-sm text-gray-500 mt-1">
-                        Includes {formatCurrency(payment_info.tax_amount, payment_info.currency)} tax
+                        Includes{" "}
+                        {formatCurrency(
+                          payment_info.tax_amount,
+                          payment_info.currency,
+                        )}{" "}
+                        tax
                       </p>
                     )}
                   </div>
@@ -394,30 +487,39 @@ export default function OrderSuccessPage() {
                   <div className="space-y-3 border-t pt-4">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Status</span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getStatusColor(payment_info.status)}`}>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getStatusColor(payment_info.status)}`}
+                      >
                         {payment_info.status.toUpperCase()}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Method</span>
-                      <span className="font-medium text-gray-900 capitalize">{payment_info.method}</span>
+                      <span className="font-medium text-gray-900 capitalize">
+                        {payment_info.method}
+                      </span>
                     </div>
                     {payment_info.card_last_four && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Card</span>
                         <span className="font-medium text-gray-900">
-                          {payment_info.card_network} •••• {payment_info.card_last_four}
+                          {payment_info.card_network} ••••{" "}
+                          {payment_info.card_last_four}
                         </span>
                       </div>
                     )}
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-500">Date</span>
-                      <span className="font-medium text-gray-900">{formatDate(payment_info.payment_date)}</span>
+                      <span className="font-medium text-gray-900">
+                        {formatDate(payment_info.payment_date)}
+                      </span>
                     </div>
                     {payment_info.transaction_id && (
                       <div className="text-sm">
                         <span className="text-gray-500">Transaction ID</span>
-                        <p className="font-mono text-xs text-gray-700 mt-1 break-all">{payment_info.transaction_id}</p>
+                        <p className="font-mono text-xs text-gray-700 mt-1 break-all">
+                          {payment_info.transaction_id}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -429,8 +531,16 @@ export default function OrderSuccessPage() {
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                   <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
                     <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                       Invoice
                     </h2>
@@ -439,15 +549,24 @@ export default function OrderSuccessPage() {
                     <div className="space-y-3 mb-4">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Invoice #</span>
-                        <span className="font-mono font-medium text-gray-900">{invoice_info.invoice_number}</span>
+                        <span className="font-mono font-medium text-gray-900">
+                          {invoice_info.invoice_number}
+                        </span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Date</span>
-                        <span className="font-medium text-gray-900">{formatDate(invoice_info.date)}</span>
+                        <span className="font-medium text-gray-900">
+                          {formatDate(invoice_info.date)}
+                        </span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Total</span>
-                        <span className="font-bold text-gray-900">{formatCurrency(invoice_info.total_amount, invoice_info.currency)}</span>
+                        <span className="font-bold text-gray-900">
+                          {formatCurrency(
+                            invoice_info.total_amount,
+                            invoice_info.currency,
+                          )}
+                        </span>
                       </div>
                     </div>
 
@@ -457,8 +576,16 @@ export default function OrderSuccessPage() {
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full bg-orange-50 hover:bg-orange-100 text-orange-700 font-semibold py-3 px-4 rounded-xl transition-colors border border-orange-200"
                     >
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                       Download Invoice PDF
                     </a>
@@ -472,7 +599,11 @@ export default function OrderSuccessPage() {
           <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-6 mb-8 border border-blue-100">
             <h3 className="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                  clipRule="evenodd"
+                />
               </svg>
               What Happens Next?
             </h3>
@@ -482,7 +613,9 @@ export default function OrderSuccessPage() {
                   <span className="text-sm font-bold text-blue-600">1</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-blue-900">Email Confirmation</p>
+                  <p className="font-semibold text-blue-900">
+                    Email Confirmation
+                  </p>
                   <p className="text-sm text-blue-700">Within 5 minutes</p>
                 </div>
               </div>
@@ -491,7 +624,9 @@ export default function OrderSuccessPage() {
                   <span className="text-sm font-bold text-blue-600">2</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-blue-900">License Delivery</p>
+                  <p className="font-semibold text-blue-900">
+                    License Delivery
+                  </p>
                   <p className="text-sm text-blue-700">Within 24 hours</p>
                 </div>
               </div>
@@ -523,7 +658,11 @@ export default function OrderSuccessPage() {
               className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                  clipRule="evenodd"
+                />
               </svg>
               Contact Support
             </Link>
@@ -532,7 +671,11 @@ export default function OrderSuccessPage() {
               className="flex items-center justify-center gap-2 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
               </svg>
               Download Center
             </Link>
@@ -541,7 +684,11 @@ export default function OrderSuccessPage() {
               className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
+                  clipRule="evenodd"
+                />
               </svg>
               Admin Dashboard
             </Link>
@@ -550,11 +697,15 @@ export default function OrderSuccessPage() {
           {/* Footer */}
           <div className="text-center">
             <Link
-              to="/products"
+              to="/#products"
               className="text-teal-600 hover:text-teal-700 font-medium transition-colors inline-flex items-center gap-1"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                  clipRule="evenodd"
+                />
               </svg>
               Return to Products
             </Link>

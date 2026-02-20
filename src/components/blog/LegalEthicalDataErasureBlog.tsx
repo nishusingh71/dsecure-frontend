@@ -162,7 +162,7 @@ const LegalEthicalDataErasureBlog: React.FC = () => {
               and contribute to environmental sustainability.
             </p>
             <Link
-              to="/products"
+              to="/#products"
               className="inline-block bg-white text-emerald-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
             >
               Explore Compliance-Ready Erasure Solutions

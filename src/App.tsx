@@ -23,6 +23,9 @@ const TechnicalDocumentation = lazy(
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ProductPage = lazy(() => import("./pages/ProductPage"));
+const DataEraserSoftwarePage = lazy(
+  () => import("./pages/DataEraserSoftwarePage"),
+);
 const CloudErasurePage = lazy(
   () => import("./pages/services/CloudErasurePage"),
 );
@@ -1259,7 +1262,10 @@ export default function App() {
                     {/* Core Routes */}
                     <Route index element={<HomePage />} />
                     <Route path="services" element={<ServicesPage />} />
-                    <Route path="products" element={<ProductPage />} />
+                    <Route
+                      path="products"
+                      element={<Navigate to="/" replace />}
+                    />
 
                     {/* Services */}
                     <Route
@@ -1325,9 +1331,16 @@ export default function App() {
 
                     {/* Other Pages */}
                     <Route path="compliance" element={<CompliancePage />} />
+                    <Route
+                      path="data-eraser-software"
+                      element={<DataEraserSoftwarePage />}
+                    />
                     <Route path="contact" element={<ContactPage />} />
                     <Route path="about" element={<About />} />
-                    <Route path="pricing" element={<PricingPage />} />
+                    <Route
+                      path="pricing"
+                      element={<Navigate to="/pricing-and-plan" replace />}
+                    />
                     <Route
                       path="pricing-and-plan"
                       element={<PricingAndPlanPage />}

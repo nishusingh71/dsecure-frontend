@@ -58,9 +58,11 @@ const EnterpriseSolutionsPage: React.FC = () => {
                   Streamline Your IT Asset Management
                 </h2>
                 <p className="text-slate-700 text-lg leading-relaxed mb-6">
-                  Ease enterprise cloud migrations, IT asset decommissioning and end-of-life data erasure
-                  with compliant and secure data erasure software. Get compliant erasure at scale for all
-                  your IT data storage assets across workforce, operations, and data centers.
+                  Ease enterprise cloud migrations, IT asset decommissioning and
+                  end-of-life data erasure with compliant and secure data
+                  erasure software. Get compliant erasure at scale for all your
+                  IT data storage assets across workforce, operations, and data
+                  centers.
                 </p>
                 <img
                   src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80"
@@ -209,7 +211,9 @@ const EnterpriseSolutionsPage: React.FC = () => {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-slate-800 font-medium">{feature}</span>
+                      <span className="text-slate-800 font-medium">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -223,8 +227,8 @@ const EnterpriseSolutionsPage: React.FC = () => {
                   Ready to Transform Your Enterprise IT Management?
                 </h2>
                 <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Let's discuss your specific requirements and design a solution that fits your
-                  enterprise needs and compliance standards.
+                  Let's discuss your specific requirements and design a solution
+                  that fits your enterprise needs and compliance standards.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
@@ -234,7 +238,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                     Schedule Consultation
                   </Link>
                   <Link
-                    to="/pricing"
+                    to="/pricing-and-plan"
                     className="border-2 border-white/30 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
                   >
                     View Pricing

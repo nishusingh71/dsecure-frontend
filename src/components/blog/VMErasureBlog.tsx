@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
@@ -204,7 +204,7 @@ const VMErasureBlog: React.FC = () => {
                         </div>
 
                         <Link
-                            to="/products"
+                            to="/#products"
                             className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg mt-6"
                         >
                             Explore D-Secure VM Eraser
@@ -304,7 +304,7 @@ const VMErasureBlog: React.FC = () => {
                                 Request Free Demo
                             </Link>
                             <Link
-                                to="/products"
+                                to="/#products"
                                 className="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors text-lg"
                             >
                                 View Products

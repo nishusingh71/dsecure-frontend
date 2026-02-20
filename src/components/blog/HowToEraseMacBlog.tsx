@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
@@ -253,7 +253,7 @@ const HowToEraseMacBlog: React.FC = () => {
                         </p>
 
                         <Link
-                            to="/products"
+                            to="/#products"
                             className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
                         >
                             Explore D-Secure for Mac

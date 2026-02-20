@@ -17,6 +17,7 @@ import {
 } from "@/components/FlatIcons";
 import { blogPosts } from "@/data/blogPosts";
 import { FileTextIcon, Monitor, Download, X } from "lucide-react";
+import { getSEOForPage } from "@/utils/seo";
 
 const getReadTime = (text: string) => {
   const wordsPerMinute = 200;
@@ -637,7 +638,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           canonicalUrl: "https://dsecuretech.com/products/file-eraser",
         }}
       />
-
+      <SEOHead seo={getSEOForPage("file-eraser")} />
       {/* ================= STICKY SECTION NAV ================= */}
       <div
         className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${

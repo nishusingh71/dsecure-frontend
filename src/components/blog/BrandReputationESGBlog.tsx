@@ -215,7 +215,7 @@ const BrandReputationESGBlog: React.FC = () => {
                     Brand reputation takes years to build and moments to destroy. In an era of heightened stakeholder expectations around data privacy and sustainability, certified data disposal is no longer just an IT concern—it's a brand protection imperative.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-amber-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

@@ -235,7 +235,7 @@ const ErasureBestPracticesBlog: React.FC = () => {
                     Implementing data erasure best practices protects your organization from data breaches, regulatory fines, and reputational damage. The key is consistency—using certified tools, following documented procedures, and maintaining complete audit trails.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

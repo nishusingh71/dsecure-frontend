@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
+import { getSEOForPage } from "@/utils/seo";
 import {
   ShieldIcon,
   CheckIcon,
@@ -442,6 +443,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           canonicalUrl: "https://dsecuretech.com/products/drive-eraser",
         }}
       />
+      <SEOHead seo={getSEOForPage("drive-eraser")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div

@@ -208,7 +208,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                     Data security and environmental sustainability are not competing priorities. Certified data erasure enables organizations to protect sensitive information while significantly reducing their carbon footprint through IT asset reuse. Make erasure the cornerstone of your sustainable IT strategy.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

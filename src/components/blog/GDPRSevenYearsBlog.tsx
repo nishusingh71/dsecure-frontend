@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
@@ -157,7 +157,7 @@ const GDPRSevenYearsBlog: React.FC = () => {
                             While it's too early to assess the results of these amendments, the risk of compromising data security due to relaxed compliance requirements remains a concern for data protection professionals.
                         </p>
                         <Link
-                            to="/products"
+                            to="/#products"
                             className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
                         >
                             Explore D-Secure Compliance Solutions
@@ -286,7 +286,7 @@ const GDPRSevenYearsBlog: React.FC = () => {
                                 Request Free Demo
                             </Link>
                             <Link
-                                to="/products"
+                                to="/#products"
                                 className="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors text-lg"
                             >
                                 View Products

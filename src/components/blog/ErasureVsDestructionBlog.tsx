@@ -254,7 +254,7 @@ const ErasureVsDestructionBlog: React.FC = () => {
                     D-Secure provides certified data erasure software that meets global standards while maximizing asset value and minimizing environmental impact.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-emerald-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

@@ -424,7 +424,7 @@ export default function MainLayout() {
                 <div className="space-y-1">
                   <NavLink
                     onClick={() => setOpen(false)}
-                    to="/products"
+                    to="/#products"
                     className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
                     aria-label="View all security products"
                   >
@@ -850,10 +850,6 @@ export default function MainLayout() {
                         <Link
                           to="/#products"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            window.location.href = "/products";
-                          }}
                         >
                           {t("footer.allProducts")}
                         </Link>

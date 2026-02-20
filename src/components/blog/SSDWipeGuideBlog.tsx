@@ -267,7 +267,7 @@ const SSDWipeGuideBlog: React.FC = () => {
                     SSD data erasure requires specialized techniques that go beyond traditional disk wiping. Using certified tools that leverage native secure erase commands is essential for compliance and security. Don't risk data breaches by relying on ineffective methods.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

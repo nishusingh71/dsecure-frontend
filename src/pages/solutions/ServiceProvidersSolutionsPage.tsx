@@ -38,7 +38,8 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                 </span>
               </h1>
               <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
-                White-Label Data Erasure Solutions for MSPs and IT Service Providers
+                White-Label Data Erasure Solutions for MSPs and IT Service
+                Providers
               </p>
               <img
                 src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600&q=80"
@@ -58,10 +59,11 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                   Empower Your Service Portfolio
                 </h2>
                 <p className="text-slate-700 text-lg leading-relaxed mb-6">
-                  Comprehensive data sanitization services that MSPs can offer to their clients with full branding.
-                  Our white-label solutions enable you to expand your service offerings, increase revenue, and
-                  provide enterprise-grade data security to your customers without the overhead of developing
-                  your own solutions.
+                  Comprehensive data sanitization services that MSPs can offer
+                  to their clients with full branding. Our white-label solutions
+                  enable you to expand your service offerings, increase revenue,
+                  and provide enterprise-grade data security to your customers
+                  without the overhead of developing your own solutions.
                 </p>
                 <img
                   src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80"
@@ -200,7 +202,9 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-slate-800 font-medium">{feature}</span>
+                      <span className="text-slate-800 font-medium">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -214,8 +218,9 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                   Ready to Become a Partner?
                 </h2>
                 <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                  Join our growing network of service providers and start offering
-                  enterprise-grade data erasure solutions to your clients today.
+                  Join our growing network of service providers and start
+                  offering enterprise-grade data erasure solutions to your
+                  clients today.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
@@ -225,7 +230,7 @@ const ServiceProvidersSolutionsPage: React.FC = () => {
                     Become a Partner
                   </Link>
                   <Link
-                    to="/pricing"
+                    to="/pricing-and-plan"
                     className="border-2 border-white/30 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
                   >
                     View Pricing

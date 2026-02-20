@@ -409,18 +409,18 @@ export default function FailurePage() {
   return (
     <>
       <SEOHead seo={seo} />
-      
+
       {/* Toast Notification */}
       {toast && (
         <div
           className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border transition-all duration-300 max-w-md ${
-            toast.type === 'error'
-              ? 'bg-red-50 border-red-200 text-red-800'
-              : 'bg-green-50 border-green-200 text-green-800'
+            toast.type === "error"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : "bg-green-50 border-green-200 text-green-800"
           }`}
         >
           <div className="flex items-start gap-3">
-            {toast.type === 'error' ? (
+            {toast.type === "error" ? (
               <svg
                 className="w-5 h-5 mt-0.5 flex-shrink-0"
                 fill="none"
@@ -479,13 +479,26 @@ export default function FailurePage() {
           {/* Failure Header */}
           <div className="text-center mb-10">
             <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-red-100 mb-6 shadow-lg">
-              <svg className="h-12 w-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="h-12 w-12 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">Payment Failed</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+              Payment Failed
+            </h1>
             <p className="text-lg text-gray-600 mb-2">
-              We're sorry, <span className="font-semibold">{customer_info.name}</span>.
+              We're sorry,{" "}
+              <span className="font-semibold">{customer_info.name}</span>.
             </p>
             <p className="text-gray-500">
               Your payment could not be processed at this time.
@@ -500,8 +513,16 @@ export default function FailurePage() {
               <div className="bg-white rounded-2xl shadow-lg border-2 border-red-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     What Happened?
                   </h2>
@@ -510,14 +531,25 @@ export default function FailurePage() {
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mt-1">
-                        <span className="text-red-600 font-bold text-sm">!</span>
+                        <span className="text-red-600 font-bold text-sm">
+                          !
+                        </span>
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">Payment Status: <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(payment_info?.status || 'Failed')}`}>{payment_info?.status || 'Failed'}</span></p>
+                        <p className="font-semibold text-gray-900">
+                          Payment Status:{" "}
+                          <span
+                            className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(payment_info?.status || "Failed")}`}
+                          >
+                            {payment_info?.status || "Failed"}
+                          </span>
+                        </p>
                       </div>
                     </div>
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <h3 className="font-semibold text-red-900 mb-2">Common reasons for payment failure:</h3>
+                      <h3 className="font-semibold text-red-900 mb-2">
+                        Common reasons for payment failure:
+                      </h3>
                       <ul className="list-disc list-inside text-sm text-red-800 space-y-1">
                         <li>Insufficient funds in your account</li>
                         <li>Incorrect card details or expired card</li>
@@ -534,8 +566,16 @@ export default function FailurePage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v12h8V4H6z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Order Details
                   </h2>
@@ -544,22 +584,30 @@ export default function FailurePage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Order ID</p>
-                      <p className="font-semibold text-gray-900">#{order_details.order_id}</p>
+                      <p className="font-semibold text-gray-900">
+                        #{order_details.order_id}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Order Date</p>
-                      <p className="font-semibold text-gray-900">{formatDate(order_details.order_date)}</p>
+                      <p className="font-semibold text-gray-900">
+                        {formatDate(order_details.order_date)}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-1">Status</p>
-                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(order_details.status)}`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(order_details.status)}`}
+                      >
                         {order_details.status}
                       </span>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Transaction ID</p>
+                      <p className="text-sm text-gray-500 mb-1">
+                        Transaction ID
+                      </p>
                       <p className="font-mono text-sm text-gray-900">
-                        {payment_info.transaction_id || 'N/A'}
+                        {payment_info.transaction_id || "N/A"}
                       </p>
                     </div>
                   </div>
@@ -570,7 +618,11 @@ export default function FailurePage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 12H9v-2h2v2zm0-4H9V6h2v4z" />
                     </svg>
                     Product You Tried to Purchase
@@ -586,16 +638,24 @@ export default function FailurePage() {
                       className="flex-shrink-0"
                     />
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{product_details.name}</h3>
-                      <p className="text-gray-600 mb-4">{product_details.summary}</p>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {product_details.name}
+                      </h3>
+                      <p className="text-gray-600 mb-4">
+                        {product_details.summary}
+                      </p>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <p className="text-sm text-gray-500 mb-1">Quantity</p>
-                          <p className="font-semibold text-gray-900">{product_details.quantity} License(s)</p>
+                          <p className="font-semibold text-gray-900">
+                            {product_details.quantity} License(s)
+                          </p>
                         </div>
                         <div>
                           <p className="text-sm text-gray-500 mb-1">Duration</p>
-                          <p className="font-semibold text-gray-900">{product_details.duration_years} Year(s)</p>
+                          <p className="font-semibold text-gray-900">
+                            {product_details.duration_years} Year(s)
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -607,8 +667,16 @@ export default function FailurePage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-gray-700 to-gray-800 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Customer Information
                   </h2>
@@ -617,28 +685,40 @@ export default function FailurePage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <span className="text-sm text-gray-500">Name</span>
-                      <p className="font-medium text-gray-900">{customer_info.name}</p>
+                      <p className="font-medium text-gray-900">
+                        {customer_info.name}
+                      </p>
                     </div>
                     <div>
                       <span className="text-sm text-gray-500">Email</span>
-                      <p className="font-medium text-gray-900">{customer_info.email}</p>
+                      <p className="font-medium text-gray-900">
+                        {customer_info.email}
+                      </p>
                     </div>
                     {customer_info.phone && (
                       <div>
                         <span className="text-sm text-gray-500">Phone</span>
-                        <p className="font-medium text-gray-900">{customer_info.phone}</p>
+                        <p className="font-medium text-gray-900">
+                          {customer_info.phone}
+                        </p>
                       </div>
                     )}
                     {customer_info.company_name && (
                       <div>
                         <span className="text-sm text-gray-500">Company</span>
-                        <p className="font-medium text-gray-900">{customer_info.company_name}</p>
+                        <p className="font-medium text-gray-900">
+                          {customer_info.company_name}
+                        </p>
                       </div>
                     )}
                     {customer_info.billing_address?.formatted && (
                       <div className="sm:col-span-2">
-                        <span className="text-sm text-gray-500">Billing Address</span>
-                        <p className="font-medium text-gray-900">{customer_info.billing_address.formatted}</p>
+                        <span className="text-sm text-gray-500">
+                          Billing Address
+                        </span>
+                        <p className="font-medium text-gray-900">
+                          {customer_info.billing_address.formatted}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -649,7 +729,11 @@ export default function FailurePage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                       <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                     </svg>
@@ -659,16 +743,36 @@ export default function FailurePage() {
                 <div className="p-6">
                   {formSubmitted ? (
                     <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                      <svg className="w-12 h-12 text-green-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <svg
+                        className="w-12 h-12 text-green-600 mx-auto mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
-                      <p className="text-green-800 font-semibold">Support request submitted!</p>
-                      <p className="text-green-700 text-sm">We'll contact you within 24 hours.</p>
+                      <p className="text-green-800 font-semibold">
+                        Support request submitted!
+                      </p>
+                      <p className="text-green-700 text-sm">
+                        We'll contact you within 24 hours.
+                      </p>
                     </div>
                   ) : (
-                    <form onSubmit={handleSupportFormSubmit} className="space-y-4">
+                    <form
+                      onSubmit={handleSupportFormSubmit}
+                      className="space-y-4"
+                    >
                       <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="name"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Full Name *
                         </label>
                         <input
@@ -676,13 +780,21 @@ export default function FailurePage() {
                           id="name"
                           required
                           value={supportForm.name}
-                          onChange={(e) => setSupportForm({ ...supportForm, name: e.target.value })}
+                          onChange={(e) =>
+                            setSupportForm({
+                              ...supportForm,
+                              name: e.target.value,
+                            })
+                          }
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                           placeholder="Enter your name"
                         />
                       </div>
                       <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Email Address *
                         </label>
                         <input
@@ -690,26 +802,42 @@ export default function FailurePage() {
                           id="email"
                           required
                           value={supportForm.email}
-                          onChange={(e) => setSupportForm({ ...supportForm, email: e.target.value })}
+                          onChange={(e) =>
+                            setSupportForm({
+                              ...supportForm,
+                              email: e.target.value,
+                            })
+                          }
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                           placeholder="your.email@example.com"
                         />
                       </div>
                       <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="phone"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Phone Number
                         </label>
                         <input
                           type="tel"
                           id="phone"
                           value={supportForm.phone}
-                          onChange={(e) => setSupportForm({ ...supportForm, phone: e.target.value })}
+                          onChange={(e) =>
+                            setSupportForm({
+                              ...supportForm,
+                              phone: e.target.value,
+                            })
+                          }
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                           placeholder="+1 (555) 000-0000"
                         />
                       </div>
                       <div>
-                        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="message"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Describe the Issue *
                         </label>
                         <textarea
@@ -717,7 +845,12 @@ export default function FailurePage() {
                           required
                           rows={4}
                           value={supportForm.message}
-                          onChange={(e) => setSupportForm({ ...supportForm, message: e.target.value })}
+                          onChange={(e) =>
+                            setSupportForm({
+                              ...supportForm,
+                              message: e.target.value,
+                            })
+                          }
                           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                           placeholder="Please describe what happened and any error messages you saw..."
                         />
@@ -727,7 +860,7 @@ export default function FailurePage() {
                         disabled={isLoading}
                         className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-semibold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {isLoading ? 'Submitting...' : 'Submit Support Request'}
+                        {isLoading ? "Submitting..." : "Submit Support Request"}
                       </button>
                     </form>
                   )}
@@ -741,7 +874,11 @@ export default function FailurePage() {
               <div className="bg-white rounded-2xl shadow-lg border-2 border-red-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" />
                     </svg>
                     Payment Details
@@ -750,35 +887,46 @@ export default function FailurePage() {
                 <div className="p-6">
                   <div className="text-center mb-6">
                     <p className="text-3xl font-bold text-gray-900 mb-2">
-                      {formatCurrency(payment_info.amount, payment_info.currency)}
+                      {formatCurrency(
+                        payment_info.amount,
+                        payment_info.currency,
+                      )}
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Attempted Amount
-                    </p>
+                    <p className="text-sm text-gray-500">Attempted Amount</p>
                   </div>
 
                   <div className="space-y-3 border-t pt-4">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Payment Method</span>
-                      <span className="font-semibold text-gray-900">{payment_info.method || 'Card'}</span>
+                      <span className="font-semibold text-gray-900">
+                        {payment_info.method || "Card"}
+                      </span>
                     </div>
                     {payment_info.card_last_four && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Card</span>
-                        <span className="font-semibold text-gray-900">**** {payment_info.card_last_four}</span>
+                        <span className="font-semibold text-gray-900">
+                          **** {payment_info.card_last_four}
+                        </span>
                       </div>
                     )}
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Date</span>
-                      <span className="font-semibold text-gray-900">{formatDate(payment_info.payment_date)}</span>
+                      <span className="font-semibold text-gray-900">
+                        {formatDate(payment_info.payment_date)}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Provider</span>
-                      <span className="font-semibold text-gray-900">{payment_info.provider}</span>
+                      <span className="font-semibold text-gray-900">
+                        {payment_info.provider}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm pt-3 border-t">
                       <span className="text-gray-600">Status</span>
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(payment_info.status)}`}>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(payment_info.status)}`}
+                      >
                         {payment_info.status}
                       </span>
                     </div>
@@ -789,14 +937,24 @@ export default function FailurePage() {
               {/* Quick Actions Card */}
               <div className="bg-gradient-to-br from-blue-50 to-teal-50 rounded-2xl p-6 border border-blue-200">
                 <h3 className="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                   What to Do Next?
                 </h3>
                 <div className="space-y-3">
                   <div className="bg-white/80 rounded-lg p-4">
-                    <p className="text-sm text-gray-700 mb-3">Don't worry! You can try purchasing again with:</p>
+                    <p className="text-sm text-gray-700 mb-3">
+                      Don't worry! You can try purchasing again with:
+                    </p>
                     <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
                       <li>A different payment method</li>
                       <li>A different card</li>
@@ -807,8 +965,16 @@ export default function FailurePage() {
                     onClick={handleTryAgain}
                     className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-semibold py-3 px-6 rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                   >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Try Again
                   </button>
@@ -819,7 +985,11 @@ export default function FailurePage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                     </svg>
                     Need Immediate Help?
@@ -828,7 +998,10 @@ export default function FailurePage() {
                 <div className="p-6 space-y-3">
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Email Support</p>
-                    <a href="mailto:support@example.com" className="text-teal-600 hover:text-teal-700 font-medium">
+                    <a
+                      href="mailto:support@example.com"
+                      className="text-teal-600 hover:text-teal-700 font-medium"
+                    >
                       support@dsecuretech.com
                     </a>
                   </div>
@@ -854,7 +1027,11 @@ export default function FailurePage() {
               className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+                  clipRule="evenodd"
+                />
               </svg>
               Visit Support Center
             </Link>
@@ -863,7 +1040,11 @@ export default function FailurePage() {
               className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clipRule="evenodd"
+                />
               </svg>
               Browse FAQs
             </Link>
@@ -872,11 +1053,15 @@ export default function FailurePage() {
           {/* Footer */}
           <div className="text-center">
             <Link
-              to="/products"
+              to="/#products"
               className="text-teal-600 hover:text-teal-700 font-medium transition-colors inline-flex items-center gap-1"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                  clipRule="evenodd"
+                />
               </svg>
               Return to Products
             </Link>

@@ -246,7 +246,7 @@
 //         content: (
 //           <>
 //             <p className="text-slate-700 leading-relaxed mb-4">
-//               To know more about D-Secure File Eraser, click <Link to="/products" className="text-blue-600 hover:underline">here</Link>.
+//               To know more about D-Secure File Eraser, click <Link to="/#products" className="text-blue-600 hover:underline">here</Link>.
 //             </p>
 //             <p className="text-slate-700 leading-relaxed mb-4">
 //               To purchase the software online, click <Link to="/pricing-and-plan?product=file-eraser" className="text-blue-600 hover:underline">here</Link>.
@@ -1837,7 +1837,10 @@ const navigationTree: NavItem[] = [
           <>
             <p className="text-slate-700 leading-relaxed mb-4">
               To know more about D-Secure File Eraser, click{" "}
-              <Link to="/products" className="text-emerald-600 hover:underline">
+              <Link
+                to="/#products"
+                className="text-emerald-600 hover:underline"
+              >
                 here
               </Link>
               .

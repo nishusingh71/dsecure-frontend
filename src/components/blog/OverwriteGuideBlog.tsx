@@ -260,7 +260,7 @@ const OverwriteGuideBlog: React.FC = () => {
                     Choosing the right overwrite method is crucial for balancing security requirements with operational efficiency. Modern NIST guidelines simplify this decision—for most cases, a single random pass with verification is sufficient. The key is using certified software that provides proper verification and documentation.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

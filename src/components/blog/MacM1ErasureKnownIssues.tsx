@@ -251,7 +251,7 @@ const MacM1ErasureKnownIssues: React.FC = () => {
             </p>
 
             <Link
-              to="/products"
+              to="/#products"
               className="inline-flex items-center bg-white text-slate-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition shadow-lg"
             >
               <HoverIcon>

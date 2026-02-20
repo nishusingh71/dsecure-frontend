@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import EnquiryForm from "./EnquiryForm";
 import CommentSection from "./CommentSection";
 import EngagementSection from "./EngagementSection";
@@ -233,7 +233,7 @@ const DiagnosticsErasureITADBlog: React.FC = () => {
                                 Get Started Today
                             </Link>
                             <Link
-                                to="/products"
+                                to="/#products"
                                 className="inline-block border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors"
                             >
                                 Explore Products

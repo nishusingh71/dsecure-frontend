@@ -215,7 +215,7 @@ const ESGDataErasureBlog: React.FC = () => {
                     ESG is no longer optional—it's a business imperative. Certified data erasure sits at the intersection of security, sustainability, and governance, enabling organizations to meet stakeholder expectations while protecting sensitive data. Make IT asset disposition a cornerstone of your ESG strategy.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-teal-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>

@@ -305,7 +305,7 @@ const DataSanitizationComplianceBlog: React.FC = () => {
                     Compliance is not optional—it's the cost of doing business in a data-driven world. Protect your organization from fines, reputational damage, and legal liability by implementing a certified, auditable data erasure process today. The investment in proper data sanitization is a fraction of the potential penalties for non-compliance.
                 </p>
                 <Link
-                    to="/products"
+                    to="/#products"
                     className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>
