@@ -960,7 +960,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   >
                     {/* Screenshot Background */}
                     <img
-                      src="/images/drive-eraser-demo-thumb.png"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772035728/ddzt2ghea7hotem4bvz9.png"
                       alt="D-Secure Drive Eraser Preview"
                       className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
                     />
