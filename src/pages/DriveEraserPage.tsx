@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import Reveal from "@/components/Reveal";
@@ -25,7 +25,9 @@ import {
   User,
 } from "lucide-react";
 import { title } from "process";
+import { useToast } from "@/components/Toast";
 import { blogPosts } from "@/data/blogPosts";
+import { ENV } from "@/config/env";
 
 const getReadTime = (text: string) => {
   const wordsPerMinute = 200;
@@ -35,6 +37,8 @@ const getReadTime = (text: string) => {
 };
 
 const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+  const { showToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,6 +49,35 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   const [activeSection, setActiveSection] = useState("");
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isDemoActive, setIsDemoActive] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const demoContainerRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        if (demoContainerRef.current?.requestFullscreen) {
+          await demoContainerRef.current.requestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.error("Error attempting to toggle fullscreen:", err);
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
   const sectionNavItems = [
     { id: "erase-types", label: "Erase Types" },
@@ -365,8 +398,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
   const downloadCatalog = () => {
     const link = document.createElement("a");
-    link.href = "/downloads/D-Secure-file-eraser-catalog.pdf";
-    link.download = "D-Secure-File-Eraser-Catalog.pdf";
+    link.href = "https://assets.dsecuretech.com/pdf/DataSheetDriveEraser.pdf";
+    link.download = "DataSheetDriveEraser.pdf";
     link.target = "_blank";
     document.body.appendChild(link);
     link.click();
@@ -538,7 +571,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     </Link>
                     <button
                       onClick={downloadCatalog}
-                      disabled={true}
+                      disabled={false}
                       className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
                     >
                       <svg
@@ -554,7 +587,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      Comming soon Datasheet
+                      Download Datasheet
                     </button>
                   </div>
                 </div>
@@ -844,7 +877,141 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           </div>
         </section>
 
-        {/* ================= VIDEO SECTION ================= */}
+        {/* ================= PRODUCT DEMO SECTION ================= */}
+        <section
+          id="demo"
+          className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-emerald-50"
+        >
+          <div className="container mx-auto px-4 max-w-6xl">
+            <Reveal>
+              <div className="text-center mb-6 sm:mb-10">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
+                  Try Drive Eraser{" "}
+                  <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                    Demo
+                  </span>
+                </h2>
+                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                  Experience D-Secure Drive Eraser in action — explore the
+                  interface and features right here
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Embedded Product Demo - Sandbox Style */}
+            <Reveal delayMs={100}>
+              <div
+                ref={demoContainerRef}
+                className={`relative bg-white overflow-hidden shadow-2xl border border-slate-200/80 hover:shadow-emerald-200/30 transition-all duration-500 flex flex-col group ${
+                  isFullscreen
+                    ? "w-full h-full rounded-none"
+                    : "rounded-2xl h-[450px] sm:h-[500px] lg:h-[600px]"
+                }`}
+              >
+                {/* Fullscreen Toggle Button (visible only when demo is active) */}
+                {isDemoActive && (
+                  <button
+                    onClick={toggleFullscreen}
+                    className="absolute top-12 right-4 z-50 p-2.5 bg-slate-900/80 hover:bg-emerald-600 text-white rounded-xl shadow-lg backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 flex items-center gap-2"
+                    title={
+                      isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
+                    }
+                  >
+                    {isFullscreen ? (
+                      <svg
+                        className="w-5 h-5 block"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"
+                        />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-5 h-5 block"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                        />
+                      </svg>
+                    )}
+                    <span className="text-sm font-medium pr-1 hidden sm:block">
+                      {isFullscreen ? "Exit Fullscreen" : "Full Screen"}
+                    </span>
+                  </button>
+                )}
+
+                {!isDemoActive ? (
+                  /* Demo Placeholder - Screenshot Thumbnail */
+                  <div
+                    onClick={() => setIsDemoActive(true)}
+                    className="group relative w-full h-full flex-1 cursor-pointer overflow-hidden"
+                  >
+                    {/* Screenshot Background */}
+                    <img
+                      src="/images/drive-eraser-demo-thumb.png"
+                      alt="D-Secure Drive Eraser Preview"
+                      className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
+                    />
+                    {/* Subtle overlay for play button visibility */}
+                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/15 transition-colors duration-300" />
+                    {/* Centered Play Button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-20 h-20 rounded-full bg-white/90 backdrop-blur-md border-2 border-emerald-200 shadow-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                            <svg
+                              className="w-7 h-7 text-white ml-0.5"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <span className="text-sm font-semibold text-slate-700 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-200/80">
+                          Click to start interactive demo
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* Iframe Container */
+                  <iframe
+                    src="https://dsecure-drive-eraser.vercel.app/"
+                    className="w-full h-full flex-1 border-0"
+                    title="D-Secure Drive Eraser Demo"
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    loading="lazy"
+                    allow="clipboard-read; clipboard-write; fullscreen"
+                    allowFullScreen
+                  />
+                )}
+              </div>
+            </Reveal>
+
+            {/* Caption below demo */}
+            <Reveal delayMs={200}>
+              <p className="text-center text-sm text-slate-500 mt-4">
+                Interactive product demo — explore Drive Eraser features
+                directly in your browser
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* [OLD VIDEO SECTION - PRESERVED AS COMMENT]
         <section
           id="demo"
           className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-emerald-50"
@@ -861,164 +1028,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 </p>
               </div>
             </Reveal>
-
-            {/* Media Grid - 1 Video + 2 Screenshots */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Main Video Card */}
-              <Reveal delayMs={100}>
-                <div className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300">
-                  {/* Video Thumbnail */}
-                  <div className="relative aspect-video bg-gradient-to-br from-slate-800 to-slate-900">
-                    {/* Replace VIDEO_THUMBNAIL_URL with actual thumbnail */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl cursor-pointer group-hover:scale-110 transition-transform">
-                        <svg
-                          className="w-7 h-7 text-white ml-1"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </div>
-                    {/* Uncomment when video thumbnail ready: */}
-                    {/* <img 
-                             src="VIDEO_THUMBNAIL_URL" 
-                             alt="File Eraser Demo" 
-                             className="w-full h-full object-cover"
-                           /> */}
-                  </div>
-                  {/* Video Info */}
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
-                        VIDEO
-                      </span>
-                      <span className="text-slate-400 text-xs">2:45</span>
-                    </div>
-                    <h3 className="font-bold text-slate-900 mb-1">
-                      Product Demo
-                    </h3>
-                    <p className="text-sm text-slate-500">
-                      Complete walkthrough of Drive Eraser features
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-
-              {/* Screenshot Cards Grid */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                {/* Screenshot 1 */}
-                <Reveal delayMs={150}>
-                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
-                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                      <svg
-                        className="w-8 h-8 text-slate-500 mb-2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                        />
-                      </svg>
-                      <span className="text-slate-400 text-xs font-medium">
-                        Coming Soon
-                      </span>
-                    </div>
-                    {/* <div className="p-3 text-center">
-                             <span className="text-xs font-medium text-slate-600">Dashboard View</span>
-                           </div> */}
-                  </div>
-                </Reveal>
-
-                {/* Screenshot 2 */}
-                <Reveal delayMs={200}>
-                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
-                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                      <svg
-                        className="w-8 h-8 text-slate-500 mb-2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                        />
-                      </svg>
-                      <span className="text-slate-400 text-xs font-medium">
-                        Coming Soon
-                      </span>
-                    </div>
-                    {/* <div className="p-3 text-center">
-                             <span className="text-xs font-medium text-slate-600">Erasure Report</span>
-                           </div> */}
-                  </div>
-                </Reveal>
-
-                {/* Screenshot 3 */}
-                <Reveal delayMs={250}>
-                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
-                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                      <svg
-                        className="w-8 h-8 text-slate-500 mb-2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                        />
-                      </svg>
-                      <span className="text-slate-400 text-xs font-medium">
-                        Coming Soon
-                      </span>
-                    </div>
-                    {/* <div className="p-3 text-center">
-                             <span className="text-xs font-medium text-slate-600">File Selection</span>
-                           </div> */}
-                  </div>
-                </Reveal>
-
-                {/* Screenshot 4 */}
-                <Reveal delayMs={300}>
-                  <div className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 transition-all duration-300">
-                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center">
-                      <svg
-                        className="w-8 h-8 text-slate-500 mb-2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                        />
-                      </svg>
-                      <span className="text-slate-400 text-xs font-medium">
-                        Coming Soon
-                      </span>
-                    </div>
-                    {/* <div className="p-3 text-center">
-                             <span className="text-xs font-medium text-slate-600">Erasure Progress</span>
-                           </div> */}
-                  </div>
-                </Reveal>
-              </div>
-            </div>
+            ... (video + screenshot cards removed) ...
           </div>
         </section>
+        */}
 
         {/* ================= HOW IT WORKS (Help Manual) ================= */}
         <section id="how-it-works" className="py-16 lg:py-24 bg-white">
@@ -1778,7 +1791,154 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
                     Request Information
                   </h3>
-                  <form className="space-y-5">
+                  <form
+                    className="space-y-5"
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setIsLoading(true);
+
+                      try {
+                        const now = new Date();
+                        const timestampLocal = now.toLocaleString("en-IN", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          timeZoneName: "short",
+                        });
+                        const timestampISO = now.toISOString();
+
+                        // === Prepare FormData for FormSubmit ===
+                        const formSubmitData = new FormData();
+                        // Webhook to notify backend - backend will send auto-response email
+                        formSubmitData.append(
+                          "_webhook",
+                          "https://api.dsecuretech.com/api/formsubmit/webhook",
+                        );
+                        formSubmitData.append("_captcha", "false");
+                        formSubmitData.append("_template", "table");
+
+                        // Form fields
+                        formSubmitData.append("name", formData.name.trim());
+                        formSubmitData.append("email", formData.email.trim());
+                        formSubmitData.append(
+                          "organization",
+                          formData.organization.trim(),
+                        );
+                        formSubmitData.append(
+                          "message",
+                          formData.message.trim(),
+                        );
+
+                        // Required for autoresponse
+                        formSubmitData.append(
+                          "_replyto",
+                          formData.email.trim(),
+                        );
+                        formSubmitData.append("timestamp", timestampLocal);
+                        formSubmitData.append(
+                          "source",
+                          "Drive Eraser Page Contact",
+                        );
+
+                        // Subject and CC
+                        formSubmitData.append(
+                          "_subject",
+                          "New Inquiry - Drive Eraser Page - D-Secure Tech",
+                        );
+                        formSubmitData.append(
+                          "_cc",
+                          "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com",
+                        );
+
+                        // === Prepare submission data for Backend API ===
+                        const submissionData = {
+                          name: formData.name.trim(),
+                          email: formData.email.trim(),
+                          company: formData.organization.trim(),
+                          phone: "",
+                          country: "",
+                          businessType: "",
+                          solutionType: "drive-erasure",
+                          complianceRequirements: "",
+                          message: formData.message.trim(),
+                          usageType: "",
+                          source: "Drive Eraser Page Contact",
+                          timestamp: timestampISO,
+                        };
+
+                        // Reset form and show success immediately
+                        setFormData({
+                          name: "",
+                          email: "",
+                          organization: "",
+                          message: "",
+                        });
+                        setIsLoading(false);
+                        showToast(
+                          "Thank you! Your enquiry has been submitted successfully.",
+                          "success",
+                        );
+
+                        try {
+                          // === 1. SUBMIT TO BACKEND API (DATABASE) ===
+                          const API_BASE = ENV.API_BASE_URL;
+                          const apiResponse = await fetch(
+                            `${API_BASE}/api/ContactFormSubmissions`,
+                            {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify(submissionData),
+                            },
+                          );
+
+                          // === 2. SUBMIT TO FORMSUBMIT (EMAIL & WEBHOOK) ===
+                          const response = await fetch(
+                            "https://formsubmit.co/support@dsecuretech.com",
+                            {
+                              method: "POST",
+                              body: formSubmitData,
+                              headers: { Accept: "application/json" },
+                            },
+                          );
+
+                          // === 3. Microsoft Excel + Teams tracking (non-blocking) ===
+                          fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                              "x-api-key": "REACT_CONTACT_2026",
+                            },
+                            body: JSON.stringify(submissionData),
+                          }).catch(() => {});
+
+                          if (!apiResponse.ok) {
+                            const errorData = await apiResponse.json();
+                            console.error(
+                              "Backend submission failed:",
+                              errorData,
+                            );
+                          }
+                        } catch (error: any) {
+                          console.error("Form error:", error);
+                          showToast(
+                            error.message ||
+                              "Failed to send message. Please try again later.",
+                            "error",
+                          );
+                        }
+                      } catch (error) {
+                        console.error("FormSubmit error:", error);
+                        showToast(
+                          "Failed to submit enquiry. Please try again.",
+                          "error",
+                        );
+                        setIsLoading(false);
+                      }
+                    }}
+                  >
                     <div>
                       <input
                         type="text"
@@ -1823,9 +1983,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl"
+                      disabled={isLoading}
+                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Submit Enquiry
+                      {isLoading ? "Submitting..." : "Submit Enquiry"}
                     </button>
                   </form>
                 </div>

@@ -65,12 +65,14 @@ export function useSubusers(
       // 1. Try IDB first (Master list)
       try {
         const cachedFn = async () => {
-            if (!targetEmail) return null;
-            const cached = await indexedDBService.get('subusers', targetEmail);
-            if (!cached || !Array.isArray(cached) || cached.length === 0) return null;
-            
-            // Apply filtering in memory
-            let filtered = cached;
+          if (!targetEmail) return null;
+          const cached = await indexedDBService.get("subusers", targetEmail);
+          if (!cached || !Array.isArray(cached) || cached.length === 0)
+            return null;
+
+          // Apply filtering in memory
+          let filtered = cached;
+          /* ********** PURANA CODE — IDB filtering missing group filter & incomplete search fields **********
             if (filters) {
                 if (filters.search) {
                     const q = filters.search.toLowerCase();
@@ -88,37 +90,101 @@ export function useSubusers(
                 }
                 // Add other filters as needed
             }
-            
-             // Enhance data (same as before)
-            const enhancedCached = filtered.map((subuser: any) => ({
-                ...subuser,
-                subuser_group: subuser.subuser_group || 'N/A',
-                license_allocation: subuser.license_allocation || '0',
-                last_login: subuser.last_login || 'Never',
-                department: subuser.department || 'N/A',
-                role: subuser.role || subuser.subuser_role || 'user',
-                defaultRole: subuser.role || subuser.subuser_role || 'user',
-                status: subuser.status || 'active',
-                licenseUsage: 0,
-            }));
-            
-            return enhancedCached;
+            ********** PURANA CODE END ********** */
+
+          // ✅ NAYA CODE — Complete IDB filtering with group support & expanded search fields
+          if (filters) {
+            if (filters.search) {
+              const q = filters.search.toLowerCase();
+              filtered = filtered.filter(
+                (u: any) =>
+                  u.user_name?.toLowerCase().includes(q) ||
+                  u.user_email?.toLowerCase().includes(q) ||
+                  u.email?.toLowerCase().includes(q) ||
+                  u.subuser_name?.toLowerCase().includes(q) ||
+                  u.subuser_email?.toLowerCase().includes(q) ||
+                  u.name?.toLowerCase().includes(q) ||
+                  u.department?.toLowerCase().includes(q),
+              );
+            }
+            if (filters.department) {
+              filtered = filtered.filter(
+                (u: any) =>
+                  u.department?.toLowerCase() ===
+                  filters.department!.toLowerCase(),
+              );
+            }
+            if (filters.role) {
+              filtered = filtered.filter(
+                (u: any) =>
+                  (u.role || u.subuser_role)?.toLowerCase() ===
+                  filters.role!.toLowerCase(),
+              );
+            }
+            if (filters.group) {
+              const groupLower = filters.group.toLowerCase();
+              filtered = filtered.filter(
+                (u: any) =>
+                  u.subuser_group?.toLowerCase() === groupLower ||
+                  u.group_name?.toLowerCase() === groupLower ||
+                  u.groupName?.toLowerCase() === groupLower ||
+                  u.user_group?.toLowerCase() === groupLower,
+              );
+            }
+          }
+
+          // ✅ NAYA CODE — If filters are active and local filtering returned 0 results,
+          // skip IDB cache and fall through to API (source of truth for filtered queries).
+          // This prevents the empty array [] (truthy in JS) from short-circuiting the API call.
+          const hasActiveFilters =
+            filters &&
+            Object.values(filters).some((v) => v !== undefined && v !== "");
+          if (hasActiveFilters && filtered.length === 0) {
+            console.log(
+              "⚠️ IDB cache returned 0 results after filtering, falling through to API...",
+            );
+            return null;
+          }
+
+          // Enhance data (same as before)
+          const enhancedCached = filtered.map((subuser: any) => ({
+            ...subuser,
+            subuser_group: subuser.subuser_group || "N/A",
+            license_allocation: subuser.license_allocation || "0",
+            last_login: subuser.last_login || "Never",
+            department: subuser.department || "N/A",
+            role: subuser.role || subuser.subuser_role || "user",
+            defaultRole: subuser.role || subuser.subuser_role || "user",
+            status: subuser.status || "active",
+            licenseUsage: 0,
+          }));
+
+          return enhancedCached;
         };
-        
+
         const cachedData = await cachedFn();
-        if (cachedData) {
-            console.log('✅ Loaded subusers from IndexedDB');
-            return cachedData;
+        if (cachedData && cachedData.length > 0) {
+          console.log("✅ Loaded subusers from IndexedDB");
+          return cachedData;
         }
       } catch (err) {
-        console.warn('⚠️ IDB Read Failed for subusers', err);
+        console.warn("⚠️ IDB Read Failed for subusers", err);
       }
 
       // 2. Fallback to API
-      const response = await apiClient.getAllSubusersWithFallback(userEmail, filters)
+      const response = await apiClient.getAllSubusersWithFallback(
+        userEmail,
+        filters,
+      );
 
-      if (!response.success || !response.data) {
-        throw new Error(response.message || 'Failed to fetch subusers')
+      // ✅ NAYA CODE — Don't throw error for valid empty filtered results
+      if (!response.success && !response.data) {
+        throw new Error(response.message || "Failed to fetch subusers");
+      }
+
+      // If success but empty data (valid filter result), return empty array
+      if (!response.data || response.data.length === 0) {
+        return [];
       }
 
       // 3. Update IDB (Only if we fetched the FULL list, i.e., no restrictive filters?)

@@ -12,31 +12,34 @@
 import { useState, useCallback } from 'react';
 
 // Centralized FormSubmit endpoint
-export const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/dhruv.rai@dsecuretech.com';
+export const FORMSUBMIT_ENDPOINT =
+  "https://formsubmit.co/support@dsecuretech.com";
 
 // Toast notification system
 export interface ToastMessage {
   id: string;
   message: string;
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   duration?: number;
 }
 
 // Global toast handler
 let globalToastHandler: ((toast: ToastMessage) => void) | null = null;
 
-export const registerGlobalToastHandler = (handler: (toast: ToastMessage) => void) => {
+export const registerGlobalToastHandler = (
+  handler: (toast: ToastMessage) => void,
+) => {
   globalToastHandler = handler;
 };
 
 export const showGlobalToast = (
   message: string,
-  type: 'success' | 'error' | 'warning' | 'info' = 'info',
-  duration: number = 5000
+  type: "success" | "error" | "warning" | "info" = "info",
+  duration: number = 5000,
 ) => {
   const toastId = Date.now().toString();
   const toast: ToastMessage = { id: toastId, message, type, duration };
-  
+
   if (globalToastHandler) {
     globalToastHandler(toast);
   } else {
@@ -50,24 +53,24 @@ export const validators = {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   },
-  
+
   phone: (phone: string): boolean => {
     const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
-    return phoneRegex.test(phone.replace(/\s/g, ''));
+    return phoneRegex.test(phone.replace(/\s/g, ""));
   },
-  
+
   required: (value: any): boolean => {
-    if (typeof value === 'string') return value.trim().length > 0;
-    return value !== null && value !== undefined && value !== '';
+    if (typeof value === "string") return value.trim().length > 0;
+    return value !== null && value !== undefined && value !== "";
   },
-  
+
   minLength: (value: string, min: number): boolean => {
     return value.trim().length >= min;
   },
-  
+
   maxLength: (value: string, max: number): boolean => {
     return value.trim().length <= max;
-  }
+  },
 };
 
 // Enhanced form submission hook
@@ -91,123 +94,221 @@ export const useEnhancedForm = (config: FormConfig) => {
   const [formState, setFormState] = useState<FormState>({
     isSubmitting: false,
     errors: {},
-    isValid: false
+    isValid: false,
   });
 
-  const validateField = useCallback((fieldName: string, value: any): string | null => {
-    // Check required fields
-    if (config.requiredFields[fieldName] && !validators.required(value)) {
-      return `${config.requiredFields[fieldName]} is required`;
-    }
-
-    // Apply custom validation rules
-    if (config.validationRules && config.validationRules[fieldName]) {
-      return config.validationRules[fieldName](value);
-    }
-
-    // Built-in validations
-    if (fieldName === 'email' && value && !validators.email(value)) {
-      return 'Please enter a valid email address';
-    }
-
-    if (fieldName === 'phone' && value && !validators.phone(value)) {
-      return 'Please enter a valid phone number';
-    }
-
-    return null;
-  }, [config]);
-
-  const validateForm = useCallback((formData: Record<string, any>): Record<string, string> => {
-    const errors: Record<string, string> = {};
-
-    // Validate all fields
-    Object.keys(config.requiredFields).forEach(fieldName => {
-      const error = validateField(fieldName, formData[fieldName]);
-      if (error) {
-        errors[fieldName] = error;
+  const validateField = useCallback(
+    (fieldName: string, value: any): string | null => {
+      // Check required fields
+      if (config.requiredFields[fieldName] && !validators.required(value)) {
+        return `${config.requiredFields[fieldName]} is required`;
       }
-    });
 
-    return errors;
-  }, [config, validateField]);
+      // Apply custom validation rules
+      if (config.validationRules && config.validationRules[fieldName]) {
+        return config.validationRules[fieldName](value);
+      }
 
-  const submitForm = useCallback(async (formData: Record<string, any>): Promise<boolean> => {
-    setFormState(prev => ({ ...prev, isSubmitting: true, errors: {} }));
+      // Built-in validations
+      if (fieldName === "email" && value && !validators.email(value)) {
+        return "Please enter a valid email address";
+      }
 
-    try {
-      // Validate form
-      const errors = validateForm(formData);
-      if (Object.keys(errors).length > 0) {
-        setFormState(prev => ({ ...prev, errors, isSubmitting: false }));
-        showGlobalToast('Please fix the form errors', 'error');
+      if (fieldName === "phone" && value && !validators.phone(value)) {
+        return "Please enter a valid phone number";
+      }
+
+      return null;
+    },
+    [config],
+  );
+
+  const validateForm = useCallback(
+    (formData: Record<string, any>): Record<string, string> => {
+      const errors: Record<string, string> = {};
+
+      // Validate all fields
+      Object.keys(config.requiredFields).forEach((fieldName) => {
+        const error = validateField(fieldName, formData[fieldName]);
+        if (error) {
+          errors[fieldName] = error;
+        }
+      });
+
+      return errors;
+    },
+    [config, validateField],
+  );
+
+  const submitForm = useCallback(
+    async (formData: Record<string, any>): Promise<boolean> => {
+      setFormState((prev) => ({ ...prev, isSubmitting: true, errors: {} }));
+
+      try {
+        // Validate form
+        const errors = validateForm(formData);
+        if (Object.keys(errors).length > 0) {
+          setFormState((prev) => ({ ...prev, errors, isSubmitting: false }));
+          showGlobalToast("Please fix the form errors", "error");
+          return false;
+        }
+
+        const now = new Date();
+        const timestampLocal = now.toLocaleString("en-IN", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZoneName: "short",
+        });
+        const timestampISO = now.toISOString();
+
+        // Prepare FormData
+        const formSubmitData = new FormData();
+
+        // Add all form fields
+        Object.entries(formData).forEach(([key, value]) => {
+          if (value !== null && value !== undefined && value !== "") {
+            formSubmitData.append(key, String(value));
+          }
+        });
+
+        // Add FormSubmit configuration
+        formSubmitData.append("_next", window.location.href);
+        formSubmitData.append("_captcha", "false");
+        formSubmitData.append("_template", "table");
+        formSubmitData.append(
+          "_subject",
+          `New Form Submission from ${document.title} - D-Secure Tech`,
+        );
+
+        // Webhook to notify backend - backend will send auto-response email
+        formSubmitData.append(
+          "_webhook",
+          "https://api.dsecuretech.com/api/formsubmit/webhook",
+        );
+        formSubmitData.append("_webhookContentType", "application/json");
+        formSubmitData.append("_webhookExtraData", "true");
+        formSubmitData.append("sendAutoReply", "true");
+        formSubmitData.append("timestamp", timestampLocal);
+        formSubmitData.append("source", document.title);
+
+        // Set reply-to and customer_email for backend
+        const userEmail = formData.email || formData.businessEmail;
+        if (userEmail) {
+          formSubmitData.append("_replyto", String(userEmail));
+          formSubmitData.append("customer_email", String(userEmail));
+        }
+
+        // CC emails
+        formSubmitData.append(
+          "_cc",
+          "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com",
+        );
+
+        // Prepare submission data for Backend API
+        const submissionData = {
+          name: formData.fullName || formData.name || "",
+          email: String(userEmail || ""),
+          company: formData.company || formData.companyName || "",
+          phone: formData.phone || formData.phoneNo || "",
+          country: formData.country || "",
+          businessType: formData.businessType || "",
+          solutionType: formData.eraseOption || formData.partnerType || "",
+          complianceRequirements: formData.compliance || "",
+          message:
+            formData.requirements ||
+            formData.businessDescription ||
+            formData.message ||
+            "",
+          usageType: formData.usage || "",
+          source: document.title,
+          timestamp: timestampISO,
+        };
+
+        // Submit to FormSubmit
+        const response = await fetch(config.endpoint || FORMSUBMIT_ENDPOINT, {
+          method: "POST",
+          body: formSubmitData,
+        });
+
+        if (response.ok) {
+          const successMessage =
+            config.successMessage ||
+            "Form submitted successfully! We will get back to you soon.";
+
+          showGlobalToast(successMessage, "success");
+
+          // Reset form if configured
+          if (config.resetAfterSubmit !== false) {
+            // Form has been reset
+          }
+
+          // Redirect if configured
+          if (config.redirectAfterSuccess) {
+            setTimeout(() => {
+              window.location.href = config.redirectAfterSuccess!;
+            }, 2000);
+          }
+
+          setFormState((prev) => ({
+            ...prev,
+            isSubmitting: false,
+            isValid: true,
+          }));
+
+          // Backend API + Power Automate (non-blocking)
+          try {
+            const { ENV } = await import("@/config/env");
+
+            // Backend API
+            fetch(`${ENV.API_BASE_URL}/api/ContactFormSubmissions`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(submissionData),
+            }).catch(() => {});
+
+            // Power Automate tracking
+            fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": "REACT_CONTACT_2026",
+              },
+              body: JSON.stringify(submissionData),
+            }).catch(() => {});
+          } catch (e) {
+            console.error("Backend/Power Automate error:", e);
+          }
+
+          return true;
+        } else {
+          throw new Error("Form submission failed");
+        }
+      } catch (error) {
+        console.error("Form submission error:", error);
+        const errorMessage =
+          config.errorMessage ||
+          "Failed to submit form. Please try again later.";
+
+        showGlobalToast(errorMessage, "error");
+        setFormState((prev) => ({ ...prev, isSubmitting: false }));
         return false;
       }
-
-      // Prepare FormData
-      const formSubmitData = new FormData();
-      
-      // Add all form fields
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== '') {
-          formSubmitData.append(key, String(value));
-        }
-      });
-
-      // Add FormSubmit configuration
-      formSubmitData.append('_next', window.location.href);
-      formSubmitData.append('_captcha', 'false');
-      formSubmitData.append('_template', 'table');
-      formSubmitData.append('_subject', `New Form Submission from ${document.title}`);
-      formSubmitData.append('_autoresponse', 'Thank you for contacting D-Secure Tech. We will get back to you soon!');
-
-      // Submit form
-      const response = await fetch(config.endpoint || FORMSUBMIT_ENDPOINT, {
-        method: 'POST',
-        body: formSubmitData
-      });
-
-      if (response.ok) {
-        const successMessage = config.successMessage || 
-          'Form submitted successfully! We will get back to you soon.';
-        
-        showGlobalToast(successMessage, 'success');
-        
-        // Reset form if configured
-        if (config.resetAfterSubmit !== false) {
-          // Form has been reset
-        }
-
-        // Redirect if configured
-        if (config.redirectAfterSuccess) {
-          setTimeout(() => {
-            window.location.href = config.redirectAfterSuccess!;
-          }, 2000);
-        }
-
-        setFormState(prev => ({ ...prev, isSubmitting: false, isValid: true }));
-        return true;
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      const errorMessage = config.errorMessage || 
-        'Failed to submit form. Please try again later.';
-      
-      showGlobalToast(errorMessage, 'error');
-      setFormState(prev => ({ ...prev, isSubmitting: false }));
-      return false;
-    }
-  }, [config, validateForm]);
+    },
+    [config, validateForm],
+  );
 
   const clearErrors = useCallback(() => {
-    setFormState(prev => ({ ...prev, errors: {} }));
+    setFormState((prev) => ({ ...prev, errors: {} }));
   }, []);
 
   const setFieldError = useCallback((fieldName: string, error: string) => {
-    setFormState(prev => ({
+    setFormState((prev) => ({
       ...prev,
-      errors: { ...prev.errors, [fieldName]: error }
+      errors: { ...prev.errors, [fieldName]: error },
     }));
   }, []);
 
@@ -217,7 +318,7 @@ export const useEnhancedForm = (config: FormConfig) => {
     validateField,
     validateForm,
     clearErrors,
-    setFieldError
+    setFieldError,
   };
 };
 

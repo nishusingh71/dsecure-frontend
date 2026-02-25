@@ -1182,8 +1182,8 @@ export default function AdminLicenses() {
             <SkeletonChart height="h-[300px]" />
           ) : licenseDetails.length > 0 ? (
             <>
-              <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="h-[300px] w-full relative">
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
                       data={licenseDetails}
@@ -1194,6 +1194,7 @@ export default function AdminLicenses() {
                       paddingAngle={5}
                       dataKey="count"
                       nameKey="type"
+                      isAnimationActive={false}
                     >
                       {licenseDetails.map((entry, index) => {
                         // Define color palette for pie chart

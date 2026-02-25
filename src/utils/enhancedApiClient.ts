@@ -1006,12 +1006,15 @@ class EnhancedApiClient {
       // },
     ]
 
+    // ✅ NAYA CODE — Check if filters are active to handle empty results correctly
+    const hasActiveFilters = filters && Object.values(filters).some(v => v !== undefined && v !== '');
+
     // Try each endpoint until we get data
     for (const strategy of endpointStrategies) {
       try {
         // console.log(`?? Trying endpoint: ${strategy.name}...`)
-        const response = await strategy.execute()
-        console.log('helllll',response);
+        const response = await strategy.execute();
+        console.log("helllll", response);
 
         // console.log(`?? Response from ${strategy.name}:`, {
         //   success: response.success,
@@ -1019,13 +1022,15 @@ class EnhancedApiClient {
         //   hasData: Array.isArray(response.data) && response.data.length > 0
         // })
 
-        // Check if we got valid data
-        if (response.success && Array.isArray(response.data) && response.data.length > 0) {
-          // console.log(`? SUCCESS! Got ${response.data.length} subusers from ${strategy.name}`)
-          return response
-        } else {
-          // console.log(`?? ${strategy.name} returned empty or invalid data, trying next endpoint...`)
+        // ✅ NAYA CODE — Accept empty results as valid when filters are active
+        // When filters are applied, 0 results is a valid API response (not a failure)
+        if (response.success && Array.isArray(response.data)) {
+          if (response.data.length > 0 || hasActiveFilters) {
+            // console.log(`? SUCCESS! Got ${response.data.length} subusers from ${strategy.name}`)
+            return response;
+          }
         }
+        // console.log(`?? ${strategy.name} returned empty or invalid data, trying next endpoint...`)
       } catch (error) {
         // console.warn(`? Error from ${strategy.name}:`, error)
         // Continue to next endpoint
@@ -1035,10 +1040,12 @@ class EnhancedApiClient {
     // If all endpoints failed or returned empty data
     // console.warn('?? All subuser endpoints failed or returned no data')
     return {
-      success: false,
+      success: hasActiveFilters ? true : false, // ✅ Empty results with filters = valid
       data: [],
-      message: 'No subusers found from any available endpoint'
-    }
+      message: hasActiveFilters
+        ? "No subusers match the applied filters"
+        : "No subusers found from any available endpoint",
+    };
   }
 
   async createSubuser(subuserData: {

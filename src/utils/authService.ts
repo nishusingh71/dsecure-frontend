@@ -129,6 +129,13 @@ class AuthService {
     // Also clear the actual user_data key that's being used
     localStorage.removeItem('user_data')
     localStorage.removeItem('authUser')
+
+    // ✅ NAYA CODE: Also clear apiClient's token storage keys (D-Secure:jwt, jwt_token)
+    // These are used by the Axios interceptor in apiClient.ts and must be cleared
+    // to prevent stale tokens from causing errors on re-login
+    sessionStorage.removeItem('D-Secure:jwt')
+    localStorage.removeItem('D-Secure:jwt')
+    localStorage.removeItem('jwt_token')
     
     // Clear PDF export settings cache on logout
     localStorage.removeItem('pdfExportSettingsCache')

@@ -181,7 +181,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   // FIXED: Special Pricing Form Configuration
   const specialPricingFormConfig = {
-    endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com", // FIXED: Correct endpoint
+    endpoint: "https://formsubmit.co/support@dsecuretech.com", // FIXED: Correct endpoint
     requiredFields: [
       "contactName",
       "email",

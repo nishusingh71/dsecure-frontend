@@ -49,9 +49,12 @@
     "requestDemo": "Request Demo"
   },
   "hero": {
-    "title": "Secure Data Erasure for",
-    "titleHighlight": "Modern Enterprises",
-    "subtitle": "D-Secure helps organizations permanently erase data across devices and clouds with Compliant workflows that meet global compliance standards.",
+    "_OLD_title": "Secure Data Erasure for",
+    "_OLD_titleHighlight": "Modern Enterprises",
+    "_OLD_subtitle": "D-Secure helps organizations permanently erase data across devices and clouds with Compliant workflows that meet global compliance standards.",
+    "title": "Enterprise Data Hygiene &",
+    "titleHighlight": "Lifecycle Governance",
+    "subtitle": "D-Secure is a data lifecycle governance company specializing in structured data sanitization, compliance-aligned systems, and operational data hygiene frameworks for enterprises.",
     "getStarted": "Get Started",
     "watchDemo": "Watch Demo",
     "trustedBy": "Trusted by 1000+ organizations worldwide"
@@ -358,9 +361,12 @@
   },
   "home": {
     "brandName": "D-Secure",
-    "heroTitle": "Secure Data Erasure for",
-    "heroHighlight": "Modern Enterprises",
-    "heroSubtitle": "D-Secure helps organizations permanently erase data across devices and clouds with Compliant workflows that meet global compliance standards.",
+    "_OLD_heroTitle": "Secure Data Erasure for",
+    "_OLD_heroHighlight": "Modern Enterprises",
+    "_OLD_heroSubtitle": "D-Secure helps organizations permanently erase data across devices and clouds with Compliant workflows that meet global compliance standards.",
+    "heroTitle": "Enterprise Data Hygiene &",
+    "heroHighlight": "Lifecycle Governance",
+    "heroSubtitle": "D-Secure is a data lifecycle governance company specializing in structured data sanitization, compliance-aligned systems, and operational data hygiene frameworks for enterprises.",
     "exploreProducts": "Learn More",
     "watchDemo": "Watch Demo",
     "trustedBy": "Trusted by 1000+ organizations worldwide",

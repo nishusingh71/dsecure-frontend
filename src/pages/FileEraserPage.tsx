@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import Reveal from "@/components/Reveal";
@@ -18,6 +18,8 @@ import {
 import { blogPosts } from "@/data/blogPosts";
 import { FileTextIcon, Monitor, Download, X } from "lucide-react";
 import { getSEOForPage } from "@/utils/seo";
+import { useToast } from "@/components/Toast";
+import { ENV } from "@/config/env";
 
 const getReadTime = (text: string) => {
   const wordsPerMinute = 200;
@@ -27,6 +29,8 @@ const getReadTime = (text: string) => {
 };
 
 const FileEraserPage: React.FC = memo(function FileEraserPage() {
+  const { showToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,117 +44,146 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
     null,
   );
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [isDemoActive, setIsDemoActive] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const demoContainerRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        if (demoContainerRef.current?.requestFullscreen) {
+          await demoContainerRef.current.requestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.error("Error attempting to toggle fullscreen:", err);
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
   // Gallery images array for lightbox navigation
   const galleryImages = [
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/wyano4in32dsvwrjfose.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937584/wipt1jepfywjm2jimvh4.png",
       alt: "Dashboard View",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/kwmr1zmohxlsvu7mewu6.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937290/hd3e1lpxec9vaxlyyyf6.png",
       alt: "Erasure Report",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/gw3zeqnncwvnn1hnlekg.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937289/upc7tsoe49jjvj1fnneo.png",
       alt: "File Selection",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/m0m1b2hqj9tl6g9gmhgz.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937256/nch8at9nw2mhkjhwjobw.png",
       alt: "Erasure Progress",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/zulpnihjrlfuoitqaizh.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937220/o7s5yxqf2pfxop8ectkd.png",
       alt: "File Eraser Screenshot 5",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615235/a31wp92vyyeh2j2hu9zc.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937213/ye59qth46en2hcl9npzg.png",
       alt: "File Eraser Screenshot 6",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/s18pgdvgux4dye0fmscy.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937213/cv3i4lngpayo23a5ncey.png",
       alt: "File Eraser Screenshot 7",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/iyavx0ommailpdkcxng5.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937213/bxadnr4jfgvwxah8ctl4.png",
       alt: "File Eraser Screenshot 8",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/uxdebjbpxhj9s4e9f2a5.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937212/kbyo3eyovzptuqwhur18.png",
       alt: "File Eraser Screenshot 9",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/h71mhoxgsxhsmftagfui.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937211/ighihuqv4fh0p90xs3kc.png",
       alt: "File Eraser Screenshot 10",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/zx7c8pmkp59la8bat6co.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937211/dcheaoasw63mpkqjqihe.png",
       alt: "File Eraser Screenshot 11",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615236/f3brvyeayc1gjvvbhycn.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937211/k3kfjkcozhgmerjdtiqs.png",
       alt: "File Eraser Screenshot 12",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/k5qipygfaw0nczflr3zz.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937211/gogmpdrqvldda1iw3izk.png",
       alt: "File Eraser Screenshot 13",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/ju9tjx02ffgsyg7hytqm.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937210/p7hlpajp75ejxyqwfsvb.png",
       alt: "File Eraser Screenshot 14",
     },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/vytjbf7yigyyo6nc5qhv.png",
-      alt: "File Eraser Screenshot 15",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mu4inz3sickwxfbtduzn.png",
-      alt: "File Eraser Screenshot 16",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/smkmqfqk7dw0xwmfl4xa.png",
-      alt: "File Eraser Screenshot 17",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/trcabsasqpewodfyrykl.png",
-      alt: "File Eraser Screenshot 18",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qnl0maavgwb12eyx9drx.png",
-      alt: "File Eraser Screenshot 19",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/y20i3mvvbzzddrzjnunf.png",
-      alt: "File Eraser Screenshot 20",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/g59dppsz6gyjm10rf5lo.png",
-      alt: "File Eraser Screenshot 21",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mx6or4o6uenf3q42ipqg.png",
-      alt: "File Eraser Screenshot 22",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/bj1yo6ykwgxvkp9bbmlm.png",
-      alt: "File Eraser Screenshot 23",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/iuvskkxwxsawnvvk8i4l.png",
-      alt: "File Eraser Screenshot 24",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/nalxxlyfrewjxtpptplf.png",
-      alt: "File Eraser Screenshot 25",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qxrifgrivw11cqhuegx0.png",
-      alt: "File Eraser Screenshot 26",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/pb9yo6kfjwz8z4shw2vz.png",
-      alt: "File Eraser Screenshot 27",
-    },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/vytjbf7yigyyo6nc5qhv.png",
+    //   alt: "File Eraser Screenshot 15",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mu4inz3sickwxfbtduzn.png",
+    //   alt: "File Eraser Screenshot 16",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/smkmqfqk7dw0xwmfl4xa.png",
+    //   alt: "File Eraser Screenshot 17",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/trcabsasqpewodfyrykl.png",
+    //   alt: "File Eraser Screenshot 18",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qnl0maavgwb12eyx9drx.png",
+    //   alt: "File Eraser Screenshot 19",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/y20i3mvvbzzddrzjnunf.png",
+    //   alt: "File Eraser Screenshot 20",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/g59dppsz6gyjm10rf5lo.png",
+    //   alt: "File Eraser Screenshot 21",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615237/mx6or4o6uenf3q42ipqg.png",
+    //   alt: "File Eraser Screenshot 22",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/bj1yo6ykwgxvkp9bbmlm.png",
+    //   alt: "File Eraser Screenshot 23",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/iuvskkxwxsawnvvk8i4l.png",
+    //   alt: "File Eraser Screenshot 24",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/nalxxlyfrewjxtpptplf.png",
+    //   alt: "File Eraser Screenshot 25",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/qxrifgrivw11cqhuegx0.png",
+    //   alt: "File Eraser Screenshot 26",
+    // },
+    // {
+    //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1770615238/pb9yo6kfjwz8z4shw2vz.png",
+    //   alt: "File Eraser Screenshot 27",
+    // },
   ];
 
   // Number of additional images beyond the 4th card (for "More" badge)
@@ -617,7 +650,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   const downloadCatalog = () => {
     const link = document.createElement("a");
-    link.href = "/downloads/DataSheetFileEraser.pdf";
+    link.href = "https://assets.dsecuretech.com/pdf/DataSheetFileEraser.pdf";
     link.download = "DataSheetFileEraser.pdf";
     link.target = "_blank";
     document.body.appendChild(link);
@@ -933,16 +966,118 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             </Reveal>
 
             {/* Media Grid - 1 Video + 2 Screenshots */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
               {/* Main Video Card */}
+              {/* Embedded Product Demo - Sandbox Style */}
+              <Reveal delayMs={100}>
+                <div
+                  ref={demoContainerRef}
+                  className={`relative bg-white overflow-hidden shadow-2xl border border-slate-200/80 hover:shadow-emerald-200/30 transition-shadow duration-500 flex flex-col group ${
+                    isFullscreen
+                      ? "w-full h-full rounded-none"
+                      : "rounded-2xl h-full min-h-[800px]"
+                  }`}
+                >
+                  {/* Fullscreen Toggle Button (visible only when demo is active) */}
+                  {isDemoActive && (
+                    <button
+                      onClick={toggleFullscreen}
+                      className="absolute top-12 right-4 z-50 p-2.5 bg-slate-900/80 hover:bg-emerald-600 text-white rounded-xl shadow-lg backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 flex items-center gap-2"
+                      title={
+                        isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
+                      }
+                    >
+                      {isFullscreen ? (
+                        <svg
+                          className="w-5 h-5 block"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          className="w-5 h-5 block"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                          />
+                        </svg>
+                      )}
+                      <span className="text-sm font-medium pr-1 hidden sm:block">
+                        {isFullscreen ? "Exit Fullscreen" : "Full Screen"}
+                      </span>
+                    </button>
+                  )}
+
+                  {!isDemoActive ? (
+                    /* Demo Placeholder - Screenshot Thumbnail */
+                    <div
+                      onClick={() => setIsDemoActive(true)}
+                      className="group relative w-full h-full min-h-[400px] flex-1 cursor-pointer overflow-hidden"
+                    >
+                      {/* Screenshot Background */}
+                      <img
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937210/p7hlpajp75ejxyqwfsvb.png"
+                        alt="D-Secure File Eraser Preview"
+                        className="w-full h-full object-contain bg-slate-50 group-hover:scale-[1.02] transition-transform duration-500"
+                      />
+                      {/* Subtle overlay for play button visibility */}
+                      <div className="absolute inset-0 bg-black/5 group-hover:bg-black/15 transition-colors duration-300" />
+                      {/* Centered Play Button */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-20 h-20 rounded-full bg-white/90 backdrop-blur-md border-2 border-emerald-200 shadow-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                              <svg
+                                className="w-7 h-7 text-white ml-0.5"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </div>
+                          </div>
+                          <span className="text-sm font-semibold text-slate-700 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-200/80">
+                            Click to start interactive demo
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Iframe Container */
+                    <iframe
+                      src="https://d-secure-file-erase-sand-box.vercel.app/"
+                      className="w-full h-full flex-1 border-0"
+                      title="D-Secure File Eraser Demo"
+                      sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                      loading="lazy"
+                      allow="clipboard-read; clipboard-write; fullscreen"
+                      allowFullScreen
+                    />
+                  )}
+                </div>
+              </Reveal>
+
+              {/* [OLD VIDEO CARD - PRESERVED AS COMMENT]
               <Reveal delayMs={100}>
                 <div
                   onClick={() => setShowVideoModal(true)}
                   className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 cursor-pointer"
                 >
-                  {/* Video Thumbnail - Custom Styled */}
                   <div className="relative aspect-video bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 overflow-hidden">
-                    {/* Background Pattern */}
                     <div className="absolute inset-0 opacity-10">
                       <div
                         className="absolute inset-0"
@@ -951,13 +1086,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         }}
                       />
                     </div>
-
-                    {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                    {/* Content */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
-                      {/* Logo/Icon Area */}
                       <div className="mb-4 flex items-center gap-3">
                         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
                           <svg
@@ -983,8 +1113,6 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           </p>
                         </div>
                       </div>
-
-                      {/* Play Button */}
                       <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-2xl">
                         <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl">
                           <svg
@@ -996,18 +1124,13 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           </svg>
                         </div>
                       </div>
-
-                      {/* Bottom Text */}
                       <p className="mt-4 text-white/70 text-sm font-medium">
                         Click to watch demo
                       </p>
                     </div>
-
-                    {/* Corner Accent */}
                     <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-teal-500/20 to-transparent" />
                   </div>
-                  {/* Video Info */}
                   <div className="p-5">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
@@ -1024,9 +1147,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                   </div>
                 </div>
               </Reveal>
+              */}
 
               {/* Screenshot Cards Grid */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {/* Screenshot 1 */}
                 <Reveal delayMs={150}>
                   <div
@@ -1052,7 +1176,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/x2bqsc3nxzdfns3nyb5r.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937210/p7hlpajp75ejxyqwfsvb.png"
                         alt="Dashboard View"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1106,7 +1230,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/y0qoxkpzqqxw8f0vibb8.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937584/wipt1jepfywjm2jimvh4.png"
                         alt="Erasure Report"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1160,7 +1284,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790691/bdacwvgixrbp512igxz0.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937211/kmytnur3cpuqon7gyfho.png"
                         alt="File Selection"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1214,7 +1338,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1769790692/cfpwnf2ii0sjjkknhdjl.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1771937213/bxadnr4jfgvwxah8ctl4.png"
                         alt="Erasure Progress"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1724,7 +1848,154 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                   <h3 className="text-2xl font-bold text-white mb-6">
                     Request Information
                   </h3>
-                  <form className="space-y-5">
+                  <form
+                    className="space-y-5"
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setIsLoading(true);
+
+                      try {
+                        const now = new Date();
+                        const timestampLocal = now.toLocaleString("en-IN", {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          timeZoneName: "short",
+                        });
+                        const timestampISO = now.toISOString();
+
+                        // === Prepare FormData for FormSubmit ===
+                        const formSubmitData = new FormData();
+                        // Webhook to notify backend - backend will send auto-response email
+                        formSubmitData.append(
+                          "_webhook",
+                          "https://api.dsecuretech.com/api/formsubmit/webhook",
+                        );
+                        formSubmitData.append("_captcha", "false");
+                        formSubmitData.append("_template", "table");
+
+                        // Form fields
+                        formSubmitData.append("name", formData.name.trim());
+                        formSubmitData.append("email", formData.email.trim());
+                        formSubmitData.append(
+                          "organization",
+                          formData.organization.trim(),
+                        );
+                        formSubmitData.append(
+                          "message",
+                          formData.message.trim(),
+                        );
+
+                        // Required for autoresponse
+                        formSubmitData.append(
+                          "_replyto",
+                          formData.email.trim(),
+                        );
+                        formSubmitData.append("timestamp", timestampLocal);
+                        formSubmitData.append(
+                          "source",
+                          "File Eraser Page Contact",
+                        );
+
+                        // Subject and CC
+                        formSubmitData.append(
+                          "_subject",
+                          "New Inquiry - File Eraser Page - D-Secure Tech",
+                        );
+                        formSubmitData.append(
+                          "_cc",
+                          "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com",
+                        );
+
+                        // === Prepare submission data for Backend API ===
+                        const submissionData = {
+                          name: formData.name.trim(),
+                          email: formData.email.trim(),
+                          company: formData.organization.trim(),
+                          phone: "",
+                          country: "",
+                          businessType: "",
+                          solutionType: "file-erasure",
+                          complianceRequirements: "",
+                          message: formData.message.trim(),
+                          usageType: "",
+                          source: "File Eraser Page Contact",
+                          timestamp: timestampISO,
+                        };
+
+                        // Reset form and show success immediately
+                        setFormData({
+                          name: "",
+                          email: "",
+                          organization: "",
+                          message: "",
+                        });
+                        setIsLoading(false);
+                        showToast(
+                          "Thank you! Your enquiry has been submitted successfully.",
+                          "success",
+                        );
+
+                        try {
+                          // === 1. SUBMIT TO BACKEND API (DATABASE) ===
+                          const API_BASE = ENV.API_BASE_URL;
+                          const apiResponse = await fetch(
+                            `${API_BASE}/api/ContactFormSubmissions`,
+                            {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify(submissionData),
+                            },
+                          );
+
+                          // === 2. SUBMIT TO FORMSUBMIT (EMAIL & WEBHOOK) ===
+                          const response = await fetch(
+                            "https://formsubmit.co/support@dsecuretech.com",
+                            {
+                              method: "POST",
+                              body: formSubmitData,
+                              headers: { Accept: "application/json" },
+                            },
+                          );
+
+                          // === 3. Microsoft Excel + Teams tracking (non-blocking) ===
+                          fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                              "x-api-key": "REACT_CONTACT_2026",
+                            },
+                            body: JSON.stringify(submissionData),
+                          }).catch(() => {});
+
+                          if (!apiResponse.ok) {
+                            const errorData = await apiResponse.json();
+                            console.error(
+                              "Backend submission failed:",
+                              errorData,
+                            );
+                          }
+                        } catch (error: any) {
+                          console.error("Form error:", error);
+                          showToast(
+                            error.message ||
+                              "Failed to send message. Please try again later.",
+                            "error",
+                          );
+                        }
+                      } catch (error) {
+                        console.error("FormSubmit error:", error);
+                        showToast(
+                          "Failed to submit enquiry. Please try again.",
+                          "error",
+                        );
+                        setIsLoading(false);
+                      }
+                    }}
+                  >
                     <div>
                       <input
                         type="text"
@@ -1769,9 +2040,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl"
+                      disabled={isLoading}
+                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Submit Enquiry
+                      {isLoading ? "Submitting..." : "Submit Enquiry"}
                     </button>
                   </form>
                 </div>

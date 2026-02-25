@@ -27,12 +27,12 @@ export function useAuditReports(userEmail?: string, enabled: boolean = true) {
     queryKey: auditReportKeys.list(userEmail),
     queryFn: async () => {
       if (!userEmail) {
-        throw new Error('User email is required')
+        throw new Error("User email is required");
       }
 
       // Return demo data if in demo mode
       if (isDemoMode()) {
-        console.log('🔹 Using DEMO audit reports data');
+        console.log("🔹 Using DEMO audit reports data");
         return DEMO_AUDIT_REPORTS;
       }
 
@@ -42,20 +42,22 @@ export function useAuditReports(userEmail?: string, enabled: boolean = true) {
       // *******************************************
       // ********** NAYA CODE — Read from correct 'audit_reports' store **********
       try {
-        const cached = await indexedDBService.get('audit_reports', userEmail);
+        const cached = await indexedDBService.get("audit_reports", userEmail);
         if (cached && Array.isArray(cached) && cached.length > 0) {
-            console.log(`✅ Loaded audit reports for ${userEmail} from IndexedDB`);
-            return cached;
+          console.log(
+            `✅ Loaded audit reports for ${userEmail} from IndexedDB`,
+          );
+          return cached;
         }
       } catch (e) {
-         console.warn('IDB Read Failed: audit_reports', e);
+        console.warn("IDB Read Failed: audit_reports", e);
       }
       // *******************************************
 
-      const response = await apiClient.getAuditReportsByEmail(userEmail)
+      const response = await apiClient.getAuditReportsByEmail(userEmail);
 
       if (!response.success || !response.data) {
-        throw new Error(response.message || 'Failed to fetch audit reports')
+        throw new Error(response.message || "Failed to fetch audit reports");
       }
 
       // 3. Update IDB
@@ -63,16 +65,21 @@ export function useAuditReports(userEmail?: string, enabled: boolean = true) {
       // indexedDBService.put('recent_reports', userEmail, response.data).catch(e => console.error('IDB Write Failed: auditReports', e));
       // *******************************************
       // ********** NAYA CODE — Write to correct 'audit_reports' store **********
-      indexedDBService.put('audit_reports', userEmail, response.data).catch(e => console.error('IDB Write Failed: audit_reports', e));
+      indexedDBService
+        .put("audit_reports", userEmail, response.data)
+        .catch((e) => console.error("IDB Write Failed: audit_reports", e));
       // *******************************************
 
-      return response.data
+      return response.data;
     },
     enabled: enabled && !!userEmail,
-    staleTime: 5 * 60 * 1000,  // 5 minutes - audit reports don't change frequently
-    gcTime: 15 * 60 * 1000,    // 15 minutes in cache
+    staleTime: 5 * 60 * 1000, // 5 minutes - audit reports don't change frequently
+    gcTime: 15 * 60 * 1000, // 15 minutes in cache
+    placeholderData: (previousData: any) => previousData, // ✅ Keep previous data while refetching
+    refetchOnMount: false, // ✅ Don't refetch on tab switch
+    refetchOnWindowFocus: false, // ✅ Don't refetch on window focus
     retry: 1,
-  })
+  });
 }
 
 /**
@@ -137,48 +144,80 @@ export function useRefetchAuditReports() {
  */
 export function useEnhancedAuditReports(userEmail?: string, enabled: boolean = true) {
   return useQuery({
-    queryKey: [...auditReportKeys.list(userEmail), 'enhanced'],
+    queryKey: [...auditReportKeys.list(userEmail), "enhanced"],
     queryFn: async () => {
       if (!userEmail) {
-        throw new Error('User email is required')
+        throw new Error("User email is required");
       }
 
-      const response = await apiClient.getAuditReportsByEmail(userEmail)
+      // 1. Try IDB first for instant load
+      try {
+        const cached = await indexedDBService.get(
+          "enhanced_audit_reports",
+          userEmail,
+        );
+        if (cached && Array.isArray(cached) && cached.length > 0) {
+          console.log(
+            `✅ Loaded enhanced audit reports for ${userEmail} from IndexedDB`,
+          );
+          return cached;
+        }
+      } catch (e) {
+        console.warn("IDB Read Failed: enhanced_audit_reports", e);
+      }
+
+      const response = await apiClient.getAuditReportsByEmail(userEmail);
 
       if (!response.success || !response.data) {
-        throw new Error(response.message || 'Failed to fetch audit reports')
+        throw new Error(response.message || "Failed to fetch audit reports");
       }
 
-      const reports = response.data
+      const reports = response.data;
 
       // Fetch device count for each report in parallel
       const reportsWithDeviceCount = await Promise.all(
         reports.map(async (report: AuditReport) => {
           try {
-            const machinesRes = await apiClient.getMachinesByEmail(report.user_email)
-            const deviceCount = machinesRes.success && machinesRes.data
-              ? machinesRes.data.length
-              : 0
+            const machinesRes = await apiClient.getMachinesByEmail(
+              report.user_email,
+            );
+            const deviceCount =
+              machinesRes.success && machinesRes.data
+                ? machinesRes.data.length
+                : 0;
 
             return {
               ...report,
-              deviceCount
-            }
+              deviceCount,
+            };
           } catch (error) {
-            console.warn(`⚠️ Failed to fetch machines for ${report.user_email}:`, error)
+            console.warn(
+              `⚠️ Failed to fetch machines for ${report.user_email}:`,
+              error,
+            );
             return {
               ...report,
-              deviceCount: 0
-            }
+              deviceCount: 0,
+            };
           }
-        })
-      )
+        }),
+      );
 
-      return reportsWithDeviceCount
+      // 3. Update IDB cache with enhanced reports for instant loading next time
+      indexedDBService
+        .put("enhanced_audit_reports", userEmail, reportsWithDeviceCount)
+        .catch((e) =>
+          console.error("IDB Write Failed: enhanced_audit_reports", e),
+        );
+
+      return reportsWithDeviceCount;
     },
     enabled: enabled && !!userEmail,
     staleTime: 5 * 60 * 1000,
     gcTime: 15 * 60 * 1000,
+    placeholderData: (previousData: any) => previousData, // ✅ Keep previous data while refetching
+    refetchOnMount: false, // ✅ Don't refetch on tab switch
+    refetchOnWindowFocus: false, // ✅ Don't refetch on window focus
     retry: 1,
-  })
+  });
 }

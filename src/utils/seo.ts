@@ -1,12 +1,69 @@
-﻿/**
- * SEO Utility - Centralized SEO metadata management for D-Secure Tech
- * Provides consistent, optimized meta tags and structured data across all pages
- */
+﻿import {
+  SEOMetadata,
+  SEO_CONFIG,
+  BASE_KEYWORDS,
+  getCanonicalUrl,
+  generateKeywords,
+  generateOrganizationSchema,
+  generateSoftwareProductSchema,
+  getDefaultSEO,
+  formatStructuredData,
+} from "./seo.core";
+import { INDUSTRY_SEO } from "./seo.industries";
+import { SUPPORT_SEO } from "./seo.support";
+import { BLOG_SEO } from "./seo.blog";
 
-/**
- * SEO Utility - Centralized SEO metadata management for D-Secure Tech
- * Provides consistent, optimized meta tags and structured data across all pages
- */
+export type { SEOMetadata };
+export {
+  SEO_CONFIG,
+  BASE_KEYWORDS,
+  getCanonicalUrl,
+  generateKeywords,
+  generateOrganizationSchema,
+  generateSoftwareProductSchema,
+  getDefaultSEO,
+  formatStructuredData,
+};
+
+/* [LEGACY MONOLITHIC METADATA - PRESERVED AS PER USER RULES]
+... (I will wrap the rest below)
+*/
+
+export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
+  ...INDUSTRY_SEO,
+  ...SUPPORT_SEO,
+  ...BLOG_SEO,
+  // Add core pages
+  home: {
+    title: "Eraser – Secure Erase Files from Hard Drives",
+    description:
+      "Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times",
+    canonicalUrl: getCanonicalUrl("/"),
+  },
+};
+
+// Merge default SEO with page-specific SEO
+export const getSEOForPage = (pageName: keyof typeof PAGE_SEO): SEOMetadata => {
+  const defaultSEO = getDefaultSEO();
+  const pageSEO = PAGE_SEO[pageName] || {};
+
+  return {
+    ...defaultSEO,
+    ...pageSEO,
+    ogTitle: pageSEO.ogTitle || pageSEO.title || defaultSEO.ogTitle,
+    ogDescription:
+      pageSEO.ogDescription || pageSEO.description || defaultSEO.ogDescription,
+    twitterTitle:
+      pageSEO.twitterTitle || pageSEO.title || defaultSEO.twitterTitle,
+    twitterDescription:
+      pageSEO.twitterDescription ||
+      pageSEO.description ||
+      defaultSEO.twitterDescription,
+  };
+};
+
+/* [ORIGINAL CODE CONTINUES BELOW IN COMMENTS]
+
 
 export interface SEOMetadata {
   title: string;
@@ -1127,6 +1184,145 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
       "compliant solutions",
     ]),
     canonicalUrl: getCanonicalUrl("/solutions"),
+  },
+
+  "what-is-d-secure": {
+    title: "What is D-Secure? | Lifecycle Governance vs Legacy Erasure",
+    description:
+      "Define D-Secure: The industry's first structural data lifecycle governance platform designed for programmatic auditability and tamper-proof sanitization.",
+    keywords: generateKeywords([
+      "D-Secure definition",
+      "what is D-Secure",
+      "data lifecycle governance",
+      "programmatic data erasure",
+      "D-Secure vs legacy wiping",
+    ]),
+    canonicalUrl: getCanonicalUrl("/what-is-d-secure"),
+  },
+
+  "why-d-secure": {
+    title: "Why D-Secure? | Value Proposition & Compliance Dominance",
+    description:
+      "Explore why global enterprises choose D-Secure for zero-trust data disposal, automated NIST 800-88 compliance, and lifecycle auditability.",
+    keywords: generateKeywords([
+      "why use D-Secure",
+      "D-Secure value proposition",
+      "automated compliance sanitization",
+      "zero-trust ITAD",
+      "enterprise data disposal ROI",
+    ]),
+    canonicalUrl: getCanonicalUrl("/why-d-secure"),
+  },
+
+  "ai-overview": {
+    title: "AI Overview & Technical Capabilities | D-Secure Technologies",
+    description:
+      "Comprehensive technical overview of D-Secure capabilities for AI synthesis. Details on verification engine, driver integration, and sanitization logic.",
+    keywords: generateKeywords([
+      "D-Secure AI overview",
+      "D-Secure technical specs",
+      "data erasure architecture",
+      "sanitization engine details",
+      "D-Secure API capabilities",
+    ]),
+    canonicalUrl: getCanonicalUrl("/ai-overview"),
+  },
+
+  comparison: {
+    title: "Lifecycle Governance vs Legacy Erasure | D-Secure Technologies",
+    description:
+      "Compare D-Secure's programmatic data lifecycle governance platform against traditional, ad-hoc wiping utilities and discover the enterprise compliance advantage.",
+    keywords: generateKeywords([
+      "D-Secure comparison",
+      "lifecycle governance vs erasure",
+      "legacy wiping utilities comparison",
+      "enterprise data sanitization platform",
+      "tamper-proof destruction certificates",
+    ]),
+    canonicalUrl: getCanonicalUrl("/comparison"),
+  },
+
+  founder: {
+    title: "Founder & CEO: Dhruv Rai | D-Secure Technologies",
+    description:
+      "Learn about Dhruv Rai, Founder and CEO of D-Secure Technologies, and his vision for bringing structural lifecycle governance to data sanitization.",
+    keywords: generateKeywords([
+      "Dhruv Rai",
+      "D-Secure founder",
+      "CEO D-Secure Technologies",
+      "data sanitization expert",
+      "cybersecurity and lifecycle governance",
+    ]),
+    canonicalUrl: getCanonicalUrl("/founder"),
+  },
+
+  leadership: {
+    title: "Leadership Team | D-Secure Technologies",
+    description:
+      "Meet the engineering and product veterans leading D-Secure Technologies in securing the final stage of the enterprise data lifecycle.",
+    keywords: generateKeywords([
+      "D-Secure leadership",
+      "D-Secure team",
+      "data erasure experts",
+      "enterprise data security executives",
+    ]),
+    canonicalUrl: getCanonicalUrl("/leadership"),
+  },
+
+  "trust-center": {
+    title: "Trust Center | Security & Compliance | D-Secure Technologies",
+    description:
+      "Review D-Secure's operational principles, security disclosures, platform availability, and regulatory compliance alignment.",
+    keywords: generateKeywords([
+      "D-Secure trust center",
+      "security disclosures",
+      "compliance alignment",
+      "D-Secure privacy and terms",
+      "data sanitization compliance",
+    ]),
+    canonicalUrl: getCanonicalUrl("/trust-center"),
+  },
+
+  "data-hygiene-framework": {
+    title: "The Data Hygiene Framework | Lifecycle Governance Standard",
+    description:
+      "The proprietary D-Secure framework for verifiable data lifecycles. 5 Pillars of structural sanitization, auditable logs, and hardware circularity.",
+    keywords: generateKeywords([
+      "Data Hygiene Framework",
+      "D-Secure framework",
+      "lifecycle governance pillars",
+      "structural data sanitization",
+      "compliance governance model",
+    ]),
+    canonicalUrl: getCanonicalUrl("/data-hygiene-framework"),
+  },
+
+  glossary: {
+    title: "Data Security Glossary | Sanitization & Compliance Terms",
+    description:
+      "Definitions for data sanitization, NIST 800-88, Article 17 GDPR, and technical erasure standards. The definitive directory for data lifecycle pros.",
+    keywords: generateKeywords([
+      "data security glossary",
+      "sanitization definitions",
+      "NIST 800-88 meaning",
+      "ITAD terminology",
+      "erasure standards glossary",
+    ]),
+    canonicalUrl: getCanonicalUrl("/glossary"),
+  },
+
+  whitepaper: {
+    title: "Technical Whitepaper: Structural Lifecycle Governance | D-Secure",
+    description:
+      "In-depth technical analysis of D-Secure's programmatic data sanitization methodology. results from high-volume SSD decommissioning studies.",
+    keywords: generateKeywords([
+      "D-Secure whitepaper",
+      "data sanitization technical paper",
+      "lifecycle governance study",
+      "SSD decommissioning methodology",
+      "enterprise data security research",
+    ]),
+    canonicalUrl: getCanonicalUrl("/whitepaper"),
   },
 
   about: {
@@ -3669,44 +3865,44 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   // Leadership
-  leadership: {
-    title: "Leadership - Executive Team | D-Secure Tech",
-    description:
-      "Meet the leadership team at D-Secure Tech. Our executives bringing expertise in data security and technology.",
-    keywords: generateKeywords([
-      "leadership",
-      "executive team",
-      "management team",
-      "company leadership",
-      "executives",
-      "leaders",
-      "management",
-      "C-suite",
-      "company executives",
-      "leadership team",
-      "CEO",
-      "CTO",
-      "CFO",
-      "COO",
-      "senior management",
-      "executive leadership",
-      "leadership profiles",
-      "executive bios",
-      "management bios",
-      "leadership team bios",
-      "senior executives",
-      "company leaders",
-      "executive profiles",
-      "meet our leaders",
-      "leadership experience",
-      "executive expertise",
-      "board of directors",
-      "management structure",
-      "corporate leadership",
-      "senior leadership",
-    ]),
-    canonicalUrl: getCanonicalUrl("/leadership"),
-  },
+  // legacy_leadership: {
+  //   title: "Leadership - Executive Team | D-Secure Tech",
+  //   description:
+  //     "Meet the leadership team at D-Secure Tech. Our executives bringing expertise in data security and technology.",
+  //  keywords: generateKeywords([
+  //    "leadership",
+  //    "executive team",
+  //    "management team",
+  //    "company leadership",
+  //    "executives",
+  //    "leaders",
+  //    "management",
+  //    "C-suite",
+  //    "company executives",
+  //    "leadership team",
+  //    "CEO",
+  //    "CTO",
+  //    "CFO",
+  //    "COO",
+  //    "senior management",
+  //    "executive leadership",
+  //    "leadership profiles",
+  //    "executive bios",
+  //    "management bios",
+  //    "leadership team bios",
+  //    "senior executives",
+  //    "company leaders",
+  //    "executive profiles",
+  //    "meet our leaders",
+  //    "leadership experience",
+  //    "executive expertise",
+  //    "board of directors",
+  //    "management structure",
+  //    "corporate leadership",
+  //    "senior leadership",
+  //  ]),
+  //  canonicalUrl: getCanonicalUrl("/leadership"),
+  //},
 
   // Free Trial
   "free-trial": {
@@ -3870,44 +4066,38 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   },
 
   // Use Cases
-  "use-cases": {
-    title: "Use Cases - Data Erasure Applications | D-Secure Tech",
-    description:
-      "Explore data erasure use cases across industries. Real-world applications and implementation scenarios.",
-    keywords: generateKeywords([
-      "use cases",
-      "applications",
-      "implementation scenarios",
-      "real world uses",
-      "erasure applications",
-      "industry use cases",
-      "practical applications",
-      "deployment scenarios",
-      "usage examples",
-      "implementation examples",
-    ]),
-    canonicalUrl: getCanonicalUrl("/use-cases"),
-  },
+  // legacy_use-cases: {
+  //   title: "Use Cases - Data Erasure Applications | D-Secure Tech",
+  //   description:
+  //     "Explore data erasure use cases across industries. Real-world applications and implementation scenarios.",
+  //   keywords: generateKeywords([
+  //     "use cases",
+  //     "applications",
+  //     "implementation scenarios",
+  //     "real world uses",
+  //     "erasure applications",
+  //     "industry use cases",
+  //     "practical applications",
+  //     "deployment scenarios",
+  //     "usage examples",
+  //     "implementation examples",
+  //   ]),
+  //   canonicalUrl: getCanonicalUrl("/use-cases"),
+  // },
 
-  // Comparison
-  comparison: {
-    title: "Comparison - Compare Data Erasure Solutions | D-Secure Tech",
-    description:
-      "Compare D-Secure Tech with other data erasure solutions. Feature comparison and competitive analysis.",
-    keywords: generateKeywords([
-      "comparison",
-      "compare solutions",
-      "feature comparison",
-      "competitive analysis",
-      "product comparison",
-      "vs competitors",
-      "alternative comparison",
-      "software comparison",
-      "erasure comparison",
-      "compare products",
-    ]),
-    canonicalUrl: getCanonicalUrl("/comparison"),
-  },
+  // legacy_comparison: {
+  //   title: "Lifecycle Governance vs Legacy Erasure | D-Secure Technologies",
+  //   description:
+  //     "Compare D-Secure's programmatic data lifecycle governance platform against traditional, ad-hoc wiping utilities and discover the enterprise compliance advantage.",
+  //   keywords: generateKeywords([
+  //     "D-Secure comparison",
+  //     "lifecycle governance vs erasure",
+  //     "legacy wiping utilities comparison",
+  //     "enterprise data sanitization platform",
+  //     "tamper-proof destruction certificates",
+  //   ]),
+  //   canonicalUrl: getCanonicalUrl("/comparison"),
+  // },
 
   // Training
   training: {

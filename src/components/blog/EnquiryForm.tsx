@@ -53,26 +53,35 @@ const EnquiryForm: React.FC<EnquiryFormProps> = ({ blogId, blogTitle }) => {
     
     try {
       const now = new Date();
-      const timestampLocal = now.toLocaleString('en-IN', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZoneName: 'short'
+      const timestampLocal = now.toLocaleString("en-IN", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZoneName: "short",
       });
       const timestampISO = now.toISOString();
 
       // Prepare FormSubmit data
       const formSubmitData = new FormData();
-      formSubmitData.append("_webhook", "https://api.dsecuretech.com/api/formsubmit/webhook");
+      formSubmitData.append(
+        "_webhook",
+        "https://api.dsecuretech.com/api/formsubmit/webhook",
+      );
       formSubmitData.append("_captcha", "false");
       formSubmitData.append("_template", "table");
       formSubmitData.append("_replyto", formData.email.trim());
-      formSubmitData.append("_subject", `Blog Enquiry: ${blogTitle} - D-Secure Tech`);
-      formSubmitData.append("_cc", "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com");
-      
+      formSubmitData.append(
+        "_subject",
+        `Blog Enquiry: ${blogTitle} - D-Secure Tech`,
+      );
+      formSubmitData.append(
+        "_cc",
+        "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com",
+      );
+
       formSubmitData.append("name", formData.name.trim());
       formSubmitData.append("email", formData.email.trim());
       formSubmitData.append("phone", formData.phone?.trim() || "");
@@ -96,30 +105,43 @@ const EnquiryForm: React.FC<EnquiryFormProps> = ({ blogId, blogTitle }) => {
 
       // Submit to backend
       const API_BASE = ENV.API_BASE_URL;
-      const apiResponse = await fetch(`${API_BASE}/api/ContactFormSubmissions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const apiResponse = await fetch(
+        `${API_BASE}/api/ContactFormSubmissions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(submissionData),
         },
-        body: JSON.stringify(submissionData),
-      });
+      );
 
       // Submit to FormSubmit for email notifications
       await fetch(FORMSUBMIT_ENDPOINT, {
         method: "POST",
         body: formSubmitData,
         headers: {
-          'Accept': 'application/json',
+          Accept: "application/json",
         },
       });
 
+      // Microsoft Excel + Teams tracking (non-blocking)
+      fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "REACT_CONTACT_2026",
+        },
+        body: JSON.stringify(submissionData),
+      }).catch(() => {});
+
       if (!apiResponse.ok) {
-        console.warn('Backend submission had issues, but FormSubmit was sent');
+        console.warn("Backend submission had issues, but FormSubmit was sent");
       }
 
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', message: '' });
+      setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error: any) {
       console.error("Form submission error:", error);
       setIsSubmitting(false);

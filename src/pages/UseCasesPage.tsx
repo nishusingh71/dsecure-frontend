@@ -1,63 +1,164 @@
-import React from 'react';
-import SEOHead from '@/components/SEOHead';
-import { getSEOForPage } from '@/utils/seo';
-import Reveal from '@/components/Reveal';
-import {
-  ShieldIcon,
-  DatabaseIcon,
-  ServerIcon
-} from '@/components/FlatIcons';
+import { useEffect } from "react";
+import SEOHead from "../components/SEOHead";
+import { getSEOForPage } from "../utils/seo";
+import Reveal from "../components/Reveal";
 
 export default function UseCasesPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const useCases = [
     {
-      title: 'IT Asset Disposition',
-      description: 'Secure data erasure for IT asset disposal and recycling',
-      icon: <ServerIcon className="w-6 h-6" filled={true} />
+      title: "Finance & Banking",
+      sector: "FinTech",
+      challenge:
+        "Protecting highly sensitive PII and financial records during workstation upgrades.",
+      solution:
+        "D-Secure's automated Purge protocol with auditable JSON-LD certificates for SOX compliance.",
+      icon: "🏦",
     },
     {
-      title: 'Device Refresh Programs',
-      description: 'Erasure of devices during refresh cycles',
-      icon: <DatabaseIcon className="w-6 h-6" filled={true} />
+      title: "Healthcare",
+      sector: "Healthcare IT",
+      challenge:
+        "Handling PHI on medical devices and servers while meeting HIPAA/HITECH disposal requirements.",
+      solution:
+        "Device-agnostic sanitization that handles legacy proprietary firmware correctly.",
+      icon: "🏥",
     },
     {
-      title: 'Compliance Requirements',
-      description: 'Meeting regulatory compliance for data destruction',
-      icon: <ShieldIcon className="w-6 h-6" filled={true} />
-    }
+      title: "Government & Defense",
+      sector: "Public Sector",
+      challenge:
+        "Ensuring no data leaks during wide-scale hardware decommissioning across multiple agencies.",
+      solution:
+        "Centralized governance console with tamper-proof audit trails for cross-agency verification.",
+      icon: "🏛️",
+    },
+    {
+      title: "ITAD & Recyclers",
+      sector: "Eco-Tech",
+      challenge:
+        "Processing thousands of drives daily with high throughput and 100% verification.",
+      solution:
+        "Parallel execution engine capable of sanitizing 100+ drives simultaneously.",
+      icon: "♻️",
+    },
+    {
+      title: "Cloud Service Providers",
+      sector: "Data Centers",
+      challenge:
+        "Secure decommissioning of faulty SSDs in high-density storage arrays.",
+      solution:
+        "Remote-triggered cryptographic erase that integrates with existing maintenance workflows.",
+      icon: "☁️",
+    },
   ];
 
   return (
     <>
-      <SEOHead seo={getSEOForPage('use-cases')} />
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
-        <section className="py-16 md:py-24">
-          <div className="container-responsive text-center max-w-4xl mx-auto">
+      <SEOHead seo={getSEOForPage("use-cases")} />
+
+      <div className="min-h-screen bg-white">
+        {/* Hero */}
+        <section className="bg-emerald-900 py-20 lg:py-32 text-white">
+          <div className="container-responsive">
             <Reveal>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
-                Use Cases
+              <h1 className="text-4xl md:text-6xl font-extrabold mb-8 leading-tight">
+                Enterprise <span className="text-brand">Use Cases</span>
               </h1>
-              <p className="text-lg md:text-xl text-slate-600 mb-8">
-                Explore data erasure use cases across industries. Real-world applications and implementation scenarios.
+              <p className="text-xl text-emerald-100 max-w-3xl">
+                See how industry leaders across the globe leverage D-Secure to
+                eliminate data liabilities and streamline compliance operations.
               </p>
             </Reveal>
           </div>
         </section>
 
-        <section className="py-16 bg-white">
+        {/* Use Case Grid */}
+        <section className="py-20 lg:py-32 bg-slate-50">
           <div className="container-responsive">
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {useCases.map((useCase, index) => (
-                <Reveal key={useCase.title} delayMs={index * 100}>
-                  <div className="bg-gradient-to-br from-white to-slate-50 rounded-2xl p-6 border border-slate-200 hover:shadow-xl transition-all">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 text-white">
-                      {useCase.icon}
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">{useCase.title}</h3>
-                    <p className="text-slate-600">{useCase.description}</p>
+                <div
+                  key={index}
+                  className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-100 group hover:border-brand/40 transition-all"
+                >
+                  <div className="text-5xl mb-6">{useCase.icon}</div>
+                  <div className="text-brand font-bold text-xs uppercase tracking-widest mb-2">
+                    {useCase.sector}
                   </div>
-                </Reveal>
+                  <h2 className="text-3xl font-bold text-slate-900 mb-6 group-hover:text-brand transition-colors">
+                    {useCase.title}
+                  </h2>
+
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-400 uppercase mb-2">
+                        The Challenge
+                      </h3>
+                      <p className="text-slate-600 leading-relaxed">
+                        {useCase.challenge}
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-400 uppercase mb-2">
+                        The D-Secure Solution
+                      </h3>
+                      <p className="text-slate-600 leading-relaxed">
+                        {useCase.solution}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-10 pt-8 border-t border-slate-50">
+                    <a
+                      href="/contact"
+                      className="inline-flex items-center text-brand font-bold hover:gap-2 transition-all"
+                    >
+                      Learn more about {useCase.title}{" "}
+                      <span className="ml-2">→</span>
+                    </a>
+                  </div>
+                </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Dynamic Integration Section */}
+        <section className="py-20 bg-slate-900 text-white overflow-hidden relative">
+          <div className="container-responsive relative z-10 text-center">
+            <h2 className="text-3xl md:text-5xl font-bold mb-8">
+              Deploy Anywhere, Sanitize Everywhere
+            </h2>
+            <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-12">
+              Our platform is designed for versatility. Whether it's an
+              on-premise data center or a remote field office, D-Secure provides
+              consistent, structural governance.
+            </p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-6 bg-slate-800 rounded-2xl border border-slate-700">
+                <div className="text-emerald-400 font-bold mb-2">On-Prem</div>
+                <div className="text-xs text-slate-500">Enterprise Servers</div>
+              </div>
+              <div className="p-6 bg-slate-800 rounded-2xl border border-slate-700">
+                <div className="text-emerald-400 font-bold mb-2">Remote</div>
+                <div className="text-xs text-slate-500">Corporate Laptops</div>
+              </div>
+              <div className="p-6 bg-slate-800 rounded-2xl border border-slate-700">
+                <div className="text-emerald-400 font-bold mb-2">
+                  Industrial
+                </div>
+                <div className="text-xs text-slate-500">Medical Hardware</div>
+              </div>
+              <div className="p-6 bg-slate-800 rounded-2xl border border-slate-700">
+                <div className="text-emerald-400 font-bold mb-2">ITAD</div>
+                <div className="text-xs text-slate-500">
+                  High Volume Erasure
+                </div>
+              </div>
             </div>
           </div>
         </section>

@@ -33,6 +33,14 @@ export default function AdminSubusers() {
   const [subuserEmailFilter, setSubuserEmailFilter] = useState(""); // 🔍 Subuser email filter
   const [groupFilter, setGroupFilter] = useState(""); // 🔍 Group filter
   const [searchFilter, setSearchFilter] = useState(""); // 🔍 Search filter
+  const [searchInputValue, setSearchInputValue] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchFilter(searchInputValue);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchInputValue]);
   const [showUniqueOnly, setShowUniqueOnly] = useState(false);
   const [sortBy, setSortBy] = useState<keyof SubuserTableRow>("subuser_email");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -407,6 +415,7 @@ export default function AdminSubusers() {
     setSubuserEmailFilter(""); // Reset subuser email filter
     setGroupFilter(""); // Reset group filter
     setSearchFilter(""); // Reset search filter
+    setSearchInputValue(""); // Reset local search filter input
     setShowUniqueOnly(false);
     setSubuserOwnerFilter(""); // Reset subuser owner filter
     setPage(1);
@@ -518,6 +527,13 @@ export default function AdminSubusers() {
     try {
       showInfo(`Updating user ${editFormData.subuser_email}...`);
 
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        showSuccess(`User ${editFormData.subuser_email} updated successfully`);
+        setEditModal({ show: false, user: null });
+        return;
+      }
+
       // ✅ Use patchSubuser with correct field mapping
       const response = await apiClient.patchSubuser(
         editFormData.subuser_email,
@@ -575,6 +591,13 @@ export default function AdminSubusers() {
     try {
       showInfo(`Deleting user ${user.subuser_email}...`);
       console.log("🗑️ Calling deleteSubuser with email:", user.subuser_email);
+
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        showSuccess(`User ${user.subuser_email} deleted successfully`);
+        setDeleteModal({ show: false, user: null });
+        return;
+      }
 
       // Call delete API
       const response = await apiClient.deleteSubuser(user.subuser_email);
@@ -1109,9 +1132,9 @@ export default function AdminSubusers() {
               <input
                 className="w-full border rounded px-3 py-2 text-sm"
                 placeholder="Search keyword"
-                value={searchFilter}
+                value={searchInputValue}
                 onChange={(e) => {
-                  setSearchFilter(e.target.value);
+                  setSearchInputValue(e.target.value);
                   setPage(1);
                 }}
               />
@@ -1239,8 +1262,8 @@ export default function AdminSubusers() {
               >
                 <option value="subuser_email">Email</option>
                 <option value="roles">Role</option>
-                <option value="status">Status</option>
-                <option value="department">Department</option>
+                {/* <option value="status">Status</option>
+                <option value="department">Department</option> */}
                 <option value="last_login">Last Login</option>
               </select>
               <button

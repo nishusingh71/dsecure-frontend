@@ -410,90 +410,122 @@ export default function AdminSessions() {
   const totalPages = Math.max(1, Math.ceil(sessions.length / pageSize));
 
   // ✅ Format date with proper UTC to local timezone conversion
+  // const formatDate = (dateString: string) => {
+  //   if (!dateString || dateString === "N/A") return "-";
+  //   try {
+  //     let dateValue = dateString;
+  //     let date: Date;
+
+  //     // Check if it matches ISO format (YYYY-MM-DDTHH:mm:ss.sssZ)
+  //     if (
+  //       typeof dateValue === "string" &&
+  //       (dateValue.includes("T") || dateValue.includes("-"))
+  //     ) {
+  //       // If it's a simple date string like '2023-01-01 10:00:00', strictly treat as UTC
+  //       if (!dateValue.endsWith("Z") && !dateValue.includes("+")) {
+  //         dateValue = dateValue.replace(" ", "T") + "Z";
+  //       }
+  //       date = new Date(dateValue);
+  //     } else {
+  //       // Fallback for other formats (e.g. "10 Feb 2023 10:00 AM" or "10 Feb, 10:00 am")
+  //       let dateStr = dateValue;
+  //       // If year is missing (e.g. "10 Feb, 10:00 am"), append current year
+  //       if (!/\d{4}/.test(dateStr)) {
+  //         dateStr += ` ${new Date().getFullYear()}`;
+  //       }
+
+  //       const localDate = new Date(dateStr);
+  //       if (!isNaN(localDate.getTime())) {
+  //         // The browser parses this string as local time (e.g. 09:42 AM Local),
+  //         // but we know the actual text represents an intended UTC time.
+  //         // By subtracting the local timezone offset, we shift the internal epoch backward/forward
+  //         // so that the resulting Date object exactly aligns with that UTC time.
+  //         date = new Date(
+  //           localDate.getTime() - localDate.getTimezoneOffset() * 60000,
+  //         );
+  //       }
+  //     }
+
+  //     if (!date || isNaN(date.getTime())) return dateString;
+
+  //     // Return formatted date using the browser's system timezone automatically
+  //     return date.toLocaleString(undefined, {
+  //       month: "short",
+  //       day: "numeric",
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //       hour12: true,
+  //     });
+  //   } catch (e: any) {
+  //     console.warn("Date parsing error:", dateString, e);
+  //     return dateString;
+  //   }
+  // };
+  /* ********** PURANA CODE — formatDate did NOT append 'Z' to ISO strings with 'T' **********
   const formatDate = (dateString: string) => {
     if (!dateString || dateString === "N/A") return "-";
-    try {
-      let dateValue = dateString;
-      let date: Date;
 
-      // Check if it matches ISO format (YYYY-MM-DDTHH:mm:ss.sssZ)
-      if (
-        typeof dateValue === "string" &&
-        (dateValue.includes("T") || dateValue.includes("-"))
-      ) {
-        // If it's a simple date string like '2023-01-01 10:00:00', strictly treat as UTC
-        if (!dateValue.endsWith("Z") && !dateValue.includes("+")) {
-          dateValue = dateValue.replace(" ", "T") + "Z";
-        }
-        date = new Date(dateValue);
-      } else {
-        // Fallback for other formats (e.g. "10 Feb 2023 10:00 AM")
-        // PROBLEM: new Date("10 Feb 2023 10:00 AM") creates local time.
-        // FIX: We need to parse it as UTC.
+    let formattedValue = dateString;
 
-        let dateStr = dateValue;
-        // If year is missing (e.g. "10 Feb, 10:00 am"), append current year
-        if (!/\d{4}/.test(dateStr)) {
-          dateStr += `, ${new Date().getFullYear()}`;
-        }
-
-        // Try to parse using Date.parse, appending 'UTC' to force UTC interpretation
-        const utcDateStr = `${dateStr} UTC`;
-        const timestamp = Date.parse(utcDateStr);
-
-        if (!isNaN(timestamp)) {
-          date = new Date(timestamp);
-        } else {
-          // If adding UTC failed, try parsing as local and then shifting by timezone offset
-          // This is a last resort fallback
-          date = new Date(dateStr);
-          if (!isNaN(date.getTime())) {
-            // Assume the string was meant to be UTC, so subtract local offset to get real UTC point
-            // Actually, if we want "10:00 AM" string to be treated as UTC 10:00 AM:
-            // new Date("... 10:00 AM") gives 10:00 AM Local.
-            // We want to treat it as 10:00 AM UTC.
-            // So we constructed `new Date(string + " UTC")` above which should work.
-            // If that failed, we just use the local interpretation.
-          }
-        }
-      }
-
-      if (!date || isNaN(date.getTime())) return dateString;
-
-      // Get user's timezone from stored data
-      const storedUser = localStorage.getItem("user_data");
-      const authUser = localStorage.getItem("authUser");
-      let userTimezone = undefined;
-
-      if (storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          userTimezone = userData.timezone;
-        } catch (e) {}
-      }
-      if (!userTimezone && authUser) {
-        try {
-          const userData = JSON.parse(authUser);
-          userTimezone = userData.timezone;
-        } catch (e) {}
-      }
-
-      // Return formatted date in user's specific timezone if available, otherwise browser default
-      return date.toLocaleString("en-IN", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-        // If userTimezone is valid, use it. If invalid/missing, undefined lets browser use local system timezone (IST for this user)
-        timeZone: userTimezone || undefined,
-      });
-    } catch (e: any) {
-      console.warn("Date parsing error:", dateString, e);
-      return dateString;
+    // If not proper ISO format, convert to UTC ISO
+    if (
+      typeof dateString === "string" &&
+      !dateString.includes("T") &&
+      !dateString.includes("Z") &&
+      !dateString.includes("+")
+    ) {
+      formattedValue = dateString.replace(" ", "T") + "Z";
     }
-  };
 
+    const date = new Date(formattedValue);
+
+    if (isNaN(date.getTime())) return dateString;
+
+    return date.toLocaleString(undefined, {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+  ********** PURANA CODE END ********** */
+
+  // ✅ NAYA CODE — formatDate: Always treat API date strings as UTC
+  // API sends dates without timezone info (e.g., "2024-01-15T10:30:00")
+  // which browsers parse as local time. We append "Z" to force UTC interpretation
+  // so toLocaleString() correctly converts to the user's local timezone.
+  const formatDate = (dateString: string) => {
+    if (!dateString || dateString === "N/A") return "-";
+
+    let formattedValue = dateString;
+
+    // If the string has no timezone indicator (Z or +/-offset), treat as UTC
+    if (
+      typeof dateString === "string" &&
+      !dateString.endsWith("Z") &&
+      !dateString.includes("+") &&
+      !/\d{2}:\d{2}:\d{2}[+-]/.test(dateString)
+    ) {
+      // Replace space with T if needed, then append Z for UTC
+      formattedValue = dateString.replace(" ", "T");
+      if (!formattedValue.endsWith("Z")) {
+        formattedValue += "Z";
+      }
+    }
+
+    const date = new Date(formattedValue);
+
+    if (isNaN(date.getTime())) return dateString;
+
+    return date.toLocaleString(undefined, {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
   const getStatusColor = (status: string) => {
     const s = String(status).toLowerCase();
     if (s.includes("active") || s.includes("success"))
@@ -811,12 +843,34 @@ export default function AdminSessions() {
                         <span className="text-[10px] text-slate-400 uppercase font-bold">
                           Logout
                         </span>
+                        {/* ********** PURANA CODE — always showed "Active Now" when logout_time was null **********
                         <span className="font-medium text-slate-700">
                           {session.logout_time ? (
                             formatDate(session.logout_time)
                           ) : (
                             <span className="text-emerald-600 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
                               Active Now
+                            </span>
+                          )}
+                        </span>
+                        ********** PURANA CODE END ********** */}
+                        {/* ✅ NAYA CODE — Show "Expired" for sessions past their expiry time */}
+                        <span className="font-medium text-slate-700">
+                          {session.logout_time ? (
+                            formatDate(session.logout_time)
+                          ) : session.isActive ? (
+                            <span className="text-emerald-600 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
+                              Active Now
+                            </span>
+                          ) : session.estimatedExpiryTime &&
+                            new Date(session.estimatedExpiryTime).getTime() <
+                              Date.now() ? (
+                            <span className="text-red-600 font-medium bg-red-50 px-1.5 py-0.5 rounded text-[10px]">
+                              Expired
+                            </span>
+                          ) : (
+                            <span className="text-slate-500 font-medium bg-slate-50 px-1.5 py-0.5 rounded text-[10px]">
+                              Session Ended
                             </span>
                           )}
                         </span>

@@ -28,6 +28,8 @@ import {
 } from "@/data/demoData";
 import { Helmet } from "react-helmet-async";
 
+const EMPTY_METHOD_METRICS: MethodMetric[] = [];
+
 interface PerformanceData {
   monthlyErasures: { month: string; count: number }[];
   avgDuration: { month: string; duration: number }[];
@@ -142,11 +144,11 @@ export default function AdminPerformance() {
 
   // --- Data Fetching ---
 
+  const EMPTY_SUBUSERS: any[] = [];
+
   // 1. Fetch Subusers for Dropdown
-  const { data: subusers = isDemo ? DEMO_SUBUSERS : [] } = useSubusers(
-    currentUserEmail,
-    !!currentUserEmail && !isDemo,
-  );
+  const { data: subusers = isDemo ? DEMO_SUBUSERS : EMPTY_SUBUSERS } =
+    useSubusers(currentUserEmail, !!currentUserEmail && !isDemo);
 
   // 2. Fetch Erasure Metrics
   const metricsFilters = useMemo(() => {
@@ -598,64 +600,71 @@ export default function AdminPerformance() {
                   : 0}
               </p>
             </div>
-            <div className="flex-1 w-full relative">
-              <ResponsiveContainer width="100%" height="100%" minHeight={300}>
-                <PieChart>
-                  <Pie
-                    data={(performanceData.methodMetrics || []) as any}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius="60%"
-                    outerRadius="80%"
-                    paddingAngle={5}
-                    dataKey="count"
-                    nameKey="methodName"
-                  >
-                    {(performanceData.methodMetrics || []).map(
-                      (entry, index) => (
+            <div className="flex-1 w-full relative min-h-[300px]">
+              {performanceData.methodMetrics &&
+              performanceData.methodMetrics.length > 0 ? (
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={performanceData.methodMetrics as any}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius="60%"
+                      outerRadius="80%"
+                      paddingAngle={5}
+                      dataKey="count"
+                      nameKey="methodName"
+                      isAnimationActive={false}
+                    >
+                      {performanceData.methodMetrics.map((entry, index) => (
                         <Cell
                           key={`cell-${index}`}
                           fill={COLORS[index % COLORS.length]}
                           strokeWidth={2}
                           stroke="#fff"
                         />
-                      ),
-                    )}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.95)",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                      border: "1px solid #e2e8f0",
-                      fontSize: "14px",
-                    }}
-                    itemStyle={{ color: "#1e293b" }}
-                    formatter={(value: any, name: any, props: any) => {
-                      const total =
-                        performanceData.methodMetrics?.reduce(
-                          (acc, curr) => acc + curr.count,
-                          0,
-                        ) || 1;
-                      const percent = ((value / total) * 100).toFixed(1);
-                      return [`${value} (${percent}%)`, name];
-                    }}
-                  />
-                  <Legend
-                    verticalAlign="bottom"
-                    height={36}
-                    iconType="circle"
-                    iconSize={10}
-                    wrapperStyle={{
-                      fontSize: "14px",
-                      paddingTop: "20px",
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(255, 255, 255, 0.95)",
+                        borderRadius: "8px",
+                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                        border: "1px solid #e2e8f0",
+                        fontSize: "14px",
+                      }}
+                      itemStyle={{ color: "#1e293b" }}
+                      formatter={(value: any, name: any, props: any) => {
+                        const total =
+                          performanceData.methodMetrics?.reduce(
+                            (acc, curr) => acc + curr.count,
+                            0,
+                          ) || 1;
+                        const percent = ((value / total) * 100).toFixed(1);
+                        return [`${value} (${percent}%)`, name];
+                      }}
+                    />
+                    <Legend
+                      verticalAlign="bottom"
+                      height={36}
+                      iconType="circle"
+                      iconSize={10}
+                      wrapperStyle={{
+                        fontSize: "14px",
+                        paddingTop: "20px",
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-slate-400 italic text-sm">
+                  No erasure data found
+                </div>
+              )}
             </div>
           </div>
 
+          {/* Erasure Method Distribution List View */}
           {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col">
             <div className="mb-4">
               <p className="text-sm text-slate-500 mb-1">

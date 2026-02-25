@@ -1036,7 +1036,7 @@ export default function FailurePage() {
               Visit Support Center
             </Link>
             <Link
-              to="/faq"
+              to="/support/faqs"
               className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-all"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

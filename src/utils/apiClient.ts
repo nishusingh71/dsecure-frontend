@@ -91,13 +91,17 @@ function createApiInstance(): AxiosInstance {
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       // Get JWT token from storage
-      const token = sessionStorage.getItem('D-Secure:jwt') ||
-        localStorage.getItem('D-Secure:jwt') ||
-        localStorage.getItem('jwt_token');
+      const token =
+        sessionStorage.getItem("D-Secure:jwt") ||
+        localStorage.getItem("D-Secure:jwt") ||
+        localStorage.getItem("jwt_token");
 
       // Add Authorization header if token exists AND request is not for a public endpoint
-      // Skip auth for ForgotPassword endpoints to prevent "IP mismatch" errors from stale tokens
-      const isPublicEndpoint = config.url?.includes('/api/ForgotPassword/');
+      // Skip auth for auth endpoints to prevent token validation errors from stale tokens
+      const isPublicEndpoint =
+        config.url?.includes("/api/ForgotPassword/") ||
+        config.url?.includes("/api/RoleBasedAuth/login") ||
+        config.url?.includes("/api/RoleBasedAuth/register");
 
       if (token && !isPublicEndpoint) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -107,21 +111,25 @@ function createApiInstance(): AxiosInstance {
       // FRONTEND PII-SAFE REFACTOR:
       // Add user email to headers (Base64 encoded) instead of URL parameters
       // -------------------------------------------------------------------------
-      const storedUserData = localStorage.getItem('user_data');
-      const authUser = localStorage.getItem('authUser');
+      const storedUserData = localStorage.getItem("user_data");
+      const authUser = localStorage.getItem("authUser");
 
-      let userEmail = '';
+      let userEmail = "";
       if (storedUserData) {
         try {
           const userData = JSON.parse(storedUserData);
-          userEmail = userData.user_email || userData.email || userData.subuser_email || '';
+          userEmail =
+            userData.user_email ||
+            userData.email ||
+            userData.subuser_email ||
+            "";
         } catch (e) {
           // Ignore parse errors
         }
       } else if (authUser) {
         try {
           const userData = JSON.parse(authUser);
-          userEmail = userData.user_email || userData.email || '';
+          userEmail = userData.user_email || userData.email || "";
         } catch (e) {
           // Ignore parse errors
         }
@@ -129,18 +137,18 @@ function createApiInstance(): AxiosInstance {
 
       // Add encoded email to headers if available
       if (userEmail) {
-        config.headers['X-User-Email'] = encodeEmail(userEmail);
+        config.headers["X-User-Email"] = encodeEmail(userEmail);
       }
 
       // Development logging
-      debugLog('API', `?? ${config.method?.toUpperCase()} ${config.url}`);
+      debugLog("API", `?? ${config.method?.toUpperCase()} ${config.url}`);
 
       return config;
     },
     (error) => {
-      debugError('API', 'Request Interceptor Error', error);
+      debugError("API", "Request Interceptor Error", error);
       return Promise.reject(error);
-    }
+    },
   );
 
   // ---------------------------------------------------------------------------
@@ -148,14 +156,17 @@ function createApiInstance(): AxiosInstance {
   // ---------------------------------------------------------------------------
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
-      const contentType = response.headers['content-type'];
+      const contentType = response.headers["content-type"];
       const requestUrl = response.config.url;
 
       // -------------------------------------------------------------------------
       // RULE 1: BINARY SAFETY - Skip decryption for binary content
       // -------------------------------------------------------------------------
       if (isBinaryContentType(contentType) || isBinaryUrl(requestUrl)) {
-        debugLog('API', `?? Binary response, skipping decryption: ${requestUrl}`);
+        debugLog(
+          "API",
+          `?? Binary response, skipping decryption: ${requestUrl}`,
+        );
         return response;
       }
 
@@ -165,12 +176,12 @@ function createApiInstance(): AxiosInstance {
       let responseData = response.data;
 
       // If response data is string, try to parse as JSON
-      if (typeof responseData === 'string') {
+      if (typeof responseData === "string") {
         try {
           responseData = JSON.parse(responseData);
         } catch {
           // Not JSON, return as-is
-          debugLog('API', `?? Non-JSON response: ${requestUrl}`);
+          debugLog("API", `?? Non-JSON response: ${requestUrl}`);
           return response;
         }
       }
@@ -180,29 +191,43 @@ function createApiInstance(): AxiosInstance {
       // -------------------------------------------------------------------------
       if (isEncryptedResponse(responseData)) {
         try {
-          debugLog('ENCRYPT', `?? Encrypted response detected: ${requestUrl}`);
+          debugLog("ENCRYPT", `?? Encrypted response detected: ${requestUrl}`);
 
           // Check if data is compressed
           const isCompressed = responseData.compressed !== false;
-          debugLog('ENCRYPT', `   Compressed: ${isCompressed}`);
+          debugLog("ENCRYPT", `   Compressed: ${isCompressed}`);
 
           // Decrypt the data
-          const decryptedData = EncryptionService.decrypt(responseData.data, isCompressed);
+          const decryptedData = EncryptionService.decrypt(
+            responseData.data,
+            isCompressed,
+          );
 
           // Replace response data with decrypted data
           response.data = decryptedData;
 
-          debugLog('ENCRYPT', `? Decryption successful: ${requestUrl}`, decryptedData);
+          debugLog(
+            "ENCRYPT",
+            `? Decryption successful: ${requestUrl}`,
+            decryptedData,
+          );
 
           return response;
         } catch (decryptError) {
-          debugError('ENCRYPT', `Decryption failed for ${requestUrl}`, decryptError);
+          debugError(
+            "ENCRYPT",
+            `Decryption failed for ${requestUrl}`,
+            decryptError,
+          );
 
           // Return encrypted data with error flag (graceful degradation)
           response.data = {
             ...responseData,
             decryptionError: true,
-            error: decryptError instanceof Error ? decryptError.message : 'Decryption failed',
+            error:
+              decryptError instanceof Error
+                ? decryptError.message
+                : "Decryption failed",
           };
           return response;
         }
@@ -213,7 +238,10 @@ function createApiInstance(): AxiosInstance {
       // -------------------------------------------------------------------------
       response.data = responseData;
 
-      debugLog('API', `?? Response: ${response.config.url} [${response.status}]`);
+      debugLog(
+        "API",
+        `?? Response: ${response.config.url} [${response.status}]`,
+      );
 
       return response;
     },
@@ -221,38 +249,46 @@ function createApiInstance(): AxiosInstance {
       // Handle response errors with detailed logging
       const status = error.response?.status;
       const url = error.config?.url;
-      const method = error.config?.method?.toUpperCase() || 'REQUEST';
+      const method = error.config?.method?.toUpperCase() || "REQUEST";
 
       // Always log API errors with full details
-      debugError('API', `${method} ${url} failed [${status || 'NETWORK'}]`, error);
+      debugError(
+        "API",
+        `${method} ${url} failed [${status || "NETWORK"}]`,
+        error,
+      );
 
       if (error.response) {
-        // Handle 401 Unauthorized - Token expired or invalid
-        if (status === 401) {
-          debugWarn('AUTH', 'Session expired - clearing tokens');
-          sessionStorage.removeItem('D-Secure:jwt');
-          localStorage.removeItem('D-Secure:jwt');
-          localStorage.removeItem('jwt_token');
-          localStorage.removeItem('user_data');
-          localStorage.removeItem('authUser');
-          localStorage.removeItem('pdfExportSettingsCache');
+        const isLoginEndpoint = url?.includes("/api/RoleBasedAuth/login");
+
+        // Handle 401 Unauthorized - Token expired or invalid (Skip redirect for login to prevent page reloads)
+        if (status === 401 && !isLoginEndpoint) {
+          debugWarn("AUTH", "Session expired - clearing tokens");
+          sessionStorage.removeItem("D-Secure:jwt");
+          localStorage.removeItem("D-Secure:jwt");
+          localStorage.removeItem("jwt_token");
+          localStorage.removeItem("user_data");
+          localStorage.removeItem("authUser");
+          localStorage.removeItem("pdfExportSettingsCache");
 
           // Dispatch custom event for auth handling
-          window.dispatchEvent(new CustomEvent('authError', {
-            detail: { status: 401, message: 'Session expired' }
-          }));
-          
+          window.dispatchEvent(
+            new CustomEvent("authError", {
+              detail: { status: 401, message: "Session expired" },
+            }),
+          );
+
           // Redirect to login page with expired flag
           // But if it was a logout request, just redirect cleanly
-          if (error.config?.url?.includes('/logout')) {
-            window.location.href = '/login';
+          if (error.config?.url?.includes("/logout")) {
+            window.location.href = "/login";
           } else {
-            window.location.href = '/login';
+            window.location.href = "/login";
           }
         }
 
         // Try to parse error response
-        if (typeof error.response.data === 'string') {
+        if (typeof error.response.data === "string") {
           try {
             error.response.data = JSON.parse(error.response.data);
           } catch {
@@ -262,7 +298,7 @@ function createApiInstance(): AxiosInstance {
       }
 
       return Promise.reject(error);
-    }
+    },
   );
 
   return instance;

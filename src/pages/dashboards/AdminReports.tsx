@@ -40,6 +40,16 @@ export default function AdminReports() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification();
   const { user } = useAuth();
   const [query, setQuery] = useState("");
+  const [searchInputValue, setSearchInputValue] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setQuery(searchInputValue);
+      // Optional: reset page to 1 when search completes
+      // Though it's handled on input change, having it here guarantees consistency.
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchInputValue]);
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("");
   const [fromDate, setFromDate] = useState("");
@@ -174,16 +184,50 @@ export default function AdminReports() {
         <label className="block text-sm font-medium text-slate-700 mb-1">
           {label} <span className="text-slate-500 text-xs">(YYYY-MM-DD)</span>
         </label>
-        <input
-          ref={inputRef}
-          type="text"
-          className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-brand focus:border-transparent font-mono"
-          placeholder={placeholder}
-          value={displayValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          maxLength={10}
-        />
+        <div className="relative">
+          <input
+            ref={inputRef}
+            type="text"
+            className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-brand focus:border-transparent font-mono pr-10"
+            placeholder={placeholder}
+            value={displayValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            maxLength={10}
+          />
+          <input
+            type="date"
+            className="absolute right-0 top-0 h-full w-10 opacity-0 cursor-pointer"
+            value={
+              displayValue.match(/^\d{4}-\d{2}-\d{2}$/) ? displayValue : ""
+            }
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val) {
+                setDisplayValue(val);
+                onChange(val);
+              }
+            }}
+          />
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+        </div>
       </div>
     );
   };
@@ -584,6 +628,16 @@ export default function AdminReports() {
           return;
         }
 
+        // 🛑 DEMO MODE GUARD: Skip API call in demo mode
+        if (isDemo) {
+          console.log(
+            "🔵 Demo mode: Skipping API fetch for settings, using defaults/cache",
+          );
+          if (isMounted) setPdfSettingsLoaded(true);
+          if (isMounted) setPdfSettingsLoading(false);
+          return;
+        }
+
         const API_BASE = ENV.API_BASE_URL;
         const response = await fetch(
           `${API_BASE}/api/EnhancedAuditReports/export-settings`,
@@ -766,17 +820,24 @@ export default function AdminReports() {
 
       console.log("🔵 Saving PDF settings to server with FormData");
 
-      const response = await fetch(
-        `${API_BASE}/api/EnhancedAuditReports/export-settings`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${authService.getAccessToken()}`,
-            // Don't set Content-Type - browser will set it automatically with boundary for FormData
+      let response;
+
+      if (isDemo) {
+        console.log("🔵 Demo mode: Simulating POST to export-settings");
+        response = { ok: true, status: 200, text: async () => "Demo Success" };
+      } else {
+        response = await fetch(
+          `${API_BASE}/api/EnhancedAuditReports/export-settings`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${authService.getAccessToken()}`,
+              // Don't set Content-Type - browser will set it automatically with boundary for FormData
+            },
+            body: formData,
           },
-          body: formData,
-        },
-      );
+        );
+      }
 
       if (response.ok) {
         console.log("✅ PDF settings saved to server successfully");
@@ -1806,6 +1867,7 @@ export default function AdminReports() {
 
   const clearAllFilters = () => {
     setQuery("");
+    setSearchInputValue("");
     setStatusFilter("");
     setFromDate("");
     setToDate("");
@@ -1956,12 +2018,32 @@ export default function AdminReports() {
 
       console.log("🔵 Download request:", downloadUrl);
 
-      const response = await fetch(downloadUrl, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${authService.getAccessToken()}`,
-        },
-      });
+      let response;
+      if (isDemo) {
+        console.log(
+          `🔵 Demo mode: Simulating PDF download for report ${reportId}`,
+        );
+        // Create a minimal valid PDF blob for demo download
+        const dummyPdfContent =
+          "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 53 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n392\n%%EOF";
+        response = {
+          ok: true,
+          status: 200,
+          statusText: "OK",
+          headers: new Headers({ "content-type": "application/pdf" }),
+          blob: async () =>
+            new Blob([dummyPdfContent], { type: "application/pdf" }),
+        };
+        // Simulated network delay
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      } else {
+        response = await fetch(downloadUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${authService.getAccessToken()}`,
+          },
+        });
+      }
 
       console.log("🔵 Response status:", response.status, response.statusText);
       console.log("🔵 Content-Type:", response.headers.get("content-type"));
@@ -1970,7 +2052,7 @@ export default function AdminReports() {
         // Try to get error message from response body
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
-          const errorData = await response.json();
+          const errorData = await (response as any).json();
           console.error("❌ Backend error response:", errorData);
           errorMessage = errorData.message || errorData.error || errorMessage;
         } catch (e) {
@@ -2115,21 +2197,39 @@ export default function AdminReports() {
             );
           }
 
-          const response = await fetch(
-            `${
-              import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"
-            }/api/EnhancedAuditReports/${encodeURIComponent(
-              reportId,
-            )}/export-pdf-with-files`,
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${authService.getAccessToken()}`,
-                // Content-Type header is not needed for FormData, browser sets it automatically with boundary
+          let response;
+          if (isDemo) {
+            console.log(
+              `🔵 Demo mode: Simulating PDF export for report ${reportId}`,
+            );
+            // Create a minimal valid PDF blob for demo
+            const dummyPdfContent =
+              "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 53 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n392\n%%EOF";
+            response = {
+              ok: true,
+              blob: async () =>
+                new Blob([dummyPdfContent], { type: "application/pdf" }),
+            };
+            // Artificial delay to simulate download
+            await new Promise((resolve) => setTimeout(resolve, 500));
+          } else {
+            response = await fetch(
+              `${
+                import.meta.env.VITE_API_BASE_URL ||
+                "https://api.dsecuretech.com"
+              }/api/EnhancedAuditReports/${encodeURIComponent(
+                reportId,
+              )}/export-pdf-with-files`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${authService.getAccessToken()}`,
+                  // Content-Type header is not needed for FormData, browser sets it automatically with boundary
+                },
+                body: submitData,
               },
-              body: submitData,
-            },
-          );
+            );
+          }
 
           if (response.ok) {
             const blob = await response.blob();
@@ -2138,7 +2238,7 @@ export default function AdminReports() {
             successCount++;
           } else {
             console.warn(
-              `Failed to download report ${report.id}: ${response.statusText}`,
+              `Failed to download report ${report.id}: ${response.statusText || "Error"}`,
             );
             // Fallback to regular export if custom fails? No, better to report error
             failedCount++;
@@ -2382,20 +2482,38 @@ export default function AdminReports() {
             );
           }
 
-          const response = await fetch(
-            `${
-              import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"
-            }/api/EnhancedAuditReports/${encodeURIComponent(
-              reportId,
-            )}/export-pdf-with-files`,
-            {
-              method: "POST",
-              headers: {
-                Authorization: `Bearer ${authService.getAccessToken()}`,
+          let response;
+          if (isDemo) {
+            console.log(
+              `🔵 Demo mode: Simulating PDF preview for report ${reportId}`,
+            );
+            // Create a minimal valid PDF blob for demo preview
+            const dummyPdfContent =
+              "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 61 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Preview Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n400\n%%EOF";
+            response = {
+              ok: true,
+              blob: async () =>
+                new Blob([dummyPdfContent], { type: "application/pdf" }),
+            };
+            // Artificial delay
+            await new Promise((resolve) => setTimeout(resolve, 500));
+          } else {
+            response = await fetch(
+              `${
+                import.meta.env.VITE_API_BASE_URL ||
+                "https://api.dsecuretech.com"
+              }/api/EnhancedAuditReports/${encodeURIComponent(
+                reportId,
+              )}/export-pdf-with-files`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${authService.getAccessToken()}`,
+                },
+                body: submitData,
               },
-              body: submitData,
-            },
-          );
+            );
+          }
 
           if (response.ok) {
             const blob = await response.blob();
@@ -2804,9 +2922,9 @@ export default function AdminReports() {
               <input
                 className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
                 placeholder="Search ID, department"
-                value={query}
+                value={searchInputValue}
                 onChange={(e) => {
-                  setQuery(e.target.value);
+                  setSearchInputValue(e.target.value);
                   setPage(1);
                 }}
               />

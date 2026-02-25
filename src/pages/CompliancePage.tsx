@@ -14,39 +14,30 @@ import {
 } from '@/components/FlatIcons'
 import SEOHead from '../components/SEOHead'
 import { getSEOForPage } from '../utils/seo'
+type ClauseRequirement = {
+  clause: string;
+  requirement: string;
+  evidence: string;
+};
+
 type Standard = {
   title: string;
   fullName: string;
   description: string;
   icon: string;
   details: string;
-  requirements: string[];
+  clauseRequirements: ClauseRequirement[];
   implementation: string;
-}
+};
 
 type Standards = {
   [key: string]: Standard;
-}
+};
 
 export default function CompliancePage() {
   return (
     <>
-      <SEOHead seo={getSEOForPage('compliance')} />
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/compliance" />
-        <title>
-          Data Erasure Compliance | NIST, GDPR, HIPAA Standards
-        </title>
-        <meta
-          name="description"
-          content="Comprehensive compliance solutions for NIST 800-88, GDPR, HIPAA, SOX, and PCI DSS. Secure data erasure meeting global regulatory standards."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, GDPR compliance, HIPAA data security, SOX PCI DSS standards, regulatory compliance"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
+      <SEOHead seo={getSEOForPage("compliance")} />
 
       <CompliancePageContent />
     </>
@@ -54,198 +45,249 @@ export default function CompliancePage() {
 }
 
 function CompliancePageContent() {
-  const [activeStandard, setActiveStandard] = useState<keyof Standards>('nist')
-  const [searchParams] = useSearchParams()
+  const [activeStandard, setActiveStandard] = useState<keyof Standards>("nist");
+  const [searchParams] = useSearchParams();
 
   // Handle URL parameters to auto-select compliance standards
   useEffect(() => {
-    const urlSearch = searchParams.get('search')?.toLowerCase()
+    const urlSearch = searchParams.get("search")?.toLowerCase();
     if (urlSearch) {
-      if (urlSearch.includes('nist')) {
-        setActiveStandard('nist')
-      } else if (urlSearch.includes('iso') || urlSearch.includes('27001')) {
-        setActiveStandard('iso27001')
-      } else if (urlSearch.includes('gdpr') || urlSearch.includes('privacy')) {
-        setActiveStandard('gdpr')
-      } else if (urlSearch.includes('hipaa') || urlSearch.includes('healthcare')) {
-        setActiveStandard('hipaa')
-      } else if (urlSearch.includes('sox') || urlSearch.includes('sarbanes')) {
-        setActiveStandard('sox')
-      } else if (urlSearch.includes('dod') || urlSearch.includes('defense')) {
-        setActiveStandard('dod')
+      if (urlSearch.includes("nist")) {
+        setActiveStandard("nist");
+      } else if (urlSearch.includes("iso") || urlSearch.includes("27001")) {
+        setActiveStandard("iso27001");
+      } else if (urlSearch.includes("gdpr") || urlSearch.includes("privacy")) {
+        setActiveStandard("gdpr");
+      } else if (
+        urlSearch.includes("hipaa") ||
+        urlSearch.includes("healthcare")
+      ) {
+        setActiveStandard("hipaa");
+      } else if (urlSearch.includes("sox") || urlSearch.includes("sarbanes")) {
+        setActiveStandard("sox");
+      } else if (urlSearch.includes("dod") || urlSearch.includes("defense")) {
+        setActiveStandard("dod");
       }
     }
-  }, [searchParams])
+  }, [searchParams]);
 
   const standards: Standards = {
     nist: {
-      title: 'NIST 800-88',
-      fullName: 'National Institute of Standards and Technology',
-      description: 'Guidelines for Media Sanitization',
-      icon: '🇺🇸',
-      details: 'NIST Special Publication 800-88 provides guidance for sanitizing information system media to prevent the unauthorized disclosure of information.',
-      requirements: [
-        'Clear: Apply logical techniques to sanitize data',
-        'Purge: Apply physical or logical techniques to render data recovery infeasible',
-        'Destroy: Render media unusable and data unrecoverable',
-        'Documentation: Maintain records of sanitization activities'
+      title: "NIST 800-88",
+      fullName: "National Institute of Standards and Technology",
+      description: "Guidelines for Media Sanitization",
+      icon: "🇺🇸",
+      details:
+        "NIST Special Publication 800-88 Rev. 1 provides guidance for sanitizing information system media to prevent the unauthorized disclosure of information.",
+      clauseRequirements: [
+        {
+          clause: "Section 2.1",
+          requirement: "Information Disposition & Sanitization",
+          evidence: "Verification Receipt (Bit-Level)",
+        },
+        {
+          clause: "Section 4.1",
+          requirement: "Clear: Logical techniques to sanitize data",
+          evidence: "Internal Sanitization Log",
+        },
+        {
+          clause: "Section 4.2",
+          requirement: "Purge: Physical/Logical rendering unrecoverable",
+          evidence: "Cryptographic Erasure Key Deletion Record",
+        },
+        {
+          clause: "Section 4.3",
+          requirement: "Documentation of Sanitization",
+          evidence: "Tamper-Proof Certificate of Destruction",
+        },
       ],
-      implementation: 'D-Secure implements all NIST 800-88 Rev. 1 sanitization categories with automated verification and regulatory document generation.'
+      implementation:
+        "D-Secure implements all NIST 800-88 Rev. 1 sanitization categories with automated verification and regulatory document generation.",
     },
     iso27001: {
-      title: 'ISO 27001',
-      fullName: 'International Organization for Standardization',
-      description: 'Information Security Management Systems',
-      icon: '🌐',
-      details: 'ISO/IEC 27001 specifies requirements for establishing, implementing, maintaining and continually improving an information security management system.',
-      requirements: [
-        'Asset management and classification',
-        'Secure disposal of media and equipment',
-        'Access control and authentication',
-        'Incident management and reporting'
+      title: "ISO 27001",
+      fullName: "International Organization for Standardization",
+      description: "Information Security Management Systems",
+      icon: "🌐",
+      details:
+        "ISO/IEC 27001 specifies requirements for establishing, implementing, maintaining and continually improving an ISMS.",
+      clauseRequirements: [
+        {
+          clause: "Annex A.8.3.2",
+          requirement: "Disposal of media",
+          evidence: "Chain of Custody Report",
+        },
+        {
+          clause: "Annex A.11.2.7",
+          requirement: "Removal of Property",
+          evidence: "Asset Exit Authorization Log",
+        },
+        {
+          clause: "Annex A.18.1.3",
+          requirement: "Protection of Records",
+          evidence: "Immutable Session Audit Trail",
+        },
       ],
-      implementation: 'D-Secure supports ISO 27001 compliance through comprehensive asset tracking, access controls, and audit trail generation.'
+      implementation:
+        "D-Secure supports ISO 27001 compliance through comprehensive asset tracking, access controls, and audit trail generation.",
     },
     gdpr: {
-      title: 'GDPR',
-      fullName: 'General Data Protection Regulation',
-      description: 'European Union Data Protection Law',
-      icon: '🇪🇺',
-      details: 'The General Data Protection Regulation requires organizations to implement appropriate technical and organizational measures to ensure data protection.',
-      requirements: [
-        'Right to erasure ("right to be forgotten")',
-        'Data protection by design and by default',
-        'Demonstration of compliance',
-        'Breach notification requirements'
+      title: "GDPR",
+      fullName: "General Data Protection Regulation",
+      description: "European Union Data Protection Law",
+      icon: "🇪🇺",
+      details:
+        "The GDPR requires organizations to implement appropriate technical and organizational measures to ensure data protection.",
+      clauseRequirements: [
+        {
+          clause: "Article 17",
+          requirement: 'Right to erasure ("Right to be Forgotten")',
+          evidence: "Verification of Destruction Receipt",
+        },
+        {
+          clause: "Article 25",
+          requirement: "Data protection by design and default",
+          evidence: "Automated Lifecycle API Logs",
+        },
+        {
+          clause: "Article 32",
+          requirement: "Security of processing",
+          evidence: "Cryptographic Erasure Validation",
+        },
       ],
-      implementation: 'D-Secure ensures GDPR compliance with verifiable data erasure, detailed logging, and automated reporting capabilities.'
+      implementation:
+        "D-Secure ensures GDPR compliance with verifiable data erasure, detailed logging, and automated reporting capabilities.",
     },
     hipaa: {
-      title: 'HIPAA',
-      fullName: 'Health Insurance Portability and Accountability Act',
-      description: 'Healthcare Information Privacy and Security',
-      icon: '🏥',
-      details: 'HIPAA requires covered entities to implement safeguards to protect the privacy and security of protected health information (PHI).',
-      requirements: [
-        'Administrative safeguards for PHI access',
-        'Physical safeguards for equipment and media',
-        'Technical safeguards for data transmission',
-        'Secure disposal of PHI-containing media'
+      title: "HIPAA",
+      fullName: "Health Insurance Portability and Accountability Act",
+      description: "Healthcare Information Privacy and Security",
+      icon: "🏥",
+      details:
+        "HIPAA requires covered entities to implement safeguards to protect the privacy and security of protected health information (PHI).",
+      clauseRequirements: [
+        {
+          clause: "§ 164.310(d)(2)(i)",
+          requirement: "Disposal: Final disposition of electronic PHI",
+          evidence: "Media Sanitization Certification",
+        },
+        {
+          clause: "§ 164.310(d)(2)(ii)",
+          requirement: "Media Re-use: Proper sanitization before reuse",
+          evidence: "Verification Log (Post-Write-Test)",
+        },
+        {
+          clause: "§ 164.312(c)(1)",
+          requirement: "Integrity: Protecting PHI from alteration",
+          evidence: "JSON-LD Immutable Audit Trail",
+        },
       ],
-      implementation: 'D-Secure provides HIPAA-compliant sanitization with PHI-specific protocols and comprehensive audit documentation.'
+      implementation:
+        "D-Secure provides HIPAA-compliant sanitization with PHI-specific protocols and comprehensive audit documentation.",
     },
     sox: {
-      title: 'SOX',
-      fullName: 'Sarbanes-Oxley Act',
-      description: 'Financial Reporting and Corporate Governance',
-      icon: '📊',
-      details: 'The Sarbanes-Oxley Act requires public companies to maintain accurate financial records and implement internal controls.',
+      title: "SOX",
+      fullName: "Sarbanes-Oxley Act",
+      description: "Financial Reporting and Corporate Governance",
+      icon: "📊",
+      details:
+        "The Sarbanes-Oxley Act requires public companies to maintain accurate financial records and implement internal controls.",
       requirements: [
-        'Data integrity and accuracy controls',
-        'Secure retention and disposal of records',
-        'Audit trail requirements',
-        'Management regulation of controls'
+        "Data integrity and accuracy controls",
+        "Secure retention and disposal of records",
+        "Audit trail requirements",
+        "Management regulation of controls",
       ],
-      implementation: 'D-Secure supports SOX compliance through tamper-proof audit trails, secure data handling, and management reporting.'
+      implementation:
+        "D-Secure supports SOX compliance through tamper-proof audit trails, secure data handling, and management reporting.",
     },
     pci: {
-      title: 'PCI DSS',
-      fullName: 'Payment Card Industry Data Security Standard',
-      description: 'Credit Card Data Protection Requirements',
-      icon: '💳',
-      details: 'PCI DSS is a set of security standards designed to ensure that companies that process credit card information maintain a secure environment.',
+      title: "PCI DSS",
+      fullName: "Payment Card Industry Data Security Standard",
+      description: "Credit Card Data Protection Requirements",
+      icon: "💳",
+      details:
+        "PCI DSS is a set of security standards designed to ensure that companies that process credit card information maintain a secure environment.",
       requirements: [
-        'Secure storage and transmission of cardholder data',
-        'Implement strong access control measures',
-        'Regularly monitor and test networks',
-        'Secure disposal of cardholder data'
+        "Secure storage and transmission of cardholder data",
+        "Implement strong access control measures",
+        "Regularly monitor and test networks",
+        "Secure disposal of cardholder data",
       ],
-      implementation: 'D-Secure ensures PCI DSS compliance with Compliant sanitization methods and detailed compliance reporting.'
-    }
-  }
+      implementation:
+        "D-Secure ensures PCI DSS compliance with Compliant sanitization methods and detailed compliance reporting.",
+    },
+  };
 
   const certifications = [
     {
-      name: 'Common Criteria',
-      level: 'EAL 4+',
-      description: 'International standard for computer security regulation',
-      icon: '🛡️'
+      name: "Common Criteria",
+      level: "EAL 4+",
+      description: "International standard for computer security regulation",
+      icon: "🛡️",
     },
     {
-      name: 'FIPS 140-2',
-      level: 'Level 3',
-      description: 'Cryptographic module validation standard',
-      icon: '🔐'
+      name: "FIPS 140-2",
+      level: "Level 3",
+      description: "Cryptographic module validation standard",
+      icon: "🔐",
     },
     {
-      name: 'NSA/CSS',
-      level: 'Approved',
-      description: 'Listed on NSA/CSS Evaluated Products List',
-      icon: '🏛️'
+      name: "NSA/CSS",
+      level: "Approved",
+      description: "Listed on NSA/CSS Evaluated Products List",
+      icon: "🏛️",
     },
     {
-      name: 'CSA STAR',
-      level: 'Gold',
-      description: 'Cloud Security Alliance regulation',
-      icon: '⭐'
-    }
-  ]
+      name: "CSA STAR",
+      level: "Gold",
+      description: "Cloud Security Alliance regulation",
+      icon: "⭐",
+    },
+  ];
 
   const auditFeatures = [
     {
-      title: 'Tamper-Proof Regulatory Documents',
-      description: 'Cryptographically signed regulatory documents that cannot be forged.',
+      title: "Tamper-Proof Regulatory Documents",
+      description:
+        "Cryptographically signed regulatory documents that cannot be forged.",
       icon: (
         <HoverIcon>
           {(filled) => <ShieldIcon className="w-6 h-6" filled={filled} />}
         </HoverIcon>
-      )
+      ),
     },
     {
-      title: 'Chain of Custody',
-      description: 'Complete tracking from device intake to final disposition',
+      title: "Chain of Custody",
+      description: "Complete tracking from device intake to final disposition",
       icon: (
         <HoverIcon>
           {(filled) => <ClipboardIcon className="w-6 h-6" filled={filled} />}
         </HoverIcon>
-      )
+      ),
     },
     {
-      title: 'White Label Support',
-      description: 'Customizable branding and UI for seamless integration.',
+      title: "White Label Support",
+      description: "Customizable branding and UI for seamless integration.",
       icon: (
         <HoverIcon>
           {(filled) => <GearIcon className="w-6 h-6" filled={filled} />}
         </HoverIcon>
-      )
+      ),
     },
     {
-      title: 'Automated Reporting',
-      description: 'Generate compliance reports for auditors and regulators',
+      title: "Automated Reporting",
+      description: "Generate compliance reports for auditors and regulators",
       icon: (
         <HoverIcon>
           {(filled) => <ClipboardIcon className="w-6 h-6" filled={filled} />}
         </HoverIcon>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   return (
     <>
-      <Helmet>
-        <link rel="canonical" href="https://dsecuretech.com/compliance" />
-        <title>DSecureTech Compliance | Data Erasure Standards & Regulations</title>
-        <meta
-          name="description"
-          content="D-SecureTech helps businesses meet global data sanitization standards like NIST, ISO 27001, GDPR, HIPAA, PCI DSS, and SOX with verifiable compliance solutions."
-        />
-        <meta
-          name="keywords"
-          content="data erasure compliance, NIST 800-88, ISO 27001, GDPR, HIPAA, SOX, PCI DSS, enterprise data destruction, B2B data security"
-        />
-        <meta name="robots" content="index, follow" />
-      </Helmet>
-      {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-white to-teal-50">
         <div className="container-app py-16 md:py-24">
           <div className="text-center max-w-4xl mx-auto">
@@ -256,8 +298,9 @@ function CompliancePageContent() {
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Meet and exceed global data sanitization frameworks with verifiable,
-                repeatable erasure protocols. Built for the most stringent regulatory requirements.
+                Meet and exceed global data sanitization frameworks with
+                verifiable, repeatable erasure protocols. Built for the most
+                stringent regulatory requirements.
               </p>
             </Reveal>
             <Reveal delayMs={20}>
@@ -278,9 +321,12 @@ function CompliancePageContent() {
       <section id="standards" className="py-16 md:py-24">
         <div className="container-app">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Supported Standards & Regulations</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+              Supported Standards & Regulations
+            </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              D-Secure is Compliant and compliant with major international standards and regulations.
+              D-Secure is Compliant and compliant with major international
+              standards and regulations.
             </p>
           </div>
 
@@ -290,13 +336,18 @@ function CompliancePageContent() {
               <button
                 key={key}
                 onClick={() => setActiveStandard(key)}
-                className={`text-center p-3 lg:p-4 rounded-xl transition-all duration-200 ${activeStandard === key
-                    ? 'bg-purple-100 border-2 border-purple-300 shadow-lg'
-                    : 'bg-white border-2 border-slate-200 hover:border-slate-300'
-                  }`}
+                className={`text-center p-3 lg:p-4 rounded-xl transition-all duration-200 ${
+                  activeStandard === key
+                    ? "bg-purple-100 border-2 border-purple-300 shadow-lg"
+                    : "bg-white border-2 border-slate-200 hover:border-slate-300"
+                }`}
               >
-                <div className="text-2xl lg:text-3xl mb-1 lg:mb-2">{standard.icon}</div>
-                <div className="font-semibold text-slate-900 text-xs lg:text-sm">{standard.title}</div>
+                <div className="text-2xl lg:text-3xl mb-1 lg:mb-2">
+                  {standard.icon}
+                </div>
+                <div className="font-semibold text-slate-900 text-xs lg:text-sm">
+                  {standard.title}
+                </div>
               </button>
             ))}
           </div>
@@ -307,82 +358,145 @@ function CompliancePageContent() {
               <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
                 <div className="xl:col-span-2 p-6 md:p-8 lg:p-12">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-                    <div className="text-4xl lg:text-5xl flex-shrink-0">{standards[activeStandard].icon}</div>
+                    <div className="text-4xl lg:text-5xl flex-shrink-0">
+                      {standards[activeStandard].icon}
+                    </div>
                     <div className="min-w-0">
-                      <h3 className="text-xl lg:text-2xl font-bold text-slate-900">{standards[activeStandard].title}</h3>
-                      <p className="text-purple-600 font-medium text-sm lg:text-base">{standards[activeStandard].fullName}</p>
-                      <p className="text-slate-600 text-sm lg:text-base">{standards[activeStandard].description}</p>
+                      <h3 className="text-xl lg:text-2xl font-bold text-slate-900">
+                        {standards[activeStandard].title}
+                      </h3>
+                      <p className="text-purple-600 font-medium text-sm lg:text-base">
+                        {standards[activeStandard].fullName}
+                      </p>
+                      <p className="text-slate-600 text-sm lg:text-base">
+                        {standards[activeStandard].description}
+                      </p>
                     </div>
                   </div>
 
-                  <p className="text-slate-600 leading-relaxed mb-6 lg:mb-8">{standards[activeStandard].details}</p>
+                  <p className="text-slate-600 leading-relaxed mb-6 lg:mb-8">
+                    {standards[activeStandard].details}
+                  </p>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                     <div>
-                      <h4 className="font-semibold text-slate-900 mb-4">Key Requirements</h4>
-                      <div className="space-y-3">
-                        {standards[activeStandard].requirements.map((req, index) => (
-                          <div key={index} className="flex items-start gap-3">
-                            <HoverIcon>
-                              {(filled) => <CheckIcon className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" filled={filled} />}
-                            </HoverIcon>
-                            <span className="text-slate-700 text-sm">{req}</span>
-                          </div>
-                        ))}
+                      <h4 className="font-semibold text-slate-900 mb-4">
+                        Structural Mapping
+                      </h4>
+                      <div className="space-y-4">
+                        {standards[activeStandard].clauseRequirements?.map(
+                          (req, index) => (
+                            <div
+                              key={index}
+                              className="p-4 bg-slate-50 rounded-xl border border-slate-100"
+                            >
+                              <div className="flex justify-between items-start mb-2">
+                                <span className="text-[10px] font-bold text-brand uppercase tracking-widest">
+                                  {req.clause}
+                                </span>
+                                <span className="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded">
+                                  EVIDENCE AVAILABLE
+                                </span>
+                              </div>
+                              <h5 className="font-bold text-slate-900 text-sm mb-1">
+                                {req.requirement}
+                              </h5>
+                              <p className="text-slate-500 text-xs italic">
+                                Evidence: {req.evidence}
+                              </p>
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-slate-900 mb-4">DSecure Implementation</h4>
+                      <h4 className="font-semibold text-slate-900 mb-4">
+                        DSecure Implementation
+                      </h4>
                       <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                        <p className="text-slate-700 text-sm leading-relaxed">{standards[activeStandard].implementation}</p>
+                        <p className="text-slate-700 text-sm leading-relaxed">
+                          {standards[activeStandard].implementation}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-slate-50 p-8">
-                  <h4 className="font-semibold text-slate-900 mb-6">Compliance Benefits</h4>
+                  <h4 className="font-semibold text-slate-900 mb-6">
+                    Compliance Benefits
+                  </h4>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <HoverIcon>
-                          {(filled) => <CheckIcon className="w-4 h-4 text-green-600" filled={filled} />}
+                          {(filled) => (
+                            <CheckIcon
+                              className="w-4 h-4 text-green-600"
+                              filled={filled}
+                            />
+                          )}
                         </HoverIcon>
                       </div>
                       <div>
-                        <div className="font-medium text-slate-900 text-sm">Audit Ready</div>
-                        <div className="text-slate-600 text-xs mt-1">Complete documentation for compliance audits</div>
+                        <div className="font-medium text-slate-900 text-sm">
+                          Audit Ready
+                        </div>
+                        <div className="text-slate-600 text-xs mt-1">
+                          Complete documentation for compliance audits
+                        </div>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <HoverIcon>
-                          {(filled) => <ShieldIcon className="w-4 h-4 text-blue-600" filled={filled} />}
+                          {(filled) => (
+                            <ShieldIcon
+                              className="w-4 h-4 text-blue-600"
+                              filled={filled}
+                            />
+                          )}
                         </HoverIcon>
                       </div>
                       <div>
-                        <div className="font-medium text-slate-900 text-sm">Risk Mitigation</div>
-                        <div className="text-slate-600 text-xs mt-1">Reduce regulatory and reputational risks</div>
+                        <div className="font-medium text-slate-900 text-sm">
+                          Risk Mitigation
+                        </div>
+                        <div className="text-slate-600 text-xs mt-1">
+                          Reduce regulatory and reputational risks
+                        </div>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <HoverIcon>
-                          {(filled) => <LightningIcon className="w-4 h-4 text-purple-600" filled={filled} />}
+                          {(filled) => (
+                            <LightningIcon
+                              className="w-4 h-4 text-purple-600"
+                              filled={filled}
+                            />
+                          )}
                         </HoverIcon>
                       </div>
                       <div>
-                        <div className="font-medium text-slate-900 text-sm">Automated Compliance</div>
-                        <div className="text-slate-600 text-xs mt-1">Streamlined compliance processes</div>
+                        <div className="font-medium text-slate-900 text-sm">
+                          Automated Compliance
+                        </div>
+                        <div className="text-slate-600 text-xs mt-1">
+                          Streamlined compliance processes
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-8 pt-6 border-t border-slate-200">
-                    <a href="/contact" className="w-full btn-secondary text-center block">
+                    <a
+                      href="/contact"
+                      className="w-full btn-secondary text-center block"
+                    >
                       Get Compliance Report
                     </a>
                   </div>
@@ -394,36 +508,52 @@ function CompliancePageContent() {
                 <button
                   onClick={() => {
                     const standardKeys = Object.keys(standards);
-                    const currentIndex = standardKeys.indexOf(activeStandard as string);
-                    const prevIndex = currentIndex === 0 ? standardKeys.length - 1 : currentIndex - 1;
+                    const currentIndex = standardKeys.indexOf(
+                      activeStandard as string,
+                    );
+                    const prevIndex =
+                      currentIndex === 0
+                        ? standardKeys.length - 1
+                        : currentIndex - 1;
                     setActiveStandard(standardKeys[prevIndex]);
                   }}
                   className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-brand transition-colors rounded-lg hover:bg-white/80"
                 >
                   <HoverIcon>
-                    {(filled) => <ArrowLeftIcon className="w-4 h-4" filled={filled} />}
+                    {(filled) => (
+                      <ArrowLeftIcon className="w-4 h-4" filled={filled} />
+                    )}
                   </HoverIcon>
                   <span className="text-sm font-medium">Previous Standard</span>
                 </button>
 
                 <div className="text-center">
                   <div className="text-xs text-slate-400">
-                    {Object.keys(standards).indexOf(activeStandard as string) + 1} of {Object.keys(standards).length}
+                    {Object.keys(standards).indexOf(activeStandard as string) +
+                      1}{" "}
+                    of {Object.keys(standards).length}
                   </div>
                 </div>
 
                 <button
                   onClick={() => {
                     const standardKeys = Object.keys(standards);
-                    const currentIndex = standardKeys.indexOf(activeStandard as string);
-                    const nextIndex = currentIndex === standardKeys.length - 1 ? 0 : currentIndex + 1;
+                    const currentIndex = standardKeys.indexOf(
+                      activeStandard as string,
+                    );
+                    const nextIndex =
+                      currentIndex === standardKeys.length - 1
+                        ? 0
+                        : currentIndex + 1;
                     setActiveStandard(standardKeys[nextIndex]);
                   }}
                   className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-brand transition-colors rounded-lg hover:bg-white/80"
                 >
                   <span className="text-sm font-medium">Next Standard</span>
                   <HoverIcon>
-                    {(filled) => <ArrowRightIcon className="w-4 h-4" filled={filled} />}
+                    {(filled) => (
+                      <ArrowRightIcon className="w-4 h-4" filled={filled} />
+                    )}
                   </HoverIcon>
                 </button>
               </div>
@@ -461,9 +591,12 @@ function CompliancePageContent() {
       <section className="py-16 md:py-24">
         <div className="container-app">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Audit & Reporting Features</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">
+              Audit & Reporting Features
+            </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Comprehensive audit trails and reporting capabilities to support your compliance requirements.
+              Comprehensive audit trails and reporting capabilities to support
+              your compliance requirements.
             </p>
           </div>
 
@@ -475,7 +608,9 @@ function CompliancePageContent() {
                     {feature.icon}
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-2">{feature.title}</h3>
+                    <h3 className="font-bold text-slate-900 mb-2">
+                      {feature.title}
+                    </h3>
                     <p className="text-slate-600">{feature.description}</p>
                   </div>
                 </div>
@@ -490,16 +625,25 @@ function CompliancePageContent() {
         <div className="container-app">
           <Reveal>
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 md:p-12 text-center text-white">
-              <h2 className="text-3xl font-bold mb-4">Ensure Your Compliance Today</h2>
+              <h2 className="text-3xl font-bold mb-4">
+                Ensure Your Compliance Today
+              </h2>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Don't let compliance concerns hold back your data erasure operations.
-                Get expert guidance on meeting your regulatory requirements.
+                Don't let compliance concerns hold back your data erasure
+                operations. Get expert guidance on meeting your regulatory
+                requirements.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="/contact" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors">
+                <a
+                  href="/contact"
+                  className="bg-white text-purple-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+                >
                   Schedule Compliance Review
                 </a>
-                <a href="/resources" className="border border-white/30 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors">
+                <a
+                  href="/resources"
+                  className="border border-white/30 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
+                >
                   Download Compliance Guide
                 </a>
               </div>
@@ -508,7 +652,7 @@ function CompliancePageContent() {
         </div>
       </section>
     </>
-  )
+  );
 }
 
 

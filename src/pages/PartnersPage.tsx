@@ -13,6 +13,7 @@ import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField, TextAreaField, SelectField } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
+import { ENV } from "@/config/env";
 
 import {
   GlobeIcon,
@@ -228,6 +229,15 @@ const PartnersPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState("All Countries");
   const [selectedPartnerType, setSelectedPartnerType] =
     useState("All Partner Types");
+  const [contactPartnerForm, setContactPartnerForm] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+  const [isContactSubmitting, setIsContactSubmitting] = useState(false);
 
   // Mock partner data based on attachment
   // const partnersList = [
@@ -621,7 +631,7 @@ const PartnersPage: React.FC = () => {
                     onClick={() =>
                       downloadPDF(
                         "partnership-brochure.pdf",
-                        "D-Secure_Partnership_Brochure.pdf"
+                        "D-Secure_Partnership_Brochure.pdf",
                       )
                     }
                     className="group bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-3"
@@ -1095,7 +1105,6 @@ const PartnersPage: React.FC = () => {
 
             {/* Find Partners Section */}
           </div>
-
         </section>
 
         {/* ITAD Partner Program */}
@@ -1282,7 +1291,7 @@ const PartnersPage: React.FC = () => {
                               {/* Background Pattern - Decorative */}
                               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-50 to-transparent rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-0"></div>
                             </div>
-                          )
+                          ),
                         ) ||
                           partnerTypes[activePartnerType].benefits.map(
                             (benefit, index) => (
@@ -1334,7 +1343,7 @@ const PartnersPage: React.FC = () => {
                                 {/* Background Glow */}
                                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-50 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                               </div>
-                            )
+                            ),
                           )}
                       </div>
                     </div>
@@ -1360,7 +1369,7 @@ const PartnersPage: React.FC = () => {
                         onClick={() =>
                           downloadPDF(
                             "partnership-brochure.pdf",
-                            "D-Secure_Partnership_Brochure.pdf"
+                            "D-Secure_Partnership_Brochure.pdf",
                           )
                         }
                         className="w-full bg-white border-2 border-slate-200/60 hover:border-brand hover:bg-gradient-to-r hover:from-brand/5 hover:to-brand/10 text-slate-700 hover:text-brand font-semibold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg group flex items-center justify-center gap-2"
@@ -1424,8 +1433,8 @@ const PartnersPage: React.FC = () => {
                   </h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
                     Get to know about our global partners and easily locate
-                    them. Connect with qualified D-Secure partners in your region
-                    for seamless collaboration.
+                    them. Connect with qualified D-Secure partners in your
+                    region for seamless collaboration.
                   </p>
                   {/* Feature Pills */}
                   <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-10 max-w-lg sm:max-w-none mx-auto">
@@ -1767,11 +1776,14 @@ const PartnersPage: React.FC = () => {
           preSelectedPartnerType={activePartnerType}
           customConfig={{
             ...formConfigs.partnership,
-            endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
+            endpoint: "https://formsubmit.co/support@dsecuretech.com",
             onSuccess: () => {
               setShowPartnerModal(false);
-              showToast("Partnership application submitted successfully! We'll contact you soon.", "success");
-            }
+              showToast(
+                "Partnership application submitted successfully! We'll contact you soon.",
+                "success",
+              );
+            },
           }}
         />
       )}
@@ -1969,11 +1981,14 @@ const PartnersPage: React.FC = () => {
           onClose={() => setShowLicenseModal(false)}
           customConfig={{
             ...formConfigs.license,
-            endpoint: "https://formsubmit.co/dhruv.rai@dsecuretech.com",
+            endpoint: "https://formsubmit.co/support@dsecuretech.com",
             onSuccess: () => {
               setShowLicenseModal(false);
-              showToast("License request submitted successfully! We'll process your request soon.", "success");
-            }
+              showToast(
+                "License request submitted successfully! We'll process your request soon.",
+                "success",
+              );
+            },
           }}
         />
       )}
@@ -2039,7 +2054,181 @@ const PartnersPage: React.FC = () => {
                   </div>
                 </div>
                 {/* Contact Form */}
-                <form className="space-y-4">
+                <form
+                  className="space-y-4"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (
+                      !contactPartnerForm.name.trim() ||
+                      !contactPartnerForm.email.trim() ||
+                      !contactPartnerForm.subject.trim() ||
+                      !contactPartnerForm.message.trim()
+                    ) {
+                      showToast("Please fill in all required fields.", "error");
+                      return;
+                    }
+                    setIsContactSubmitting(true);
+                    try {
+                      const now = new Date();
+                      const timestampLocal = now.toLocaleString("en-IN", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZoneName: "short",
+                      });
+                      const timestampISO = now.toISOString();
+
+                      const partnerInfo = selectedPartnerForContact;
+
+                      // === Prepare FormData for FormSubmit ===
+                      const formSubmitData = new FormData();
+                      formSubmitData.append(
+                        "_webhook",
+                        "https://api.dsecuretech.com/api/formsubmit/webhook",
+                      );
+                      formSubmitData.append("_captcha", "false");
+                      formSubmitData.append("_template", "table");
+                      formSubmitData.append(
+                        "name",
+                        contactPartnerForm.name.trim(),
+                      );
+                      formSubmitData.append(
+                        "email",
+                        contactPartnerForm.email.trim(),
+                      );
+                      formSubmitData.append(
+                        "company",
+                        contactPartnerForm.company.trim(),
+                      );
+                      formSubmitData.append(
+                        "phone",
+                        contactPartnerForm.phone.trim(),
+                      );
+                      formSubmitData.append(
+                        "subject",
+                        contactPartnerForm.subject.trim(),
+                      );
+                      formSubmitData.append(
+                        "message",
+                        contactPartnerForm.message.trim(),
+                      );
+                      formSubmitData.append(
+                        "_replyto",
+                        contactPartnerForm.email.trim(),
+                      );
+                      formSubmitData.append("timestamp", timestampLocal);
+                      formSubmitData.append(
+                        "partnerCompany",
+                        partnerInfo?.company || "",
+                      );
+                      formSubmitData.append(
+                        "partnerType",
+                        partnerInfo?.type || "",
+                      );
+                      formSubmitData.append(
+                        "partnerLocation",
+                        partnerInfo?.location || "",
+                      );
+                      formSubmitData.append(
+                        "source",
+                        "Partners Page - Contact Partner Form",
+                      );
+                      formSubmitData.append(
+                        "_subject",
+                        `Partner Contact Inquiry: ${contactPartnerForm.subject.trim()} - D-Secure Tech`,
+                      );
+                      formSubmitData.append(
+                        "_cc",
+                        "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com",
+                      );
+
+                      // === Prepare submission data for Backend API ===
+                      const submissionData = {
+                        name: contactPartnerForm.name.trim(),
+                        email: contactPartnerForm.email.trim(),
+                        company: contactPartnerForm.company.trim(),
+                        phone: contactPartnerForm.phone.trim(),
+                        country: partnerInfo?.location || "",
+                        businessType: partnerInfo?.type || "",
+                        solutionType: "partner-contact",
+                        complianceRequirements: "",
+                        message: `[Partner: ${partnerInfo?.company || "N/A"}] ${contactPartnerForm.subject.trim()}: ${contactPartnerForm.message.trim()}`,
+                        usageType: "",
+                        source: "Partners Page - Contact Partner Form",
+                        timestamp: timestampISO,
+                      };
+
+                      // Reset form and show success immediately
+                      setContactPartnerForm({
+                        name: "",
+                        email: "",
+                        company: "",
+                        phone: "",
+                        subject: "",
+                        message: "",
+                      });
+                      setIsContactSubmitting(false);
+                      setShowContactModal(false);
+                      showToast(
+                        "Message sent successfully! The partner will contact you soon.",
+                        "success",
+                      );
+
+                      try {
+                        // === 1. SUBMIT TO BACKEND API (DATABASE) ===
+                        const API_BASE = ENV.API_BASE_URL;
+                        const apiResponse = await fetch(
+                          `${API_BASE}/api/ContactFormSubmissions`,
+                          {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(submissionData),
+                          },
+                        );
+
+                        // === 2. SUBMIT TO FORMSUBMIT (EMAIL & WEBHOOK) ===
+                        await fetch(
+                          "https://formsubmit.co/support@dsecuretech.com",
+                          {
+                            method: "POST",
+                            body: formSubmitData,
+                            headers: { Accept: "application/json" },
+                          },
+                        );
+
+                        // === 3. Microsoft Excel + Teams tracking (non-blocking) ===
+                        fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                            "x-api-key": "REACT_CONTACT_2026",
+                          },
+                          body: JSON.stringify(submissionData),
+                        }).catch(() => {});
+
+                        if (!apiResponse.ok) {
+                          const errorData = await apiResponse.json();
+                          console.error(
+                            "Backend submission failed:",
+                            errorData,
+                          );
+                        }
+                      } catch (error: any) {
+                        console.error("Form error:", error);
+                      }
+                    } catch (error) {
+                      console.error("FormSubmit error:", error);
+                      showToast(
+                        "Failed to send message. Please try again.",
+                        "error",
+                      );
+                      setIsContactSubmitting(false);
+                    }
+                  }}
+                >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -2047,6 +2236,14 @@ const PartnersPage: React.FC = () => {
                       </label>
                       <input
                         type="text"
+                        required
+                        value={contactPartnerForm.name}
+                        onChange={(e) =>
+                          setContactPartnerForm((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                         placeholder="Enter your full name"
                       />
@@ -2057,6 +2254,14 @@ const PartnersPage: React.FC = () => {
                       </label>
                       <input
                         type="email"
+                        required
+                        value={contactPartnerForm.email}
+                        onChange={(e) =>
+                          setContactPartnerForm((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                         placeholder="Enter your email"
                       />
@@ -2069,6 +2274,13 @@ const PartnersPage: React.FC = () => {
                       </label>
                       <input
                         type="text"
+                        value={contactPartnerForm.company}
+                        onChange={(e) =>
+                          setContactPartnerForm((prev) => ({
+                            ...prev,
+                            company: e.target.value,
+                          }))
+                        }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                         placeholder="Your company name"
                       />
@@ -2079,6 +2291,13 @@ const PartnersPage: React.FC = () => {
                       </label>
                       <input
                         type="tel"
+                        value={contactPartnerForm.phone}
+                        onChange={(e) =>
+                          setContactPartnerForm((prev) => ({
+                            ...prev,
+                            phone: e.target.value,
+                          }))
+                        }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                         placeholder="Your phone number"
                       />
@@ -2090,6 +2309,14 @@ const PartnersPage: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      required
+                      value={contactPartnerForm.subject}
+                      onChange={(e) =>
+                        setContactPartnerForm((prev) => ({
+                          ...prev,
+                          subject: e.target.value,
+                        }))
+                      }
                       className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                       placeholder="Brief subject of your inquiry"
                     />
@@ -2100,6 +2327,14 @@ const PartnersPage: React.FC = () => {
                     </label>
                     <textarea
                       rows={4}
+                      required
+                      value={contactPartnerForm.message}
+                      onChange={(e) =>
+                        setContactPartnerForm((prev) => ({
+                          ...prev,
+                          message: e.target.value,
+                        }))
+                      }
                       className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
                       placeholder="Describe your requirements or questions..."
                     />
@@ -2107,17 +2342,10 @@ const PartnersPage: React.FC = () => {
                   <div className="flex gap-4 pt-4">
                     <button
                       type="submit"
-                      className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        showToast(
-                          "Message sent successfully! The partner will contact you soon.",
-                          "success"
-                        );
-                        setShowContactModal(false);
-                      }}
+                      disabled={isContactSubmitting}
+                      className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Send Message
+                      {isContactSubmitting ? "Sending..." : "Send Message"}
                     </button>
                     <button
                       type="button"
@@ -2284,9 +2512,9 @@ const PartnersPage: React.FC = () => {
                       Our team of Compliant professionals ensures complete data
                       destruction compliance with international standards
                       including NIST 800-88, DOD 5220.22-M, and Common Criteria.
-                      We provide comprehensive regulatory documents of destruction for
-                      audit purposes and maintain the highest levels of security
-                      throughout the data erasure process.
+                      We provide comprehensive regulatory documents of
+                      destruction for audit purposes and maintain the highest
+                      levels of security throughout the data erasure process.
                     </p>
                   </div>
                 </div>

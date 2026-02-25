@@ -1280,11 +1280,21 @@ export default function AdminMachines() {
         `Transferring ${selectedMachines.length} machines to ${selectedSubuserForTransfer}...`,
       );
 
-      // Call the actual API endpoint
-      const response = await apiClient.transferMachinesToSubuser(
-        selectedSubuserForTransfer,
-        macAddresses,
-      );
+      // Call the actual API endpoint or simulate in demo mode
+      let response;
+      if (isDemo) {
+        console.log(
+          `🔵 Demo mode: Simulating transfer of ${macAddresses.length} machines to ${selectedSubuserForTransfer}`,
+        );
+        // Artificial delay
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        response = { success: true };
+      } else {
+        response = await apiClient.transferMachinesToSubuser(
+          selectedSubuserForTransfer,
+          macAddresses,
+        );
+      }
 
       if (response.success) {
         showSuccess(

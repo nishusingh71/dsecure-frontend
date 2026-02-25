@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState, useCall
 import { authService } from '../utils/authService'
 import { apiClient } from '../utils/enhancedApiClient'
 import type { User } from '../utils/enhancedApiClient'
+import { clearAuthToken } from "../utils/apiClient";
 import { indexedDBService } from "../services/indexedDBService";
 
 export type Role =
@@ -520,6 +521,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await apiClient.logout();
       }
 
+      // ✅ NAYA CODE: Clear Axios instance's in-memory Authorization header
+      // This prevents stale tokens from being sent on re-login
+      clearAuthToken();
+
       // ? Clear all user-related data from localStorage
       localStorage.removeItem("user_data");
       localStorage.removeItem("authUser");
@@ -545,6 +550,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       console.error("Logout error:", err);
       // Even if API fails, clear all local data
+      authService.clearTokens(); // ✅ Clear all token storage keys
+      clearAuthToken(); // ✅ Clear Axios in-memory headers
       localStorage.removeItem("authUser");
       localStorage.removeItem("userData");
 

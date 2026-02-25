@@ -667,7 +667,7 @@ export default function OrderSuccessPage() {
               Contact Support
             </Link>
             <Link
-              to="/downloads"
+              to="/admin/downloads"
               className="flex items-center justify-center gap-2 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

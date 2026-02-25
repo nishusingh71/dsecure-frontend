@@ -113,7 +113,7 @@ export interface LicenseFormData {
 
 // Props for the LicenseForm component
 export interface LicenseFormProps {
-  onSubmit: (formData: LicenseFormData) => void;
+  onSubmit?: (formData: LicenseFormData) => void;
   onClose?: () => void;
   isModal?: boolean;
   className?: string;

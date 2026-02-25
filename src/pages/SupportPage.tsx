@@ -8,7 +8,7 @@ import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
-
+import { ENV } from "@/config/env";
 
 // Form components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -19,30 +19,22 @@ const FormInput: React.FC<{
   required?: boolean;
   placeholder: string;
   label: string;
-}> = ({
-  type,
-  name,
-  value,
-  onChange,
-  required,
-  placeholder,
-  label
-}) => (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        {label} {required && '*'}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        required={required}
-        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-        placeholder={placeholder}
-      />
-    </div>
-  );
+}> = ({ type, name, value, onChange, required, placeholder, label }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label} {required && "*"}
+    </label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      required={required}
+      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+      placeholder={placeholder}
+    />
+  </div>
+);
 
 const FormTextarea: React.FC<{
   name: string;
@@ -52,30 +44,22 @@ const FormTextarea: React.FC<{
   placeholder: string;
   label: string;
   rows: number;
-}> = ({
-  name,
-  value,
-  onChange,
-  required,
-  placeholder,
-  label,
-  rows
-}) => (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        {label} {required && '*'}
-      </label>
-      <textarea
-        name={name}
-        value={value}
-        onChange={onChange}
-        required={required}
-        rows={rows}
-        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
-        placeholder={placeholder}
-      />
-    </div>
-  );
+}> = ({ name, value, onChange, required, placeholder, label, rows }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label} {required && "*"}
+    </label>
+    <textarea
+      name={name}
+      value={value}
+      onChange={onChange}
+      required={required}
+      rows={rows}
+      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
+      placeholder={placeholder}
+    />
+  </div>
+);
 
 const FormSelect: React.FC<{
   name: string;
@@ -83,31 +67,25 @@ const FormSelect: React.FC<{
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   options: { value: string; label: string }[];
-}> = ({
-  name,
-  value,
-  onChange,
-  label,
-  options
-}) => (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        {label}
-      </label>
-      <select
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
-      >
-        {options.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
+}> = ({ name, value, onChange, label, options }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      {label}
+    </label>
+    <select
+      name={name}
+      value={value}
+      onChange={onChange}
+      className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors bg-white"
+    >
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  </div>
+);
 
 // Support Ticket Modal Component - removed memo for consistency
 const SupportTicketModal: React.FC<{
@@ -121,10 +99,15 @@ const SupportTicketModal: React.FC<{
     category: string;
     description: string;
   };
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+  onInputChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => void;
   onSubmit: (e: React.FormEvent) => void;
   priorityOptions: { value: string; label: string }[];
   categoryOptions: { value: string; label: string }[];
+  isSubmitting?: boolean;
 }> = ({
   isOpen,
   onClose,
@@ -132,113 +115,116 @@ const SupportTicketModal: React.FC<{
   onInputChange,
   onSubmit,
   priorityOptions,
-  categoryOptions
+  categoryOptions,
+  isSubmitting = false,
 }) => {
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-          {/* Fixed Header */}
-          <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
-              <button
-                onClick={onClose}
-                className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
-              >
-                ×
-              </button>
-            </div>
-            <p className="mt-2 text-emerald-100">
-              We'll get back to you as soon as possible!
-            </p>
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+        {/* Fixed Header */}
+        <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
+            <button
+              onClick={onClose}
+              className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
+              disabled={isSubmitting}
+            >
+              ×
+            </button>
           </div>
+          <p className="mt-2 text-emerald-100">
+            We'll get back to you as soon as possible!
+          </p>
+        </div>
 
-          {/* Scrollable Form Content */}
-          <div className="flex-1 overflow-y-auto modal-scroll-container">
-            <form onSubmit={onSubmit} className="p-6 space-y-6 modal-scroll">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormInput
-                  type="text"
-                  name="name"
-                  value={ticketForm.name}
-                  onChange={onInputChange}
-                  required
-                  placeholder="Enter your full name"
-                  label="Full Name"
-                />
-
-                <FormInput
-                  type="email"
-                  name="email"
-                  value={ticketForm.email}
-                  onChange={onInputChange}
-                  required
-                  placeholder="Enter your email address"
-                  label="Email Address"
-                />
-              </div>
-
+        {/* Scrollable Form Content */}
+        <div className="flex-1 overflow-y-auto modal-scroll-container">
+          <form onSubmit={onSubmit} className="p-6 space-y-6 modal-scroll">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormInput
                 type="text"
-                name="subject"
-                value={ticketForm.subject}
+                name="name"
+                value={ticketForm.name}
                 onChange={onInputChange}
                 required
-                placeholder="Brief description of your issue"
-                label="Subject"
+                placeholder="Enter your full name"
+                label="Full Name"
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormSelect
-                  name="priority"
-                  value={ticketForm.priority}
-                  onChange={onInputChange}
-                  label="Priority"
-                  options={priorityOptions}
-                />
-
-                <FormSelect
-                  name="category"
-                  value={ticketForm.category}
-                  onChange={onInputChange}
-                  label="Category"
-                  options={categoryOptions}
-                />
-              </div>
-
-              <FormTextarea
-                name="description"
-                value={ticketForm.description}
+              <FormInput
+                type="email"
+                name="email"
+                value={ticketForm.email}
                 onChange={onInputChange}
                 required
-                rows={1}
-                placeholder="Please provide detailed information about your issue or question..."
-                label="Description"
+                placeholder="Enter your email address"
+                label="Email Address"
+              />
+            </div>
+
+            <FormInput
+              type="text"
+              name="subject"
+              value={ticketForm.subject}
+              onChange={onInputChange}
+              required
+              placeholder="Brief description of your issue"
+              label="Subject"
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormSelect
+                name="priority"
+                value={ticketForm.priority}
+                onChange={onInputChange}
+                label="Priority"
+                options={priorityOptions}
               />
 
-              <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
-                <button
-                  type="submit"
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
-                >
-                  Submit Ticket
-                </button>
-                {/* <button
+              <FormSelect
+                name="category"
+                value={ticketForm.category}
+                onChange={onInputChange}
+                label="Category"
+                options={categoryOptions}
+              />
+            </div>
+
+            <FormTextarea
+              name="description"
+              value={ticketForm.description}
+              onChange={onInputChange}
+              required
+              rows={1}
+              placeholder="Please provide detailed information about your issue or question..."
+              label="Description"
+            />
+
+            <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? "Submitting..." : "Submit Ticket"}
+              </button>
+              {/* <button
                 type="button"
                 onClick={onClose}
                 className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
               >
                 Cancel
               </button> */}
-              </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 const SupportPage: React.FC = () => {
   const { toast, showToast, hideToast } = useToast();
@@ -260,142 +246,214 @@ const SupportPage: React.FC = () => {
   });
 
   // Memoize form options to prevent re-creation
-  const priorityOptions = useMemo(() => [
-    { value: "low", label: "Low" },
-    { value: "medium", label: "Medium" },
-    { value: "high", label: "High" },
-    { value: "urgent", label: "Urgent" }
-  ], []);
+  const priorityOptions = useMemo(
+    () => [
+      { value: "low", label: "Low" },
+      { value: "medium", label: "Medium" },
+      { value: "high", label: "High" },
+      { value: "urgent", label: "Urgent" },
+    ],
+    [],
+  );
 
-  const categoryOptions = useMemo(() => [
-    { value: "general", label: "General Support" },
-    { value: "technical", label: "Technical Issue" },
-    { value: "billing", label: "Billing & Licensing" },
-    { value: "feature", label: "Feature Request" },
-    { value: "bug", label: "Bug Report" }
-  ], []);
+  const categoryOptions = useMemo(
+    () => [
+      { value: "general", label: "General Support" },
+      { value: "technical", label: "Technical Issue" },
+      { value: "billing", label: "Billing & Licensing" },
+      { value: "feature", label: "Feature Request" },
+      { value: "bug", label: "Bug Report" },
+    ],
+    [],
+  );
 
   // Searchable content database
-  const searchableContent = useMemo(() => [
-    {
-      id: 'faqs',
-      title: 'Frequently Asked Questions',
-      description: 'Common questions and answers about D-Secure data erasure solutions',
-      url: '/support/faqs',
-      category: 'Support',
-      keywords: ['faq', 'questions', 'answers', 'help', 'common', 'issues', 'problems']
-    },
-    {
-      id: 'knowledge-base',
-      title: 'Knowledge Base',
-      description: 'Step by step guides for secure data wiping on different devices',
-      url: '/support/knowledge-base',
-      category: 'Documentation',
-      keywords: ['guide', 'tutorial', 'documentation', 'steps', 'how-to', 'manual']
-    },
-    {
-      id: 'get-started',
-      title: 'Get Started Guide',
-      description: 'Learn how to wipe PC, Mac, Server & Mobile devices',
-      url: '/support/get-started',
-      category: 'Getting Started',
-      keywords: ['getting started', 'beginner', 'setup', 'installation', 'first time']
-    },
-    {
-      id: 'help-manual',
-      title: 'Help Manual',
-      description: 'Comprehensive user manual for D-Secure products',
-      url: '/support/help-manual',
-      category: 'Documentation',
-      keywords: ['manual', 'documentation', 'user guide', 'reference']
-    },
-    {
-      id: 'product-videos',
-      title: 'Product Videos',
-      description: 'Video tutorials and product demonstrations',
-      url: '/support/product-videos',
-      category: 'Videos',
-      keywords: ['video', 'tutorial', 'demo', 'demonstration', 'visual', 'watch']
-    },
-    {
-      id: 'overwrite-guide',
-      title: 'Hard Drive Overwrite Guide',
-      description: 'How many overwrites should I do on a Hard Drive?',
-      url: '/support/overwrite-guide',
-      category: 'Guides',
-      keywords: ['overwrite', 'hard drive', 'hdd', 'passes', 'multiple', 'secure']
-    },
-    {
-      id: 'wipe-guide',
-      title: 'HDD & SSD Wipe Guide',
-      description: 'How to securely wipe Hard Drives and SSDs',
-      url: '/support/secure-erase-hddssd',
-      category: 'Guides',
-      keywords: ['wipe', 'erase', 'delete', 'hdd', 'ssd', 'hard drive', 'solid state']
-    },
-    {
-      id: 'sas-wipe-guide',
-      title: 'SAS Drive Wipe Guide',
-      description: 'How to wipe SAS drives permanently',
-      url: '/support/sas-wipe-guide',
-      category: 'Guides',
-      keywords: ['sas', 'drive', 'wipe', 'permanent', 'enterprise', 'server']
-    },
-    {
-      id: 'mac-wipe-guide',
-      title: 'Mac Machine Wipe Guide',
-      description: 'How to wipe 12 board Mac machines',
-      url: '/support/mac-eraser-guide',
-      category: 'Guides',
-      keywords: ['mac', 'apple', 'macbook', 'imac', 'board', 'wipe']
-    },
-    {
-      id: 'm1-mac-wipe-guide',
-      title: 'M1 Mac Wipe Guide',
-      description: 'How to wipe MacOS with M1 chip',
-      url: '/support/mac-wipe-guide',
-      category: 'Guides',
-      keywords: ['m1', 'mac', 'chip', 'apple silicon', 'new mac', 'arm']
-    },
-    {
-      id: 'cloud-console-guide',
-      title: 'Cloud Console Guide',
-      description: 'How to use D-Secure Cloud Console',
-      url: '/support/cloud-console-guide',
-      category: 'Cloud',
-      keywords: ['cloud', 'console', 'remote', 'management', 'web interface']
-    },
-    {
-      id: 'ssd-cryptographic-erasure',
-      title: 'SSD Cryptographic Erasure',
-      description: 'How to perform cryptographic erasure on SSD',
-      url: '/support/ssd-cryptographic-erasure-guide',
-      category: 'Advanced',
-      keywords: ['ssd', 'cryptographic', 'encryption', 'secure erase', 'crypto']
-    },
-    {
-      id: 'retain-os-guide',
-      title: 'Retain OS Wipe Guide',
-      description: 'How to wipe everything and retain your operating system',
-      url: '/support/retain-os-guide',
-      category: 'Guides',
-      keywords: ['retain', 'os', 'operating system', 'keep', 'preserve', 'selective wipe']
-    }
-  ], []);
+  const searchableContent = useMemo(
+    () => [
+      {
+        id: "faqs",
+        title: "Frequently Asked Questions",
+        description:
+          "Common questions and answers about D-Secure data erasure solutions",
+        url: "/support/faqs",
+        category: "Support",
+        keywords: [
+          "faq",
+          "questions",
+          "answers",
+          "help",
+          "common",
+          "issues",
+          "problems",
+        ],
+      },
+      {
+        id: "knowledge-base",
+        title: "Knowledge Base",
+        description:
+          "Step by step guides for secure data wiping on different devices",
+        url: "/support/knowledge-base",
+        category: "Documentation",
+        keywords: [
+          "guide",
+          "tutorial",
+          "documentation",
+          "steps",
+          "how-to",
+          "manual",
+        ],
+      },
+      {
+        id: "get-started",
+        title: "Get Started Guide",
+        description: "Learn how to wipe PC, Mac, Server & Mobile devices",
+        url: "/support/get-started",
+        category: "Getting Started",
+        keywords: [
+          "getting started",
+          "beginner",
+          "setup",
+          "installation",
+          "first time",
+        ],
+      },
+      {
+        id: "help-manual",
+        title: "Help Manual",
+        description: "Comprehensive user manual for D-Secure products",
+        url: "/support/help-manual",
+        category: "Documentation",
+        keywords: ["manual", "documentation", "user guide", "reference"],
+      },
+      {
+        id: "product-videos",
+        title: "Product Videos",
+        description: "Video tutorials and product demonstrations",
+        url: "/support/product-videos",
+        category: "Videos",
+        keywords: [
+          "video",
+          "tutorial",
+          "demo",
+          "demonstration",
+          "visual",
+          "watch",
+        ],
+      },
+      {
+        id: "overwrite-guide",
+        title: "Hard Drive Overwrite Guide",
+        description: "How many overwrites should I do on a Hard Drive?",
+        url: "/support/overwrite-guide",
+        category: "Guides",
+        keywords: [
+          "overwrite",
+          "hard drive",
+          "hdd",
+          "passes",
+          "multiple",
+          "secure",
+        ],
+      },
+      {
+        id: "wipe-guide",
+        title: "HDD & SSD Wipe Guide",
+        description: "How to securely wipe Hard Drives and SSDs",
+        url: "/support/secure-erase-hddssd",
+        category: "Guides",
+        keywords: [
+          "wipe",
+          "erase",
+          "delete",
+          "hdd",
+          "ssd",
+          "hard drive",
+          "solid state",
+        ],
+      },
+      {
+        id: "sas-wipe-guide",
+        title: "SAS Drive Wipe Guide",
+        description: "How to wipe SAS drives permanently",
+        url: "/support/sas-wipe-guide",
+        category: "Guides",
+        keywords: ["sas", "drive", "wipe", "permanent", "enterprise", "server"],
+      },
+      {
+        id: "mac-wipe-guide",
+        title: "Mac Machine Wipe Guide",
+        description: "How to wipe 12 board Mac machines",
+        url: "/support/mac-eraser-guide",
+        category: "Guides",
+        keywords: ["mac", "apple", "macbook", "imac", "board", "wipe"],
+      },
+      {
+        id: "m1-mac-wipe-guide",
+        title: "M1 Mac Wipe Guide",
+        description: "How to wipe MacOS with M1 chip",
+        url: "/support/mac-wipe-guide",
+        category: "Guides",
+        keywords: ["m1", "mac", "chip", "apple silicon", "new mac", "arm"],
+      },
+      {
+        id: "cloud-console-guide",
+        title: "Cloud Console Guide",
+        description: "How to use D-Secure Cloud Console",
+        url: "/support/cloud-console-guide",
+        category: "Cloud",
+        keywords: ["cloud", "console", "remote", "management", "web interface"],
+      },
+      {
+        id: "ssd-cryptographic-erasure",
+        title: "SSD Cryptographic Erasure",
+        description: "How to perform cryptographic erasure on SSD",
+        url: "/support/ssd-cryptographic-erasure-guide",
+        category: "Advanced",
+        keywords: [
+          "ssd",
+          "cryptographic",
+          "encryption",
+          "secure erase",
+          "crypto",
+        ],
+      },
+      {
+        id: "retain-os-guide",
+        title: "Retain OS Wipe Guide",
+        description: "How to wipe everything and retain your operating system",
+        url: "/support/retain-os-guide",
+        category: "Guides",
+        keywords: [
+          "retain",
+          "os",
+          "operating system",
+          "keep",
+          "preserve",
+          "selective wipe",
+        ],
+      },
+    ],
+    [],
+  );
 
   // Trending searches data
-  const trendingSearches = useMemo(() => ({
-    "How many overwrites should I do on a Hard Drive?": "/support/overwrite-guide",
-    "How can I Wipe Hard Drives and SSDs?": "/support/secure-erase-hddssd",
-    "How to Wipe SAS Drives Permanently?": "/support/sas-wipe-guide",
-    "How can I wipe 12 board Mac Machines?": "/support/mac-eraser-guide",
-    // "How to customize ISO file using D-Secure?": "/support/iso-customization-guide",
-    "How do I wipe everything and retain my OS?": "/support/retain-os-guide",
-    "How can I Wipe a MacOS with M1 Chip?": "/support/mac-wipe-guide",
-    "How to use D-Secure Cloud Console?": "/support/cloud-console-guide",
-    "How do I Perform Cryptographic Erasure on SSD?": "/support/ssd-cryptographic-erasure-guide",
-    // "How can I diagnose my smartphone using D-Secure?": "/support/smartphone-diagnosis-guide",
-  }), []);
+  const trendingSearches = useMemo(
+    () => ({
+      "How many overwrites should I do on a Hard Drive?":
+        "/support/overwrite-guide",
+      "How can I Wipe Hard Drives and SSDs?": "/support/secure-erase-hddssd",
+      "How to Wipe SAS Drives Permanently?": "/support/sas-wipe-guide",
+      "How can I wipe 12 board Mac Machines?": "/support/mac-eraser-guide",
+      // "How to customize ISO file using D-Secure?": "/support/iso-customization-guide",
+      "How do I wipe everything and retain my OS?": "/support/retain-os-guide",
+      "How can I Wipe a MacOS with M1 Chip?": "/support/mac-wipe-guide",
+      "How to use D-Secure Cloud Console?": "/support/cloud-console-guide",
+      "How do I Perform Cryptographic Erasure on SSD?":
+        "/support/ssd-cryptographic-erasure-guide",
+      // "How can I diagnose my smartphone using D-Secure?": "/support/smartphone-diagnosis-guide",
+    }),
+    [],
+  );
 
   // Search functionality
   const searchResults = useMemo(() => {
@@ -404,278 +462,287 @@ const SupportPage: React.FC = () => {
     const query = searchQuery.toLowerCase();
 
     // First, search through regular searchable content
-    const contentResults = searchableContent.filter(item =>
-      item.title.toLowerCase().includes(query) ||
-      item.description.toLowerCase().includes(query) ||
-      item.category.toLowerCase().includes(query) ||
-      item.keywords.some(keyword => keyword.includes(query))
+    const contentResults = searchableContent.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query) ||
+        item.keywords.some((keyword) => keyword.includes(query)),
     );
 
     // Then, search through trending searches for keyword matches
     const trendingResults = Object.entries(trendingSearches)
       .filter(([searchText, url]) => {
         const searchTextLower = searchText.toLowerCase();
-        return searchTextLower.includes(query) ||
-          query.split(' ').some(word =>
-            word.length > 2 && searchTextLower.includes(word)
-          );
+        return (
+          searchTextLower.includes(query) ||
+          query
+            .split(" ")
+            .some((word) => word.length > 2 && searchTextLower.includes(word))
+        );
       })
       .map(([searchText, url]) => ({
         title: searchText,
         description: "Popular support question",
         category: "Trending",
         url: url,
-        keywords: searchText.toLowerCase().split(' ')
+        keywords: searchText.toLowerCase().split(" "),
       }));
 
     // Combine results, prioritizing trending searches
     const combinedResults = [...trendingResults, ...contentResults];
 
     // Remove duplicates based on title and limit to 8 results
-    const uniqueResults = combinedResults.filter((item, index, arr) =>
-      arr.findIndex(t => t.title.toLowerCase() === item.title.toLowerCase()) === index
+    const uniqueResults = combinedResults.filter(
+      (item, index, arr) =>
+        arr.findIndex(
+          (t) => t.title.toLowerCase() === item.title.toLowerCase(),
+        ) === index,
     );
 
     return uniqueResults.slice(0, 8);
   }, [searchQuery, searchableContent, trendingSearches]);
 
-  const handleSearch = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      setShowSearchResults(true);
-    }
-  }, [searchQuery]);
+  const handleSearch = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+        setShowSearchResults(true);
+      }
+    },
+    [searchQuery],
+  );
 
-  const handleSearchInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    const shouldShow = value.trim().length > 0;
-    setShowSearchResults(shouldShow);
-    setSelectedResultIndex(-1);
+  const handleSearchInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setSearchQuery(value);
+      const shouldShow = value.trim().length > 0;
+      setShowSearchResults(shouldShow);
+      setSelectedResultIndex(-1);
 
-    // Prevent page scroll when search results are shown
-    if (shouldShow) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-  }, []);
+      // Prevent page scroll when search results are shown
+      if (shouldShow) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    },
+    [],
+  );
 
   const clearSearch = useCallback(() => {
     setSearchQuery("");
     setShowSearchResults(false);
     setSelectedResultIndex(-1);
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
   }, []);
 
   // Handle keyboard navigation
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (!showSearchResults || searchResults.length === 0) return;
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!showSearchResults || searchResults.length === 0) return;
 
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setSelectedResultIndex(prev =>
-          prev < searchResults.length - 1 ? prev + 1 : 0
-        );
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setSelectedResultIndex(prev =>
-          prev > 0 ? prev - 1 : searchResults.length - 1
-        );
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (selectedResultIndex >= 0 && selectedResultIndex < searchResults.length) {
-          window.location.href = searchResults[selectedResultIndex].url;
-        } else {
-          handleSearch(e as any);
-        }
-        break;
-      case 'Escape':
-        e.preventDefault();
-        clearSearch();
-        break;
-    }
-  }, [showSearchResults, searchResults, selectedResultIndex, handleSearch, clearSearch]);
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setSelectedResultIndex((prev) =>
+            prev < searchResults.length - 1 ? prev + 1 : 0,
+          );
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setSelectedResultIndex((prev) =>
+            prev > 0 ? prev - 1 : searchResults.length - 1,
+          );
+          break;
+        case "Enter":
+          e.preventDefault();
+          if (
+            selectedResultIndex >= 0 &&
+            selectedResultIndex < searchResults.length
+          ) {
+            window.location.href = searchResults[selectedResultIndex].url;
+          } else {
+            handleSearch(e as any);
+          }
+          break;
+        case "Escape":
+          e.preventDefault();
+          clearSearch();
+          break;
+      }
+    },
+    [
+      showSearchResults,
+      searchResults,
+      selectedResultIndex,
+      handleSearch,
+      clearSearch,
+    ],
+  );
 
   // Handle trending search click
-  const handleTrendingSearchClick = useCallback((url: string) => {
-    navigate(url);
-  }, [navigate]);
+  const handleTrendingSearchClick = useCallback(
+    (url: string) => {
+      navigate(url);
+    },
+    [navigate],
+  );
 
-  const handleLicenseSubmit = useCallback((formData: LicenseFormData) => {
-    // console.log('License request from Support Page:', formData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Prepare email data for EmailJS
-    const emailData = {
-      service_id: 'your_service_id',
-      template_id: 'your_license_template_id',
-      user_id: 'your_user_id',
-      template_params: {
-        to_email: 'license@dsecuretech.com',
-        from_name: formData.fullName,
-        from_email: formData.email,
-        subject: `Free License Request - ${formData.company}`,
-        usage_type: formData.usage,
-        company_name: formData.company,
-        country: formData.country,
-        business_type: formData.businessType,
-        compliance_requirements: formData.compliance,
-        erase_option: formData.eraseOption,
-        device_count: formData.deviceCount,
-        phone_number: formData.phone,
-        additional_requirements: formData.requirements,
-        submission_source: 'Support Page',
-        submission_date: new Date().toLocaleString()
+  // Removed handleLicenseSubmit and handlePartnershipSubmit since the form components handle submission natively
+
+  const handleTicketSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+
+      try {
+        const now = new Date();
+        const timestampLocal = now.toLocaleString("en-IN", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZoneName: "short",
+        });
+        const timestampISO = now.toISOString();
+
+        // === Prepare FormData for FormSubmit ===
+        const formSubmitData = new FormData();
+        formSubmitData.append(
+          "_webhook",
+          "https://api.dsecuretech.com/api/formsubmit/webhook",
+        );
+        formSubmitData.append("_captcha", "false");
+        formSubmitData.append("_template", "table");
+        formSubmitData.append("name", ticketForm.name.trim());
+        formSubmitData.append("email", ticketForm.email.trim());
+        formSubmitData.append("subject", ticketForm.subject.trim());
+        formSubmitData.append("priority", ticketForm.priority.trim());
+        formSubmitData.append("category", ticketForm.category.trim());
+        formSubmitData.append("description", ticketForm.description.trim());
+        formSubmitData.append("_replyto", ticketForm.email.trim());
+        formSubmitData.append("timestamp", timestampLocal);
+        formSubmitData.append("source", "Support Page - Ticket Form");
+        formSubmitData.append(
+          "_subject",
+          `Support Ticket: ${ticketForm.subject} - D-Secure Tech`,
+        );
+        formSubmitData.append(
+          "_cc",
+          "niteshkushwaha592592@gmail.com,sainiprashant46@gmail.com,d.kumar9012@gmail.com,nishus877@gmail.com,spsingh8477@gmail.com",
+        );
+
+        // === Prepare submission data for Backend API ===
+        const submissionData = {
+          name: ticketForm.name.trim(),
+          email: ticketForm.email.trim(),
+          company: "",
+          phone: "",
+          country: "",
+          businessType: "",
+          solutionType: ticketForm.category.trim(),
+          complianceRequirements: "",
+          message: `[${ticketForm.priority.toUpperCase()}] ${ticketForm.subject.trim()}: ${ticketForm.description.trim()}`,
+          usageType: "",
+          source: "Support Page - Ticket Form",
+          timestamp: timestampISO,
+        };
+
+        // Reset form and show success immediately
+        setActiveTicketForm(false);
+        setTicketForm({
+          name: "",
+          email: "",
+          subject: "",
+          priority: "medium",
+          category: "general",
+          description: "",
+        });
+        setIsSubmitting(false);
+        showToast(
+          "Support ticket submitted successfully! We will get back to you soon.",
+          "success",
+        );
+
+        try {
+          // === 1. SUBMIT TO BACKEND API (DATABASE) ===
+          const API_BASE = ENV.API_BASE_URL;
+          const apiResponse = await fetch(
+            `${API_BASE}/api/ContactFormSubmissions`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(submissionData),
+            },
+          );
+
+          // === 2. SUBMIT TO FORMSUBMIT (EMAIL & WEBHOOK) ===
+          await fetch("https://formsubmit.co/support@dsecuretech.com", {
+            method: "POST",
+            body: formSubmitData,
+            headers: { Accept: "application/json" },
+          });
+
+          // === 3. Microsoft Excel + Teams tracking (non-blocking) ===
+          fetch(ENV.POWER_AUTOMATE_HTTP_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": "REACT_CONTACT_2026",
+            },
+            body: JSON.stringify(submissionData),
+          }).catch(() => {});
+
+          if (!apiResponse.ok) {
+            const errorData = await apiResponse.json();
+            console.error("Backend submission failed:", errorData);
+          }
+        } catch (error: any) {
+          console.error("Form error:", error);
+        }
+      } catch (error) {
+        console.error("FormSubmit error:", error);
+        showToast(
+          "Failed to submit support ticket. Please try again.",
+          "error",
+        );
+        setIsSubmitting(false);
       }
-    };
+    },
+    [ticketForm, showToast],
+  );
 
-    // Log email data for debugging
-    // console.log('License email data prepared:', emailData);
-
-    // Example EmailJS call (uncomment when configured):
-    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
-    //   .then(() => {
-    //     showToast('Free license request submitted successfully! We will send you the license details soon.', 'success');
-    //     setShowLicenseModal(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Email sending failed:', error);
-    //     showToast('There was an error submitting your request. Please try again.', 'error');
-    //   });
-
-    // Temporary success simulation
-    setTimeout(() => {
-      showToast('Free license request submitted successfully! We will send you the license details soon.', 'success');
-      setShowLicenseModal(false);
-    }, 1000);
-  }, [showToast]);
-
-  const handlePartnershipSubmit = useCallback((formData: PartnershipFormData) => {
-    // console.log('Partnership request from Support Page:', formData);
-
-    // Prepare email data for EmailJS
-    const emailData = {
-      service_id: 'your_service_id',
-      template_id: 'your_partnership_template_id',
-      user_id: 'your_user_id',
-      template_params: {
-        to_email: 'partnerships@dsecuretech.com',
-        from_name: formData.fullName,
-        from_email: formData.businessEmail,
-        subject: `Partnership Request - ${formData.companyName}`,
-        company_name: formData.companyName,
-        website: formData.website,
-        country: formData.country,
-        partner_type: formData.partnerType,
-        phone_number: formData.phoneNo,
-        business_description: formData.businessDescription,
-        submission_source: 'Support Page',
-        submission_date: new Date().toLocaleString()
-      }
-    };
-
-    // Log email data for debugging
-    // console.log('Partnership email data prepared:', emailData);
-
-    // Example EmailJS call (uncomment when configured):
-    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
-    //   .then(() => {
-    //     showToast('Partnership request submitted successfully! We will review your application and get back to you soon.', 'success');
-    //     setShowPartnershipModal(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Email sending failed:', error);
-    //     showToast('There was an error submitting your request. Please try again.', 'error');
-    //   });
-
-    // Temporary success simulation
-    setTimeout(() => {
-      showToast('Partnership request submitted successfully! We will review your application and get back to you soon.', 'success');
-      setShowPartnershipModal(false);
-    }, 1000);
-  }, [showToast]);
-
-  const handleTicketSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Prepare email data for EmailJS
-    const emailData = {
-      service_id: 'your_service_id',
-      template_id: 'your_support_template_id',
-      user_id: 'your_user_id',
-      template_params: {
-        to_email: 'support@dsecuretech.com',
-        from_name: ticketForm.name,
-        from_email: ticketForm.email,
-        subject: `Support Ticket: ${ticketForm.subject}`,
-        priority: ticketForm.priority,
-        category: ticketForm.category,
-        description: ticketForm.description,
-        submission_source: 'Support Page',
-        submission_date: new Date().toLocaleString()
-      }
-    };
-
-    // Log email data for debugging
-    // console.log('Support ticket email data prepared:', emailData);
-
-    // Example EmailJS call (uncomment when configured):
-    // emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
-    //   .then(() => {
-    //     showToast('Support ticket submitted successfully! We will get back to you soon.', 'success');
-    //     setActiveTicketForm(false);
-    //     setTicketForm({
-    //       name: "",
-    //       email: "",
-    //       subject: "",
-    //       priority: "medium",
-    //       category: "general",
-    //       description: "",
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.error('Email sending failed:', error);
-    //     showToast('There was an error submitting your ticket. Please try again.', 'error');
-    //   });
-
-    // Temporary success simulation
-    showToast("Support ticket submitted successfully! We will get back to you soon.", 'success');
-    setActiveTicketForm(false);
-    setTicketForm({
-      name: "",
-      email: "",
-      subject: "",
-      priority: "medium",
-      category: "general",
-      description: "",
-    });
-  }, [ticketForm, showToast]);
-
-  const handleInputChange = useCallback((
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setTicketForm((prev) => {
-      // Only update if the value actually changed
-      if (prev[name as keyof typeof prev] === value) {
-        return prev;
-      }
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  }, []);
+  const handleInputChange = useCallback(
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => {
+      const { name, value } = e.target;
+      setTicketForm((prev) => {
+        // Only update if the value actually changed
+        if (prev[name as keyof typeof prev] === value) {
+          return prev;
+        }
+        return {
+          ...prev,
+          [name]: value,
+        };
+      });
+    },
+    [],
+  );
 
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage('support')} />
+      <SEOHead seo={getSEOForPage("support")} />
 
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
@@ -686,8 +753,7 @@ const SupportPage: React.FC = () => {
                 <div className="mb-8">
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
                     <span className="text-brand">D-Secure</span>
-                    <sup className="text-2xl text-brand"></sup> Customer
-                    Support
+                    <sup className="text-2xl text-brand"></sup> Customer Support
                   </h1>
                   <h2 className="text-3xl md:text-4xl font-bold text-slate-700 mb-6">
                     How can we help you today?
@@ -726,8 +792,18 @@ const SupportPage: React.FC = () => {
                               onClick={clearSearch}
                               className="absolute right-12 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
                             >
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
                               </svg>
                             </button>
                           )}
@@ -763,14 +839,26 @@ const SupportPage: React.FC = () => {
                   <div className="p-4 border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-teal-50">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-emerald-900">
-                        {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found for "{searchQuery}"
+                        {searchResults.length} result
+                        {searchResults.length !== 1 ? "s" : ""} found for "
+                        {searchQuery}"
                       </span>
                       <button
                         onClick={clearSearch}
                         className="text-emerald-600 hover:text-emerald-700 transition-colors p-1 hover:bg-emerald-100 rounded-full"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
                         </svg>
                       </button>
                     </div>
@@ -780,8 +868,11 @@ const SupportPage: React.FC = () => {
                       <Link
                         key={`${result.title}-${index}`}
                         to={result.url}
-                        className={`block p-4 hover:bg-emerald-50 transition-all border-b border-slate-100 last:border-b-0 ${index === selectedResultIndex ? 'bg-emerald-50 border-l-4 border-l-emerald-500' : ''
-                          }`}
+                        className={`block p-4 hover:bg-emerald-50 transition-all border-b border-slate-100 last:border-b-0 ${
+                          index === selectedResultIndex
+                            ? "bg-emerald-50 border-l-4 border-l-emerald-500"
+                            : ""
+                        }`}
                         onClick={clearSearch}
                         onMouseEnter={() => setSelectedResultIndex(index)}
                       >
@@ -797,37 +888,66 @@ const SupportPage: React.FC = () => {
                               {result.category}
                             </span>
                           </div>
-                          <svg className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          <svg
+                            className="w-5 h-5 text-emerald-500 mt-1 flex-shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
                           </svg>
                         </div>
                       </Link>
                     ))}
                   </div>
                 </div>
-              ) : searchQuery && (
-                <div className="bg-white rounded-xl shadow-2xl p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+              ) : (
+                searchQuery && (
+                  <div className="bg-white rounded-xl shadow-2xl p-8 text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg
+                        className="w-8 h-8 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-slate-900 font-semibold mb-2">
+                      No results found for "{searchQuery}"
+                    </p>
+                    <p className="text-sm text-slate-600 mb-4">
+                      Try searching with different keywords or browse our
+                      support sections below.
+                    </p>
+                    <button
+                      onClick={clearSearch}
+                      className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-2 rounded-lg font-medium text-sm transition-all shadow-md"
+                    >
+                      Clear search
+                    </button>
                   </div>
-                  <p className="text-slate-900 font-semibold mb-2">No results found for "{searchQuery}"</p>
-                  <p className="text-sm text-slate-600 mb-4">Try searching with different keywords or browse our support sections below.</p>
-                  <button
-                    onClick={clearSearch}
-                    className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-2 rounded-lg font-medium text-sm transition-all shadow-md"
-                  >
-                    Clear search
-                  </button>
-                </div>
+                )
               )}
             </div>
           </>
         )}
 
         {/* Trending Searches */}
-        <section className={`py-8 bg-white border-b border-slate-200 ${showSearchResults ? 'hidden' : ''}`}>
+        <section
+          className={`py-8 bg-white border-b border-slate-200 ${showSearchResults ? "hidden" : ""}`}
+        >
           <div className="container-responsive">
             <Reveal>
               <div>
@@ -835,28 +955,25 @@ const SupportPage: React.FC = () => {
                   TRENDING SEARCHES
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {Object.entries(trendingSearches).map(([search, url], index) => (
-                    <div key={index} className="flex gap-2">
-                      <button
-                        className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
-                        onClick={() => handleTrendingSearchClick(url)}
-
-                      >
-                        {search}
-                      </button>
-                      <Link
-                        to={url}
-                        className="text-slate-500 hover:text-brand transition-colors p-2 rounded-md hover:bg-slate-50"
-                        title="Go directly to guide"
-                      >
-
-                      </Link>
-                    </div>
-                  ))}
+                  {Object.entries(trendingSearches).map(
+                    ([search, url], index) => (
+                      <div key={index} className="flex gap-2">
+                        <button
+                          className="flex-1 text-left text-brand hover:text-brand-600 hover:underline transition-colors p-2 rounded-md hover:bg-blue-50"
+                          onClick={() => handleTrendingSearchClick(url)}
+                        >
+                          {search}
+                        </button>
+                        <Link
+                          to={url}
+                          className="text-slate-500 hover:text-brand transition-colors p-2 rounded-md hover:bg-slate-50"
+                          title="Go directly to guide"
+                        ></Link>
+                      </div>
+                    ),
+                  )}
                 </div>
-                <div className="mt-4 text-sm text-slate-600">
-
-                </div>
+                <div className="mt-4 text-sm text-slate-600"></div>
               </div>
             </Reveal>
           </div>
@@ -896,7 +1013,10 @@ const SupportPage: React.FC = () => {
                     Frequently Asked Questions By Our Customers That Might Help
                     You.
                   </p>
-                  <Link to="/support/faqs" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link
+                    to="/support/faqs"
+                    className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
+                  >
                     Learn More →
                   </Link>
                 </div>
@@ -921,7 +1041,10 @@ const SupportPage: React.FC = () => {
                     Step By Step Guide To Securely Wipe Data On Different
                     Devices.
                   </p>
-                  <Link to="/support/knowledge-base" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link
+                    to="/support/knowledge-base"
+                    className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
+                  >
                     Learn More →
                   </Link>
                 </div>
@@ -945,7 +1068,10 @@ const SupportPage: React.FC = () => {
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Learn How To Wipe PC, Mac, Server & Mobile Devices.
                   </p>
-                  <Link to="/support/get-started" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link
+                    to="/support/get-started"
+                    className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
+                  >
                     Learn More →
                   </Link>
                 </div>
@@ -971,9 +1097,14 @@ const SupportPage: React.FC = () => {
                     Help Manual
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Complete Visual Guide To Learn More About D-Secure Products, Installation, FAQs, Report Management & Advanced Settings Configuration.
+                    Complete Visual Guide To Learn More About D-Secure Products,
+                    Installation, FAQs, Report Management & Advanced Settings
+                    Configuration.
                   </p>
-                  <Link to="/support/help-manual" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link
+                    to="/support/help-manual"
+                    className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
+                  >
                     View Help Manual →
                   </Link>
                 </div>
@@ -997,7 +1128,10 @@ const SupportPage: React.FC = () => {
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
                     Product Walkthroughs & How To Videos.
                   </p>
-                  <Link to="/support/product-videos" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link
+                    to="/support/product-videos"
+                    className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
+                  >
                     Learn More →
                   </Link>
                 </div>
@@ -1019,9 +1153,13 @@ const SupportPage: React.FC = () => {
                     Technical Blog
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Insights and practical guides on data erasure, cybersecurity, and IT asset lifecycle management.
+                    Insights and practical guides on data erasure,
+                    cybersecurity, and IT asset lifecycle management.
                   </p>
-                  <Link to="/blog" className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors">
+                  <Link
+                    to="/blog"
+                    className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
+                  >
                     Learn More →
                   </Link>
                 </div>
@@ -1170,7 +1308,12 @@ const SupportPage: React.FC = () => {
                       >
                         Request Free License →
                       </button>
-                      <button onClick={() => (window.location.href = "tel:+91-844-775-0101")} className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300">
+                      <button
+                        onClick={() =>
+                          (window.location.href = "tel:+91-844-775-0101")
+                        }
+                        className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300"
+                      >
                         Need help: +91-844-775-0101
                       </button>
                     </div>
@@ -1236,7 +1379,17 @@ const SupportPage: React.FC = () => {
       {/* License Request Modal */}
       {showLicenseModal && (
         <LicenseForm
-          onSubmit={handleLicenseSubmit}
+          customConfig={{
+            endpoint: "https://formsubmit.co/support@dsecuretech.com",
+            requiredFields: {
+              fullName: "Full Name",
+              email: "Email",
+              company: "Company",
+              usage: "Usage Type",
+            },
+            successMessage:
+              "Free license request submitted successfully! We will send you the license details within 12 hours.",
+          }}
           onClose={() => setShowLicenseModal(false)}
           title="Request Free License - Support"
         />
@@ -1245,7 +1398,17 @@ const SupportPage: React.FC = () => {
       {/* Partnership Request Modal */}
       {showPartnershipModal && (
         <PartnershipForm
-          onSubmit={handlePartnershipSubmit}
+          customConfig={{
+            endpoint: "https://formsubmit.co/support@dsecuretech.com",
+            requiredFields: {
+              fullName: "Full Name",
+              businessEmail: "Business Email",
+              companyName: "Company Name",
+              partnerType: "Partnership Type",
+            },
+            successMessage:
+              "Partnership request submitted successfully! We will review your application and get back to you soon.",
+          }}
           onClose={() => setShowPartnershipModal(false)}
           title="Partnership Request - Support"
         />

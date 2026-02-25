@@ -954,6 +954,17 @@ export default function AdminGroups() {
       // *******************************************
       */
 
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setShowAddUserModal(false);
+        setUserEmail("");
+        setMakeGroupAdmin(false);
+        setErrorMessage("");
+        setSelectedGroup(null);
+        await fetchGroups(true);
+        return;
+      }
+
       // ********** NAYA CODE (APPLIED) **********
       // If the "Group Admin" box is checked, assign GroupAdmin role
       const response = await apiClient.addMemberToGroupByEmail(
@@ -1004,6 +1015,25 @@ export default function AdminGroups() {
     try {
       setIsLoadingMachines(true);
 
+      if (isDemo) {
+        setAvailableMachines([
+          {
+            id: 1,
+            machine_id: "demo-m1",
+            machine_name: "Desktop-En1",
+            mac_address: "00:00:00:00:00:00",
+          },
+          {
+            id: 2,
+            machine_id: "demo-m2",
+            machine_name: "Desktop-En2",
+            mac_address: "11:11:11:11:11:11",
+          },
+        ]);
+        setAvailableLicenses([]);
+        return;
+      }
+
       // Find the GroupAdmin's email from the group
       const groupAdminEmail =
         group.users.find((u) => u.role === "Group Admin")?.email ||
@@ -1048,6 +1078,16 @@ export default function AdminGroups() {
     try {
       setIsSubmitting(true);
       setErrorMessage("");
+
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setShowTransferModal(false);
+        setSelectedMachines([]);
+        setSelectedLicenses([]);
+        setSelectedTransferUser("");
+        await fetchGroups(true);
+        return;
+      }
 
       if (!currentUserEmail) {
         setErrorMessage("User email not found. Please log in again.");
@@ -1151,6 +1191,25 @@ export default function AdminGroups() {
     try {
       setIsLoadingUserAssets(true);
 
+      if (isDemo) {
+        setUserMachines([
+          {
+            id: 1,
+            machine_id: "demo-m1",
+            machine_name: "Desktop-En1",
+            mac_address: "00:00:00:00:00:00",
+          },
+          {
+            id: 2,
+            machine_id: "demo-m2",
+            machine_name: "Desktop-En2",
+            mac_address: "11:11:11:11:11:11",
+          },
+        ]);
+        setUserLicenses([]);
+        return;
+      }
+
       // Fetch user's machines (all machines for the member)
       const machinesResponse = await apiClient.getMachinesByEmail(userEmail);
       if (machinesResponse.success && machinesResponse.data) {
@@ -1182,6 +1241,16 @@ export default function AdminGroups() {
     try {
       setIsSubmitting(true);
       setErrorMessage("");
+
+      if (isDemo) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setShowRevokeModal(false);
+        setSelectedRevokeMachines([]);
+        setSelectedRevokeLicenses([]);
+        setSelectedRevokeUser("");
+        await fetchGroups(true);
+        return;
+      }
 
       // Get MAC addresses for selected machines to revoke
       const macAddresses = userMachines

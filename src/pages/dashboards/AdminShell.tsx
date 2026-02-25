@@ -1,7 +1,7 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 import { useAuth } from "../../auth/AuthContext";
@@ -13,6 +13,8 @@ import { indexedDBService } from "../../services/indexedDBService";
 
 export default function AdminShell() {
   const { user } = useAuth();
+  // ✅ NAYA CODE: useLocation for forcing Outlet re-mount on sidebar navigation
+  const location = useLocation();
 
   // Helper to get user data from storage if context is not yet populated
   const getUserDataFromStorage = () => {
@@ -412,7 +414,9 @@ export default function AdminShell() {
             </nav>
           </aside>
           <section className="min-w-0">
-            <Outlet />
+            {/* ✅ NAYA CODE: key={location.pathname} forces React to unmount old child and mount new child on navigation */}
+            {/* PURANA CODE: <Outlet /> — without key, React tried to update in-place causing navigation lag */}
+            <Outlet key={location.pathname} />
           </section>
         </div>
       </div>

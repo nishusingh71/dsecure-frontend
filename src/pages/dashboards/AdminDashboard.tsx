@@ -4,7 +4,8 @@ import { getSEOForPage } from "../../utils/seo";
 import { useNotification } from "@/contexts/NotificationContext";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Helmet } from "react-helmet-async";
-import { useState, useMemo, useEffect } from "react";
+// ✅ NAYA CODE: Added startTransition to allow navigation to interrupt data-sync updates
+import { useState, useMemo, useEffect, startTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -57,7 +58,7 @@ import {
   useUpdateSubuser,
   useDeleteSubuser,
 } from "@/hooks/useSubusers";
-import { useDashboardData } from "@/hooks/useDashboardData";
+import { useDashboardData, useDashboardLicenseList, useDashboardSessions } from "@/hooks/useDashboardData";
 import {
   useUserMachines,
   useActiveLicensesCount,
@@ -68,11 +69,14 @@ import {
 } from "@/hooks/useAuditReports";
 import { useErasureMetrics } from "@/hooks/useErasureMetrics";
 import { usePerformanceData } from "@/hooks/usePerformanceData";
-import { useSessions } from "@/hooks/useSessions";
+// ✅ NAYA CODE: Isolated PieChart component to fix infinite re-render loop in Performance tab
+import ErasureMethodPieChart from "@/components/charts/ErasureMethodPieChart";
 import authService from "@/utils/authService";
 // ********** NAYA CODE — Phase 3: Import IDB service for IDB-first reads **********
 import { indexedDBService } from "@/services/indexedDBService";
 // *******************************************
+const EMPTY_METHOD_METRICS: MethodMetric[] = [];
+const EMPTY_SUBUSERS: any[] = [];
 
 // ============================================================================
 // 🏗️ RBAC ARCHITECTURE: Hierarchical Role-Based Access Control System
@@ -133,7 +137,8 @@ export const buildWhereClause = (user: Partial<CurrentUser>) => {
         ...base,
         ownerId: user.id,
       };
-
+    
+    // SubUser handled separately (often inherits parent's context)
     case Roles.SUB_USER:
       // SubUser: WHERE owner_id = parentUserId AND sub_user_id = userId AND department_id = departmentId
       return {
@@ -150,6 +155,84 @@ export const buildWhereClause = (user: Partial<CurrentUser>) => {
         ownerId: user.id,
       };
   }
+};
+
+// ✅ Helper: Format date with proper UTC to local timezone conversion (Parity with AdminSessions)
+// const formatSessionDate = (dateString: string) => {
+//   if (!dateString || dateString === "N/A") return "-";
+//   try {
+//     let dateValue = dateString;
+//     let date: Date;
+
+//     // ISO format or simple date string (e.g., '2023-01-01 10:00:00')
+//     if (typeof dateValue === "string" && (dateValue.includes("T") || dateValue.includes("-"))) {
+//       if (!dateValue.endsWith("Z") && !dateValue.includes("+")) {
+//         dateValue = dateValue.replace(" ", "T") + "Z";
+//       }
+//       date = new Date(dateValue);
+//     } else {
+//       // Fallback for custom formats (e.g., "10 Feb, 10:00 am")
+//       let dateStr = dateValue;
+//       if (!/\d{4}/.test(dateStr)) {
+//         dateStr += ` ${new Date().getFullYear()}`;
+//       }
+
+//       const localDate = new Date(dateStr);
+//       if (!isNaN(localDate.getTime())) {
+//         // Shift internal epoch by timezone offset to interpret as UTC
+//         date = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+//       } else {
+//         date = new Date(); // fallback
+//       }
+//     }
+
+//     if (!date || isNaN(date.getTime())) return dateString;
+
+//     return date.toLocaleString("en-IN", {
+//       month: "short",
+//       day: "numeric",
+//       hour: "2-digit",
+//       minute: "2-digit",
+//       hour12: true,
+//     });
+//   } catch (e: any) {
+//     console.warn("Date parsing error:", dateString, e);
+//     return dateString;
+//   }
+// };
+
+// ✅ NAYA CODE — formatSessionDate: Always treat API date strings as UTC
+// API sends dates without timezone info (e.g., "2024-01-15T10:30:00")
+// which browsers parse as local time. We append "Z" to force UTC interpretation.
+const formatSessionDate = (dateString: string) => {
+  if (!dateString || dateString === "N/A") return "-";
+
+  let formattedValue = dateString;
+
+  // If the string has no timezone indicator (Z or +/-offset), treat as UTC
+  if (
+    typeof dateString === "string" &&
+    !dateString.endsWith("Z") &&
+    !dateString.includes("+") &&
+    !/\d{2}:\d{2}:\d{2}[+-]/.test(dateString)
+  ) {
+    formattedValue = dateString.replace(" ", "T");
+    if (!formattedValue.endsWith("Z")) {
+      formattedValue += "Z";
+    }
+  }
+
+  const date = new Date(formattedValue);
+
+  if (isNaN(date.getTime())) return dateString;
+
+  return date.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 };
 
 /**
@@ -661,6 +744,9 @@ export default function AdminDashboard() {
   const [userLicenseDetails, setUserLicenseDetails] = useState<LicenseData[]>(
     [],
   );
+  // ✅ License list from /api/License/admin/all (same as AdminLicenses page)
+  const [dashboardLicenseList, setDashboardLicenseList] = useState<any[]>([]);
+  const [licenseListLoading, setLicenseListLoading] = useState(false);
   const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>([]);
   const [recentSessions, setRecentSessions] = useState<any[]>([]);
 
@@ -762,22 +848,10 @@ export default function AdminDashboard() {
     profileData?.is_subusers_enabled ||
     false;
 
-  devLog("🔍 Private Cloud Check:", {
-    userIsPrivateCloud: user?.is_private_cloud,
-    storedIsPrivateCloud: storedUserData?.is_private_cloud,
-    isPrivateCloudEnabled,
-    user,
-    storedUserData,
-  });
-
-  console.log("🚀 Feature Flags Debug:", {
-    isGroupsEnabled,
-    isSubusersEnabled,
-    user_is_groups_enabled: user?.is_groups_enabled,
-    stored_is_groups_enabled: storedUserData?.is_groups_enabled,
-    user_is_subusers_enabled: user?.is_subusers_enabled,
-    stored_is_subusers_enabled: storedUserData?.is_subusers_enabled,
-  });
+  // ✅ NAYA CODE: Commented out render-body logs to prevent blocking main thread on every re-render
+  // PURANA CODE: These logs created heavy objects on EVERY render, slowing down React's reconciler
+  // devLog("🔍 Private Cloud Check:", { userIsPrivateCloud: user?.is_private_cloud, storedIsPrivateCloud: storedUserData?.is_private_cloud, isPrivateCloudEnabled, user, storedUserData });
+  // console.log("🚀 Feature Flags Debug:", { isGroupsEnabled, isSubusersEnabled, user_is_groups_enabled: user?.is_groups_enabled, stored_is_groups_enabled: storedUserData?.is_groups_enabled, user_is_subusers_enabled: user?.is_subusers_enabled, stored_is_subusers_enabled: storedUserData?.is_subusers_enabled });
 
   // Get user email for API calls (calculate before using in queries)
   const userEmail =
@@ -817,12 +891,7 @@ export default function AdminDashboard() {
     ],
   );
 
-  devLog("🔐 RBAC Info (AdminDashboard):", {
-    role: currentUserRole,
-    groupId: currentUserGroupId,
-    email: currentUserEmail,
-    centralizedUser: currentUser,
-  });
+  // PURANA CODE: devLog("🔐 RBAC Info (AdminDashboard):", { role: currentUserRole, groupId: currentUserGroupId, email: currentUserEmail, centralizedUser: currentUser });
 
   // ✅ 1. Eagerly load stats from IDB to prevent shimmer on tab switch
   useEffect(() => {
@@ -848,21 +917,20 @@ export default function AdminDashboard() {
   }, [isDemo, userEmail]); // Run only on mount/email change
 
   // ✅ React Query: Fetch dashboard data with automatic caching
+  // ✅ NAYA CODE: Enabled dashboardData for 'groups' tab so React Query cached data is available immediately
+  // PURANA CODE: activeTab === "overview" || activeTab === "licenses";
   const dashboardDataEnabled =
-    activeTab === "overview" || activeTab === "licenses";
+    activeTab === "overview" || activeTab === "licenses" || activeTab === "groups";
   const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
+
+  // PURANA CODE: console.log("dashboardQuery>>>>>>>>>>>>>>>>", dashboardQuery);
 
   // ✅ Check if current user is a subuser
   const currentUserType =
     storedUserData?.user_type || storedUserData?.userType || "";
   const isCurrentUserSubuser = currentUserType === "subuser";
 
-  devLog(
-    "👤 Current User Type:",
-    currentUserType,
-    "| Is Subuser:",
-    isCurrentUserSubuser,
-  );
+  // PURANA CODE: devLog("👤 Current User Type:", currentUserType, "| Is Subuser:", isCurrentUserSubuser);
 
   // ✅ React Query: Fetch subusers data with automatic caching and refetching
   // Fetch subusers filtered by current user's email (works for both regular users and subusers)
@@ -872,7 +940,7 @@ export default function AdminDashboard() {
   // ✅ In Demo Mode, disable all React Query API calls
 
   const {
-    data: subusersData = isDemo ? DEMO_SUBUSERS : [],
+    data: subusersData = isDemo ? DEMO_SUBUSERS : EMPTY_SUBUSERS,
     isLoading: _usersDataLoading,
     error: subusersError,
     refetch: refetchSubusers,
@@ -944,7 +1012,8 @@ export default function AdminDashboard() {
 
   const enhancedAuditReportsQuery = useEnhancedAuditReports(
     userEmail,
-    !!userEmail && activeTab === "overview" && !isDemo,
+    // ✅ NAYA CODE: Keep query enabled on overview and reports tabs to maintain cache
+    !!userEmail && (activeTab === "overview" || activeTab === "reports") && !isDemo,
   );
 
   // ✅ React Query: Get active licenses count directly from cache (disabled in demo mode)
@@ -987,6 +1056,209 @@ export default function AdminDashboard() {
     !!userEmail && activeTab === "performance" && !isDemo,
   );
 
+  // ✅ Fetch license list from /api/License/admin/all
+  // ✅ NAYA CODE: Fetch in background so that billing details always has license data
+  const licenseListQuery = useDashboardLicenseList(
+    userEmail,
+    !!userEmail && !isDemo,
+  );
+
+  // ✅ NAYA CODE: Prefetch Billing Details in background for SuperAdmins
+  useEffect(() => {
+    if (!isSuperAdmin || isDemo || !userEmail) return;
+    if (billingDetails && Object.keys(billingDetails).length > 0) return;
+
+    let isMounted = true;
+
+    const fetchBillingDetails = async () => {
+      // Helper function to format date in user's local timezone
+      const formatDateLocal = (dateStr: string | undefined) => {
+        if (!dateStr) return "N/A";
+        try {
+          return new Date(dateStr).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        } catch {
+          return dateStr;
+        }
+      };
+
+      try {
+        const apiUserRes = await apiClient.getUserByEmail(userEmail);
+        if (apiUserRes.success && apiUserRes.data && isMounted) {
+          const apiUser = apiUserRes.data;
+          let combinedBillingInfo: any = {};
+
+          // 1️⃣ Load license details and normalize to DEMO format
+          const licenseDetailsJson = apiUser.license_details_json;
+          if (licenseDetailsJson && licenseDetailsJson !== "{}") {
+            try {
+              const parsed = JSON.parse(licenseDetailsJson);
+              if (parsed.plans && parsed.summary) {
+                combinedBillingInfo = {
+                  activePlanTypes: parsed.summary.activePlanTypes?.join(", ") || "N/A",
+                  activePlanIds: parsed.summary.activePlanIds?.join(", ") || "N/A",
+                  totalPurchases: parsed.summary.totalPurchases || 0,
+                  totalLicenses: parsed.summary.totalLicensesAcrossAllPlans || 0,
+                  availableLicenses: parsed.summary.totalAvailableLicenses || 0,
+                  consumedLicenses: parsed.summary.totalConsumedLicenses || 0,
+                  usedLicenses: parsed.summary.totalConsumedLicenses || 0,
+                  userEmail: parsed.useremail || userEmail,
+                  status: "Active",
+                };
+
+                if (parsed.plans.length > 0) {
+                  const firstPlan = parsed.plans[0];
+                  combinedBillingInfo.planType = firstPlan.planType || firstPlan.plan_type || combinedBillingInfo.activePlanTypes;
+                  combinedBillingInfo.totalLicenses = firstPlan.totalLicenses || firstPlan.total_licenses || combinedBillingInfo.totalLicenses || 0;
+                  combinedBillingInfo.purchaseDate = formatDateLocal(firstPlan.purchaseDate);
+                  combinedBillingInfo.startDate = formatDateLocal(firstPlan.startDate || firstPlan.purchaseDate);
+                  combinedBillingInfo.validityYears = firstPlan.validityYears || firstPlan.validity_years || "N/A";
+                  combinedBillingInfo.expiryDate = formatDateLocal(firstPlan.expiryDate);
+                  combinedBillingInfo.billingCycle = firstPlan.billingCycle || firstPlan.billing_cycle || "Annual";
+                  combinedBillingInfo.amount = firstPlan.amount || firstPlan.price || "N/A";
+                  combinedBillingInfo.features = Array.isArray(firstPlan.features) ? firstPlan.features.join(", ") : firstPlan.features || "Standard Features";
+                }
+              } else {
+                combinedBillingInfo = {
+                  activePlanTypes: parsed.plan_type || parsed.planType || parsed.activePlanTypes || "Standard",
+                  activePlanIds: parsed.plan_id || parsed.planId || parsed.activePlanIds || "N/A",
+                  totalPurchases: parsed.total_purchases || parsed.totalPurchases || 1,
+                  totalLicenses: parsed.total_licenses || parsed.totalLicenses || parsed.licenses || parsed.totalLicenses || 0,
+                  availableLicenses: parsed.available_licenses || parsed.availableLicenses || 0,
+                  consumedLicenses: parsed.consumed_licenses || parsed.consumedLicenses || parsed.usedLicenses || 0,
+                  usedLicenses: parsed.used_licenses || parsed.usedLicenses || parsed.consumedLicenses || 0,
+                  validityYears: parsed.validity_years || parsed.validityYears || "1",
+                  purchaseDate: formatDateLocal(parsed.purchase_date || parsed.purchaseDate),
+                  startDate: formatDateLocal(parsed.start_date || parsed.startDate),
+                  expiryDate: formatDateLocal(parsed.expiry_date || parsed.expiryDate),
+                  billingCycle: parsed.billing_cycle || parsed.billingCycle || "Annual",
+                  amount: parsed.amount || parsed.price || "N/A",
+                  status: parsed.status || "Active",
+                  userEmail: parsed.user_email || parsed.userEmail || userEmail,
+                  features: Array.isArray(parsed.features) ? parsed.features.join(", ") : parsed.features || "Standard Features",
+                };
+              }
+            } catch (e) {
+              devError("❌ Failed to parse license details:", e);
+            }
+          }
+
+          // 2️⃣ Load payment details
+          const paymentDetailsJson = apiUser.payment_details_json;
+          if (paymentDetailsJson && paymentDetailsJson !== "{}") {
+            try {
+              const paymentParsed = JSON.parse(paymentDetailsJson);
+              combinedBillingInfo = { ...combinedBillingInfo, ...paymentParsed };
+            } catch (e) {
+              devError("❌ Failed to parse payment details:", e);
+            }
+          }
+
+          if (Object.keys(combinedBillingInfo).length > 0 && isMounted) {
+            setBillingDetails(combinedBillingInfo);
+          }
+        }
+      } catch (error) {
+        devError("❌ Error fetching billing data in background:", error);
+      }
+    };
+
+    fetchBillingDetails();
+
+    return () => { isMounted = false; };
+  }, [isSuperAdmin, isDemo, userEmail]);
+
+  useEffect(() => {
+    // NAYA CODE: ensure dashboardLicenseList is loaded right away if we have data
+    if (dashboardLicenseList.length > 0) return;
+
+    if (isDemo) {
+      // Show dummy demo data matching the new tabular format
+      setDashboardLicenseList([
+        {
+          license_id: "1",
+          license_key: "ENT-A1B2-C3D4-E5F6",
+          user_email: "admin@dsecure.com",
+          license_type: "Enterprise",
+          status: "Active",
+          created_at: "2024-01-15T09:00:00Z",
+          expires_at: "2027-01-15T09:00:00Z",
+          activated_at: "2024-01-15T10:30:00Z",
+          machine_count: 5,
+        },
+        {
+          license_id: "2",
+          license_key: "PRO-X7Y8-Z9W0-V1U2",
+          user_email: "manager@dsecure.com",
+          license_type: "Professional",
+          status: "Active",
+          created_at: "2024-02-20T14:00:00Z",
+          expires_at: "2026-02-20T14:00:00Z",
+          machine_count: 2,
+        },
+        {
+          license_id: "3",
+          license_key: "STD-Q3R4-S5T6-U7V8",
+          user_email: "user1@dsecure.com",
+          license_type: "Standard",
+          status: "Inactive",
+          created_at: "2024-03-10T11:00:00Z",
+          expires_at: "2025-03-10T11:00:00Z",
+          machine_count: 1,
+        },
+        {
+          license_id: "4",
+          license_key: "TRIAL-L9M0-N1O2-P3Q4",
+          user_email: "trial@demo.com",
+          license_type: "Trial",
+          status: "Expired",
+          created_at: "2023-11-01T10:00:00Z",
+          expires_at: "2023-12-01T10:00:00Z",
+          machine_count: 0,
+        },
+      ]);
+      return;
+    }
+
+    // Sync license list from React Query cache
+    startTransition(() => {
+      if (licenseListQuery.data && licenseListQuery.data.length > 0) {
+        setDashboardLicenseList(licenseListQuery.data);
+      }
+    });
+  }, [activeTab, isDemo, licenseListQuery.data]);
+
+  // Loading state reflects the query loading state
+  useEffect(() => {
+    setLicenseListLoading(licenseListQuery.isLoading);
+  }, [licenseListQuery.isLoading]);
+
+  /* 
+  // PURANA CODE: Manual fetch without caching
+  useEffect(() => {
+    if (activeTab !== "licenses" || dashboardLicenseList.length > 0) return;
+
+    if (isDemo) { ... }
+
+    const fetchLicenseList = async () => {
+      setLicenseListLoading(true);
+      try {
+        const listRes = await apiClient.get<any>("/api/License/admin/all");
+        // ... mapping and filtering logic ...
+        setDashboardLicenseList(filteredList);
+      } catch (err) {
+        console.error("Failed to fetch license list for dashboard:", err);
+      } finally {
+        setLicenseListLoading(false);
+      }
+    };
+
+    fetchLicenseList();
+  }, [activeTab, userEmail, isDemo]);
+  */
   // ✅ MEMOIZED: Performance Metrics Adapter
   // Adapts standard API data or Demo data into the format expected by the UI
   const displayErasureMetrics = useMemo(() => {
@@ -1006,12 +1278,12 @@ export default function AdminDashboard() {
         methodMetrics: DEMO_PERFORMANCE_DATA.methodMetrics || [],
       };
     }
-    console.log("Dashboard Display Metrics:", erasureMetrics?.methodMetrics);
+    // PURANA CODE: console.log("Dashboard Display Metrics:", erasureMetrics?.methodMetrics);
     return erasureMetrics;
   }, [erasureMetrics]);
 
   // ✅ React Query: Fetch sessions data with caching (disabled in demo mode)
-  const sessionsQuery = useSessions(
+  const sessionsQuery = useDashboardSessions(
     isDemo ? "" : userEmail,
     !!userEmail && !isDemo,
   );
@@ -1074,18 +1346,7 @@ export default function AdminDashboard() {
   };
 
   // Debug: Log role and permissions
-  devLog("🔍 AdminDashboard Role Debug:", {
-    currentUserRole,
-    userRole: user?.role,
-    storedUserRole: storedUserData?.userRole,
-    storedUser_role: storedUserData?.user_role,
-    storedRole: storedUserData?.role || storedUserData?.user_type,
-    permissions,
-    canViewAllUsers: permissions.canViewAllUsers,
-    canViewGroups: permissions.canViewGroups,
-    canViewSettings: permissions.canViewSettings,
-    canGenerateReports: permissions.canGenerateReports,
-  });
+  // PURANA CODE: devLog("🔍 AdminDashboard Role Debug:", { currentUserRole, userRole: user?.role, permissions });
 
   // Note: All users can access admin dashboard, but with limited permissions
   // UI elements will be hidden based on role permissions
@@ -1105,7 +1366,7 @@ export default function AdminDashboard() {
         setActiveLicensesCount(0);
         setAuditReportsCount(0);
         setAuditReports([]);
-        setUserLicenseDetails([]);
+        // setUserLicenseDetails([]);
         setRecentSystemLogs([]);
         setPerformanceData({
           monthlyErasures: [],
@@ -1136,107 +1397,108 @@ export default function AdminDashboard() {
   // loading state is now reactive to React Query
   const dataLoading = dashboardQuery.isLoading && !isDemo;
 
+  // ✅ NAYA CODE: Wrapped ALL setState calls in startTransition so navigation can interrupt them
+  // PURANA CODE: Same effect but setState calls were NOT wrapped in startTransition,
+  // causing them to be HIGH priority and blocking sidebar navigation in real login mode
   useEffect(() => {
     if (isDemo) return; // Skip in demo mode
 
-    // Sync stats
-    if (dashboardQuery.stats) {
-      setDashboardStats(dashboardQuery.stats);
-    }
-
-    // Sync groups
-    if (dashboardQuery.groups && dashboardQuery.groups.length > 0) {
-      setGroups(dashboardQuery.groups);
-    }
-
-    // Sync license data (from React Query cache)
-    if (dashboardQuery.licenses && dashboardQuery.licenses.length > 0) {
-      setLicenseData(dashboardQuery.licenses);
-      setUserLicenseDetails(dashboardQuery.licenses);
-      devLog(
-        "✅ License data synced from React Query cache:",
-        dashboardQuery.licenses.length,
-        "items",
-      );
-    }
-
-    // Sync reports
-    if (dashboardQuery.reports && dashboardQuery.reports.length > 0) {
-      setRecentReports(dashboardQuery.reports);
-    }
-
-    // Sync system logs
-    // if (dashboardData.systemLogs && dashboardData.systemLogs.length > 0) {
-    //   setRecentSystemLogs(dashboardData.systemLogs);
-    // }
-
-    // Sync profile data and flags
-    if (dashboardQuery.profile) {
-      setProfileData(dashboardQuery.profile);
-
-      // Update localStorage to sync with sidebar (AdminShell) - ONLY IF NOT DEMO
-      if (!isDemo) {
-        const currentData = getUserDataFromStorage() || {};
-        const updatedData = {
-          ...currentData,
-          is_groups_enabled: dashboardQuery.profile.is_groups_enabled,
-          is_subusers_enabled: dashboardQuery.profile.is_subusers_enabled,
-        };
-        localStorage.setItem("user_data", JSON.stringify(updatedData));
-        localStorage.setItem("authUser", JSON.stringify(updatedData));
-
-        devLog(
-          "✅ Profile data and flags synced from API and persisted to storage:",
-          dashboardQuery.profile,
-        );
-      } else {
-        devLog("🎭 Demo Mode: Skipping profile persistence to localStorage");
+    startTransition(() => {
+      // Sync stats
+      if (dashboardQuery.stats) {
+        setDashboardStats(dashboardQuery.stats);
       }
-    }
+
+      // Sync groups
+      if (dashboardQuery.groups && dashboardQuery.groups.length > 0) {
+        setGroups(dashboardQuery.groups);
+      }
+
+      // Sync license data (from React Query cache)
+      if (dashboardQuery.licenses && dashboardQuery.licenses.length > 0) {
+        setLicenseData(dashboardQuery.licenses);
+        setUserLicenseDetails(dashboardQuery.licenses);
+      } else if (
+        dashboardQuery.stats &&
+        Number(dashboardQuery.stats.totalLicenses) > 0
+      ) {
+        const fallbackLicense: LicenseData = {
+          product: "D-Secure License",
+          total: Number(dashboardQuery.stats.totalLicenses) || 0,
+          consumed: Number(dashboardQuery.stats.licensesInUse) || 0,
+          available: Number(dashboardQuery.stats.availableLicenses) || 0,
+        };
+        setLicenseData([fallbackLicense]);
+        setUserLicenseDetails([fallbackLicense]);
+      }
+
+      // Sync reports
+      if (dashboardQuery.reports && dashboardQuery.reports.length > 0) {
+        setRecentReports(dashboardQuery.reports);
+      }
+
+      // Sync profile data and flags
+      if (dashboardQuery.profile) {
+        setProfileData(dashboardQuery.profile);
+
+        if (!isDemo) {
+          const currentData = getUserDataFromStorage() || {};
+          const updatedData = {
+            ...currentData,
+            is_groups_enabled: dashboardQuery.profile.is_groups_enabled,
+            is_subusers_enabled: dashboardQuery.profile.is_subusers_enabled,
+          };
+          localStorage.setItem("user_data", JSON.stringify(updatedData));
+          localStorage.setItem("authUser", JSON.stringify(updatedData));
+        }
+      }
+    });
   }, [
+    // Using dashboardQuery directly here is safe now because useDashboardData is memoized.
     dashboardQuery.stats,
     dashboardQuery.groups,
     dashboardQuery.licenses,
     dashboardQuery.reports,
     dashboardQuery.profile,
-    // dashboardQuery.systemLogs,
     isDemo,
   ]);
 
   // ✅ React Query: Update machines data (keep for backward compatibility)
+  // ✅ NAYA CODE: All data-sync effects wrapped in startTransition for non-blocking navigation
+  // PURANA CODE: 5 separate useEffects without startTransition — each triggered a re-render cascade
   useEffect(() => {
-    if (machinesQuery.data) {
-      const activeLicenses = machinesQuery.data.filter(
-        (machine: Machine) => machine.license_activated === true,
-      ).length;
-      setActiveLicensesCount(activeLicenses);
-
-      // Note: We now use activeLicensesFromCache directly instead of profileData.licenses
-      // This provides more reliable data that doesn't disappear on re-renders
-    }
+    startTransition(() => {
+      if (machinesQuery.data) {
+        const activeLicenses = machinesQuery.data.filter(
+          (machine: Machine) => machine.license_activated === true,
+        ).length;
+        setActiveLicensesCount(activeLicenses);
+      }
+    });
   }, [machinesQuery.data]);
 
   useEffect(() => {
-    if (auditReportsQuery.data) {
-      setAuditReportsCount(auditReportsQuery.data.length);
-    }
+    startTransition(() => {
+      if (auditReportsQuery.data) {
+        setAuditReportsCount(auditReportsQuery.data.length);
+      }
+    });
   }, [auditReportsQuery.data]);
 
   useEffect(() => {
-    if (enhancedAuditReportsQuery.data) {
-      setAuditReports(enhancedAuditReportsQuery.data);
-    }
+    startTransition(() => {
+      if (enhancedAuditReportsQuery.data) {
+        setAuditReports(enhancedAuditReportsQuery.data);
+      }
+    });
   }, [enhancedAuditReportsQuery.data]);
 
-  // ✅ React Query: Update performance data from cache
   useEffect(() => {
-    if (performanceQuery.data) {
-      setPerformanceData(performanceQuery.data);
-      devLog(
-        "✅ Performance data updated from React Query cache:",
-        performanceQuery.data,
-      );
-    }
+    startTransition(() => {
+      if (performanceQuery.data) {
+        setPerformanceData(performanceQuery.data);
+      }
+    });
   }, [performanceQuery.data]);
 
   // ✅ RBAC FILTERING: Filter license data using centralized buildLicenseFilter
@@ -1244,15 +1506,12 @@ export default function AdminDashboard() {
 
   const displayPerformanceData = performanceData;
 
-  // ✅ React Query: Update sessions data from cache
   useEffect(() => {
-    if (sessionsQuery.data) {
-      setRecentSessions(sessionsQuery.data);
-      devLog(
-        "✅ Sessions data updated from React Query cache:",
-        sessionsQuery.data.length,
-      );
-    }
+    startTransition(() => {
+      if (sessionsQuery.data) {
+        setRecentSessions(sessionsQuery.data);
+      }
+    });
   }, [sessionsQuery.data]);
 
   // ✅ DEMO MODE: Set static/dummy data when user logs in via "Try Demo Account"
@@ -1462,8 +1721,8 @@ export default function AdminDashboard() {
         }
       }
 
-      // If we don't have cached data, show loading
-      if (!groupsCached) {
+      // If we don't have cached data and current data is empty, show loading
+      if (!groupsCached && groupsWithUsers.length === 0) {
         setGroupsLoading(true);
       }
 
@@ -1796,14 +2055,13 @@ export default function AdminDashboard() {
   const stats = useMemo(() => {
     // ✅ DEMO MODE: Always use demo stats in demo mode (no API dependency)
     const statsData = isDemo ? DEMO_DASHBOARD_STATS : dashboardStats;
-
+    // PURANA CODE: console.log("statsData>>>>>>>>>>>>>>>>", statsData);
     if (!statsData) return [];
 
     return [
       {
         label: "Total Licenses",
-        value:
-          statsData.totalLicenses || (statsData as any).total_licenses || "0",
+        value: statsData.totalLicenses || "0",
         change: statsData.changes?.totalLicenses?.value || "0",
         trend: statsData.changes?.totalLicenses?.trend || "up",
         color: "bg-blue-500",
@@ -2296,339 +2554,41 @@ export default function AdminDashboard() {
             </button>
 
             {/* Settings Button - Billing & Password */}
-            {/* ✅ RBAC: Only SuperAdmin can access Settings (Billing) */}
-            {isSuperAdmin && (
-              <button
-                onClick={async () => {
-                  setShowSettingsModal(true);
-
-                  // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
-                  if (isDemo) {
-                    devLog("🎭 Demo Mode: Using DEMO_BILLING_DETAILS");
-                    setBillingDetails(DEMO_BILLING_DETAILS);
-                    return;
-                  }
-
-                  // ✅ CACHE CHECK: If billing data already loaded, don't fetch again
-                  if (
-                    billingDetails &&
-                    Object.keys(billingDetails).length > 0
-                  ) {
-                    devLog("✅ Using cached billing data, skipping API call");
-                    return;
-                  }
-
-                  // Get user email for API call
-                  const userEmail =
-                    user?.email ||
-                    (user as any)?.user_email ||
-                    storedUserData?.user_email ||
-                    storedUserData?.email;
-
-                  if (!userEmail) {
-                    devLog("⚠️ No user email found for billing fetch");
-                    return;
-                  }
-
-                  // Helper function to format date in user's local timezone
-                  const formatDateLocal = (dateStr: string | undefined) => {
-                    if (!dateStr) return "N/A";
-                    try {
-                      return new Date(dateStr).toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      });
-                    } catch {
-                      return dateStr;
-                    }
-                  };
-
-                  let combinedBillingInfo: any = {};
-
-                  try {
-                    // 📡 Fetch fresh user data from API to get payment_details_json
-                    devLog(
-                      "📡 Fetching user billing data from API for:",
-                      userEmail,
-                    );
-                    const apiUserRes =
-                      await apiClient.getUserByEmail(userEmail);
-
-                    if (apiUserRes.success && apiUserRes.data) {
-                      const apiUser = apiUserRes.data;
-                      devLog("✅ API User data received:", apiUser);
-
-                      // Debug: Show what fields are available
-                      const hasLicense =
-                        !!apiUser.license_details_json &&
-                        apiUser.license_details_json !== "{}";
-                      const hasPayment =
-                        !!apiUser.payment_details_json &&
-                        apiUser.payment_details_json !== "{}";
-                      devLog(
-                        "🔍 Has license_details_json:",
-                        hasLicense,
-                        "| Has payment_details_json:",
-                        hasPayment,
-                      );
-
-                      // 1️⃣ Load license details and normalize to DEMO format
-                      const licenseDetailsJson = apiUser.license_details_json;
-                      if (licenseDetailsJson && licenseDetailsJson !== "{}") {
-                        try {
-                          const parsed = JSON.parse(licenseDetailsJson);
-                          devLog("✅ License details parsed:", parsed);
-
-                          // Handle format with plans array and summary
-                          if (parsed.plans && parsed.summary) {
-                            combinedBillingInfo = {
-                              activePlanTypes:
-                                parsed.summary.activePlanTypes?.join(", ") ||
-                                "N/A",
-                              activePlanIds:
-                                parsed.summary.activePlanIds?.join(", ") ||
-                                "N/A",
-                              totalPurchases:
-                                parsed.summary.totalPurchases || 0,
-                              totalLicenses:
-                                parsed.summary.totalLicensesAcrossAllPlans || 0,
-                              availableLicenses:
-                                parsed.summary.totalAvailableLicenses || 0,
-                              consumedLicenses:
-                                parsed.summary.totalConsumedLicenses || 0,
-                              usedLicenses:
-                                parsed.summary.totalConsumedLicenses || 0,
-                              userEmail: parsed.useremail || userEmail,
-                              status: "Active",
-                            };
-
-                            if (parsed.plans.length > 0) {
-                              const firstPlan = parsed.plans[0];
-                              // Extract planType from firstPlan if not in summary
-                              combinedBillingInfo.planType =
-                                firstPlan.planType ||
-                                firstPlan.plan_type ||
-                                combinedBillingInfo.activePlanTypes;
-                              combinedBillingInfo.totalLicenses =
-                                firstPlan.totalLicenses ||
-                                firstPlan.total_licenses ||
-                                combinedBillingInfo.totalLicenses ||
-                                0;
-                              combinedBillingInfo.purchaseDate =
-                                formatDateLocal(firstPlan.purchaseDate);
-                              combinedBillingInfo.startDate = formatDateLocal(
-                                firstPlan.startDate || firstPlan.purchaseDate,
-                              );
-                              combinedBillingInfo.validityYears =
-                                firstPlan.validityYears ||
-                                firstPlan.validity_years ||
-                                "N/A";
-                              combinedBillingInfo.expiryDate = formatDateLocal(
-                                firstPlan.expiryDate,
-                              );
-                              combinedBillingInfo.billingCycle =
-                                firstPlan.billingCycle ||
-                                firstPlan.billing_cycle ||
-                                "Annual";
-                              combinedBillingInfo.amount =
-                                firstPlan.amount || firstPlan.price || "N/A";
-                              combinedBillingInfo.features = Array.isArray(
-                                firstPlan.features,
-                              )
-                                ? firstPlan.features.join(", ")
-                                : firstPlan.features || "Standard Features";
-                            }
-                          } else {
-                            // Direct object format - normalize field names to DEMO format
-                            combinedBillingInfo = {
-                              activePlanTypes:
-                                parsed.plan_type ||
-                                parsed.planType ||
-                                parsed.activePlanTypes ||
-                                "Standard",
-                              activePlanIds:
-                                parsed.plan_id ||
-                                parsed.planId ||
-                                parsed.activePlanIds ||
-                                "N/A",
-                              totalPurchases:
-                                parsed.total_purchases ||
-                                parsed.totalPurchases ||
-                                1,
-                              totalLicenses:
-                                parsed.total_licenses ||
-                                parsed.totalLicenses ||
-                                parsed.licenses ||
-                                parsed.totalLicenses ||
-                                0,
-                              availableLicenses:
-                                parsed.available_licenses ||
-                                parsed.availableLicenses ||
-                                0,
-                              consumedLicenses:
-                                parsed.consumed_licenses ||
-                                parsed.consumedLicenses ||
-                                parsed.usedLicenses ||
-                                0,
-                              usedLicenses:
-                                parsed.used_licenses ||
-                                parsed.usedLicenses ||
-                                parsed.consumedLicenses ||
-                                0,
-                              validityYears:
-                                parsed.validity_years ||
-                                parsed.validityYears ||
-                                "1",
-                              purchaseDate: formatDateLocal(
-                                parsed.purchase_date || parsed.purchaseDate,
-                              ),
-                              startDate: formatDateLocal(
-                                parsed.start_date || parsed.startDate,
-                              ),
-                              expiryDate: formatDateLocal(
-                                parsed.expiry_date || parsed.expiryDate,
-                              ),
-                              billingCycle:
-                                parsed.billing_cycle ||
-                                parsed.billingCycle ||
-                                "Annual",
-                              amount: parsed.amount || parsed.price || "N/A",
-                              status: parsed.status || "Active",
-                              userEmail:
-                                parsed.user_email ||
-                                parsed.userEmail ||
-                                userEmail,
-                              features: Array.isArray(parsed.features)
-                                ? parsed.features.join(", ")
-                                : parsed.features || "Standard Features",
-                            };
-                          }
-                        } catch (e) {
-                          devError("❌ Failed to parse license details:", e);
-                        }
-                      }
-
-                      // 2️⃣ Load payment details
-                      const paymentDetailsJson = apiUser.payment_details_json;
-                      if (paymentDetailsJson && paymentDetailsJson !== "{}") {
-                        try {
-                          const paymentParsed = JSON.parse(paymentDetailsJson);
-                          devLog("✅ Payment details parsed:", paymentParsed);
-                          combinedBillingInfo = {
-                            ...combinedBillingInfo,
-                            ...paymentParsed,
-                          };
-                        } catch (e) {
-                          devError("❌ Failed to parse payment details:", e);
-                        }
-                      }
-
-                      // 3️⃣ If still empty, use basic user info as fallback
-                      if (Object.keys(combinedBillingInfo).length === 0) {
-                        devLog(
-                          "⚠️ No billing/payment JSON found, using basic user info",
-                        );
-                        combinedBillingInfo = {
-                          userEmail:
-                            apiUser.user_email || apiUser.email || userEmail,
-                          userName: apiUser.user_name || apiUser.name || "N/A",
-                          userRole: apiUser.role || apiUser.user_role || "N/A",
-                          status: apiUser.status || "active",
-                          department: apiUser.department || "N/A",
-                          licenseAllocation:
-                            apiUser.licesne_allocation ||
-                            (apiUser as any).license_allocation ||
-                            "0",
-                          timezone: apiUser.timezone || "N/A",
-                          isPrivateCloud: apiUser.is_private_cloud
-                            ? "Yes"
-                            : "No",
-                          lastLogin: apiUser.last_login || "N/A",
-                        };
-                      }
-                    } else {
-                      devLog(
-                        "⚠️ API call failed, falling back to localStorage",
-                      );
-                      // Fallback to localStorage data
-                      const storedData = getUserDataFromStorage();
-                      const licenseDetailsJson =
-                        storedData?.license_details_json;
-                      const paymentDetailsJson =
-                        storedData?.payment_details_json;
-
-                      if (licenseDetailsJson && licenseDetailsJson !== "{}") {
-                        try {
-                          combinedBillingInfo = JSON.parse(licenseDetailsJson);
-                        } catch (e) {
-                          /* ignore */
-                        }
-                      }
-                      if (paymentDetailsJson && paymentDetailsJson !== "{}") {
-                        try {
-                          combinedBillingInfo = {
-                            ...combinedBillingInfo,
-                            ...JSON.parse(paymentDetailsJson),
-                          };
-                        } catch (e) {
-                          /* ignore */
-                        }
-                      }
-
-                      // Fallback to basic stored user data
-                      if (
-                        Object.keys(combinedBillingInfo).length === 0 &&
-                        storedData
-                      ) {
-                        combinedBillingInfo = {
-                          userEmail:
-                            storedData.user_email ||
-                            storedData.email ||
-                            userEmail,
-                          userName:
-                            storedData.user_name || storedData.name || "N/A",
-                          userRole:
-                            storedData.role || storedData.user_role || "N/A",
-                          status: storedData.status || "active",
-                          department: storedData.department || "N/A",
-                          licenseAllocation:
-                            storedData.license_allocation || "0",
-                        };
-                      }
-                    }
-                  } catch (error) {
-                    devError("❌ Error fetching billing data:", error);
-                  }
-
-                  devLog("✅ Final billing details:", combinedBillingInfo);
-                  setBillingDetails(combinedBillingInfo);
-                }}
-                className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
-                title="Settings - Billing & Password"
+            {/* ✅ RBAC: All users can access Settings (Billing restricted inside) */}
+            <button
+              onClick={() => {
+                setShowSettingsModal(true);
+                // 🎭 In Demo Mode, use DEMO_BILLING_DETAILS directly
+                if (isDemo && isSuperAdmin) {
+                  devLog("🎭 Demo Mode: Using DEMO_BILLING_DETAILS");
+                  setBillingDetails(DEMO_BILLING_DETAILS);
+                }
+                setSettingsTab(isSuperAdmin ? "billing" : "password");
+              }}
+              className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
+              title="Settings"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <span className="hidden sm:inline">Settings</span>
-              </button>
-            )}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <span className="hidden sm:inline">Settings</span>
+            </button>
 
             {/* Private Cloud Button - For Superadmin (Not Demo) */}
             {/* {currentUserRole === 'superadmin' && isDemo && (
@@ -3034,9 +2994,7 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
-                    {dashboardStats?.totalLicenses ||
-                      (dashboardStats as any)?.total_licenses ||
-                      0}
+                    {dashboardStats?.totalLicenses || 0}
                   </p>
                   <p className="text-sm text-slate-500 mt-2">All licenses</p>
                 </div>
@@ -3090,12 +3048,7 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
-                    {(Array.isArray(userLicenseDetails)
-                      ? userLicenseDetails.reduce(
-                          (sum, lic) => sum + (lic.total || 0),
-                          0,
-                        )
-                      : 0) || 0}
+                    {dashboardStats?.totalLicenses || 0}
                   </p>
                   <p className="text-sm text-slate-500 mt-2">All licenses</p>
                 </div>
@@ -3131,7 +3084,7 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
-                    {auditReportsCount}
+                    {dashboardStats?.totalReports || 0}
                   </p>
                   <p className="text-sm text-slate-500 mt-2">
                     Ready to download
@@ -3387,14 +3340,7 @@ export default function AdminDashboard() {
                                     </p>
                                     <span className="text-xs text-slate-500 flex-shrink-0">
                                       {session.login_time
-                                        ? new Date(
-                                            session.login_time,
-                                          ).toLocaleString("en-IN", {
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                          })
+                                        ? "Login: " + formatSessionDate(session.login_time)
                                         : "N/A"}
                                     </span>
                                   </div>
@@ -3421,13 +3367,7 @@ export default function AdminDashboard() {
                                     )}
                                     {session.logout_time && (
                                       <span className="truncate text-slate-400">
-                                        Logout:{" "}
-                                        {new Date(
-                                          session.logout_time,
-                                        ).toLocaleString("en-IN", {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })}
+                                        Logout: {formatSessionDate(session.logout_time)}
                                       </span>
                                     )}
                                   </div>
@@ -3671,185 +3611,217 @@ export default function AdminDashboard() {
 
             {activeTab === "licenses" && (
               <div className="space-y-6">
-                {/* License Overview */}
-                <div className="card">
-                  <div className="px-6 py-5 border-b border-slate-200">
-                    <h2 className="font-semibold text-slate-900">
-                      License Details
-                    </h2>
-                    <p className="text-sm text-slate-600 mt-1">
-                      Manage and monitor your software licenses
-                    </p>
+                {/* License Overview - Same pattern as AdminLicenses page */}
+                <div className="card !p-0 overflow-hidden">
+                  <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+                    <div>
+                      <h2 className="font-semibold text-slate-900">
+                        License Details
+                      </h2>
+                      <p className="text-sm text-slate-600 mt-1">
+                        Manage and monitor your software licenses
+                      </p>
+                    </div>
+                    <span className="text-sm text-slate-500">
+                      {dashboardLicenseList.length} found
+                    </span>
                   </div>
-                  <div className="p-4 sm:p-6">
-                    <div className="overflow-x-auto -mx-2 sm:mx-0 max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
-                      <div className="inline-block min-w-full align-middle">
-                        <table className="min-w-full">
-                          <thead className="sticky top-0 bg-white shadow-sm z-10">
-                            <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
-                              <th className="pb-3 font-medium whitespace-nowrap">
-                                Product
-                              </th>
-                              <th className="pb-3 font-medium whitespace-nowrap">
-                                Total Available
-                              </th>
-                              <th className="pb-3 font-medium whitespace-nowrap">
-                                Total Consumed
-                              </th>
-                              <th className="pb-3 font-medium whitespace-nowrap">
-                                Usage
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-200">
-                            {(Array.isArray(userLicenseDetails)
-                              ? userLicenseDetails
-                              : []
-                            )
-                              .slice(
-                                (licenseDetailsPage - 1) * licensePageSize,
-                                licenseDetailsPage * licensePageSize,
-                              )
-                              .map((license, index) => {
-                                const usagePercent =
-                                  license.total > 0
-                                    ? (license.consumed / license.total) * 100
-                                    : 0;
-                                return (
-                                  <tr key={index} className="hover:bg-slate-50">
-                                    <td className="py-4 font-medium text-slate-900 whitespace-nowrap">
-                                      {license.product}
-                                    </td>
-                                    <td className="py-4 text-slate-600">
-                                      {license.total}
-                                    </td>
-                                    <td className="py-4 text-slate-600">
-                                      {license.consumed}
-                                    </td>
-                                    <td className="py-4">
-                                      <div className="flex items-center gap-3">
-                                        <div className="flex-1 bg-slate-200 rounded-full h-2 min-w-[80px]">
-                                          <div
-                                            className={`h-2 rounded-full ${
-                                              usagePercent > 80
-                                                ? "bg-red-500"
-                                                : usagePercent > 60
-                                                  ? "bg-yellow-500"
-                                                  : "bg-green-500"
-                                            }`}
-                                            style={{
-                                              width: `${Math.min(
-                                                usagePercent,
-                                                100,
-                                              )}%`,
-                                            }}
-                                          ></div>
-                                        </div>
-                                        <span className="text-sm text-slate-600 min-w-[50px] text-right">
-                                          {usagePercent.toFixed(1)}%
-                                        </span>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                            {(!Array.isArray(userLicenseDetails) ||
-                              userLicenseDetails.length === 0) && (
-                              <tr>
-                                <td
-                                  colSpan={4}
-                                  className="py-8 text-center text-slate-500"
+                  <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                    <table className="w-full relative">
+                      <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                            License Key
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                            User Email
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                            Type
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                            Expires
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-slate-200">
+                        {licenseListLoading ? (
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className="px-4 py-12 text-center text-slate-500"
+                            >
+                              <div className="flex items-center justify-center gap-2">
+                                <svg
+                                  className="animate-spin w-5 h-5 text-emerald-500"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
                                 >
-                                  No license data available
+                                  <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                  ></circle>
+                                  <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                  ></path>
+                                </svg>
+                                Loading licenses...
+                              </div>
+                            </td>
+                          </tr>
+                        ) : dashboardLicenseList.length > 0 ? (
+                          dashboardLicenseList
+                            .slice(
+                              (licenseDetailsPage - 1) * licensePageSize,
+                              licenseDetailsPage * licensePageSize,
+                            )
+                            .map((license: any, index: number) => (
+                              <tr
+                                key={license.license_id || index}
+                                className="hover:bg-slate-50"
+                              >
+                                <td className="px-4 py-3 whitespace-nowrap text-sm font-mono text-slate-900 max-w-xs overflow-x-auto">
+                                  {license.license_key || "N/A"}
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-600">
+                                  {license.user_email || "N/A"}
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                  <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    {license.license_type || "N/A"}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                  <span
+                                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                                      license.status?.toLowerCase() === "active"
+                                        ? "bg-emerald-100 text-emerald-800"
+                                        : license.status?.toLowerCase() ===
+                                            "expired"
+                                          ? "bg-red-100 text-red-800"
+                                          : license.status?.toLowerCase() ===
+                                              "revoked"
+                                            ? "bg-rose-100 text-rose-800"
+                                            : "bg-orange-100 text-orange-800"
+                                    }`}
+                                  >
+                                    {license.status?.toUpperCase() === "IN_USE"
+                                      ? "Inactive"
+                                      : license.status || "Unknown"}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-600">
+                                  {license.expires_at
+                                    ? new Date(
+                                        license.expires_at,
+                                      ).toLocaleDateString()
+                                    : "N/A"}
                                 </td>
                               </tr>
-                            )}
-                          </tbody>
-                        </table>
+                            ))
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan={5}
+                              className="py-8 text-center text-slate-500"
+                            >
+                              No license data available
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  {/* License Details Pagination */}
+                  {dashboardLicenseList.length > 0 && (
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 sm:px-6 py-3 border-t border-slate-200 bg-slate-50">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <label className="text-xs sm:text-sm text-slate-600">
+                          Rows:
+                        </label>
+                        <select
+                          value={licensePageSize}
+                          onChange={(e) => {
+                            setLicensePageSize(parseInt(e.target.value, 10));
+                            setLicenseDetailsPage(1);
+                          }}
+                          className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                        >
+                          {pageSizeOptions.map((size: number) => (
+                            <option key={size} value={size}>
+                              {size}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
+                          Showing{" "}
+                          {Math.min(
+                            (licenseDetailsPage - 1) * licensePageSize + 1,
+                            dashboardLicenseList.length,
+                          )}{" "}
+                          to{" "}
+                          {Math.min(
+                            licenseDetailsPage * licensePageSize,
+                            dashboardLicenseList.length,
+                          )}{" "}
+                          of {dashboardLicenseList.length}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <span className="text-xs sm:text-sm text-slate-600">
+                          Page {licenseDetailsPage} of{" "}
+                          {Math.ceil(
+                            dashboardLicenseList.length / licensePageSize,
+                          )}
+                        </span>
+                        <div className="flex gap-1 sm:gap-2">
+                          <button
+                            onClick={() =>
+                              setLicenseDetailsPage((prev) =>
+                                Math.max(prev - 1, 1),
+                              )
+                            }
+                            disabled={licenseDetailsPage === 1}
+                            className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <span className="sm:hidden">Prev</span>
+                            <span className="hidden sm:inline">Previous</span>
+                          </button>
+                          <button
+                            onClick={() =>
+                              setLicenseDetailsPage((prev) =>
+                                Math.min(
+                                  prev + 1,
+                                  Math.ceil(
+                                    dashboardLicenseList.length /
+                                      licensePageSize,
+                                  ),
+                                ),
+                              )
+                            }
+                            disabled={
+                              licenseDetailsPage >=
+                              Math.ceil(
+                                dashboardLicenseList.length / licensePageSize,
+                              )
+                            }
+                            className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Next
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    {/* License Details Pagination - always show when data exists */}
-                    {userLicenseDetails.length > 0 && (
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                          <label className="text-xs sm:text-sm text-slate-600">
-                            Rows:
-                          </label>
-                          <select
-                            value={licensePageSize}
-                            onChange={(e) => {
-                              setLicensePageSize(parseInt(e.target.value, 10));
-                              setLicenseDetailsPage(1);
-                            }}
-                            className="px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-300 rounded-lg text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
-                          >
-                            {pageSizeOptions.map((size) => (
-                              <option key={size} value={size}>
-                                {size}
-                              </option>
-                            ))}
-                          </select>
-                          <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                            Showing{" "}
-                            {Math.min(
-                              (licenseDetailsPage - 1) * licensePageSize + 1,
-                              userLicenseDetails.length,
-                            )}{" "}
-                            to{" "}
-                            {Math.min(
-                              licenseDetailsPage * licensePageSize,
-                              userLicenseDetails.length,
-                            )}{" "}
-                            of {userLicenseDetails.length}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 sm:gap-3">
-                          <span className="text-xs sm:text-sm text-slate-600">
-                            Page {licenseDetailsPage} of{" "}
-                            {Math.ceil(
-                              userLicenseDetails.length / licensePageSize,
-                            )}
-                          </span>
-                          <div className="flex gap-1 sm:gap-2">
-                            <button
-                              onClick={() =>
-                                setLicenseDetailsPage((prev) =>
-                                  Math.max(prev - 1, 1),
-                                )
-                              }
-                              disabled={licenseDetailsPage === 1}
-                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              <span className="sm:hidden">Prev</span>
-                              <span className="hidden sm:inline">Previous</span>
-                            </button>
-                            <button
-                              onClick={() =>
-                                setLicenseDetailsPage((prev) =>
-                                  Math.min(
-                                    prev + 1,
-                                    Math.ceil(
-                                      userLicenseDetails.length /
-                                        licensePageSize,
-                                    ),
-                                  ),
-                                )
-                              }
-                              disabled={
-                                licenseDetailsPage >=
-                                Math.ceil(
-                                  userLicenseDetails.length / licensePageSize,
-                                )
-                              }
-                              className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              Next
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
             )}
@@ -4989,9 +4961,12 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {erasureMetricsLoading ? (
-                  <div className="flex items-center justify-center p-12">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
+                {erasureMetricsLoading && !displayErasureMetrics ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="text-center">
+                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+                      <p className="mt-4 text-sm text-slate-600">Loading performance data...</p>
+                    </div>
                   </div>
                 ) : erasureMetricsError || !displayErasureMetrics ? (
                   <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
@@ -5022,13 +4997,15 @@ export default function AdminDashboard() {
                     <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
                       {/* Erasure Method Distribution (Pie Chart) */}
                       {/* Erasure Method Distribution (Pie Chart) */}
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col h-full min-h-[400px]">
+                      {/* Erasure Method Distribution (Pie Chart) */}
+                      {/* ✅ NAYA CODE: Isolated PieChart component — fixes infinite re-render loop */}
+                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col min-h-[400px]">
                         <div className="mb-6">
                           <p className="text-base md:text-lg text-slate-500 mb-2 font-medium">
                             Erasure Method Breakdown
                           </p>
                           <p className="text-3xl md:text-4xl font-bold text-slate-900">
-                            {displayErasureMetrics.methodMetrics &&
+                            {displayErasureMetrics?.methodMetrics &&
                             displayErasureMetrics.methodMetrics.length > 0
                               ? displayErasureMetrics.methodMetrics
                                   .reduce(
@@ -5040,82 +5017,63 @@ export default function AdminDashboard() {
                               : 0}
                           </p>
                         </div>
-                        <div className="flex-1 w-full relative">
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                            minHeight={300}
-                          >
-                            <PieChart>
-                              <Pie
-                                data={displayErasureMetrics.methodMetrics || []}
-                                cx="50%"
-                                cy="50%"
-                                innerRadius="60%"
-                                outerRadius="80%"
-                                paddingAngle={5}
-                                dataKey="count"
-                                nameKey="methodName"
-                              >
-                                {(
-                                  displayErasureMetrics.methodMetrics || []
-                                ).map((entry: MethodMetric, index: number) => (
-                                  <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index % COLORS.length]}
-                                    strokeWidth={2}
-                                    stroke="#fff"
-                                  />
-                                ))}
-                              </Pie>
-                              <Tooltip
-                                contentStyle={{
-                                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                                  borderRadius: "8px",
-                                  boxShadow:
-                                    "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                                  border: "1px solid #e2e8f0",
-                                  fontSize: "14px",
-                                }}
-                                itemStyle={{ color: "#1e293b" }}
-                                formatter={(
-                                  value: any,
-                                  name: any,
-                                  props: any,
-                                ) => {
-                                  const numericValue = Number(value);
-                                  const total =
-                                    displayErasureMetrics.methodMetrics?.reduce(
-                                      (acc: number, curr: MethodMetric) =>
-                                        acc + curr.count,
-                                      0,
-                                    ) || 1;
-                                  const percent = (
-                                    (numericValue / total) *
-                                    100
-                                  ).toFixed(1);
-                                  return [
-                                    `${numericValue} (${percent}%)`,
-                                    name,
-                                  ];
-                                }}
-                              />
-                              <Legend
-                                verticalAlign="bottom"
-                                height={36}
-                                iconType="circle"
-                                iconSize={10}
-                                wrapperStyle={{
-                                  fontSize: "14px",
-                                  paddingTop: "20px",
-                                }}
-                              />
-                            </PieChart>
-                          </ResponsiveContainer>
+                        <div className="flex-1 w-full relative min-h-[300px]">
+                          <ErasureMethodPieChart methodMetrics={displayErasureMetrics?.methodMetrics} />
                         </div>
                       </div>
 
-                      {/* Erasure Method Distribution */}
+                      {/* ========== PURANA CODE (COMMENTED OUT) — Inline PieChart that caused infinite re-render loop ==========
+                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col min-h-[400px]">
+                        <div className="mb-6">
+                          <p className="text-base md:text-lg text-slate-500 mb-2 font-medium">
+                            Erasure Method Breakdown
+                          </p>
+                          <p className="text-3xl md:text-4xl font-bold text-slate-900">
+                            {displayErasureMetrics?.methodMetrics &&
+                            displayErasureMetrics.methodMetrics.length > 0
+                              ? displayErasureMetrics.methodMetrics
+                                  .reduce(
+                                    (acc: number, curr: MethodMetric) =>
+                                      acc + curr.count,
+                                    0,
+                                  )
+                                  .toLocaleString()
+                              : 0}
+                          </p>
+                        </div>
+                        <div className="flex-1 w-full relative min-h-[300px]">
+                          {displayErasureMetrics?.methodMetrics &&
+                          displayErasureMetrics.methodMetrics.length > 0 ? (
+                            <div style={{ width: '100%', height: '300px', minHeight: '300px', display: 'flex', justifyContent: 'center' }}>
+                              <PieChart width={350} height={300}>
+                                <Pie
+                                  data={(displayErasureMetrics.methodMetrics as any) || []}
+                                  cx="50%" cy="50%" innerRadius="60%" outerRadius="80%"
+                                  paddingAngle={5} dataKey="count" nameKey="methodName"
+                                  isAnimationActive={false}
+                                >
+                                  {displayErasureMetrics.methodMetrics.map((entry: any, index: number) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} strokeWidth={2} stroke="#fff" />
+                                  ))}
+                                </Pie>
+                                <Tooltip formatter={(value: any, name: any) => {
+                                  const total = displayErasureMetrics.methodMetrics?.reduce((acc: any, curr: any) => acc + curr.count, 0) || 1;
+                                  const percent = ((value / total) * 100).toFixed(1);
+                                  return [`${value} (${percent}%)`, name];
+                                }} />
+                                <Legend verticalAlign="bottom" height={36} iconType="circle" iconSize={10} />
+                              </PieChart>
+                            </div>
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center text-slate-400 italic text-sm">
+                              No erasure data found
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      ========== PURANA CODE END ========== */}
+
+                      {/* Erasure Method Distribution List View */}
                       {/* <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col">
                         <div className="mb-4">
                           <p className="text-sm text-slate-500 mb-1">
@@ -6528,7 +6486,7 @@ export default function AdminDashboard() {
                     <button
                       onClick={() => {
                         setShowSettingsModal(false);
-                        setSettingsTab("billing");
+                        setSettingsTab(isSuperAdmin ? "billing" : "password");
                         setChangePasswordForm({
                           currentPassword: "",
                           newPassword: "",
@@ -6555,31 +6513,33 @@ export default function AdminDashboard() {
                   {/* Tabs */}
                   <div className="border-b border-slate-200">
                     <div className="flex">
-                      <button
-                        onClick={() => setSettingsTab("billing")}
-                        className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${
-                          settingsTab === "billing"
-                            ? "text-brand border-b-2 border-brand bg-brand/5"
-                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                        }`}
-                      >
-                        <div className="flex items-center justify-center gap-2">
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                            />
-                          </svg>
-                          Billing Usage
-                        </div>
-                      </button>
+                      {isSuperAdmin && (
+                        <button
+                          onClick={() => setSettingsTab("billing")}
+                          className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${
+                            settingsTab === "billing"
+                              ? "text-brand border-b-2 border-brand bg-brand/5"
+                              : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-center gap-2">
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                              />
+                            </svg>
+                            Billing Usage
+                          </div>
+                        </button>
+                      )}
                       <button
                         onClick={() => setSettingsTab("password")}
                         className={`flex-1 px-6 py-3 text-sm font-medium transition-colors ${
@@ -6616,7 +6576,7 @@ export default function AdminDashboard() {
                           <h4 className="text-lg font-semibold text-slate-900">
                             Billing Usage
                           </h4>
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() => {
                               // Get current user data for prefilling checkout
@@ -6706,7 +6666,7 @@ export default function AdminDashboard() {
                               />
                             </svg>
                             Renew License
-                          </button>
+                          </button> */}
                         </div>
 
                         {(() => {
@@ -6809,32 +6769,62 @@ export default function AdminDashboard() {
                                     return null;
                                   })()}
                                   <div className="grid grid-cols-2 gap-4">
-                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
-                                      <p className="text-xs text-slate-600 mb-1">
-                                        Plan Type
-                                      </p>
-                                      <p className="text-lg font-bold text-brand">
-                                        {billingDetails.activePlanTypes ||
-                                          billingDetails.planType ||
-                                          billingDetails.plan_type ||
-                                          "N/A"}
-                                      </p>
-                                    </div>
-                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
-                                      <p className="text-xs text-slate-600 mb-1">
-                                        Total Licenses
-                                      </p>
-                                      <p className="text-lg font-bold text-slate-900">
-                                        {billingDetails.purchase_details
-                                          ?.total_licenses ||
-                                          billingDetails.total_licenses ||
-                                          0}
-                                      </p>
+                                    {/* PURANA CODE
+                                      <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
+                                        <p className="text-xs text-slate-600 mb-1">
+                                          Plan Type
+                                        </p>
+                                        <p className="text-lg font-bold text-brand">
+                                          {billingDetails.activePlanTypes ||
+                                            billingDetails.planType ||
+                                            billingDetails.plan_type ||
+                                            "N/A"}
+                                        </p>
+                                      </div>
+                                      <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
+                                        <p className="text-xs text-slate-600 mb-1">
+                                          Total Licenses
+                                        </p>
+                                        <p className="text-lg font-bold text-slate-900">
+                                          {billingDetails.purchase_details
+                                            ?.total_licenses ||
+                                            billingDetails.total_licenses ||
+                                            0}
+                                        </p>
+                                      </div>
+                                      */}
+
+                                      {/* NAYA CODE */}
+                                      <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
+                                        <p className="text-xs text-slate-600 mb-1">
+                                          Plan Type
+                                        </p>
+                                        <p className="text-lg font-bold text-brand">
+                                          {dashboardLicenseList.length > 0
+                                            ? Array.from(
+                                                new Set(
+                                                  dashboardLicenseList.map(
+                                                    (l) => l.license_type || l.edition || l.type || "D-Secure File Eraser"
+                                                  )
+                                                )
+                                              ).join(", ")
+                                            : "D-Secure File Eraser"}
+                                        </p>
+                                      </div>
+                                      <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
+                                        <p className="text-xs text-slate-600 mb-1">
+                                          Total Licenses
+                                        </p>
+                                        <p className="text-lg font-bold text-slate-900">
+                                          {activeLicensesFromCache ||
+                                            dashboardStats?.totalLicenses ||
+                                            0}
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
 
                             {/* Accordion 2: License Usage Stats */}
                             {/* <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
@@ -6973,7 +6963,108 @@ export default function AdminDashboard() {
                               >
                                 <div className="px-6 pb-6 space-y-4">
                                   {/* Display parsed billing details - Filter sensitive data */}
-                                  {Object.entries(billingDetails).map(
+                                  
+                                  {/* NEW STATIC FEATURES DISPLAY */}
+                                  {(() => {
+                                    const expiryRaw = dashboardLicenseList.length > 0 
+                                      ? dashboardLicenseList[0]?.expires_at || dashboardLicenseList[0]?.expiryDate 
+                                      : userLicenseDetails?.length > 0 
+                                      ? (userLicenseDetails[0] as any)?.expires_at || (userLicenseDetails[0] as any)?.expiryDate || (userLicenseDetails[0] as any)?.expiry_date
+                                      : billingDetails?.expiry_date || billingDetails?.expires_at || "N/A";
+                                      
+                                    let displayExpiry = String(expiryRaw);
+                                    let isExpired = false;
+                                    
+                                    if (typeof expiryRaw === "string" && !isNaN(Date.parse(expiryRaw))) {
+                                      try { 
+                                        const expiryDateObj = new Date(expiryRaw);
+                                        displayExpiry = expiryDateObj.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); 
+                                        isExpired = expiryDateObj < new Date();
+                                      } catch {}
+                                    }
+
+                                    const planStatus = isExpired ? "Expired" : (billingDetails?.status || (dashboardLicenseList.length > 0 ? dashboardLicenseList[0]?.status : "Active"));
+                                    const statusDisplay = String(planStatus);
+
+                                    const InfoRow = ({ label, value, isStatus = false }: { label: string, value: string, isStatus?: boolean }) => {
+                                      const icon = label === "Expiry Date" ? (
+                                        <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                      ) : (
+                                        <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                      );
+
+                                      let valueClass = "text-slate-900";
+                                      if (isStatus) {
+                                        valueClass = value.toLowerCase() === "active" ? "text-emerald-600" : "text-red-600";
+                                      } else if (value === "Enabled") {
+                                        valueClass = "text-emerald-600";
+                                      } else if (value === "Disabled") {
+                                        valueClass = "text-slate-500";
+                                      }
+
+                                      return (
+                                        <div className="py-3 border-b border-slate-200 last:border-0">
+                                          <div className="flex items-center gap-3">
+                                            {icon}
+                                            <div className="flex-1 flex justify-between items-center">
+                                              <span className="text-sm font-medium text-slate-700 capitalize">{label}</span>
+                                              <span className={`text-sm font-semibold capitalize ${valueClass}`}>
+                                                {value}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      );
+                                    };
+
+                                    return (
+                                      <>
+                                        <InfoRow label="Status" value={statusDisplay} isStatus={true} />
+                                        <InfoRow label="Expiry Date" value={displayExpiry} />
+                                        <InfoRow label="Subusers" value={profileData?.is_subusers_enabled ? "Enabled" : "Disabled"} />
+                                        <InfoRow label="Groups" value={profileData?.is_groups_enabled ? "Enabled" : "Disabled"} />
+                                        <InfoRow label="Private Cloud" value={profileData?.is_private_cloud ? "Enabled" : "Disabled"} />
+                                      </>
+                                    );
+                                  })()}
+
+                                  {/* PREVIOUS NAYA CODE */}
+                                  {false && Object.entries(billingDetails).map(([key, value]) => {
+                                    const allowedFields = ["status", "expirydate", "expiry_date", "expires_at", "expiredate", "valid_till"];
+                                    if (!allowedFields.includes(key.toLowerCase())) return null;
+
+                                    let displayLabel = key.replace(/_/g, " ").replace(/([A-Z])/g, " $1").trim();
+                                    if (key.toLowerCase() === "status") displayLabel = "Status";
+                                    else if (key.toLowerCase().includes("expir")) displayLabel = "Expiry Date";
+
+                                    const icon = key.toLowerCase().includes("expir") || key.toLowerCase().includes("date") ? (
+                                      <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    ) : (
+                                      <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    );
+
+                                    let displayValue = String(value);
+                                    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)) {
+                                      try { displayValue = new Date(value).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch {}
+                                    }
+
+                                    return (
+                                      <div key={key} className="py-3 border-b border-slate-200 last:border-0">
+                                        <div className="flex items-center gap-3">
+                                          {icon}
+                                          <div className="flex-1 flex justify-between items-center">
+                                            <span className="text-sm font-medium text-slate-700 capitalize">{displayLabel}</span>
+                                            <span className={`text-sm font-semibold capitalize ${key.toLowerCase() === "status" ? (displayValue.toLowerCase() === "active" ? "text-emerald-600" : "text-red-600") : "text-slate-900"}`}>
+                                              {displayValue}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+
+                                  {/* PURANA CODE */}
+                                  {false && Object.entries(billingDetails).map(
                                     ([key, value]) => {
                                       // Skip fields already shown in cards above and raw JSON fields
                                       const skipFields = [
@@ -7030,6 +7121,10 @@ export default function AdminDashboard() {
                                         "updated_at",
                                         "userEmail",
                                         "user_email",
+                                        // ✅ NAYA CODE: hide license allocations
+                                        // "licenseAllocations",
+                                        // "license_allocations",
+                                        // "allocations"
                                       ];
 
                                       if (skipFields.includes(key)) {
