@@ -13,13 +13,15 @@ const CryptographicErasurePage: React.FC = memo(() => {
     {
       id: 1,
       title: "Introduction & Importance",
-      description: "Understanding cryptographic erasure and modern data security",
+      description:
+        "Understanding cryptographic erasure and modern data security",
       icon: "🔐",
       subsections: [
         {
           id: 11,
           title: "Why Cryptographic Erasure Matters",
-          description: "Modern data breach risks and limitations of traditional methods",
+          description:
+            "Modern data breach risks and limitations of traditional methods",
           url: "/support/manual/crypto-importance",
           pageCount: 2,
         },
@@ -55,15 +57,16 @@ const CryptographicErasurePage: React.FC = memo(() => {
         {
           id: 22,
           title: "Step-by-Step Erasure Process",
-          description: "Complete workflow from boot to regulatory document generation",
+          description:
+            "Complete workflow from boot to regulatory document generation",
           url: "/support/manual/erasure-process",
           pageCount: 3,
         },
         {
           id: 23,
-          title: "D-SecureIntegration",
+          title: "D-Secure Integration",
           description: "D-Secure tools and drive eraser USB workflow",
-          url: "/support/manual/bitraser-integration",
+          url: "/support/manual/dsecure-integration",
           pageCount: 2,
         },
       ],
@@ -113,7 +116,8 @@ const CryptographicErasurePage: React.FC = memo(() => {
         {
           id: 42,
           title: "Regulatory Document Generation",
-          description: "Tamper-proof erasure regulatory documents and audit trails",
+          description:
+            "Tamper-proof erasure regulatory documents and audit trails",
           url: "/support/manual/certificate-generation",
           pageCount: 2,
         },
@@ -171,7 +175,8 @@ const CryptographicErasurePage: React.FC = memo(() => {
         {
           id: 62,
           title: "Future of Secure Erasure",
-          description: "AI verification, blockchain logs, and energy efficiency",
+          description:
+            "AI verification, blockchain logs, and energy efficiency",
           url: "/support/manual/future-trends",
           pageCount: 2,
         },
@@ -202,7 +207,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
       section.subsections.some(
         (sub) =>
           sub.title.toLowerCase().includes(query) ||
-          sub.description.toLowerCase().includes(query)
+          sub.description.toLowerCase().includes(query),
       )
     );
   });
@@ -212,13 +217,16 @@ const CryptographicErasurePage: React.FC = memo(() => {
   };
 
   const getTotalPages = (section: any) => {
-    return section.subsections.reduce((total: number, sub: any) => total + sub.pageCount, 0);
+    return section.subsections.reduce(
+      (total: number, sub: any) => total + sub.pageCount,
+      0,
+    );
   };
 
   return (
     <>
       {/* SEO Meta Tags */}
-      <SEOHead seo={getSEOForPage('cryptographic-erasure')} />
+      <SEOHead seo={getSEOForPage("cryptographic-erasure")} />
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Hero Section */}
@@ -227,8 +235,18 @@ const CryptographicErasurePage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center max-w-4xl mx-auto">
                 <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
                   </svg>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
@@ -237,7 +255,8 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   </span>
                 </h1>
                 <p className="text-xl md:text-2xl text-slate-700 mb-8 leading-relaxed">
-                  Secure. Instant. Irreversible. Next-generation data sanitization through encryption key destruction.
+                  Secure. Instant. Irreversible. Next-generation data
+                  sanitization through encryption key destruction.
                 </p>
 
                 {/* Search Bar */}
@@ -279,21 +298,31 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl text-white">⚡</span>
                   </div>
-                  <h3 className="text-xl font-bold text-emerald-900 mb-2">Instant</h3>
-                  <p className="text-slate-600">Seconds vs hours for traditional methods</p>
+                  <h3 className="text-xl font-bold text-emerald-900 mb-2">
+                    Instant
+                  </h3>
+                  <p className="text-slate-600">
+                    Seconds vs hours for traditional methods
+                  </p>
                 </div>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
                   <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl text-white">🔒</span>
                   </div>
-                  <h3 className="text-xl font-bold text-teal-900 mb-2">Secure</h3>
-                  <p className="text-slate-600">NIST 800-88 Purge level compliance</p>
+                  <h3 className="text-xl font-bold text-teal-900 mb-2">
+                    Secure
+                  </h3>
+                  <p className="text-slate-600">
+                    NIST 800-88 Purge level compliance
+                  </p>
                 </div>
                 <div className="bg-white rounded-2xl shadow-lg p-8 border border-emerald-100 hover:shadow-xl transition-all duration-300">
                   <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl text-white">🌱</span>
                   </div>
-                  <h3 className="text-xl font-bold text-cyan-900 mb-2">Sustainable</h3>
+                  <h3 className="text-xl font-bold text-cyan-900 mb-2">
+                    Sustainable
+                  </h3>
                   <p className="text-slate-600">No drive wear, enables reuse</p>
                 </div>
               </div>
@@ -310,7 +339,8 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   How Cryptographic Erasure Works
                 </h2>
                 <p className="text-xl text-slate-700 max-w-2xl mx-auto">
-                  Instead of overwriting data, destroy the encryption keys — making all data permanently inaccessible
+                  Instead of overwriting data, destroy the encryption keys —
+                  making all data permanently inaccessible
                 </p>
               </div>
             </Reveal>
@@ -322,22 +352,34 @@ const CryptographicErasurePage: React.FC = memo(() => {
                     <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
                       1
                     </div>
-                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">Encrypted Drive</h3>
-                    <p className="text-slate-600">Data is encrypted with AES-256 bit encryption</p>
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">
+                      Encrypted Drive
+                    </h3>
+                    <p className="text-slate-600">
+                      Data is encrypted with AES-256 bit encryption
+                    </p>
                   </div>
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
                       2
                     </div>
-                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">Key Destruction</h3>
-                    <p className="text-slate-600">Encryption keys are permanently deleted</p>
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">
+                      Key Destruction
+                    </h3>
+                    <p className="text-slate-600">
+                      Encryption keys are permanently deleted
+                    </p>
                   </div>
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white rounded-2xl flex items-center justify-center text-xl mx-auto mb-4">
                       3
                     </div>
-                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">Data Inaccessible</h3>
-                    <p className="text-slate-600">All data becomes cryptographically unreadable</p>
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">
+                      Data Inaccessible
+                    </h3>
+                    <p className="text-slate-600">
+                      All data becomes cryptographically unreadable
+                    </p>
                   </div>
                 </div>
 
@@ -345,9 +387,13 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   <div className="flex items-start">
                     <div className="text-2xl mr-4">🔑</div>
                     <div>
-                      <h4 className="font-semibold text-emerald-900 mb-2 text-lg">Analogy</h4>
+                      <h4 className="font-semibold text-emerald-900 mb-2 text-lg">
+                        Analogy
+                      </h4>
                       <p className="text-emerald-800">
-                        Imagine locking your vault and melting the only key — the vault (drive) remains, but its contents are inaccessible forever.
+                        Imagine locking your vault and melting the only key —
+                        the vault (drive) remains, but its contents are
+                        inaccessible forever.
                       </p>
                     </div>
                   </div>
@@ -372,8 +418,12 @@ const CryptographicErasurePage: React.FC = memo(() => {
               <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-3 bg-slate-900 text-white">
                   <div className="p-6 font-semibold text-lg">Feature</div>
-                  <div className="p-6 font-semibold bg-red-600/20 text-lg">Traditional Overwriting</div>
-                  <div className="p-6 font-semibold bg-emerald-600/20 text-lg">Cryptographic Erasure</div>
+                  <div className="p-6 font-semibold bg-red-600/20 text-lg">
+                    Traditional Overwriting
+                  </div>
+                  <div className="p-6 font-semibold bg-emerald-600/20 text-lg">
+                    Cryptographic Erasure
+                  </div>
                 </div>
 
                 {[
@@ -407,9 +457,15 @@ const CryptographicErasurePage: React.FC = memo(() => {
                     key={index}
                     className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200 last:border-b-0"
                   >
-                    <div className="p-6 font-medium bg-slate-50 text-lg">{row.feature}</div>
-                    <div className="p-6 text-slate-600 text-lg">{row.traditional}</div>
-                    <div className="p-6 text-emerald-600 font-medium text-lg">{row.crypto}</div>
+                    <div className="p-6 font-medium bg-slate-50 text-lg">
+                      {row.feature}
+                    </div>
+                    <div className="p-6 text-slate-600 text-lg">
+                      {row.traditional}
+                    </div>
+                    <div className="p-6 text-emerald-600 font-medium text-lg">
+                      {row.crypto}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -438,8 +494,12 @@ const CryptographicErasurePage: React.FC = memo(() => {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">No Sections Found</h3>
-                  <p className="text-slate-600">Try adjusting your search terms.</p>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                    No Sections Found
+                  </h3>
+                  <p className="text-slate-600">
+                    Try adjusting your search terms.
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -456,7 +516,9 @@ const CryptographicErasurePage: React.FC = memo(() => {
                               <h3 className="text-xl font-semibold text-slate-900 mb-2">
                                 {section.title}
                               </h3>
-                              <p className="text-slate-600">{section.description}</p>
+                              <p className="text-slate-600">
+                                {section.description}
+                              </p>
                               <div className="flex items-center gap-4 mt-3 text-sm text-slate-500">
                                 <span>{section.subsections.length} topics</span>
                                 <span>{getTotalPages(section)} pages</span>
@@ -464,8 +526,9 @@ const CryptographicErasurePage: React.FC = memo(() => {
                             </div>
                           </div>
                           <svg
-                            className={`w-5 h-5 text-slate-500 transform transition-transform ${activeSection === section.id ? "rotate-180" : ""
-                              }`}
+                            className={`w-5 h-5 text-slate-500 transform transition-transform ${
+                              activeSection === section.id ? "rotate-180" : ""
+                            }`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -560,8 +623,12 @@ const CryptographicErasurePage: React.FC = memo(() => {
               ].map((item, index) => (
                 <Reveal key={item.standard} delayMs={index * 100}>
                   <div className="bg-white rounded-xl p-6 text-center border border-emerald-100 shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div className="text-xl font-bold text-emerald-600 mb-2">{item.standard}</div>
-                    <div className="text-sm text-slate-600">{item.description}</div>
+                    <div className="text-xl font-bold text-emerald-600 mb-2">
+                      {item.standard}
+                    </div>
+                    <div className="text-sm text-slate-600">
+                      {item.description}
+                    </div>
                   </div>
                 </Reveal>
               ))}
@@ -600,10 +667,10 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   color: "bg-teal-500",
                 },
                 {
-                  title: "D-SecureTools",
+                  title: "D-Secure Tools",
                   description: "Integration documentation",
                   icon: "💾",
-                  url: "/products/bitraser-drive-eraser",
+                  url: "/products/dsecure-drive-eraser",
                   color: "bg-cyan-500",
                 },
                 {
@@ -627,7 +694,9 @@ const CryptographicErasurePage: React.FC = memo(() => {
                     <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
                       {item.title}
                     </h3>
-                    <p className="text-slate-600 text-sm flex-grow">{item.description}</p>
+                    <p className="text-slate-600 text-sm flex-grow">
+                      {item.description}
+                    </p>
                   </a>
                 </Reveal>
               ))}
@@ -644,7 +713,9 @@ const CryptographicErasurePage: React.FC = memo(() => {
                   Ready to Secure Your SSDs?
                 </h2>
                 <p className="text-xl text-emerald-100 mb-8 max-w-2xl mx-auto">
-                  Take full control of your data lifecycle. Cryptographic Erasure offers the perfect balance of speed, compliance, and sustainability.
+                  Take full control of your data lifecycle. Cryptographic
+                  Erasure offers the perfect balance of speed, compliance, and
+                  sustainability.
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
                   <a
@@ -682,20 +753,25 @@ const CryptographicErasurePage: React.FC = memo(() => {
               {[
                 {
                   question: "Can CryptoErase be undone?",
-                  answer: "No. Once encryption keys are deleted, data is unrecoverable by any means.",
+                  answer:
+                    "No. Once encryption keys are deleted, data is unrecoverable by any means.",
                 },
                 {
                   question: "Does it work on HDDs?",
-                  answer: "Yes, if the drive supports hardware encryption (SED type). Otherwise, use firmware sanitize.",
+                  answer:
+                    "Yes, if the drive supports hardware encryption (SED type). Otherwise, use firmware sanitize.",
                 },
                 {
                   question: "How long does it take?",
-                  answer: "Usually under 15 minutes including verification and report generation.",
+                  answer:
+                    "Usually under 15 minutes including verification and report generation.",
                 },
               ].map((faq, index) => (
                 <Reveal key={index} delayMs={index * 100}>
                   <div className="bg-white rounded-2xl p-6 border border-emerald-100 shadow-lg hover:shadow-xl transition-all duration-300">
-                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">{faq.question}</h3>
+                    <h3 className="font-semibold text-slate-900 mb-2 text-lg">
+                      {faq.question}
+                    </h3>
                     <p className="text-slate-600">{faq.answer}</p>
                   </div>
                 </Reveal>

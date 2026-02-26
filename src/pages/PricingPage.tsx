@@ -349,7 +349,7 @@ function PricingPageContent() {
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 <span>
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759503993/ec8v6wcjdpwgpplobi3w.svg"
                     alt=""
                     className="w-10 h-10 inline-block -mt-1"
                   />

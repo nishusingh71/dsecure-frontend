@@ -4,7 +4,7 @@ import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
 
-const BitraserIntegrationPage: React.FC = memo(() => {
+const DSecureIntegrationPage: React.FC = memo(() => {
   return (
     <>
       <SEOHead seo={getSEOForPage('help-manual')} />
@@ -43,4 +43,4 @@ const BitraserIntegrationPage: React.FC = memo(() => {
   );
 });
 
-export default BitraserIntegrationPage;
+export default DSecureIntegrationPage;

@@ -175,7 +175,7 @@ const WindowsSystemsPage: React.FC = memo(() => {
         {
           id: 52,
           title: "Third-Party Software Comparison",
-          description: "Blancco, BitRaser, and other professional tools",
+          description: "Blancco, D-Secure, and other professional tools",
           url: "/support/manual/windows-third-party",
           pageCount: 2,
         },

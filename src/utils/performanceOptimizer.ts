@@ -6,15 +6,31 @@ export const preloadCriticalResources = () => {
 };
 
 // Optimize images with WebP support
-export const getOptimizedImageUrl = (url: string, width?: number, quality = 80) => {
+// Note: All static Cloudinary URLs already include f_auto,q_auto.
+// This function adds additional transforms (width, custom quality) on top.
+export const getOptimizedImageUrl = (url: string, width?: number, quality?: number) => {
   if (url.includes('cloudinary.com')) {
+    // Already has f_auto,q_auto baked in — only add width/custom quality if needed
+    if (url.includes('f_auto')) {
+      if (!width && !quality) return url; // Already optimized, nothing to add
+      
+      const baseUrl = url.split('/upload/')[0] + '/upload/';
+      const afterUpload = url.split('/upload/')[1];
+      
+      let extraTransforms: string[] = [];
+      if (width) extraTransforms.push(`w_${width}`);
+      if (quality) extraTransforms.push(`q_${quality}`);
+      
+      return `${baseUrl}${extraTransforms.join(',')}/${afterUpload}`;
+    }
+    
+    // Fallback for any URLs missed by the optimization script
     const baseUrl = url.split('/upload/')[0] + '/upload/';
     const imagePath = url.split('/upload/')[1];
     
-    let transformations = [`q_${quality}`, 'f_auto'];
-    if (width) {
-      transformations.push(`w_${width}`);
-    }
+    let transformations = ['f_auto', 'q_auto'];
+    if (width) transformations.push(`w_${width}`);
+    if (quality) transformations.push(`q_${quality}`);
     
     return `${baseUrl}${transformations.join(',')}/${imagePath}`;
   }
@@ -68,7 +84,7 @@ export const inlineCriticalCSS = (css: string) => {
 export const addResourceHints = () => {
   const hints = [
     { rel: 'dns-prefetch', href: '//fonts.googleapis.com' },
-    { rel: 'dns-prefetch', href: '//res.cloudinary.com' },
+    { rel: 'preconnect', href: 'https://res.cloudinary.com', crossOrigin: 'anonymous' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' }
   ];
 

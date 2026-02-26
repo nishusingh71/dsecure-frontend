@@ -23,6 +23,7 @@ import {
   RefreshCwIcon,
   SettingsIcon,
   User,
+  X,
 } from "lucide-react";
 import { title } from "process";
 import { useToast } from "@/components/Toast";
@@ -48,7 +49,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
   const [activeSection, setActiveSection] = useState("");
   const [isNavVisible, setIsNavVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
   const [isDemoActive, setIsDemoActive] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -78,6 +81,113 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     return () =>
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
+
+  // Gallery images array for lightbox navigation
+  const galleryImages = [
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/hhmrgqu1j8dmtlawjy5z.png",
+      alt: "Drive Eraser Screenshot 1",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bapyhtkbzh3swpj64t4x.png",
+      alt: "Drive Eraser Screenshot 2",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ye68dt372vdbwgoxvfux.png",
+      alt: "Drive Eraser Screenshot 3",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/ekvmur4pojkla41gnmd4.png",
+      alt: "Drive Eraser Screenshot 4",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/bezjifgihbakej2julde.png",
+      alt: "Drive Eraser Screenshot 5",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ucwxczg0fepj1u1ut7we.png",
+      alt: "Drive Eraser Screenshot 6",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/dvwnmwzlcb3wk88cyakl.png",
+      alt: "Drive Eraser Screenshot 7",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/xjqcegdsp1dsdndcziww.png",
+      alt: "Drive Eraser Screenshot 8",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/evjsbmqbynavpxnfwnxa.png",
+      alt: "Drive Eraser Screenshot 9",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/nt6v24wnqrwgkc5tdddu.png",
+      alt: "Drive Eraser Screenshot 10",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/osp0gdj81m08qspfmqdy.png",
+      alt: "Drive Eraser Screenshot 11",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/sr3c7bwx5lesgnrlsuty.png",
+      alt: "Drive Eraser Screenshot 12",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/iwsvvppdgbqjai40tcwb.png",
+      alt: "Drive Eraser Screenshot 13",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/sq3rvfji9f9wfghlvlqx.png",
+      alt: "Drive Eraser Screenshot 14",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/w77kkhcf6lecezokiybj.png",
+      alt: "Drive Eraser Screenshot 15",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bh1xablttwasjfwvvfio.png",
+      alt: "Drive Eraser Screenshot 16",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/icnd512glswldxkfl4kg.png",
+      alt: "Drive Eraser Screenshot 17",
+    },
+  ];
+
+  // Number of additional images beyond the 4th card (for "More" badge)
+  const additionalImagesCount = galleryImages.length - 4;
+
+  const handlePrevImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(
+        selectedImageIndex === 0
+          ? galleryImages.length - 1
+          : selectedImageIndex - 1,
+      );
+    }
+  };
+
+  const handleNextImage = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(
+        selectedImageIndex === galleryImages.length - 1
+          ? 0
+          : selectedImageIndex + 1,
+      );
+    }
+  };
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImageIndex === null) return;
+      if (e.key === "ArrowLeft") handlePrevImage();
+      if (e.key === "ArrowRight") handleNextImage();
+      if (e.key === "Escape") setSelectedImageIndex(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedImageIndex]);
 
   const sectionNavItems = [
     { id: "erase-types", label: "Erase Types" },
@@ -960,7 +1070,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   >
                     {/* Screenshot Background */}
                     <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1772035728/ddzt2ghea7hotem4bvz9.png"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035728/ddzt2ghea7hotem4bvz9.png"
                       alt="D-Secure Drive Eraser Preview"
                       className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
                     />
@@ -1008,6 +1118,153 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 directly in your browser
               </p>
             </Reveal>
+
+            {/* Screenshot Cards Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+              {/* Screenshot 1 */}
+              <Reveal delayMs={150}>
+                <div
+                  onClick={() => setSelectedImageIndex(0)}
+                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
+                    <img
+                      src={galleryImages[0].url}
+                      alt={galleryImages[0].alt}
+                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-5 h-5 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Screenshot 2 */}
+              <Reveal delayMs={200}>
+                <div
+                  onClick={() => setSelectedImageIndex(1)}
+                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
+                    <img
+                      src={galleryImages[1].url}
+                      alt={galleryImages[1].alt}
+                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-5 h-5 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Screenshot 3 */}
+              <Reveal delayMs={250}>
+                <div
+                  onClick={() => setSelectedImageIndex(2)}
+                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
+                    <img
+                      src={galleryImages[2].url}
+                      alt={galleryImages[2].alt}
+                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-5 h-5 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Screenshot 4 - Shows "More" badge if additional images exist */}
+              <Reveal delayMs={300}>
+                <div
+                  onClick={() => setSelectedImageIndex(3)}
+                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
+                    <img
+                      src={galleryImages[3].url}
+                      alt={galleryImages[3].alt}
+                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
+                    />
+                    {/* More Images Badge */}
+                    {additionalImagesCount > 0 && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <span className="text-white text-xl sm:text-2xl font-bold">
+                          +{additionalImagesCount} More
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-5 h-5 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </section>
 
@@ -1995,6 +2252,85 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           </div>
         </section>
       </div>
+
+      {/* Lightbox Modal with Gallery Navigation */}
+      {selectedImageIndex !== null && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setSelectedImageIndex(null)}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setSelectedImageIndex(null)}
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Left Arrow */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrevImage();
+            }}
+            className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+          >
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNextImage();
+            }}
+            className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors z-10"
+          >
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+
+          {/* Image Container */}
+          <div
+            className="relative max-w-7xl w-full max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={galleryImages[selectedImageIndex].url}
+              alt={galleryImages[selectedImageIndex].alt}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-200"
+            />
+          </div>
+
+          {/* Image Counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/10 rounded-full text-white text-sm">
+            {selectedImageIndex + 1} / {galleryImages.length}
+          </div>
+        </div>
+      )}
     </>
   );
 });

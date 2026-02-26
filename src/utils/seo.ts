@@ -352,7 +352,7 @@ export const BASE_KEYWORDS = [
 
   // Product Names & Competitors
   "tpr tec eraser enterprise",
-  "BitRaser",
+  "D-Secure",
   "Data Eraser Software",
   "Drive Eraser",
 
@@ -774,11 +774,11 @@ export const BASE_KEYWORDS = [
   "Trust & Safety Tool",
   "Online Safety Service",
 
-  // Stellar & BitRaser
+  // Stellar & D-Secure
   "Stellar Data Eraser Software",
-  "Stellar BitRaser",
-  "BitRaser Data Eraser",
-  "BitRaser Data Erasure Software",
+  "Stellar D-Secure",
+  "D-Secure Data Eraser",
+  "D-Secure Data Erasure Software",
   "Secure Data Eraser",
   "Certified Data Erasure Tool",
   "DIY Data Eraser Software",
@@ -5166,18 +5166,18 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     ]),
     canonicalUrl: "https://dsecuretech.com/support/manual/best-practices",
   },
-  "support-manual-bitraser-integration": {
-    title: "Support Manual Bitraser Integration | D-Secure Tech",
+  "support-manual-dsecure-integration": {
+    title: "Support Manual D-Secure Integration | D-Secure Tech",
     description:
-      "Learn about support manual bitraser integration. D-Secure provides comprehensive data erasure solutions and documentation for support manual bitraser integration.",
+      "Learn about support manual D-Secure integration. D-Secure provides comprehensive data erasure solutions and documentation for support manual D-Secure integration.",
     keywords: generateKeywords([
       "support",
       "manual",
-      "bitraser",
+      "d-secure",
       "integration",
       "data erasure",
     ]),
-    canonicalUrl: "https://dsecuretech.com/support/manual/bitraser-integration",
+    canonicalUrl: "https://dsecuretech.com/support/manual/dsecure-integration",
   },
   "support-manual-certificate-destruction": {
     title: "Support Manual Certificate Destruction | D-Secure Tech",

@@ -10,11 +10,11 @@ const DiagnosticsPage: React.FC = () => {
   const testUrls = [
     {
       name: 'Main Logo',
-      url: `https://res.cloudinary.com/${cloudName}/image/upload/dsecure/logos/logo`
+      url: `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/dsecure/logos/logo`
     },
     {
       name: 'White Logo',
-      url: `https://res.cloudinary.com/${cloudName}/image/upload/dsecure/logos/logo-white`
+      url: `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/dsecure/logos/logo-white`
     }
   ];
 

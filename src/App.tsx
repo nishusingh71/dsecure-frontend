@@ -460,8 +460,8 @@ const BankingModePage = lazy(
 const BestPracticesPage = lazy(
   () => import("./pages/support/manual/BestPracticesPage"),
 );
-const BitraserIntegrationPage = lazy(
-  () => import("./pages/support/manual/BitraserIntegrationPage"),
+const DSecureIntegrationPage = lazy(
+  () => import("./pages/support/manual/DSecureIntegrationPage"),
 );
 const CertificateDestructionPage = lazy(
   () => import("./pages/support/manual/CertificateDestructionPage"),

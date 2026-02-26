@@ -89,7 +89,7 @@ const GovernmentSecuritySolutions: React.FC = () => {
                     {
                       title: "Data Protection",
                       desc: "End-to-end encryption and secure storage solutions ensuring confidentiality of sensitive governmental information.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
                     },
                     {
                       title: "Physical Security",

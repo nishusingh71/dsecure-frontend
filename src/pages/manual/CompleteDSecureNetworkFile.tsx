@@ -29,7 +29,7 @@ import {
  * - Clean, print-friendly blocks
  *
  * NOTE: All wording normalized to "D-Secure File Eraser Network".
- * If you must keep "BitRaser" strings, we can toggle a flag and swap labels.
+ * If you must keep "D-Secure" strings, we can toggle a flag and swap labels.
  */
 
 // ---------- Types ----------

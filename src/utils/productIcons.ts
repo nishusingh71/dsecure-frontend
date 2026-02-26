@@ -1,7 +1,7 @@
 // Product icon utility functions
 export const getProductIcon = (category: string, size: number = 128): string => {
   // Use the Cloudinary image for all products
-  return 'https://res.cloudinary.com/dhwi5wevf/image/upload/v1759928831/bwsswefvwhdvuy8yrplk.png';
+  return 'https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759928831/bwsswefvwhdvuy8yrplk.png';
 };
 
 // Get icon for different product categories with specific styling

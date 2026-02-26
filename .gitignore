@@ -22,9 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-*.txt
-*.md
-*.log
+
 # Screenshots and Images (unwanted tracking)
 src/assets/Screenshots/
 *.png
@@ -62,9 +60,6 @@ desktop.ini
 **/cache/
 **/temp/
 
-# Markdown documentation files
-*.md
-
 # Python files
 *.py
 
@@ -79,16 +74,72 @@ src/tests/
 *.test.tsx
 *.spec.ts
 *.spec.tsx
-.test-api.html
-.validate-email-pii.js
-.generate-professional-catalogs.cjs
+
 # Screenshots folder
 ss/
-*png
-*jpg
-*jpeg
-*gif
-*bmp
-*webp
 
+# Python virtual env
+.venv/
 
+# Qodo
+.qodo/
+
+# ============================================
+# Root clutter — temp/debug/one-off files
+# ============================================
+
+# Build & TypeScript error logs
+build_errors.txt
+build_errors_v2.txt
+build_output.txt
+final_build_errors.txt
+tsc_errors.txt
+tsc_output.txt
+tsc_final.txt
+tsc_dashboard.txt
+tsc_down.txt
+admin_dashboard_errors.txt
+ncu_output.txt
+console-log-cleanup-report.txt
+
+# Route/page/sitemap dumps
+app_routes.txt
+app_routes_utf8.txt
+route-count.txt
+page-files.txt
+remaining-pages.txt
+sitemap_locs.txt
+sitemap_locs_utf8.txt
+sitemap_urls.txt
+missing_urls.txt
+app-prashant.txt
+
+# Configuration notes
+CONFIGURATION.txt
+
+# One-off debug/test scripts (JS)
+crawl_404s.js
+find_404s.js
+remove_6_404s.js
+remove_urls.js
+validate-email-pii.js
+
+# One-off debug/test scripts (Python — already covered by *.py above)
+# add_react_memo.py, audit_seo_mastery.py, cleanup_seo.py,
+# compare_routes.py, final_seo_audit.py, find_sitemap_lines.py, transform_seo.py
+
+# Debug/test HTML pages
+test-api.html
+test-pages.html
+verify-jwt-token.html
+stats.html
+
+# Crawler results
+crawler_results.json
+
+# Backup config files
+vite.config.backup.ts
+
+# Implementation/report docs
+GROUP_ADMIN_IMPLEMENTATION.md
+SEO_VERIFICATION_REPORT.md

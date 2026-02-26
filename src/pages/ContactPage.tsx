@@ -476,7 +476,7 @@ function ContactPageContent() {
       // Company Information
       company: {
         name: "InfoTree Computers LLC",
-        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
+        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
         website: "https://infotreeit.com",
         established: "2015",
       },
@@ -523,7 +523,7 @@ function ContactPageContent() {
       id: 2,
       company: {
         name: "D-Secure Technologies",
-        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
+        logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
         website: "https://dsecuretech.com",
         established: "2025",
       },

@@ -404,42 +404,42 @@ const navigationTree: NavItem[] = [
                 <div className="space-y-4">
                   <div className="border border-gray-200 rounded overflow-hidden w-1/4">
                     <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767179216/fsxo7fgdrpsmr9whozmm.jpg"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767179216/fsxo7fgdrpsmr9whozmm.jpg"
                       alt="Main Dashboard"
                       className="w-full h-auto"
                     />
                   </div>
                   <div className="border border-gray-200 rounded overflow-hidden w-1/4">
                     <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767179216/dqpwy8upofic1itdmcfe.jpg"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767179216/dqpwy8upofic1itdmcfe.jpg"
                       alt="Erase Files Tab"
                       className="w-full h-auto"
                     />
                   </div>
                   <div className="border border-gray-200 rounded overflow-hidden w-1/4">
                     <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767179216/nzm3pqkqmlcdtr9ktfeu.jpg"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767179216/nzm3pqkqmlcdtr9ktfeu.jpg"
                       alt="Add Items Button"
                       className="w-full h-auto"
                     />
                   </div>
                   <div className="border border-gray-200 rounded overflow-hidden w-1/4">
                     <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767179216/se8crsmpekz7hfyyxx0f.jpg"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767179216/se8crsmpekz7hfyyxx0f.jpg"
                       alt="Erase Now Button"
                       className="w-full h-auto"
                     />
                   </div>
                   <div className="border border-gray-200 rounded overflow-hidden w-1/4">
                     <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767179215/cnye1quqy5ahwxn23sgs.jpg"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767179215/cnye1quqy5ahwxn23sgs.jpg"
                       alt="Settings Button"
                       className="w-full h-auto"
                     />
                   </div>
                   <div className="border border-gray-200 rounded overflow-hidden w-1/4">
                     <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767179215/uvtw2xxfhrn5n1i8sbvp.jpg"
+                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767179215/uvtw2xxfhrn5n1i8sbvp.jpg"
                       alt="Reports Section"
                       className="w-full h-auto"
                     />
@@ -506,7 +506,7 @@ const navigationTree: NavItem[] = [
                 </span>
                 <div className="mt-3  border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190292/da1tkglizlctioo2dkvy.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190292/da1tkglizlctioo2dkvy.jpg"
                     alt="Activate Menu"
                     className="w-full "
                     style={{ borderRadius: "3%" }}
@@ -524,7 +524,7 @@ const navigationTree: NavItem[] = [
                 </span>
                 <div className="mt-3  border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190292/fdckookpcjyggjd9pfut.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190292/fdckookpcjyggjd9pfut.jpg"
                     alt="Enter License Key"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -543,7 +543,7 @@ const navigationTree: NavItem[] = [
                 </span>
                 <div className="mt-3  border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190293/krkocraxnwan7eniscsh.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190293/krkocraxnwan7eniscsh.jpg"
                     alt="Activation Success"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -563,7 +563,7 @@ const navigationTree: NavItem[] = [
                 </span>
                 <div className="mt-3  border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190302/l96qjgzvqj64nixtncuu.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190302/l96qjgzvqj64nixtncuu.jpg"
                     alt="Activation Success"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -583,7 +583,7 @@ const navigationTree: NavItem[] = [
                 </span>
                 <div className="mt-3  border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190295/e2vlnkwfaots4ercjdcj.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190295/e2vlnkwfaots4ercjdcj.jpg"
                     alt="Activation Success"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -652,7 +652,7 @@ const navigationTree: NavItem[] = [
                   link to manually select data from your computer.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767164487/pxivekqv1xwqftp7mluh.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767164487/pxivekqv1xwqftp7mluh.png"
                   alt="Erase Files Tab"
                   className="w-full mb-6"
                   style={{ borderRadius: "4%" }}
@@ -670,7 +670,7 @@ const navigationTree: NavItem[] = [
                   Selected" button to add it to the erasure queue.{" "}
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767164486/foglpcpwfsp1nrfafgg4.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767164486/foglpcpwfsp1nrfafgg4.png"
                   alt="Add Items"
                   className="w-full mb-6"
                   style={{ borderRadius: "1%" }}
@@ -688,7 +688,7 @@ const navigationTree: NavItem[] = [
                   proceeding.{" "}
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767164487/dryvshnscg2wuubvjbuq.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767164487/dryvshnscg2wuubvjbuq.png"
                   alt="Review Items"
                   className="w-full mb-6"
                   style={{ borderRadius: "4%" }}
@@ -704,7 +704,7 @@ const navigationTree: NavItem[] = [
                   data.{" "}
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767164486/yyyancdhy0svt1cmkixc.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767164486/yyyancdhy0svt1cmkixc.png"
                   alt="Erase Now"
                   className="w-full mb-6"
                   style={{ borderRadius: "4%" }}
@@ -724,7 +724,7 @@ const navigationTree: NavItem[] = [
                   click "Yes, Erase" to begin the permanent deletion process.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767164485/extjstcwso6dop9chh2t.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767164485/extjstcwso6dop9chh2t.png"
                   alt="Completion"
                   className="w-full mb-6"
                   style={{ borderRadius: "6%" }}
@@ -742,7 +742,7 @@ const navigationTree: NavItem[] = [
                   operation using the red "Stop" button.{" "}
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767164487/kml72uwwvipwaowaj73c.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767164487/kml72uwwvipwaowaj73c.png"
                   alt="Completion"
                   className="w-full mb-6"
                   style={{ borderRadius: "4%" }}
@@ -759,7 +759,7 @@ const navigationTree: NavItem[] = [
                   to close the summary and return to the main dashboard.{" "}
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767164487/dryvshnscg2wuubvjbuq.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767164487/dryvshnscg2wuubvjbuq.png"
                   alt="Completion"
                   className="w-full mb-6"
                   style={{ borderRadius: "4%" }}
@@ -791,7 +791,7 @@ const navigationTree: NavItem[] = [
                   click the "Erase Now" button to proceed.{" "}
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336045/um6ckm7shkbv9s22af2b.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336045/um6ckm7shkbv9s22af2b.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -808,7 +808,7 @@ const navigationTree: NavItem[] = [
                 </p>
 
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336045/fpfrmbqwqikle2twmuj5.jpg"
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336045/fpfrmbqwqikle2twmuj5.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -824,7 +824,7 @@ const navigationTree: NavItem[] = [
                   back.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336045/r3zhjmt6nlhflpxlscm4.jpg  "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336045/r3zhjmt6nlhflpxlscm4.jpg  "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -839,7 +839,7 @@ const navigationTree: NavItem[] = [
                   removing all stored data to ensure it cannot be recovered.
                 </p>
                 <img
-                  src="  https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336046/skf0os0bjcx36lon0lsl.jpg"
+                  src="  https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336046/skf0os0bjcx36lon0lsl.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -855,7 +855,7 @@ const navigationTree: NavItem[] = [
                   available if you need to terminate the process immediately.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336045/m7zxxdttloczazi01n9k.jpg  "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336045/m7zxxdttloczazi01n9k.jpg  "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -872,7 +872,7 @@ const navigationTree: NavItem[] = [
                   permanently erased.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336045/ignz55qmsntaodg2ecm1.jpg  "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336045/ignz55qmsntaodg2ecm1.jpg  "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -886,7 +886,7 @@ const navigationTree: NavItem[] = [
                   the dialog and return to the main menu.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336047/xrqzkfrixory2xgri0p5.jpg "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336047/xrqzkfrixory2xgri0p5.jpg "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -902,7 +902,7 @@ const navigationTree: NavItem[] = [
                   at the bottom right to return to the volume selection screen.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336046/ga10g9ac9maloluzooih.jpg "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336046/ga10g9ac9maloluzooih.jpg "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -917,7 +917,7 @@ const navigationTree: NavItem[] = [
                   system and restore its accessibility.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336046/gngbhft33b34tgppfsx7.jpg "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336046/gngbhft33b34tgppfsx7.jpg "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -932,7 +932,7 @@ const navigationTree: NavItem[] = [
                   restore the drive's file system for normal use.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336047/c5xgql17tc8qsgrjl3eh.jpg  "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336047/c5xgql17tc8qsgrjl3eh.jpg  "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -946,7 +946,7 @@ const navigationTree: NavItem[] = [
                   restored with a clean file system and ready for new data.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767336047/yncpgejwjilmbeq1wx7f.jpg "
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767336047/yncpgejwjilmbeq1wx7f.jpg "
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -978,7 +978,7 @@ const navigationTree: NavItem[] = [
                   feature to work.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113921/d7z71zwnclsifqtstbl9.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113921/d7z71zwnclsifqtstbl9.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -996,7 +996,7 @@ const navigationTree: NavItem[] = [
                   D-Secure to proceed
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767114553/mkch2ielijlnygetaoge.png"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767114553/mkch2ielijlnygetaoge.png"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1014,7 +1014,7 @@ const navigationTree: NavItem[] = [
                   proceed with the connection
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113924/nraikrpp6sls2m8egdad.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113924/nraikrpp6sls2m8egdad.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1034,7 +1034,7 @@ const navigationTree: NavItem[] = [
                   interface
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113922/qrpotpcoqqqskbr1nzkr.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113922/qrpotpcoqqqskbr1nzkr.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1052,7 +1052,7 @@ const navigationTree: NavItem[] = [
                   begin managing your cloud storage
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113786/jg97pzpacy7h4wbxvrko.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113786/jg97pzpacy7h4wbxvrko.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1072,7 +1072,7 @@ const navigationTree: NavItem[] = [
                   erasure.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113788/u1u6v9rli9sea3sij9ya.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113788/u1u6v9rli9sea3sij9ya.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1091,7 +1091,7 @@ const navigationTree: NavItem[] = [
                   subfolders you wish to permanently remove.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113786/oiqnosbnioa1dasr8a6a.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113786/oiqnosbnioa1dasr8a6a.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1112,7 +1112,7 @@ const navigationTree: NavItem[] = [
                   removal.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113794/utipneibbd6y7rxsbqdh.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113794/utipneibbd6y7rxsbqdh.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1132,7 +1132,7 @@ const navigationTree: NavItem[] = [
                   permanently erase.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113792/lfli5ca1ij5xi5fopgwp.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113792/lfli5ca1ij5xi5fopgwp.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1152,7 +1152,7 @@ const navigationTree: NavItem[] = [
                   remove before proceeding.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113790/jdxortfirlhfvosmh8x2.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113790/jdxortfirlhfvosmh8x2.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1173,7 +1173,7 @@ const navigationTree: NavItem[] = [
                   data
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113932/slpruaiyeqwipbc4rrnj.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113932/slpruaiyeqwipbc4rrnj.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1193,7 +1193,7 @@ const navigationTree: NavItem[] = [
                   located at the bottom right of the window.
                 </p>
                 <img
-                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113930/qixab9dmayc9j8gif6gh.jpg"
+                  src=" https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113930/qixab9dmayc9j8gif6gh.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1213,7 +1213,7 @@ const navigationTree: NavItem[] = [
                   to track exactly which data is being processed in real-time.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113794/hjxm0vunlo5dgegixnyd.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113794/hjxm0vunlo5dgegixnyd.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1234,7 +1234,7 @@ const navigationTree: NavItem[] = [
                   operation.
                 </p>
                 <img
-                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767113794/j1ieckpw4d9gbgphwhue.jpg"
+                  src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767113794/j1ieckpw4d9gbgphwhue.jpg"
                   alt="Cloud Storage Interface"
                   className="w-full mb-6"
                   style={{ borderRadius: "3%" }}
@@ -1283,7 +1283,7 @@ const navigationTree: NavItem[] = [
                 your data is wiped at specific intervals.{" "}
               </p>
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173974/fxlhwph8xah5xgcqf7c2.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173974/fxlhwph8xah5xgcqf7c2.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1313,7 +1313,7 @@ const navigationTree: NavItem[] = [
               </p>
               <br />
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173974/kbw6yfd5mdm2z09nqv4d.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173974/kbw6yfd5mdm2z09nqv4d.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1330,7 +1330,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173974/r2fs60fpvs7m9hvypu1n.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173974/r2fs60fpvs7m9hvypu1n.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1346,7 +1346,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173974/gsgqtflxe6fs4qsupsht.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173974/gsgqtflxe6fs4qsupsht.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1363,7 +1363,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173975/glt9hasa5kohhr8pcg0e.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173975/glt9hasa5kohhr8pcg0e.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1381,7 +1381,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173975/xzyyxjs7c6m1craeafwz.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173975/xzyyxjs7c6m1craeafwz.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1399,7 +1399,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173975/zrruf5vuaynxz6ya72ad.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173975/zrruf5vuaynxz6ya72ad.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1416,7 +1416,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173975/zrruf5vuaynxz6ya72ad.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173975/zrruf5vuaynxz6ya72ad.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1433,7 +1433,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173975/mommpwrjrdzemhblbobt.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173975/mommpwrjrdzemhblbobt.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1450,7 +1450,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173976/fo9ngx0660o0u1czrehg.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173976/fo9ngx0660o0u1czrehg.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1466,7 +1466,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173976/prz2rgxdpsqlirgur172.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173976/prz2rgxdpsqlirgur172.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -1486,7 +1486,7 @@ const navigationTree: NavItem[] = [
               </p>
 
               <img
-                src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767173976/ld3m3z3mdqsmbtjrvy2r.jpg"
+                src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767173976/ld3m3z3mdqsmbtjrvy2r.jpg"
                 alt="Cloud Storage Interface"
                 className="w-full mb-6"
                 style={{ borderRadius: "3%" }}
@@ -2057,10 +2057,10 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className="space-y-4">
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059232/u2qmj9jitsxbfpnbf8pw.png" alt="Trace Settings" className="w-full" />
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1766059232/u2qmj9jitsxbfpnbf8pw.png" alt="Trace Settings" className="w-full" />
                   </div>
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1766059232/goptjbjxxejpyzca2xiz.png" alt="Trace Categories" className="w-full" />
+                    <img src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1766059232/goptjbjxxejpyzca2xiz.png" alt="Trace Categories" className="w-full" />
                   </div>
                 </div>
               </>
@@ -2090,7 +2090,7 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className=" border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190292/da1tkglizlctioo2dkvy.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190292/da1tkglizlctioo2dkvy.jpg"
                     alt="Cloud Login Access"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -2106,7 +2106,7 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className=" border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190292/fdckookpcjyggjd9pfut.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190292/fdckookpcjyggjd9pfut.jpg"
                     alt="Enter Cloud Credentials"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -2121,7 +2121,7 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className=" border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190293/krkocraxnwan7eniscsh.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190293/krkocraxnwan7eniscsh.jpg"
                     alt="Account Verification"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -2138,7 +2138,7 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className=" border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190302/l96qjgzvqj64nixtncuu.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190302/l96qjgzvqj64nixtncuu.jpg"
                     alt="Cloud Connection"
                     className="w-full"
                     style={{ borderRadius: "3%" }}
@@ -2156,7 +2156,7 @@ const navigationTree: NavItem[] = [
                 </p>
                 <div className=" border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/v1767190295/e2vlnkwfaots4ercjdcj.jpg"
+                    src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1767190295/e2vlnkwfaots4ercjdcj.jpg"
                     alt="Cloud Features Active"
                     className="w-full"
                     style={{ borderRadius: "3%" }}

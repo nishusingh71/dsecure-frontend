@@ -86,7 +86,7 @@ const FinancialSolutionsPage: React.FC = () => {
                     {
                       title: "Customer Data Protection",
                       desc: "Protect sensitive customer PII and financial data with military-grade sanitization processes.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760089918/uh9vcisoo7jwfggjbilf.jpg",
                     },
                     {
                       title: "Trading System Sanitization",

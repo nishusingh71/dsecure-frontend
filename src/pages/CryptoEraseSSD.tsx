@@ -6,7 +6,7 @@ import Reveal from "@/components/Reveal";
 const CryptoEraseSSDGuide: React.FC = () => {
   return (
     <>
-      <SEOHead seo={getSEOForPage('crypto-erase-ssd')} />
+      <SEOHead seo={getSEOForPage("crypto-erase-ssd")} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-cyan-50">
         {/* HERO */}
@@ -157,8 +157,8 @@ const CryptoEraseSSDGuide: React.FC = () => {
                   <li>
                     <strong>Use regulated tools:</strong> Manufacturer utilities
                     (Samsung Magician, Intel Toolbox) or regulated software
-                    (D-SecureDrive Eraser) provide tamper-proof regulatory documents
-                    and audit logs.
+                    (D-SecureDrive Eraser) provide tamper-proof regulatory
+                    documents and audit logs.
                   </li>
                   <li>
                     <strong>Procedure overview:</strong> Create bootable media,
@@ -171,8 +171,8 @@ const CryptoEraseSSDGuide: React.FC = () => {
                 <div className="bg-slate-50 rounded-lg p-4 border border-slate-100">
                   <p className="text-slate-700 text-sm">
                     Typical regulated workflows complete quickly (often under 15
-                    minutes). Always verify the regulatory document/logs to prove key
-                    destruction for audits.
+                    minutes). Always verify the regulatory document/logs to
+                    prove key destruction for audits.
                   </p>
                 </div>
               </div>
@@ -238,7 +238,7 @@ const CryptoEraseSSDGuide: React.FC = () => {
             <Reveal>
               <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow p-8 border border-slate-100">
                 <h3 className="text-2xl font-semibold text-slate-900 mb-4">
-                  Step-by-Step: CryptoEraseSSD with BitRaser
+                  Step-by-Step: CryptoEraseSSD with D-Secure
                 </h3>
 
                 <ol className="list-decimal list-inside text-slate-700 space-y-3">
@@ -258,8 +258,8 @@ const CryptoEraseSSDGuide: React.FC = () => {
                     sanitizes the drive.
                   </li>
                   <li>
-                    Download tamper-proof regulatory document / logs proving successful
-                    erasure for compliance.
+                    Download tamper-proof regulatory document / logs proving
+                    successful erasure for compliance.
                   </li>
                 </ol>
 
@@ -327,7 +327,7 @@ const CryptoEraseSSDGuide: React.FC = () => {
                 <p className="text-slate-700 mb-6">
                   Cryptographic erase is the fastest, most reliable method to
                   sanitize encrypted SSDs. Combine encryption with CryptoErase,
-                  use regulated tools like BitRaser, and retain erasure
+                  use regulated tools like D-Secure, and retain erasure
                   regulatory documents for compliance.
                 </p>
 

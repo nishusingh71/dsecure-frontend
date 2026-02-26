@@ -288,7 +288,7 @@ const DigitalProtectionSolutions: React.FC = () => {
                     {
                       industry: "Healthcare",
                       desc: "Protecting patient data and medical records with HIPAA-compliant solutions, ensuring confidentiality whilst enabling seamless care delivery.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093103/cp7t7nascrxgvlbjxj7t.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093103/cp7t7nascrxgvlbjxj7t.jpg",
                     },
                     {
                       industry: "Financial Services",
@@ -298,12 +298,12 @@ const DigitalProtectionSolutions: React.FC = () => {
                     {
                       industry: "Education",
                       desc: "Securing student data and institutional systems whilst maintaining accessibility for learning and research activities.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093103/fqyls0ledhjwmgoph0bq.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093103/fqyls0ledhjwmgoph0bq.jpg",
                     },
                     {
                       industry: "E-Commerce",
                       desc: "Protecting customer transactions and business data, building trust and ensuring compliance with payment security standards.",
-                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/v1760093292/c3s2iz7zd1g5qmnpkw6d.jpg",
+                      img: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760093292/c3s2iz7zd1g5qmnpkw6d.jpg",
                     },
                   ].map((application, i) => (
                     <div
