@@ -122,7 +122,7 @@ export default function AdminMachines() {
           setAllReports(parsedReports);
         }
       } catch (error) {
-        console.error("Error fetching reports for machine mapping:", error);
+        // console.error("Error fetching reports for machine mapping:", error);
       }
     };
 
@@ -326,7 +326,7 @@ export default function AdminMachines() {
       if (groupFilter) filters.groupName = groupFilter;
       if (licenseFilter) filters.licenseStatus = licenseFilter;
 
-      console.log("🖥️ Fetching filtered machines with:", filters);
+      // console.log("🖥️ Fetching filtered machines with:", filters);
 
       const response = await apiClient.getFilteredMachines(filters);
 
@@ -335,9 +335,9 @@ export default function AdminMachines() {
         const responseData = response.data as any;
         if (responseData.machines && Array.isArray(responseData.machines)) {
           uniqueMachines = responseData.machines;
-          console.log(
+          /* console.log(
             `📊 Total Machines: ${responseData.totalMachines}, Pages: ${responseData.totalPages}`,
-          );
+          ); */
         } else {
           uniqueMachines = Array.isArray(response.data)
             ? response.data
@@ -484,7 +484,7 @@ export default function AdminMachines() {
                 eraseOption = licenseDetails.license_type;
               }
             } catch (error) {
-              console.warn("⚠️ Failed to parse license_details_json:", error);
+              // console.warn("⚠️ Failed to parse license_details_json:", error);
             }
           }
 
@@ -852,11 +852,19 @@ export default function AdminMachines() {
   };
 
   const handleEditMachine = async (machine: UIMachine) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Editing machines is disabled in demo mode");
+      return;
+    }
     showInfo(`Edit mode enabled for ${machine.hostname}`);
     // You can implement a modal or redirect to edit page here
   };
 
   const handleDeleteMachine = async (machine: UIMachine) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Deleting machines is disabled in demo mode");
+      return;
+    }
     // Show confirmation using toast instead of prompt
     showInfo(
       `Delete Confirmation`,
@@ -881,6 +889,10 @@ export default function AdminMachines() {
   };
 
   const handleRestartMachine = async (machine: UIMachine) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Restarting machines is disabled in demo mode");
+      return;
+    }
     if (
       machine.status.includes("Inactive") ||
       machine.status.includes("Expired")
@@ -908,6 +920,10 @@ export default function AdminMachines() {
   };
 
   const handleRunErase = async (machine: UIMachine) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Running erase is disabled in demo mode");
+      return;
+    }
     if (
       machine.status.includes("Inactive") ||
       machine.status.includes("Expired")
@@ -936,6 +952,10 @@ export default function AdminMachines() {
 
   // ✅ Bulk Erase Multiple Machines
   const handleBulkErase = async () => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Bulk erase is disabled in demo mode");
+      return;
+    }
     if (selectedMachineIds.size === 0) {
       showWarning(
         "No Machines Selected",
@@ -1249,6 +1269,12 @@ export default function AdminMachines() {
 
   // Handle Transfer to Subuser
   const handleTransferMachines = async () => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Transferring machines is disabled in demo mode");
+      setShowTransferModal(false);
+      return;
+    }
+
     if (!selectedSubuserForTransfer) {
       showWarning(
         "Select Subuser",
@@ -1280,21 +1306,11 @@ export default function AdminMachines() {
         `Transferring ${selectedMachines.length} machines to ${selectedSubuserForTransfer}...`,
       );
 
-      // Call the actual API endpoint or simulate in demo mode
-      let response;
-      if (isDemo) {
-        console.log(
-          `🔵 Demo mode: Simulating transfer of ${macAddresses.length} machines to ${selectedSubuserForTransfer}`,
-        );
-        // Artificial delay
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        response = { success: true };
-      } else {
-        response = await apiClient.transferMachinesToSubuser(
-          selectedSubuserForTransfer,
-          macAddresses,
-        );
-      }
+      // Call the actual API endpoint
+      const response = await apiClient.transferMachinesToSubuser(
+        selectedSubuserForTransfer,
+        macAddresses,
+      );
 
       if (response.success) {
         showSuccess(
@@ -1931,11 +1947,11 @@ export default function AdminMachines() {
               )}
 
               {/* Scrollable table wrapper - only tbody scrolls, header stays fixed */}
-              <div className="max-h-[500px] overflow-y-auto scrollbar-hide">
+              <div className="max-h-[500px] overflow-y-auto">
                 <table className="w-full text-nowrap">
                   <thead className="sticky top-0 bg-white shadow-sm z-10">
-                    <tr className="text-left text-slate-500 border-b">
-                      <th className="py-2 w-10">
+                    <tr className="text-left text-xs sm:text-sm text-slate-500 border-b">
+                      <th className="py-3 px-4 w-10">
                         <input
                           type="checkbox"
                           checked={
@@ -1949,13 +1965,18 @@ export default function AdminMachines() {
                           title="Select all on this page"
                         />
                       </th>
-                      <th className="py-2">Hostname</th>
-                      <th className="py-2">Assign Machine To</th>
-                      {/* <th className="py-2">MAC Address</th> */}
-                      <th className="py-2">License</th>
-                      <th className="py-2">Status</th>
-                      {/* Actions column commented out - using bulk action bar instead */}
-                      {/* <th className="py-2">Actions</th> */}
+                      <th className="py-3 px-4 font-medium min-w-[180px]">
+                        Hostname
+                      </th>
+                      <th className="py-3 px-4 font-medium min-w-[180px]">
+                        Assign Machine To
+                      </th>
+                      <th className="py-3 px-4 font-medium min-w-[120px]">
+                        License
+                      </th>
+                      <th className="py-3 px-4 font-medium min-w-[120px]">
+                        Status
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1964,7 +1985,7 @@ export default function AdminMachines() {
                         key={`${row.hostname}-${i}`}
                         className="border-t hover:bg-slate-50"
                       >
-                        <td className="py-2">
+                        <td className="py-3 px-4">
                           <input
                             type="checkbox"
                             checked={selectedMachineIds.has(
@@ -1978,14 +1999,25 @@ export default function AdminMachines() {
                             className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
                           />
                         </td>
-                        <td className="py-2 font-medium">{row.hostname}</td>
-                        <td className="py-2 text-sm text-slate-600">
-                          {row.userEmail || "N/A"}
+                        <td className="py-3 px-4">
+                          <div
+                            className="font-medium text-slate-900 truncate max-w-[200px]"
+                            title={row.hostname}
+                          >
+                            {row.hostname}
+                          </div>
                         </td>
-                        {/* <td className="py-2">{row.eraseOption}</td> */}
-                        <td className="py-2">
+                        <td className="py-3 px-4">
+                          <div
+                            className="text-sm text-slate-600 truncate max-w-[200px]"
+                            title={row.userEmail || "N/A"}
+                          >
+                            {row.userEmail || "N/A"}
+                          </div>
+                        </td>
+                        <td className="py-3 px-4">
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            className={`px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium whitespace-nowrap ${
                               row.license === "Enterprise"
                                 ? "bg-purple-100 text-purple-800"
                                 : row.license === "Premium"
@@ -1996,9 +2028,9 @@ export default function AdminMachines() {
                             {row.license}
                           </span>
                         </td>
-                        <td className="py-2">
+                        <td className="py-3 px-4">
                           <span
-                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium whitespace-nowrap ${
                               row.status === "online" ||
                               row.status.includes("Active")
                                 ? "bg-green-100 text-green-800"
@@ -2020,29 +2052,6 @@ export default function AdminMachines() {
                             {row.status}
                           </span>
                         </td>
-                        {/* Actions column commented out - using bulk action bar instead */}
-                        {/* <td className="py-2">
-                          <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => handleViewDetails(row)}
-                              className="text-blue-600 hover:text-blue-800 text-xs px-2 py-1 rounded border border-blue-200 hover:bg-blue-50"
-                              title="View Details"
-                            >
-                              View
-                            </button>
-                            <button
-                              onClick={() => handleRunErase(row)}
-                              className={`text-xs px-2 py-1 rounded border ${row.status === 'offline'
-                                ? 'text-slate-400 border-slate-200 cursor-not-allowed'
-                                : 'text-purple-600 hover:text-purple-800 border-purple-200 hover:bg-purple-50'
-                                }`}
-                              disabled={row.status === 'offline'}
-                              title={row.status === 'offline' ? 'Machine offline' : 'Run Erase'}
-                            >
-                              Erase
-                            </button>
-                          </div>
-                        </td> */}
                       </tr>
                     ))}
                   </tbody>
@@ -2051,32 +2060,34 @@ export default function AdminMachines() {
               {/* End scrollable table wrapper */}
 
               {/* Pagination */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-6 mt-4 pt-4 border-t">
                 {/* Left side - Rows per page selector */}
-                <div className="flex items-center gap-3">
-                  <label
-                    htmlFor="machinesPageSize"
-                    className="text-sm text-slate-600"
-                  >
-                    Rows per page:
-                  </label>
-                  <select
-                    id="machinesPageSize"
-                    value={pageSize}
-                    onChange={(e) => {
-                      const newSize = parseInt(e.target.value, 10);
-                      setPageSize(newSize);
-                      setPage(1);
-                    }}
-                    className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
-                  >
-                    {pageSizeOptions.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="text-sm text-slate-500">
+                <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                  <div className="flex items-center gap-3">
+                    <label
+                      htmlFor="machinesPageSize"
+                      className="text-sm text-slate-600 whitespace-nowrap"
+                    >
+                      Rows per page:
+                    </label>
+                    <select
+                      id="machinesPageSize"
+                      value={pageSize}
+                      onChange={(e) => {
+                        const newSize = parseInt(e.target.value, 10);
+                        setPageSize(newSize);
+                        setPage(1);
+                      }}
+                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
+                    >
+                      {pageSizeOptions.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <span className="text-sm text-slate-500 whitespace-nowrap">
                     Showing{" "}
                     {Math.min((page - 1) * pageSize + 1, filtered.length)} to{" "}
                     {Math.min(page * pageSize, filtered.length)} of{" "}
@@ -2085,22 +2096,22 @@ export default function AdminMachines() {
                 </div>
 
                 {/* Right side - Page navigation */}
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-slate-600">
+                <div className="flex items-center justify-between sm:justify-end gap-6 w-full lg:w-auto">
+                  <span className="text-sm text-slate-600 whitespace-nowrap">
                     Page {page} of {totalPages}
                   </span>
                   <div className="flex gap-2">
                     <button
                       disabled={page <= 1}
                       onClick={() => setPage(page - 1)}
-                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                      className="px-4 py-2 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors bg-white font-medium shadow-sm"
                     >
                       Previous
                     </button>
                     <button
                       disabled={page >= totalPages}
                       onClick={() => setPage(page + 1)}
-                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                      className="px-4 py-2 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors bg-white font-medium shadow-sm"
                     >
                       Next
                     </button>

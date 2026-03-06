@@ -7,7 +7,6 @@ import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import ThemeAwareLogoFooter from "../components/ThemeAwareLogoFooter";
 import ScrollToTop from "@/components/ScrollToTop";
-import BlogPage from "@/components/BlogPage";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { useIdleTimer } from "@/hooks/useIdleTimer";
@@ -739,22 +738,22 @@ export default function MainLayout() {
     </div> */}
 
             {/* Main Footer Content */}
-            <div className="py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 xl:py-18 xxl:py-20">
-              <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-12 xl:grid-cols-12 xxl:grid-cols-12 gap-6 xs:gap-8 sm:gap-10 md:gap-12 lg:gap-12 xl:gap-14 xxl:gap-16">
+            <div className="py-8 xs:py-10 sm:py-12 md:py-14 lg:py-16 xl:py-18 xxl:py-20 px-6 sm:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 xl:gap-14 xxl:gap-16">
                 {/* Company Info */}
-                <div className="sm:col-span-2 md:col-span-2 lg:col-span-4 xl:col-span-4 xxl:col-span-4">
+                <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left">
                   <Link
                     to="/"
-                    className="flex items-center gap-2 xs:gap-3 font-bold text-white hover:opacity-80 transition-opacity mb-4 xs:mb-5 sm:mb-6"
+                    className="flex items-center gap-2 xs:gap-3 font-bold text-white hover:opacity-80 transition-opacity mb-6"
                     aria-label="D-Secure homepage"
                   >
                     <ThemeAwareLogoFooter
-                      className="h-8 xs:h-9 sm:h-10 md:h-11 lg:h-12 xl:h-13 xxl:h-14 w-auto"
+                      className="h-10 xs:h-11 sm:h-12 w-auto"
                       responsive={true}
                       priority={false}
                     />
                   </Link>
-                  <p className="text-slate-300 leading-relaxed mb-4 xs:mb-5 sm:mb-6 text-sm xs:text-base sm:text-base md:text-base lg:text-base xl:text-lg xxl:text-lg">
+                  <p className="text-slate-300 leading-relaxed mb-6 text-sm xs:text-base lg:text-base xl:text-lg">
                     {t("footer.description")}
                   </p>
 
@@ -839,7 +838,7 @@ export default function MainLayout() {
                 </div>
 
                 {/* Navigation Links */}
-                <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div className="lg:col-span-8 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10">
                   {/* Services */}
                   <div>
                     <h4 className="font-semibold text-white mb-6 text-sm uppercase tracking-wider">
@@ -1044,23 +1043,19 @@ export default function MainLayout() {
             </div>
 
             {/* Bottom Bar */}
-            <div className="border-t border-slate-700/50 py-8">
-              <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
-                <div className="flex flex-col sm:flex-row gap-6 items-center text-slate-400 text-sm">
+            <div className="border-t border-slate-700/50 py-8 px-6 sm:px-8">
+              <div className="flex flex-col lg:flex-row gap-8 items-center justify-between">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center text-slate-400 text-sm text-center sm:text-left">
                   <p>
                     © {new Date().getFullYear()} {t("footer.copyright")}
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 text-green-400">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-xs">
-                        {t("footer.systemStatus")}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-2 text-green-400">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs">{t("footer.systemStatus")}</span>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-6 text-slate-400 text-sm">
+                <div className="flex flex-wrap justify-center lg:justify-end gap-x-6 gap-y-3 text-slate-400 text-sm">
                   <Link
                     to="/privacy-policy"
                     className="hover:text-brand transition-colors"

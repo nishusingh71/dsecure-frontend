@@ -99,20 +99,19 @@ function DocumentationResourcesContent() {
         "Generate report",
       ],
       time: "5 min",
-      link: "/support/help-manual/complete-manual"
+      link: "/support/help-manual/complete-manual",
     },
     {
       title: "D-Secure Drive Eraser Setup",
       description: "Quick setup guide for D-Secure Drive Eraser",
       steps: [
-       "Download software",
+        "Download software",
         "Install and configure",
         "Run first erasure",
         "Generate report",
       ],
       time: "5 min",
-      link: "",
-      comingSoon: true
+      link: "/support/help-manual/complete-drive-manual",
     },
     // {
     //   title: "Enterprise Setup",
@@ -214,10 +213,10 @@ function DocumentationResourcesContent() {
             </Reveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {quickStartGuides.map((guide, index) => (
               <Reveal key={index} delayMs={index * 10}>
-                <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl p-6 border border-slate-200">
+                <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl p-6 border border-slate-200 h-full flex flex-col">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-semibold text-slate-900">
                       {guide.title}
@@ -237,18 +236,12 @@ function DocumentationResourcesContent() {
                       </div>
                     ))}
                   </div>
-                  {guide.comingSoon ? (
-                    <div className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-300 text-slate-500 font-medium rounded-lg cursor-not-allowed">
-                      Coming Soon
-                    </div>
-                  ) : (
-                    <Link
-                      to={guide.link}
-                      className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
-                    >
-                      Start Guide
-                    </Link>
-                  )}
+                  <Link
+                    to={guide.link}
+                    className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
+                  >
+                    Start Guide
+                  </Link>
                 </div>
               </Reveal>
             ))}

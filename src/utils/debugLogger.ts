@@ -11,20 +11,21 @@
  */
 
 import { ENV } from '../config/env';
+import { isDemoMode } from "../data/demoData";
 
 // Check if debug mode is enabled (always true in dev, or via VITE_DEBUG=true)
 const isDebugEnabled = (): boolean => {
-    return ENV.DEBUG;
+  return ENV.DEBUG;
 };
 
 // Color codes for different log types
 const LOG_COLORS = {
-    API: '#4CAF50',      // Green
-    AUTH: '#2196F3',     // Blue
-    ENCRYPT: '#9C27B0',  // Purple
-    ERROR: '#F44336',    // Red
-    WARN: '#FF9800',     // Orange
-    INFO: '#00BCD4',     // Cyan
+  API: "#4CAF50", // Green
+  AUTH: "#2196F3", // Blue
+  ENCRYPT: "#9C27B0", // Purple
+  ERROR: "#F44336", // Red
+  WARN: "#FF9800", // Orange
+  INFO: "#00BCD4", // Cyan
 };
 
 type LogCategory = keyof typeof LOG_COLORS;
@@ -32,63 +33,76 @@ type LogCategory = keyof typeof LOG_COLORS;
 /**
  * Debug log - shows in console with category and color
  */
-export const debugLog = (category: LogCategory | string, message: string, data?: any): void => {
-    if (!isDebugEnabled()) return;
+export const debugLog = (
+  category: LogCategory | string,
+  message: string,
+  data?: any,
+): void => {
+  if (!isDebugEnabled() || isDemoMode()) return;
 
-    const color = LOG_COLORS[category as LogCategory] || '#888888';
-    const timestamp = new Date().toLocaleTimeString();
+  const color = LOG_COLORS[category as LogCategory] || "#888888";
+  const timestamp = new Date().toLocaleTimeString();
 
-    if (data !== undefined) {
-        console.log(
-            `%c[${timestamp}] [${category}] ${message}`,
-            `color: ${color}; font-weight: bold;`,
-            data
-        );
-    } else {
-        console.log(
-            `%c[${timestamp}] [${category}] ${message}`,
-            `color: ${color}; font-weight: bold;`
-        );
-    }
+  if (data !== undefined) {
+    console.log(
+      `%c[${timestamp}] [${category}] ${message}`,
+      `color: ${color}; font-weight: bold;`,
+      data,
+    );
+  } else {
+    console.log(
+      `%c[${timestamp}] [${category}] ${message}`,
+      `color: ${color}; font-weight: bold;`,
+    );
+  }
 };
 
 /**
  * Debug error - ALWAYS logs (even in production) for critical errors
  */
-export const debugError = (category: LogCategory | string, message: string, error?: any): void => {
-    const timestamp = new Date().toLocaleTimeString();
+export const debugError = (
+  category: LogCategory | string,
+  message: string,
+  error?: any,
+): void => {
+  if (isDemoMode()) return;
+  const timestamp = new Date().toLocaleTimeString();
 
-    console.error(
-        `%c[${timestamp}] [${category}] ❌ ${message}`,
-        `color: ${LOG_COLORS.ERROR}; font-weight: bold;`
-    );
+  console.error(
+    `%c[${timestamp}] [${category}] ❌ ${message}`,
+    `color: ${LOG_COLORS.ERROR}; font-weight: bold;`,
+  );
 
-    if (error) {
-        // Log full error details
-        console.error('Error Details:', {
-            message: error?.message || error,
-            status: error?.response?.status,
-            statusText: error?.response?.statusText,
-            url: error?.config?.url || error?.request?.responseURL,
-            data: error?.response?.data,
-            stack: error?.stack,
-        });
-    }
+  if (error) {
+    // Log full error details
+    console.error("Error Details:", {
+      message: error?.message || error,
+      status: error?.response?.status,
+      statusText: error?.response?.statusText,
+      url: error?.config?.url || error?.request?.responseURL,
+      data: error?.response?.data,
+      stack: error?.stack,
+    });
+  }
 };
 
 /**
  * Debug warning - shows in console
  */
-export const debugWarn = (category: LogCategory | string, message: string, data?: any): void => {
-    if (!isDebugEnabled()) return;
+export const debugWarn = (
+  category: LogCategory | string,
+  message: string,
+  data?: any,
+): void => {
+  if (!isDebugEnabled() || isDemoMode()) return;
 
-    const timestamp = new Date().toLocaleTimeString();
+  const timestamp = new Date().toLocaleTimeString();
 
-    console.warn(
-        `%c[${timestamp}] [${category}] ⚠️ ${message}`,
-        `color: ${LOG_COLORS.WARN}; font-weight: bold;`,
-        data || ''
-    );
+  console.warn(
+    `%c[${timestamp}] [${category}] ⚠️ ${message}`,
+    `color: ${LOG_COLORS.WARN}; font-weight: bold;`,
+    data || "",
+  );
 };
 
 /**

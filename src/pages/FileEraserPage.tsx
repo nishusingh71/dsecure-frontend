@@ -77,59 +77,59 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
   // Gallery images array for lightbox navigation
   const galleryImages = [
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937584/wipt1jepfywjm2jimvh4.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/rrewuevqba6xopawa2n8.png",
       alt: "Dashboard View",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937290/hd3e1lpxec9vaxlyyyf6.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/ot4kpilynrfgw9vuzrbf.png",
       alt: "Erasure Report",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937289/upc7tsoe49jjvj1fnneo.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/ctujrrfv3h1visi1jrvz.png",
       alt: "File Selection",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937256/nch8at9nw2mhkjhwjobw.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/ykhnzzsbwdeuncs9uvem.png",
       alt: "Erasure Progress",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937220/o7s5yxqf2pfxop8ectkd.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/bjklx7nvvam1m2h122zo.png",
       alt: "File Eraser Screenshot 5",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/ye59qth46en2hcl9npzg.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/lxs0usvvneldpij0dqwo.png",
       alt: "File Eraser Screenshot 6",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/cv3i4lngpayo23a5ncey.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/oax8dj4tw1pitsbnbr31.png",
       alt: "File Eraser Screenshot 7",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/bxadnr4jfgvwxah8ctl4.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/cninfubwl4z6u9bhoi3f.png",
       alt: "File Eraser Screenshot 8",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937212/kbyo3eyovzptuqwhur18.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/dns8j5kip5vxyczqoipe.png",
       alt: "File Eraser Screenshot 9",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/ighihuqv4fh0p90xs3kc.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185417/k6uywfbzsktkrdzmojnm.png",
       alt: "File Eraser Screenshot 10",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/dcheaoasw63mpkqjqihe.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185417/lsjiymvrj0x7jmgempbe.png",
       alt: "File Eraser Screenshot 11",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/k3kfjkcozhgmerjdtiqs.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185417/ndoby2cwwxxsngynqp5e.png",
       alt: "File Eraser Screenshot 12",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/gogmpdrqvldda1iw3izk.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185417/slvfga3d5nx66jv7uxug.png",
       alt: "File Eraser Screenshot 13",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937210/p7hlpajp75ejxyqwfsvb.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185417/fpnm8lqq46ftsw0ny0ca.png",
       alt: "File Eraser Screenshot 14",
     },
     // {
@@ -683,13 +683,17 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
         <div className="bg-white border-b border-emerald-100 shadow-sm">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between h-14">
-              <Link to="/" className="flex items-center">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
                 <ThemeAwareLogo
                   className="h-7 sm:h-8 w-auto"
                   responsive={true}
                 />
               </Link>
-              <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2">
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
                 {sectionNavItems.map((item) => (
                   <button
                     key={item.id}
@@ -1030,7 +1034,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                     >
                       {/* Screenshot Background */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937210/p7hlpajp75ejxyqwfsvb.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/rrewuevqba6xopawa2n8.png"
                         alt="D-Secure File Eraser Preview"
                         className="w-full h-full object-contain bg-slate-50 group-hover:scale-[1.02] transition-transform duration-500"
                       />
@@ -1176,7 +1180,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937210/p7hlpajp75ejxyqwfsvb.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/rrewuevqba6xopawa2n8.png"
                         alt="Dashboard View"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1230,7 +1234,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937584/wipt1jepfywjm2jimvh4.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/ot4kpilynrfgw9vuzrbf.png"
                         alt="Erasure Report"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1284,7 +1288,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/kmytnur3cpuqon7gyfho.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/ctujrrfv3h1visi1jrvz.png"
                         alt="File Selection"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -1338,7 +1342,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Uncomment when image ready: */}
                       <img
-                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/bxadnr4jfgvwxah8ctl4.png"
+                        src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185418/ykhnzzsbwdeuncs9uvem.png"
                         alt="Erasure Progress"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />

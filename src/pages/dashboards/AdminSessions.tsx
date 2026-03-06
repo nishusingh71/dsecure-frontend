@@ -115,7 +115,7 @@ const parseActivityLog = (raw: any): ActivityLogItem[] => {
       return logValue;
     }
   } catch (e) {
-    console.warn("Failed to parse activityLog:", e);
+    // console.warn("Failed to parse activityLog:", e);
   }
   return [];
 };
@@ -272,7 +272,7 @@ export default function AdminSessions() {
 
     // If already expired, logout immediately
     if (timeUntilExpiry <= 0) {
-      console.warn("🔴 Session already expired, logging out...");
+      // console.warn("🔴 Session already expired, logging out...");
       authService.clearTokens();
       indexedDBService.clearAll().catch(() => {});
       window.location.href = "/login";
@@ -281,13 +281,13 @@ export default function AdminSessions() {
 
     // Cap at 15 minutes max
     const effectiveTimeout = Math.min(timeUntilExpiry, MAX_SESSION_MS);
-    console.log(
+    /* console.log(
       `⏰ Session auto-logout in ${Math.round(effectiveTimeout / 1000 / 60)} minutes`,
-    );
+    ); */
 
     // Set timeout to logout when session expires (capped at 15 min)
     const logoutTimer = setTimeout(() => {
-      console.warn("🔴 Session expired, auto-logout triggered");
+      // console.warn("🔴 Session expired, auto-logout triggered");
       showError(
         "Session Expired",
         "Your session has expired. Please login again.",
@@ -344,18 +344,18 @@ export default function AdminSessions() {
               cached.length > 0 &&
               cached[0]?.success !== undefined;
             if (isCorrupted) {
-              console.warn("⚠️ IDB sessions cache is corrupted, clearing...");
+              // console.warn("⚠️ IDB sessions cache is corrupted, clearing...");
               indexedDBService.delete("sessions", cacheKey).catch(() => {});
             } else {
-              console.log(
+              /* console.log(
                 "✅ Loaded sessions from IndexedDB for",
                 currentEmail,
-              );
+              ); */
               timelineData = cached;
             }
           }
         } catch (e) {
-          console.warn("IDB Read Failed: sessions", e);
+          // console.warn("IDB Read Failed: sessions", e);
         }
       }
 
@@ -373,9 +373,7 @@ export default function AdminSessions() {
           if (!hasFilters) {
             indexedDBService
               .put("sessions", cacheKey, response)
-              .catch((e: any) =>
-                console.error("IDB Write Failed: sessions", e),
-              );
+              .catch((e: any) => {}); // console.error("IDB Write Failed: sessions", e));
           }
         }
       }
@@ -393,7 +391,7 @@ export default function AdminSessions() {
         setSessions(mappedData);
       }
     } catch (e: any) {
-      console.error(e);
+      // console.error(e);
       showError("Error", "Failed to load data");
     } finally {
       const elapsedTime = performance.now() - startTime;
@@ -725,9 +723,9 @@ export default function AdminSessions() {
 
         {/* Main Content */}
         <div className="card">
-          {/* Table Header */}
-          <div className="overflow-x-auto max-h-[600px] overflow-y-auto scrollbar-hide">
-            <div className="hidden md:grid grid-cols-12 gap-4 p-4 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          {/* Table Header - chote screens par ye hidden rahega aur items stack honge */}
+          <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+            <div className="hidden md:grid grid-cols-12 gap-4 p-4 bg-slate-50 border-b border-slate-200 text-[10px] lg:text-xs font-semibold text-slate-500 uppercase tracking-wider">
               <div className="col-span-2">User & Status</div>
               <div className="col-span-2">Session Time</div>
               <div className="col-span-2">Duration & Activity</div>
@@ -967,55 +965,98 @@ export default function AdminSessions() {
             </div>
           </div>
 
-          {/* Pagination Footer */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border-t border-slate-200 bg-slate-50">
+          {/* Pagination Footer - responsive pagination code yahan hai */}
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4 p-4 border-t border-slate-200 bg-slate-50">
             {/* Left side - Rows per page selector */}
-            <div className="flex items-center gap-3">
-              <label htmlFor="pageSize" className="text-sm text-slate-600">
-                Rows per page:
-              </label>
-              <select
-                id="pageSize"
-                value={pageSize}
-                onChange={(e) => {
-                  const newSize = parseInt(e.target.value, 10);
-                  setPageSize(newSize);
-                  setPage(1); // Reset to first page when changing page size
-                }}
-                className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
-              >
-                {pageSizeOptions.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-              <span className="text-sm text-slate-500">
-                Showing {Math.min((page - 1) * pageSize + 1, sessions.length)}{" "}
-                to {Math.min(page * pageSize, sessions.length)} of{" "}
-                {sessions.length} records
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+              <div className="flex items-center gap-2">
+                <label
+                  htmlFor="pageSize"
+                  className="text-sm text-slate-600 whitespace-nowrap"
+                >
+                  Rows per page:
+                </label>
+                <select
+                  id="pageSize"
+                  value={pageSize}
+                  onChange={(e) => {
+                    const newSize = parseInt(e.target.value, 10);
+                    setPageSize(newSize);
+                    setPage(1);
+                  }}
+                  className="px-2 py-1 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
+                >
+                  {pageSizeOptions.map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <span className="text-sm text-slate-500 whitespace-nowrap">
+                Showing{" "}
+                <span className="font-medium text-slate-700">
+                  {Math.min((page - 1) * pageSize + 1, sessions.length)}
+                </span>{" "}
+                to{" "}
+                <span className="font-medium text-slate-700">
+                  {Math.min(page * pageSize, sessions.length)}
+                </span>{" "}
+                of{" "}
+                <span className="font-medium text-slate-700">
+                  {sessions.length}
+                </span>{" "}
+                records
               </span>
             </div>
 
             {/* Right side - Page navigation */}
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-slate-600">
-                Page {page} of {totalPages}
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+              <span className="text-sm text-slate-600 whitespace-nowrap">
+                Page <span className="font-medium text-slate-700">{page}</span>{" "}
+                of{" "}
+                <span className="font-medium text-slate-700">{totalPages}</span>
               </span>
               <div className="flex gap-2">
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage(page - 1)}
-                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors flex items-center gap-1 font-medium text-slate-600"
                 >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
                   Previous
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage(page + 1)}
-                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                  className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors flex items-center gap-1 font-medium text-slate-600"
                 >
                   Next
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>

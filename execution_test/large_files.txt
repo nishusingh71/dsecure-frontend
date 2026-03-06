@@ -1,0 +1,10 @@
+﻿@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\dashboards\AdminDashboard.tsx; Size(KB)=420.55859375}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\utils\seo.ts; Size(KB)=294.1845703125}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\dashboards\AdminReports.tsx; Size(KB)=205.654296875}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\PartnersPage.tsx; Size(KB)=136.01953125}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\dashboards\AdminGroups.tsx; Size(KB)=133.576171875}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\manual\CompleteDSecureDriveManual.tsx; Size(KB)=122.375}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\PricingPage.tsx; Size(KB)=121.5712890625}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\DriveEraserPage.tsx; Size(KB)=115.865234375}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\FileEraserPage.tsx; Size(KB)=102.56640625}
+@{FullName=C:\Users\nishu\Downloads\dsecure-frontend\src\pages\manual\CompleteDSecureManual.tsx; Size(KB)=101.4814453125}

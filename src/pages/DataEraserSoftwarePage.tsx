@@ -257,13 +257,17 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
         <div className="bg-white border-b border-emerald-100 shadow-sm">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between h-14">
-              <Link to="/" className="flex items-center">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
                 <ThemeAwareLogo
                   className="h-7 sm:h-8 w-auto"
                   responsive={true}
                 />
               </Link>
-              <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2">
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
                 {sectionNavItems.map((item) => (
                   <button
                     key={item.id}
@@ -311,17 +315,19 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
 
                   {/* Compliance Badges */}
                   <div className="flex flex-wrap items-center gap-3">
-                    {["NIST 800-88", "GDPR", "HIPAA", "ISO 27001"].map((badge) => (
-                      <div
-                        key={badge}
-                        className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-emerald-100"
-                      >
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                        <span className="text-sm font-medium text-slate-700">
-                          {badge}
-                        </span>
-                      </div>
-                    ))}
+                    {["NIST 800-88", "GDPR", "HIPAA", "ISO 27001"].map(
+                      (badge) => (
+                        <div
+                          key={badge}
+                          className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-emerald-100"
+                        >
+                          <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                          <span className="text-sm font-medium text-slate-700">
+                            {badge}
+                          </span>
+                        </div>
+                      ),
+                    )}
                   </div>
 
                   {/* CTA Buttons */}
@@ -372,31 +378,89 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                   {/* Orbiting Device Icons */}
                   <div className="absolute inset-0 hidden sm:block">
                     {[
-                      { top: "5%", left: "10%", label: "HDD", icon: "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4", delay: "0s" },
-                      { top: "8%", right: "5%", label: "SSD", icon: "M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z", delay: "0.6s" },
-                      { bottom: "25%", left: "2%", label: "Mobile", icon: "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z", delay: "1.2s" },
-                      { bottom: "15%", right: "3%", label: "Cloud", icon: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z", delay: "0.3s" },
-                      { top: "45%", left: "0%", label: "Server", icon: "M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2", delay: "0.9s" },
-                      { bottom: "5%", left: "35%", label: "Mac", icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", delay: "1.5s" },
+                      {
+                        top: "5%",
+                        left: "10%",
+                        label: "HDD",
+                        icon: "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4",
+                        delay: "0s",
+                      },
+                      {
+                        top: "8%",
+                        right: "5%",
+                        label: "SSD",
+                        icon: "M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z",
+                        delay: "0.6s",
+                      },
+                      {
+                        bottom: "25%",
+                        left: "2%",
+                        label: "Mobile",
+                        icon: "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z",
+                        delay: "1.2s",
+                      },
+                      {
+                        bottom: "15%",
+                        right: "3%",
+                        label: "Cloud",
+                        icon: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z",
+                        delay: "0.3s",
+                      },
+                      {
+                        top: "45%",
+                        left: "0%",
+                        label: "Server",
+                        icon: "M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2",
+                        delay: "0.9s",
+                      },
+                      {
+                        bottom: "5%",
+                        left: "35%",
+                        label: "Mac",
+                        icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+                        delay: "1.5s",
+                      },
                     ].map((item) => (
                       <div
                         key={item.label}
                         className="absolute group"
-                        style={{ top: item.top, left: item.left, right: item.right, bottom: item.bottom }}
+                        style={{
+                          top: item.top,
+                          left: item.left,
+                          right: item.right,
+                          bottom: item.bottom,
+                        }}
                       >
                         <div
                           className="w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-xl shadow-lg border border-emerald-100 flex items-center justify-center transition-all hover:scale-110 hover:shadow-xl hover:border-emerald-400"
-                          style={{ animation: `deviceBob 3s ease-in-out infinite ${item.delay}` }}
+                          style={{
+                            animation: `deviceBob 3s ease-in-out infinite ${item.delay}`,
+                          }}
                         >
-                          <svg className="w-5 h-5 lg:w-6 lg:h-6 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                          <svg
+                            className="w-5 h-5 lg:w-6 lg:h-6 text-emerald-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d={item.icon}
+                            />
                           </svg>
                         </div>
                         <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-500 whitespace-nowrap">
                           {item.label}
                         </span>
                         {/* Connection line to center */}
-                        <div className="absolute top-1/2 left-1/2 w-8 lg:w-12 h-px bg-gradient-to-r from-emerald-300/40 to-transparent origin-left" style={{ transform: `rotate(${item.right ? '180deg' : '0deg'})` }}></div>
+                        <div
+                          className="absolute top-1/2 left-1/2 w-8 lg:w-12 h-px bg-gradient-to-r from-emerald-300/40 to-transparent origin-left"
+                          style={{
+                            transform: `rotate(${item.right ? "180deg" : "0deg"})`,
+                          }}
+                        ></div>
                       </div>
                     ))}
                   </div>
@@ -404,7 +468,9 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                   {/* Main Monitor */}
                   <div
                     className="relative z-10"
-                    style={{ animation: "monitorFloat 6s ease-in-out infinite" }}
+                    style={{
+                      animation: "monitorFloat 6s ease-in-out infinite",
+                    }}
                   >
                     {/* Glow behind monitor */}
                     <div className="absolute -inset-6 lg:-inset-10 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 blur-3xl rounded-full"></div>
@@ -412,8 +478,12 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                     {/* Monitor frame */}
                     <div className="relative w-[260px] sm:w-[300px] lg:w-[380px]">
                       {/* Screen bezel */}
-                      <div className="bg-slate-900 rounded-t-xl sm:rounded-t-2xl p-1.5 sm:p-2 lg:p-2.5 shadow-2xl border border-slate-700/50"
-                        style={{ boxShadow: "0 20px 60px -15px rgba(0,0,0,0.4), 0 0 40px rgba(16,185,129,0.15)" }}
+                      <div
+                        className="bg-slate-900 rounded-t-xl sm:rounded-t-2xl p-1.5 sm:p-2 lg:p-2.5 shadow-2xl border border-slate-700/50"
+                        style={{
+                          boxShadow:
+                            "0 20px 60px -15px rgba(0,0,0,0.4), 0 0 40px rgba(16,185,129,0.15)",
+                        }}
                       >
                         {/* Screen content */}
                         <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg sm:rounded-xl overflow-hidden">
@@ -424,7 +494,9 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                               <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-yellow-400 rounded-full"></div>
                               <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full"></div>
                             </div>
-                            <span className="text-[7px] sm:text-[8px] lg:text-[9px] text-slate-500 font-medium">D-Secure Console</span>
+                            <span className="text-[7px] sm:text-[8px] lg:text-[9px] text-slate-500 font-medium">
+                              D-Secure Console
+                            </span>
                             <div className="w-6"></div>
                           </div>
 
@@ -433,16 +505,28 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                             {/* Top stats row */}
                             <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                               <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-1.5 sm:p-2 text-center">
-                                <div className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-lg">847</div>
-                                <div className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 uppercase">Devices Wiped</div>
+                                <div className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-lg">
+                                  847
+                                </div>
+                                <div className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 uppercase">
+                                  Devices Wiped
+                                </div>
                               </div>
                               <div className="bg-teal-500/10 border border-teal-500/20 rounded-lg p-1.5 sm:p-2 text-center">
-                                <div className="text-teal-400 font-bold text-xs sm:text-sm lg:text-lg">100%</div>
-                                <div className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 uppercase">Success Rate</div>
+                                <div className="text-teal-400 font-bold text-xs sm:text-sm lg:text-lg">
+                                  100%
+                                </div>
+                                <div className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 uppercase">
+                                  Success Rate
+                                </div>
                               </div>
                               <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-1.5 sm:p-2 text-center">
-                                <div className="text-cyan-400 font-bold text-xs sm:text-sm lg:text-lg">26+</div>
-                                <div className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 uppercase">Standards</div>
+                                <div className="text-cyan-400 font-bold text-xs sm:text-sm lg:text-lg">
+                                  26+
+                                </div>
+                                <div className="text-[6px] sm:text-[7px] lg:text-[8px] text-slate-500 uppercase">
+                                  Standards
+                                </div>
                               </div>
                             </div>
 
@@ -453,32 +537,66 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                                   <div className="w-4 h-4 sm:w-5 sm:h-5 rounded bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
                                     <ShieldIcon className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" />
                                   </div>
-                                  <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-white font-medium">Batch Erasure — NIST 800-88</span>
+                                  <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-white font-medium">
+                                    Batch Erasure — NIST 800-88
+                                  </span>
                                 </div>
                                 <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
                               </div>
                               <div className="h-1 sm:h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style={{ width: "72%", animation: "progressGrow 3s ease-in-out infinite" }}></div>
+                                <div
+                                  className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
+                                  style={{
+                                    width: "72%",
+                                    animation:
+                                      "progressGrow 3s ease-in-out infinite",
+                                  }}
+                                ></div>
                               </div>
                               <div className="flex justify-between mt-1">
-                                <span className="text-[6px] sm:text-[7px] text-slate-500">12 of 16 devices</span>
-                                <span className="text-[6px] sm:text-[7px] text-emerald-400 font-bold">72%</span>
+                                <span className="text-[6px] sm:text-[7px] text-slate-500">
+                                  12 of 16 devices
+                                </span>
+                                <span className="text-[6px] sm:text-[7px] text-emerald-400 font-bold">
+                                  72%
+                                </span>
                               </div>
                             </div>
 
                             {/* Recent reports mini list */}
                             <div className="space-y-1">
                               {[
-                                { name: "WD Blue 2TB", status: "verified", time: "2m ago" },
-                                { name: "Samsung 870 EVO", status: "verified", time: "5m ago" },
-                                { name: "iPhone 14 Pro", status: "in-progress", time: "now" },
+                                {
+                                  name: "WD Blue 2TB",
+                                  status: "verified",
+                                  time: "2m ago",
+                                },
+                                {
+                                  name: "Samsung 870 EVO",
+                                  status: "verified",
+                                  time: "5m ago",
+                                },
+                                {
+                                  name: "iPhone 14 Pro",
+                                  status: "in-progress",
+                                  time: "now",
+                                },
                               ].map((item) => (
-                                <div key={item.name} className="flex items-center justify-between px-2 py-1 rounded bg-slate-800/40">
+                                <div
+                                  key={item.name}
+                                  className="flex items-center justify-between px-2 py-1 rounded bg-slate-800/40"
+                                >
                                   <div className="flex items-center gap-1.5">
-                                    <div className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full ${item.status === 'verified' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'}`}></div>
-                                    <span className="text-[7px] sm:text-[8px] text-slate-400">{item.name}</span>
+                                    <div
+                                      className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full ${item.status === "verified" ? "bg-emerald-400" : "bg-amber-400 animate-pulse"}`}
+                                    ></div>
+                                    <span className="text-[7px] sm:text-[8px] text-slate-400">
+                                      {item.name}
+                                    </span>
                                   </div>
-                                  <span className="text-[6px] sm:text-[7px] text-slate-600">{item.time}</span>
+                                  <span className="text-[6px] sm:text-[7px] text-slate-600">
+                                    {item.time}
+                                  </span>
                                 </div>
                               ))}
                             </div>
@@ -526,7 +644,8 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                   </span>
                 </h2>
                 <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                  Two powerful solutions designed for complete data sanitization — from full-disk erasure to selective file wiping
+                  Two powerful solutions designed for complete data sanitization
+                  — from full-disk erasure to selective file wiping
                 </p>
               </div>
             </Reveal>
@@ -567,7 +686,10 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
         </section>
 
         {/* ═══════════ USE CASES ═══════════ */}
-        <section id="use-cases" className="py-16 md:py-24 bg-gradient-to-br from-slate-50 via-emerald-50/20 to-teal-50/20">
+        <section
+          id="use-cases"
+          className="py-16 md:py-24 bg-gradient-to-br from-slate-50 via-emerald-50/20 to-teal-50/20"
+        >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               {/* Left — illustration placeholder */}
@@ -650,7 +772,10 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
         </section>
 
         {/* ═══════════ CAPABILITIES 3×3 ═══════════ */}
-        <section id="capabilities" className="py-16 md:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 text-white relative overflow-hidden">
+        <section
+          id="capabilities"
+          className="py-16 md:py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 text-white relative overflow-hidden"
+        >
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-1/4 w-72 h-72 bg-emerald-500/30 rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/30 rounded-full blur-3xl" />
@@ -735,9 +860,9 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                 Our compliance-ready data erasure software ensures the permanent
                 wiping of sensitive data from Drives, Laptops, Mac, Chromebooks,
                 Servers & Mobile devices. This data wiping software generates
-                tamper-proof erasure certificates, helping organizations mitigate
-                risks & attain compliance with laws and standards like EU-GDPR,
-                CPRA, GLBA, HIPAA, PCI-DSS, & ISO-27001.
+                tamper-proof erasure certificates, helping organizations
+                mitigate risks & attain compliance with laws and standards like
+                EU-GDPR, CPRA, GLBA, HIPAA, PCI-DSS, & ISO-27001.
               </p>
             </Reveal>
 
@@ -768,7 +893,10 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
         </section>
 
         {/* ═══════════ WHY D-SECURE ═══════════ */}
-        <section id="why-dsecure" className="py-16 md:py-20 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white relative overflow-hidden">
+        <section
+          id="why-dsecure"
+          className="py-16 md:py-20 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white relative overflow-hidden"
+        >
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-1/4 w-72 h-72 bg-white/20 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-white/20 rounded-full blur-3xl" />
@@ -780,7 +908,8 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                   Why Choose D-Secure?
                 </h2>
                 <p className="text-white/70 max-w-2xl mx-auto text-sm md:text-base">
-                  Purpose-built for organizations that take data privacy seriously
+                  Purpose-built for organizations that take data privacy
+                  seriously
                 </p>
               </div>
             </Reveal>
@@ -821,13 +950,27 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                   <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/10 hover:bg-white/15 transition-all duration-300 h-full">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-5 h-5 text-yellow-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                        <svg
+                          className="w-5 h-5 text-yellow-300"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d={item.icon}
+                          />
                         </svg>
                       </div>
                       <div>
-                        <h3 className="font-bold text-white mb-1">{item.title}</h3>
-                        <p className="text-xs text-white/65 leading-relaxed">{item.desc}</p>
+                        <h3 className="font-bold text-white mb-1">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-white/65 leading-relaxed">
+                          {item.desc}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -838,7 +981,10 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
         </section>
 
         {/* ═══════════ FAQ ═══════════ */}
-        <section id="faq" className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-white">
+        <section
+          id="faq"
+          className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-white"
+        >
           <div className="container mx-auto px-4 max-w-4xl">
             <Reveal>
               <div className="text-center mb-14">
@@ -907,7 +1053,10 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
         </section>
 
         {/* ═══════════ FINAL CTA ═══════════ */}
-        <section id="cta" className="py-16 md:py-24 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white relative overflow-hidden">
+        <section
+          id="cta"
+          className="py-16 md:py-24 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white relative overflow-hidden"
+        >
           <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
           <div className="container mx-auto px-4 max-w-4xl relative z-10 text-center">
             <Reveal>
@@ -915,9 +1064,9 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                 Ready to Secure Your Data?
               </h2>
               <p className="text-lg text-white/90 mb-10 max-w-2xl mx-auto">
-                Get started with D-Secure's compliance-ready data erasure software.
-                Protect your organization from data breaches and ensure
-                regulatory compliance.
+                Get started with D-Secure's compliance-ready data erasure
+                software. Protect your organization from data breaches and
+                ensure regulatory compliance.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link

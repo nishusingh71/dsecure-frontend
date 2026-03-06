@@ -22,8 +22,6 @@
   "dependencies": {
     "@cloudinary/react": "^1.14.3",
     "@cloudinary/url-gen": "^1.22.0",
-    "@emailjs/browser": "^4.4.1",
-    "@polar-sh/better-auth": "^1.6.3",
     "@polar-sh/sdk": "^0.42.1",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^5.90.5",
@@ -41,6 +39,7 @@
     "framer-motion": "^12.23.24",
     "i18next": "^25.6.0",
     "i18next-browser-languagedetector": "^8.2.0",
+    "i18next-http-backend": "^3.0.2",
     "idb": "^8.0.3",
     "jspdf": "^4.0.0",
     "jspdf-autotable": "^5.0.2",

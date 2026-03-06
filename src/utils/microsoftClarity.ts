@@ -23,30 +23,41 @@ class MicrosoftClarity {
 
   // Initialize Microsoft Clarity
   init(): void {
-    if (typeof window === 'undefined' || this.isInitialized) return;
+    if (typeof window === "undefined" || this.isInitialized) return;
 
-    // Skip initialization in development to avoid CORS errors
-    if (ENV.IS_DEV) {
+    // Suppress completely on localhost
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    ) {
       this.isInitialized = true;
       return;
     }
 
-    // Check if Clarity is already loaded
+    // Check if Clarity is already loaded or in production snippet
     if ((window as any).clarity) {
+      this.isInitialized = true;
+      return;
+    }
+
+    // Skip initialization in development unless debug is on
+    if (ENV.IS_DEV && !this.debug) {
       this.isInitialized = true;
       return;
     }
 
     // Clarity initialization script
     (function (c: any, l: any, a: any, r: any, i: any, t: any, y: any) {
-      c[a] = c[a] || function () {
-        (c[a].q = c[a].q || []).push(arguments);
-      };
+      c[a] =
+        c[a] ||
+        function () {
+          (c[a].q = c[a].q || []).push(arguments);
+        };
       t = l.createElement(r);
       t.async = 1;
       t.src = "https://www.clarity.ms/tag/" + i;
       y = l.getElementsByTagName(r)[0];
-      y.parentNode.insertBefore(t, y);
+      y.parentNode && y.parentNode.insertBefore(t, y);
     })(window, document, "clarity", "script", this.projectId, null, null);
 
     this.isInitialized = true;
@@ -54,15 +65,15 @@ class MicrosoftClarity {
 
   // Track custom events
   trackEvent(event: ClarityEvent): void {
-    if (!this.isInitialized || typeof window === 'undefined') return;
+    if (!this.isInitialized || typeof window === "undefined") return;
     if (ENV.IS_DEV) return;
 
     const clarity = (window as any).clarity;
     if (clarity) {
       if (event.properties) {
-        clarity('event', event.name, event.properties);
+        clarity("event", event.name, event.properties);
       } else {
-        clarity('event', event.name);
+        clarity("event", event.name);
       }
 
       if (this.debug) {
@@ -73,11 +84,11 @@ class MicrosoftClarity {
 
   // Set user identifier
   setUserId(userId: string): void {
-    if (!this.isInitialized || typeof window === 'undefined') return;
+    if (!this.isInitialized || typeof window === "undefined") return;
 
     const clarity = (window as any).clarity;
     if (clarity) {
-      clarity('identify', userId);
+      clarity("identify", userId);
 
       if (this.debug) {
         //console.log('Clarity User ID set:', userId);
@@ -87,11 +98,11 @@ class MicrosoftClarity {
 
   // Set custom tags for better session organization
   setCustomTag(key: string, value: string): void {
-    if (!this.isInitialized || typeof window === 'undefined') return;
+    if (!this.isInitialized || typeof window === "undefined") return;
 
     const clarity = (window as any).clarity;
     if (clarity) {
-      clarity('set', key, value);
+      clarity("set", key, value);
 
       if (this.debug) {
         //console.log('Clarity Custom Tag:', key, value);
@@ -100,51 +111,60 @@ class MicrosoftClarity {
   }
 
   // Track business-specific events for D-Secure
-  trackBusinessEvent(eventType: 'page_view' | 'form_interaction' | 'product_interest' | 'pricing_view' | 'demo_request' | 'download', details?: any): void {
+  trackBusinessEvent(
+    eventType:
+      | "page_view"
+      | "form_interaction"
+      | "product_interest"
+      | "pricing_view"
+      | "demo_request"
+      | "download",
+    details?: any,
+  ): void {
     const eventMap = {
       page_view: {
-        name: 'page_view',
+        name: "page_view",
         properties: {
           page: details?.page || window.location.pathname,
-          title: details?.title || document.title
-        }
+          title: details?.title || document.title,
+        },
       },
       form_interaction: {
-        name: 'form_interaction',
+        name: "form_interaction",
         properties: {
-          form_type: details?.formType || 'unknown',
-          field: details?.field || 'unknown',
-          action: details?.action || 'focus'
-        }
+          form_type: details?.formType || "unknown",
+          field: details?.field || "unknown",
+          action: details?.action || "focus",
+        },
       },
       product_interest: {
-        name: 'product_interest',
+        name: "product_interest",
         properties: {
-          product: details?.product || 'unknown',
-          section: details?.section || 'unknown'
-        }
+          product: details?.product || "unknown",
+          section: details?.section || "unknown",
+        },
       },
       pricing_view: {
-        name: 'pricing_view',
+        name: "pricing_view",
         properties: {
-          plan: details?.plan || 'unknown',
-          duration: details?.duration || 'monthly'
-        }
+          plan: details?.plan || "unknown",
+          duration: details?.duration || "monthly",
+        },
       },
       demo_request: {
-        name: 'demo_request',
+        name: "demo_request",
         properties: {
-          source: details?.source || 'unknown',
-          company_size: details?.companySize || 'unknown'
-        }
+          source: details?.source || "unknown",
+          company_size: details?.companySize || "unknown",
+        },
       },
       download: {
-        name: 'resource_download',
+        name: "resource_download",
         properties: {
-          resource_type: details?.resourceType || 'unknown',
-          resource_name: details?.resourceName || 'unknown'
-        }
-      }
+          resource_type: details?.resourceType || "unknown",
+          resource_name: details?.resourceName || "unknown",
+        },
+      },
     };
 
     const event = eventMap[eventType];
@@ -154,28 +174,35 @@ class MicrosoftClarity {
   }
 
   // Track user journey milestones
-  trackMilestone(milestone: 'site_entry' | 'product_exploration' | 'pricing_interest' | 'contact_engagement' | 'conversion_start'): void {
-    this.setCustomTag('user_milestone', milestone);
+  trackMilestone(
+    milestone:
+      | "site_entry"
+      | "product_exploration"
+      | "pricing_interest"
+      | "contact_engagement"
+      | "conversion_start",
+  ): void {
+    this.setCustomTag("user_milestone", milestone);
     this.trackEvent({
-      name: 'milestone_reached',
+      name: "milestone_reached",
       properties: {
         milestone: milestone,
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     });
   }
 
   // Get session URL (useful for support)
   getSessionUrl(): Promise<string | null> {
     return new Promise((resolve) => {
-      if (!this.isInitialized || typeof window === 'undefined') {
+      if (!this.isInitialized || typeof window === "undefined") {
         resolve(null);
         return;
       }
 
       const clarity = (window as any).clarity;
       if (clarity) {
-        clarity('getSessionUrl', (url: string) => {
+        clarity("getSessionUrl", (url: string) => {
           resolve(url);
         });
       } else {
@@ -185,43 +212,55 @@ class MicrosoftClarity {
   }
 
   // Track user behavior patterns
-  trackUserBehavior(behaviorType: 'scroll_depth' | 'time_on_page' | 'click_pattern' | 'form_abandonment', data?: any): void {
+  trackUserBehavior(
+    behaviorType:
+      | "scroll_depth"
+      | "time_on_page"
+      | "click_pattern"
+      | "form_abandonment",
+    data?: any,
+  ): void {
     this.trackEvent({
       name: `user_behavior_${behaviorType}`,
       properties: {
         ...data,
         page: window.location.pathname,
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     });
   }
 }
 
-import { ENV } from '../config/env';
+import { ENV } from "../config/env";
 
 // Initialize Clarity instance
 export const clarity = new MicrosoftClarity({
   projectId: ENV.CLARITY_ID, // Your actual Clarity Project ID
-  debug: ENV.DEBUG
+  debug: ENV.DEBUG,
 });
 
 // React hook for Clarity tracking
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export function useMicrosoftClarity() {
   const location = useLocation();
 
   useEffect(() => {
-    // Initialize Clarity on first load
-    clarity.init();
+    // Initialize Clarity on first load but defer to avoid blocking initial render
+    // and pushing 'c.gif' redirects to later
+    const timer = setTimeout(() => {
+      clarity.init();
+    }, 5000); // 5 second delay
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     // Track page views on route changes
-    clarity.trackBusinessEvent('page_view', {
+    clarity.trackBusinessEvent("page_view", {
       page: location.pathname + location.search,
-      title: document.title
+      title: document.title,
     });
   }, [location]);
 
@@ -232,7 +271,7 @@ export function useMicrosoftClarity() {
     trackUserBehavior: clarity.trackUserBehavior.bind(clarity),
     setUserId: clarity.setUserId.bind(clarity),
     setCustomTag: clarity.setCustomTag.bind(clarity),
-    getSessionUrl: clarity.getSessionUrl.bind(clarity)
+    getSessionUrl: clarity.getSessionUrl.bind(clarity),
   };
 }
 

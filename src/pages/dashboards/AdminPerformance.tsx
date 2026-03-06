@@ -113,7 +113,7 @@ export default function AdminPerformance() {
       try {
         storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error("Error parsing user_data:", e);
+        // console.error("Error parsing user_data:", e);
       }
     }
 
@@ -121,7 +121,7 @@ export default function AdminPerformance() {
       try {
         storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error("Error parsing authUser:", e);
+        // console.error("Error parsing authUser:", e);
       }
     }
 

@@ -113,24 +113,42 @@ export default defineConfig({
 
         // [MINIMALIST SAFER CHUNKING]
         manualChunks: (id) => {
-          if (id.includes('node_modules')) {
+          if (id.includes("node_modules")) {
             // ONLY isolate the truly massive standalone libraries.
             // DO NOT split React, Lucide, Framer, or anything else framework-related.
-            
-            // 1. Heavy standalone docs/zip libs
-            if (id.includes('jspdf') || id.includes('exceljs') || id.includes('jszip') || id.includes('pako')) {
-              return 'vendor-heavy-utils'
+
+            // 1. Heavy Utilities & Data
+            if (id.includes("exceljs")) return "vendor-exceljs";
+            if (id.includes("jspdf") || id.includes("jspdf-autotable"))
+              return "vendor-jspdf";
+            if (id.includes("react-pdf") || id.includes("pdfjs-dist"))
+              return "vendor-pdf";
+            if (id.includes("jszip") || id.includes("pako"))
+              return "vendor-zip";
+
+            // 2. Visualization & Icons
+            if (id.includes("recharts") || id.includes("d3"))
+              return "vendor-viz";
+            if (id.includes("lucide-react")) return "vendor-icons";
+            if (id.includes("leaflet")) return "vendor-maps";
+
+            // 3. UI Frameworks
+            if (id.includes("framer-motion")) return "vendor-animation";
+            if (id.includes("@radix-ui")) return "vendor-ui-radix";
+
+            // 4. Core Infrastructure
+            if (id.includes("@tanstack/react-query")) return "vendor-query";
+            if (id.includes("cloudinary")) return "vendor-cloudinary";
+            if (
+              id.includes("axios") ||
+              id.includes("i18next") ||
+              id.includes("react-router-dom") ||
+              id.includes("react-helmet-async")
+            ) {
+              return "vendor-core";
             }
-            // 2. Maps (Standalone)
-            if (id.includes('leaflet')) {
-              return 'vendor-maps'
-            }
-            // 3. Charts (Standalone)
-            if (id.includes('recharts') || id.includes('d3')) {
-              return 'vendor-viz'
-            }
-            
-            // Everything else stays in the main vendor or is managed by Vite defaults.
+
+            return "vendor";
           }
         },
 

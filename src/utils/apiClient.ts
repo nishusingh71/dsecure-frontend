@@ -13,12 +13,18 @@
  * 3. FALLBACK: Return response as-is
  */
 
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { EncryptionService, isEncryptedResponse } from './EncryptionService';
-import { encodeEmail } from './encodeEmail';
-import { debugLog, debugError, debugWarn } from './debugLogger';
+import axios, {
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+  AxiosError,
+} from "axios";
+import { EncryptionService, isEncryptedResponse } from "./EncryptionService";
+import { encodeEmail } from "./encodeEmail";
+import { debugLog, debugError, debugWarn } from "./debugLogger";
+import { isDemoMode } from "../data/demoData";
 
-import { ENV } from '../config/env';
+import { ENV } from "../config/env";
 
 // API Base URL from environment
 const API_BASE_URL = ENV.API_BASE_URL;
@@ -28,28 +34,28 @@ const API_TIMEOUT = ENV.API_TIMEOUT;
  * Binary content types that should NOT be decrypted
  */
 const BINARY_CONTENT_TYPES = [
-  'application/pdf',
-  'application/octet-stream',
-  'application/zip',
-  'application/x-zip-compressed',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument',
-  'image/',
-  'audio/',
-  'video/',
+  "application/pdf",
+  "application/octet-stream",
+  "application/zip",
+  "application/x-zip-compressed",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument",
+  "image/",
+  "audio/",
+  "video/",
 ];
 
 /**
  * URL patterns that indicate binary/download requests
  */
 const BINARY_URL_PATTERNS = [
-  '/download',
-  '/export-pdf',
-  '/export',
-  '/generate-pdf',
-  '/file/',
-  '/attachment/',
-  '/blob/',
+  "/download",
+  "/export-pdf",
+  "/export",
+  "/generate-pdf",
+  "/file/",
+  "/attachment/",
+  "/blob/",
 ];
 
 /**
@@ -58,7 +64,7 @@ const BINARY_URL_PATTERNS = [
 function isBinaryContentType(contentType: string | undefined): boolean {
   if (!contentType) return false;
   const lowerContentType = contentType.toLowerCase();
-  return BINARY_CONTENT_TYPES.some(type => lowerContentType.includes(type));
+  return BINARY_CONTENT_TYPES.some((type) => lowerContentType.includes(type));
 }
 
 /**
@@ -67,7 +73,7 @@ function isBinaryContentType(contentType: string | undefined): boolean {
 function isBinaryUrl(url: string | undefined): boolean {
   if (!url) return false;
   const lowerUrl = url.toLowerCase();
-  return BINARY_URL_PATTERNS.some(pattern => lowerUrl.includes(pattern));
+  return BINARY_URL_PATTERNS.some((pattern) => lowerUrl.includes(pattern));
 }
 
 /**
@@ -78,8 +84,8 @@ function createApiInstance(): AxiosInstance {
     baseURL: API_BASE_URL,
     timeout: API_TIMEOUT,
     headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      "Content-Type": "application/json",
+      Accept: "application/json",
     },
     // Don't transform response automatically - we handle it in interceptor
     transformResponse: [(data) => data],
@@ -105,6 +111,21 @@ function createApiInstance(): AxiosInstance {
 
       if (token && !isPublicEndpoint) {
         config.headers.Authorization = `Bearer ${token}`;
+      }
+
+      // 🛑 BLOCK API CALLS IN DEMO MODE (except public ones like login)
+      if (isDemoMode() && !isPublicEndpoint) {
+        // debugWarn("DEMO", `🚫 Blocking API call in Demo Mode: ${config.url}`);
+        // Cancellation using CancelToken or throwing error
+        const controller = new AbortController();
+        config.signal = controller.signal;
+        controller.abort("DEMO_RESTRICTION");
+
+        return Promise.reject({
+          message: "Action restricted in Demo Mode",
+          isDemoRestriction: true,
+          config,
+        });
       }
 
       // -------------------------------------------------------------------------

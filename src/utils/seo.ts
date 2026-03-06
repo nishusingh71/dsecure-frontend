@@ -2653,6 +2653,45 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     canonicalUrl: getCanonicalUrl("/checkout"),
   },
 
+  "order-success": {
+    title: "Payment Successful - Thank You | D-Secure Tech",
+    description:
+      "Your order has been successfully processed. Thank you for choosing D-Secure Tech. Your license details and download links will be emailed to you shortly.",
+    keywords: generateKeywords([
+      "order success",
+      "payment successful",
+      "purchase complete",
+      "d-secure tech order",
+    ]),
+    canonicalUrl: getCanonicalUrl("/order-success"),
+  },
+
+  "order-failure": {
+    title: "Payment Failed - Action Required | D-Secure Tech",
+    description:
+      "There was an issue processing your payment. Please review your payment details and try again to complete your purchase of D-Secure Tech software.",
+    keywords: generateKeywords([
+      "payment failed",
+      "order failure",
+      "checkout error",
+      "d-secure tech payment",
+    ]),
+    canonicalUrl: getCanonicalUrl("/order-failure"),
+  },
+
+  "api-test": {
+    title: "API Integration Testing & Status | D-Secure Tech",
+    description:
+      "Test your D-Secure Tech API integration. Verify connectivity, check endpoint status, and validate your programmatic data erasure workflows.",
+    keywords: generateKeywords([
+      "api testing",
+      "developer tools",
+      "software integration",
+      "programmatic erasure test",
+    ]),
+    canonicalUrl: getCanonicalUrl("/api-test"),
+  },
+
   // Utility pages
   "not-found": {
     title: "Page Not Found - D-Secure Tech",

@@ -14,6 +14,7 @@ import { authService } from "@/utils/authService";
 import { isDemoMode } from "@/data/demoData";
 import { encodeEmail } from "@/utils/encodeEmail";
 import { indexedDBService } from "@/services/indexedDBService";
+import { useNotification } from "@/contexts/NotificationContext";
 
 // ✅ Helper to suppress logs in demo mode
 const devLog = (...args: any[]) => {
@@ -61,6 +62,7 @@ interface LicenseSummary {
 }
 
 export default function AdminGroups() {
+  const { showInfo, showSuccess, showError } = useNotification();
   const { user } = useAuth();
   const isDemo = isDemoMode();
 
@@ -275,20 +277,20 @@ export default function AdminGroups() {
         try {
           const cached = await indexedDBService.get("groups", groupsCacheKey);
           if (cached) {
-            console.log(
+            /* console.log(
               "✅ Loaded groups from IndexedDB for",
               currentUserEmail,
-            );
+            ); */
             // Defensive: If cache is an array (legacy), wrap it in the expected structure
             groupsData = Array.isArray(cached)
               ? { groups: { data: cached } }
               : cached;
           }
         } catch (e) {
-          console.warn("IDB Read Failed: groups", e);
+          // console.warn("IDB Read Failed: groups", e);
         }
       } else {
-        console.log("🔄 Force refreshing groups (skipping cache)...");
+        // console.log("🔄 Force refreshing groups (skipping cache)...");
       }
 
       // 2. Fetch from API if no cache
@@ -301,7 +303,7 @@ export default function AdminGroups() {
         if (!response.success) {
           const err = response.message || "Failed to fetch groups from server";
           setIsError(err);
-          console.error("❌ API Error:", err);
+          // console.error("❌ API Error:", err);
           return;
         }
 
@@ -311,12 +313,12 @@ export default function AdminGroups() {
         if (groupsData) {
           indexedDBService
             .put("groups", groupsCacheKey, groupsData)
-            .catch((e: any) => console.error("IDB Write Failed: groups", e));
+            .catch((e: any) => {}); // console.error("IDB Write Failed: groups", e));
         }
       }
 
       if (!groupsData?.groups?.data || !Array.isArray(groupsData.groups.data)) {
-        console.error("❌ Unexpected response structure:", groupsData);
+        // console.error("❌ Unexpected response structure:", groupsData);
         setIsError("Unexpected data format from server");
         return;
       }
@@ -576,7 +578,7 @@ export default function AdminGroups() {
             allMachines += machinesResponse.data.length;
           }
         } catch (error) {
-          console.error(`Error fetching machines for ${userEmail}:`, error);
+          // console.error(`Error fetching machines for ${userEmail}:`, error);
         }
 
         // Fetch reports count for this user
@@ -589,7 +591,7 @@ export default function AdminGroups() {
               : 0;
           }
         } catch (error) {
-          console.error(`Error fetching reports for ${userEmail}:`, error);
+          // console.error(`Error fetching reports for ${userEmail}:`, error);
         }
       }
 
@@ -671,19 +673,8 @@ export default function AdminGroups() {
       };
 
       if (isDemo) {
-        // Simulate success for demo
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        showInfo("Demo Mode", "Adding groups is disabled in demo mode");
         setShowAddModal(false);
-        setFormData({
-          name: "",
-          description: "",
-          licenseAllocation: 0,
-          permission: "",
-          status: "active",
-        });
-        setErrorMessage("");
-        // Manually update local state if needed for demo, or just trigger a "fake" refresh
-        await fetchGroups(true);
         return;
       }
 
@@ -759,18 +750,8 @@ export default function AdminGroups() {
       // console.log('📝 Updating group:', selectedGroup.id, 'Payload:', payload);
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        showInfo("Demo Mode", "Editing groups is disabled in demo mode");
         setShowEditModal(false);
-        setErrorMessage("");
-        setSelectedGroup(null);
-        setFormData({
-          name: "",
-          description: "",
-          licenseAllocation: 0,
-          permission: "",
-          status: "active",
-        });
-        await fetchGroups(true);
         return;
       }
 
@@ -867,10 +848,8 @@ export default function AdminGroups() {
       // console.log('🗑️ Deleting group:', selectedGroup.id, selectedGroup.name);
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        showInfo("Demo Mode", "Deleting groups is disabled in demo mode");
         setShowDeleteModal(false);
-        setSelectedGroup(null);
-        await fetchGroups(true);
         return;
       }
 
@@ -955,13 +934,8 @@ export default function AdminGroups() {
       */
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        showInfo("Demo Mode", "Adding members is disabled in demo mode");
         setShowAddUserModal(false);
-        setUserEmail("");
-        setMakeGroupAdmin(false);
-        setErrorMessage("");
-        setSelectedGroup(null);
-        await fetchGroups(true);
         return;
       }
 
@@ -1080,12 +1054,8 @@ export default function AdminGroups() {
       setErrorMessage("");
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        showInfo("Demo Mode", "Transferring assets is disabled in demo mode");
         setShowTransferModal(false);
-        setSelectedMachines([]);
-        setSelectedLicenses([]);
-        setSelectedTransferUser("");
-        await fetchGroups(true);
         return;
       }
 
@@ -1163,7 +1133,7 @@ export default function AdminGroups() {
       await fetchGroups(true);
       await fetchMachinesAndReportsCount(true);
     } catch (error: any) {
-      console.error("Transfer error:", error);
+      // console.error("Transfer error:", error);
       setErrorMessage(error.message || "Failed to transfer assets");
     } finally {
       setIsSubmitting(false);
@@ -1243,12 +1213,8 @@ export default function AdminGroups() {
       setErrorMessage("");
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        showInfo("Demo Mode", "Revoking assets is disabled in demo mode");
         setShowRevokeModal(false);
-        setSelectedRevokeMachines([]);
-        setSelectedRevokeLicenses([]);
-        setSelectedRevokeUser("");
-        await fetchGroups(true);
         return;
       }
 
@@ -1297,7 +1263,7 @@ export default function AdminGroups() {
       await fetchGroups(true);
       await fetchMachinesAndReportsCount(true);
     } catch (error: any) {
-      console.error("Revoke error:", error);
+      // console.error("Revoke error:", error);
       setErrorMessage(error.message || "Failed to revoke assets");
     } finally {
       setIsSubmitting(false);
@@ -1343,7 +1309,7 @@ export default function AdminGroups() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4">
           <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>

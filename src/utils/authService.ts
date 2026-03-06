@@ -312,38 +312,47 @@ class AuthService {
 
   private async attemptTokenRefresh(): Promise<void> {
     try {
-      const refreshToken = this.getRefreshToken()
+      // 🛑 BLOCK TOKEN REFRESH IN DEMO MODE
+      if (localStorage.getItem("demo_mode") === "true") {
+        // //console.log('Skipping token refresh in Demo Mode')
+        return;
+      }
+
+      const refreshToken = this.getRefreshToken();
       if (!refreshToken) {
         // //console.log('No refresh token available')
-        window.dispatchEvent(new CustomEvent('authenticationFailed'))
-        return
+        window.dispatchEvent(new CustomEvent("authenticationFailed"));
+        return;
       }
 
       // Call refresh endpoint
-      const response = await fetch('/api/auth/refresh', {
-        method: 'POST',
+      const response = await fetch("/api/auth/refresh", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ refreshToken })
-      })
+        body: JSON.stringify({ refreshToken }),
+      });
 
       if (response.ok) {
-        const data = await response.json()
-        const isRemembered = localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === 'true'
+        const data = await response.json();
+        const isRemembered =
+          localStorage.getItem(STORAGE_KEYS.REMEMBER_ME) === "true";
 
-        this.saveTokens(data.accessToken, data.refreshToken, isRemembered)
+        this.saveTokens(data.accessToken, data.refreshToken, isRemembered);
 
         // Notify components about token refresh
-        window.dispatchEvent(new CustomEvent('tokenRefreshed', {
-          detail: { token: data.accessToken }
-        }))
+        window.dispatchEvent(
+          new CustomEvent("tokenRefreshed", {
+            detail: { token: data.accessToken },
+          }),
+        );
 
         // //console.log('Token refreshed successfully')
       } else {
         // console.error('Token refresh failed')
-        this.clearTokens()
-        window.dispatchEvent(new CustomEvent('authenticationFailed'))
+        this.clearTokens();
+        window.dispatchEvent(new CustomEvent("authenticationFailed"));
       }
     } catch (error) {
       // console.error('Error during token refresh:', error)

@@ -293,6 +293,17 @@ class EnhancedApiClient {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
+    // 🛑 BLOCK API CALLS IN DEMO MODE (except login check/health if needed, but usually blocked)
+    if (localStorage.getItem('demo_mode') === 'true') {
+      const isPublic = endpoint.includes('/RoleBasedAuth/login') || endpoint.includes('/api/health');
+      if (!isPublic) {
+        return {
+          success: false,
+          error: 'Action restricted in Demo Mode',
+          message: 'This feature is disabled during the demo tour.'
+        };
+      }
+    }
     return this.requestWithRetry<T>(endpoint, options, 0)
   }
 
@@ -755,36 +766,43 @@ class EnhancedApiClient {
     try {
       // ? Enhanced Logout: Parallel execution with timeout
       // Don't block UI for slow API calls
+
+      // 🛑 BLOCK LOGOUT API IN DEMO MODE
+      if (localStorage.getItem("demo_mode") === "true") {
+        // Just clear locally and return
+        authService.clearTokens();
+        return { success: true };
+      }
+
       const userEmail = authService.getUserEmail();
       const logoutTime = new Date().toISOString(); // Use client time for speed
-      
+
       const tasks: Promise<any>[] = [];
 
       // 1. Update last_logout in background
       if (userEmail) {
         tasks.push(
           this.request<void>(`/api/EnhancedSubuser/${encodeEmail(userEmail)}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ last_logout: logoutTime })
-          }).catch(() => {}) // Silent fail
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ last_logout: logoutTime }),
+          }).catch(() => {}), // Silent fail
         );
       }
 
       // 2. Notify server logout in background
       tasks.push(
-        this.request<void>('/api/RoleBasedAuth/logout', {
-          method: 'POST',
-        }).catch(() => {}) // Silent fail
+        this.request<void>("/api/RoleBasedAuth/logout", {
+          method: "POST",
+        }).catch(() => {}), // Silent fail
       );
 
       // Race: Wait for tasks OR timeout (800ms max delay)
       // This ensures UI feels responsive even if API is slow
       await Promise.race([
         Promise.allSettled(tasks),
-        new Promise(resolve => setTimeout(resolve, 800))
+        new Promise((resolve) => setTimeout(resolve, 800)),
       ]);
-
     } catch (error) {
       // Silently handle errors
     } finally {

@@ -44,7 +44,7 @@ export default function AdminDownloads() {
       try {
         storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error("Error parsing user_data:", e);
+        // console.error("Error parsing user_data:", e);
       }
     }
 
@@ -52,7 +52,7 @@ export default function AdminDownloads() {
       try {
         storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error("Error parsing authUser:", e);
+        // console.error("Error parsing authUser:", e);
       }
     }
 
@@ -127,7 +127,7 @@ export default function AdminDownloads() {
           );
 
           if (cachedStats && cachedProducts) {
-            console.log("✅ Loaded downloads from IndexedDB for", dlEmail);
+            // console.log("✅ Loaded downloads from IndexedDB for", dlEmail);
             setStats(cachedStats);
             setProducts(cachedProducts);
             setLoading(false);
@@ -136,7 +136,7 @@ export default function AdminDownloads() {
             return;
           }
         } catch (e) {
-          console.warn("⚠️ IDB Read Failed: downloads", e);
+          // console.warn("⚠️ IDB Read Failed: downloads", e);
         }
 
         // 2. Fetch from API (background revalidation)
@@ -149,8 +149,8 @@ export default function AdminDownloads() {
           // Update IDB cache for stats (user-scoped)
           indexedDBService
             .put("downloads", statsCacheKey, statsResponse.data)
-            .catch((e) =>
-              console.warn("⚠️ IDB Write Failed: downloads stats", e),
+            .catch(
+              (e) => {}, // console.warn("⚠️ IDB Write Failed: downloads stats", e),
             );
         }
 
@@ -215,12 +215,12 @@ export default function AdminDownloads() {
           // 3. Update IDB cache for products (user-scoped)
           indexedDBService
             .put("downloads", productsCacheKey, Array.from(productMap.values()))
-            .catch((e) =>
-              console.warn("⚠️ IDB Write Failed: downloads products", e),
+            .catch(
+              (e) => {}, // console.warn("⚠️ IDB Write Failed: downloads products", e),
             );
         }
       } catch (error) {
-        console.error("Failed to fetch download data:", error);
+        // console.error("Failed to fetch download data:", error);
       } finally {
         setLoading(false);
       }

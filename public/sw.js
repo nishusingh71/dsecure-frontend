@@ -107,9 +107,11 @@ self.addEventListener("fetch", (event) => {
   } else if (
     request.destination === "script" ||
     request.destination === "style" ||
-    request.destination === "font"
+    request.destination === "font" ||
+    url.pathname.endsWith(".svg") ||
+    url.pathname.includes("ec8v6wcjdpwgpplobi3w")
   ) {
-    // JS/CSS/Fonts: Stale-While-Revalidate
+    // JS/CSS/Fonts/Critical SVGs: Proper Stale-While-Revalidate
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
         const fetchPromise = fetch(request).then((networkResponse) => {
@@ -121,6 +123,9 @@ self.addEventListener("fetch", (event) => {
           }
           return networkResponse;
         });
+
+        // Return cached response immediately if available,
+        // while fetchPromise continues in background to update cache
         return cachedResponse || fetchPromise;
       }),
     );

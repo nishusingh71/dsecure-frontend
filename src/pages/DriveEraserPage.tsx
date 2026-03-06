@@ -85,72 +85,94 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   // Gallery images array for lightbox navigation
   const galleryImages = [
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/hhmrgqu1j8dmtlawjy5z.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417893/yhvioc1r2sgrjkpt4xnx.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417893/yhvioc1r2sgrjkpt4xnx.png",
       alt: "Drive Eraser Screenshot 1",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bapyhtkbzh3swpj64t4x.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417890/awgnvxwdwcli7oyhxuwa.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417890/awgnvxwdwcli7oyhxuwa.png",
       alt: "Drive Eraser Screenshot 2",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ye68dt372vdbwgoxvfux.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417890/g7qsgoaib5aff4fz4lwp.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417890/g7qsgoaib5aff4fz4lwp.png",
       alt: "Drive Eraser Screenshot 3",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/ekvmur4pojkla41gnmd4.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417889/mbz29lvbnlqcgpftgtp2.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417889/mbz29lvbnlqcgpftgtp2.png",
       alt: "Drive Eraser Screenshot 4",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/bezjifgihbakej2julde.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417889/o4zgi0cowaixr9spcqkf.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417889/o4zgi0cowaixr9spcqkf.png",
       alt: "Drive Eraser Screenshot 5",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ucwxczg0fepj1u1ut7we.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417889/oijdo5wfz4n7zesrrudt.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417889/oijdo5wfz4n7zesrrudt.png",
       alt: "Drive Eraser Screenshot 6",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/dvwnmwzlcb3wk88cyakl.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/z30pqhpscxlo6dsbmmn3.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/z30pqhpscxlo6dsbmmn3.png",
       alt: "Drive Eraser Screenshot 7",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/xjqcegdsp1dsdndcziww.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/hpjvvebp5ya3beufhslh.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/hpjvvebp5ya3beufhslh.png",
       alt: "Drive Eraser Screenshot 8",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/evjsbmqbynavpxnfwnxa.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/qoi3ucpunnzcaeu1ljw6.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/qoi3ucpunnzcaeu1ljw6.png",
       alt: "Drive Eraser Screenshot 9",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/nt6v24wnqrwgkc5tdddu.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/nbwo10x5ljj8lvnlve3z.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/nbwo10x5ljj8lvnlve3z.png",
       alt: "Drive Eraser Screenshot 10",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/osp0gdj81m08qspfmqdy.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/sxw62hblrclb96aqnfyj.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/sxw62hblrclb96aqnfyj.png",
       alt: "Drive Eraser Screenshot 11",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/sr3c7bwx5lesgnrlsuty.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/hk7tniwoqceef728iwep.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/hk7tniwoqceef728iwep.png",
       alt: "Drive Eraser Screenshot 12",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/iwsvvppdgbqjai40tcwb.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/e7sdh1mazppjy3ikjrrz.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/e7sdh1mazppjy3ikjrrz.png",
       alt: "Drive Eraser Screenshot 13",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/sq3rvfji9f9wfghlvlqx.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/qn7dcrwd4iojztir1rxp.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/qn7dcrwd4iojztir1rxp.png",
       alt: "Drive Eraser Screenshot 14",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/w77kkhcf6lecezokiybj.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/cfolkopf9z9ogx8wnulz.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/cfolkopf9z9ogx8wnulz.png",
       alt: "Drive Eraser Screenshot 15",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bh1xablttwasjfwvvfio.png",
-      alt: "Drive Eraser Screenshot 16",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/icnd512glswldxkfl4kg.png",
-      alt: "Drive Eraser Screenshot 17",
     },
   ];
 
@@ -599,13 +621,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
         <div className="bg-white border-b border-emerald-100 shadow-sm">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between h-14">
-              <Link to="/" className="flex items-center">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
                 <ThemeAwareLogo
                   className="h-7 sm:h-8 w-auto"
                   responsive={true}
                 />
               </Link>
-              <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide py-2">
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
                 {sectionNavItems.map((item) => (
                   <button
                     key={item.id}
@@ -1129,7 +1155,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 >
                   <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
                     <img
-                      src={galleryImages[0].url}
+                      src={galleryImages[0].thumbnail}
                       alt={galleryImages[0].alt}
                       className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
                     />
@@ -1163,7 +1189,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 >
                   <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
                     <img
-                      src={galleryImages[1].url}
+                      src={galleryImages[1].thumbnail}
                       alt={galleryImages[1].alt}
                       className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
                     />
@@ -1197,7 +1223,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 >
                   <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
                     <img
-                      src={galleryImages[2].url}
+                      src={galleryImages[2].thumbnail}
                       alt={galleryImages[2].alt}
                       className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
                     />
@@ -1231,7 +1257,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 >
                   <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
                     <img
-                      src={galleryImages[3].url}
+                      src={galleryImages[3].thumbnail}
                       alt={galleryImages[3].alt}
                       className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
                     />

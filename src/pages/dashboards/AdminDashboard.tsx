@@ -80,82 +80,20 @@ const EMPTY_SUBUSERS: any[] = [];
 
 // ============================================================================
 // 🏗️ RBAC ARCHITECTURE: Hierarchical Role-Based Access Control System
-// ============================================================================
-
 /**
  * Role Hierarchy Definition
  * Descending order of access privileges
  */
-export const Roles = {
-  SUPER_ADMIN: "SuperAdmin",
-  GROUP_ADMIN: "GroupAdmin",
-  ADMIN: "Admin",
-  USER: "User",
-  SUB_USER: "SubUser",
-} as const;
-
-type RoleType = (typeof Roles)[keyof typeof Roles];
-
-/**
- * User Interface for Filter Building
- */
-interface CurrentUser {
-  id: string;
-  email: string;
-  role: RoleType;
-  groupId?: string;
-  parentUserId?: string;
-  departmentId?: string;
-}
-
-/**
- * Universal WHERE Clause Generator (Frontend → Backend Parity)
- * Centralized filter builder matching backend SQL WHERE clauses
- *
- * @param user - Current authenticated user
- * @returns Base filter object for API queries
- */
-export const buildWhereClause = (user: Partial<CurrentUser>) => {
-  const base = { isDeleted: false };
-
-  switch (user.role) {
-    case Roles.SUPER_ADMIN:
-      // SuperAdmin: No restrictions (see ALL data)
-      return base;
-
-    case Roles.GROUP_ADMIN:
-    case Roles.ADMIN:
-      // GroupAdmin/Admin: WHERE group_id = currentUser.groupId
-      return {
-        ...base,
-        groupId: user.groupId,
-      };
-
-    case Roles.USER:
-      // User: WHERE owner_id = currentUser.id
-      return {
-        ...base,
-        ownerId: user.id,
-      };
-    
-    // SubUser handled separately (often inherits parent's context)
-    case Roles.SUB_USER:
-      // SubUser: WHERE owner_id = parentUserId AND sub_user_id = userId AND department_id = departmentId
-      return {
-        ...base,
-        ownerId: user.parentUserId,
-        subUserId: user.id,
-        departmentId: user.departmentId,
-      };
-
-    default:
-      // Fallback: Most restrictive (own data only)
-      return {
-        ...base,
-        ownerId: user.id,
-      };
-  }
-};
+import { 
+  Roles, 
+  buildWhereClause, 
+  buildReportFilter, 
+  buildMachineFilter, 
+  buildSessionFilter, 
+  buildLicenseFilter, 
+  buildPerformanceFilter,
+  type CurrentUser 
+} from '@/utils/dashboardFilters';
 
 // ✅ Helper: Format date with proper UTC to local timezone conversion (Parity with AdminSessions)
 // const formatSessionDate = (dateString: string) => {
@@ -234,215 +172,6 @@ const formatSessionDate = (dateString: string) => {
     hour12: true,
   });
 };
-
-/**
- * Filter Builder: Audit Reports & Reports
- * Includes advanced filters: date range, report type, erase type, status, department, email
- */
-export const buildReportFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    groupId?: string;
-    machineId?: string;
-    reportType?: string;
-    eraseType?: string;
-    eraseStatus?: string;
-    fromDate?: string;
-    toDate?: string;
-    departmentId?: string;
-    subUserId?: string;
-    email?: string;
-  },
-) => {
-  return {
-    ...buildWhereClause(user),
-    ...filters,
-  };
-};
-
-/**
- * Filter Builder: Machines
- * Includes: group, subUser, isErased, eraseType, licenseStatus
- */
-export const buildMachineFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    groupId?: string;
-    subUserId?: string;
-    isErased?: boolean;
-    eraseType?: string;
-    licenseStatus?: string;
-  },
-) => {
-  return {
-    ...buildWhereClause(user),
-    ...filters,
-  };
-};
-
-/**
- * Filter Builder: Session Logs
- * Includes: owner, role, subUser, date range
- */
-export const buildSessionFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    subUserId?: string;
-    fromDate?: string;
-    toDate?: string;
-  },
-) => {
-  return {
-    ownerId: user.id,
-    role: user.role,
-    ...filters,
-  };
-};
-
-/**
- * Filter Builder: License Distribution
- * Includes: status array, assigned user
- */
-export const buildLicenseFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    status?: string[];
-    assignedTo?: string;
-  },
-) => {
-  return {
-    ...buildWhereClause(user),
-    status: filters.status || ["Active", "Expired", "Revoked"],
-    assignedTo: filters.assignedTo,
-  };
-};
-
-/**
- * Filter Builder: Performance Dashboard
- * Includes: group, department, date range, role
- */
-export const buildPerformanceFilter = (
-  user: Partial<CurrentUser>,
-  filters: {
-    groupId?: string;
-    departmentId?: string;
-    fromDate?: string;
-    toDate?: string;
-  },
-) => {
-  return {
-    groupId: filters.groupId,
-    departmentId: filters.departmentId,
-    fromDate: filters.fromDate,
-    toDate: filters.toDate,
-    role: user.role,
-  };
-};
-
-// ============================================================================
-// 🔗 API Integration Pattern (Best Practice)
-// ============================================================================
-
-/**
- * Example API Call Pattern with Centralized Filters
- *
- * Usage in Component:
- * ```typescript
- * // 1. Build filter object using useMemo
- * const reportFilter = useMemo(() =>
- *   buildReportFilter(currentUser, {
- *     groupId: selectedGroup,
- *     reportType,
- *     eraseStatus,
- *     fromDate,
- *     toDate
- *   }),
- *   [currentUser, selectedGroup, reportType, eraseStatus, fromDate, toDate]
- * );
- *
- * // 2. Pass filter to API call
- * useEffect(() => {
- *   fetchAuditReports(reportFilter).then(setAuditData);
- * }, [reportFilter]);
- * ```
- *
- * Backend SQL Pattern (MySQL Example):
- * ```sql
- * SELECT * FROM AuditReports
- * WHERE
- *   (:role = 'SuperAdmin')
- *   OR (:role = 'GroupAdmin' AND GroupId = :groupId)
- *   OR (:role = 'Admin' AND GroupId = :groupId)
- *   OR (:role = 'User' AND OwnerId = :userId)
- *   OR (:role = 'SubUser' AND OwnerId = :parentId AND SubUserId = :userId)
- * AND
- *   (:fromDate IS NULL OR CreatedOn >= :fromDate)
- * AND
- *   (:toDate IS NULL OR CreatedOn <= :toDate)
- * AND
- *   (:eraseType IS NULL OR EraseType = :eraseType)
- * AND
- *   (:status IS NULL OR Status = :status);
- * ```
- *
- * API Service Example (Axios):
- * ```typescript
- * export const fetchAuditReports = async (filters: ReturnType<typeof buildReportFilter>) => {
- *   return axios.post("/api/audit/search", filters);
- * };
- *
- * export const fetchMachines = async (filters: ReturnType<typeof buildMachineFilter>) => {
- *   return axios.post("/api/machines/search", filters);
- * };
- *
- * export const fetchSessions = async (filters: ReturnType<typeof buildSessionFilter>) => {
- *   return axios.post("/api/sessions/search", filters);
- * };
- * ```
- */
-
-// ============================================================================
-// 📤 Export Filter Builders for Reuse in Other Components
-// ============================================================================
-
-/**
- * Export these functions to use in other admin components:
- *
- * ```typescript
- * import {
- *   Roles,
- *   buildWhereClause,
- *   buildReportFilter,
- *   buildMachineFilter,
- *   buildSessionFilter,
- *   buildLicenseFilter,
- *   buildPerformanceFilter
- * } from '@/pages/dashboards/AdminDashboard';
- * ```
- *
- * Then use in any component:
- * ```typescript
- * const currentUser = {
- *   id: userId,
- *   email: userEmail,
- *   role: Roles.GROUP_ADMIN,
- *   groupId: userGroupId
- * };
- *
- * const filters = buildReportFilter(currentUser, {
- *   fromDate: '2025-01-01',
- *   toDate: '2025-01-16',
- *   eraseType: 'DoD 5220.22-M'
- * });
- *
- * // Use filters in API call
- * const reports = await fetchReports(filters);
- * ```
- */
-
-// ============================================================================
-// End of RBAC Architecture
-// ============================================================================
 
 // ✅ Import Demo Data for "Try Demo Account" mode
 import {
@@ -728,27 +457,56 @@ export default function AdminDashboard() {
   // ✅ Cache Helper Functions - Store data with timestamp
   // API Data States - React Query will populate these via useEffect
   const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(
-    null,
+    isDemoMode() ? DEMO_DASHBOARD_STATS : null,
   );
-  const [userActivity, setUserActivity] = useState<UserActivity[]>([]);
-  const [groups, setGroups] = useState<GroupData[]>([]);
+  const [userActivity, setUserActivity] = useState<UserActivity[]>(
+    isDemoMode() ? DEMO_USER_ACTIVITY : [],
+  );
+  const [groups, setGroups] = useState<GroupData[]>(isDemoMode() ? DEMO_GROUPS : []);
   const [groupsWithUsers, setGroupsWithUsers] = useState<any[]>([]);
   const [expandedGroups, setExpandedGroups] = useState<number[]>([]);
   const [groupsLoading, setGroupsLoading] = useState(false);
   const [groupsCached, setGroupsCached] = useState(false); // ✅ Cache flag
-  const [licenseData, setLicenseData] = useState<LicenseData[]>([]);
-  const [recentReports, setRecentReports] = useState<RecentReport[]>([]);
-  const [activeLicensesCount, setActiveLicensesCount] = useState<number>(0);
-  const [auditReportsCount, setAuditReportsCount] = useState<number>(0);
-  const [auditReports, setAuditReports] = useState<AuditReport[]>([]);
+  const [licenseData, setLicenseData] = useState<LicenseData[]>(
+    isDemoMode() ? DEMO_LICENSE_DETAILS : [],
+  );
+  const [recentReports, setRecentReports] = useState<RecentReport[]>(
+    isDemoMode()
+      ? DEMO_REPORTS.map((r) => ({
+          id: r.id,
+          type: r.type,
+          devices: r.devices,
+          status: r.status,
+          date: r.date,
+          method: r.method,
+        }))
+      : [],
+  );
+  const [activeLicensesCount, setActiveLicensesCount] = useState<number>(
+    isDemoMode()
+      ? DEMO_MACHINES.filter(
+          (m) => m.status === "Active" || m.status === "Running",
+        ).length
+      : 0,
+  );
+  const [auditReportsCount, setAuditReportsCount] = useState<number>(
+    isDemoMode() ? DEMO_AUDIT_REPORTS.length : 0,
+  );
+  const [auditReports, setAuditReports] = useState<AuditReport[]>(
+    isDemoMode() ? (DEMO_AUDIT_REPORTS as any) : [],
+  );
   const [userLicenseDetails, setUserLicenseDetails] = useState<LicenseData[]>(
-    [],
+    isDemoMode() ? DEMO_LICENSE_DETAILS : [],
   );
   // ✅ License list from /api/License/admin/all (same as AdminLicenses page)
   const [dashboardLicenseList, setDashboardLicenseList] = useState<any[]>([]);
   const [licenseListLoading, setLicenseListLoading] = useState(false);
-  const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>([]);
-  const [recentSessions, setRecentSessions] = useState<any[]>([]);
+  const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>(
+    isDemoMode() ? DEMO_SYSTEM_LOGS : [],
+  );
+  const [recentSessions, setRecentSessions] = useState<any[]>(
+    isDemoMode() ? DEMO_SESSIONS : [],
+  );
 
   // Performance data state
   const [performanceData, setPerformanceData] = useState<{
@@ -758,14 +516,18 @@ export default function AdminDashboard() {
     successRate: string;
     successCount: number;
     failureCount: number;
-  }>({
-    monthlyErasures: [],
-    avgDuration: [],
-    throughput: [],
-    successRate: "0%",
-    successCount: 0,
-    failureCount: 0,
-  });
+  }>(
+    isDemoMode()
+      ? (DEMO_PERFORMANCE_DATA as any)
+      : {
+          monthlyErasures: [],
+          avgDuration: [],
+          throughput: [],
+          successRate: "0%",
+          successCount: 0,
+          failureCount: 0,
+        },
+  );
 
   // Separate states for Users and Subusers (not merged)
   const [superuserData, setSuperuserData] = useState<MergedUserData | null>(
@@ -1233,8 +995,8 @@ export default function AdminDashboard() {
 
   // Loading state reflects the query loading state
   useEffect(() => {
-    setLicenseListLoading(licenseListQuery.isLoading);
-  }, [licenseListQuery.isLoading]);
+    setLicenseListLoading(licenseListQuery.isLoading && !isDemo);
+  }, [licenseListQuery.isLoading, isDemo]);
 
   /* 
   // PURANA CODE: Manual fetch without caching
@@ -2360,12 +2122,22 @@ export default function AdminDashboard() {
 
   // Subuser Actions
   const handleEditSubuser = (subuser: Subuser) => {
+    // ✅ DEMO MODE GUARD: Prevent subuser editing in demo mode
+    if (isDemo) {
+      showInfo("Demo Mode", "Subuser editing is disabled in demo mode");
+      return;
+    }
     showInfo("Edit Subuser", `Opening edit page for ${subuser.subuser_email}`);
     // Future: Navigate to subuser edit page or open modal
     devLog("Edit subuser:", subuser);
   };
 
   const handleDeleteSubuser = async (subuser: Subuser) => {
+    // ✅ DEMO MODE GUARD: Prevent subuser deletion in demo mode
+    if (isDemo) {
+      showInfo("Demo Mode", "Subuser deletion is disabled in demo mode");
+      return;
+    }
     // Simple confirmation using window.confirm
     const confirmed = window.confirm(
       `Are you sure you want to delete ${subuser.subuser_email}?\n\nThis action cannot be undone.`,
@@ -2474,7 +2246,7 @@ export default function AdminDashboard() {
       </Helmet>
       <div className="container-app py-8 lg:py-12 bg-gradient-to-br from-emerald-50 via-white to-teal-50 min-h-screen">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
@@ -2487,9 +2259,9 @@ export default function AdminDashboard() {
                 {roleInfo.label}
               </span>
             </div>
-            <p className="mt-2 text-slate-600 flex items-center gap-2">
+            <p className="mt-2 text-slate-600 flex flex-wrap items-center gap-2">
               <span className="inline-block w-2 h-2 rounded-full bg-green-400 flex-shrink-0"></span>
-              <span className="truncate">
+              <span className="break-all sm:break-normal">
                 {t("dashboard.welcomeBack")},{" "}
                 {storedUserData?.name ||
                   storedUserData?.user_name ||
@@ -2510,7 +2282,7 @@ export default function AdminDashboard() {
               </span>
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-3 lg:justify-end">
             {/* Profile Button - Always visible with dynamic avatar */}
             <button
               onClick={() => setShowProfileModal(true)}
@@ -2664,7 +2436,7 @@ export default function AdminDashboard() {
         {/* Navigation Tabs - Role-Based Visibility */}
         <div className="mb-8">
           <div className="border-b border-slate-200 overflow-hidden">
-            <nav className="-mb-px flex overflow-x-auto scrollbar-hide">
+            <nav className="-mb-px flex overflow-x-auto">
               <div className="flex space-x-4 sm:space-x-8 px-1 min-w-max">
                 {[
                   {
@@ -2866,7 +2638,7 @@ export default function AdminDashboard() {
         {dataLoading && !dashboardStats && (
           <div className="animate-pulse space-y-6">
             {/* Stats Cards Skeleton */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6">
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
@@ -2914,7 +2686,7 @@ export default function AdminDashboard() {
             {/* Full Stats for SuperAdmin/Admin */}
             <RoleBased permission="canViewAllStats">
               {stats.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-8">
                   {stats.map((stat) => (
                     <div
                       key={stat.label}
@@ -2925,11 +2697,11 @@ export default function AdminDashboard() {
                           <div
                             className={`w-3 h-3 rounded-full ${stat.color} flex-shrink-0`}
                           ></div>
-                          <p className="text-sm font-medium text-slate-600 truncate">
+                          <p className="text-sm font-medium text-slate-600">
                             {stat.label}
                           </p>
                         </div>
-                        <p className="text-2xl lg:text-3xl font-bold text-slate-900 truncate">
+                        <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                           {stat.value}
                         </p>
                       </div>
@@ -2985,7 +2757,7 @@ export default function AdminDashboard() {
 
             {/* Limited Stats for Manager */}
             <RoleBased permission="canViewAllStats" roles={["Manager"]}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-8">
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0"></div>
@@ -3039,7 +2811,7 @@ export default function AdminDashboard() {
 
             {/* Minimal Stats for User */}
             <RoleBased roles={["user"]}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-8">
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0"></div>
@@ -3109,7 +2881,7 @@ export default function AdminDashboard() {
                       View All
                     </Link>
                   </div>
-                  <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                  <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto">
                     {auditReports.length > 0 ? (
                       <>
                         {auditReports
@@ -3120,11 +2892,11 @@ export default function AdminDashboard() {
                           .map((report) => (
                             <div
                               key={report.id || report.report_id}
-                              className="px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors min-w-0"
+                              className="px-4 sm:px-6 py-4 flex items-start justify-between hover:bg-slate-50 transition-colors min-w-0 gap-3"
                             >
-                              <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                              <div className="flex items-start gap-2 sm:gap-4 min-w-0 flex-1">
                                 <div
-                                  className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                                  className={`w-2 h-2 rounded-full flex-shrink-0 mt-2 ${
                                     report.status === "completed" ||
                                     report.status === "Completed"
                                       ? "bg-green-400"
@@ -3138,7 +2910,7 @@ export default function AdminDashboard() {
                                   }`}
                                 ></div>
                                 <div className="min-w-0 flex-1">
-                                  <div className="font-medium text-slate-900 truncate">
+                                  <div className="font-medium text-slate-900 truncate" title={report.report_name || report.reportType}>
                                     {report.report_name ||
                                       report.reportType ||
                                       `Report #${
@@ -3149,7 +2921,7 @@ export default function AdminDashboard() {
                                   </div>
                                   <div className="text-sm text-slate-500 truncate">
                                     {report.erasure_method && (
-                                      <span>{report.erasure_method}</span>
+                                      <span className="mr-2">{report.erasure_method}</span>
                                     )}
                                     {report.reportType && (
                                       <span>{report.reportType}</span>
@@ -3157,7 +2929,7 @@ export default function AdminDashboard() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="text-sm text-slate-500 flex-shrink-0 ml-2">
+                              <div className="text-xs sm:text-sm text-slate-500 flex-shrink-0 mt-1">
                                 {report.report_datetime
                                   ? new Date(
                                       report.report_datetime,
@@ -3205,43 +2977,41 @@ export default function AdminDashboard() {
                   </div>
                   {/* Recent Reports Pagination Footer */}
                   {auditReports.length > 0 && (
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 sm:px-6 py-3 border-t border-slate-200 bg-slate-50">
-                      <div className="flex items-center gap-2">
-                        <label className="text-xs text-slate-600">
-                          Rows per page:
-                        </label>
-                        <select
-                          value={recentReportsPageSize}
-                          onChange={(e) => {
-                            setRecentReportsPageSize(
-                              parseInt(e.target.value, 10),
-                            );
-                            setRecentReportsPage(1);
-                          }}
-                          className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
-                        >
-                          {pageSizeOptions.map((size) => (
-                            <option key={size} value={size}>
-                              {size}
-                            </option>
-                          ))}
-                        </select>
-                        <span className="text-xs text-slate-500">
-                          Showing{" "}
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 py-3 border-t border-slate-200 bg-slate-50">
+                      <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+                        <div className="flex items-center gap-2">
+                          <label className="text-xs text-slate-600 whitespace-nowrap">
+                            Rows:
+                          </label>
+                          <select
+                            value={recentReportsPageSize}
+                            onChange={(e) => {
+                              setRecentReportsPageSize(
+                                parseInt(e.target.value, 10),
+                              );
+                              setRecentReportsPage(1);
+                            }}
+                            className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                          >
+                            {pageSizeOptions.map((size) => (
+                              <option key={size} value={size}>
+                                {size}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <span className="text-xs text-slate-500 whitespace-nowrap">
                           {Math.min(
                             (recentReportsPage - 1) * recentReportsPageSize + 1,
                             auditReports.length,
-                          )}{" "}
-                          to{" "}
-                          {Math.min(
+                          )}-{Math.min(
                             recentReportsPage * recentReportsPageSize,
                             auditReports.length,
-                          )}{" "}
-                          of {auditReports.length}
+                          )} of {auditReports.length}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-600">
+                      <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+                        <span className="text-xs text-slate-600 whitespace-nowrap">
                           Page {recentReportsPage} of{" "}
                           {Math.ceil(
                             auditReports.length / recentReportsPageSize,
@@ -3299,7 +3069,7 @@ export default function AdminDashboard() {
                       View All
                     </Link>
                   </div>
-                  <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                  <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto">
                     {recentSessions.length > 0 ? (
                       <>
                         {recentSessions
@@ -3334,13 +3104,13 @@ export default function AdminDashboard() {
 
                                 {/* Session Details */}
                                 <div className="flex-1 min-w-0">
-                                  <div className="flex items-start justify-between gap-2 mb-1">
-                                    <p className="font-medium text-slate-900 text-sm truncate">
+                                  <div className="flex items-start justify-between gap-3 mb-1">
+                                    <p className="font-medium text-slate-900 text-sm truncate" title={session.user_email}>
                                       {session.user_email || "Unknown User"}
                                     </p>
-                                    <span className="text-xs text-slate-500 flex-shrink-0">
+                                    <span className="text-[10px] sm:text-xs text-slate-500 flex-shrink-0 mt-0.5">
                                       {session.login_time
-                                        ? "Login: " + formatSessionDate(session.login_time)
+                                        ? formatSessionDate(session.login_time)
                                         : "N/A"}
                                     </span>
                                   </div>
@@ -3348,7 +3118,7 @@ export default function AdminDashboard() {
                                   {/* Additional Info */}
                                   <div className="flex items-center gap-3 text-xs text-slate-500">
                                     {session.ip_address && (
-                                      <span className="truncate">
+                                      <span className="">
                                         <svg
                                           className="w-3 h-3 inline mr-1"
                                           fill="none"
@@ -3404,59 +3174,66 @@ export default function AdminDashboard() {
                   </div>
                   {/* Sessions Pagination - always show when data exists */}
                   {recentSessions.length > 0 && (
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 sm:px-6 py-4 border-t border-slate-200">
-                      <div className="flex items-center gap-2">
-                        <label className="text-xs text-slate-600">Rows:</label>
-                        <select
-                          value={systemLogsPageSize}
-                          onChange={(e) => {
-                            setSystemLogsPageSize(parseInt(e.target.value, 10));
-                            setSystemLogsPage(1);
-                          }}
-                          className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
-                        >
-                          {pageSizeOptions.map((size) => (
-                            <option key={size} value={size}>
-                              {size}
-                            </option>
-                          ))}
-                        </select>
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 sm:px-6 py-4 border-t border-slate-200 bg-slate-50">
+                      <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+                        <div className="flex items-center gap-2">
+                          <label className="text-xs text-slate-600 whitespace-nowrap">Rows:</label>
+                          <select
+                            value={systemLogsPageSize}
+                            onChange={(e) => {
+                              setSystemLogsPageSize(parseInt(e.target.value, 10));
+                              setSystemLogsPage(1);
+                            }}
+                            className="px-2 py-1 border border-slate-300 rounded text-xs bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
+                          >
+                            {pageSizeOptions.map((size) => (
+                              <option key={size} value={size}>
+                                {size}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <span className="text-xs text-slate-500 whitespace-nowrap">
+                          {Math.min((systemLogsPage - 1) * systemLogsPageSize + 1, recentSessions.length)}-{Math.min(systemLogsPage * systemLogsPageSize, recentSessions.length)} of {recentSessions.length}
+                        </span>
                       </div>
-                      <span className="text-sm text-slate-600">
-                        Page {systemLogsPage} of{" "}
-                        {Math.ceil(recentSessions.length / systemLogsPageSize)}
-                      </span>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() =>
-                            setSystemLogsPage((prev) => Math.max(prev - 1, 1))
-                          }
-                          disabled={systemLogsPage === 1}
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Previous
-                        </button>
-                        <button
-                          onClick={() =>
-                            setSystemLogsPage((prev) =>
-                              Math.min(
-                                prev + 1,
-                                Math.ceil(
-                                  recentSessions.length / systemLogsPageSize,
+                      <div className="flex items-center justify-between w-full sm:w-auto gap-4">
+                        <span className="text-xs text-slate-600 whitespace-nowrap">
+                          Page {systemLogsPage} of{" "}
+                          {Math.ceil(recentSessions.length / systemLogsPageSize)}
+                        </span>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() =>
+                              setSystemLogsPage((prev) => Math.max(prev - 1, 1))
+                            }
+                            disabled={systemLogsPage === 1}
+                            className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                          >
+                            Prev
+                          </button>
+                          <button
+                            onClick={() =>
+                              setSystemLogsPage((prev) =>
+                                Math.min(
+                                  prev + 1,
+                                  Math.ceil(
+                                    recentSessions.length / systemLogsPageSize,
+                                  ),
                                 ),
-                              ),
-                            )
-                          }
-                          disabled={
-                            systemLogsPage >=
-                            Math.ceil(
-                              recentSessions.length / systemLogsPageSize,
-                            )
-                          }
-                          className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          Next
-                        </button>
+                              )
+                            }
+                            disabled={
+                              systemLogsPage >=
+                              Math.ceil(
+                                recentSessions.length / systemLogsPageSize,
+                              )
+                            }
+                            className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                          >
+                            Next
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -3626,7 +3403,7 @@ export default function AdminDashboard() {
                       {dashboardLicenseList.length} found
                     </span>
                   </div>
-                  <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                  <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto">
                     <table className="w-full relative">
                       <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
                         <tr>
@@ -3907,7 +3684,7 @@ export default function AdminDashboard() {
                       {/* Users Table - Show for all users if data exists */}
                       {!usersDataLoading && displaySubusersData.length > 0 && (
                         <div>
-                          <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                          <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto">
                             <table className="w-full">
                               <thead className="sticky top-0 bg-white shadow-sm z-10">
                                 <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
@@ -4452,7 +4229,7 @@ export default function AdminDashboard() {
                       }
                       return (
                         <>
-                          <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                          <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto">
                             <table className="w-full">
                               <thead className="sticky top-0 bg-white shadow-sm z-10">
                                 <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
@@ -4673,7 +4450,7 @@ export default function AdminDashboard() {
                     </div>
                   ) : (
                     <>
-                      <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
+                      <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto">
                         <table className="w-full">
                           <thead className="sticky top-0 bg-white shadow-sm z-10">
                             <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
@@ -6129,6 +5906,12 @@ export default function AdminDashboard() {
                           className="space-y-4"
                           onSubmit={async (e) => {
                             e.preventDefault();
+                            // ✅ DEMO MODE GUARD: Prevent profile update in demo mode
+                            if (isDemo) {
+                              showInfo("Demo Mode", "Profile updates are disabled in demo mode");
+                              setIsEditingProfile(false);
+                              return;
+                            }
                             setProfileUpdateLoading(true);
 
                             try {
@@ -7471,6 +7254,13 @@ export default function AdminDashboard() {
                         <form
                           onSubmit={async (e) => {
                             e.preventDefault();
+
+                            // ✅ DEMO MODE GUARD: Prevent password change in demo mode
+                            if (isDemo) {
+                              showInfo("Demo Mode", "Password change is disabled in demo mode");
+                              setShowSettingsModal(false);
+                              return;
+                            }
 
                             // if (changePasswordForm.newPassword !== changePasswordForm.confirmPassword) {
                             //   showError('Password Mismatch', 'New password and confirm password do not match')

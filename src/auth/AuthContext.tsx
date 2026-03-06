@@ -160,29 +160,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // Check for regular authentication (including demo tokens stored via authService)
         if (authService.isAuthenticated()) {
-          // //console.log('AuthService says authenticated')
           const jwtUser = authService.getUserFromToken();
           const token = authService.getAccessToken();
 
           if (jwtUser && token) {
-            // //console.log('JWT user found:', jwtUser)
             const authUser = convertJWTUserToAuthUser(jwtUser, token);
             setUser(authUser);
+          } else if (isDemoMode) {
+            // ✅ NAYA CODE: If in demo mode, prioritize keeping demo_mode alive
+            // even if token verification fails (common on refresh)
+            /* devLog(
+              "🎭 Auth Init: Keeping Demo Mode alive despite token failure",
+            ); */
           } else {
-            // //console.log('JWT parsing failed, clearing tokens')
-            // If JWT parsing failed, clear tokens
             authService.clearTokens();
             localStorage.removeItem("demo_mode");
           }
-        } else {
-          // //console.log('Not authenticated')
+        } else if (isDemoMode) {
+          // ✅ NAYA CODE: If isAuthenticated is false but demo_mode is true, keep it
+          // devLog("🎭 Auth Init: Flagging persistent Demo Mode");
         }
       } catch (error) {
         // console.error('Failed to initialize authentication:', error)
-        authService.clearTokens();
-        // Clear demo data on error
-        localStorage.removeItem("demo_mode");
-        setError("Authentication initialization failed");
+
+        // ✅ NAYA CODE: Don't clear demo_mode if it was intentional
+        const isDemo = localStorage.getItem("demo_mode") === "true";
+        if (!isDemo) {
+          authService.clearTokens();
+          localStorage.removeItem("demo_mode");
+          setError("Authentication initialization failed");
+        } else {
+          // devLog("🎭 Auth Init: Ignoring error in Demo Mode context");
+        }
       } finally {
         setLoading(false);
       }
@@ -348,10 +357,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         iss: "D-Secure-demo",
       };
 
-      // Create a fake JWT token (base64 encoded payload)
-      const header = btoa(JSON.stringify({ typ: "JWT", alg: "HS256" }));
-      const payload = btoa(JSON.stringify(dummyJWTPayload));
-      const signature = btoa("demo-signature");
+      // Create a fake JWT token (Base64URL encoded to avoid parsing errors)
+      const header = btoa(JSON.stringify({ typ: "JWT", alg: "HS256" }))
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
+      const payload = btoa(JSON.stringify(dummyJWTPayload))
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
+      const signature = btoa("demo-signature")
+        .replace(/=/g, "")
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_");
       const dummyToken = `${header}.${payload}.${signature}`;
 
       // //console.log('Generated demo token:', dummyToken)
@@ -419,7 +437,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }),
       );
     } catch (err) {
-      console.error("Demo login error:", err);
+      // console.error("Demo login error:", err);
       const errorMessage = "Demo login failed";
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -518,7 +536,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         authService.clearTokens();
       } else {
         // Call API logout for real users
-        await apiClient.logout();
+        await apiClient.logout().catch(() => {});
       }
 
       // ✅ NAYA CODE: Clear Axios instance's in-memory Authorization header
@@ -546,9 +564,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       keysToRemove.forEach((key) => localStorage.removeItem(key));
 
-      // console.log('? Logout successful - All user data and caches cleared')
+      // // console.log('? Logout successful - All user data and caches cleared')
     } catch (err) {
-      console.error("Logout error:", err);
+      // console.error("Logout error:", err);
       // Even if API fails, clear all local data
       authService.clearTokens(); // ✅ Clear all token storage keys
       clearAuthToken(); // ✅ Clear Axios in-memory headers

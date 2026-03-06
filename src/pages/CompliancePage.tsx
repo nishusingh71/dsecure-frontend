@@ -192,11 +192,22 @@ function CompliancePageContent() {
       icon: "📊",
       details:
         "The Sarbanes-Oxley Act requires public companies to maintain accurate financial records and implement internal controls.",
-      requirements: [
-        "Data integrity and accuracy controls",
-        "Secure retention and disposal of records",
-        "Audit trail requirements",
-        "Management regulation of controls",
+      clauseRequirements: [
+        {
+          clause: "Section 404",
+          requirement: "Data integrity and accuracy controls",
+          evidence: "SOX Compliance Report",
+        },
+        {
+          clause: "Section 802",
+          requirement: "Secure retention and disposal of records",
+          evidence: "Tamper-Proof Audit Trail",
+        },
+        {
+          clause: "Section 302",
+          requirement: "Management regulation of controls",
+          evidence: "Role-Based Access Logs",
+        },
       ],
       implementation:
         "D-Secure supports SOX compliance through tamper-proof audit trails, secure data handling, and management reporting.",
@@ -208,11 +219,22 @@ function CompliancePageContent() {
       icon: "💳",
       details:
         "PCI DSS is a set of security standards designed to ensure that companies that process credit card information maintain a secure environment.",
-      requirements: [
-        "Secure storage and transmission of cardholder data",
-        "Implement strong access control measures",
-        "Regularly monitor and test networks",
-        "Secure disposal of cardholder data",
+      clauseRequirements: [
+        {
+          clause: "Req 3",
+          requirement: "Secure storage and transmission of cardholder data",
+          evidence: "Encryption Certificates",
+        },
+        {
+          clause: "Req 7",
+          requirement: "Implement strong access control measures",
+          evidence: "Access Control Logs",
+        },
+        {
+          clause: "Req 9",
+          requirement: "Secure disposal of cardholder data",
+          evidence: "Media Sanitization Certificate",
+        },
       ],
       implementation:
         "D-Secure ensures PCI DSS compliance with Compliant sanitization methods and detailed compliance reporting.",

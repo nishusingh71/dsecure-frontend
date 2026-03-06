@@ -2,7 +2,7 @@ import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 
 import { useAuth } from "../../auth/AuthContext";
 import { isDemoMode } from "../../data/demoData";
@@ -172,8 +172,18 @@ export default function AdminShell() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-4 sm:gap-6">
-          <aside className="card h-fit md:sticky md:top-24 !p-3 sm:!p-6 overflow-hidden">
-            <nav className="flex flex-col sm:flex-row md:flex-col gap-2 text-sm">
+          <aside
+            className="card h-fit md:sticky md:top-24 !p-3 sm:!p-6 overflow-x-auto scrollbar-hide"
+            onWheel={(e) => {
+              if (
+                window.innerWidth < 768 &&
+                Math.abs(e.deltaY) > Math.abs(e.deltaX)
+              ) {
+                e.currentTarget.scrollLeft += e.deltaY;
+              }
+            }}
+          >
+            <nav className="flex flex-col sm:flex-row md:flex-col gap-2 text-sm whitespace-nowrap min-w-max md:min-w-0">
               <NavLink
                 to="/admin"
                 end
@@ -416,7 +426,22 @@ export default function AdminShell() {
           <section className="min-w-0">
             {/* ✅ NAYA CODE: key={location.pathname} forces React to unmount old child and mount new child on navigation */}
             {/* PURANA CODE: <Outlet /> — without key, React tried to update in-place causing navigation lag */}
-            <Outlet key={location.pathname} />
+            <Suspense
+              fallback={
+                <div className="p-6 space-y-6 animate-pulse">
+                  <div className="h-10 bg-slate-200 rounded w-64" />
+                  <div className="grid grid-cols-4 gap-6">
+                    <div className="h-32 bg-slate-100 rounded-xl" />
+                    <div className="h-32 bg-slate-100 rounded-xl" />
+                    <div className="h-32 bg-slate-100 rounded-xl" />
+                    <div className="h-32 bg-slate-100 rounded-xl" />
+                  </div>
+                  <div className="h-64 bg-slate-50 rounded-xl" />
+                </div>
+              }
+            >
+              <Outlet key={location.pathname} />
+            </Suspense>
           </section>
         </div>
       </div>

@@ -27,6 +27,8 @@ if (!ENABLE_CONSOLE) {
 // -------------------------------------------------------------------------------
 
 // Preload critical resources
+import { addResourceHints } from "./utils/performanceOptimizer";
+addResourceHints();
 preloadCriticalResources();
 
 // Optimized performance monitoring

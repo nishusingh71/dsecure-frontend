@@ -660,3 +660,61 @@ html {
     padding: 0 !important;
   }
 }
+/* ============================================= */
+/* Recharts Legend & Chart Responsive Fixes      */
+/* ============================================= */
+
+/* Ensure Recharts legends wrap properly on small screens */
+.recharts-legend-wrapper {
+  overflow: visible !important;
+}
+
+.recharts-default-legend {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: 4px 8px !important;
+}
+
+.recharts-legend-item {
+  margin: 0 !important;
+}
+
+/* Prevent chart containers from overflowing */
+.recharts-responsive-container {
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+/* Mobile-specific chart adjustments */
+@media (max-width: 475px) {
+  .recharts-default-legend {
+    gap: 2px 6px !important;
+  }
+  
+  .recharts-legend-item-text {
+    font-size: 10px !important;
+  }
+
+  .recharts-tooltip-wrapper {
+    max-width: 200px !important;
+  }
+}
+
+@media (min-width: 476px) and (max-width: 639px) {
+  .recharts-legend-item-text {
+    font-size: 11px !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .recharts-legend-item-text {
+    font-size: 12px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .recharts-legend-item-text {
+    font-size: 13px !important;
+  }
+}

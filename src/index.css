@@ -15,6 +15,18 @@
     @apply bg-gradient-to-br from-slate-50 to-white text-slate-800 antialiased min-h-screen;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   }
+/* Hide scrollbar globally but keep functionality */
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari and Opera */
+}
 }
 
 @layer components {

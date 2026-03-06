@@ -1,0 +1,642 @@
+﻿
+> d-secure-frontend@0.1.0 build
+> node scripts/update-sitemap.js && vite build
+
+📖 Reading App.tsx from: C:\Users\nishu\Downloads\dsecure-frontend\src\App.tsx
+📄 File size: 53746 bytes
+✅ Extracted 0 unique valid routes from 1 matches.
+📖 Reading App.tsx from: C:\Users\nishu\Downloads\dsecure-frontend\src\App.tsx
+📄 File size: 53746 bytes
+✅ Extracted 0 unique valid routes from 1 matches.
+✅ Sitemap updated successfully!
+📅 Updated with date: 2026-03-06
+📄 Total URLs: 11
+Sitemap location: C:\Users\nishu\Downloads\dsecure-frontend\public\sitemap.xml
+✅ Robots.txt timestamp updated!
+[36mvite v7.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 3821 modules transformed.
+
+✨ [vite-plugin-compression]:algorithm=gzip - compressed file successfully: 
+dist/C:/Users/nishu/Downloads/dsecure-frontend/404.html.gz                                                      1.00kb / gzip: 0.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/css/EnquiryForm-CKdOKdrR.css.gz                                  6.81kb / gzip: 1.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/debug.html.gz                                                    4.24kb / gzip: 1.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ActivationKeyPage-DGvA90PH.js.gz                              2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AccessVerificationPage-cHpLCuvS.js.gz                         2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/downloads/dsecure-file-eraser-catalog.html.gz                    12.54kb / gzip: 2.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/About-DeLmEd9o.js.gz                                          11.03kb / gzip: 3.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/downloads/dsecure-drive-eraser-catalog.html.gz                   8.99kb / gzip: 2.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/index.html.gz                                                    8.02kb / gzip: 2.47kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AddGroup-VLoRn_3Y.js.gz                                       6.31kb / gzip: 2.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/adminDashboardAPI-DOUDcGM2.js.gz                              7.49kb / gzip: 1.99kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminDownloads-B-nhNEZM.js.gz                                 9.25kb / gzip: 3.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/css/vendor-maps-Dgihpmma.css.gz                                  14.68kb / gzip: 6.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminGroups-DUXLLgDC.js.gz                                    14.50kb / gzip: 4.14kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminGroups-BNi3-0J9.js.gz                                    49.93kb / gzip: 8.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminShell-Dz9QF37N.js.gz                                     8.60kb / gzip: 2.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AddUser-DdlfeSL1.js.gz                                        9.55kb / gzip: 2.62kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminPerformance-BxNXzbdC.js.gz                               10.63kb / gzip: 3.08kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminSettings-Cvh6aGjs.js.gz                                  11.55kb / gzip: 2.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminLicenses-DpgpmrKE.js.gz                                  31.27kb / gzip: 8.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminMachines-B_ag5rmo.js.gz                                  25.63kb / gzip: 7.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminProfileEdit-5PRy_TRh.js.gz                               8.71kb / gzip: 2.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminSessions-DLuLgAer.js.gz                                  16.93kb / gzip: 5.06kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminReports-De9p15VJ.js.gz                                   12.84kb / gzip: 3.12kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AIOverviewPage-Ci5l-2Tm.js.gz                                 6.77kb / gzip: 2.03kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ApiIntegrationPage-BA_THSoH.js.gz                             2.23kb / gzip: 0.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AuditPreparationPage-plF7kRBg.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminUsers-C-YN_MR5.js.gz                                     10.62kb / gzip: 2.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AuditVerificationPage-BUolRfm9.js.gz                          2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ApiTestPage-DG6S6Alj.js.gz                                    10.39kb / gzip: 2.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AutoUpdatesPage-BxPqvpcN.js.gz                                2.10kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AuditTrailsPage-bclNmgBp.js.gz                                5.16kb / gzip: 1.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AutomatedErasureBlog-D0PBuwzR.js.gz                           13.37kb / gzip: 3.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminSubusers-HTX2DnGn.js.gz                                  26.46kb / gzip: 6.58kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BestPracticesPage-RuGTyJXC.js.gz                              2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BatchOperationsPage-Dwr33fZw.js.gz                            17.66kb / gzip: 3.53kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BankingModePage-BUI2m_6C.js.gz                                2.10kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BankingFinancePage-CCbUCrAb.js.gz                             2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BestErasureMethodBlog-fWy_2d53.js.gz                          12.43kb / gzip: 2.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CarbonFootprintErasureBlog-CKGdKJpp.js.gz                     13.23kb / gzip: 3.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BlogPage-CRPiVV45.js.gz                                       13.45kb / gzip: 3.53kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BrandReputationESGBlog-DaPe249d.js.gz                         12.84kb / gzip: 3.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CaseStudiesResourcesPage-DQfBmDiJ.js.gz                       12.78kb / gzip: 3.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CaptionCallFCCSettlementBlog-BpevTgj9.js.gz                   13.90kb / gzip: 3.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CertificateDestructionPage-BsrXgxfm.js.gz                     2.05kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CaptionCallSettlementBlog-DqmJbyrG.js.gz                      9.81kb / gzip: 2.67kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CCPAViolationBlog-CTcw-7Pc.js.gz                              14.92kb / gzip: 3.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CertificateGenerationPage-Bz3GpOhk.js.gz                      14.01kb / gzip: 3.26kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/blogPosts-CPCaLxry.js.gz                                      56.68kb / gzip: 11.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CertifiedITADReasonsBlog-cFGyYJdS.js.gz                       13.33kb / gzip: 3.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChainCustodyPage-Ckgr-Lwf.js.gz                               5.83kb / gzip: 1.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChromebookDataRisksBlog-CPI-VC58.js.gz                        13.89kb / gzip: 4.01kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudConsolePage-CVnf5i8q.js.gz                               2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChangeHealthcareAttackBlog-u3MqlOGh.js.gz                     20.76kb / gzip: 5.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CheckoutPage-D1e9v5q8.js.gz                                   18.92kb / gzip: 4.78kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CommonCriteriaBlog-B3QXNmd4.js.gz                             12.06kb / gzip: 3.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CommonCriteriaCertifiedDataWipingBlog-U_x6EQ7T.js.gz          8.01kb / gzip: 2.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudConsoleGuide-DJefpFW_.js.gz                              19.89kb / gzip: 4.04kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChainOfCustodyBlog-Q0sIu_HQ.js.gz                             12.82kb / gzip: 3.47kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudErasurePage-cdRDE4Tg.js.gz                               13.50kb / gzip: 3.03kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComparisonPage-DY5oAsjb.js.gz                                 4.92kb / gzip: 1.67kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComparisonTablePage-DIH_v3rV.js.gz                            2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComplianceExportPage-pcrRWo60.js.gz                           1.96kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudMigrationBlog-BaJnMrzV.js.gz                             4.78kb / gzip: 1.59kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComplianceResourcesPage-BihwgqL2.js.gz                        13.10kb / gzip: 3.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CookiePolicyPage-gVcjx0Om.js.gz                               10.25kb / gzip: 2.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComplianceStandardsPage-s8M9Rax4.js.gz                        11.29kb / gzip: 1.99kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CrushingMethodPage-DyUvwqVi.js.gz                             2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptographicEraseBlog-C1vNkl9y.js.gz                         9.55kb / gzip: 2.79kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CommonIssuesPage-fhx8S-A0.js.gz                               19.84kb / gzip: 6.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompleteDSecureNetworkFile-CAV7cVFt.js.gz                     28.33kb / gzip: 9.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptographicEraseNISTBlog-DexzEhcu.js.gz                     9.83kb / gzip: 3.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoEraseSSD-BM87pAMb.js.gz                                 11.00kb / gzip: 3.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoBenefitsPage-B9Q467uG.js.gz                             2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ContactPage-BK8fd0MA.js.gz                                    35.49kb / gzip: 7.59kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoImportancePage-BocCauDn.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CustomAlgorithmsPage-Dz3aihh4.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoVerificationPage-ahdfDy9y.js.gz                         2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoProcessPage-Dg86cdFE.js.gz                              2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CustomDashboardsPage-B18YProZ.js.gz                           2.06kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CorporateITAssetRisksBlog-DXijrjCZ.js.gz                      12.69kb / gzip: 3.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CustomConfigurationsPage-CfIsRQgV.js.gz                       8.47kb / gzip: 1.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompliancePage-DEaby8GM.js.gz                                 14.87kb / gzip: 4.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptographicErasurePage-BcMLlJCF.js.gz                       20.13kb / gzip: 4.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataErasureDisasterRecoveryBlog-C9cMzJCc.js.gz                14.33kb / gzip: 3.67kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CybersecurityDataDestructionBlog-Cf3I2FOo.js.gz               15.83kb / gzip: 4.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataDeletionMythsBlog-DYHisO9G.js.gz                          15.35kb / gzip: 3.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataErasureForNonProfits-XO1qSqOx.js.gz                       10.25kb / gzip: 3.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataDestructionBestPracticesBlog-CBdjydj5.js.gz               16.87kb / gzip: 4.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DarkDataRisksBlog-Bcm0H6ap.js.gz                              16.85kb / gzip: 4.03kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataHoardingBlog-DgJQJ2yr.js.gz                               8.90kb / gzip: 2.72kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataEraserSoftwarePage-Cv546Z6Q.js.gz                         33.05kb / gzip: 8.80kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataRemediationErasureBlog-D0hZA77A.js.gz                     12.97kb / gzip: 3.29kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataErasureMythsBlog-qMtYXXIe.js.gz                           16.71kb / gzip: 4.33kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataMinimizationBlog-n1D4C6l5.js.gz                           15.82kb / gzip: 4.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DegaussingMethodPage-pza_pNNO.js.gz                           2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataHygieneFrameworkPage-BkfxGNAw.js.gz                       6.50kb / gzip: 2.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataHoardingRisksBlog-DHcRa_Bb.js.gz                          16.16kb / gzip: 5.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataPrivacyObligationsBlog-B7d1SiOO.js.gz                     14.75kb / gzip: 3.69kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataDisposalGuidelinesBlog-BQxINU95.js.gz                     15.30kb / gzip: 4.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeletionVsErasureBlog-CvKCXw2u.js.gz                          15.38kb / gzip: 4.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataRetentionPrivacyBlog-AQD_1uqg.js.gz                       15.22kb / gzip: 3.70kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DestructionStandardsPage-Dhg2mfak.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataRemanenceBlog-Cu40M1Zs.js.gz                              12.55kb / gzip: 3.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DellDataWipeAlternativeBlog-BiKU9h4S.js.gz                    11.94kb / gzip: 3.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeletedFilesTruthBlog-D3Hf0ubR.js.gz                          16.78kb / gzip: 4.08kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataGuardianAwardPage-DcMRDDUO.js.gz                          45.43kb / gzip: 10.43kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeploymentOptionsBlog-dM0Vwu0l.js.gz                          10.33kb / gzip: 2.53kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DegaussingRisksBlog-B7aXdZwo.js.gz                            20.51kb / gzip: 4.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataSanitizationComplianceBlog-CmpVa-Zl.js.gz                 21.16kb / gzip: 6.02kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DestructionQualityPage-DcL1FOm_.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DellDataWipeVsDSecureBlog-dca0y9YS.js.gz                      8.34kb / gzip: 2.70kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DiagnosticsPage-DPrnqOuf.js.gz                                2.95kb / gzip: 1.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DestructionUseCasesPage-F7uqnn2F.js.gz                        2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Dod3passPage-gcOZTnu7.js.gz                                   2.08kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DodStandardsPage-DAUHCHsP.js.gz                               2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DiagnosticsErasureITADBlog-BVldIZOZ.js.gz                     12.78kb / gzip: 3.95kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DigitalDivideBlog-57j5CpVq.js.gz                              10.90kb / gzip: 3.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DoDVsIEEEDataSanitizationBlog-BdOw-n8P.js.gz                  6.86kb / gzip: 2.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DownloadInstallerPage-DhLwu1BU.js.gz                          4.11kb / gzip: 1.49kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeviceSelectionPage-DxTtewbQ.js.gz                            3.91kb / gzip: 1.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/demoData-Dw95hARX.js.gz                                       21.81kb / gzip: 5.05kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Dod7passPage-C0rXsmqz.js.gz                                   2.08kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DownloadAgentPage-ecYC9X80.js.gz                              10.19kb / gzip: 3.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DoDWipingStandardBlog-Ch2uMqqs.js.gz                          15.53kb / gzip: 4.12kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/downloadUtils-D2pvXcwO.js.gz                                  1.06kb / gzip: 0.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DocumentationResourcesPage-CT4iOd6W.js.gz                     4.70kb / gzip: 1.54kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DoDVsIEEEBlog-DQKARo3n.js.gz                                  25.83kb / gzip: 5.14kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DownloadPage-nQCALMmV.js.gz                                   10.06kb / gzip: 3.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DSecureOperationsBlog-DGFpnCjm.js.gz                          11.29kb / gzip: 3.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DSecureIntegrationPage-D1ePXxkK.js.gz                         2.02kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EditUser-Fhv0ulxN.js.gz                                       7.22kb / gzip: 2.25kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DSecureFAQPage-CWJgP7z6.js.gz                                 21.14kb / gzip: 3.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EditGroup-PTssr7oR.js.gz                                      7.66kb / gzip: 2.54kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseBenefitsPage-eUH-e_G_.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EducationPage-CvQGGdKd.js.gz                                  13.11kb / gzip: 4.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EducationDataDestructionBlog-CbyOjfBC.js.gz                   12.62kb / gzip: 3.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DumpsterDivingDataBreachBlog-CcB_cnWA.js.gz                   15.53kb / gzip: 4.58kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseServersPage-D9ekjGra.js.gz                          8.32kb / gzip: 1.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnquiryForm-CnwVBJK_.js.gz                                    10.29kb / gzip: 3.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnhancedUserDashboard-idctUtQm.js.gz                          14.08kb / gzip: 3.42kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseIntegrationPage-CBS3C0qS.js.gz                      2.26kb / gzip: 0.91kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseSolutionsPage-Z9XwGfGz.js.gz                        7.77kb / gzip: 2.66kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EraseDataPcLaptopDesktopBlog-fwATtzWp.js.gz                   6.61kb / gzip: 2.31kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EndOfLifeDataSecurityBlog-D-eBENK0.js.gz                      16.31kb / gzip: 4.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnvironmentalConsiderationsPage-DO6vZj30.js.gz                2.17kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnvironmentalImpactPage-B76sz_r3.js.gz                        2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterprisePage-Bi10soJF.js.gz                                 5.94kb / gzip: 1.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureAsAServiceDSecureBlog-CgI96aXj.js.gz                   8.15kb / gzip: 3.09kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasurePreferencesPage-B0iY_RHW.js.gz                         2.05kb / gzip: 0.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DriveEraserPage-Dx5TZvtm.js.gz                                66.13kb / gzip: 14.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EditSubuser-nG6jQTMF.js.gz                                    7.29kb / gzip: 2.33kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EraseMacDataSafelyUsingDSecureBlog-DCYX5Yuv.js.gz             9.77kb / gzip: 3.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureProcessPage-Z12a0SW8.js.gz                             2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureReportsPage-BTg0gPcv.js.gz                             2.05kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ESGReportBlog-BpiyHsiV.js.gz                                  15.48kb / gzip: 4.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureVerificationBlog-B_Xqg0JQ.js.gz                        14.65kb / gzip: 3.67kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureBestPracticesBlog-DWgXSlIy.js.gz                       13.65kb / gzip: 3.33kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ESGDataErasureBlog-1YrravRQ.js.gz                             12.69kb / gzip: 3.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FaqsPage-RoECfLQr.js.gz                                       2.06kb / gzip: 0.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureVsDestructionBlog-BiObtgJB.js.gz                       16.62kb / gzip: 4.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialVerificationPage-zHThBHeP.js.gz                      2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FAQsPage-9A8S96HR.js.gz                                       10.30kb / gzip: 3.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialDataBreachCaseStudyBlog-MQUhOmM5.js.gz               14.05kb / gzip: 4.05kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FileEraserGuide-CraysSQq.js.gz                                19.18kb / gzip: 4.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErrorCodesPage-mzpAJdGm.js.gz                                 29.41kb / gzip: 8.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirewallConfigPage-DFqfl89m.js.gz                             2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialSolutionsPage-TdTTwdNr.js.gz                         7.88kb / gzip: 2.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EUCSRDBlog-B8PLpDmZ.js.gz                                     16.99kb / gzip: 4.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirstRunPage-D7qOAVOn.js.gz                                   2.09kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirewallSetupPage-Cuqy78XK.js.gz                              8.24kb / gzip: 2.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FailurePage-nXHFXUxg.js.gz                                    23.70kb / gzip: 5.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FragmentVerificationPage-D7H4g5_U.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ForumPage-BtSwa8fX.js.gz                                      7.66kb / gzip: 2.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialServices-Dg-oieya.js.gz                              7.31kb / gzip: 2.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FlatIcons-BEnXtIsc.js.gz                                      13.61kb / gzip: 3.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirstScanPage-CW_Lma7D.js.gz                                  9.06kb / gzip: 2.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirstTimeSetupPage-tfKPZn6J.js.gz                             21.08kb / gzip: 5.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FutureTrendsPage-C-HrTnxz.js.gz                               2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GdprVerificationPage-CwH_ESml.js.gz                           2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FutureOfDataDestructionBlog-DkzntdOH.js.gz                    14.74kb / gzip: 3.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FounderPage-CeVMCJMr.js.gz                                    4.38kb / gzip: 1.80kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FreeVsProEraserBlog-DfahMhoQ.js.gz                            12.95kb / gzip: 3.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FileEraserPage-CrQaF16P.js.gz                                 57.94kb / gzip: 14.52kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GetStartedPage-iSrxXhK_.js.gz                                 12.09kb / gzip: 3.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FutureDataDestructionBlog-Dsy5B6qF.js.gz                      23.17kb / gzip: 5.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GDPRSevenYearsBlog-D01-vdL1.js.gz                             16.54kb / gzip: 4.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GenerateReport-Cg5R-2MS.js.gz                                 13.92kb / gzip: 3.49kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GlossaryPage-DJ_OO-W-.js.gz                                   4.97kb / gzip: 2.17kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentDefensePage-B4qQObmX.js.gz                          2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentVerificationPage-DFocARw7.js.gz                     2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HddDestructionPage-CQJrrG6M.js.gz                             2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovDeviceTheftBlog-BGw1xipI.js.gz                             16.88kb / gzip: 4.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentPage-DBiuYOn6.js.gz                                 10.20kb / gzip: 3.29kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HardwareDiagnosticsBlog-CA17fUQn.js.gz                        8.97kb / gzip: 2.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GeneralSettingsPage-ooXZGLhi.js.gz                            2.06kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HardwareSanitizationPage-CiEDJFVz.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GreenITPracticesBlog-B44B6Pwr.js.gz                           8.53kb / gzip: 2.69kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentDeviceTheftBlog-Dci25TLQ.js.gz                      16.81kb / gzip: 4.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareDestructionPage-CXA-5Uoz.js.gz                      2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentITDisposalBlog-_TjFUAdT.js.gz                       14.69kb / gzip: 3.59kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareRansomwareLessonsBlog-DAC3mVSV.js.gz                9.58kb / gzip: 3.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareDataBreachCaseStudyBlog-DPsjjDqS.js.gz              15.55kb / gzip: 4.31kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareVerificationPage-CyYlwDFS.js.gz                     2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareServices-TXoy3O8m.js.gz                             9.29kb / gzip: 2.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareSolutionsPage-NXv0vAFA.js.gz                        4.60kb / gzip: 1.75kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HardwareDiagnosticsITADComplianceBlog-DIpniExX.js.gz          6.34kb / gzip: 2.33kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HelpManualIndexPage-SX3Qkl93.js.gz                            15.37kb / gzip: 2.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HelpManualPage-S6BCxG_B.js.gz                                 16.10kb / gzip: 4.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HiddenDiskAreasBlog-aYqTx1EC.js.gz                            15.91kb / gzip: 4.18kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HIPAAComplianceErasureBlog-BgYu40_1.js.gz                     15.12kb / gzip: 3.80kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HowToEraseMacBlog-DXpMQ3ar.js.gz                              20.75kb / gzip: 4.89kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ImplementationConsiderationsPage-BBYY_c2X.js.gz               2.17kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/imagePlaceholders-DvEV_Mkx.js.gz                              1.38kb / gzip: 0.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HexViewerBlog-DuOc904M.js.gz                                  5.22kb / gzip: 1.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IndustryUseCasesPage-ByQAqCbJ.js.gz                           2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IncinerationMethodPage-CKxh6Dp8.js.gz                         2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IndustryApplicationsPage-C5AN6FIV.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationProgressPage-YFYSmnA7.js.gz                       4.28kb / gzip: 1.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ImplementationPracticesPage-CoKPsZrh.js.gz                    2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationSettingsPage-C4fb1d_C.js.gz                       4.00kb / gzip: 1.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IPadTabletErasureBlog-01_2Hxaq.js.gz                          15.83kb / gzip: 3.68kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationPage-gzyrzUJA.js.gz                               19.83kb / gzip: 4.89kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADChallengesBlog-BQACiG9m.js.gz                             4.78kb / gzip: 1.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InternetRequirementsPage-CA-L-Qe0.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationPathPage-DGzF73lK.js.gz                           2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ItadDatacentersPage-BNCgf2Q0.js.gz                            2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADEnvironmentalBlog-CSnhnXBm.js.gz                          11.91kb / gzip: 3.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationGuideDetailed-B8kleoFL.js.gz                      15.64kb / gzip: 2.99kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HomePage-DDN6Ql-i.js.gz                                       50.84kb / gzip: 6.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAMDisposalGuideBlog-4vSFaD69.js.gz                          18.18kb / gzip: 4.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADMarketGrowthBlog-C6XXInJD.js.gz                           16.79kb / gzip: 4.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADProcurementBlog-BAC38xv3.js.gz                            13.52kb / gzip: 4.02kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADSolution-DiCOOi-L.js.gz                                   12.97kb / gzip: 3.66kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KeyActivationPage-hb5ekBj6.js.gz                              4.93kb / gzip: 1.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAMDataBreachBlog-BQNjhCnB.js.gz                             13.92kb / gzip: 3.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KnowledgeBasePage-Dg9CBKIi.js.gz                              9.05kb / gzip: 2.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADSelectionGuideBlog-DpWRRsD_.js.gz                         15.01kb / gzip: 4.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAssetReuseBlog-BPr7Bwz2.js.gz                               8.12kb / gzip: 2.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LegalEthicalErasureBlog-DbllS3Gi.js.gz                        9.50kb / gzip: 2.81kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KeyDestructionVerifyPage-BMd0zV7f.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAssetLifecycleBlog-Bhl-ZbFz.js.gz                           18.25kb / gzip: 4.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LegalEthicalDataErasureBlog-DcINNo-0.js.gz                    7.78kb / gzip: 2.67kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LicenseActivationPage-DFnLLTWB.js.gz                          4.37kb / gzip: 1.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KeyboardShortcutsPage-oSGoLdjC.js.gz                          2.14kb / gzip: 0.89kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LimitationsPage-DDRQehdD.js.gz                                2.10kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LicenseAgreementPage-BxE4ycsx.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LegalPolicy-CPuF1bfw.js.gz                                    6.54kb / gzip: 1.92kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LicenseTroubleshootingPage-BGLzyVrp.js.gz                     2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LinuxSystemsPage-BYMzs4NX.js.gz                               15.08kb / gzip: 4.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LooseDrivesErasureGuideBlog-_uJRmmx4.js.gz                    15.89kb / gzip: 4.37kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosAppleSiliconPage-Cbb_3WQq.js.gz                          2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/M1MacErasureIssuesBlog-DaupOhaK.js.gz                         14.05kb / gzip: 3.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosBestPracticesPage-DcO9tSZc.js.gz                         2.13kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosBuiltinToolsPage-CKHCQ4I5.js.gz                          2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacM1ErasureKnownIssues-mKNXB2w5.js.gz                        9.32kb / gzip: 2.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LoginPage-P2pU6u6T.js.gz                                      21.82kb / gzip: 5.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosCryptoErasurePage-DXx8UtRf.js.gz                         2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosArchitecturePage-DiI1BsmW.js.gz                          2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosEnterprisePage-DltJ1sI2.js.gz                            2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacEraseGuide-BJPRgKYf.js.gz                                  8.70kb / gzip: 2.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosCompliancePage-Bk8jI-bK.js.gz                            2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosFaqPage-14Ll4NcL.js.gz                                   2.08kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosIntroductionPage-KyAohYnC.js.gz                          2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosExternalMediaPage-D3wizyfj.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosFilesystemsPage-DDn0TZ7v.js.gz                           2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosEncryptionPage-gJRDogcW.js.gz                            2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosMethodsComparisonPage-BTkWtlF3.js.gz                     2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosSsdConsiderationsPage-7jZVC5m8.js.gz                     2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosRisksPage-DmSI-5j4.js.gz                                 2.09kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosResourcesPage-CbCHpdkI.js.gz                             2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosPreparationPage-qoe3eY69.js.gz                           2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosIntelProceduresPage-DYZsvO-b.js.gz                       2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosSoftwareErasurePage-Ctl23d7d.js.gz                       2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosSystemDrivePage-OeDS1e70.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosFilevaultPage-B4bkcKhx.js.gz                             2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosThirdPartyPage-DJ_BJgmK.js.gz                            2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosToolSelectionPage-eeqVAKhA.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacOSSystemsPage-D5TuMErj.js.gz                               21.27kb / gzip: 5.14kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MarriottSettlementBlog-Cqmzzbqj.js.gz                         13.83kb / gzip: 3.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosStoragePage-D3BXAU2J.js.gz                               2.10kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MainDashboardPage-DxSgHuO6.js.gz                              4.48kb / gzip: 1.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosTroubleshootingPage-eikZJ2PH.js.gz                       2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MediaSanitizationNeedBlog-_nPdh41T.js.gz                      13.12kb / gzip: 3.91kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosVerificationPage-C0Mskb-Z.js.gz                          2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ManualPageTemplate-BXUT4PvH.js.gz                             8.22kb / gzip: 2.28kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDevicesPage-CC_jKCqU.js.gz                              7.15kb / gzip: 2.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDestructionPage-Qv3tqFRI.js.gz                          2.13kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MDMDetectionBlog-Ic8JcBmJ.js.gz                               16.72kb / gzip: 4.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDiagnosticsRevolutionBlog-CD2S5FLD.js.gz                13.77kb / gzip: 3.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MorganStanleyFineBlog-nDrzK7xC.js.gz                          15.91kb / gzip: 4.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDiagnosticsBenefitsBlog-BOffBllk.js.gz                  12.91kb / gzip: 3.25kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MorganStanleyDataBreachBlog-Cx0cnaKQ.js.gz                    13.41kb / gzip: 3.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPDataErasureBlog-BKN9jv1L.js.gz                             13.75kb / gzip: 3.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NavigationPage-af9knkWf.js.gz                                 3.87kb / gzip: 1.26kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPErasureServiceBlog-Iz9jQfAl.js.gz                          18.04kb / gzip: 4.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileErasureGuideBlog-rp5iVmg0.js.gz                         13.66kb / gzip: 3.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPErasureAsAServiceBlog-BN9ShxLz.js.gz                       6.68kb / gzip: 2.74kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NetworkFileManualLayout-BhgoAs6S.js.gz                        6.07kb / gzip: 2.01kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPSecurityBlog-CjGV8NRT.js.gz                                11.14kb / gzip: 3.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NCUAThirdPartyDataDisposalBlog-mnd5-239.js.gz                 5.89kb / gzip: 2.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NistModernStoragePage-CCrC4ZNO.js.gz                          2.13kb / gzip: 0.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NistGuidelinesPage-ll8CQC5r.js.gz                             2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NewErasurePage-DTZtRGBK.js.gz                                 9.29kb / gzip: 2.56kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NISTClearPurgeBlog-BoBeXxW2.js.gz                             21.77kb / gzip: 4.47kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OnsiteOffsitePage-CKe0GomW.js.gz                              2.11kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NISTTestedErasureSoftwareBlog-CHNR0xbX.js.gz                  14.90kb / gzip: 3.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NotFoundPage-Dj6EPNBM.js.gz                                   10.31kb / gzip: 2.45kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OperationHistoryPage-3s5G-bYb.js.gz                           2.08kb / gzip: 0.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NCUAGuidelinesBlog-M1BSNIvt.js.gz                             19.46kb / gzip: 4.68kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Nist80088Page-B6Awp0_j.js.gz                                  2.09kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NISTVsIEEEBlog-DNtWxLVB.js.gz                                 16.82kb / gzip: 3.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OrderSuccessPage-DJ5JdIxb.js.gz                               18.38kb / gzip: 4.01kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ParentalControlsPage-BZ8zFQHY.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteGuide-CktNBhzu.js.gz                                 17.13kb / gzip: 3.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteIntroductionPage-BQ3w8N7u.js.gz                      2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OpticalTapeDestructionPage-3V4MyiE2.js.gz                     2.16kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteRisksPage-CXz3fwrY.js.gz                             2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteGuideBlog-DcqTj7bK.js.gz                             14.68kb / gzip: 3.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OnsiteVsOffsiteDestructionBlog-COPjAgWW.js.gz                 15.08kb / gzip: 4.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwritePatternsPage-BsHCQby-.js.gz                          27.68kb / gzip: 5.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PatternSelectionPage-DCareyFi.js.gz                           2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PaymentSetupPage-CT91ooTN.js.gz                               12.12kb / gzip: 3.45kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceAnalysisPage-Bj6EOhuf.js.gz                        2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceTroubleshootingPage-CCetMYAs.js.gz                 2.17kb / gzip: 0.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceTuningPage-Eic0ff0H.js.gz                          2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PaymentPage-CBM8-TvU.js.gz                                    17.14kb / gzip: 4.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PartnershipForm-D6872yd8.js.gz                                26.84kb / gzip: 7.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceOptimizationPage-if61pGhD.js.gz                    23.98kb / gzip: 5.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PHIErasureBlog-DSm4CPIf.js.gz                                 7.46kb / gzip: 2.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PhysicalDestructionOverviewPage-C-odiY_7.js.gz                2.17kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PhysicalInspectionPage-3rv5ecIz.js.gz                         2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceTradeoffsPage-BaYk5Wmj.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PartnersPage-CQh8muM8.js.gz                                   59.33kb / gzip: 13.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PIIDisposalBreachBlog-BB5AMmcq.js.gz                          16.09kb / gzip: 3.89kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PostInstallOptimizationPage-Dzxg2o7I.js.gz                    2.15kb / gzip: 0.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PostCovidDataDisposalBlog-DW22gKm0.js.gz                      12.05kb / gzip: 3.33kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PreInstallationPage-C3UQKsJa.js.gz                            12.99kb / gzip: 3.00kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PrivacyPolicy-DgEz6Bu0.js.gz                                  8.04kb / gzip: 2.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PhysicalDestructionPage-DNNTz4uh.js.gz                        25.17kb / gzip: 5.54kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PrivateCloudSetup-BUXcRo7j.js.gz                              13.31kb / gzip: 3.71kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProductImage-DylS7H74.js.gz                                   1.39kb / gzip: 0.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RealTimeMonitoringPage-Crrmi6WI.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PrivateCloudBlog-Ck3S7uo1.js.gz                               16.04kb / gzip: 3.91kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProgrammaticSolutionPage-CcuCFLPJ.js.gz                       21.50kb / gzip: 7.80kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PricingAndPlanPage-D8O49jHS.js.gz                             37.67kb / gzip: 9.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/QuickstartPage-CrHS_xMO.js.gz                                 5.75kb / gzip: 2.02kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProductVideosPage-B4mCF5C2.js.gz                              16.14kb / gzip: 4.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProgressMonitoringPage-CkE3xKdH.js.gz                         4.00kb / gzip: 1.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RealtimeProtectionPage-CETl6gVR.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReadbackVerificationPage-GimcPiCB.js.gz                       2.41kb / gzip: 0.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RegulatoryCompliancePage-Djo-7hox.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RecoveryProceduresPage-BnOddjrx.js.gz                         6.44kb / gzip: 1.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/purify.es-BjU8njvH.js.gz                                      21.86kb / gzip: 8.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RegisterPage-B0ty2tBm.js.gz                                   12.42kb / gzip: 3.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteManagementPage-Dtii_1pe.js.gz                           9.47kb / gzip: 1.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteWorkDataErasureBlog-BOHnXewY.js.gz                      17.38kb / gzip: 4.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteWorkDataErasureBestPracticesBlog-CqgOfRrQ.js.gz         5.82kb / gzip: 2.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReportsPage-BgcWtGW3.js.gz                                    10.02kb / gzip: 2.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RetainOSGuide-BIOe5xN-.js.gz                                  14.11kb / gzip: 2.74kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteWipingSoftwareBlog-KSMpLSNd.js.gz                       15.53kb / gzip: 3.92kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReturningLeasedITHardwareDosAndDonts-oeFAFfIn.js.gz           6.36kb / gzip: 2.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Reveal-CCdmooSy.js.gz                                         1.20kb / gzip: 0.55kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ResellerProfitsBlog-PaUMTySr.js.gz                            4.79kb / gzip: 1.62kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ResourcesPage-DplHZNql.js.gz                                  25.44kb / gzip: 6.31kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SanitizationConceptsPage-CXFQQSY3.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScanExclusionsPage-Bez7Yv_I.js.gz                             2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReportManagementPage-CJlgZK4z.js.gz                           11.61kb / gzip: 2.74kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SamplingMethodologyPage-DF5usksO.js.gz                        2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScanResultsPage-tBsWJLde.js.gz                                2.10kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RightToRepairBlog-C78AxZtG.js.gz                              5.35kb / gzip: 1.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SearchBar-CHX8MNFX.js.gz                                      6.32kb / gzip: 2.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Scope3EmissionsBlog-D5H47Ypf.js.gz                            13.13kb / gzip: 3.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScanSchedulingPage-CZmtXw3O.js.gz                             2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScheduleSettingsPage-C4DuoV9T.js.gz                           17.97kb / gzip: 3.09kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureFileEraseBlog-Fdw0bhPT.js.gz                            17.29kb / gzip: 4.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureEraseHDDSDD-qAqMvgy3.js.gz                              23.82kb / gzip: 4.80kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScriptingAutomationPage-C85Lnv4g.js.gz                        11.10kb / gzip: 2.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SearchDemoPage-BjyUiz12.js.gz                                 9.88kb / gzip: 3.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SECComplianceBlog-CAOxHOWI.js.gz                              13.25kb / gzip: 3.28kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurePHIePHIErasureBlog-n-_jqIZO.js.gz                       11.73kb / gzip: 3.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurityProtocolsPage-3tp4bnep.js.gz                          2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurityAssurancePage-DhTiyocv.js.gz                          2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServerErasureBlog-1rWiFZWq.js.gz                              12.21kb / gzip: 3.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurityPage-9Sbs1bE6.js.gz                                   23.03kb / gzip: 3.42kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServiceWorkflowPage-B5mbZTON.js.gz                            2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureITAssetDisposalBlog-CfvallJ9.js.gz                      14.74kb / gzip: 3.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureSmartphoneErasureBlog-CXG3ixxx.js.gz                    12.24kb / gzip: 3.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ShreddingMethodPage-u3xvhbjl.js.gz                            2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServicesPage-B9Tk_hR_.js.gz                                   32.48kb / gzip: 6.69kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureHDDDisposalBlog-jffjswnW.js.gz                          16.72kb / gzip: 4.54kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServiceProvidersSolutionsPage-B8mOvBVm.js.gz                  7.67kb / gzip: 2.57kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SoftwareSupportedMediaPage-hvlPJOCz.js.gz                     2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ShadowDataBlog-BEaYafXb.js.gz                                 15.65kb / gzip: 4.17kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SetupWizardPage-CTZAn7Sr.js.gz                                17.72kb / gzip: 3.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ShadowDataRisksBlog-Dzq8TwyC.js.gz                            13.40kb / gzip: 3.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StartErasurePage-I2QowJZl.js.gz                               3.90kb / gzip: 1.26kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SsdDestructionPage-B3sc2Fut.js.gz                             2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SolutionsPage-BOihUOra.js.gz                                  28.12kb / gzip: 5.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SSDWipeBIOSBlog-DiVjeuKE.js.gz                                15.87kb / gzip: 3.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SoftwareVerificationPage-DVoPizoF.js.gz                       2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SsdChallengesPage-DQ2BIo7z.js.gz                              2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StandardsComparisonPage-F9Jju1Ho.js.gz                        2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatisticalConfidencePage-B7eTKQol.js.gz                      2.14kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatusIndicatorsPage-CjN3LPgw.js.gz                           4.08kb / gzip: 1.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatutoryComplianceBlog-BwXFVhqw.js.gz                        7.71kb / gzip: 2.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SupportedDevicesPage-DuzTFTIc.js.gz                           2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SSDWipeGuideBlog-BJMFegrZ.js.gz                               16.14kb / gzip: 3.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatusPage-kTq9PQca.js.gz                                     17.11kb / gzip: 3.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatutoryRegulatoryComplianceDataErasureBlog-DukaWVEs.js.gz   10.81kb / gzip: 3.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SystemScanningPage-keFPe_Po.js.gz                             2.11kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SustainableITReuseBlog-CFeKyqgF.js.gz                         12.79kb / gzip: 4.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SystemRequirementsPage-Dgz_70T4.js.gz                         14.02kb / gzip: 2.95kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SupportedEncryptionPage-vmKp2Z5q.js.gz                        2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SystemSetupPage-DwRetqB1.js.gz                                17.49kb / gzip: 3.58kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UltratestComparisonBlog-CLCfOcLE.js.gz                        10.43kb / gzip: 2.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/TechnicalDocumentation-BgmN9XUH.js.gz                         9.80kb / gzip: 3.00kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserManagementPage-q8mlqF4T.js.gz                             2.03kb / gzip: 0.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/TermsOfServicePage-CgRcEV8h.js.gz                             8.47kb / gzip: 2.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UseCasesPage-ByXs69ea.js.gz                                   2.08kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/TrustCenterPage-BfsYiC3O.js.gz                                7.78kb / gzip: 2.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UseCasesPage-5vzuVC7z.js.gz                                   5.28kb / gzip: 1.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserProfilePage-POjEjREb.js.gz                                2.10kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SupportPage-BLGem_ld.js.gz                                    29.01kb / gzip: 7.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserInterfacePage-BVg_GEiX.js.gz                              6.56kb / gzip: 2.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserDashboard-CalhmkUD.js.gz                                  20.21kb / gzip: 4.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/useFormSubmission-CQx8ETML.js.gz                              6.60kb / gzip: 2.71kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/useSubusers-DWjYdVfX.js.gz                                    16.75kb / gzip: 5.45kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-lucide-CG8LUvEh.js.gz                                  15.75kb / gzip: 5.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationImportancePage-5XAfZElu.js.gz                     2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationChallengesPage-XWjbFezI.js.gz                     2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationStandardsPage-Ci4iYJsP.js.gz                      2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationRisksPage-CYPF-CiW.js.gz                          2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationOverviewPage-dLBBhvVx.js.gz                       2.91kb / gzip: 1.06kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationMethodsPage-ayYrVRjO.js.gz                        21.04kb / gzip: 5.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationLogsPage-BSWZfCVE.js.gz                           2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VisualConfirmationPage-DHwT0zh2.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VirusDefinitionsPage-2OldVCkq.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VpnSetupPage-BEjFPe87.js.gz                                   2.09kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhitepaperPage-B5_3wMMi.js.gz                                 6.77kb / gzip: 2.42kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhatIsDSecurePage-Bzdhfp1c.js.gz                              6.84kb / gzip: 1.75kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationToolsPage-CRjVxAYJ.js.gz                          2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhitepapersResourcesPage-BMED3HHy.js.gz                       14.39kb / gzip: 3.92kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhyPhysicalDestructionPage-DYq_tYcI.js.gz                     2.16kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBootableUsbPage-mVwfPlMt.js.gz                         2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhyDSecurePage-CVSe_bRf.js.gz                                 5.50kb / gzip: 1.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationTechniquesPage-Cs7lCIcy.js.gz                     2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Windows10EOSBlog-Dznn8kca.js.gz                               13.97kb / gzip: 4.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBestPracticesPage-BcclRoAm.js.gz                       2.13kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsCompliancePage-eT5-ijgb.js.gz                          2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBitlockerPage-CX1dAsyQ.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsDsecureEraserPage-BGs4pjh3.js.gz                       2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsCommandLinePage-CCV8isZX.js.gz                         2.66kb / gzip: 1.14kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsCryptoErasurePage-CTOOFghe.js.gz                       2.61kb / gzip: 1.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsEnterprisePage-B0XWwZQ8.js.gz                          5.83kb / gzip: 1.68kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBuiltinToolsPage-B86mzZW1.js.gz                        5.82kb / gzip: 1.72kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsFaqPage-CiHvglNF.js.gz                                 2.09kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsFilesystemsPage-C156ZJ6l.js.gz                         4.88kb / gzip: 1.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VMErasureBlog-Dn6R1Yj-.js.gz                                  16.83kb / gzip: 4.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsPreparationPage-DnVXyAwa.js.gz                         4.19kb / gzip: 1.47kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsResidualDataPage-BFxIpgT4.js.gz                        2.23kb / gzip: 0.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsResourcesPage-rncE2VVa.js.gz                           2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsIntroductionPage-BVFqW7IU.js.gz                        4.51kb / gzip: 1.62kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsMethodsComparisonPage-DR0AzO3V.js.gz                   2.23kb / gzip: 0.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSoftwareErasurePage-ByZsNCaw.js.gz                     2.23kb / gzip: 0.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsRisksPage-DQxMN4Yr.js.gz                               5.21kb / gzip: 1.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSedDrivesPage-CSGzswC5.js.gz                           2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsThirdPartyPage-BmfM8pfx.js.gz                          2.12kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSsdErasurePage-Caq5o6u-.js.gz                          2.12kb / gzip: 0.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSystemFilesPage-BKa5cTy5.js.gz                         4.64kb / gzip: 1.60kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsTroubleshootingPage-BjH-314z.js.gz                     4.12kb / gzip: 1.54kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsStoragePage-FvXkgfiZ.js.gz                             4.75kb / gzip: 1.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeMacM1-xv2AqsG-.js.gz                                      6.98kb / gzip: 2.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeSSDFromBIOSGuide-nTDxcx7d.js.gz                           9.02kb / gzip: 2.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSystemsPage-CbsHB3G-.js.gz                             20.97kb / gzip: 5.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeComputerDonatingBlog-DxfxRLep.js.gz                       12.20kb / gzip: 3.25kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsVerificationPage-DwJI6ywJ.js.gz                        2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeSASDrive-C22Si4K8.js.gz                                   1.71kb / gzip: 0.74kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/sw.js.gz                                                         3.70kb / gzip: 1.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WorkingWithDSecurePage-Cpcnup53.js.gz                         24.93kb / gzip: 5.33kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ZeroTrustDisposalBlog-CdYd6eLI.js.gz                          13.01kb / gzip: 3.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WorldClassNPSBlog-BL_OYFtA.js.gz                              15.71kb / gzip: 4.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminDashboard-DzkvbhtF.js.gz                                 156.95kb / gzip: 29.17kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/css/index-CI-5qasw.css.gz                                        220.55kb / gzip: 29.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompleteDSecureManual-CqjcVH4k.js.gz                          93.60kb / gzip: 20.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompleteDSecureDriveManual-mpmy2g-L.js.gz                     87.75kb / gzip: 19.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-d3-B-0eV2cV.js.gz                                      61.55kb / gzip: 20.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/html2canvas.esm-DuDNxuTR.js.gz                                195.85kb / gzip: 45.95kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-jszip-pako-B17UPQeM.js.gz                              141.21kb / gzip: 43.75kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-framer-NNJ8pppZ.js.gz                                  119.30kb / gzip: 39.45kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-maps-DGPsaKPl.js.gz                                    153.34kb / gzip: 44.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/index.es-CZ89koOn.js.gz                                       154.69kb / gzip: 51.49kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-recharts-D2GKuNyK.js.gz                                248.93kb / gzip: 74.03kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-jspdf-DdRXegag.js.gz                                   385.34kb / gzip: 124.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminReports-DSLG-ald.js.gz                                   511.10kb / gzip: 145.04kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-exceljs-BgP9EHGp.js.gz                                 914.47kb / gzip: 262.74kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/index-COnDZrlU.js.gz                                          1168.76kb / gzip: 308.55kb
+
+
+node.exe : 
+At C:\Users\nishu\AppDa
+ta\Roaming\npm\npm.ps1:
+24 char:5
++     & "node$exe"  "$b
+asedir/node_modules/npm
+/bin/npm-cli.js" $args
++     ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (:String) [],    
+ RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+ ERROR  [31m✗[39m 
+Build failed in 28.58s
+
+
+ ERROR  [31merror 
+during build:
+[31msrc/pages/admin/Ad
+minReports.tsx (7:9): 
+"Roles" is not 
+exported by "src/pages/
+dashboards/AdminDashboa
+rd.tsx", imported by "s
+rc/pages/admin/AdminRep
+orts.tsx".[31m
+file: [36mC:/Users/nis
+hu/Downloads/dsecure-fr
+ontend/src/pages/admin/
+AdminReports.tsx:7:9[3
+1m
+[33m
+5: import { Helmet } 
+from 
+'react-helmet-async'
+6: import { 
+useNavigate } from 
+'react-router-dom'
+7: import { Roles, 
+buildReportFilter } 
+from '@/pages/dashboard
+s/AdminDashboard'
+            ^
+8: 
+9: type RoleType = 
+typeof Roles[keyof 
+typeof Roles];
+[31m
+    at getRollupError (
+file:///C:/Users/nishu/
+Downloads/dsecure-front
+end/node_modules/rollup
+/dist/es/shared/parseAs
+t.js:401:41)
+    at error (file:///C
+:/Users/nishu/Downloads
+/dsecure-frontend/node_
+modules/rollup/dist/es/
+shared/parseAst.js:397:
+42)
+    at Module.error (fi
+le:///C:/Users/nishu/Do
+wnloads/dsecure-fronten
+d/node_modules/rollup/d
+ist/es/shared/node-entr
+y.js:16994:16)
+    at 
+Module.traceVariable (f
+ile:///C:/Users/nishu/D
+ownloads/dsecure-fronte
+nd/node_modules/rollup/
+dist/es/shared/node-ent
+ry.js:17450:29)
+    at ModuleScope.find
+Variable (file:///C:/Us
+ers/nishu/Downloads/dse
+cure-frontend/node_modu
+les/rollup/dist/es/shar
+ed/node-entry.js:15113:
+39)
+    at FunctionScope.fi
+ndVariable (file:///C:/
+Users/nishu/Downloads/d
+secure-frontend/node_mo
+dules/rollup/dist/es/sh
+ared/node-entry.js:5674
+:38)
+    at FunctionBodyScop
+e.findVariable (file://
+/C:/Users/nishu/Downloa
+ds/dsecure-frontend/nod
+e_modules/rollup/dist/e
+s/shared/node-entry.js:
+5674:38)
+    at ReturnValueScope
+.findVariable (file:///
+C:/Users/nishu/Download
+s/dsecure-frontend/node
+_modules/rollup/dist/es
+/shared/node-entry.js:5
+674:38)
+    at FunctionBodyScop
+e.findVariable (file://
+/C:/Users/nishu/Downloa
+ds/dsecure-frontend/nod
+e_modules/rollup/dist/e
+s/shared/node-entry.js:
+5674:38)
+    at 
+MemberExpression.bind (
+file:///C:/Users/nishu/
+Downloads/dsecure-front
+end/node_modules/rollup
+/dist/es/shared/node-en
+try.js:7388:49)[39m
+
+

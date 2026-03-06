@@ -71,6 +71,10 @@ const HomePage = memo(function HomePage() {
                   <Link
                     to="/data-eraser-software"
                     className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center"
+                    aria-label={t(
+                      "home.exploreDataEraserSoftware",
+                      "Explore D-Secure Data Eraser Software",
+                    )}
                   >
                     <HoverIcon>
                       {(filled) => (
@@ -80,7 +84,7 @@ const HomePage = memo(function HomePage() {
                         />
                       )}
                     </HoverIcon>
-                    {t("home.exploreProducts")}
+                    {t("home.exploreDataEraserSoftware", "Explore Data Eraser")}
                   </Link>
                   <Link
                     to="/pricing-and-plan"

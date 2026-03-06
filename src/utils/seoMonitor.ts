@@ -225,14 +225,10 @@ class SEOMonitor {
       this.behaviorMetrics.timeOnPage = timeOnPage;
 
       // Determine if this is a bounce (less than 10 seconds and no interactions)
-      this.behaviorMetrics.bounceRate = timeOnPage < 10000 && this.interactions === 0;
+      this.behaviorMetrics.bounceRate =
+        timeOnPage < 10000 && this.interactions === 0;
 
-      navigator.sendBeacon('/analytics', JSON.stringify({
-        timeOnPage,
-        bounceRate: this.behaviorMetrics.bounceRate,
-        scrollDepth: this.behaviorMetrics.scrollDepth,
-        interactions: this.interactions
-      }));
+      // Removed broken /analytics beacon to prevent 404 network calls
     });
   }
 

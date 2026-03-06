@@ -1,0 +1,1056 @@
+﻿
+> d-secure-frontend@0.1.0 build
+> node scripts/update-sitemap.js && vite build
+
+📖 Reading App.tsx from: C:\Users\nishu\Downloads\dsecure-frontend\src\App.tsx
+📄 File size: 53746 bytes
+✅ Extracted 0 unique valid routes from 1 matches.
+📖 Reading App.tsx from: C:\Users\nishu\Downloads\dsecure-frontend\src\App.tsx
+📄 File size: 53746 bytes
+✅ Extracted 0 unique valid routes from 1 matches.
+✅ Sitemap updated successfully!
+📅 Updated with date: 2026-03-06
+📄 Total URLs: 11
+Sitemap location: C:\Users\nishu\Downloads\dsecure-frontend\public\sitemap.xml
+✅ Robots.txt timestamp updated!
+[36mvite v7.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 3821 modules transformed.
+rendering chunks...
+[2mdist/[22m[32mindex.html                                                   [39m[1m[2m  7.98 kB[22m[1m[22m
+[2mdist/[22m[35mcss/EnquiryForm-CKdOKdrR.css                                 [39m[1m[2m  6.97 kB[22m[1m[22m
+[2mdist/[22m[35mcss/vendor-maps-Dgihpmma.css                                 [39m[1m[2m 15.04 kB[22m[1m[22m
+[2mdist/[22m[35mcss/index-CI-5qasw.css                                       [39m[1m[2m225.84 kB[22m[1m[22m
+[2mdist/[22m[36mjs/roleHelper-Cv-3tCs5.js                                    [39m[1m[2m  0.42 kB[22m[1m[22m
+[2mdist/[22m[36mjs/productIcons-DkuZ-EPG.js                                  [39m[1m[2m  0.75 kB[22m[1m[22m
+[2mdist/[22m[36mjs/useErasureMetrics-BjCRuKWt.js                             [39m[1m[2m  0.83 kB[22m[1m[22m
+[2mdist/[22m[36mjs/useUserMachines-CUHnaL9-.js                               [39m[1m[2m  0.89 kB[22m[1m[22m
+[2mdist/[22m[36mjs/downloadUtils-D2pvXcwO.js                                 [39m[1m[2m  1.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/Reveal-fe8Gldks.js                                        [39m[1m[2m  1.22 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ProductImage-BTLvCuJ6.js                                  [39m[1m[2m  1.41 kB[22m[1m[22m
+[2mdist/[22m[36mjs/imagePlaceholders-DvEV_Mkx.js                             [39m[1m[2m  1.41 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WipeSASDrive-BGGtxu-W.js                                  [39m[1m[2m  1.67 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ComplianceExportPage-DeidFXuN.js                          [39m[1m[2m  1.93 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DSecureIntegrationPage-BlR_PoTe.js                        [39m[1m[2m  1.99 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsVerificationPage-DvasubHo.js                       [39m[1m[2m  1.99 kB[22m[1m[22m
+[2mdist/[22m[36mjs/UserManagementPage-BqH0vogq.js                            [39m[1m[2m  2.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErasureReportsPage-BwCtkK5-.js                            [39m[1m[2m  2.02 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CertificateDestructionPage-B92AwBdZ.js                    [39m[1m[2m  2.02 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErasurePreferencesPage-CRKgw3gE.js                        [39m[1m[2m  2.02 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FaqsPage-DbJJtNTh.js                                      [39m[1m[2m  2.02 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GeneralSettingsPage-BK_BtMJ2.js                           [39m[1m[2m  2.03 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CustomDashboardsPage-Kd0qEt_G.js                          [39m[1m[2m  2.03 kB[22m[1m[22m
+[2mdist/[22m[36mjs/dashboardFilters-CWyjd489.js                              [39m[1m[2m  2.03 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OperationHistoryPage-D6NSduY1.js                          [39m[1m[2m  2.04 kB[22m[1m[22m
+[2mdist/[22m[36mjs/UseCasesPage-BzL-UlXs.js                                  [39m[1m[2m  2.04 kB[22m[1m[22m
+[2mdist/[22m[36mjs/Dod3passPage-DKnhUbFX.js                                  [39m[1m[2m  2.05 kB[22m[1m[22m
+[2mdist/[22m[36mjs/Dod7passPage-CKXPpzrj.js                                  [39m[1m[2m  2.05 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosFaqPage-DNdBp6Lh.js                                  [39m[1m[2m  2.05 kB[22m[1m[22m
+[2mdist/[22m[36mjs/Nist80088Page-CbnhdzCz.js                                 [39m[1m[2m  2.05 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FirstRunPage-r0Jesbn_.js                                  [39m[1m[2m  2.06 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosRisksPage-DLK_B0lE.js                                [39m[1m[2m  2.06 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VpnSetupPage-Cfqr1Gg1.js                                  [39m[1m[2m  2.06 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsFaqPage-jqGBqMtu.js                                [39m[1m[2m  2.06 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosStoragePage-CGMR35Us.js                              [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/UserProfilePage-CV0wwSPb.js                               [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LimitationsPage-BXfWEadM.js                               [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AutoUpdatesPage-Df21nXLg.js                               [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/BankingModePage-7AHyzwaB.js                               [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ScanResultsPage-Dzb8NGyY.js                               [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptoProcessPage-AJjML1VQ.js                             [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosFilevaultPage-BUK6sdIa.js                            [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosResourcesPage-DY5i4yGm.js                            [39m[1m[2m  2.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CloudConsolePage-Dt1HV-ei.js                              [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FutureTrendsPage-GIHGJJPz.js                              [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErasureProcessPage-SraoQ-gv.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosCompliancePage-eU5J70If.js                           [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosEncryptionPage-DgVAV0JL.js                           [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosEnterprisePage-D5fvEBxB.js                           [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ActivationKeyPage-DgPyUCuH.js                             [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/BestPracticesPage-CN1W9SZJ.js                             [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DodStandardsPage-C0cksqmv.js                              [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OnsiteOffsitePage-DhgIkYyZ.js                             [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SsdChallengesPage-q_z-xCql.js                             [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsResourcesPage-BV0OBOIm.js                          [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosFilesystemsPage-B-JnvYb9.js                          [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosPreparationPage-qJrEaCK9.js                          [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosThirdPartyPage-s5QZBUnq.js                           [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OverwriteRisksPage-aNLPuPUq.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ServiceWorkflowPage-DJWVzR66.js                           [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/BankingFinancePage-B-XMiYuo.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptoBenefitsPage-Cjybm2B_.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FirewallConfigPage-DP6Gu7Nm.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ScanExclusionsPage-Bd3VomkL.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ScanSchedulingPage-Dj0uZmEb.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SystemScanningPage-Dra_TOB2.js                            [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsBitlockerPage-BXavld3c.js                          [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsDsecureEraserPage-D3EVyte9.js                      [39m[1m[2m  2.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosArchitecturePage-FfhzjQ3f.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosIntroductionPage-N0ESOG7W.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosSystemDrivePage-DRXOomFH.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosVerificationPage-qLD4nE5W.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ComparisonTablePage-B76ynhdV.js                           [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ItadDatacentersPage-B_UkiyYv.js                           [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NistGuidelinesPage-DDPqR6am.js                            [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsSsdErasurePage-jwF1IDMD.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsCompliancePage-QPv4nAwC.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsSedDrivesPage-DzLX2sb9.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CrushingMethodPage-CeKYPgJX.js                            [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HddDestructionPage-Bzu_-lWW.js                            [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/InstallationPathPage-kRXfqeb_.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LicenseAgreementPage-C-ssogc6.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SsdDestructionPage-B9XPFSnO.js                            [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosAppleSiliconPage-21ENGTpt.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosBuiltinToolsPage-Qdbq8MZG.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecurityAssurancePage-SGJ_poBO.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AuditPreparationPage-Yes_iZq3.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptoImportancePage-Iymwkqo9.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CustomAlgorithmsPage-CYSiAkxE.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ParentalControlsPage-Br3UM92S.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SupportedDevicesPage-Ds4NbUIH.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VirusDefinitionsPage-DOfi6bBh.js                          [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsThirdPartyPage-C6UCgm2w.js                         [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ShreddingMethodPage-IDdf5S4Q.js                           [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosBestPracticesPage-TV8elHIx.js                        [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosCryptoErasurePage-DAwPFoqb.js                        [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosExternalMediaPage-BZtzpt9X.js                        [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosToolSelectionPage-CaPheHKH.js                        [39m[1m[2m  2.09 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GovernmentDefensePage-B0enKuGs.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/IndustryUseCasesPage-DADvkj06.js                          [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PatternSelectionPage-DXtkJMc0.js                          [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecurityProtocolsPage-ZrPCbcug.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsBootableUsbPage-BY330pyD.js                        [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DegaussingMethodPage-Dv5_PXEn.js                          [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GdprVerificationPage-B1NIY0Mk.js                          [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationLogsPage-BpGMJPbt.js                          [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosTroubleshootingPage-CPjPs9Cv.js                      [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DestructionQualityPage-CCa2a8ip.js                        [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnterpriseBenefitsPage-B6-EDQtV.js                        [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RealtimeProtectionPage-Cd0q4mNx.js                        [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VisualConfirmationPage-v4iPL1uJ.js                        [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PerformanceTuningPage-BNce-qpZ.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AuditVerificationPage-5xeOoECZ.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MobileDestructionPage-DxkkENVL.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationRisksPage-CNt3pWK4.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationToolsPage-B1v5HtiV.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosIntelProceduresPage-W6KSXWdz.js                      [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosSoftwareErasurePage-BleSF6fi.js                      [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnvironmentalImpactPage-DpOCFI76.js                       [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NistModernStoragePage-BynTuGHg.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RealTimeMonitoringPage-Dm8CwjRT.js                        [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SamplingMethodologyPage-CNJQ94nT.js                       [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/StandardsComparisonPage-D_lRQaoN.js                       [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SupportedEncryptionPage-CBPfr5gx.js                       [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/KeyboardShortcutsPage-Chnlv6bY.js                         [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsBestPracticesPage-27nx10Y2.js                      [39m[1m[2m  2.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AccessVerificationPage-C5dNyz3-.js                        [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptoVerificationPage-BYeQ_IRQ.js                        [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/IncinerationMethodPage-TclspUVG.js                        [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PhysicalInspectionPage-DcaF0K0s.js                        [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DestructionStandardsPage-PhNqW4wq.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DestructionUseCasesPage-CSoyd3BA.js                       [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HardwareSanitizationPage-DGmziEgM.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/IndustryApplicationsPage-xpuTs9wP.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/InternetRequirementsPage-vTUtRAbn.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RegulatoryCompliancePage-DkmYNE50.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SanitizationConceptsPage-C_-BCqkJ.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosMethodsComparisonPage-n5IN1-Xi.js                    [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacosSsdConsiderationsPage-C-0RwLLG.js                    [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/KeyDestructionVerifyPage-BG-guqV_.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/StatisticalConfidencePage-D2_aWbRP.js                     [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PerformanceTradeoffsPage-9IdPsakr.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FragmentVerificationPage-ChOJRdzy.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LicenseTroubleshootingPage-CPytww9V.js                    [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PerformanceAnalysisPage-D-LByv14.js                       [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SoftwareVerificationPage-UfKOBV84.js                      [39m[1m[2m  2.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OverwriteIntroductionPage-BlJMIJt-.js                     [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FinancialVerificationPage-CQU_Cndt.js                     [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HealthcareDestructionPage-DA3yrCNr.js                     [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationStandardsPage-Cjk7L66L.js                     [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ImplementationPracticesPage-gM3bAjUK.js                   [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SoftwareSupportedMediaPage-6nzMzKEO.js                    [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GovernmentVerificationPage-CQ6dDXSR.js                    [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HealthcareVerificationPage-BX8lQuF4.js                    [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationChallengesPage-BVcY9VuT.js                    [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationImportancePage-C9-ptugW.js                    [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationTechniquesPage-k0CRa8iV.js                    [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PostInstallOptimizationPage-C7-sEWS7.js                   [39m[1m[2m  2.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OpticalTapeDestructionPage-Im6Lq_fY.js                    [39m[1m[2m  2.13 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WhyPhysicalDestructionPage-Djv52A1s.js                    [39m[1m[2m  2.13 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnvironmentalConsiderationsPage-DQOyl4Vz.js               [39m[1m[2m  2.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PerformanceTroubleshootingPage-Dp2PTQfS.js                [39m[1m[2m  2.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ImplementationConsiderationsPage-B61G7oTC.js              [39m[1m[2m  2.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PhysicalDestructionOverviewPage-hZC-giXY.js               [39m[1m[2m  2.15 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsResidualDataPage-CcvnNqQD.js                       [39m[1m[2m  2.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ApiIntegrationPage-08tPIJ61.js                            [39m[1m[2m  2.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsSoftwareErasurePage-CYnYt_Ov.js                    [39m[1m[2m  2.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsMethodsComparisonPage-BdKnAHPZ.js                  [39m[1m[2m  2.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnterpriseIntegrationPage-A-D8JZFx.js                     [39m[1m[2m  2.24 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ReadbackVerificationPage-16dTYTlN.js                      [39m[1m[2m  2.39 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsCryptoErasurePage-B42G9TOJ.js                      [39m[1m[2m  2.59 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsCommandLinePage-EQdkqYlU.js                        [39m[1m[2m  2.64 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-query-OwXlhCYc.js                                  [39m[1m[2m  2.74 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationOverviewPage-CBgoc7BO.js                      [39m[1m[2m  2.90 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DiagnosticsPage-DfPBkhTw.js                               [39m[1m[2m  2.94 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NavigationPage-DXVuAnUz.js                                [39m[1m[2m  3.89 kB[22m[1m[22m
+[2mdist/[22m[36mjs/StartErasurePage-CWAQce8s.js                              [39m[1m[2m  3.91 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DeviceSelectionPage-CSx0SOXz.js                           [39m[1m[2m  3.92 kB[22m[1m[22m
+[2mdist/[22m[36mjs/InstallationSettingsPage-D7J3N9Az.js                      [39m[1m[2m  4.01 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ProgressMonitoringPage-DW307mAw.js                        [39m[1m[2m  4.01 kB[22m[1m[22m
+[2mdist/[22m[36mjs/StatusIndicatorsPage-nCYReK66.js                          [39m[1m[2m  4.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DownloadInstallerPage-B_9zvn1i.js                         [39m[1m[2m  4.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsTroubleshootingPage-DVwEPJIN.js                    [39m[1m[2m  4.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsPreparationPage-CF2Yu9B_.js                        [39m[1m[2m  4.21 kB[22m[1m[22m
+[2mdist/[22m[36mjs/useSubusers-AFhw7AFs.js                                   [39m[1m[2m  4.28 kB[22m[1m[22m
+[2mdist/[22m[36mjs/InstallationProgressPage-H1pGSB0H.js                      [39m[1m[2m  4.30 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LicenseActivationPage-BS8O8qvu.js                         [39m[1m[2m  4.39 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FounderPage-CgUV55fB.js                                   [39m[1m[2m  4.40 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MainDashboardPage-A5LDMUzM.js                             [39m[1m[2m  4.51 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsIntroductionPage-5IrX73k9.js                       [39m[1m[2m  4.54 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HealthcareSolutionsPage-BULY_kZa.js                       [39m[1m[2m  4.63 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsSystemFilesPage-DZLwO-l4.js                        [39m[1m[2m  4.67 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DocumentationResourcesPage-DP0R62Gm.js                    [39m[1m[2m  4.74 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsStoragePage-LMnCJlgU.js                            [39m[1m[2m  4.78 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITADChallengesBlog-DqlCcUcw.js                            [39m[1m[2m  4.81 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CloudMigrationBlog-BUkq3-RW.js                            [39m[1m[2m  4.81 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ResellerProfitsBlog-Cx-604YL.js                           [39m[1m[2m  4.82 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsFilesystemsPage-0d33CZ47.js                        [39m[1m[2m  4.92 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ComparisonPage-a12-QdDb.js                                [39m[1m[2m  4.95 kB[22m[1m[22m
+[2mdist/[22m[36mjs/KeyActivationPage-C8WRMLzc.js                             [39m[1m[2m  4.97 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GlossaryPage-CXiueEVl.js                                  [39m[1m[2m  5.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AuditTrailsPage-C5NnCtnQ.js                               [39m[1m[2m  5.21 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsRisksPage-cvg8l1Pn.js                              [39m[1m[2m  5.25 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HexViewerBlog-C3fGL6HQ.js                                 [39m[1m[2m  5.27 kB[22m[1m[22m
+[2mdist/[22m[36mjs/UseCasesPage-6nckBGVA.js                                  [39m[1m[2m  5.32 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RightToRepairBlog-BtP1FkS9.js                             [39m[1m[2m  5.40 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WhyDSecurePage-CnKDL7ZX.js                                [39m[1m[2m  5.55 kB[22m[1m[22m
+[2mdist/[22m[36mjs/QuickstartPage-C6SZPpUv.js                                [39m[1m[2m  5.67 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RemoteWorkDataErasureBestPracticesBlog-Dl7jQU4g.js        [39m[1m[2m  5.88 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsBuiltinToolsPage-Cf8xOqko.js                       [39m[1m[2m  5.88 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsEnterprisePage-B5Okfhyf.js                         [39m[1m[2m  5.88 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ChainCustodyPage-Bcw_EaPZ.js                              [39m[1m[2m  5.89 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NCUAThirdPartyDataDisposalBlog-Btf7xLpe.js                [39m[1m[2m  5.95 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnterprisePage-DDboq1yT.js                                [39m[1m[2m  6.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NetworkFileManualLayout-bD-WzQSe.js                       [39m[1m[2m  6.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AddGroup-9ZIaV3YA.js                                      [39m[1m[2m  6.38 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HardwareDiagnosticsITADComplianceBlog-C_OWamf_.js         [39m[1m[2m  6.41 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ReturningLeasedITHardwareDosAndDonts-CBX18dwi.js          [39m[1m[2m  6.43 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SearchBar-BGAP-_nz.js                                     [39m[1m[2m  6.46 kB[22m[1m[22m
+[2mdist/[22m[36mjs/UserInterfacePage-DdjUt7yi.js                             [39m[1m[2m  6.51 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RecoveryProceduresPage-D7ZtFCdK.js                        [39m[1m[2m  6.51 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataHygieneFrameworkPage-CczdjBNz.js                      [39m[1m[2m  6.57 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LegalPolicy-C5YmCHvo.js                                   [39m[1m[2m  6.61 kB[22m[1m[22m
+[2mdist/[22m[36mjs/useFormSubmission-BnrOxfOp.js                             [39m[1m[2m  6.64 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EraseDataPcLaptopDesktopBlog-C-2E6MTl.js                  [39m[1m[2m  6.69 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MSPErasureAsAServiceBlog-DVpP3JE-.js                      [39m[1m[2m  6.76 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AIOverviewPage-P7TxM3xx.js                                [39m[1m[2m  6.84 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WhitepaperPage-CnftxI0k.js                                [39m[1m[2m  6.84 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WhatIsDSecurePage-BImLNJyE.js                             [39m[1m[2m  6.92 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DoDVsIEEEDataSanitizationBlog-s-55eICe.js                 [39m[1m[2m  6.95 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WipeMacM1-BSrWtDXe.js                                     [39m[1m[2m  7.06 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MobileDevicesPage-CY8cs9NQ.js                             [39m[1m[2m  7.23 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EditUser-Bum6o34Z.js                                      [39m[1m[2m  7.31 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EditSubuser-CKd228tS.js                                   [39m[1m[2m  7.38 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FinancialServices-CeX7r-jq.js                             [39m[1m[2m  7.40 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PHIErasureBlog-CSKsjJFe.js                                [39m[1m[2m  7.56 kB[22m[1m[22m
+[2mdist/[22m[36mjs/adminDashboardAPI-BBC9KD3k.js                             [39m[1m[2m  7.67 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ForumPage-D0lpMG8H.js                                     [39m[1m[2m  7.75 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EditGroup-NB6JovIr.js                                     [39m[1m[2m  7.76 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ServiceProvidersSolutionsPage-JV5NUncg.js                 [39m[1m[2m  7.78 kB[22m[1m[22m
+[2mdist/[22m[36mjs/StatutoryComplianceBlog-CwgjKoup.js                       [39m[1m[2m  7.81 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnterpriseSolutionsPage-Ex2VpChZ.js                       [39m[1m[2m  7.87 kB[22m[1m[22m
+[2mdist/[22m[36mjs/TrustCenterPage-CRFMAIP6.js                               [39m[1m[2m  7.88 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LegalEthicalDataErasureBlog-ECktJl0T.js                   [39m[1m[2m  7.89 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FinancialSolutionsPage-C03OIAsb.js                        [39m[1m[2m  7.99 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CommonCriteriaCertifiedDataWipingBlog-CHJX41gv.js         [39m[1m[2m  8.12 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PrivacyPolicy-Dp8PK_EW.js                                 [39m[1m[2m  8.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITAssetReuseBlog-Bh6WGbsi.js                              [39m[1m[2m  8.23 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErasureAsAServiceDSecureBlog-CZx2CQPw.js                  [39m[1m[2m  8.26 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FirewallSetupPage-DGfxJdql.js                             [39m[1m[2m  8.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ManualPageTemplate-C7d2Nf8W.js                            [39m[1m[2m  8.42 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnterpriseServersPage-_yf8fTpW.js                         [39m[1m[2m  8.44 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DellDataWipeVsDSecureBlog-BMEHa42I.js                     [39m[1m[2m  8.46 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CustomConfigurationsPage-DYjduOjK.js                      [39m[1m[2m  8.59 kB[22m[1m[22m
+[2mdist/[22m[36mjs/TermsOfServicePage-BeHtPQTt.js                            [39m[1m[2m  8.59 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GreenITPracticesBlog-CJvO8aOS.js                          [39m[1m[2m  8.66 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminShell-D6NoIwhb.js                                    [39m[1m[2m  8.73 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacEraseGuide-BnADGSfh.js                                 [39m[1m[2m  8.82 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminProfileEdit-CipahvPU.js                              [39m[1m[2m  8.83 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataHoardingBlog-CBtPI5Xx.js                              [39m[1m[2m  9.03 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HardwareDiagnosticsBlog-Ct8lwR1_.js                       [39m[1m[2m  9.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WipeSSDFromBIOSGuide-9tnQeuBT.js                          [39m[1m[2m  9.15 kB[22m[1m[22m
+[2mdist/[22m[36mjs/KnowledgeBasePage-BpMPyhQB.js                             [39m[1m[2m  9.18 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FirstScanPage-Bg5Q5QTz.js                                 [39m[1m[2m  9.19 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminDownloads-BzqZvfbp.js                                [39m[1m[2m  9.39 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HealthcareServices-DXpZlrIy.js                            [39m[1m[2m  9.42 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NewErasurePage-DGwpdS6b.js                                [39m[1m[2m  9.43 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacM1ErasureKnownIssues-Db_ssfNe.js                       [39m[1m[2m  9.47 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RemoteManagementPage-NpS08Qh9.js                          [39m[1m[2m  9.61 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LegalEthicalErasureBlog-dkuAF2FL.js                       [39m[1m[2m  9.65 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AddUser-Cv-P_WtO.js                                       [39m[1m[2m  9.70 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptographicEraseBlog-CH-VRkCj.js                        [39m[1m[2m  9.70 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HealthcareRansomwareLessonsBlog-Bu7qJHEz.js               [39m[1m[2m  9.73 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EraseMacDataSafelyUsingDSecureBlog-BFwLEuOq.js            [39m[1m[2m  9.93 kB[22m[1m[22m
+[2mdist/[22m[36mjs/TechnicalDocumentation-B4-PPCwK.js                        [39m[1m[2m  9.95 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CaptionCallSettlementBlog-B5-bnbVD.js                     [39m[1m[2m  9.96 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptographicEraseNISTBlog-C2MOOlnx.js                    [39m[1m[2m  9.99 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SearchDemoPage-DvuCvPpO.js                                [39m[1m[2m 10.03 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ReportsPage-BHVipE2w.js                                   [39m[1m[2m 10.18 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DownloadPage-DBbEaMNo.js                                  [39m[1m[2m 10.23 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DownloadAgentPage-pQ_fjNmR.js                             [39m[1m[2m 10.35 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GovernmentPage-B8OLHmK2.js                                [39m[1m[2m 10.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataErasureForNonProfits-BKqvQH_X.js                      [39m[1m[2m 10.41 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CookiePolicyPage-C_G5UZkh.js                              [39m[1m[2m 10.41 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FAQsPage-BV0TXfSJ.js                                      [39m[1m[2m 10.46 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NotFoundPage-BINRss2x.js                                  [39m[1m[2m 10.48 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DeploymentOptionsBlog-CStmYuPi.js                         [39m[1m[2m 10.49 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnquiryForm-DKFltcIv.js                                   [39m[1m[2m 10.53 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ApiTestPage-yclde9Ed.js                                   [39m[1m[2m 10.56 kB[22m[1m[22m
+[2mdist/[22m[36mjs/UltratestComparisonBlog-y9MWc2To.js                       [39m[1m[2m 10.60 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminUsers-D2U2m2qI.js                                    [39m[1m[2m 10.79 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminPerformance-D-lqapF8.js                              [39m[1m[2m 10.84 kB[22m[1m[22m
+[2mdist/[22m[36mjs/StatutoryRegulatoryComplianceDataErasureBlog-Bfa1nHF1.js  [39m[1m[2m 10.99 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DigitalDivideBlog-DzJU4VMl.js                             [39m[1m[2m 11.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptoEraseSSD-CRxQVH2Q.js                                [39m[1m[2m 11.17 kB[22m[1m[22m
+[2mdist/[22m[36mjs/About-CrGvBLKG.js                                         [39m[1m[2m 11.21 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ScriptingAutomationPage-Begiw9mq.js                       [39m[1m[2m 11.28 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MSPSecurityBlog-CqY7OTNw.js                               [39m[1m[2m 11.33 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ComplianceStandardsPage-D9WNVQtT.js                       [39m[1m[2m 11.48 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DSecureOperationsBlog-B-CcNinZ.js                         [39m[1m[2m 11.48 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminSettings-a8kvb0ny.js                                 [39m[1m[2m 11.75 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ReportManagementPage-tzHbZpW-.js                          [39m[1m[2m 11.80 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecurePHIePHIErasureBlog-CcB5C4VZ.js                      [39m[1m[2m 11.93 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITADEnvironmentalBlog-Bh7CgVKJ.js                         [39m[1m[2m 12.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DellDataWipeAlternativeBlog-BceM6q3d.js                   [39m[1m[2m 12.15 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PostCovidDataDisposalBlog-D0y71al_.js                     [39m[1m[2m 12.26 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CommonCriteriaBlog-CV-aGYj7.js                            [39m[1m[2m 12.27 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GetStartedPage-92riWZD4.js                                [39m[1m[2m 12.30 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PaymentSetupPage-DNIUKjSj.js                              [39m[1m[2m 12.32 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WipeComputerDonatingBlog-DR-ihzkW.js                      [39m[1m[2m 12.41 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ServerErasureBlog-nD3vETCn.js                             [39m[1m[2m 12.42 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecureSmartphoneErasureBlog-DF3joiYx.js                   [39m[1m[2m 12.45 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RegisterPage-BKeJW5QL.js                                  [39m[1m[2m 12.63 kB[22m[1m[22m
+[2mdist/[22m[36mjs/BestErasureMethodBlog-DKi2XsNu.js                         [39m[1m[2m 12.65 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataRemanenceBlog-shDqo-7t.js                             [39m[1m[2m 12.77 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EducationDataDestructionBlog-BGZSyG4M.js                  [39m[1m[2m 12.84 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ESGDataErasureBlog-VixvvzWY.js                            [39m[1m[2m 12.91 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CorporateITAssetRisksBlog-9R5j_4V5.js                     [39m[1m[2m 12.91 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminReports-C1FCJVUQ.js                                  [39m[1m[2m 12.94 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CaseStudiesResourcesPage-CONSk8dw.js                      [39m[1m[2m 13.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DiagnosticsErasureITADBlog-D3a0w5Lw.js                    [39m[1m[2m 13.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SustainableITReuseBlog-D1OhBH1k.js                        [39m[1m[2m 13.02 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ChainOfCustodyBlog-COSAgEb3.js                            [39m[1m[2m 13.04 kB[22m[1m[22m
+[2mdist/[22m[36mjs/BrandReputationESGBlog-DvHWiEw3.js                        [39m[1m[2m 13.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MobileDiagnosticsBenefitsBlog-mpMnWw0F.js                 [39m[1m[2m 13.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FreeVsProEraserBlog-DmFWWkJM.js                           [39m[1m[2m 13.18 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataRemediationErasureBlog-DqLLbjHR.js                    [39m[1m[2m 13.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITADSolution-CPfs7g7i.js                                  [39m[1m[2m 13.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PreInstallationPage-vlTm_ewa.js                           [39m[1m[2m 13.22 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ZeroTrustDisposalBlog-DElBKw_y.js                         [39m[1m[2m 13.24 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ComplianceResourcesPage-Q6vQJCQk.js                       [39m[1m[2m 13.33 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EducationPage-Czockdy3.js                                 [39m[1m[2m 13.34 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MediaSanitizationNeedBlog-Dtxt3zeF.js                     [39m[1m[2m 13.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/Scope3EmissionsBlog-Dwwq9WIM.js                           [39m[1m[2m 13.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CarbonFootprintErasureBlog-B7L3Zv4M.js                    [39m[1m[2m 13.47 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SECComplianceBlog-DakGVTbV.js                             [39m[1m[2m 13.49 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PrivateCloudSetup-IlQHD-46.js                             [39m[1m[2m 13.54 kB[22m[1m[22m
+[2mdist/[22m[36mjs/BlogPage-BrPEHl9E.js                                      [39m[1m[2m 13.56 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CertifiedITADReasonsBlog-DnFO1t_0.js                      [39m[1m[2m 13.56 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AutomatedErasureBlog-Dw7f33Rz.js                          [39m[1m[2m 13.61 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ShadowDataRisksBlog-BMSEKGvG.js                           [39m[1m[2m 13.64 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MorganStanleyDataBreachBlog-Dv-GtYVs.js                   [39m[1m[2m 13.65 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CloudErasurePage-CX182HI9.js                              [39m[1m[2m 13.74 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITADProcurementBlog-CtJG5BsB.js                           [39m[1m[2m 13.77 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErasureBestPracticesBlog-B3QSrvzO.js                      [39m[1m[2m 13.89 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MobileErasureGuideBlog-DqFdtsuM.js                        [39m[1m[2m 13.91 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FlatIcons-DeNIggx3.js                                     [39m[1m[2m 13.93 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MSPDataErasureBlog-BO9aJM2I.js                            [39m[1m[2m 14.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MobileDiagnosticsRevolutionBlog-4hU0Qrgb.js               [39m[1m[2m 14.02 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MarriottSettlementBlog-CyVu1vHz.js                        [39m[1m[2m 14.08 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ChromebookDataRisksBlog-BjUJbrAt.js                       [39m[1m[2m 14.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GenerateReport-Cmvvz8IC.js                                [39m[1m[2m 14.15 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CaptionCallFCCSettlementBlog-nRbfUgSZ.js                  [39m[1m[2m 14.15 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITAMDataBreachBlog-CVdiH4KJ.js                            [39m[1m[2m 14.17 kB[22m[1m[22m
+[2mdist/[22m[36mjs/Windows10EOSBlog-BJK37kTs.js                              [39m[1m[2m 14.22 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CertificateGenerationPage-DfbRL5NQ.js                     [39m[1m[2m 14.26 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SystemRequirementsPage-D9sDVhVp.js                        [39m[1m[2m 14.28 kB[22m[1m[22m
+[2mdist/[22m[36mjs/M1MacErasureIssuesBlog-CqUPpAZP.js                        [39m[1m[2m 14.30 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FinancialDataBreachCaseStudyBlog-CX25qobH.js              [39m[1m[2m 14.31 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EnhancedUserDashboard-T4F15Go-.js                         [39m[1m[2m 14.34 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RetainOSGuide-CSwoxUrc.js                                 [39m[1m[2m 14.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataErasureDisasterRecoveryBlog-DuAFHAie.js               [39m[1m[2m 14.59 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WhitepapersResourcesPage-DoCOlEQw.js                      [39m[1m[2m 14.65 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminGroups-2m9xL91T.js                                   [39m[1m[2m 14.76 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErasureVerificationBlog-BBpVtM41.js                       [39m[1m[2m 14.92 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OverwriteGuideBlog-C-C9cjv3.js                            [39m[1m[2m 14.96 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GovernmentITDisposalBlog-CRDSpkdl.js                      [39m[1m[2m 14.96 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FutureOfDataDestructionBlog-CPlPVnxp.js                   [39m[1m[2m 15.01 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecureITAssetDisposalBlog-ChMz2BZ8.js                     [39m[1m[2m 15.01 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataPrivacyObligationsBlog-D0KM6404.js                    [39m[1m[2m 15.02 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CompliancePage-DaA3ItT2.js                                [39m[1m[2m 15.15 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NISTTestedErasureSoftwareBlog-Cju2ONfJ.js                 [39m[1m[2m 15.18 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CCPAViolationBlog-zoISP9Jd.js                             [39m[1m[2m 15.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITADSelectionGuideBlog-DDz28LGF.js                        [39m[1m[2m 15.29 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LinuxSystemsPage-CnsNUvPx.js                              [39m[1m[2m 15.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OnsiteVsOffsiteDestructionBlog-DGXxsqCw.js                [39m[1m[2m 15.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HIPAAComplianceErasureBlog-CYgZkDJI.js                    [39m[1m[2m 15.40 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataRetentionPrivacyBlog-CC2QLi0K.js                      [39m[1m[2m 15.50 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataDisposalGuidelinesBlog-j82S66S1.js                    [39m[1m[2m 15.59 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataDeletionMythsBlog-BJ08zeJI.js                         [39m[1m[2m 15.64 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HelpManualIndexPage-DlK7Atyw.js                           [39m[1m[2m 15.66 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DeletionVsErasureBlog-B4zsWPuR.js                         [39m[1m[2m 15.67 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ESGReportBlog-DyynlcNG.js                                 [39m[1m[2m 15.77 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RemoteWipingSoftwareBlog-45ydwzvT.js                      [39m[1m[2m 15.82 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DoDWipingStandardBlog-hE_1v8f5.js                         [39m[1m[2m 15.82 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DumpsterDivingDataBreachBlog-DIswJt79.js                  [39m[1m[2m 15.82 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HealthcareDataBreachCaseStudyBlog-D4mduozK.js             [39m[1m[2m 15.84 kB[22m[1m[22m
+[2mdist/[22m[36mjs/InstallationGuideDetailed-CiSEqy6I.js                     [39m[1m[2m 15.94 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ShadowDataBlog-YQaXlmdk.js                                [39m[1m[2m 15.94 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WorldClassNPSBlog-OZTpVuEU.js                             [39m[1m[2m 16.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataMinimizationBlog-VC1QIGMC.js                          [39m[1m[2m 16.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-icons-T3mvy2yw.js                                  [39m[1m[2m 16.13 kB[22m[1m[22m
+[2mdist/[22m[36mjs/IPadTabletErasureBlog-w2uqFHMQ.js                         [39m[1m[2m 16.13 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CybersecurityDataDestructionBlog-ky1UFi6F.js              [39m[1m[2m 16.13 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SSDWipeBIOSBlog-Dy8Mcnxy.js                               [39m[1m[2m 16.16 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LooseDrivesErasureGuideBlog-DCwaXVK5.js                   [39m[1m[2m 16.19 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HiddenDiskAreasBlog-DSpu5k25.js                           [39m[1m[2m 16.21 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MorganStanleyFineBlog-B81XBCKM.js                         [39m[1m[2m 16.21 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PrivateCloudBlog-xLy6hhCJ.js                              [39m[1m[2m 16.34 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PIIDisposalBreachBlog-PNYGrB94.js                         [39m[1m[2m 16.40 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HelpManualPage-swtZmxoQ.js                                [39m[1m[2m 16.40 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ProductVideosPage-Bre0We-N.js                             [39m[1m[2m 16.45 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SSDWipeGuideBlog-BXXjQrYn.js                              [39m[1m[2m 16.45 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataHoardingRisksBlog-Baun4AvL.js                         [39m[1m[2m 16.46 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EndOfLifeDataSecurityBlog-aDVfD4rm.js                     [39m[1m[2m 16.62 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GDPRSevenYearsBlog-Dc4C9JVJ.js                            [39m[1m[2m 16.85 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErasureVsDestructionBlog-B2S4LPzn.js                      [39m[1m[2m 16.93 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataErasureMythsBlog-CWnZrHfn.js                          [39m[1m[2m 17.03 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecureHDDDisposalBlog-CnmutRZJ.js                         [39m[1m[2m 17.04 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MDMDetectionBlog-DQTsP9nR.js                              [39m[1m[2m 17.04 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DeletedFilesTruthBlog-Cj-dNE-m.js                         [39m[1m[2m 17.10 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITADMarketGrowthBlog-DXXn-R48.js                          [39m[1m[2m 17.11 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GovernmentDeviceTheftBlog-Ba_CA0gu.js                     [39m[1m[2m 17.13 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NISTVsIEEEBlog-BR4oHpn7.js                                [39m[1m[2m 17.14 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VMErasureBlog-CmRLhHDj.js                                 [39m[1m[2m 17.15 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DarkDataRisksBlog-CI_vbSjK.js                             [39m[1m[2m 17.17 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataDestructionBestPracticesBlog-wi6Kx1-P.js              [39m[1m[2m 17.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/GovDeviceTheftBlog-DQmviHH-.js                            [39m[1m[2m 17.20 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminSessions-DCgd6WRA.js                                 [39m[1m[2m 17.26 kB[22m[1m[22m
+[2mdist/[22m[36mjs/EUCSRDBlog-DApQwzQN.js                                    [39m[1m[2m 17.32 kB[22m[1m[22m
+[2mdist/[22m[36mjs/StatusPage-4MzkTqzA.js                                    [39m[1m[2m 17.43 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OverwriteGuide-DRbYXL6V.js                                [39m[1m[2m 17.45 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PaymentPage-kakoVcqj.js                                   [39m[1m[2m 17.47 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecureFileEraseBlog-Up7wl04Y.js                           [39m[1m[2m 17.63 kB[22m[1m[22m
+[2mdist/[22m[36mjs/RemoteWorkDataErasureBlog-CqEKEljD.js                     [39m[1m[2m 17.72 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SystemSetupPage-CIpe3itu.js                               [39m[1m[2m 17.83 kB[22m[1m[22m
+[2mdist/[22m[36mjs/BatchOperationsPage-CbLmt9Qa.js                           [39m[1m[2m 18.00 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SetupWizardPage-EKPuC7mi.js                               [39m[1m[2m 18.07 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ScheduleSettingsPage-CZOScumG.js                          [39m[1m[2m 18.32 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MSPErasureServiceBlog-C_es4DoS.js                         [39m[1m[2m 18.40 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITAMDisposalGuideBlog-DxG3GcxM.js                         [39m[1m[2m 18.54 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ITAssetLifecycleBlog-CnUcRZ3y.js                          [39m[1m[2m 18.60 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OrderSuccessPage-CSKWHjBs.js                              [39m[1m[2m 18.74 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CheckoutPage-BRO9i-y-.js                                  [39m[1m[2m 19.29 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FileEraserGuide-ByeJFi0G.js                               [39m[1m[2m 19.55 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NCUAGuidelinesBlog-Dl7cEL6S.js                            [39m[1m[2m 19.85 kB[22m[1m[22m
+[2mdist/[22m[36mjs/InstallationPage-CI1iD9XS.js                              [39m[1m[2m 20.22 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CommonIssuesPage-Drid0gi5.js                              [39m[1m[2m 20.23 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CloudConsoleGuide-Dfr2Mc0m.js                             [39m[1m[2m 20.29 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CryptographicErasurePage-vX2vfaOf.js                      [39m[1m[2m 20.53 kB[22m[1m[22m
+[2mdist/[22m[36mjs/UserDashboard-CWsZCBnu.js                                 [39m[1m[2m 20.61 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DegaussingRisksBlog-bdOEJqXk.js                           [39m[1m[2m 20.92 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HowToEraseMacBlog-Dl2nIjIE.js                             [39m[1m[2m 21.16 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ChangeHealthcareAttackBlog-DwaqXWpx.js                    [39m[1m[2m 21.17 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WindowsSystemsPage-DtcJqbbp.js                            [39m[1m[2m 21.39 kB[22m[1m[22m
+[2mdist/[22m[36mjs/VerificationMethodsPage-bAGrr_hl.js                       [39m[1m[2m 21.46 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FirstTimeSetupPage-CqWeoxEV.js                            [39m[1m[2m 21.50 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DSecureFAQPage-DrOQ35-K.js                                [39m[1m[2m 21.57 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataSanitizationComplianceBlog-IVgtXITu.js                [39m[1m[2m 21.58 kB[22m[1m[22m
+[2mdist/[22m[36mjs/MacOSSystemsPage-C2VpL8wr.js                              [39m[1m[2m 21.70 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ProgrammaticSolutionPage-CFjZUPQl.js                      [39m[1m[2m 21.98 kB[22m[1m[22m
+[2mdist/[22m[36mjs/NISTClearPurgeBlog-P8ad4Agc.js                            [39m[1m[2m 22.21 kB[22m[1m[22m
+[2mdist/[22m[36mjs/LoginPage-RRcNvbAj.js                                     [39m[1m[2m 22.27 kB[22m[1m[22m
+[2mdist/[22m[36mjs/demoData-Dw95hARX.js                                      [39m[1m[2m 22.33 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecurityPage-BcRlXjl1.js                                  [39m[1m[2m 23.50 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FutureDataDestructionBlog-DsZ8mIm7.js                     [39m[1m[2m 23.65 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FailurePage-B8XPkcY0.js                                   [39m[1m[2m 24.19 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SecureEraseHDDSDD-Dn82NDK8.js                             [39m[1m[2m 24.30 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PerformanceOptimizationPage-EcOWPhmC.js                   [39m[1m[2m 24.48 kB[22m[1m[22m
+[2mdist/[22m[36mjs/WorkingWithDSecurePage-1RpInwvo.js                        [39m[1m[2m 25.44 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PhysicalDestructionPage-LkfyqiM0.js                       [39m[1m[2m 25.69 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ResourcesPage-B8Jg6lM3.js                                 [39m[1m[2m 25.97 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminMachines-Dy4AJVxR.js                                 [39m[1m[2m 26.17 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DoDVsIEEEBlog-HzReO210.js                                 [39m[1m[2m 26.36 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminSubusers-qjtzCLk4.js                                 [39m[1m[2m 27.01 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PartnershipForm-jsFf4CvQ.js                               [39m[1m[2m 27.37 kB[22m[1m[22m
+[2mdist/[22m[36mjs/OverwritePatternsPage-GxbsOHtl.js                         [39m[1m[2m 28.26 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SolutionsPage-DyxAtKE_.js                                 [39m[1m[2m 28.72 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CompleteDSecureNetworkFile-CyqcS0J9.js                    [39m[1m[2m 28.93 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminLicenses-DUziQAFQ.js                                 [39m[1m[2m 29.52 kB[22m[1m[22m
+[2mdist/[22m[36mjs/SupportPage-CS47O5wy.js                                   [39m[1m[2m 29.63 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ErrorCodesPage-DtEwIE0q.js                                [39m[1m[2m 30.03 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ServicesPage-BiAU-xBy.js                                  [39m[1m[2m 33.18 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataEraserSoftwarePage-BzxKxTDB.js                        [39m[1m[2m 33.76 kB[22m[1m[22m
+[2mdist/[22m[36mjs/ContactPage-BCYtl2AD.js                                   [39m[1m[2m 36.26 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PricingAndPlanPage-BdhZ5K7U.js                            [39m[1m[2m 38.49 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DataGuardianAwardPage-Dt6FCenR.js                         [39m[1m[2m 46.48 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminGroups-D3eFYi04.js                                   [39m[1m[2m 51.04 kB[22m[1m[22m
+[2mdist/[22m[36mjs/HomePage-Y76SwWFx.js                                      [39m[1m[2m 51.98 kB[22m[1m[22m
+[2mdist/[22m[36mjs/blogPosts-CPCaLxry.js                                     [39m[1m[2m 58.04 kB[22m[1m[22m
+[2mdist/[22m[36mjs/FileEraserPage-qSH0wIwd.js                                [39m[1m[2m 59.25 kB[22m[1m[22m
+[2mdist/[22m[36mjs/PartnersPage-DcdDth0Q.js                                  [39m[1m[2m 60.67 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminReports-oL2YJXah.js                                  [39m[1m[2m 61.66 kB[22m[1m[22m
+[2mdist/[22m[36mjs/DriveEraserPage-CyzKwOPo.js                               [39m[1m[2m 67.63 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-animation-CyGo_GX5.js                              [39m[1m[2m 75.19 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CompleteDSecureDriveManual-CGbssM_7.js                    [39m[1m[2m 89.78 kB[22m[1m[22m
+[2mdist/[22m[36mjs/CompleteDSecureManual-VvYb2Czq.js                         [39m[1m[2m 95.76 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-core-Bvvq62p6.js                                   [39m[1m[2m108.41 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-zip-CRz69fKA.js                                    [39m[1m[2m144.60 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-maps-5zbV9slm.js                                   [39m[1m[2m153.34 kB[22m[1m[22m
+[2mdist/[22m[36mjs/AdminDashboard-iWGThUcR.js                                [39m[1m[2m158.95 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-viz-Cas7yUB2.js                                    [39m[1m[2m237.94 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-jspdf-DlyMfRrJ.js                                  [39m[1m[2m367.81 kB[22m[1m[22m
+[2mdist/[22m[36mjs/vendor-pdf-Cy2nDrOQ.js                                    [39m[1m[2m458.06 kB[22m[1m[22m
+[2mdist/[22m[36mjs/index-ZseuEkvp.js                                         [39m[1m[33m778.66 kB[39m[22m
+[2mdist/[22m[36mjs/vendor-DYmtDeOV.js                                        [39m[1m[33m861.64 kB[39m[22m
+[2mdist/[22m[36mjs/vendor-exceljs-q0xBO6Sv.js                                [39m[1m[33m935.48 kB[39m[22m
+node.exe : 
+At C:\Users\nishu\AppDa
+ta\Roaming\npm\npm.ps1:
+24 char:5
++     & "node$exe"  "$b
+asedir/node_modules/npm
+/bin/npm-cli.js" $args
++     ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (:String) [],    
+ RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+ WARN  [33m
+(!) Some chunks are 
+larger than 500 kB 
+after minification. 
+Consider:
+- Using dynamic 
+import() to code-split 
+the application
+- Use build.rollupOptio
+ns.output.manualChunks 
+to improve chunking: ht
+tps://rollupjs.org/conf
+iguration-options/#outp
+ut-manualchunks
+- Adjust chunk size 
+limit for this warning 
+via build.chunkSizeWarn
+ingLimit.[39m
+
+[32m✓ built in 1m 27s[39m
+
+✨ [vite-plugin-compression]:algorithm=gzip - compressed file successfully: 
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ActivationKeyPage-DgPyUCuH.js.gz                              2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/css/EnquiryForm-CKdOKdrR.css.gz                                  6.81kb / gzip: 1.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/About-CrGvBLKG.js.gz                                          10.94kb / gzip: 3.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AccessVerificationPage-C5dNyz3-.js.gz                         2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/index.html.gz                                                    7.79kb / gzip: 2.42kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/debug.html.gz                                                    4.24kb / gzip: 1.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/404.html.gz                                                      1.00kb / gzip: 0.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AddUser-Cv-P_WtO.js.gz                                        9.47kb / gzip: 2.58kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/downloads/dsecure-drive-eraser-catalog.html.gz                   8.99kb / gzip: 2.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/css/vendor-maps-Dgihpmma.css.gz                                  14.68kb / gzip: 6.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AddGroup-9ZIaV3YA.js.gz                                       6.23kb / gzip: 2.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminDownloads-BzqZvfbp.js.gz                                 9.17kb / gzip: 3.18kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/downloads/dsecure-file-eraser-catalog.html.gz                    12.54kb / gzip: 2.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/adminDashboardAPI-BBC9KD3k.js.gz                              7.49kb / gzip: 1.99kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminProfileEdit-CipahvPU.js.gz                               8.63kb / gzip: 2.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminGroups-2m9xL91T.js.gz                                    14.42kb / gzip: 4.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminReports-C1FCJVUQ.js.gz                                   12.64kb / gzip: 3.02kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminMachines-Dy4AJVxR.js.gz                                  25.55kb / gzip: 7.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminShell-D6NoIwhb.js.gz                                     8.53kb / gzip: 2.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminLicenses-DUziQAFQ.js.gz                                  28.83kb / gzip: 7.71kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminPerformance-D-lqapF8.js.gz                               10.59kb / gzip: 3.05kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ApiIntegrationPage-08tPIJ61.js.gz                             2.15kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminGroups-D3eFYi04.js.gz                                    49.85kb / gzip: 8.69kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminSettings-a8kvb0ny.js.gz                                  11.47kb / gzip: 2.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AIOverviewPage-P7TxM3xx.js.gz                                 6.68kb / gzip: 1.99kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AuditTrailsPage-C5NnCtnQ.js.gz                                5.08kb / gzip: 1.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminSessions-DCgd6WRA.js.gz                                  16.85kb / gzip: 5.02kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminSubusers-qjtzCLk4.js.gz                                  26.38kb / gzip: 6.54kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AuditPreparationPage-Yes_iZq3.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AuditVerificationPage-5xeOoECZ.js.gz                          2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BankingModePage-7AHyzwaB.js.gz                                2.02kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BankingFinancePage-B-XMiYuo.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AutomatedErasureBlog-Dw7f33Rz.js.gz                           13.29kb / gzip: 3.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ApiTestPage-yclde9Ed.js.gz                                    10.31kb / gzip: 2.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminUsers-D2U2m2qI.js.gz                                     10.54kb / gzip: 2.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AutoUpdatesPage-Df21nXLg.js.gz                                2.02kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BestPracticesPage-CN1W9SZJ.js.gz                              2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BlogPage-BrPEHl9E.js.gz                                       13.24kb / gzip: 3.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CaseStudiesResourcesPage-CONSk8dw.js.gz                       12.69kb / gzip: 3.28kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminReports-oL2YJXah.js.gz                                   60.21kb / gzip: 12.57kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CarbonFootprintErasureBlog-B7L3Zv4M.js.gz                     13.15kb / gzip: 3.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BrandReputationESGBlog-DvHWiEw3.js.gz                         12.76kb / gzip: 3.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CertificateDestructionPage-B92AwBdZ.js.gz                     1.97kb / gzip: 0.81kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BestErasureMethodBlog-DKi2XsNu.js.gz                          12.35kb / gzip: 2.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/BatchOperationsPage-CbLmt9Qa.js.gz                            17.58kb / gzip: 3.49kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CertificateGenerationPage-DfbRL5NQ.js.gz                      13.93kb / gzip: 3.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CaptionCallSettlementBlog-B5-bnbVD.js.gz                      9.73kb / gzip: 2.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChainCustodyPage-Bcw_EaPZ.js.gz                               5.75kb / gzip: 1.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CCPAViolationBlog-zoISP9Jd.js.gz                              14.84kb / gzip: 3.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CaptionCallFCCSettlementBlog-nRbfUgSZ.js.gz                   13.82kb / gzip: 3.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChainOfCustodyBlog-COSAgEb3.js.gz                             12.74kb / gzip: 3.43kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudConsoleGuide-Dfr2Mc0m.js.gz                              19.81kb / gzip: 4.00kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudConsolePage-Dt1HV-ei.js.gz                               2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChromebookDataRisksBlog-BjUJbrAt.js.gz                        13.81kb / gzip: 3.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/blogPosts-CPCaLxry.js.gz                                      56.68kb / gzip: 11.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudMigrationBlog-BUkq3-RW.js.gz                             4.70kb / gzip: 1.55kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CommonCriteriaBlog-CV-aGYj7.js.gz                             11.98kb / gzip: 3.12kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ChangeHealthcareAttackBlog-DwaqXWpx.js.gz                     20.68kb / gzip: 5.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComparisonTablePage-B76ynhdV.js.gz                            2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CloudErasurePage-CX182HI9.js.gz                               13.42kb / gzip: 2.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComplianceExportPage-DeidFXuN.js.gz                           1.88kb / gzip: 0.81kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CheckoutPage-BRO9i-y-.js.gz                                   18.83kb / gzip: 4.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CommonCriteriaCertifiedDataWipingBlog-CHJX41gv.js.gz          7.93kb / gzip: 2.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComparisonPage-a12-QdDb.js.gz                                 4.83kb / gzip: 1.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CommonIssuesPage-Drid0gi5.js.gz                               19.76kb / gzip: 6.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CertifiedITADReasonsBlog-DnFO1t_0.js.gz                       13.25kb / gzip: 3.37kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComplianceStandardsPage-D9WNVQtT.js.gz                        11.21kb / gzip: 1.95kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CookiePolicyPage-C_G5UZkh.js.gz                               10.17kb / gzip: 2.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ComplianceResourcesPage-Q6vQJCQk.js.gz                        13.02kb / gzip: 3.72kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CrushingMethodPage-CeKYPgJX.js.gz                             2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompliancePage-DaA3ItT2.js.gz                                 14.80kb / gzip: 4.31kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompleteDSecureNetworkFile-CyqcS0J9.js.gz                     28.25kb / gzip: 9.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoBenefitsPage-Cjybm2B_.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoEraseSSD-CRxQVH2Q.js.gz                                 10.91kb / gzip: 3.03kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CorporateITAssetRisksBlog-9R5j_4V5.js.gz                      12.61kb / gzip: 3.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CustomAlgorithmsPage-CYSiAkxE.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptographicEraseBlog-CH-VRkCj.js.gz                         9.47kb / gzip: 2.75kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoProcessPage-AJjML1VQ.js.gz                              2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptographicErasurePage-vX2vfaOf.js.gz                       20.05kb / gzip: 4.72kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CybersecurityDataDestructionBlog-ky1UFi6F.js.gz               15.75kb / gzip: 4.57kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ContactPage-BCYtl2AD.js.gz                                    35.41kb / gzip: 7.55kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CustomConfigurationsPage-DYjduOjK.js.gz                       8.38kb / gzip: 1.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CustomDashboardsPage-Kd0qEt_G.js.gz                           1.98kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoImportancePage-Iymwkqo9.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptographicEraseNISTBlog-C2MOOlnx.js.gz                     9.75kb / gzip: 3.12kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CryptoVerificationPage-BYeQ_IRQ.js.gz                         2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataDeletionMythsBlog-BJ08zeJI.js.gz                          15.27kb / gzip: 3.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataErasureDisasterRecoveryBlog-DuAFHAie.js.gz                14.25kb / gzip: 3.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataDestructionBestPracticesBlog-wi6Kx1-P.js.gz               16.79kb / gzip: 4.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataDisposalGuidelinesBlog-j82S66S1.js.gz                     15.22kb / gzip: 4.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DarkDataRisksBlog-CI_vbSjK.js.gz                              16.77kb / gzip: 3.99kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataHoardingRisksBlog-Baun4AvL.js.gz                          16.08kb / gzip: 5.09kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataErasureForNonProfits-BKqvQH_X.js.gz                       10.17kb / gzip: 3.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataErasureMythsBlog-CWnZrHfn.js.gz                           16.63kb / gzip: 4.29kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/dashboardFilters-CWyjd489.js.gz                               1.98kb / gzip: 1.08kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataPrivacyObligationsBlog-D0KM6404.js.gz                     14.67kb / gzip: 3.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataHoardingBlog-CBtPI5Xx.js.gz                               8.82kb / gzip: 2.68kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataEraserSoftwarePage-BzxKxTDB.js.gz                         32.97kb / gzip: 8.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataHygieneFrameworkPage-CczdjBNz.js.gz                       6.41kb / gzip: 2.16kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataGuardianAwardPage-Dt6FCenR.js.gz                          45.39kb / gzip: 10.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataRemediationErasureBlog-DqLLbjHR.js.gz                     12.89kb / gzip: 3.26kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataSanitizationComplianceBlog-IVgtXITu.js.gz                 21.08kb / gzip: 5.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataMinimizationBlog-VC1QIGMC.js.gz                           15.74kb / gzip: 4.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DegaussingMethodPage-Dv5_PXEn.js.gz                           2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DegaussingRisksBlog-bdOEJqXk.js.gz                            20.43kb / gzip: 4.72kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DestructionStandardsPage-PhNqW4wq.js.gz                       2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataRemanenceBlog-shDqo-7t.js.gz                              12.47kb / gzip: 3.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DestructionQualityPage-CCa2a8ip.js.gz                         2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeletedFilesTruthBlog-Cj-dNE-m.js.gz                          16.70kb / gzip: 4.04kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DellDataWipeVsDSecureBlog-BMEHa42I.js.gz                      8.26kb / gzip: 2.66kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DestructionUseCasesPage-CSoyd3BA.js.gz                        2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeviceSelectionPage-CSx0SOXz.js.gz                            3.83kb / gzip: 1.26kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DataRetentionPrivacyBlog-CC2QLi0K.js.gz                       15.14kb / gzip: 3.66kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Dod3passPage-DKnhUbFX.js.gz                                   2.00kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeletionVsErasureBlog-B4zsWPuR.js.gz                          15.30kb / gzip: 4.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DiagnosticsErasureITADBlog-D3a0w5Lw.js.gz                     12.70kb / gzip: 3.91kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DellDataWipeAlternativeBlog-BceM6q3d.js.gz                    11.86kb / gzip: 3.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DiagnosticsPage-DfPBkhTw.js.gz                                2.87kb / gzip: 1.12kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Dod7passPage-CKXPpzrj.js.gz                                   2.00kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DocumentationResourcesPage-DP0R62Gm.js.gz                     4.63kb / gzip: 1.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DodStandardsPage-C0cksqmv.js.gz                               2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DoDVsIEEEDataSanitizationBlog-s-55eICe.js.gz                  6.78kb / gzip: 2.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/demoData-Dw95hARX.js.gz                                       21.81kb / gzip: 5.05kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DigitalDivideBlog-DzJU4VMl.js.gz                              10.82kb / gzip: 3.42kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DeploymentOptionsBlog-CStmYuPi.js.gz                          10.25kb / gzip: 2.49kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/downloadUtils-D2pvXcwO.js.gz                                  1.06kb / gzip: 0.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DoDWipingStandardBlog-hE_1v8f5.js.gz                          15.45kb / gzip: 4.09kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DownloadAgentPage-pQ_fjNmR.js.gz                              10.11kb / gzip: 3.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DownloadPage-DBbEaMNo.js.gz                                   9.99kb / gzip: 3.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DSecureIntegrationPage-BlR_PoTe.js.gz                         1.94kb / gzip: 0.80kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DownloadInstallerPage-B_9zvn1i.js.gz                          4.03kb / gzip: 1.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DoDVsIEEEBlog-HzReO210.js.gz                                  25.75kb / gzip: 5.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DSecureOperationsBlog-B-CcNinZ.js.gz                          11.21kb / gzip: 3.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DSecureFAQPage-DrOQ35-K.js.gz                                 21.06kb / gzip: 3.78kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EditUser-Bum6o34Z.js.gz                                       7.14kb / gzip: 2.21kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EducationDataDestructionBlog-BGZSyG4M.js.gz                   12.54kb / gzip: 3.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnquiryForm-DKFltcIv.js.gz                                    10.28kb / gzip: 3.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseBenefitsPage-B6-EDQtV.js.gz                         2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EditGroup-NB6JovIr.js.gz                                      7.58kb / gzip: 2.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EducationPage-Czockdy3.js.gz                                  13.03kb / gzip: 4.03kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EditSubuser-CKd228tS.js.gz                                    7.21kb / gzip: 2.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseServersPage-_yf8fTpW.js.gz                          8.24kb / gzip: 1.70kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DumpsterDivingDataBreachBlog-DIswJt79.js.gz                   15.45kb / gzip: 4.53kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnvironmentalImpactPage-DpOCFI76.js.gz                        2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EraseDataPcLaptopDesktopBlog-C-2E6MTl.js.gz                   6.53kb / gzip: 2.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseSolutionsPage-Ex2VpChZ.js.gz                        7.69kb / gzip: 2.62kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/DriveEraserPage-CyzKwOPo.js.gz                                66.05kb / gzip: 14.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnhancedUserDashboard-T4F15Go-.js.gz                          14.00kb / gzip: 3.37kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterpriseIntegrationPage-A-D8JZFx.js.gz                      2.18kb / gzip: 0.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnvironmentalConsiderationsPage-DQOyl4Vz.js.gz                2.08kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EndOfLifeDataSecurityBlog-aDVfD4rm.js.gz                      16.23kb / gzip: 4.71kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureReportsPage-BwCtkK5-.js.gz                             1.97kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureAsAServiceDSecureBlog-CZx2CQPw.js.gz                   8.07kb / gzip: 3.05kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureBestPracticesBlog-B3QSrvzO.js.gz                       13.57kb / gzip: 3.29kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasurePreferencesPage-CRKgw3gE.js.gz                         1.97kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EraseMacDataSafelyUsingDSecureBlog-BFwLEuOq.js.gz             9.69kb / gzip: 3.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureProcessPage-SraoQ-gv.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ESGDataErasureBlog-VixvvzWY.js.gz                             12.61kb / gzip: 3.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErrorCodesPage-DtEwIE0q.js.gz                                 29.33kb / gzip: 8.60kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureVerificationBlog-BBpVtM41.js.gz                        14.57kb / gzip: 3.62kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FAQsPage-BV0TXfSJ.js.gz                                       10.22kb / gzip: 3.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ErasureVsDestructionBlog-B2S4LPzn.js.gz                       16.54kb / gzip: 4.18kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EnterprisePage-DDboq1yT.js.gz                                 5.86kb / gzip: 1.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FaqsPage-DbJJtNTh.js.gz                                       1.98kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialServices-CeX7r-jq.js.gz                              7.23kb / gzip: 2.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/EUCSRDBlog-DApQwzQN.js.gz                                     16.91kb / gzip: 4.43kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ESGReportBlog-DyynlcNG.js.gz                                  15.40kb / gzip: 4.37kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialVerificationPage-CQU_Cndt.js.gz                      2.07kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialSolutionsPage-C03OIAsb.js.gz                         7.80kb / gzip: 2.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FinancialDataBreachCaseStudyBlog-CX25qobH.js.gz               13.97kb / gzip: 4.01kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FailurePage-B8XPkcY0.js.gz                                    23.62kb / gzip: 5.81kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FileEraserGuide-ByeJFi0G.js.gz                                19.09kb / gzip: 4.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirstScanPage-Bg5Q5QTz.js.gz                                  8.98kb / gzip: 2.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirstTimeSetupPage-CqWeoxEV.js.gz                             21.00kb / gzip: 5.12kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirewallSetupPage-DGfxJdql.js.gz                              8.16kb / gzip: 2.26kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FlatIcons-DeNIggx3.js.gz                                      13.61kb / gzip: 3.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirewallConfigPage-DP6Gu7Nm.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FirstRunPage-r0Jesbn_.js.gz                                   2.01kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ForumPage-D0lpMG8H.js.gz                                      7.57kb / gzip: 2.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FounderPage-CgUV55fB.js.gz                                    4.29kb / gzip: 1.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FreeVsProEraserBlog-DmFWWkJM.js.gz                            12.87kb / gzip: 3.32kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FutureTrendsPage-GIHGJJPz.js.gz                               2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FileEraserPage-qSH0wIwd.js.gz                                 57.86kb / gzip: 14.48kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GDPRSevenYearsBlog-Dc4C9JVJ.js.gz                             16.46kb / gzip: 4.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FutureOfDataDestructionBlog-CPlPVnxp.js.gz                    14.66kb / gzip: 3.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FragmentVerificationPage-ChOJRdzy.js.gz                       2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/FutureDataDestructionBlog-DsZ8mIm7.js.gz                      23.09kb / gzip: 5.34kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GdprVerificationPage-B1NIY0Mk.js.gz                           2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GeneralSettingsPage-BK_BtMJ2.js.gz                            1.98kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GenerateReport-Cmvvz8IC.js.gz                                 13.82kb / gzip: 3.45kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentDefensePage-B0enKuGs.js.gz                          2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovDeviceTheftBlog-DQmviHH-.js.gz                             16.80kb / gzip: 4.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentDeviceTheftBlog-Ba_CA0gu.js.gz                      16.73kb / gzip: 4.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentPage-B8OLHmK2.js.gz                                 10.12kb / gzip: 3.26kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GreenITPracticesBlog-CJvO8aOS.js.gz                           8.45kb / gzip: 2.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GlossaryPage-CXiueEVl.js.gz                                   4.89kb / gzip: 2.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareDataBreachCaseStudyBlog-D4mduozK.js.gz              15.47kb / gzip: 4.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentITDisposalBlog-CRDSpkdl.js.gz                       14.61kb / gzip: 3.55kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareRansomwareLessonsBlog-Bu7qJHEz.js.gz                9.50kb / gzip: 3.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GovernmentVerificationPage-CQ6dDXSR.js.gz                     2.07kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/GetStartedPage-92riWZD4.js.gz                                 12.01kb / gzip: 3.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareDestructionPage-DA3yrCNr.js.gz                      2.07kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HardwareSanitizationPage-DGmziEgM.js.gz                       2.06kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HardwareDiagnosticsBlog-Ct8lwR1_.js.gz                        8.89kb / gzip: 2.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareServices-DXpZlrIy.js.gz                             9.20kb / gzip: 2.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareVerificationPage-BX8lQuF4.js.gz                     2.07kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HardwareDiagnosticsITADComplianceBlog-C_OWamf_.js.gz          6.26kb / gzip: 2.29kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HddDestructionPage-Bzu_-lWW.js.gz                             2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HexViewerBlog-C3fGL6HQ.js.gz                                  5.14kb / gzip: 1.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HealthcareSolutionsPage-BULY_kZa.js.gz                        4.52kb / gzip: 1.72kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HelpManualPage-swtZmxoQ.js.gz                                 16.02kb / gzip: 4.45kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ImplementationConsiderationsPage-B61G7oTC.js.gz               2.09kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/imagePlaceholders-DvEV_Mkx.js.gz                              1.38kb / gzip: 0.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HowToEraseMacBlog-Dl2nIjIE.js.gz                              20.67kb / gzip: 4.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HIPAAComplianceErasureBlog-CYgZkDJI.js.gz                     15.04kb / gzip: 3.75kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IndustryUseCasesPage-DADvkj06.js.gz                           2.05kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IncinerationMethodPage-TclspUVG.js.gz                         2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HiddenDiskAreasBlog-DSpu5k25.js.gz                            15.83kb / gzip: 4.14kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IndustryApplicationsPage-xpuTs9wP.js.gz                       2.06kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HelpManualIndexPage-DlK7Atyw.js.gz                            15.29kb / gzip: 2.69kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/HomePage-Y76SwWFx.js.gz                                       50.76kb / gzip: 6.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ImplementationPracticesPage-gM3bAjUK.js.gz                    2.07kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationGuideDetailed-CiSEqy6I.js.gz                      15.56kb / gzip: 2.95kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationPage-CI1iD9XS.js.gz                               19.75kb / gzip: 4.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationPathPage-kRXfqeb_.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADChallengesBlog-DqlCcUcw.js.gz                             4.70kb / gzip: 1.59kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationSettingsPage-D7J3N9Az.js.gz                       3.92kb / gzip: 1.37kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ItadDatacentersPage-B_UkiyYv.js.gz                            2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InternetRequirementsPage-vTUtRAbn.js.gz                       2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADProcurementBlog-CtJG5BsB.js.gz                            13.44kb / gzip: 3.98kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/InstallationProgressPage-H1pGSB0H.js.gz                       4.20kb / gzip: 1.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/IPadTabletErasureBlog-w2uqFHMQ.js.gz                          15.75kb / gzip: 3.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KeyActivationPage-C8WRMLzc.js.gz                              4.85kb / gzip: 1.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAMDisposalGuideBlog-DxG3GcxM.js.gz                          18.10kb / gzip: 4.89kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADSelectionGuideBlog-DDz28LGF.js.gz                         14.93kb / gzip: 4.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADMarketGrowthBlog-DXXn-R48.js.gz                           16.71kb / gzip: 4.12kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADEnvironmentalBlog-Bh7CgVKJ.js.gz                          11.83kb / gzip: 3.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAssetLifecycleBlog-CnUcRZ3y.js.gz                           18.17kb / gzip: 4.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LegalEthicalDataErasureBlog-ECktJl0T.js.gz                    7.70kb / gzip: 2.62kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITADSolution-CPfs7g7i.js.gz                                   12.89kb / gzip: 3.62kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAssetReuseBlog-Bh6WGbsi.js.gz                               8.04kb / gzip: 2.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KeyboardShortcutsPage-Chnlv6bY.js.gz                          2.05kb / gzip: 0.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KnowledgeBasePage-BpMPyhQB.js.gz                              8.97kb / gzip: 2.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LegalEthicalErasureBlog-dkuAF2FL.js.gz                        9.42kb / gzip: 2.77kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LicenseAgreementPage-C-ssogc6.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LicenseActivationPage-BS8O8qvu.js.gz                          4.29kb / gzip: 1.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/KeyDestructionVerifyPage-BG-guqV_.js.gz                       2.06kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LimitationsPage-BXfWEadM.js.gz                                2.02kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LegalPolicy-C5YmCHvo.js.gz                                    6.45kb / gzip: 1.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ITAMDataBreachBlog-CVdiH4KJ.js.gz                             13.84kb / gzip: 3.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LicenseTroubleshootingPage-CPytww9V.js.gz                     2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosBestPracticesPage-TV8elHIx.js.gz                         2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LinuxSystemsPage-CnsNUvPx.js.gz                               15.00kb / gzip: 4.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosBuiltinToolsPage-Qdbq8MZG.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosArchitecturePage-FfhzjQ3f.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosCompliancePage-eU5J70If.js.gz                            2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LoginPage-RRcNvbAj.js.gz                                      21.75kb / gzip: 5.78kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/M1MacErasureIssuesBlog-CqUPpAZP.js.gz                         13.97kb / gzip: 3.57kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosCryptoErasurePage-DAwPFoqb.js.gz                         2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosAppleSiliconPage-21ENGTpt.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacM1ErasureKnownIssues-Db_ssfNe.js.gz                        9.24kb / gzip: 2.81kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosEnterprisePage-D5fvEBxB.js.gz                            2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/LooseDrivesErasureGuideBlog-DCwaXVK5.js.gz                    15.81kb / gzip: 4.33kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosFaqPage-DNdBp6Lh.js.gz                                   2.00kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosFilesystemsPage-B-JnvYb9.js.gz                           2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacEraseGuide-BnADGSfh.js.gz                                  8.61kb / gzip: 2.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosExternalMediaPage-BZtzpt9X.js.gz                         2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosFilevaultPage-BUK6sdIa.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosIntelProceduresPage-W6KSXWdz.js.gz                       2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosPreparationPage-qJrEaCK9.js.gz                           2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosIntroductionPage-N0ESOG7W.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosEncryptionPage-DgVAV0JL.js.gz                            2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosRisksPage-DLK_B0lE.js.gz                                 2.01kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosSoftwareErasurePage-BleSF6fi.js.gz                       2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosMethodsComparisonPage-n5IN1-Xi.js.gz                     2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosStoragePage-CGMR35Us.js.gz                               2.02kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosResourcesPage-DY5i4yGm.js.gz                             2.03kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosSsdConsiderationsPage-C-0RwLLG.js.gz                     2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosSystemDrivePage-DRXOomFH.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosVerificationPage-qLD4nE5W.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosTroubleshootingPage-CPjPs9Cv.js.gz                       2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MainDashboardPage-A5LDMUzM.js.gz                              4.40kb / gzip: 1.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosToolSelectionPage-CaPheHKH.js.gz                         2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ManualPageTemplate-C7d2Nf8W.js.gz                             8.22kb / gzip: 2.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacOSSystemsPage-C2VpL8wr.js.gz                               21.19kb / gzip: 5.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MediaSanitizationNeedBlog-Dtxt3zeF.js.gz                      13.04kb / gzip: 3.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MacosThirdPartyPage-s5QZBUnq.js.gz                            2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDestructionPage-DxkkENVL.js.gz                          2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDevicesPage-CY8cs9NQ.js.gz                              7.06kb / gzip: 2.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MarriottSettlementBlog-CyVu1vHz.js.gz                         13.75kb / gzip: 3.89kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDiagnosticsBenefitsBlog-mpMnWw0F.js.gz                  12.83kb / gzip: 3.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MDMDetectionBlog-DQTsP9nR.js.gz                               16.64kb / gzip: 4.09kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPErasureAsAServiceBlog-DVpP3JE-.js.gz                       6.60kb / gzip: 2.70kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MorganStanleyFineBlog-B81XBCKM.js.gz                          15.83kb / gzip: 4.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MorganStanleyDataBreachBlog-Dv-GtYVs.js.gz                    13.33kb / gzip: 3.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileDiagnosticsRevolutionBlog-4hU0Qrgb.js.gz                13.69kb / gzip: 3.28kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NavigationPage-DXVuAnUz.js.gz                                 3.79kb / gzip: 1.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NCUAThirdPartyDataDisposalBlog-Btf7xLpe.js.gz                 5.81kb / gzip: 2.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NetworkFileManualLayout-bD-WzQSe.js.gz                        5.99kb / gzip: 1.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPSecurityBlog-CqY7OTNw.js.gz                                11.06kb / gzip: 3.81kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NCUAGuidelinesBlog-Dl7cEL6S.js.gz                             19.38kb / gzip: 4.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NistModernStoragePage-BynTuGHg.js.gz                          2.05kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NistGuidelinesPage-DDPqR6am.js.gz                             2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NewErasurePage-DGwpdS6b.js.gz                                 9.21kb / gzip: 2.52kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPErasureServiceBlog-C_es4DoS.js.gz                          17.96kb / gzip: 4.09kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NISTClearPurgeBlog-P8ad4Agc.js.gz                             21.69kb / gzip: 4.42kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Nist80088Page-CbnhdzCz.js.gz                                  2.01kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NISTTestedErasureSoftwareBlog-Cju2ONfJ.js.gz                  14.82kb / gzip: 3.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MSPDataErasureBlog-BO9aJM2I.js.gz                             13.67kb / gzip: 3.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/MobileErasureGuideBlog-DqFdtsuM.js.gz                         13.58kb / gzip: 3.37kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NotFoundPage-BINRss2x.js.gz                                   10.23kb / gzip: 2.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/NISTVsIEEEBlog-BR4oHpn7.js.gz                                 16.74kb / gzip: 3.78kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteIntroductionPage-BlJMIJt-.js.gz                      2.07kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OpticalTapeDestructionPage-Im6Lq_fY.js.gz                     2.08kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OperationHistoryPage-D6NSduY1.js.gz                           2.00kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OnsiteOffsitePage-DhgIkYyZ.js.gz                              2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PatternSelectionPage-DXtkJMc0.js.gz                           2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OrderSuccessPage-CSKWHjBs.js.gz                               18.30kb / gzip: 3.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteRisksPage-aNLPuPUq.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OnsiteVsOffsiteDestructionBlog-DGXxsqCw.js.gz                 15.00kb / gzip: 4.31kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteGuide-DRbYXL6V.js.gz                                 17.04kb / gzip: 3.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwritePatternsPage-GxbsOHtl.js.gz                          27.60kb / gzip: 5.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PaymentPage-kakoVcqj.js.gz                                    17.06kb / gzip: 4.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ParentalControlsPage-Br3UM92S.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/OverwriteGuideBlog-C-C9cjv3.js.gz                             14.60kb / gzip: 3.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceTradeoffsPage-9IdPsakr.js.gz                       2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceAnalysisPage-D-LByv14.js.gz                        2.06kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PHIErasureBlog-CSKsjJFe.js.gz                                 7.38kb / gzip: 2.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceTuningPage-BNce-qpZ.js.gz                          2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PhysicalDestructionOverviewPage-hZC-giXY.js.gz                2.09kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceTroubleshootingPage-Dp2PTQfS.js.gz                 2.09kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PartnershipForm-jsFf4CvQ.js.gz                                26.73kb / gzip: 7.02kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PostInstallOptimizationPage-C7-sEWS7.js.gz                    2.07kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PerformanceOptimizationPage-EcOWPhmC.js.gz                    23.90kb / gzip: 5.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PaymentSetupPage-DNIUKjSj.js.gz                               12.03kb / gzip: 3.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PreInstallationPage-vlTm_ewa.js.gz                            12.91kb / gzip: 2.96kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PhysicalInspectionPage-DcaF0K0s.js.gz                         2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PrivacyPolicy-Dp8PK_EW.js.gz                                  7.95kb / gzip: 2.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PartnersPage-DcdDth0Q.js.gz                                   59.24kb / gzip: 13.28kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PhysicalDestructionPage-LkfyqiM0.js.gz                        25.09kb / gzip: 5.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PrivateCloudBlog-xLy6hhCJ.js.gz                               15.96kb / gzip: 3.87kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/QuickstartPage-C6SZPpUv.js.gz                                 5.53kb / gzip: 1.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProductImage-BTLvCuJ6.js.gz                                   1.38kb / gzip: 0.76kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PIIDisposalBreachBlog-PNYGrB94.js.gz                          16.01kb / gzip: 3.85kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RealTimeMonitoringPage-Dm8CwjRT.js.gz                         2.05kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProductVideosPage-Bre0We-N.js.gz                              16.06kb / gzip: 4.45kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PrivateCloudSetup-IlQHD-46.js.gz                              13.22kb / gzip: 3.67kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProgressMonitoringPage-DW307mAw.js.gz                         3.92kb / gzip: 1.31kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RealtimeProtectionPage-Cd0q4mNx.js.gz                         2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RegisterPage-BKeJW5QL.js.gz                                   12.33kb / gzip: 3.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RecoveryProceduresPage-D7ZtFCdK.js.gz                         6.36kb / gzip: 1.61kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PricingAndPlanPage-BdhZ5K7U.js.gz                             37.59kb / gzip: 9.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReadbackVerificationPage-16dTYTlN.js.gz                       2.33kb / gzip: 0.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RegulatoryCompliancePage-DkmYNE50.js.gz                       2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteManagementPage-NpS08Qh9.js.gz                           9.39kb / gzip: 1.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReportsPage-BHVipE2w.js.gz                                    9.94kb / gzip: 2.69kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteWorkDataErasureBlog-CqEKEljD.js.gz                      17.30kb / gzip: 4.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteWorkDataErasureBestPracticesBlog-Dl7jQU4g.js.gz         5.74kb / gzip: 2.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ProgrammaticSolutionPage-CFjZUPQl.js.gz                       21.46kb / gzip: 7.79kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ResellerProfitsBlog-Cx-604YL.js.gz                            4.71kb / gzip: 1.58kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RemoteWipingSoftwareBlog-45ydwzvT.js.gz                       15.45kb / gzip: 3.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReturningLeasedITHardwareDosAndDonts-CBX18dwi.js.gz           6.28kb / gzip: 2.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ResourcesPage-B8Jg6lM3.js.gz                                  25.36kb / gzip: 6.27kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/PostCovidDataDisposalBlog-D0y71al_.js.gz                      11.97kb / gzip: 3.29kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SamplingMethodologyPage-CNJQ94nT.js.gz                        2.05kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Reveal-fe8Gldks.js.gz                                         1.19kb / gzip: 0.55kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SanitizationConceptsPage-C_-BCqkJ.js.gz                       2.06kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScanResultsPage-Dzb8NGyY.js.gz                                2.02kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ReportManagementPage-tzHbZpW-.js.gz                           11.53kb / gzip: 2.70kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScanExclusionsPage-Bd3VomkL.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScanSchedulingPage-Dj0uZmEb.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RightToRepairBlog-BtP1FkS9.js.gz                              5.27kb / gzip: 1.72kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/RetainOSGuide-CSwoxUrc.js.gz                                  14.02kb / gzip: 2.71kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SearchBar-BGAP-_nz.js.gz                                      6.31kb / gzip: 2.37kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Scope3EmissionsBlog-Dwwq9WIM.js.gz                            13.05kb / gzip: 3.06kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScheduleSettingsPage-CZOScumG.js.gz                           17.89kb / gzip: 3.05kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SECComplianceBlog-DakGVTbV.js.gz                              13.17kb / gzip: 3.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ScriptingAutomationPage-Begiw9mq.js.gz                        11.02kb / gzip: 2.06kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureFileEraseBlog-Up7wl04Y.js.gz                            17.21kb / gzip: 4.23kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurityAssurancePage-SGJ_poBO.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurityProtocolsPage-ZrPCbcug.js.gz                          2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureITAssetDisposalBlog-ChMz2BZ8.js.gz                      14.66kb / gzip: 3.86kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SearchDemoPage-DvuCvPpO.js.gz                                 9.79kb / gzip: 3.58kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureEraseHDDSDD-Dn82NDK8.js.gz                              23.73kb / gzip: 4.75kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureSmartphoneErasureBlog-DF3joiYx.js.gz                    12.16kb / gzip: 3.20kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecureHDDDisposalBlog-CnmutRZJ.js.gz                          16.64kb / gzip: 4.50kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServiceProvidersSolutionsPage-JV5NUncg.js.gz                  7.59kb / gzip: 2.53kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurePHIePHIErasureBlog-CcB5C4VZ.js.gz                       11.65kb / gzip: 3.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServiceWorkflowPage-DJWVzR66.js.gz                            2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ShreddingMethodPage-IDdf5S4Q.js.gz                            2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServerErasureBlog-nD3vETCn.js.gz                              12.13kb / gzip: 3.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SecurityPage-BcRlXjl1.js.gz                                   22.95kb / gzip: 3.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SoftwareSupportedMediaPage-6nzMzKEO.js.gz                     2.07kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StandardsComparisonPage-D_lRQaoN.js.gz                        2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ShadowDataRisksBlog-BMSEKGvG.js.gz                            13.32kb / gzip: 3.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SsdChallengesPage-q_z-xCql.js.gz                              2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SetupWizardPage-EKPuC7mi.js.gz                                17.64kb / gzip: 3.94kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SsdDestructionPage-B9XPFSnO.js.gz                             2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ShadowDataBlog-YQaXlmdk.js.gz                                 15.57kb / gzip: 4.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SSDWipeGuideBlog-BXXjQrYn.js.gz                               16.06kb / gzip: 3.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SSDWipeBIOSBlog-Dy8Mcnxy.js.gz                                15.79kb / gzip: 3.57kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SolutionsPage-DyxAtKE_.js.gz                                  28.05kb / gzip: 5.57kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SoftwareVerificationPage-UfKOBV84.js.gz                       2.06kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatusIndicatorsPage-nCYReK66.js.gz                           4.00kb / gzip: 1.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ServicesPage-BiAU-xBy.js.gz                                   32.40kb / gzip: 6.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatisticalConfidencePage-D2_aWbRP.js.gz                      2.06kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SupportedEncryptionPage-CBPfr5gx.js.gz                        2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatusPage-4MzkTqzA.js.gz                                     17.02kb / gzip: 3.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StartErasurePage-CWAQce8s.js.gz                               3.82kb / gzip: 1.22kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatutoryComplianceBlog-CwgjKoup.js.gz                        7.63kb / gzip: 2.35kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SupportedDevicesPage-Ds4NbUIH.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/StatutoryRegulatoryComplianceDataErasureBlog-Bfa1nHF1.js.gz   10.73kb / gzip: 3.36kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/TechnicalDocumentation-B4-PPCwK.js.gz                         9.71kb / gzip: 2.97kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SustainableITReuseBlog-D1OhBH1k.js.gz                         12.71kb / gzip: 4.18kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SystemScanningPage-Dra_TOB2.js.gz                             2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/TrustCenterPage-CRFMAIP6.js.gz                                7.69kb / gzip: 2.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UseCasesPage-BzL-UlXs.js.gz                                   2.00kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SupportPage-CS47O5wy.js.gz                                    28.93kb / gzip: 7.46kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UltratestComparisonBlog-y9MWc2To.js.gz                        10.35kb / gzip: 2.74kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SystemSetupPage-CIpe3itu.js.gz                                17.41kb / gzip: 3.54kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/SystemRequirementsPage-D9sDVhVp.js.gz                         13.94kb / gzip: 2.91kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserInterfacePage-DdjUt7yi.js.gz                              6.35kb / gzip: 2.10kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/TermsOfServicePage-BeHtPQTt.js.gz                             8.39kb / gzip: 2.44kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UseCasesPage-6nckBGVA.js.gz                                   5.20kb / gzip: 1.91kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/useSubusers-AFhw7AFs.js.gz                                    4.18kb / gzip: 1.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserProfilePage-CV0wwSPb.js.gz                                2.02kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/useFormSubmission-BnrOxfOp.js.gz                              6.48kb / gzip: 2.65kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserManagementPage-BqH0vogq.js.gz                             1.95kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/UserDashboard-CWsZCBnu.js.gz                                  20.13kb / gzip: 4.81kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-icons-T3mvy2yw.js.gz                                   15.75kb / gzip: 5.63kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-query-OwXlhCYc.js.gz                                   2.68kb / gzip: 1.24kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationChallengesPage-BVcY9VuT.js.gz                     2.07kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationRisksPage-CNt3pWK4.js.gz                          2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationImportancePage-C9-ptugW.js.gz                     2.07kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationToolsPage-B1v5HtiV.js.gz                          2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationOverviewPage-CBgoc7BO.js.gz                       2.83kb / gzip: 1.03kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationTechniquesPage-k0CRa8iV.js.gz                     2.07kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationLogsPage-BpGMJPbt.js.gz                           2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VisualConfirmationPage-v4iPL1uJ.js.gz                         2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationStandardsPage-Cjk7L66L.js.gz                      2.07kb / gzip: 0.84kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VirusDefinitionsPage-DOfi6bBh.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VpnSetupPage-Cfqr1Gg1.js.gz                                   2.01kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VerificationMethodsPage-bAGrr_hl.js.gz                        20.96kb / gzip: 5.13kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/VMErasureBlog-CmRLhHDj.js.gz                                  16.75kb / gzip: 4.59kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhitepaperPage-CnftxI0k.js.gz                                 6.68kb / gzip: 2.39kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhatIsDSecurePage-BImLNJyE.js.gz                              6.75kb / gzip: 1.71kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhitepapersResourcesPage-DoCOlEQw.js.gz                       14.31kb / gzip: 3.88kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhyDSecurePage-CnKDL7ZX.js.gz                                 5.42kb / gzip: 1.93kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBootableUsbPage-BY330pyD.js.gz                         2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBitlockerPage-BXavld3c.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBestPracticesPage-27nx10Y2.js.gz                       2.05kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsCompliancePage-QPv4nAwC.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WhyPhysicalDestructionPage-Djv52A1s.js.gz                     2.08kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsBuiltinToolsPage-Cf8xOqko.js.gz                        5.74kb / gzip: 1.69kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsEnterprisePage-B5Okfhyf.js.gz                          5.75kb / gzip: 1.64kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsCommandLinePage-EQdkqYlU.js.gz                         2.58kb / gzip: 1.11kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsDsecureEraserPage-D3EVyte9.js.gz                       2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsCryptoErasurePage-B42G9TOJ.js.gz                       2.53kb / gzip: 1.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/Windows10EOSBlog-BJK37kTs.js.gz                               13.89kb / gzip: 4.31kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsPreparationPage-CF2Yu9B_.js.gz                         4.11kb / gzip: 1.43kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsMethodsComparisonPage-BdKnAHPZ.js.gz                   2.15kb / gzip: 0.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsResourcesPage-BV0OBOIm.js.gz                           2.03kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsFilesystemsPage-0d33CZ47.js.gz                         4.80kb / gzip: 1.60kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsIntroductionPage-5IrX73k9.js.gz                        4.43kb / gzip: 1.58kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsFaqPage-jqGBqMtu.js.gz                                 2.01kb / gzip: 0.82kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsRisksPage-cvg8l1Pn.js.gz                               5.13kb / gzip: 1.73kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsResidualDataPage-CcvnNqQD.js.gz                        2.15kb / gzip: 0.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSoftwareErasurePage-CYnYt_Ov.js.gz                     2.15kb / gzip: 0.90kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSystemFilesPage-DZLwO-l4.js.gz                         4.56kb / gzip: 1.56kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSedDrivesPage-DzLX2sb9.js.gz                           2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSystemsPage-DtcJqbbp.js.gz                             20.89kb / gzip: 5.07kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsSsdErasurePage-jwF1IDMD.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsThirdPartyPage-C6UCgm2w.js.gz                          2.04kb / gzip: 0.83kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsTroubleshootingPage-DVwEPJIN.js.gz                     4.04kb / gzip: 1.51kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsVerificationPage-DvasubHo.js.gz                        1.95kb / gzip: 0.80kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeMacM1-BSrWtDXe.js.gz                                      6.89kb / gzip: 2.18kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeComputerDonatingBlog-DR-ihzkW.js.gz                       12.12kb / gzip: 3.21kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WindowsStoragePage-LMnCJlgU.js.gz                             4.67kb / gzip: 1.60kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/ZeroTrustDisposalBlog-DElBKw_y.js.gz                          12.93kb / gzip: 3.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WorkingWithDSecurePage-1RpInwvo.js.gz                         24.85kb / gzip: 5.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeSSDFromBIOSGuide-9tnQeuBT.js.gz                           8.94kb / gzip: 2.40kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WipeSASDrive-BGGtxu-W.js.gz                                   1.63kb / gzip: 0.70kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/WorldClassNPSBlog-OZTpVuEU.js.gz                              15.63kb / gzip: 4.28kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/sw.js.gz                                                         3.70kb / gzip: 1.15kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/AdminDashboard-iWGThUcR.js.gz                                 155.22kb / gzip: 28.42kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/css/index-CI-5qasw.css.gz                                        220.55kb / gzip: 29.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompleteDSecureDriveManual-CGbssM_7.js.gz                     87.67kb / gzip: 19.92kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/CompleteDSecureManual-VvYb2Czq.js.gz                          93.52kb / gzip: 20.19kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-animation-CyGo_GX5.js.gz                               73.43kb / gzip: 23.52kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-core-Bvvq62p6.js.gz                                    105.87kb / gzip: 37.30kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-zip-CRz69fKA.js.gz                                     141.21kb / gzip: 43.74kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-maps-5zbV9slm.js.gz                                    149.74kb / gzip: 43.41kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-viz-Cas7yUB2.js.gz                                     232.36kb / gzip: 66.28kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-jspdf-DlyMfRrJ.js.gz                                   359.19kb / gzip: 116.04kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-pdf-Cy2nDrOQ.js.gz                                     447.33kb / gzip: 131.43kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/index-ZseuEkvp.js.gz                                          760.41kb / gzip: 172.25kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-exceljs-q0xBO6Sv.js.gz                                 913.55kb / gzip: 262.38kb
+dist/C:/Users/nishu/Downloads/dsecure-frontend/js/vendor-DYmtDeOV.js.gz                                         841.44kb / gzip: 262.33kb
+
+

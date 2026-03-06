@@ -1,67 +1,62 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-
-// Import translation files
-import en from '../locales/en.json';
-import hi from '../locales/hi.json';
-import es from '../locales/es.json';
-import fr from '../locales/fr.json';
-import de from '../locales/de.json';
-import ja from '../locales/ja.json';
-import zh from '../locales/zh.json';
-
-// Language resources
-const resources = {
-  en: { translation: en },
-  hi: { translation: hi },
-  es: { translation: es },
-  fr: { translation: fr },
-  de: { translation: de },
-  ja: { translation: ja },
-  zh: { translation: zh },
-};
+import HttpBackend from "i18next-http-backend";
+import enTranslation from "../../public/locales/en/translation.json";
 
 // Language configurations
 export const languages = [
-  { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी', flag: '🇮🇳' },
-  { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷' },
-  { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪' },
-  { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
-  { code: 'zh', name: 'Chinese', nativeName: '中文', flag: '🇨🇳' },
+  { code: "en", name: "English", nativeName: "English", flag: "🇺🇸" },
+  { code: "hi", name: "Hindi", nativeName: "हिन्दी", flag: "🇮🇳" },
+  { code: "es", name: "Spanish", nativeName: "Español", flag: "🇪🇸" },
+  { code: "fr", name: "French", nativeName: "Français", flag: "🇫🇷" },
+  { code: "de", name: "German", nativeName: "Deutsch", flag: "🇩🇪" },
+  { code: "ja", name: "Japanese", nativeName: "日本語", flag: "🇯🇵" },
+  { code: "zh", name: "Chinese", nativeName: "中文", flag: "🇨🇳" },
 ];
 
 // Initialize i18next
 i18n
+  .use(HttpBackend) // Load translations via HTTP
   .use(LanguageDetector) // Detect user language
   .use(initReactI18next) // Pass i18n instance to react-i18next
   .init({
-    resources,
-    fallbackLng: 'en', // Use English if detected language is not available
+    fallbackLng: "en", // Use English if detected language is not available
     debug: false, // Set to true for development debugging
-    
+
+    // Bundle English so it doesn't trigger a network request on default load
+    resources: {
+      en: {
+        translation: enTranslation,
+      },
+    },
+
+    // Path to translation files for ALL OTHER languages
+    partialBundledLanguages: true, // Let backend load other languages
+    backend: {
+      loadPath: "/locales/{{lng}}/translation.json",
+    },
+
     interpolation: {
       escapeValue: false, // React already escapes values
     },
 
     detection: {
       // Order of detection methods
-      order: ['localStorage', 'navigator', 'htmlTag'],
-      
+      order: ["localStorage", "navigator", "htmlTag"],
+
       // Keys to lookup language from
-      lookupLocalStorage: 'i18nextLng',
-      
+      lookupLocalStorage: "i18nextLng",
+
       // Cache user language
-      caches: ['localStorage'],
-      
+      caches: ["localStorage"],
+
       // Optional: exclude certain languages
-      excludeCacheFor: ['cimode'],
+      excludeCacheFor: ["cimode"],
     },
 
     react: {
-      useSuspense: false, // Disable suspense for better compatibility
+      useSuspense: true, // Enable suspense for better loading experience
     },
   });
 

@@ -434,17 +434,17 @@ export default function AdminReports() {
     technicianSignature: string | null;
     validatorSignature: string | null;
   }>(() => {
-    console.log("🔵 Initializing imageBase64 state...");
+    // console.log("🔵 Initializing imageBase64 state...");
     try {
       // First check the unified cache
       const cachedSettings = localStorage.getItem("pdfExportSettingsCache");
-      console.log("🔵 Cache found:", !!cachedSettings);
+      // console.log("🔵 Cache found:", !!cachedSettings);
       if (cachedSettings) {
         const parsed = JSON.parse(cachedSettings);
-        console.log("🔵 Parsed cache:", {
+        /* console.log("🔵 Parsed cache:", {
           hasImages: !!parsed.images,
           imageKeys: parsed.images ? Object.keys(parsed.images) : [],
-        });
+        }); */
         if (parsed.images) {
           const result = {
             headerLeftLogo: parsed.images.headerLeftLogo || null,
@@ -453,7 +453,7 @@ export default function AdminReports() {
             technicianSignature: parsed.images.technicianSignature || null,
             validatorSignature: parsed.images.validatorSignature || null,
           };
-          console.log("🖼️ Initial imageBase64 from cache:", {
+          /* console.log("🖼️ Initial imageBase64 from cache:", {
             headerLeftLogo: result.headerLeftLogo ? "✅ loaded" : "❌ null",
             headerRightLogo: result.headerRightLogo ? "✅ loaded" : "❌ null",
             watermarkImage: result.watermarkImage ? "✅ loaded" : "❌ null",
@@ -463,22 +463,22 @@ export default function AdminReports() {
             validatorSignature: result.validatorSignature
               ? "✅ loaded"
               : "❌ null",
-          });
+          }); */
           return result;
         }
       }
       // Fallback to old key for backwards compatibility
       const saved = localStorage.getItem("pdfImageSettings");
       if (saved) {
-        console.log(
+        /* console.log(
           "🖼️ Initial imageBase64 loaded from pdfImageSettings (legacy)",
-        );
+        ); */
         return JSON.parse(saved);
       }
     } catch (e) {
-      console.error("❌ Failed to load image settings from localStorage:", e);
+      // console.error("❌ Failed to load image settings from localStorage:", e);
     }
-    console.log("🔵 No cached images found, using defaults");
+    // console.log("🔵 No cached images found, using defaults");
     return {
       headerLeftLogo: null,
       headerRightLogo: null,
@@ -818,29 +818,24 @@ export default function AdminReports() {
         );
       }
 
-      console.log("🔵 Saving PDF settings to server with FormData");
+      // console.log("🔵 Saving PDF settings to server with FormData");
 
       let response;
 
-      if (isDemo) {
-        console.log("🔵 Demo mode: Simulating POST to export-settings");
-        response = { ok: true, status: 200, text: async () => "Demo Success" };
-      } else {
-        response = await fetch(
-          `${API_BASE}/api/EnhancedAuditReports/export-settings`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${authService.getAccessToken()}`,
-              // Don't set Content-Type - browser will set it automatically with boundary for FormData
-            },
-            body: formData,
+      response = await fetch(
+        `${API_BASE}/api/EnhancedAuditReports/export-settings`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${authService.getAccessToken()}`,
+            // Don't set Content-Type - browser will set it automatically with boundary for FormData
           },
-        );
-      }
+          body: formData,
+        },
+      );
 
       if (response.ok) {
-        console.log("✅ PDF settings saved to server successfully");
+        // console.log("✅ PDF settings saved to server successfully");
         setPdfSettingsLoaded(true);
 
         // Update localStorage cache with new settings
@@ -861,6 +856,7 @@ export default function AdminReports() {
             },
             cachedAt: Date.now(),
           };
+          /* 
           console.log("🖼️ Saving images to cache:", {
             headerLeftLogo: imageBase64.headerLeftLogo
               ? `✅ exists (${(imageBase64.headerLeftLogo.length / 1024).toFixed(1)}KB)`
@@ -878,6 +874,7 @@ export default function AdminReports() {
               ? `✅ exists (${(imageBase64.validatorSignature.length / 1024).toFixed(1)}KB)`
               : "❌ null",
           });
+          */
 
           const cacheString = JSON.stringify(cacheData);
           console.log(
@@ -1888,6 +1885,10 @@ export default function AdminReports() {
   // };
 
   const handleDownloadReport = async (report: ExtendedAdminReport) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "PDF Generation is disabled in demo mode");
+      return;
+    }
     try {
       showInfo(`Preparing PDF download for report ${report.id}...`);
 
@@ -2016,13 +2017,13 @@ export default function AdminReports() {
         import.meta.env.VITE_API_BASE_URL || "https://api.dsecuretech.com"
       }/api/EnhancedAuditReports/${encodeURIComponent(reportId)}/export-pdf-with-settings`;
 
-      console.log("🔵 Download request:", downloadUrl);
+      // console.log("🔵 Download request:", downloadUrl);
 
       let response;
       if (isDemo) {
-        console.log(
+        /* console.log(
           `🔵 Demo mode: Simulating PDF download for report ${reportId}`,
-        );
+        ); */
         // Create a minimal valid PDF blob for demo download
         const dummyPdfContent =
           "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 53 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n392\n%%EOF";
@@ -2096,6 +2097,11 @@ export default function AdminReports() {
 
   // ✅ Bulk Download Multiple Reports as ZIP
   const handleBulkDownload = async () => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Bulk report download is disabled in demo mode");
+      return;
+    }
+
     if (selectedReportIds.size === 0) {
       showWarning(
         "No Reports Selected",
@@ -2362,6 +2368,11 @@ export default function AdminReports() {
 
   // ✅ Handle preview of selected reports - Fetches PDF blobs for preview
   const handlePreviewSelectedReports = async () => {
+    if (isDemo) {
+      showInfo("Demo Mode", "PDF Preview is disabled in demo mode");
+      return;
+    }
+
     if (selectedReportIds.size === 0) {
       showWarning(
         "No Reports Selected",
@@ -2484,9 +2495,9 @@ export default function AdminReports() {
 
           let response;
           if (isDemo) {
-            console.log(
+            /* console.log(
               `🔵 Demo mode: Simulating PDF preview for report ${reportId}`,
-            );
+            ); */
             // Create a minimal valid PDF blob for demo preview
             const dummyPdfContent =
               "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 61 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Preview Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n400\n%%EOF";
@@ -3385,14 +3396,14 @@ export default function AdminReports() {
                   </div>
                 </div>
               )}
-              {/* Scrollable table wrapper - only tbody scrolls, header stays fixed */}
-              <div className="max-h-[500px] overflow-y-auto scrollbar-hide">
+              {/* scrollable table wrapper - yahan se table horizontally scroll hogi chote screens par */}
+              <div className="max-h-[500px] overflow-y-auto">
                 <table className="w-full text-nowrap min-w-[800px]">
                   <thead className="sticky top-0 bg-white shadow-sm z-10">
-                    <tr className="text-left text-slate-500 border-b">
+                    <tr className="text-left text-slate-500 border-b whitespace-nowrap">
                       {/* ✅ RBAC: Only show checkbox for SuperAdmin and GroupAdmin */}
                       {!isSubUser && (
-                        <th className="py-3 px-2 w-10">
+                        <th className="py-3 px-2 w-10 min-w-[40px]">
                           <input
                             type="checkbox"
                             checked={
@@ -3407,39 +3418,33 @@ export default function AdminReports() {
                           />
                         </th>
                       )}
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 min-w-[120px]">
                         Report ID
                       </th>
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 min-w-[100px]">
                         Date
                       </th>
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 min-w-[120px]">
                         Report Type
                       </th>
-                      {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                      Devices
-                    </th> */}
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 min-w-[100px]">
                         Status
                       </th>
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 min-w-[150px]">
                         Method
                       </th>
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 text-center min-w-[100px]">
                         Total Files
                       </th>
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 text-center min-w-[80px]">
                         Erased
                       </th>
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 text-center min-w-[80px]">
                         Failed
                       </th>
-                      <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
+                      <th className="py-3 px-4 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500 text-center min-w-[80px]">
                         Success
                       </th>
-                      {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                        Actions
-                      </th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -3463,78 +3468,69 @@ export default function AdminReports() {
                             />
                           </td>
                         )}
-                        <td className="py-3 px-2 font-medium font-mono text-xs xs:text-sm sm:text-sm">
+                        <td className="py-3 px-4 font-medium font-mono text-[11px] sm:text-xs text-slate-600">
                           {row.id}
                         </td>
-                        <td className="py-3 px-2 text-xs xs:text-sm sm:text-sm">
+                        <td className="py-3 px-4 text-xs text-slate-600">
                           {row.date}
                         </td>
-                        <td className="py-3 px-2 text-xs xs:text-sm sm:text-sm">
-                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        <td className="py-3 px-4 text-xs">
+                          <span className="px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-purple-100 text-purple-800 whitespace-nowrap">
                             {row.reportType || "Erasure"}
                           </span>
                         </td>
-                        {/* <td className="py-2">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            row.devices >= 200
-                              ? "bg-purple-100 text-purple-800"
-                              : row.devices >= 100
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-slate-100 text-slate-800"
-                          }`}
-                        >
-                          {row.devices}
-                        </span>
-                      </td> */}
-                        <td className="py-2">
+                        <td className="py-3 px-4">
                           <span
-                            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-medium whitespace-nowrap ${
                               row.status === "completed"
-                                ? "bg-green-100 text-green-800"
+                                ? "bg-emerald-100 text-emerald-800"
                                 : row.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-800"
+                                  ? "bg-amber-100 text-amber-800"
                                   : row.status === "failed"
-                                    ? "bg-red-100 text-red-800"
+                                    ? "bg-rose-100 text-rose-800"
                                     : "bg-slate-100 text-slate-800"
                             }`}
                           >
                             <span
-                              className={`w-2 h-2 rounded-full ${
+                              className={`w-1.5 h-1.5 rounded-full ${
                                 row.status === "completed"
-                                  ? "bg-green-400"
+                                  ? "bg-emerald-500"
                                   : row.status === "pending"
-                                    ? "bg-yellow-400"
+                                    ? "bg-amber-500"
                                     : row.status === "failed"
-                                      ? "bg-red-400"
+                                      ? "bg-rose-500"
                                       : "bg-slate-400"
                               }`}
                             ></span>
-                            {row.status}
+                            <span className="capitalize">{row.status}</span>
                           </span>
                         </td>
-                        <td className="py-2 text-xs xs:text-sm sm:text-sm">
+                        <td className="py-3 px-4 text-xs text-slate-600">
                           {row.method}
                         </td>
-                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
-                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <td className="py-3 px-4 text-xs text-center">
+                          <span className="inline-flex px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium">
                             {row.totalFiles ?? 0}
                           </span>
                         </td>
-                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
-                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                        <td className="py-3 px-4 text-xs text-center">
+                          <span className="inline-flex px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium">
                             {row.erasedFiles ?? 0}
                           </span>
                         </td>
-                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
+                        <td className="py-3 px-4 text-xs text-center">
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${(row.failedFiles ?? 0) > 0 ? "bg-red-100 text-red-800" : "bg-slate-100 text-slate-800"}`}
+                            className={`inline-flex px-2 py-0.5 rounded-full font-medium ${
+                              (row.failedFiles ?? 0) > 0
+                                ? "bg-rose-50 text-rose-700"
+                                : "bg-slate-50 text-slate-500"
+                            }`}
                           >
                             {row.failedFiles ?? 0}
                           </span>
                         </td>
-                        <td className="py-2 text-xs xs:text-sm sm:text-sm text-center">
-                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <td className="py-3 px-4 text-xs text-center">
+                          <span className="inline-flex px-2 py-0.5 rounded-full bg-green-50 text-green-700 font-medium">
                             {row.successFiles ?? 0}
                           </span>
                         </td>
@@ -3543,58 +3539,103 @@ export default function AdminReports() {
                   </tbody>
                 </table>
               </div>
-              {/* End scrollable table wrapper */}
+              {/* End scrollable table wrapper - horizontal scroll yahan khatam hota hai */}
 
               {/* Pagination */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-4 mt-4 pt-4 border-t">
                 {/* Left side - Rows per page selector */}
-                <div className="flex items-center gap-3">
-                  <label htmlFor="pageSize" className="text-sm text-slate-600">
-                    Rows per page:
-                  </label>
-                  <select
-                    id="pageSize"
-                    value={pageSize}
-                    onChange={(e) => {
-                      const newSize = parseInt(e.target.value, 10);
-                      setPageSize(newSize);
-                      setPage(1); // Reset to first page when changing page size
-                    }}
-                    className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
-                  >
-                    {pageSizeOptions.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="text-sm text-slate-500">
+                <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="pageSize"
+                      className="text-sm text-slate-600 whitespace-nowrap"
+                    >
+                      Rows per page:
+                    </label>
+                    <select
+                      id="pageSize"
+                      value={pageSize}
+                      onChange={(e) => {
+                        const newSize = parseInt(e.target.value, 10);
+                        setPageSize(newSize);
+                        setPage(1);
+                      }}
+                      className="px-2 py-1 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer"
+                    >
+                      {pageSizeOptions.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <span className="text-sm text-slate-500 whitespace-nowrap">
                     Showing{" "}
-                    {Math.min((page - 1) * pageSize + 1, filtered.length)} to{" "}
-                    {Math.min(page * pageSize, filtered.length)} of{" "}
-                    {filtered.length} records
+                    <span className="font-medium text-slate-700">
+                      {Math.min((page - 1) * pageSize + 1, filtered.length)}
+                    </span>{" "}
+                    to{" "}
+                    <span className="font-medium text-slate-700">
+                      {Math.min(page * pageSize, filtered.length)}
+                    </span>{" "}
+                    of{" "}
+                    <span className="font-medium text-slate-700">
+                      {filtered.length}
+                    </span>{" "}
+                    records
                   </span>
                 </div>
 
                 {/* Right side - Page navigation */}
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-slate-600">
-                    Page {page} of {totalPages}
+                <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                  <span className="text-sm text-slate-600 whitespace-nowrap">
+                    Page{" "}
+                    <span className="font-medium text-slate-700">{page}</span>{" "}
+                    of{" "}
+                    <span className="font-medium text-slate-700">
+                      {totalPages}
+                    </span>
                   </span>
                   <div className="flex gap-2">
                     <button
                       disabled={page <= 1}
                       onClick={() => setPage(page - 1)}
-                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors flex items-center gap-1 font-medium text-slate-600"
                     >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 19l-7-7 7-7"
+                        />
+                      </svg>
                       Previous
                     </button>
                     <button
                       disabled={page >= totalPages}
                       onClick={() => setPage(page + 1)}
-                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+                      className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors flex items-center gap-1 font-medium text-slate-600"
                     >
                       Next
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
                     </button>
                   </div>
                 </div>
@@ -3656,6 +3697,14 @@ export default function AdminReports() {
                   type="button"
                   disabled={pdfSettingsLoading}
                   onClick={async () => {
+                    if (isDemo) {
+                      showInfo(
+                        "Demo Mode",
+                        "Saving PDF settings is disabled in demo mode",
+                      );
+                      setShowBulkSettingsModal(false);
+                      return;
+                    }
                     // if (!pdfFormData.reportTitle.trim() || !pdfFormData.headerText.trim()) {
                     //   showError("Validation Error", "Please fill in Report Title and Header Text");
                     //   return;
@@ -4943,6 +4992,13 @@ export default function AdminReports() {
                 {/* Download Button */}
                 <button
                   onClick={() => {
+                    if (isDemo) {
+                      showInfo(
+                        "Demo Mode",
+                        "PDF Preview download is disabled in demo mode",
+                      );
+                      return;
+                    }
                     const blob = previewBlobs[currentPreviewIndex];
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement("a");

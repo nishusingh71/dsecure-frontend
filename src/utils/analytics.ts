@@ -33,10 +33,25 @@ class GoogleAnalytics {
 
   // Initialize Google Analytics
   init(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined" || this.isInitialized) return;
+
+    // Suppress completely on localhost
+    if (
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+    ) {
+      this.isInitialized = true;
+      return;
+    }
+
+    // Check if gtag is already present (e.g., loaded in index.html)
+    if (typeof window.gtag !== "undefined") {
+      this.isInitialized = true;
+      return;
+    }
 
     // Load gtag script
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${this.trackingId}`;
     document.head.appendChild(script);
@@ -48,11 +63,12 @@ class GoogleAnalytics {
     }
     window.gtag = gtag;
 
-    gtag('js', new Date());
-    gtag('config', this.trackingId, {
+    gtag("js", new Date());
+    gtag("config", this.trackingId, {
       page_title: document.title,
       page_location: window.location.href,
-      custom_parameter: 'D-Secure_website'
+      custom_parameter: "D-Secure_website",
+      send_page_view: false, // Manual tracking handled by useGoogleAnalytics
     });
 
     this.isInitialized = true;

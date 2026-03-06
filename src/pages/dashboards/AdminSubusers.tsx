@@ -108,7 +108,7 @@ export default function AdminSubusers() {
       try {
         storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error("Error parsing user_data:", e);
+        // console.error("Error parsing user_data:", e);
       }
     }
 
@@ -116,7 +116,7 @@ export default function AdminSubusers() {
       try {
         storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error("Error parsing authUser:", e);
+        // console.error("Error parsing authUser:", e);
       }
     }
 
@@ -141,7 +141,7 @@ export default function AdminSubusers() {
       try {
         storedUserData = JSON.parse(authUser);
       } catch (e) {
-        console.error("Error parsing authUser:", e);
+        // console.error("Error parsing authUser:", e);
       }
     }
 
@@ -165,7 +165,7 @@ export default function AdminSubusers() {
       try {
         storedUserData = JSON.parse(storedUser);
       } catch (e) {
-        console.error("Error parsing user_data:", e);
+        // console.error("Error parsing user_data:", e);
       }
     }
     return storedUserData?.user_type || storedUserData?.userType || "";
@@ -428,8 +428,8 @@ export default function AdminSubusers() {
   };
 
   const handleEditUser = async (user: SubuserTableRow) => {
-    console.log("✏️ handleEditUser called with:", user);
-    console.log("📊 Current subusersData length:", subusersData.length);
+    /* console.log("✏️ handleEditUser called with:", user);
+    console.log("📊 Current subusersData length:", subusersData.length); */
 
     // Find the original subuser data with flexible field matching
     const originalSubuser = subusersData.find((s: any) => {
@@ -472,15 +472,15 @@ export default function AdminSubusers() {
     // Fetch full enhanced subuser details from the API
     try {
       showInfo(`Fetching details for ${user.subuser_email}...`);
-      console.log(
+      /* console.log(
         "🔍 Calling getEnhancedSubuser with email:",
         user.subuser_email,
-      );
+      ); */
       const res = await apiClient.getEnhancedSubuser(user.subuser_email);
-      console.log("📥 getEnhancedSubuser response:", res);
+      // console.log("📥 getEnhancedSubuser response:", res);
 
       if (!res || !res.success || !res.data) {
-        console.error("❌ getEnhancedSubuser failed:", { res });
+        // console.error("❌ getEnhancedSubuser failed:", { res });
         showError(
           "Fetch Failed",
           res?.error || "Could not retrieve user details",
@@ -528,8 +528,7 @@ export default function AdminSubusers() {
       showInfo(`Updating user ${editFormData.subuser_email}...`);
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        showSuccess(`User ${editFormData.subuser_email} updated successfully`);
+        showInfo("Demo Mode", "Editing subusers is disabled in demo mode");
         setEditModal({ show: false, user: null });
         return;
       }
@@ -590,18 +589,17 @@ export default function AdminSubusers() {
 
     try {
       showInfo(`Deleting user ${user.subuser_email}...`);
-      console.log("🗑️ Calling deleteSubuser with email:", user.subuser_email);
+      // console.log("🗑️ Calling deleteSubuser with email:", user.subuser_email);
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        showSuccess(`User ${user.subuser_email} deleted successfully`);
+        showInfo("Demo Mode", "Deleting subusers is disabled in demo mode");
         setDeleteModal({ show: false, user: null });
         return;
       }
 
       // Call delete API
       const response = await apiClient.deleteSubuser(user.subuser_email);
-      console.log("📥 deleteSubuser response:", response);
+      // console.log("📥 deleteSubuser response:", response);
 
       if (response.success) {
         showSuccess(`User ${user.subuser_email} deleted successfully`);
@@ -632,6 +630,10 @@ export default function AdminSubusers() {
   };
 
   const handleResetPassword = async (user: SubuserTableRow) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Password reset is disabled in demo mode");
+      return;
+    }
     if (user.status === "inactive") {
       showWarning(
         `Cannot reset password for ${user.subuser_email} - user is inactive`,
@@ -649,6 +651,10 @@ export default function AdminSubusers() {
   };
 
   const handleToggleStatus = async (user: SubuserTableRow) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Status updates are disabled in demo mode");
+      return;
+    }
     try {
       showInfo(`Toggling status for ${user.subuser_email}...`);
       // Implement status toggle API call here when available
@@ -1298,7 +1304,7 @@ export default function AdminSubusers() {
         {/* Table - scroll applied to table body only */}
         <div className="card-content card-table card overflow-x-auto">
           {/* Scrollable table wrapper */}
-          <div className="max-h-[500px] overflow-y-auto scrollbar-hide">
+          <div className="max-h-[500px] overflow-y-auto">
             <table className="w-full text-nowrap">
               <thead className="sticky top-0 bg-white shadow-sm z-10">
                 <tr className="text-left text-slate-500 border-b">

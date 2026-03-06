@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
+import { useNotification } from "@/contexts/NotificationContext";
 import { isDemoMode } from "@/data/demoData";
 import { indexedDBService } from "@/services/indexedDBService";
 import {
@@ -55,6 +56,7 @@ interface LicenseDistribution {
 }
 
 export default function AdminLicenses() {
+  const { showInfo, showSuccess, showError, showWarning } = useNotification();
   const isDemo = isDemoMode();
 
   // ✅ Get user role for RBAC
@@ -304,7 +306,7 @@ export default function AdminLicenses() {
       try {
         const cached = await indexedDBService.get("licenses", cacheKey);
         if (cached && cached.list && cached.stats && cached.details) {
-          console.log("✅ Loaded licenses from IndexedDB");
+          // console.log("✅ Loaded licenses from IndexedDB");
           setLicenses(cached.stats);
           setLicenseList(cached.list);
           setLicenseDetails(cached.details);
@@ -326,7 +328,7 @@ export default function AdminLicenses() {
         apiClient.get<any>("/api/License/distribution"),
       ]);
 
-      console.log("API Responses:", { statsRes, listRes, distributionRes }); // Debugging data fields
+      // console.log("API Responses:", { statsRes, listRes, distributionRes }); // Debugging data fields
 
       // Update license stats
       if (statsRes.success && statsRes.data) {
@@ -348,7 +350,7 @@ export default function AdminLicenses() {
         const rawList = Array.isArray(listRes.data)
           ? listRes.data
           : listRes.data.licenses || [];
-        console.log("Sample Raw License:", rawList[0]); // Debugging
+        // console.log("Sample Raw License:", rawList[0]); // Debugging
 
         // Robust mapping to ensure all fields are present
         const mappedList = rawList.map((item: any) => ({
@@ -358,7 +360,9 @@ export default function AdminLicenses() {
           user_email: item.user_email || item.email,
           license_type:
             item.edition || item.license_type || item.type || "Standard", // Use edition as requested
-          status: item.status || "Active",
+          status:
+            item.status?.charAt(0).toUpperCase() +
+              item.status?.slice(1).toLowerCase() || "Active",
           created_at: item.created_at || item.createdAt,
           expires_at: item.expires_at || item.expiresAt || item.expiry_date, // Fallback for Expires
           machine_count: item.machine_count || item.machineCount || 0,
@@ -425,20 +429,22 @@ export default function AdminLicenses() {
         setLicenseList(filteredList);
 
         // ✅ RE-CALCULATE Stats based on filtered list (Ignore global statsRes)
+        // Status matching ko case-insensitive banaya taaki "EXPIRED" ya "expired" dono count ho sakein
         const newStats = {
           total: filteredList.length,
-          active: filteredList.filter((l: License) => l.status === "Active")
-            .length,
-          inactive: filteredList.filter(
-            (l: License) =>
-              l.status === "Inactive" ||
-              l.status === "In_Use" ||
-              l.status === "IN_USE",
+          active: filteredList.filter(
+            (l: License) => (l.status || "").trim().toLowerCase() === "active",
           ).length,
-          expired: filteredList.filter((l: License) => l.status === "Expired")
-            .length,
-          revoked: filteredList.filter((l: License) => l.status === "Revoked")
-            .length,
+          inactive: filteredList.filter((l: License) => {
+            const s = (l.status || "").trim().toLowerCase();
+            return s === "inactive" || s === "in_use";
+          }).length,
+          expired: filteredList.filter(
+            (l: License) => (l.status || "").trim().toLowerCase() === "expired",
+          ).length,
+          revoked: filteredList.filter(
+            (l: License) => (l.status || "").trim().toLowerCase() === "revoked",
+          ).length,
         };
         setLicenses(newStats);
 
@@ -530,6 +536,10 @@ export default function AdminLicenses() {
 
   // Export to Excel - Try backend API first, fallback to client-side
   const handleExportExcel = async () => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Excel export is disabled in demo mode");
+      return;
+    }
     setExporting("excel");
     try {
       // Try backend API first
@@ -651,6 +661,10 @@ export default function AdminLicenses() {
 
   // Export to PDF - Try backend API first, fallback to client-side
   const handleExportPDF = async () => {
+    if (isDemo) {
+      showInfo("Demo Mode", "PDF export is disabled in demo mode");
+      return;
+    }
     setExporting("pdf");
     try {
       // Try backend API first
@@ -820,6 +834,10 @@ export default function AdminLicenses() {
 
   // Initialize Revoke
   const handleRevoke = (ids: string[]) => {
+    if (isDemo) {
+      showInfo("Demo Mode", "Revoking licenses is disabled in demo mode");
+      return;
+    }
     const targets = licenseList.filter((l) => ids.includes(l.license_id));
     if (targets.length === 0) return;
 
@@ -868,20 +886,20 @@ export default function AdminLicenses() {
             `licenses_v2_${currentUserEmail}`,
           );
         } catch (e) {
-          console.warn("Failed to clear cache", e);
+          // console.warn("Failed to clear cache", e);
         }
 
         await fetchLicenseData();
         setSelectedLicenses(new Set());
         // alert('Licenses revoked successfully');
       } else {
-        console.error("Some revocations failed:", failures);
+        // console.error("Some revocations failed:", failures);
         throw new Error(
           `Failed to revoke ${failures.length} licenses. Please check logs.`,
         );
       }
     } catch (err: any) {
-      console.error("Revoke failed:", err);
+      // console.error("Revoke failed:", err);
       await fetchLicenseData();
       // alert(err.message || 'Failed to revoke licenses');
     } finally {
@@ -1037,7 +1055,7 @@ export default function AdminLicenses() {
         {loading ? (
           <SkeletonStats items={4} />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             <div className="card !p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -1253,9 +1271,15 @@ export default function AdminLicenses() {
                     />
                     <Legend
                       verticalAlign="bottom"
-                      height={36}
+                      align="center"
+                      layout="horizontal"
+                      iconSize={10}
+                      wrapperStyle={{
+                        paddingTop: "20px",
+                        fontSize: "12px",
+                      }}
                       formatter={(value, entry: any) => (
-                        <span className="text-slate-600 text-sm ml-1">
+                        <span className="text-slate-600 text-xs sm:text-sm ml-1">
                           {value} ({entry.payload.percentage}%)
                         </span>
                       )}
@@ -1272,8 +1296,8 @@ export default function AdminLicenses() {
         </div>
 
         {/* License Breakdown Table */}
-        <div className="card !p-0 overflow-hidden">
-          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
+        <div className="card !p-0 overflow-hidden flex flex-col h-full">
+          <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex-none">
             <h3 className="text-lg font-semibold text-slate-900">
               License Breakdown
             </h3>
@@ -1283,16 +1307,16 @@ export default function AdminLicenses() {
               <SkeletonTable rows={4} columns={3} />
             ) : (
               <table className="w-full">
-                <thead className="bg-slate-50 border-b border-slate-200">
+                <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-1/2 px-4 sm:px-6 py-3 text-left text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Type
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <th className="w-1/4 px-4 sm:px-6 py-3 text-right text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider">
                       Count
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
-                      Percentage
+                    <th className="w-1/4 px-4 sm:px-6 py-3 text-right text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      %
                     </th>
                   </tr>
                 </thead>
@@ -1309,37 +1333,47 @@ export default function AdminLicenses() {
 
                     return (
                       <tr key={index} className="hover:bg-slate-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="w-1/2 px-4 sm:px-6 py-4 whitespace-nowrap">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors[license.color] || "bg-slate-100 text-slate-800"}`}
+                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium ${colors[license.color] || "bg-slate-100 text-slate-800"}`}
                           >
                             {license.type}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-slate-900">
+                        <td className="w-1/4 px-4 sm:px-6 py-4 whitespace-nowrap text-right text-xs sm:text-sm font-medium text-slate-900">
                           {license.count.toLocaleString()}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-600">
+                        <td className="w-1/4 px-4 sm:px-6 py-4 whitespace-nowrap text-right text-xs sm:text-sm text-slate-600">
                           {license.percentage}%
                         </td>
                       </tr>
                     );
                   })}
-                  <tr className="bg-slate-50 font-semibold">
-                    <td className="px-6 py-4 whitespace-nowrap text-slate-900">
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          {/* Footer for Total - Card ke sabse neeche fixed rahega */}
+          {!loading && licenseDetails.length > 0 && (
+            <div className="mt-auto border-t border-slate-200 bg-slate-50">
+              <table className="w-full">
+                <tbody className="font-semibold text-slate-900 border-t-2 border-slate-200">
+                  <tr className="bg-slate-50">
+                    <td className="w-1/2 px-4 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm">
                       Total
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-slate-900">
+                    <td className="w-1/4 px-4 sm:px-6 py-4 whitespace-nowrap text-right text-xs sm:text-sm">
                       {licenses.total.toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-slate-900">
+                    <td className="w-1/4 px-4 sm:px-6 py-4 whitespace-nowrap text-right text-xs sm:text-sm">
                       {licenses.total > 0 ? "100%" : "0%"}
                     </td>
                   </tr>
                 </tbody>
               </table>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 

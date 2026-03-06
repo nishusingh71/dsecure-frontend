@@ -7,6 +7,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import React from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { useNotification } from "@/contexts/NotificationContext";
+import { isDemoMode } from "@/data/demoData";
 
 interface ReportFormData {
   reportTitle: string;
@@ -74,7 +75,7 @@ export default function GenerateReport() {
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     const { name, value, type } = e.target;
 
@@ -95,7 +96,7 @@ export default function GenerateReport() {
 
   const handleFileSelect = (
     fieldName: keyof ReportFormData,
-    ref: React.RefObject<HTMLInputElement>
+    ref: React.RefObject<HTMLInputElement>,
   ) => {
     ref.current?.click();
   };
@@ -117,6 +118,11 @@ export default function GenerateReport() {
     // If reportId is provided, validate it
     if (reportId && !reportId.trim()) {
       showError("Invalid Report ID", "The report ID provided is not valid");
+      return;
+    }
+
+    if (isDemoMode()) {
+      showInfo("You are in Demo Mode. Action is not permitted.");
       return;
     }
 
@@ -151,7 +157,7 @@ export default function GenerateReport() {
         if (formData.technicianSignature) {
           submitData.append(
             "technicianSignature",
-            formData.technicianSignature
+            formData.technicianSignature,
           );
         }
         if (formData.validatorSignature) {
@@ -167,7 +173,7 @@ export default function GenerateReport() {
               Authorization: `Bearer ${user?.token || ""}`,
             },
             body: submitData,
-          }
+          },
         );
 
         if (response.ok) {
@@ -184,14 +190,14 @@ export default function GenerateReport() {
 
           showSuccess(
             "Report Generated Successfully",
-            `Custom report for ID ${reportId} has been generated and downloaded`
+            `Custom report for ID ${reportId} has been generated and downloaded`,
           );
         } else {
-          const errorData = await response.text();
-          console.error("API Error:", errorData);
+          // const errorData = await response.text();
+          // console.error("API Error:", errorData);
           showError(
             "Report Generation Failed",
-            `Failed to generate custom report: ${response.status} ${response.statusText}`
+            `Failed to generate custom report: ${response.status} ${response.statusText}`,
           );
         }
       } else if (isBulkMode && bulkReportIds.length > 0) {
@@ -233,13 +239,13 @@ export default function GenerateReport() {
             if (formData.technicianSignature) {
               submitData.append(
                 "technicianSignature",
-                formData.technicianSignature
+                formData.technicianSignature,
               );
             }
             if (formData.validatorSignature) {
               submitData.append(
                 "validatorSignature",
-                formData.validatorSignature
+                formData.validatorSignature,
               );
             }
 
@@ -251,7 +257,7 @@ export default function GenerateReport() {
                   Authorization: `Bearer ${user?.token || ""}`,
                 },
                 body: submitData,
-              }
+              },
             );
 
             if (response.ok) {
@@ -260,11 +266,11 @@ export default function GenerateReport() {
               zip.file(fileName, blob);
               successCount++;
             } else {
-              console.warn(`Failed to customize report ${reportId}`);
+              // console.warn(`Failed to customize report ${reportId}`);
               failedCount++;
             }
           } catch (error) {
-            console.error(`Error customizing report ${reportId}:`, error);
+            // console.error(`Error customizing report ${reportId}:`, error);
             failedCount++;
           }
         }
@@ -294,11 +300,11 @@ export default function GenerateReport() {
         if (failedCount > 0) {
           showSuccess(
             "Partial Success",
-            `Customized ${successCount} reports. ${failedCount} failed. ZIP file downloaded.`
+            `Customized ${successCount} reports. ${failedCount} failed. ZIP file downloaded.`,
           );
         } else {
           showSuccess(
-            `Successfully customized and downloaded ${successCount} reports as ZIP`
+            `Successfully customized and downloaded ${successCount} reports as ZIP`,
           );
         }
       } else {
@@ -326,7 +332,7 @@ export default function GenerateReport() {
         if (formData.technicianSignature) {
           submitData.append(
             "technicianSignature",
-            formData.technicianSignature
+            formData.technicianSignature,
           );
         }
         if (formData.validatorSignature) {
@@ -337,23 +343,23 @@ export default function GenerateReport() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         // console.log(
-          // "Generating regular report with data:",
-          // Object.fromEntries(submitData)
+        // "Generating regular report with data:",
+        // Object.fromEntries(submitData)
         // );
 
         showSuccess(
           "Report Generation Started",
-          `Report "${formData.reportTitle}" generation has started! You will be notified when it's ready.`
+          `Report "${formData.reportTitle}" generation has started! You will be notified when it's ready.`,
         );
       }
 
       // Navigate back to reports
       navigate("/admin/reports");
     } catch (error) {
-      console.error("Error generating report:", error);
+      // console.error("Error generating report:", error);
       showError(
         "Report Generation Failed",
-        "Failed to generate report. Please try again."
+        "Failed to generate report. Please try again.",
       );
     } finally {
       setIsLoading(false);
@@ -399,8 +405,8 @@ export default function GenerateReport() {
                 {isBulkMode
                   ? `Bulk Customize Reports (${bulkReportIds.length} selected)`
                   : reportId
-                  ? `Generate Custom Report - Report #${reportId}`
-                  : "Generate Report"}
+                    ? `Generate Custom Report - Report #${reportId}`
+                    : "Generate Report"}
               </h1>
             </div>
             <p className="text-slate-600">
@@ -496,16 +502,6 @@ export default function GenerateReport() {
                   accept="image/*"
                   className="hidden"
                 />
-                {/* <div className="flex items-center gap-2 mt-1">
-                  <input
-                    type="checkbox"
-                    id="headerLeftLogoEmpty"
-                    className="rounded border-slate-300"
-                  />
-                  <label htmlFor="headerLeftLogoEmpty" className="text-sm text-slate-600">
-                    Send empty value
-                  </label>
-                </div> */}
               </div>
 
               {/* Header Right Logo */}
@@ -539,16 +535,6 @@ export default function GenerateReport() {
                   accept="image/*"
                   className="hidden"
                 />
-                {/* <div className="flex items-center gap-2 mt-1">
-                  <input
-                    type="checkbox"
-                    id="headerRightLogoEmpty"
-                    className="rounded border-slate-300"
-                  />
-                  <label htmlFor="headerRightLogoEmpty" className="text-sm text-slate-600">
-                    Send empty value
-                  </label>
-                </div> */}
               </div>
 
               {/* Watermark Image */}
@@ -582,16 +568,6 @@ export default function GenerateReport() {
                   accept="image/*"
                   className="hidden"
                 />
-                {/* <div className="flex items-center gap-2 mt-1">
-                  <input
-                    type="checkbox"
-                    id="watermarkImageEmpty"
-                    className="rounded border-slate-300"
-                  />
-                  <label htmlFor="watermarkImageEmpty" className="text-sm text-slate-600">
-                    Send empty value
-                  </label>
-                </div> */}
               </div>
 
               {/* Technician Name */}
@@ -688,7 +664,7 @@ export default function GenerateReport() {
                     onClick={() =>
                       handleFileSelect(
                         "technicianSignature",
-                        technicianSignatureRef
+                        technicianSignatureRef,
                       )
                     }
                     className="px-4 py-2 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300 transition-colors"
@@ -704,16 +680,6 @@ export default function GenerateReport() {
                   accept="image/*"
                   className="hidden"
                 />
-                {/* <div className="flex items-center gap-2 mt-1">
-                  <input
-                    type="checkbox"
-                    id="technicianSignatureEmpty"
-                    className="rounded border-slate-300"
-                  />
-                  <label htmlFor="technicianSignatureEmpty" className="text-sm text-slate-600">
-                    Send empty value
-                  </label>
-                </div> */}
               </div>
 
               {/* Validator Signature */}
@@ -734,7 +700,7 @@ export default function GenerateReport() {
                     onClick={() =>
                       handleFileSelect(
                         "validatorSignature",
-                        validatorSignatureRef
+                        validatorSignatureRef,
                       )
                     }
                     className="px-4 py-2 bg-slate-200 text-slate-700 rounded-md hover:bg-slate-300 transition-colors"
@@ -750,16 +716,6 @@ export default function GenerateReport() {
                   accept="image/*"
                   className="hidden"
                 />
-                {/* <div className="flex items-center gap-2 mt-1">
-                  <input
-                    type="checkbox"
-                    id="validatorSignatureEmpty"
-                    className="rounded border-slate-300"
-                  />
-                  <label htmlFor="validatorSignatureEmpty" className="text-sm text-slate-600">
-                    Send empty value
-                  </label>
-                </div> */}
               </div>
             </div>
 
@@ -799,14 +755,10 @@ export default function GenerateReport() {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    {isBulkMode
-                      ? `Processing ${bulkReportIds.length} reports...`
-                      : "Executing..."}
+                    Generating...
                   </>
-                ) : isBulkMode ? (
-                  `Customize & Download ${bulkReportIds.length} Reports`
                 ) : (
-                  "Execute"
+                  "Generate Report"
                 )}
               </button>
             </div>

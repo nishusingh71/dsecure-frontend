@@ -84,7 +84,6 @@ ss/
 # Qodo
 .qodo/
 
-# ============================================
 # Root clutter — temp/debug/one-off files
 # ============================================
 
@@ -95,10 +94,12 @@ build_output.txt
 final_build_errors.txt
 tsc_errors.txt
 tsc_output.txt
+tsc_output_utf8.txt
 tsc_final.txt
 tsc_dashboard.txt
 tsc_down.txt
 admin_dashboard_errors.txt
+ts_errors.txt
 ncu_output.txt
 console-log-cleanup-report.txt
 
@@ -113,6 +114,7 @@ sitemap_locs_utf8.txt
 sitemap_urls.txt
 missing_urls.txt
 app-prashant.txt
+test_out.txt
 
 # Configuration notes
 CONFIGURATION.txt
@@ -123,6 +125,9 @@ find_404s.js
 remove_6_404s.js
 remove_urls.js
 validate-email-pii.js
+test_regex.js
+test_loop.js
+test_*.js
 
 # One-off debug/test scripts (Python — already covered by *.py above)
 # add_react_memo.py, audit_seo_mastery.py, cleanup_seo.py,

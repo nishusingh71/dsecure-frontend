@@ -44,6 +44,23 @@ export default function LoginPage() {
     setTimeout(() => setToast(null), 5000); // Auto hide after 5 seconds
   };
 
+  /**
+   * ✅ NAYA CODE: Pre-fetch AdminDashboard component
+   * This speeds up the "Try Demo Account" transition by downloading the massive
+   * dashboard chunk in the background while the user is still on the login page.
+   */
+  useEffect(() => {
+    // Pre-fetch AdminDashboard on mount
+    const prefetchDashboard = () => {
+      // @ts-ignore - dynamic import for pre-fetching
+      import("../dashboards/AdminDashboard").catch(() => {});
+    };
+
+    // Delay pre-fetch slightly to prioritize login page interactivity
+    const timer = setTimeout(prefetchDashboard, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // ✅ FormSubmit.co Email Service with Error Handling
   const sendEmailViaFormSubmit = async (
     toEmail: string,
@@ -598,7 +615,9 @@ export default function LoginPage() {
       localStorage.setItem("authUser", JSON.stringify(user));
 
       // ✅ CRITICAL: Ensure demo mode is cleared so live data is always fetched
-      localStorage.removeItem("demo_mode");
+      if (localStorage.getItem("demo_mode")) {
+        localStorage.removeItem("demo_mode");
+      }
 
       // 🔐 Set auth token for all future API requests
       setAuthToken(data.token, rememberMe);
@@ -1364,6 +1383,11 @@ export default function LoginPage() {
               <button
                 type="button"
                 className="btn-secondary w-full flex items-center justify-center gap-2"
+                onMouseEnter={() => {
+                  // Pre-fetch on hover for even faster transition
+                  // @ts-ignore
+                  import("../dashboards/AdminDashboard").catch(() => {});
+                }}
                 onClick={async () => {
                   // //console.log('Demo button clicked!')
                   // //console.log('demoLogin function:', demoLogin)
