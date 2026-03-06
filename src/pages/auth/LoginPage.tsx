@@ -8,10 +8,11 @@ import { api, setAuthToken } from "@/utils/apiClient";
 import { authService } from "@/utils/authService";
 
 import { isDemoMode } from "@/data/demoData";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 export default function LoginPage() {
   const { login, demoLogin, getSmartRedirectPath } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const location = useLocation();
   const { t } = useTranslation();
   const [email, setEmail] = useState("");

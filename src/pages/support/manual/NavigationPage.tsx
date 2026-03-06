@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 
 const NavigationPage: React.FC = memo(() => {
   return (

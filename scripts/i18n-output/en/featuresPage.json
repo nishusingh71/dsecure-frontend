@@ -1,0 +1,21 @@
+{
+  "multiplatformSupport": "Multi-Platform Support",
+  "windowsMacosAndLinuxSupportForComprehensiveDevice": "Windows, macOS, and Linux support for comprehensive device coverage",
+  "complianceReporting": "Compliance Reporting",
+  "automatedComplianceReportsForNistDodGdprAnd": "Automated compliance reports for NIST, DoD, GDPR, and HIPAA standards",
+  "enterpriseManagement": "Enterprise Management",
+  "centralizedManagementConsoleForLargescaleDeploymen": "Centralized management console for large-scale deployments",
+  "networkErasure": "Network Erasure",
+  "pxeBootAndLanbasedErasureForRemoteDevice": "PXE boot and LAN-based erasure for remote device management",
+  "mobileDeviceSupport": "Mobile Device Support",
+  "cryptographicErase": "Cryptographic Erase",
+  "fastSsdErasureUsingCryptographicKeyDestruction": "Fast SSD erasure using cryptographic key destruction",
+  "automatedScheduling": "Automated Scheduling",
+  "scheduleErasureTasksForAutomatedDataDestruction": "Schedule erasure tasks for automated data destruction",
+  "batchOperations": "Batch Operations",
+  "erasureOfMultipleDevicesSimultaneously": "Erasure of multiple devices simultaneously",
+  "auditTrails": "Audit Trails",
+  "comprehensiveAuditLogsForComplianceVerification": "Comprehensive audit logs for compliance verification",
+  "apiIntegration": "API Integration",
+  "restfulApiForCustomIntegrationsAndAutomation": "RESTful API for custom integrations and automation"
+}

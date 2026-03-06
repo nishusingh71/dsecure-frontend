@@ -1,0 +1,157 @@
+{
+  "hero": {
+    "title": "تواصل معنا",
+    "subtitle": "هل أنت مستعد لتأمين بياناتك بحلول مسح رائدة في الصناعة؟ خبراؤنا هنا لمساعدتك في إيجاد الحل المثالي لمؤسستك."
+  },
+  "form": {
+    "submitEnquiry": "إرسال الاستفسار",
+    "usage": "الاستخدام:",
+    "business": "أعمال",
+    "personal": "شخصي",
+    "personalNote": "الترخيص المجاني متاح للاستخدام التجاري فقط. في حال وجود أي استفسار، يرجى ملء النموذج أدناه.",
+    "fullName": "الاسم الكامل",
+    "businessEmail": "البريد الإلكتروني للأعمال",
+    "email": "البريد الإلكتروني",
+    "phoneNo": "رقم الهاتف",
+    "phoneNumber": "رقم الهاتف",
+    "businessType": "نوع النشاط التجاري",
+    "companyName": "اسم الشركة",
+    "country": "الدولة",
+    "selectSolutionType": "اختر نوع الحل",
+    "selectSolutionTypeRequired": "اختر نوع الحل *",
+    "complianceRequirements": "متطلبات الامتثال",
+    "messageLabel": "يرجى إخبارنا بمتطلباتك بالتفصيل.",
+    "submitting": "جارٍ الإرسال...",
+    "privacyText": "أفهم أن المعلومات أعلاه محمية بموجب",
+    "privacyLink": "سياسة الخصوصية الخاصة بـ D-Secure"
+  },
+  "businessTypes": {
+    "placeholder": "نوع النشاط التجاري",
+    "enterprise": "مؤسسة",
+    "government": "حكومة",
+    "healthcare": "الرعاية الصحية",
+    "education": "التعليم",
+    "financial": "الخدمات المالية",
+    "legal": "القانون",
+    "technology": "التكنولوجيا",
+    "manufacturing": "التصنيع",
+    "other": "أخرى"
+  },
+  "solutionTypes": {
+    "business": {
+      "fileEraser": "ماسح الملفات",
+      "driveEraser": "ماسح الأقراص",
+      "customSolution": "حل مخصص"
+    },
+    "personal": {
+      "driveErasure": "مسح الأقراص",
+      "fileErasure": "مسح الملفات",
+      "personalUse": "الاستخدام الشخصي",
+      "consultation": "استشارة",
+      "other": "أخرى"
+    }
+  },
+  "compliance": {
+    "placeholder": "متطلبات الامتثال",
+    "nist": "NIST 800-88",
+    "dod": "DoD 5220.22-M",
+    "gdpr": "GDPR",
+    "hipaa": "HIPAA",
+    "sox": "SOX",
+    "iso": "ISO 27001",
+    "multiple": "معايير متعددة",
+    "personalPrivacy": "الخصوصية الشخصية",
+    "noSpecific": "لا توجد متطلبات محددة",
+    "other": "أخرى"
+  },
+  "countries": {
+    "unitedStates": "الولايات المتحدة الأمريكية",
+    "canada": "كندا",
+    "unitedKingdom": "المملكة المتحدة",
+    "germany": "ألمانيا",
+    "france": "فرنسا",
+    "italy": "إيطاليا",
+    "spain": "إسبانيا",
+    "netherlands": "هولندا",
+    "switzerland": "سويسرا",
+    "sweden": "السويد",
+    "norway": "النرويج",
+    "denmark": "الدنمارك",
+    "india": "الهند",
+    "china": "الصين",
+    "japan": "اليابان",
+    "southKorea": "كوريا الجنوبية",
+    "singapore": "سنغافورة",
+    "hongKong": "هونغ كونغ",
+    "australia": "أستراليا",
+    "uae": "الإمارات العربية المتحدة",
+    "saudiArabia": "المملكة العربية السعودية",
+    "brazil": "البرازيل",
+    "mexico": "المكسيك",
+    "russia": "روسيا",
+    "turkey": "تركيا",
+    "southAfrica": "جنوب أفريقيا",
+    "other": "أخرى"
+  },
+  "validation": {
+    "nameRequired": "الاسم مطلوب",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+    "messageRequired": "الرسالة مطلوبة"
+  },
+  "toast": {
+    "success": "شكرًا لك! تم تقديم استفسارك بنجاح.",
+    "error": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى لاحقًا."
+  },
+  "quickResponse": {
+    "title": "استجابة سريعة",
+    "responseTime": "الرد خلال 12 ساعة عمل",
+    "workingHours": "(9 صباحًا - 6 مساءً) [03:30 - 12:30 UTC]",
+    "liveChat": "الدردشة المباشرة متاحة",
+    "expertSupport": "دعم فني متخصص"
+  },
+  "support": {
+    "title": "كيف يمكننا المساعدة؟",
+    "subtitle": "اختر طريقة الاتصال المناسبة لاحتياجاتك.",
+    "salesTitle": "استفسارات المبيعات",
+    "salesDesc": "احصل على معلومات الأسعار وناقش متطلباتك",
+    "techTitle": "الدعم الفني",
+    "techDesc": "دعم على مدار الساعة للعملاء الحاليين",
+    "contactNow": "تواصل الآن"
+  },
+  "offices": {
+    "title": "المكاتب العالمية",
+    "subtitle": "بمكاتب حول العالم، نحن هنا لدعمك في منطقتك الزمنية.",
+    "hq": "المقر الرئيسي",
+    "est": "تأسست",
+    "keyServices": "الخدمات الرئيسية:",
+    "quickContact": "التواصل السريع:",
+    "contactOffice": "تواصل مع المكتب",
+    "callNow": "اتصل الآن",
+    "services": {
+      "dataErasure": "حلول مسح البيانات",
+      "itConsulting": "استشارات تكنولوجيا المعلومات",
+      "hardware": "خدمات الأجهزة"
+    },
+    "office1": {
+      "companyName": "InfoTree Computers LLC",
+      "contactName": "Varun Kumar Singh",
+      "title": "المدير الإداري",
+      "address": "دبي، الإمارات العربية المتحدة",
+      "city": "دبي",
+      "country": "الإمارات العربية المتحدة",
+      "workingHours": "9 صباحًا - 6 مساءً بتوقيت الخليج",
+      "timezone": "GST (UTC+4)"
+    },
+    "office2": {
+      "companyName": "D-Secure Technologies",
+      "contactName": "Dhruv Rai",
+      "title": "الرئيس التنفيذي",
+      "address": "القطاع 62، نويدا، أوتار براديش 201301",
+      "city": "نويدا",
+      "country": "الهند",
+      "workingHours": "9 صباحًا - 6 مساءً بتوقيت الهند",
+      "timezone": "IST (UTC+5:30)"
+    }
+  }
+}

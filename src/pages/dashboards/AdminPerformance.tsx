@@ -27,6 +27,7 @@ import {
   DEMO_SUBUSERS,
 } from "@/data/demoData";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
 const EMPTY_METHOD_METRICS: MethodMetric[] = [];
 
@@ -99,6 +100,7 @@ const CustomDateInput = ({
 };
 
 export default function AdminPerformance() {
+  const { t } = useTranslation();
   const { showError } = useNotification();
   const { user } = useAuth();
   const isDemo = isDemoMode();
@@ -294,15 +296,23 @@ export default function AdminPerformance() {
       <>
         <SEOHead seo={getSEOForPage("admin-performance")} />
         <Helmet>
-          <title>DSecureTech Performance | System Performance</title>
+          <title>
+            {t(
+              "dashboard.adminPerformance.dsecuretech_performance_system_performance",
+            )}
+          </title>
         </Helmet>
         <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
           {/* Header & Filters (Still visible to allow changing filters) */}
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Performance</h1>
+              <h1 className="text-2xl font-bold text-slate-900">
+                {t("dashboard.adminPerformance.performance")}
+              </h1>
               <p className="text-sm text-slate-600 mt-1">
-                Monitor system performance and erasure metrics
+                {t(
+                  "dashboard.adminPerformance.monitor_system_performance_and_erasure_metric",
+                )}
               </p>
             </div>
           </div>
@@ -312,13 +322,13 @@ export default function AdminPerformance() {
             <div className="card p-4 space-y-4 bg-white rounded-xl shadow-sm border border-slate-200">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-slate-900">
-                  Filters & Search
+                  {t("dashboard.adminPerformance.filters_search")}
                 </h3>
                 <button
                   onClick={clearAllFilters}
                   className="text-sm text-red-600 hover:text-red-800 font-medium"
                 >
-                  Clear All
+                  {t("dashboard.adminPerformance.clear_all")}
                 </button>
               </div>
 
@@ -326,16 +336,22 @@ export default function AdminPerformance() {
                 {/* User Filter */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Report Owner
+                    {t("dashboard.adminPerformance.report_owner")}
                   </label>
                   <select
                     className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
                     value={selectedUserEmail}
                     onChange={(e) => setSelectedUserEmail(e.target.value)}
                   >
-                    <option value="">My Reports</option>
-                    <option value="all">All Reports (Me + Subusers)</option>
-                    <optgroup label="Subuser Reports">
+                    <option value="">
+                      {t("dashboard.adminPerformance.my_reports")}
+                    </option>
+                    <option value="all">
+                      {t("dashboard.adminPerformance.all_reports_me_subusers")}
+                    </option>
+                    <optgroup
+                      label={t("dashboard.adminPerformance.subuser_reports")}
+                    >
                       {subusers.map((subuser: any) => (
                         <option
                           key={subuser.subuser_email || subuser.email}
@@ -354,7 +370,7 @@ export default function AdminPerformance() {
                 {/* Year Selector */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Year
+                    {t("dashboard.adminPerformance.year")}
                   </label>
                   <select
                     className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
@@ -428,10 +444,12 @@ export default function AdminPerformance() {
               />
             </svg>
             <h3 className="text-lg font-medium text-slate-900 mb-2">
-              No Performance Metrics Available
+              {t("dashboard.adminPerformance.no_performance_metrics_available")}
             </h3>
             <p className="text-slate-600">
-              There are no performance metrics to display for this account.
+              {t(
+                "dashboard.adminPerformance.there_are_no_performance_metrics_to_display_f",
+              )}
             </p>
           </div>
         </div>
@@ -456,16 +474,24 @@ export default function AdminPerformance() {
     <>
       <SEOHead seo={getSEOForPage("admin-performance")} />
       <Helmet>
-        <title>DSecureTech Performance | System Performance</title>
+        <title>
+          {t(
+            "dashboard.adminPerformance.dsecuretech_performance_system_performance",
+          )}
+        </title>
       </Helmet>
 
       <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
         {/* Header & Filters */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Performance</h1>
+            <h1 className="text-2xl font-bold text-slate-900">
+              {t("dashboard.adminPerformance.performance")}
+            </h1>
             <p className="text-sm text-slate-600 mt-1">
-              Monitor system performance and erasure metrics
+              {t(
+                "dashboard.adminPerformance.monitor_system_performance_and_erasure_metric",
+              )}
             </p>
           </div>
         </div>
@@ -475,13 +501,13 @@ export default function AdminPerformance() {
           <div className="card p-4 space-y-4 bg-white rounded-xl shadow-sm border border-slate-200">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-slate-900">
-                Filters & Search
+                {t("dashboard.adminPerformance.filters_search")}
               </h3>
               <button
                 onClick={clearAllFilters}
                 className="text-sm text-red-600 hover:text-red-800 font-medium"
               >
-                Clear All
+                {t("dashboard.adminPerformance.clear_all")}
               </button>
             </div>
 
@@ -489,15 +515,19 @@ export default function AdminPerformance() {
               {/* User Filter */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Report Owner
+                  {t("dashboard.adminPerformance.report_owner")}
                 </label>
                 <select
                   className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
                   value={selectedUserEmail}
                   onChange={(e) => setSelectedUserEmail(e.target.value)}
                 >
-                  <option value="">My Reports</option>
-                  <option value="all">All Reports (Me + Subusers)</option>
+                  <option value="">
+                    {t("dashboard.adminPerformance.my_reports")}
+                  </option>
+                  <option value="all">
+                    {t("dashboard.adminPerformance.all_reports_me_subusers")}
+                  </option>
                   <optgroup label="Subuser Reports">
                     {subusers.map((subuser: any) => (
                       <option
@@ -537,14 +567,14 @@ export default function AdminPerformance() {
 
               {/* Date Range Filter */}
               <CustomDateInput
-                label="From Date"
+                label={t("dashboard.adminPerformance.from_date")}
                 value={fromDate}
                 onChange={(value) => {
                   setFromDate(value);
                   // Validate date range
                   if (value && toDate && new Date(value) > new Date(toDate)) {
                     setDateValidationError(
-                      "From date cannot be later than To date.",
+                      t("dashboard.adminPerformance.from_date_error"),
                     );
                   } else {
                     setDateValidationError("");
@@ -554,7 +584,7 @@ export default function AdminPerformance() {
 
               {/* To Date Filter */}
               <CustomDateInput
-                label="To Date"
+                label={t("dashboard.adminPerformance.to_date")}
                 value={toDate}
                 onChange={(value) => {
                   setToDate(value);
@@ -565,7 +595,7 @@ export default function AdminPerformance() {
                     new Date(fromDate) > new Date(value)
                   ) {
                     setDateValidationError(
-                      "To date cannot be earlier than From date.",
+                      t("dashboard.adminPerformance.to_date_error"),
                     );
                   } else {
                     setDateValidationError("");
@@ -589,7 +619,7 @@ export default function AdminPerformance() {
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col h-full min-h-[400px]">
             <div className="mb-6">
               <p className="text-base md:text-lg text-slate-500 mb-2 font-medium">
-                Erasure Method Distribution
+                {t("dashboard.adminPerformance.erasure_method_distribution")}
               </p>
               <p className="text-3xl md:text-4xl font-bold text-slate-900">
                 {performanceData.methodMetrics &&
@@ -658,7 +688,7 @@ export default function AdminPerformance() {
                 </ResponsiveContainer>
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center text-slate-400 italic text-sm">
-                  No erasure data found
+                  {t("dashboard.adminPerformance.no_erasure_data_found")}
                 </div>
               )}
             </div>

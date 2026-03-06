@@ -1,0 +1,13 @@
+{
+  "dataErasureService": "Data Erasure Service",
+  "webApplication": "Web Application",
+  "mobileDeviceServices": "Mobile Device Services",
+  "cloudIntegration": "Cloud Integration",
+  "reportingSystem": "Reporting System",
+  "authenticationService": "Authentication Service",
+  "allSystemsOperational": "All systems operational",
+  "someSystemsExperiencingIssues": "Some systems experiencing issues",
+  "scheduledMaintenanceInProgress": "Scheduled maintenance in progress",
+  "statusUnknown": "Status unknown",
+  "enterYourEmailForUpdates": "Enter your email for updates"
+}

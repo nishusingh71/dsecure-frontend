@@ -1,49 +1,55 @@
 import { useState, useEffect, memo, useCallback } from 'react'
+import { useTranslation } from "react-i18next";
 
 interface ScrollToTopProps {
-  threshold?: number
-  className?: string
+  threshold?: number;
+  className?: string;
 }
 
-const ScrollToTop = memo(function ScrollToTop({ threshold = 300, className = '' }: ScrollToTopProps) {
-  const [isVisible, setIsVisible] = useState(false)
+const ScrollToTop = memo(function ScrollToTop({
+  threshold = 300,
+  className = "",
+}: ScrollToTopProps) {
+  const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     setIsVisible(scrollTop > threshold);
-  }, [threshold])
+  }, [threshold]);
 
   const scrollToTop = useCallback(() => {
-    if (typeof window === 'undefined') return;
-    
+    if (typeof window === "undefined") return;
+
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
-    })
-  }, [])
+      behavior: "smooth",
+    });
+  }, []);
 
   useEffect(() => {
     // Check if we're in browser environment
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     // Check initial scroll position
     toggleVisibility();
 
-    window.addEventListener('scroll', toggleVisibility, { passive: true });
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
 
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, [toggleVisibility])
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, [toggleVisibility]);
+
+  const { t } = useTranslation();
 
   if (!isVisible) {
-    return null
+    return null;
   }
 
   return (
     <button
       onClick={scrollToTop}
       className={`fixed bottom-6 right-6 z-50 p-3 bg-brand text-white rounded-full shadow-lg hover:bg-brand-600 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-brand/50 group ${className}`}
-      aria-label="Scroll to top"
-      title="Back to top"
+      aria-label={t("layout.scroll_to_top")}
+      title={t("layout.back_to_top")}
       type="button"
     >
       <svg
@@ -61,7 +67,7 @@ const ScrollToTop = memo(function ScrollToTop({ threshold = 300, className = '' 
         />
       </svg>
     </button>
-  )
-})
+  );
+});
 
 export default ScrollToTop

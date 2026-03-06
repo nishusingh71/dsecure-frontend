@@ -1,0 +1,23 @@
+{
+  "noOrderOrPaymentIdFoundRedirecting": "No order or payment ID found. Redirecting...",
+  "failedToLoadOrderDetailsPleaseRefreshThe": "Failed to load order details. Please refresh the page.",
+  "loadingOrderDetails": "Loading order details...",
+  "errorLoadingOrder": "Error Loading Order",
+  "orderId": "Order ID",
+  "orderDate": "Order Date",
+  "status": "Status",
+  "paymentId": "Payment ID",
+  "name": "Name",
+  "method": "Method",
+  "card": "Card",
+  "date": "Date",
+  "transactionId": "Transaction ID",
+  "invoice": "Invoice #",
+  "total": "Total",
+  "within5Minutes": "Within 5 minutes",
+  "within24Hours": "Within 24 hours",
+  "supportAccess": "Support Access",
+  "immediateAccess": "Immediate access",
+  "onboarding": "Onboarding",
+  "within48Hours": "Within 48 hours"
+}

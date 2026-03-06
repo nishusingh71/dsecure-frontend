@@ -1,6 +1,6 @@
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
-import DSecureIconOnly from "@/assets/dsecure-icon-only.svg"; // Assuming vite-plugin-svgr or similar, but wait, typical vite import provides url by default. 
+import { Link } from "@/components/LocaleLink";
+import DSecureIconOnly from "@/assets/dsecure-icon-only.svg"; // Assuming vite-plugin-svgr or similar, but wait, typical vite import provides url by default.
 import OptimizedImage from "@/components/OptimizedImage";
 import {
   LightningIcon,
@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 
 const HomePage = memo(function HomePage() {
   usePerformanceMonitor("HomePage");
-  const { t } = useTranslation();
+  const { t } = useTranslation(["home", "seo", "common"]);
 
   const scrollToHash = useCallback(() => {
     const hash = window.location.hash;
@@ -45,7 +45,13 @@ const HomePage = memo(function HomePage() {
 
   return (
     <>
-      <SEOHead seo={getSEOForPage("home")} />
+      <SEOHead
+        seo={{
+          ...getSEOForPage("home"),
+          title: t("seo:home.title"),
+          description: t("seo:home.description"),
+        }}
+      />
       <section
         id="hero"
         className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28"
@@ -103,7 +109,7 @@ const HomePage = memo(function HomePage() {
                         </svg>
                       )}
                     </HoverIcon>
-                    Buy Now
+                    {t("home.buy_now")}
                   </Link>
                 </div>
               </Reveal>
@@ -111,19 +117,19 @@ const HomePage = memo(function HomePage() {
                 <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>ISO 27001</span>
+                    <span>{t("home.iso_27001")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>NIST 800-88</span>
+                    <span>{t("home.nist_80088")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>GDPR</span>
+                    <span>{t("home.gdpr")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    <span>SOC 2</span>
+                    <span>{t("home.soc_2")}</span>
                   </div>
                 </div>
               </Reveal>
@@ -270,7 +276,7 @@ const HomePage = memo(function HomePage() {
                             </div>
                             {/* Text */}
                             <span className="text-white text-[10px] lg:text-xs font-bold tracking-wider mt-2 uppercase">
-                              Secured
+                              {t("home.secured")}
                             </span>
                           </div>
                         </div>
@@ -300,7 +306,7 @@ const HomePage = memo(function HomePage() {
                           </svg>
                         </div>
                         <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] lg:text-[10px] font-semibold text-emerald-700 whitespace-nowrap bg-white/80 px-2 py-0.5 rounded">
-                          Data Erasure
+                          {t("home.data_erasure")}
                         </span>
                       </div>
                     </div>
@@ -322,7 +328,7 @@ const HomePage = memo(function HomePage() {
                           </svg>
                         </div>
                         <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
-                          Personal Computer's
+                          {t("home.personal_computers")}
                         </span>
                       </div>
                     </div>
@@ -343,7 +349,7 @@ const HomePage = memo(function HomePage() {
                           </svg>
                         </div>
                         <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
-                          Cloud
+                          {t("home.cloud")}
                         </span>
                       </div>
                     </div>
@@ -364,7 +370,7 @@ const HomePage = memo(function HomePage() {
                           </svg>
                         </div>
                         <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
-                          Files/Folder
+                          {t("home.files_folder")}
                         </span>
                       </div>
                     </div>
@@ -392,7 +398,7 @@ const HomePage = memo(function HomePage() {
                           </svg>
                         </div>
                         <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[8px] lg:text-[9px] font-medium text-slate-600 whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded">
-                          HDD/SSD
+                          {t("home.hdd_ssd")}
                         </span>
                       </div>
                     </div>
@@ -417,7 +423,7 @@ const HomePage = memo(function HomePage() {
                           </svg>
                         </div>
                         <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[9px] lg:text-[10px] font-semibold text-emerald-700 whitespace-nowrap bg-white/80 px-2 py-0.5 rounded">
-                          Compliance
+                          {t("home.compliance")}
                         </span>
                       </div>
                     </div>
@@ -728,13 +734,13 @@ const HomePage = memo(function HomePage() {
                     <BuildingIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-purple-600 transition-colors">
-                    NSA/CSS
+                    {t("home.nsa_css")}
                   </h3>
                   <p className="text-sm text-purple-600 font-medium mb-2">
-                    Approved
+                    {t("home.approved")}
                   </p>
                   <p className="text-xs text-slate-500">
-                    Evaluated Products List
+                    {t("home.evaluated_products_list")}
                   </p>
                 </div>
               </div>
@@ -747,13 +753,13 @@ const HomePage = memo(function HomePage() {
                     <StarIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-yellow-600 transition-colors">
-                    CSA STAR
+                    {t("home.csa_star")}
                   </h3>
                   <p className="text-sm text-yellow-600 font-medium mb-2">
-                    Gold
+                    {t("home.gold")}
                   </p>
                   <p className="text-xs text-slate-500">
-                    Cloud Security Alliance
+                    {t("home.cloud_security_alliance")}
                   </p>
                 </div>
               </div>
@@ -1090,10 +1096,10 @@ const HomePage = memo(function HomePage() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                      Medical Devices
+                      {t("home.medical_devices")}
                     </span>
                     <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                      PHI Protection
+                      {t("home.phi_protection")}
                     </span>
                   </div>
                 </div>
@@ -1133,10 +1139,10 @@ const HomePage = memo(function HomePage() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
-                      Trading Systems
+                      {t("home.trading_systems")}
                     </span>
                     <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
-                      Customer Data
+                      {t("home.customer_data")}
                     </span>
                   </div>
                 </div>
@@ -1209,10 +1215,10 @@ const HomePage = memo(function HomePage() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
-                      Data Centers
+                      {t("home.data_centers")}
                     </span>
                     <span className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">
-                      Cloud Migration
+                      {t("home.cloud_migration")}
                     </span>
                   </div>
                 </div>
@@ -1245,10 +1251,10 @@ const HomePage = memo(function HomePage() {
                   <p className="text-slate-600 mb-4">{t("home.itadDesc")}</p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
-                      Asset Recovery
+                      {t("home.asset_recovery")}
                     </span>
                     <span className="text-xs px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
-                      Multi-Client
+                      {t("home.multiclient")}
                     </span>
                   </div>
                 </div>
@@ -1288,10 +1294,10 @@ const HomePage = memo(function HomePage() {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
-                      MSP Solutions
+                      {t("home.msp_solutions")}
                     </span>
                     <span className="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full">
-                      Revenue Share
+                      {t("home.revenue_share")}
                     </span>
                   </div>
                 </div>
@@ -1737,7 +1743,7 @@ const HomePage = memo(function HomePage() {
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 overflow-hidden">
                     <img
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                      alt="Marcus Schmidt"
+                      alt={t("home.marcus_schmidt")}
                       className="w-full h-full rounded-full object-cover"
                     />
                   </div>
@@ -1761,7 +1767,7 @@ const HomePage = memo(function HomePage() {
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
                     <img
                       src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1961&q=80"
-                      alt="Elena Rodriguez"
+                      alt={t("home.elena_rodriguez")}
                       className="w-full h-full rounded-full object-cover"
                     />
                   </div>
@@ -1783,7 +1789,7 @@ const HomePage = memo(function HomePage() {
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
                     <img
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
-                      alt="James Thompson"
+                      alt={t("home.james_thompson")}
                       className="w-full h-full rounded-full object-cover"
                     />
                   </div>

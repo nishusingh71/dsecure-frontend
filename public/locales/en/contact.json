@@ -1,0 +1,167 @@
+{
+  "hero": {
+    "title": "Get in Touch",
+    "subtitle": "Ready to secure your data with industry-leading erasure solutions? Our experts are here to help you find the perfect fit for your organization."
+  },
+
+  "form": {
+    "submitEnquiry": "Submit Enquiry",
+    "usage": "Usage:",
+    "business": "Business",
+    "personal": "Personal",
+    "personalNote": "Free License is only available for business usage. In case you have any query, fill the form below.",
+    "fullName": "Full Name",
+    "businessEmail": "Business Email",
+    "email": "Email",
+    "phoneNo": "Phone No",
+    "phoneNumber": "Phone Number",
+    "businessType": "Business Type",
+    "companyName": "Company Name",
+    "country": "Country",
+    "selectSolutionType": "Select Solution Type",
+    "selectSolutionTypeRequired": "Select Solution Type *",
+    "complianceRequirements": "Compliance Requirements",
+    "messageLabel": "Please let us know your requirements in detail.",
+    "submitting": "Submitting...",
+    "privacyText": "I understand that the above information is protected by",
+    "privacyLink": "D-secure Privacy Policy"
+  },
+
+  "businessTypes": {
+    "placeholder": "Business Type",
+    "enterprise": "Enterprise",
+    "government": "Government",
+    "healthcare": "Healthcare",
+    "education": "Education",
+    "financial": "Financial Services",
+    "legal": "Legal",
+    "technology": "Technology",
+    "manufacturing": "Manufacturing",
+    "other": "Other"
+  },
+
+  "solutionTypes": {
+    "business": {
+      "fileEraser": "File Eraser",
+      "driveEraser": "Drive Eraser",
+      "customSolution": "Custom Solution"
+    },
+    "personal": {
+      "driveErasure": "Drive Erasure",
+      "fileErasure": "File Erasure",
+      "personalUse": "Personal Use",
+      "consultation": "Consultation",
+      "other": "Other"
+    }
+  },
+
+  "compliance": {
+    "placeholder": "Compliance Requirements",
+    "nist": "NIST 800-88",
+    "dod": "DoD 5220.22-M",
+    "gdpr": "GDPR",
+    "hipaa": "HIPAA",
+    "sox": "SOX",
+    "iso": "ISO 27001",
+    "multiple": "Multiple Standards",
+    "personalPrivacy": "Personal Privacy",
+    "noSpecific": "No Specific Requirements",
+    "other": "Other"
+  },
+
+  "countries": {
+    "unitedStates": "United States",
+    "canada": "Canada",
+    "unitedKingdom": "United Kingdom",
+    "germany": "Germany",
+    "france": "France",
+    "italy": "Italy",
+    "spain": "Spain",
+    "netherlands": "Netherlands",
+    "switzerland": "Switzerland",
+    "sweden": "Sweden",
+    "norway": "Norway",
+    "denmark": "Denmark",
+    "india": "India",
+    "china": "China",
+    "japan": "Japan",
+    "southKorea": "South Korea",
+    "singapore": "Singapore",
+    "hongKong": "Hong Kong",
+    "australia": "Australia",
+    "uae": "United Arab Emirates",
+    "saudiArabia": "Saudi Arabia",
+    "brazil": "Brazil",
+    "mexico": "Mexico",
+    "russia": "Russia",
+    "turkey": "Turkey",
+    "southAfrica": "South Africa",
+    "other": "Other"
+  },
+
+  "validation": {
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "messageRequired": "Message is required"
+  },
+
+  "toast": {
+    "success": "Thank you! Your enquiry has been submitted successfully.",
+    "error": "Failed to send message. Please try again later."
+  },
+
+  "quickResponse": {
+    "title": "Quick Response",
+    "responseTime": "Response within 12 Business Hours",
+    "workingHours": "(9 AM - 6 PM ) [03:30 - 12:30 UTC]",
+    "liveChat": "Live chat available",
+    "expertSupport": "Expert technical support"
+  },
+
+  "support": {
+    "title": "How Can We Help?",
+    "subtitle": "Choose the right contact method for your specific needs.",
+    "salesTitle": "Sales Inquiries",
+    "salesDesc": "Get pricing information and discuss your requirements",
+    "techTitle": "Technical Support",
+    "techDesc": "24/7 support for existing customers",
+    "contactNow": "Contact Now"
+  },
+
+  "offices": {
+    "title": "Global Offices",
+    "subtitle": "With offices around the world, we're here to support you in your timezone.",
+    "hq": "HQ",
+    "est": "Est.",
+    "keyServices": "Key Services:",
+    "quickContact": "Quick Contact:",
+    "contactOffice": "Contact Office",
+    "callNow": "Call Now",
+    "services": {
+      "dataErasure": "Data Erasure Solutions",
+      "itConsulting": "IT Consulting",
+      "hardware": "Hardware Services"
+    },
+    "office1": {
+      "companyName": "InfoTree Computers LLC",
+      "contactName": "Varun Kumar Singh",
+      "title": "Managing Director",
+      "address": "Dubai, UAE",
+      "city": "Dubai",
+      "country": "UAE",
+      "workingHours": "9 AM - 6 PM GST",
+      "timezone": "GST (UTC+4)"
+    },
+    "office2": {
+      "companyName": "D-Secure Technologies",
+      "contactName": "Dhruv Rai",
+      "title": "CEO",
+      "address": "Sec-62,Noida, UP 201301",
+      "city": "Noida",
+      "country": "India",
+      "workingHours": "9 AM - 6 PM IST",
+      "timezone": "IST (UTC+5:30)"
+    }
+  }
+}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from "@/components/LocaleLink";
+import { useNavigate } from "react-router-dom";
 import { assets, getOptimizedImageUrl } from '@/utils/cloudinary';
 import { ProductImage } from '@/components/ProductImage';
 import { useNotification } from "@/contexts/NotificationContext";
 import SEOHead from '../components/SEOHead';
 import { getSEOForPage } from '../utils/seo';
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface PaymentData {
   productName: string;
@@ -32,7 +34,7 @@ interface PaymentData {
 }
 
 const CheckoutPage = memo(function CheckoutPage() {
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const { showError, showSuccess } = useNotification();
   const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [customerInfo, setCustomerInfo] = useState({

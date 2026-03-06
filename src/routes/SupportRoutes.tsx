@@ -97,10 +97,13 @@ export const SupportRoutes = () => (
     <Route path="support/mac-wipe-guide" element={<WipeMacM1 />} />
     <Route path="support/mac-eraser-guide" element={<MacEraseGuide />} />
     <Route path="support/file-eraser-guide" element={<FileEraserGuide />} />
-    <Route path="/data-guardian-award" element={<DataGuardianAwardPage />} />
+    <Route path="data-guardian-award" element={<DataGuardianAwardPage />} />
     <Route path="support/secure-erase-hddssd" element={<SecureEraseHDDSSD />} />
     <Route path="support/cloud-console-guide" element={<CloudConsoleGuide />} />
-    <Route path="support/ssd-cryptographic-erasure-guide" element={<CryptoEraseSSD />} />
+    <Route
+      path="support/ssd-cryptographic-erasure-guide"
+      element={<CryptoEraseSSD />}
+    />
     <Route path="support/retain-os-guide" element={<RetainOSGuide />} />
 
     {/* Support Pages */}
@@ -111,90 +114,261 @@ export const SupportRoutes = () => (
     <Route path="support/product-videos" element={<ProductVideosPage />} />
 
     {/* Automated Manual Hub */}
-    <Route path="/support/manual/installation" element={<InstallationPage />} />
-    <Route path="/support/manual/installation-guide" element={<InstallationGuideDetailed />} />
-    <Route path="/support/manual/system-setup" element={<SystemSetupPage />} />
-    <Route path="/support/manual/working-with-D-Secure" element={<WorkingWithDSecurePage />} />
-    <Route path="/support/help-manual/working-guide" element={<WorkingWithDSecurePage />} />
-    <Route path="/support/help-manual/faqs" element={<DSecureFAQPage />} />
-    <Route path="/support/help-manual/report-management" element={<ReportManagementPage />} />
-    <Route path="/support/help-manual/schedule-settings" element={<ScheduleSettingsPage />} />
-    <Route path="/support/help-manual/complete-manual" element={<CompleteDSecureManual />} />
-    <Route path="/support/help-manual/complete-drive-manual" element={<CompleteDSecureDriveManual />} />
-    
-    <Route path="/support/help-manual/complete-network-manual" element={<NetworkFileManualLayout />}>
-      <Route index element={<div className="text-center py-12"><p className="text-gray-600">Select a topic from the sidebar to get started</p></div>} />
+    <Route path="support/manual/installation" element={<InstallationPage />} />
+    <Route
+      path="support/manual/installation-guide"
+      element={<InstallationGuideDetailed />}
+    />
+    <Route path="support/manual/system-setup" element={<SystemSetupPage />} />
+    <Route
+      path="support/manual/working-with-D-Secure"
+      element={<WorkingWithDSecurePage />}
+    />
+    <Route
+      path="support/help-manual/working-guide"
+      element={<WorkingWithDSecurePage />}
+    />
+    <Route path="support/help-manual/faqs" element={<DSecureFAQPage />} />
+    <Route
+      path="support/help-manual/report-management"
+      element={<ReportManagementPage />}
+    />
+    <Route
+      path="support/help-manual/schedule-settings"
+      element={<ScheduleSettingsPage />}
+    />
+    <Route
+      path="support/help-manual/complete-manual"
+      element={<CompleteDSecureManual />}
+    />
+    <Route
+      path="support/help-manual/complete-drive-manual"
+      element={<CompleteDSecureDriveManual />}
+    />
+
+    <Route
+      path="support/help-manual/complete-network-manual"
+      element={<NetworkFileManualLayout />}
+    >
+      <Route
+        index
+        element={
+          <div className="text-center py-12">
+            <p className="text-gray-600">
+              Select a topic from the sidebar to get started
+            </p>
+          </div>
+        }
+      />
     </Route>
 
-    <Route path="/support/help-manual/network-file" element={<NetworkFileManualLayout />}>
-      <Route path="quick-overview" element={<NetworkFilePages.QuickOverview />} />
+    <Route
+      path="support/help-manual/network-file"
+      element={<NetworkFileManualLayout />}
+    >
+      <Route
+        path="quick-overview"
+        element={<NetworkFilePages.QuickOverview />}
+      />
       <Route path="installation" element={<NetworkFilePages.Installation />} />
-      <Route path="user-interface" element={<NetworkFilePages.UserInterface />} />
+      <Route
+        path="user-interface"
+        element={<NetworkFilePages.UserInterface />}
+      />
       <Route path="licensing" element={<NetworkFilePages.Licensing />} />
       <Route path="settings" element={<NetworkFilePages.Settings />} />
-      <Route path="connecting-domain" element={<NetworkFilePages.ConnectingDomain />} />
-      <Route path="cloud-integration" element={<NetworkFilePages.CloudIntegration />} />
+      <Route
+        path="connecting-domain"
+        element={<NetworkFilePages.ConnectingDomain />}
+      />
+      <Route
+        path="cloud-integration"
+        element={<NetworkFilePages.CloudIntegration />}
+      />
       <Route path="erasing-files" element={<NetworkFilePages.ErasingFiles />} />
-      <Route path="erasing-traces" element={<NetworkFilePages.ErasingTraces />} />
-      <Route path="scheduling-tasks" element={<NetworkFilePages.SchedulingTasks />} />
-      <Route path="report-management" element={<NetworkFilePages.ReportManagement />} />
+      <Route
+        path="erasing-traces"
+        element={<NetworkFilePages.ErasingTraces />}
+      />
+      <Route
+        path="scheduling-tasks"
+        element={<NetworkFilePages.SchedulingTasks />}
+      />
+      <Route
+        path="report-management"
+        element={<NetworkFilePages.ReportManagement />}
+      />
       <Route path="faq" element={<NetworkFilePages.FAQ />} />
       <Route path="support" element={<NetworkFilePages.Support />} />
       <Route path="about" element={<NetworkFilePages.About />} />
     </Route>
 
-    <Route path="/support/help-manual" element={<HelpManualIndexPage />} />
-    <Route path="/support/manual/first-time-setup" element={<FirstTimeSetupPage />} />
-    <Route path="/support/manual/user-interface" element={<UserInterfacePage />} />
-    <Route path="/support/manual/quickstart" element={<QuickStartTutorial />} />
-    <Route path="/support/manual/overwrite-patterns" element={<OverwritePatternsPage />} />
-    <Route path="/support/manual/cryptographic-erasure" element={<CryptographicErasurePage />} />
-    <Route path="/support/manual/physical-destruction" element={<PhysicalDestructionPage />} />
-    <Route path="support/manual/physical-destruction" element={<PhysicalDestructionPage />} />
-    <Route path="/support/manual/verification-methods" element={<VerificationMethodsPage />} />
-    <Route path="/support/manual/windows" element={<WindowsSystemsPage />} />
-    <Route path="/support/manual/macos" element={<MacOSSystemsPage />} />
-    <Route path="/support/manual/linux" element={<LinuxSystemsPage />} />
-    <Route path="/support/manual/common-issues" element={<CommonIssuesPage />} />
-    <Route path="/support/manual/error-codes" element={<ErrorCodesPage />} />
-    <Route path="/support/manual/mobile" element={<MobileDevicesPage />} />
-    <Route path="/support/manual/servers" element={<EnterpriseServersPage />} />
-    <Route path="/support/manual/batch-operations" element={<BatchOperationsPage />} />
-    <Route path="/support/manual/remote-management" element={<RemoteManagementPage />} />
-    <Route path="/support/manual/scripting" element={<ScriptingAutomationPage />} />
-    <Route path="/support/manual/custom-configs" element={<CustomConfigurationsPage />} />
-    <Route path="/support/manual/compliance" element={<ComplianceStandardsPage />} />
-    <Route path="/support/manual/certificates" element={<CertificateGenerationPage />} />
-    <Route path="/support/manual/audit-trails" element={<AuditTrailsPage />} />
-    <Route path="/support/manual/chain-custody" element={<ChainCustodyPage />} />
-    <Route path="/support/manual/performance" element={<PerformanceOptimizationPage />} />
-    <Route path="/support/manual/recovery" element={<RecoveryProceduresPage />} />
-    <Route path="/support/manual/windows-introduction" element={<WindowsIntroductionPage />} />
-    <Route path="/support/manual/windows-builtin-tools" element={<WindowsBuiltinToolsPage />} />
-    <Route path="/support/manual/windows-ssd-erasure" element={<WindowsSsdErasurePage />} />
-    <Route path="/support/manual/windows-storage" element={<WindowsStoragePage />} />
-    <Route path="/support/manual/windows-preparation" element={<WindowsPreparationPage />} />
-    <Route path="/support/manual/windows-troubleshooting" element={<WindowsTroubleshootingPage />} />
-    <Route path="/support/manual/windows-enterprise" element={<WindowsEnterprisePage />} />
-    <Route path="/support/manual/windows-risks" element={<WindowsRisksPage />} />
-    <Route path="/support/manual/windows-filesystems" element={<WindowsFilesystemsPage />} />
-    <Route path="/support/manual/windows-system-files" element={<WindowsSystemFilesPage />} />
-    <Route path="/support/manual/windows-residual-data" element={<WindowsResidualDataPage />} />
-    <Route path="/support/manual/windows-software-erasure" element={<WindowsSoftwareErasurePage />} />
-    <Route path="/support/manual/windows-crypto-erasure" element={<WindowsCryptoErasurePage />} />
-    <Route path="/support/manual/windows-methods-comparison" element={<WindowsMethodsComparisonPage />} />
-    <Route path="/support/manual/windows-command-line" element={<WindowsCommandLinePage />} />
-    <Route path="/support/manual/pre-installation" element={<PreInstallationPage />} />
-    <Route path="/support/manual/download-installer" element={<DownloadInstallerPage />} />
-    <Route path="/support/manual/license-activation" element={<LicenseActivationPage />} />
-    <Route path="/support/manual/installation-settings" element={<InstallationSettingsPage />} />
-    <Route path="/support/manual/installation-progress" element={<InstallationProgressPage />} />
-    <Route path="/support/manual/system-requirements" element={<SystemRequirementsPage />} />
-    <Route path="/support/manual/setup-wizard" element={<SetupWizardPage />} />
-    <Route path="/support/manual/first-scan" element={<FirstScanPage />} />
-    <Route path="/support/manual/key-activation" element={<KeyActivationPage />} />
-    <Route path="/support/manual/firewall-setup" element={<FirewallSetupPage />} />
-    <Route path="/support/manual/main-dashboard" element={<MainDashboardPage />} />
-    <Route path="/support/manual/navigation" element={<NavigationPage />} />
+    <Route path="support/help-manual" element={<HelpManualIndexPage />} />
+    <Route
+      path="support/manual/first-time-setup"
+      element={<FirstTimeSetupPage />}
+    />
+    <Route
+      path="support/manual/user-interface"
+      element={<UserInterfacePage />}
+    />
+    <Route path="support/manual/quickstart" element={<QuickStartTutorial />} />
+    <Route
+      path="support/manual/overwrite-patterns"
+      element={<OverwritePatternsPage />}
+    />
+    <Route
+      path="support/manual/cryptographic-erasure"
+      element={<CryptographicErasurePage />}
+    />
+    <Route
+      path="support/manual/physical-destruction"
+      element={<PhysicalDestructionPage />}
+    />
+    <Route
+      path="support/manual/physical-destruction"
+      element={<PhysicalDestructionPage />}
+    />
+    <Route
+      path="support/manual/verification-methods"
+      element={<VerificationMethodsPage />}
+    />
+    <Route path="support/manual/windows" element={<WindowsSystemsPage />} />
+    <Route path="support/manual/macos" element={<MacOSSystemsPage />} />
+    <Route path="support/manual/linux" element={<LinuxSystemsPage />} />
+    <Route path="support/manual/common-issues" element={<CommonIssuesPage />} />
+    <Route path="support/manual/error-codes" element={<ErrorCodesPage />} />
+    <Route path="support/manual/mobile" element={<MobileDevicesPage />} />
+    <Route path="support/manual/servers" element={<EnterpriseServersPage />} />
+    <Route
+      path="support/manual/batch-operations"
+      element={<BatchOperationsPage />}
+    />
+    <Route
+      path="support/manual/remote-management"
+      element={<RemoteManagementPage />}
+    />
+    <Route
+      path="support/manual/scripting"
+      element={<ScriptingAutomationPage />}
+    />
+    <Route
+      path="support/manual/custom-configs"
+      element={<CustomConfigurationsPage />}
+    />
+    <Route
+      path="support/manual/compliance"
+      element={<ComplianceStandardsPage />}
+    />
+    <Route
+      path="support/manual/certificates"
+      element={<CertificateGenerationPage />}
+    />
+    <Route path="support/manual/audit-trails" element={<AuditTrailsPage />} />
+    <Route path="support/manual/chain-custody" element={<ChainCustodyPage />} />
+    <Route
+      path="support/manual/performance"
+      element={<PerformanceOptimizationPage />}
+    />
+    <Route
+      path="support/manual/recovery"
+      element={<RecoveryProceduresPage />}
+    />
+    <Route
+      path="support/manual/windows-introduction"
+      element={<WindowsIntroductionPage />}
+    />
+    <Route
+      path="support/manual/windows-builtin-tools"
+      element={<WindowsBuiltinToolsPage />}
+    />
+    <Route
+      path="support/manual/windows-ssd-erasure"
+      element={<WindowsSsdErasurePage />}
+    />
+    <Route
+      path="support/manual/windows-storage"
+      element={<WindowsStoragePage />}
+    />
+    <Route
+      path="support/manual/windows-preparation"
+      element={<WindowsPreparationPage />}
+    />
+    <Route
+      path="support/manual/windows-troubleshooting"
+      element={<WindowsTroubleshootingPage />}
+    />
+    <Route
+      path="support/manual/windows-enterprise"
+      element={<WindowsEnterprisePage />}
+    />
+    <Route path="support/manual/windows-risks" element={<WindowsRisksPage />} />
+    <Route
+      path="support/manual/windows-filesystems"
+      element={<WindowsFilesystemsPage />}
+    />
+    <Route
+      path="support/manual/windows-system-files"
+      element={<WindowsSystemFilesPage />}
+    />
+    <Route
+      path="support/manual/windows-residual-data"
+      element={<WindowsResidualDataPage />}
+    />
+    <Route
+      path="support/manual/windows-software-erasure"
+      element={<WindowsSoftwareErasurePage />}
+    />
+    <Route
+      path="support/manual/windows-crypto-erasure"
+      element={<WindowsCryptoErasurePage />}
+    />
+    <Route
+      path="support/manual/windows-methods-comparison"
+      element={<WindowsMethodsComparisonPage />}
+    />
+    <Route
+      path="support/manual/windows-command-line"
+      element={<WindowsCommandLinePage />}
+    />
+    <Route
+      path="support/manual/pre-installation"
+      element={<PreInstallationPage />}
+    />
+    <Route
+      path="support/manual/download-installer"
+      element={<DownloadInstallerPage />}
+    />
+    <Route
+      path="support/manual/license-activation"
+      element={<LicenseActivationPage />}
+    />
+    <Route
+      path="support/manual/installation-settings"
+      element={<InstallationSettingsPage />}
+    />
+    <Route
+      path="support/manual/installation-progress"
+      element={<InstallationProgressPage />}
+    />
+    <Route
+      path="support/manual/system-requirements"
+      element={<SystemRequirementsPage />}
+    />
+    <Route path="support/manual/setup-wizard" element={<SetupWizardPage />} />
+    <Route path="support/manual/first-scan" element={<FirstScanPage />} />
+    <Route
+      path="support/manual/key-activation"
+      element={<KeyActivationPage />}
+    />
+    <Route
+      path="support/manual/firewall-setup"
+      element={<FirewallSetupPage />}
+    />
+    <Route
+      path="support/manual/main-dashboard"
+      element={<MainDashboardPage />}
+    />
+    <Route path="support/manual/navigation" element={<NavigationPage />} />
   </Route>
 );

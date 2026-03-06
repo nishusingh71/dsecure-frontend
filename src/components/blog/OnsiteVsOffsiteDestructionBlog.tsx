@@ -5,7 +5,7 @@ import EngagementSection from "./EngagementSection";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 
 const OnsiteVsOffsiteDestructionBlog: React.FC = () => {
     return (

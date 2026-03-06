@@ -5,10 +5,11 @@ import { SkeletonForm } from '@/components/Skeleton'
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { ENV } from "@/config/env";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 export default function RegisterPage() {
   const { register, loading: authLoading } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
 
   // Form state for all required fields
   const [formData, setFormData] = useState({

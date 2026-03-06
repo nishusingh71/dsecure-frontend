@@ -1,0 +1,276 @@
+{
+  "badge": "آمن • متوافق",
+  "chooseYour": "اختر",
+  "dsecure": "D-Secure",
+  "subtitle": "حلول مسح بيانات احترافية موثوق بها من قِبل المؤسسات حول العالم. متوافقة مع NIST وDoD مع دعم مدى الحياة ونشر فوري.",
+  "earlyBirdOffer": "عرض المبكرين",
+  "osCompatibilityNote": "توافق نظام التشغيل: Windows، Mac، Linux، DOS وChrome OS | المعايير: NIST SP 800-88، DoD 5220.22-M، المعايير المشتركة",
+  "categories": {
+    "driveEraser": {
+      "name": "ماسح الأقراص",
+      "subtitle": "مسح محركات HDD وSSD في أجهزة الكمبيوتر وMac والخوادم"
+    },
+    "fileEraser": {
+      "name": "ماسح الملفات",
+      "subtitle": "مسح الملفات والمجلدات وحجم التخزين"
+    }
+  },
+  "plans": {
+    "standard": {
+      "name": "قياسي",
+      "description": "ميزات أساسية لمسح البيانات للأفراد والفرق الصغيرة",
+      "category": "دعم المنصة ونظام التشغيل"
+    },
+    "corporate": {
+      "name": "مؤسسي",
+      "description": "ميزات محسّنة مع دعم أوسع لأنظمة التشغيل والقدرات الأساسية",
+      "category": "حل تجاري قياسي"
+    },
+    "professional": {
+      "name": "احترافي",
+      "description": "حل احترافي مع إضافات متميزة وتخصيص",
+      "category": "حل احترافي"
+    },
+    "enterprise": {
+      "name": "مؤسسة",
+      "description": "حل مؤسسي كامل مع جميع الميزات والدعم المخصص",
+      "category": "حل مؤسسي كامل"
+    },
+    "custom": {
+      "name": "مخصص",
+      "description": "حل مصمم خصيصًا لاحتياجات مؤسستك",
+      "category": "حل مؤسسي مخصص"
+    }
+  },
+  "features": {
+    "windowsSupport": "دعم Windows",
+    "linuxSupport": "دعم Linux",
+    "macosSupport": "دعم macOS",
+    "multiBootableOsSupport": "دعم نظام تشغيل قابل للإقلاع متعدد (3+)",
+    "coreErasureCapabilities": "قدرات المسح الأساسية",
+    "internationalAlgorithms": "خوارزميات دولية (DoD 5220، المسح المشفر)",
+    "fileFolderErase": "مسح الملفات والمجلدات",
+    "eraseTracks": "مسح الآثار (المتصفح، النظام، بيانات التطبيق)",
+    "freeSpaceCleaning": "تنظيف المساحة الحرة / تنظيف ملفات المساحة الحرة",
+    "eraseVolume": "مسح الحجم",
+    "eraseDisk": "مسح القرص (الأجهزة الكاملة)",
+    "scheduleErase": "جدولة المسح",
+    "cloudStorageErase": "مسح التخزين السحابي (Google Drive دون فتح حساب)",
+    "localPdfReports": "تقارير PDF محلية",
+    "whiteLabelReports": "تقارير بالعلامة البيضاء",
+    "complianceEmailReport": "تنسيق تقرير بريد إلكتروني للامتثال",
+    "xmlReportFormat": "تنسيق تقرير XML",
+    "auditGradeDocuments": "وثائق تنظيمية بمستوى المراجعة",
+    "inspectionLogs": "سجلات الفحص",
+    "webDashboard": "لوحة تحكم الويب",
+    "cloudCommands": "أوامر السحابة (مهام عن بُعد)",
+    "customInstaller": "برنامج تثبيت مخصص (وظائف التسجيل التلقائي)",
+    "multilevelUserLogic": "منطق مستخدم متعدد المستويات",
+    "privateCloudSupport": "دعم السحابة الخاصة (مضمّن)",
+    "additionalUsbLicenses": "تراخيص مسح USB إضافية (مضمّنة)",
+    "additionalVolumeLicenses": "تراخيص مسح الحجم الإضافية (مضمّنة)",
+    "dataConnectionManager": "مدير اتصال البيانات (مضمّن)",
+    "extraSubUsers": "مستخدمون فرعيون إضافيون (مضمّنون)",
+    "extraPrivateClouds": "سحابات خاصة إضافية (مضمّنة)",
+    "bootableIntegration": "تكامل قابل للإقلاع (MLO وأدوات سريعة) (مضمّن)",
+    "dedicatedSlaManager": "مدير SLA/دعم مخصص (مضمّن)",
+    "fullyCustomizedFeatureSet": "مجموعة ميزات مخصصة بالكامل",
+    "bespokeIntegration": "تكامل وتطوير مخصص",
+    "personalizedTraining": "تدريب وإعداد مخصص",
+    "customCompliance": "متطلبات امتثال مخصصة",
+    "flexibleLicensing": "نموذج ترخيص مرن",
+    "whitelabelSolutions": "حلول العلامة البيضاء متاحة",
+    "customSla": "شروط SLA والدعم المخصصة",
+    "dedicatedDevTeam": "فريق تطوير مخصص",
+    "priorityFeatureRequests": "طلبات ميزات ذات أولوية",
+    "addOnPrivateCloud": "مجاني + دعم سحابة خاصة إضافية",
+    "addOnUsbLicenses": "مجاني + تراخيص مسح USB إضافية",
+    "addOnVolumeLicenses": "مجاني + تراخيص مسح الحجم الإضافية",
+    "addOnDataConnection": "مجاني + مدير اتصال البيانات الإضافي",
+    "addOnExtraSubUsers": "مجاني + مستخدمون فرعيون إضافيون",
+    "addOnExtraPrivateClouds": "مجاني + سحابات خاصة إضافية",
+    "addOnBootable": "مجاني + تكامل قابل للإقلاع إضافي (MLO وأدوات سريعة)",
+    "addOnDedicatedSla": "مجاني + مدير SLA/دعم مخصص إضافي"
+  },
+  "featureStatus": {
+    "included": "مضمّن",
+    "notIncluded": "غير مضمّن",
+    "addOn": "إضافة",
+    "custom": "مخصص"
+  },
+  "driveEraserFeatures": [
+    "مسح كامل لمحركات الأقراص الصلبة وSSD",
+    "معايير أمان على مستوى المؤسسات",
+    "دعم أجهزة متعددة الأنظمة",
+    "تقارير الامتثال والوثائق التنظيمية",
+    "مراقبة التقدم في الوقت الفعلي",
+    "إمكانات المعالجة الدُفعية"
+  ],
+  "fileEraserFeatures": [
+    "حذف آمن للملفات والمجلدات",
+    "أكثر من 30 خوارزمية مسح دولية",
+    "مراقبة التقدم في الوقت الفعلي",
+    "دعم Windows وMac وLinux",
+    "تنظيف المساحة الحرة",
+    "تقارير PDF محلية",
+    "ميزات مسح محسّنة",
+    "رفع/مزامنة تقارير السحابة",
+    "تقارير بالعلامة البيضاء",
+    "تنسيق تقرير XML",
+    "مسح الحجم والقرص",
+    "النشر عبر الشبكة",
+    "الوصول إلى لوحة تحكم الويب",
+    "أوامر السحابة (مهام عن بُعد)",
+    "سجلات مستخدم متعددة المستويات"
+  ],
+  "products": {
+    "driveEraser": {
+      "title": "D-Secure ماسح الأقراص",
+      "subtitle": "برنامج مسح بيانات آمن لمحركات HDD وSSD وأجهزة الكمبيوتر والمحمول وMac وChromebook والخوادم",
+      "selectionLabel": "عدد التراخيص:",
+      "selectionNote": "(الدفع لكل استخدام)"
+    },
+    "fileEraser": {
+      "title": "D-Secure ماسح الملفات الاحترافي",
+      "subtitle": "إزالة شاملة لآثار الملفات والمجلدات والتطبيقات",
+      "selectionLabel": "عدد التراخيص:",
+      "selectionNote": "(الدفع لكل ترخيص)"
+    }
+  },
+  "keyFeatures": "الميزات الرئيسية:",
+  "driveEraserKeyFeatures": "ماسح الأقراص - الميزات الرئيسية:",
+  "customQuantity": "كمية مخصصة",
+  "licenses": "تراخيص",
+  "customQuote": "عرض سعر مخصص",
+  "getPersonalizedQuote": "احصل على عرض سعر مخصص",
+  "tailoredToYourNeeds": "مصمم وفق احتياجاتك",
+  "comingSoon": "قريبًا",
+  "requestCustomQuote": "طلب عرض سعر مخصص",
+  "buyNow": "اشترِ الآن",
+  "licenseType": "نوع الترخيص:",
+  "driveEraserOnetimePurchase": "ماسح الأقراص عبارة عن شراء لمرة واحدة",
+  "select": "اختر",
+  "notProvided": "غير متوفر",
+  "notSpecified": "غير محدد",
+  "direct": "مباشر",
+  "form": {
+    "customLicenseRequest": "طلب ترخيص مخصص",
+    "specialPricingRequest": "طلب تسعير خاص",
+    "successCustom": "شكرًا لك! تم تقديم طلب الترخيص المخصص بنجاح. سيتواصل معك فريق المبيعات خلال 24 ساعة بعرض سعر مخصص.",
+    "errorCustom": "فشل إرسال طلب الترخيص المخصص. يرجى المحاولة مرة أخرى أو التواصل مع فريق المبيعات مباشرةً.",
+    "successSpecial": "شكرًا لك! تم تقديم طلب التسعير الخاص بنجاح. سيتواصل معك فريقنا خلال 24 ساعة بتسعير مخصص لمؤسستك.",
+    "errorSpecial": "فشل إرسال طلب التسعير الخاص. يرجى المحاولة مرة أخرى أو التواصل مع فريق المبيعات مباشرةً.",
+    "submissionErrorCustom": "خطأ في تقديم نموذج الترخيص المخصص:",
+    "submissionErrorSpecial": "خطأ في تقديم نموذج التسعير الخاص:",
+    "toastSuccess": "شكرًا لك! تم تقديم طلب الترخيص المخصص بنجاح. سيتواصل معك فريق المبيعات خلال 24 ساعة.",
+    "toastError": "فشل إرسال طلب الترخيص المخصص. يرجى المحاولة مرة أخرى أو التواصل مع فريق المبيعات مباشرةً.",
+    "invalidProduct": "اختيار منتج غير صالح. يرجى المحاولة مرة أخرى.",
+    "productLinkNotFound": "رابط المنتج غير موجود.",
+    "navigationError": "خطأ في التنقل:",
+    "somethingWentWrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "submissionErrorLog": "خطأ في تقديم الترخيص المخصص:"
+  },
+  "customModal": {
+    "title": "طلب ترخيص مخصص",
+    "subtitle": "احصل على عرض سعر مخصص لـ {{productName}}",
+    "companyName": "اسم الشركة",
+    "contactPerson": "جهة الاتصال",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "phoneNumber": "رقم الهاتف",
+    "numberOfLicenses": "عدد التراخيص",
+    "licenseDuration": "مدة الترخيص",
+    "specialRequirements": "متطلبات خاصة",
+    "budgetRange": "نطاق الميزانية (اختياري)",
+    "submitRequest": "إرسال الطلب",
+    "submitting": "جارٍ الإرسال...",
+    "placeholderCompany": "أدخل اسم شركتك",
+    "placeholderContact": "اسمك الكامل",
+    "placeholderEmail": "بريدك@شركتك.com",
+    "placeholderPhone": "+1 (555) 123-4567",
+    "placeholderLicenses": "مثال: 500",
+    "placeholderRequirements": "صف أي متطلبات أو تكاملات أو ميزات محددة تحتاجها...",
+    "errorCompanyRequired": "اسم الشركة مطلوب",
+    "errorContactRequired": "اسم جهة الاتصال مطلوب",
+    "errorEmailRequired": "البريد الإلكتروني مطلوب",
+    "errorEmailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+    "errorLicensesRequired": "عدد التراخيص مطلوب",
+    "errorLicensesInvalid": "يرجى إدخال عدد صالح من التراخيص (الحد الأدنى 1)",
+    "duration1Year": "سنة واحدة",
+    "duration2Years": "سنتان",
+    "duration3Years": "3 سنوات",
+    "duration5Years": "5 سنوات",
+    "durationLifetime": "مدى الحياة",
+    "budgetSelect": "اختر نطاق الميزانية",
+    "budgetUnder10k": "أقل من 10,000 دولار",
+    "budget10k25k": "10,000 - 25,000 دولار",
+    "budget25k50k": "25,000 - 50,000 دولار",
+    "budget50k100k": "50,000 - 100,000 دولار",
+    "budgetOver100k": "أكثر من 100,000 دولار"
+  },
+  "specialModal": {
+    "title": "طلب تسعير خاص",
+    "subtitle": "تسعير MSP والمؤسسات الأكاديمية وغير الربحية",
+    "availableFor": "التسعير الخاص متاح لـ:",
+    "mspProviders": "مزودو الخدمات المُدارة (MSPs)",
+    "academicInstitutions": "المؤسسات الأكاديمية والمنظمات التعليمية",
+    "nonProfitOrgs": "المنظمات غير الربحية والجمعيات الخيرية",
+    "governmentAgencies": "الجهات الحكومية",
+    "organizationType": "نوع المنظمة",
+    "organizationName": "اسم المنظمة",
+    "contactName": "اسم جهة الاتصال",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "phoneNumber": "رقم الهاتف",
+    "estimatedLicenses": "العدد التقديري للتراخيص",
+    "additionalInfo": "معلومات إضافية",
+    "productInterest": "المنتج المهتم به:",
+    "submitRequest": "إرسال الطلب",
+    "submitting": "جارٍ الإرسال...",
+    "placeholderSelectOrg": "اختر نوع المنظمة",
+    "optionMSP": "مزود خدمات مُدارة (MSP)",
+    "optionAcademic": "مؤسسة أكاديمية",
+    "optionNonProfit": "منظمة غير ربحية",
+    "optionGovernment": "جهة حكومية",
+    "optionOther": "أخرى",
+    "placeholderOrgName": "أدخل اسم مؤسستك",
+    "placeholderContact": "اسمك الكامل",
+    "placeholderEmail": "بريدك@مؤسستك.com",
+    "placeholderPhone": "+1 (555) 123-4567",
+    "placeholderLicenses": "مثال: 100، 500، 1000+",
+    "placeholderAdditionalInfo": "يرجى تقديم أي تفاصيل إضافية حول متطلباتك أو الجدول الزمني أو الاحتياجات المحددة...",
+    "errorOrgTypeRequired": "نوع المنظمة مطلوب",
+    "errorOrgNameRequired": "اسم المنظمة مطلوب",
+    "errorContactRequired": "اسم جهة الاتصال مطلوب",
+    "errorEmailRequired": "البريد الإلكتروني مطلوب",
+    "errorEmailInvalid": "البريد الإلكتروني غير صالح"
+  },
+  "faq": [
+    {
+      "question": "كيف أحصل على الترخيص الخاص بي؟",
+      "answer": "يتم تعيين كل ترخيص منتج بناءً على عدد الأجهزة التي تختارها. ستتلقى بيانات تسجيل الدخول للوصول إلى D-Secure Cloud وملفات التثبيت اللازمة بعد تأكيد طلبك. سيتوافق إجمالي عدد التراخيص مع عدد الأجهزة المختارة أثناء الشراء. بمجرد تأكيد الطلب، يتم تسليم تفاصيل الوصول إلى المنتج فورًا."
+    },
+    {
+      "question": "إذا اشتريت 1000 ترخيص، كم عدد الأقراص التي يمكنني مسحها؟",
+      "answer": "كل ترخيص يتيح لك مسح قرص واحد. إذن بـ 1000 ترخيص، يمكنك مسح 1000 قرص."
+    },
+    {
+      "question": "هل توجد رسوم شحن؟",
+      "answer": "نقدم شحنًا مجانيًا لجميع عمليات التسليم الفعلية حول العالم. للتسليم الرقمي، تحصل على وصول فوري عبر البريد الإلكتروني."
+    },
+    {
+      "question": "ما طرق الدفع التي تقبلونها؟",
+      "answer": "نقبل جميع بطاقات الائتمان الرئيسية (Visa وMasterCard وAmerican Express) وPayPal والتحويلات المصرفية وأوامر الشراء لعملاء المؤسسات."
+    },
+    {
+      "question": "هل تقدمون خصومات على الكميات؟",
+      "answer": "نعم! نقدم خصومات للطلبات الكبيرة. يرجى تقديم طلب عبر نموذج الترخيص المخصص للحصول على عرض سعر مخصص بأسعار مخفضة."
+    },
+    {
+      "question": "ما نوع الدعم الذي تقدمونه؟",
+      "answer": "تشمل جميع التراخيص دعمًا فنيًا مدى الحياة عبر البريد الإلكتروني والهاتف والدردشة المباشرة. يحصل عملاء المؤسسات على دعم ذي أولوية مع مديري حسابات مخصصين."
+    },
+    {
+      "question": "ما الدعم المستمر المقدم؟",
+      "answer": "نقدم دعمًا مستمرًا يشمل تحديثات منتظمة للبرامج والمساعدة الفنية ومراقبة الامتثال وتنسيق التجديد. نحن شريكك المستمر في نظافة البيانات."
+    }
+  ]
+}

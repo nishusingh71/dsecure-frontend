@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import {
   PartnershipForm,
   LicenseForm,
@@ -14,6 +15,7 @@ import { FormField, TextAreaField, SelectField } from "@/components/ui";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
 import { ENV } from "@/config/env";
+import { getLocalePath } from "@/utils/localePath";
 
 import {
   GlobeIcon,
@@ -32,189 +34,198 @@ import {
   GearIcon,
 } from "@/components/FlatIcons";
 
-// Partner types definition - moved to top to avoid temporal dead zone
-const partnerTypes = {
-  "ITAD Partner": {
-    title: "ITAD Partner Program",
-    description:
-      "The D-Secure ITAD Partner Program is designed for IT asset disposition companies looking to accelerate their data erasure solutions and protocols. Join our ITAD Partner program to offer secure data erasure service using globally tested & approved erasure solutions to your customers and help them meet global data privacy compliance.",
-    benefits: [
-      "Scalable & Automated Data Erasure & Diagnostics Software",
-      "Free Assisted Remote Deployment & Training",
-      "FREE Product Updates",
-      "Price Lock in During Contract Term",
-      "FREE Premium Technical Support - 24*5",
-      "Customized Solution For ITADs",
-    ],
-    detailedBenefits: [
-      {
-        title: "Scalable & Automated Data Erasure & Diagnostics Software",
-        description:
-          "D-Secure secure data erasure & diagnostics software allows you to start wiping up to 64 drives simultaneously. The software focus can consolidate the ITAD's data wiping capabilities across all types of storage media, including hard drives, SSDs, built-in drives in computers & Mac systems, servers, and OS & Android devices.",
-      },
-      {
-        title: "Price Lock in During Contract Term",
-        description:
-          "By selecting D-Secure solution as a part of the benefit of purchasing bulk licenses of D-Secure at a special discounted pricing, the special price lock in for the term of the contract ensures that there is no change in price if you order a data erasure volumes over time.",
-      },
-      {
-        title: "FREE Premium Technical Support - 24*5",
-        description:
-          "D-Secure provides free technical support for D-Secure on offering assistance from our experts. Whether it is technical assistance or help with deployment and understanding our dedicated support team is here to help D-Secure achieve exceptional service to their clients.",
-      },
-      {
-        title: "Customized Solution For ITADs",
-        description:
-          "For large ITAD partners we offer customized solution to automate their data wiping process to maximize human intervention and improve their existing data erasure process. We also help with the consultations to improve the existing process and increase efficiency in operations.",
-      },
-    ],
-  },
-  "MSP Partner": {
-    title: "MSP Partner Program",
-    description:
-      "The D-Secure MSP Partner Program empowers IT Managed Service Providers to efficiently incorporate data erasure services into their offerings, expanding their portfolio and adding value to their customers by ensuring the risk of data breach is significantly reduced ensuring relevant laws and regulations such as CCPA, HIPAA, SOX, and ISO 27001.",
-    benefits: [
-      "Expand Your Portfolio",
-      "Comprehensive Training",
-      "Access Marketing Collaterals",
-      "Free Product Updates",
-      "Special MSP Pricing",
-      "Effortless Data Erasure Software",
-      "Get Listed On D-Secure Partner Section",
-      "Free Technical Support",
-    ],
-    detailedBenefits: [
-      {
-        title: "Expand Your Portfolio",
-        description:
-          "Managed Service Providers (MSPs) allows MSPs to offer data erasure as a service, enriching their portfolio. This expansion attracts organizations requiring comprehensive data security solutions, positioning MSPs as versatile, end-to-end service providers. By adding data erasure services, MSPs differentiate themselves, enhance revenue, and position as trusted data security partners.",
-      },
-      {
-        title: "Special MSP Pricing",
-        description:
-          "Enrolling in our MSP Partner Program offers pricing as an MSP partner. With D-Secure - Purchase licenses at a special price to offer software as a service to your clients. With the special pricing only available to MSPs who are partners with us in the market. Further, partners can get cost reduced erasure solutions ensuring accessibility for MSPs.",
-      },
-      {
-        title: "Effortless Data Erasure Software",
-        description:
-          "D-Secure's secure data erasure software enables MSPs to initiate fast and effortless data erasure. The software brings automation, quick identification and erasure for your clients across over 65,000 drives. As part of our Partner Program, you'll receive the same experience at all voluntary programs they call how you operate. This includes services accomplished by user-friendly manual for seamless operations support across all types of drives to provide services to your clients.",
-      },
-      {
-        title: "Get Listed On D-Secure Partner Section",
-        description:
-          "By becoming our valuable MSP Partner, you get listed in the partner section of our website. B2B Customers can look out for partners who are experts in their compliance requirements to visit their team that can convert to revenue. Also, your customers gain trust that you are an expert from Authorized MSP Partner.",
-      },
-    ],
-  },
-  "Distributor Partner": {
-    title: "Distributor Partner Program",
-    description:
-      "D-Secure Distributor Program for D-Secure is meant for all those software distributors that have global partnerships. partner reach in order to sell data erasure products for wiping and asset service. that financial data compliance and software for wiping data permanently from HDDs, SSDs, Tablets, Desktop, service & mobile devices including OS & Android devices.",
-    benefits: [
-      "Go-To-Market Support",
-      "Free 24*7 Technical Support",
-      "Regular Updates",
-      "Product Sales Training",
-      "Trusted Brand",
-      "Deal Registration Benefits",
-    ],
-    detailedBenefits: [
-      {
-        title: "Go-To-Market Support",
-        description:
-          "Distributors are required to increase the generation and reach of D-Secure products by fixing business processes and developing solutions for data erasure software with comprehensive go-to-market strategy. Includes D-Secure brochures, technical fact sheets, product videos, demo materials to support the distributors business.",
-      },
-      {
-        title: "Product Sales Training",
-        description:
-          "All partners receive training and they get training on the features and functionality of DSecure product to understand the various data structures and compliance. We also advise the partners by providing sales documentation.",
-      },
-      {
-        title: "Trusted Brand",
-        description:
-          "D-Secure is a growing brand in the data erasure industry built on technical excellence and best practices. Our solutions follow international standards and provide reliable global service.",
-      },
-      {
-        title: "Deal Registration Benefits",
-        description:
-          "Deal Registration is a great advantage to our Distributors, it allows you to keep a best-foot-in-root your company that particular partner and projects that can be of high priority. We can provide better price for registered deals for our channel partner along with product, support and service deployment.",
-      },
-    ],
-  },
-  "Reseller Partner": {
-    title: "Reseller Partner Program",
-    description:
-      "Become our Reseller to deliver secure & reliable data erasure software to enterprise customers and help them meet compliance. Get great discounts when leveraging our globally tested and standards-compliant solutions, help your customers meet global data privacy compliance requirements, with ease.",
-    benefits: [
-      "Product Sales Training",
-      "Free Assisted Technology Support",
-      "Regular Updates And Communication",
-      "Co-To-Market Enablement",
-      "Deal Registration Benefits",
-      "Quality Solutions",
-    ],
-    detailedBenefits: [
-      {
-        title: "Product Sales Training",
-        description:
-          "The program provides you with simple training on the complete D-Secure product lineup and functionality understanding of all features and technical aspects that benefits in advanced knowledge transfer sessions remotely equip you with the level of readiness you need to market the best product in the market.",
-      },
-      {
-        title: "Co-To-Market Enablement",
-        description:
-          "You get all the necessary sales and marketing collaterals when you join the D-Secure Reseller Partner Program. We provide campaign brochures, product one-pagers, technical data sheets, prospects, and more to support and roll out your go-to-market strategy for the region that you operate.",
-      },
-      {
-        title: "Deal Registration Benefits",
-        description:
-          "Reseller program allows you look in benefit when you register for a deal through a deal registration, you can look the deal for a given duration such that the D-Secure sales team does not directly approach the same prospect. Deal registration also ensures that you do get a lead protection for you totally.",
-      },
-      {
-        title: "Quality Supplier",
-        description:
-          "D-Secure is a growing brand renowned for its data erasure solutions. We work to satisfy customers across the world in 190 countries. Our company focuses on innovative software development and providing quality in-lab services.",
-      },
-    ],
-  },
-  "OEM Partner": {
-    title: "OEM Partner Program",
-    description:
-      "D-Secure OEM Partnership Program helps you to implement and channel your existing product portfolio by offering data erasure solutions to your customers in order to safeguard their from liability.",
-    benefits: [
-      "Best-Selling Software",
-      "High Conversion Rate",
-      "Strong Technical Support",
-      "Comprehensive Solution",
-      "Standards Compliant",
-      "Trusted Brand Quality",
-    ],
-    detailedBenefits: [
-      {
-        title: "Best-Selling Software",
-        description:
-          "D-Secure software is renowned for its reliability, trustworthiness, and ease of use. We enjoy a vast customer base of more users in need of high quality data erasure solutions. Being an OEM partner, you can bundle our in-house professional data erasure software, largely unparalleled in the data erasure software industry.",
-      },
-      {
-        title: "Comprehensive Solution",
-        description:
-          "D-Secure software OEM partnership is successfully sync across all the storage drive and devices segments, including the actively operating drive hardware and those being for end-of-lifecycle. Our OEM partnership covers innovative data sanitization solutions for individual Mac, computer and mobile devices, and hybrid cloud drives, and mobile devices.",
-      },
-      {
-        title: "Standards Compliant",
-        description:
-          "D-Secure software follows international standards and best practices from leading bodies such as NIST, ADISA, and Common Criteria. Our solutions provide compliance with NIST FIPS 140-2, ADISA standards, and Common Criteria compliant data erasure methods.",
-      },
-      {
-        title: "Trusted Brand Quality",
-        description:
-          "D-Secure is a product from D-Secure - one of the growing global data tech brands, trusted by companies worldwide. Our quality-focused R&D processes ensure compliance with the highest product standards and the success of our Partner business.",
-      },
-    ],
-  },
-} as const;
+// Partner type keys for mapping
+const partnerTypeKeys = [
+  "ITAD Partner",
+  "MSP Partner",
+  "Distributor Partner",
+  "Reseller Partner",
+  "OEM Partner",
+] as const;
+type PartnerTypeKey = (typeof partnerTypeKeys)[number];
+const partnerTypeI18nMap: Record<PartnerTypeKey, string> = {
+  "ITAD Partner": "itad",
+  "MSP Partner": "msp",
+  "Distributor Partner": "distributor",
+  "Reseller Partner": "reseller",
+  "OEM Partner": "oem",
+};
 
 const PartnersPage: React.FC = () => {
+  const { t } = useTranslation("partners");
   const { toast, showToast, hideToast } = useToast();
+
+  // Build partnerTypes using translations
+  const partnerTypes = {
+    "ITAD Partner": {
+      title: t("partnerTypes.itad.title"),
+      description: t("partnerTypes.itad.description"),
+      benefits: [
+        t("partnerTypes.itad.benefits.b1"),
+        t("partnerTypes.itad.benefits.b2"),
+        t("partnerTypes.itad.benefits.b3"),
+        t("partnerTypes.itad.benefits.b4"),
+        t("partnerTypes.itad.benefits.b5"),
+        t("partnerTypes.itad.benefits.b6"),
+      ],
+      detailedBenefits: [
+        {
+          title: t("partnerTypes.itad.detailedBenefits.db1.title"),
+          description: t("partnerTypes.itad.detailedBenefits.db1.description"),
+        },
+        {
+          title: t("partnerTypes.itad.detailedBenefits.db2.title"),
+          description: t("partnerTypes.itad.detailedBenefits.db2.description"),
+        },
+        {
+          title: t("partnerTypes.itad.detailedBenefits.db3.title"),
+          description: t("partnerTypes.itad.detailedBenefits.db3.description"),
+        },
+        {
+          title: t("partnerTypes.itad.detailedBenefits.db4.title"),
+          description: t("partnerTypes.itad.detailedBenefits.db4.description"),
+        },
+      ],
+    },
+    "MSP Partner": {
+      title: t("partnerTypes.msp.title"),
+      description: t("partnerTypes.msp.description"),
+      benefits: [
+        t("partnerTypes.msp.benefits.b1"),
+        t("partnerTypes.msp.benefits.b2"),
+        t("partnerTypes.msp.benefits.b3"),
+        t("partnerTypes.msp.benefits.b4"),
+        t("partnerTypes.msp.benefits.b5"),
+        t("partnerTypes.msp.benefits.b6"),
+        t("partnerTypes.msp.benefits.b7"),
+        t("partnerTypes.msp.benefits.b8"),
+      ],
+      detailedBenefits: [
+        {
+          title: t("partnerTypes.msp.detailedBenefits.db1.title"),
+          description: t("partnerTypes.msp.detailedBenefits.db1.description"),
+        },
+        {
+          title: t("partnerTypes.msp.detailedBenefits.db2.title"),
+          description: t("partnerTypes.msp.detailedBenefits.db2.description"),
+        },
+        {
+          title: t("partnerTypes.msp.detailedBenefits.db3.title"),
+          description: t("partnerTypes.msp.detailedBenefits.db3.description"),
+        },
+        {
+          title: t("partnerTypes.msp.detailedBenefits.db4.title"),
+          description: t("partnerTypes.msp.detailedBenefits.db4.description"),
+        },
+      ],
+    },
+    "Distributor Partner": {
+      title: t("partnerTypes.distributor.title"),
+      description: t("partnerTypes.distributor.description"),
+      benefits: [
+        t("partnerTypes.distributor.benefits.b1"),
+        t("partnerTypes.distributor.benefits.b2"),
+        t("partnerTypes.distributor.benefits.b3"),
+        t("partnerTypes.distributor.benefits.b4"),
+        t("partnerTypes.distributor.benefits.b5"),
+        t("partnerTypes.distributor.benefits.b6"),
+      ],
+      detailedBenefits: [
+        {
+          title: t("partnerTypes.distributor.detailedBenefits.db1.title"),
+          description: t(
+            "partnerTypes.distributor.detailedBenefits.db1.description",
+          ),
+        },
+        {
+          title: t("partnerTypes.distributor.detailedBenefits.db2.title"),
+          description: t(
+            "partnerTypes.distributor.detailedBenefits.db2.description",
+          ),
+        },
+        {
+          title: t("partnerTypes.distributor.detailedBenefits.db3.title"),
+          description: t(
+            "partnerTypes.distributor.detailedBenefits.db3.description",
+          ),
+        },
+        {
+          title: t("partnerTypes.distributor.detailedBenefits.db4.title"),
+          description: t(
+            "partnerTypes.distributor.detailedBenefits.db4.description",
+          ),
+        },
+      ],
+    },
+    "Reseller Partner": {
+      title: t("partnerTypes.reseller.title"),
+      description: t("partnerTypes.reseller.description"),
+      benefits: [
+        t("partnerTypes.reseller.benefits.b1"),
+        t("partnerTypes.reseller.benefits.b2"),
+        t("partnerTypes.reseller.benefits.b3"),
+        t("partnerTypes.reseller.benefits.b4"),
+        t("partnerTypes.reseller.benefits.b5"),
+        t("partnerTypes.reseller.benefits.b6"),
+      ],
+      detailedBenefits: [
+        {
+          title: t("partnerTypes.reseller.detailedBenefits.db1.title"),
+          description: t(
+            "partnerTypes.reseller.detailedBenefits.db1.description",
+          ),
+        },
+        {
+          title: t("partnerTypes.reseller.detailedBenefits.db2.title"),
+          description: t(
+            "partnerTypes.reseller.detailedBenefits.db2.description",
+          ),
+        },
+        {
+          title: t("partnerTypes.reseller.detailedBenefits.db3.title"),
+          description: t(
+            "partnerTypes.reseller.detailedBenefits.db3.description",
+          ),
+        },
+        {
+          title: t("partnerTypes.reseller.detailedBenefits.db4.title"),
+          description: t(
+            "partnerTypes.reseller.detailedBenefits.db4.description",
+          ),
+        },
+      ],
+    },
+    "OEM Partner": {
+      title: t("partnerTypes.oem.title"),
+      description: t("partnerTypes.oem.description"),
+      benefits: [
+        t("partnerTypes.oem.benefits.b1"),
+        t("partnerTypes.oem.benefits.b2"),
+        t("partnerTypes.oem.benefits.b3"),
+        t("partnerTypes.oem.benefits.b4"),
+        t("partnerTypes.oem.benefits.b5"),
+        t("partnerTypes.oem.benefits.b6"),
+      ],
+      detailedBenefits: [
+        {
+          title: t("partnerTypes.oem.detailedBenefits.db1.title"),
+          description: t("partnerTypes.oem.detailedBenefits.db1.description"),
+        },
+        {
+          title: t("partnerTypes.oem.detailedBenefits.db2.title"),
+          description: t("partnerTypes.oem.detailedBenefits.db2.description"),
+        },
+        {
+          title: t("partnerTypes.oem.detailedBenefits.db3.title"),
+          description: t("partnerTypes.oem.detailedBenefits.db3.description"),
+        },
+        {
+          title: t("partnerTypes.oem.detailedBenefits.db4.title"),
+          description: t("partnerTypes.oem.detailedBenefits.db4.description"),
+        },
+      ],
+    },
+  };
   const [showPartnerModal, setShowPartnerModal] = useState(false);
   const [showFindPartnerModal, setShowFindPartnerModal] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
@@ -331,28 +342,28 @@ const PartnersPage: React.FC = () => {
   //   },
   // ];
   const countries = [
-    "All Countries",
-    "United States",
-    "India",
-    "Vietnam",
-    "Peru",
-    "Mexico",
-    "Italy",
-    "United Kingdom",
-    "Canada",
-    "Australia",
-    "Germany",
-    "France",
-    "Japan",
-    "China",
-    "Brazil",
+    { value: "All Countries", label: t("findPartner.allCountries") },
+    { value: "United States", label: t("findPartner.countries.us") },
+    { value: "India", label: t("findPartner.countries.india") },
+    { value: "Vietnam", label: t("findPartner.countries.vietnam") },
+    { value: "Peru", label: t("findPartner.countries.peru") },
+    { value: "Mexico", label: t("findPartner.countries.mexico") },
+    { value: "Italy", label: t("findPartner.countries.italy") },
+    { value: "United Kingdom", label: t("findPartner.countries.uk") },
+    { value: "Canada", label: t("findPartner.countries.canada") },
+    { value: "Australia", label: t("findPartner.countries.australia") },
+    { value: "Germany", label: t("findPartner.countries.germany") },
+    { value: "France", label: t("findPartner.countries.france") },
+    { value: "Japan", label: t("findPartner.countries.japan") },
+    { value: "China", label: t("findPartner.countries.china") },
+    { value: "Brazil", label: t("findPartner.countries.brazil") },
   ];
   const partnerTypesFilter = [
     "All Partner Types",
     "ITAD Partner",
     "MSP Partner",
-    "Distributor",
-    "Reseller",
+    "Distributor Partner",
+    "Reseller Partner",
     "OEM Partner",
   ];
   // const filteredPartners = partnersList.filter((partner) => {
@@ -385,7 +396,7 @@ const PartnersPage: React.FC = () => {
   };
   const handleContactRedirect = () => {
     // Redirect to contact page
-    window.location.href = "/contact";
+    window.location.href = getLocalePath("/contact");
   };
   // Handle contact partner click
   const handleContactPartner = (partner: any) => {
@@ -547,7 +558,7 @@ const PartnersPage: React.FC = () => {
                   </span>
                   {/* <span className="block text-slate-900">Erasure for</span> */}
                   <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
-                    Partner Program
+                    {t("hero.title")}
                   </span>
                   {/* <span className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent">
               Program
@@ -556,9 +567,7 @@ const PartnersPage: React.FC = () => {
 
                 {/* Description */}
                 <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-xl">
-                  Join our Partner Program today! Become part of our global
-                  network and unlock new opportunities with best-in-class data
-                  erasure solutions for your business success.
+                  {t("hero.description")}
                 </p>
 
                 {/* CTA Buttons */}
@@ -616,7 +625,7 @@ const PartnersPage: React.FC = () => {
                       />
                     </svg>
 
-                    <span> Join Partnership</span>
+                    <span> {t("hero.joinPartnership")}</span>
                     <svg
                       className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
                       fill="currentColor"
@@ -681,7 +690,7 @@ const PartnersPage: React.FC = () => {
                       />
                     </svg>
 
-                    <span>Download Catalog</span>
+                    <span>{t("hero.downloadCatalog")}</span>
                   </button>
                 </div>
               </div>
@@ -984,18 +993,17 @@ const PartnersPage: React.FC = () => {
                   >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
-                  Partnership Excellence
+                  {t("partnership.badge")}
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                  <span className="text-brand">Grow Your Business With </span>
+                  <span className="text-brand">{t("partnership.heading")} </span>
                   <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">
                     D-Secure
                   </span>
                   <sup className="text-brand text-base sm:text-lg md:text-2xl"></sup>
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
-                  Choose your partnership type to unlock specialized benefits
-                  and opportunities
+                  {t("partnership.subtitle")}
                 </p>
                 <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
               </div>
@@ -1052,21 +1060,16 @@ const PartnersPage: React.FC = () => {
                   >
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
-                  Partnership Excellence
+                  {t("partnership.badge")}
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                  <span className="text-brand">Grow Your Business With </span>
-                  <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">
-                    D-Secure
-                  </span>
-                  <sup className="text-brand text-base sm:text-lg md:text-2xl"></sup>
+                  <span className="text-brand">{t("partnership.heading")}</span>
                 </h2>
                 {/* <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                   Join our global network of partners and grow your business with our cutting-edge data erasure solutions.
                 </p> */}
                 <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
-                  Choose your partnership type to unlock specialized benefits
-                  and opportunities
+                  {t("partnership.subtitle")}
                 </p>
                 <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
               </div>
@@ -1080,11 +1083,15 @@ const PartnersPage: React.FC = () => {
                   className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
                 >
                   <button
-                    onClick={() => openPartnerModal(type)}
+                    onClick={() =>
+                      setActivePartnerType(type as keyof typeof partnerTypes)
+                    }
                     className="text-left w-full"
                   >
                     <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                      {type}
+                      {t(
+                        `partnerTypes.${partnerTypeI18nMap[type as PartnerTypeKey]}.label`,
+                      )}
                     </h3>
                     <p className="text-slate-600 mb-4">
                       {partnerTypes[
@@ -1155,7 +1162,7 @@ const PartnersPage: React.FC = () => {
                           </svg>
                         </div>
                         <h4 className="text-lg sm:text-xl font-bold text-slate-900">
-                          Key Benefits
+                          {t("partnership.keyBenefits")}
                         </h4>
                       </div>
                       <div className="grid gap-4 sm:gap-6">
@@ -1229,7 +1236,7 @@ const PartnersPage: React.FC = () => {
                           </svg>
                         </div>
                         <h4 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
-                          Key Benefits
+                          {t("partnership.keyBenefits")}
                         </h4>
                       </div>
 
@@ -1355,7 +1362,7 @@ const PartnersPage: React.FC = () => {
                         className="w-full bg-gradient-to-r from-brand via-brand-500 to-brand-600 hover:from-brand-600 hover:via-brand-600 hover:to-brand-700 text-white font-bold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 group"
                       >
                         <span className="text-sm sm:text-base md:text-lg">
-                          Join Partnership Program
+                          {t("partnership.joinProgram")}
                         </span>
                         <svg
                           className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
@@ -1375,7 +1382,7 @@ const PartnersPage: React.FC = () => {
                         className="w-full bg-white border-2 border-slate-200/60 hover:border-brand hover:bg-gradient-to-r hover:from-brand/5 hover:to-brand/10 text-slate-700 hover:text-brand font-semibold px-4 sm:px-6 md:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg group flex items-center justify-center gap-2"
                       >
                         <span className="text-sm sm:text-base">
-                          Download Brochure
+                          {t("partnership.downloadBrochure")}
                         </span>
                         <svg
                           className="w-3 sm:w-4 h-3 sm:h-4 group-hover:translate-y-0.5 transition-transform"
@@ -1423,18 +1430,16 @@ const PartnersPage: React.FC = () => {
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                       />
                     </svg>
-                    Partner Discovery
+                    {t("findPartner.badge")}
                   </div>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-                    Find A{" "}
+                    {t("findPartner.heading")}{" "}
                     <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-                      Partner
+                      {t("findPartner.headingHighlight")}
                     </span>
                   </h2>
                   <p className="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
-                    Get to know about our global partners and easily locate
-                    them. Connect with qualified D-Secure partners in your
-                    region for seamless collaboration.
+                    {t("findPartner.description")}
                   </p>
                   {/* Feature Pills */}
                   <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-10 max-w-lg sm:max-w-none mx-auto">
@@ -1447,7 +1452,7 @@ const PartnersPage: React.FC = () => {
                             )}
                           </HoverIcon>
                         ),
-                        text: "Global Network",
+                        text: t("findPartner.globalNetwork"),
                       },
                       {
                         icon: (
@@ -1460,7 +1465,7 @@ const PartnersPage: React.FC = () => {
                             )}
                           </HoverIcon>
                         ),
-                        text: "Location-Based",
+                        text: t("findPartner.locationBased"),
                       },
                       {
                         icon: (
@@ -1470,7 +1475,7 @@ const PartnersPage: React.FC = () => {
                             )}
                           </HoverIcon>
                         ),
-                        text: "Qualified Partners",
+                        text: t("findPartner.qualifiedPartners"),
                       },
                       {
                         icon: (
@@ -1480,7 +1485,7 @@ const PartnersPage: React.FC = () => {
                             )}
                           </HoverIcon>
                         ),
-                        text: "Direct Contact",
+                        text: t("findPartner.directContact"),
                       },
                     ].map((feature, index) => (
                       <div
@@ -1511,7 +1516,7 @@ const PartnersPage: React.FC = () => {
                         <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
                       </svg>
                     </div>
-                    <span>Find Partners Near You</span>
+                    <span>{t("findPartner.findNearYou")}</span>
                     <svg
                       className="w-5 sm:w-6 h-5 sm:h-6 group-hover:translate-x-1 transition-transform"
                       fill="currentColor"
@@ -1545,18 +1550,13 @@ const PartnersPage: React.FC = () => {
                       d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
                   </svg>
-                  Partnership Benefits
+                  {t("benefits.badge")}
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                  <span className="text-brand">Why Collaborate With </span>
-                  <span className="bg-gradient-to-r from-brand to-brand-600 bg-clip-text text-transparent">
-                    D-Secure
-                  </span>
-                  <sup className="text-brand text-base sm:text-lg md:text-2xl"></sup>
+                  <span className="text-brand">{t("benefits.heading")}</span>
                 </h2>
                 <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-3 sm:mb-4 px-4">
-                  Unlock exclusive advantages and grow your business with our
-                  comprehensive partner benefits
+                  {t("benefits.subtitle")}
                 </p>
                 <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full mx-auto"></div>
               </div>
@@ -1564,9 +1564,8 @@ const PartnersPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {[
                 {
-                  title: "Standards-Compliant Data Erasure Products",
-                  description:
-                    "Access to standards-compliant data erasure solutions following international best practices and algorithms. Get quality solutions meeting 40+ international standards by integrating our data erasure technology.",
+                  title: t("benefits.card1.title"),
+                  description: t("benefits.card1.description"),
                   icon: (
                     <HoverIcon>
                       {(filled) => (
@@ -1582,9 +1581,8 @@ const PartnersPage: React.FC = () => {
                   borderColor: "border-red-200",
                 },
                 {
-                  title: "Marketing & Sales Enablement",
-                  description:
-                    "Partners get access to our sales enablement and analytics to help them understand customer requirements. Get comprehensive marketing materials and product selling aids.",
+                  title: t("benefits.card2.title"),
+                  description: t("benefits.card2.description"),
                   icon: (
                     <HoverIcon>
                       {(filled) => (
@@ -1600,9 +1598,8 @@ const PartnersPage: React.FC = () => {
                   borderColor: "border-blue-200",
                 },
                 {
-                  title: "Free 24×7 Technical Support",
-                  description:
-                    "Get the best pre-sales & after sales support for all D-Secure solutions. Our staff provides regular training and extended deployments with dedicated expertise.",
+                  title: t("benefits.card3.title"),
+                  description: t("benefits.card3.description"),
                   icon: (
                     <HoverIcon>
                       {(filled) => (
@@ -1618,9 +1615,8 @@ const PartnersPage: React.FC = () => {
                   borderColor: "border-green-200",
                 },
                 {
-                  title: "Trusted Supplier",
-                  description:
-                    "We give you the opportunity to achieve bigger goals providing you the power around gaining a global data client with our track record of bringing innovation & trust.",
+                  title: t("benefits.card4.title"),
+                  description: t("benefits.card4.description"),
                   icon: (
                     <HoverIcon>
                       {(filled) => (
@@ -1678,8 +1674,7 @@ const PartnersPage: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-teal-50/30 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <p className="text-base sm:text-lg text-slate-600 mb-4 sm:mb-6 leading-relaxed">
-                      Ready to unlock these exclusive benefits and transform
-                      your business?
+                      {t("benefits.ctaText")}
                     </p>
                     <button
                       onClick={() => openPartnerModal()}
@@ -1700,7 +1695,7 @@ const PartnersPage: React.FC = () => {
                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M12 18v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2"
                           />
                         </svg>
-                        Start Partnership Journey
+                        {t("benefits.startJourney")}
                       </span>
                       <svg
                         className="w-4 sm:w-5 h-4 sm:h-5 group-hover:translate-x-1 transition-transform"
@@ -1724,10 +1719,10 @@ const PartnersPage: React.FC = () => {
                 {/* Header */}
                 <div className="bg-gradient-to-r from-green-500 via-green-500 to-green-600 p-8 text-center">
                   <h2 className="text-4xl font-bold text-white mb-4">
-                    Let's Get Started
+                    {t("contact.heading")}
                   </h2>
                   <p className="text-lg text-white/90 max-w-2xl mx-auto">
-                    Have a question or want to know more about our solutions?
+                    {t("contact.subtitle")}
                   </p>
                 </div>
                 {/* Content */}
@@ -1737,7 +1732,7 @@ const PartnersPage: React.FC = () => {
                       onClick={() => openLicenseModal()}
                       className="group bg-white border-2 border-green-200 hover:border-green-400 text-green-600 hover:bg-green-50 font-semibold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
-                      <span>Request Free License</span>
+                      <span>{t("contact.requestLicense")}</span>
                     </button>
                     <button
                       onClick={handleContactRedirect}
@@ -1771,6 +1766,8 @@ const PartnersPage: React.FC = () => {
       {/* Partner Application Modal */}
       {showPartnerModal && (
         <PartnershipForm
+          title={t("title", { ns: "partnershipForm" })}
+          submitButtonText={t("submit", { ns: "partnershipForm" })}
           onSubmit={handlePartnerSubmit}
           onClose={() => setShowPartnerModal(false)}
           preSelectedPartnerType={activePartnerType}
@@ -1779,10 +1776,7 @@ const PartnersPage: React.FC = () => {
             endpoint: "https://formsubmit.co/support@dsecuretech.com",
             onSuccess: () => {
               setShowPartnerModal(false);
-              showToast(
-                "Partnership application submitted successfully! We'll contact you soon.",
-                "success",
-              );
+              showToast(t("toast.partnershipSuccess"), "success");
             },
           }}
         />
@@ -1793,7 +1787,9 @@ const PartnersPage: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             {/* Fixed Header */}
             <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-2xl relative flex-shrink-0">
-              <h2 className="text-2xl font-bold text-center">Find A Partner</h2>
+              <h2 className="text-2xl font-bold text-center">
+                {t("findPartner.modalTitle")}
+              </h2>
               <button
                 onClick={() => setShowFindPartnerModal(false)}
                 className="absolute top-4 right-4 text-white hover:text-slate-200 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
@@ -1813,7 +1809,7 @@ const PartnersPage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-6 bg-gradient-to-br from-emerald-50 via-teal-50/50 to-cyan-50/30 rounded-xl border border-emerald-200/50 shadow-sm">
                   <div>
                     <label className="block text-sm font-semibold text-emerald-800 mb-2">
-                      All Countries
+                      {t("findPartner.allCountries")}
                     </label>
                     <select
                       value={selectedCountry}
@@ -1821,26 +1817,33 @@ const PartnersPage: React.FC = () => {
                       className="w-full p-3 border-2 border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-300 bg-white shadow-sm hover:border-emerald-300"
                     >
                       {countries.map((country) => (
-                        <option key={country} value={country}>
-                          {country}
+                        <option key={country.value} value={country.value}>
+                          {country.label}
                         </option>
                       ))}
                     </select>
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-emerald-800 mb-2">
-                      All Partner Types
+                      {t("findPartner.allPartnerTypes")}
                     </label>
                     <select
                       value={selectedPartnerType}
                       onChange={(e) => setSelectedPartnerType(e.target.value)}
                       className="w-full p-3 border-2 border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-300 bg-white shadow-sm hover:border-emerald-300"
                     >
-                      {partnerTypesFilter.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
+                      {partnerTypesFilter.map((type) => {
+                        const i18nKey =
+                          partnerTypeI18nMap[type as PartnerTypeKey];
+                        const label = i18nKey
+                          ? t(`partnerTypes.${i18nKey}.label`)
+                          : t("findPartner.allPartnerTypes");
+                        return (
+                          <option key={type} value={type}>
+                            {label}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                 </div>
@@ -1952,7 +1955,7 @@ const PartnersPage: React.FC = () => {
                   )}
                 </div> */}
                 <div className="justify-center items-center text-center">
-                  No List Available
+                  {t("findPartner.noListAvailable")}
                 </div>
                 <div className="flex justify-center items-center gap-2 mt-6 pt-4 border-t border-emerald-200">
                   <button className="w-8 h-8 rounded-lg border-2 border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-300 flex items-center justify-center text-sm font-medium">
@@ -1966,7 +1969,7 @@ const PartnersPage: React.FC = () => {
                   </button>
                   <span className="px-2 text-slate-500">...</span>
                   <button className="px-3 py-1 rounded-lg border-2 border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-300 text-sm">
-                    Last
+                    {t("findPartner.last")}
                   </button>
                 </div>
               </div>
@@ -1977,6 +1980,8 @@ const PartnersPage: React.FC = () => {
       {/* License Request Modal */}
       {showLicenseModal && (
         <LicenseForm
+          title={t("title", { ns: "licenseForm" })}
+          submitButtonText={t("submitButton", { ns: "licenseForm" })}
           onSubmit={handleLicenseSubmit}
           onClose={() => setShowLicenseModal(false)}
           customConfig={{
@@ -1984,10 +1989,7 @@ const PartnersPage: React.FC = () => {
             endpoint: "https://formsubmit.co/support@dsecuretech.com",
             onSuccess: () => {
               setShowLicenseModal(false);
-              showToast(
-                "License request submitted successfully! We'll process your request soon.",
-                "success",
-              );
+              showToast(t("toast.licenseSuccess"), "success");
             },
           }}
         />
@@ -1999,7 +2001,7 @@ const PartnersPage: React.FC = () => {
             {/* Fixed Header */}
             <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-2xl relative flex-shrink-0">
               <h2 className="text-2xl font-bold text-center">
-                Contact Partner
+                {t("contactPartnerModal.title")}
               </h2>
               <button
                 onClick={() => setShowContactModal(false)}
@@ -2025,7 +2027,7 @@ const PartnersPage: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-slate-600 mb-1">
-                        Contact Person
+                        {t("contactPartnerModal.contactPerson")}
                       </p>
                       <p className="font-semibold text-slate-900">
                         {selectedPartnerForContact.contact.name}
@@ -2033,20 +2035,24 @@ const PartnersPage: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-sm text-slate-600 mb-1">
-                        Partner Type
+                        {t("contactPartnerModal.partnerType")}
                       </p>
                       <p className="font-semibold text-slate-900">
                         {selectedPartnerForContact.type}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600 mb-1">Location</p>
+                      <p className="text-sm text-slate-600 mb-1">
+                        {t("contactPartnerModal.location")}
+                      </p>
                       <p className="font-semibold text-slate-900">
                         {selectedPartnerForContact.location}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600 mb-1">Phone</p>
+                      <p className="text-sm text-slate-600 mb-1">
+                        {t("contactPartnerModal.phone")}
+                      </p>
                       <p className="font-semibold text-emerald-600">
                         {selectedPartnerForContact.contact.phone}
                       </p>
@@ -2064,7 +2070,7 @@ const PartnersPage: React.FC = () => {
                       !contactPartnerForm.subject.trim() ||
                       !contactPartnerForm.message.trim()
                     ) {
-                      showToast("Please fill in all required fields.", "error");
+                      showToast(t("toast.validationError"), "error");
                       return;
                     }
                     setIsContactSubmitting(true);
@@ -2172,10 +2178,7 @@ const PartnersPage: React.FC = () => {
                       });
                       setIsContactSubmitting(false);
                       setShowContactModal(false);
-                      showToast(
-                        "Message sent successfully! The partner will contact you soon.",
-                        "success",
-                      );
+                      showToast(t("toast.contactSuccess"), "success");
 
                       try {
                         // === 1. SUBMIT TO BACKEND API (DATABASE) ===
@@ -2221,10 +2224,7 @@ const PartnersPage: React.FC = () => {
                       }
                     } catch (error) {
                       console.error("FormSubmit error:", error);
-                      showToast(
-                        "Failed to send message. Please try again.",
-                        "error",
-                      );
+                      showToast(t("toast.contactError"), "error");
                       setIsContactSubmitting(false);
                     }
                   }}
@@ -2232,7 +2232,7 @@ const PartnersPage: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Your Name *
+                        {t("contactPartnerModal.yourName")}
                       </label>
                       <input
                         type="text"
@@ -2245,12 +2245,12 @@ const PartnersPage: React.FC = () => {
                           }))
                         }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        placeholder="Enter your full name"
+                        placeholder={t("contactPartnerModal.namePlaceholder")}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Your Email *
+                        {t("contactPartnerModal.yourEmail")}
                       </label>
                       <input
                         type="email"
@@ -2263,14 +2263,14 @@ const PartnersPage: React.FC = () => {
                           }))
                         }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        placeholder="Enter your email"
+                        placeholder={t("contactPartnerModal.emailPlaceholder")}
                       />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Company
+                        {t("contactPartnerModal.company")}
                       </label>
                       <input
                         type="text"
@@ -2282,12 +2282,14 @@ const PartnersPage: React.FC = () => {
                           }))
                         }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        placeholder="Your company name"
+                        placeholder={t(
+                          "contactPartnerModal.companyPlaceholder",
+                        )}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Phone
+                        {t("contactPartnerModal.phoneLabel")}
                       </label>
                       <input
                         type="tel"
@@ -2299,13 +2301,13 @@ const PartnersPage: React.FC = () => {
                           }))
                         }
                         className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                        placeholder="Your phone number"
+                        placeholder={t("contactPartnerModal.phonePlaceholder")}
                       />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Subject *
+                      {t("contactPartnerModal.subject")}
                     </label>
                     <input
                       type="text"
@@ -2318,12 +2320,12 @@ const PartnersPage: React.FC = () => {
                         }))
                       }
                       className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                      placeholder="Brief subject of your inquiry"
+                      placeholder={t("contactPartnerModal.subjectPlaceholder")}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Message *
+                      {t("contactPartnerModal.message")}
                     </label>
                     <textarea
                       rows={4}
@@ -2336,7 +2338,7 @@ const PartnersPage: React.FC = () => {
                         }))
                       }
                       className="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors resize-none"
-                      placeholder="Describe your requirements or questions..."
+                      placeholder={t("contactPartnerModal.messagePlaceholder")}
                     />
                   </div>
                   <div className="flex gap-4 pt-4">
@@ -2345,21 +2347,23 @@ const PartnersPage: React.FC = () => {
                       disabled={isContactSubmitting}
                       className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isContactSubmitting ? "Sending..." : "Send Message"}
+                      {isContactSubmitting
+                        ? t("contactPartnerModal.sending")
+                        : t("contactPartnerModal.sendMessage")}
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowContactModal(false)}
                       className="px-6 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-semibold"
                     >
-                      Cancel
+                      {t("contactPartnerModal.cancel")}
                     </button>
                   </div>
                 </form>
                 {/* Quick Contact Options */}
                 <div className="mt-6 pt-6 border-t border-slate-200">
                   <h4 className="font-semibold text-slate-900 mb-4">
-                    Or contact directly:
+                    {t("contactPartnerModal.orContactDirectly")}
                   </h4>
                   <div className="flex flex-wrap gap-3">
                     <a
@@ -2380,7 +2384,7 @@ const PartnersPage: React.FC = () => {
                           d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                         />
                       </svg>
-                      Send Email
+                      {t("contactPartnerModal.sendEmail")}
                     </a>
                     <a
                       href={`tel:${selectedPartnerForContact.contact.phone}`}
@@ -2400,7 +2404,7 @@ const PartnersPage: React.FC = () => {
                           d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                         />
                       </svg>
-                      Call Now
+                      {t("contactPartnerModal.callNow")}
                     </a>
                     <a
                       href={selectedPartnerForContact.contact.website}
@@ -2422,7 +2426,7 @@ const PartnersPage: React.FC = () => {
                           d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"
                         />
                       </svg>
-                      Visit Website
+                      {t("contactPartnerModal.visitWebsite")}
                     </a>
                   </div>
                 </div>
@@ -2438,7 +2442,7 @@ const PartnersPage: React.FC = () => {
             {/* Fixed Header */}
             <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-2xl relative flex-shrink-0">
               <h2 className="text-2xl font-bold text-center">
-                Partner Details
+                {t("detailsModal.title")}
               </h2>
               <button
                 onClick={() => setShowDetailsModal(false)}
@@ -2468,24 +2472,30 @@ const PartnersPage: React.FC = () => {
                       </span>
                     </div>
                     <div className="text-right">
-                      <p className="text-slate-600 text-sm">Established</p>
+                      <p className="text-slate-600 text-sm">
+                        {t("detailsModal.established")}
+                      </p>
                       <p className="font-bold text-slate-900">2015</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <p className="text-sm text-slate-600 mb-1">Location</p>
+                      <p className="text-sm text-slate-600 mb-1">
+                        {t("detailsModal.location")}
+                      </p>
                       <p className="font-semibold text-slate-900">
                         {selectedPartnerForDetails.location}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600 mb-1">Employees</p>
+                      <p className="text-sm text-slate-600 mb-1">
+                        {t("detailsModal.employees")}
+                      </p>
                       <p className="font-semibold text-slate-900">50-200</p>
                     </div>
                     <div>
                       <p className="text-sm text-slate-600 mb-1">
-                        Certification
+                        {t("detailsModal.certification")}
                       </p>
                       <p className="font-semibold text-emerald-600">
                         ISO 27001, NIST
@@ -2496,43 +2506,35 @@ const PartnersPage: React.FC = () => {
                 {/* Company Overview */}
                 <div className="mb-6">
                   <h4 className="text-xl font-bold text-slate-900 mb-3">
-                    Company Overview
+                    {t("detailsModal.companyOverview")}
                   </h4>
                   <div className="bg-white border border-slate-200 rounded-xl p-6">
                     <p className="text-slate-700 leading-relaxed mb-4">
-                      {selectedPartnerForDetails.company} is a leading{" "}
-                      {selectedPartnerForDetails.type.toLowerCase()}
-                      specializing in secure data erasure and IT asset
-                      disposition services. With over 8 years of experience in
-                      the industry, we have successfully served over 500+
-                      clients across various sectors including healthcare,
-                      finance, and government organizations.
+                      {selectedPartnerForDetails.company}{" "}
+                      {t("detailsModal.overviewText1")}{" "}
+                      {selectedPartnerForDetails.type.toLowerCase()}{" "}
+                      {t("detailsModal.overviewText2")}
                     </p>
                     <p className="text-slate-700 leading-relaxed">
-                      Our team of Compliant professionals ensures complete data
-                      destruction compliance with international standards
-                      including NIST 800-88, DOD 5220.22-M, and Common Criteria.
-                      We provide comprehensive regulatory documents of
-                      destruction for audit purposes and maintain the highest
-                      levels of security throughout the data erasure process.
+                      {t("detailsModal.overviewText3")}
                     </p>
                   </div>
                 </div>
                 {/* Services Offered */}
                 <div className="mb-6">
                   <h4 className="text-xl font-bold text-slate-900 mb-3">
-                    Services Offered
+                    {t("detailsModal.servicesOffered")}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {[
-                      "Secure Data Erasure",
-                      "IT Asset Disposition",
-                      "Hard Drive Destruction",
-                      "Mobile Device Wiping",
-                      "Server Decommissioning",
-                      "Compliance Consulting",
-                      "Regulatory Document Generation",
-                      "On-site Services",
+                      t("detailsModal.services.s1"),
+                      t("detailsModal.services.s2"),
+                      t("detailsModal.services.s3"),
+                      t("detailsModal.services.s4"),
+                      t("detailsModal.services.s5"),
+                      t("detailsModal.services.s6"),
+                      t("detailsModal.services.s7"),
+                      t("detailsModal.services.s8"),
                     ].map((service, index) => (
                       <div
                         key={index}
@@ -2559,23 +2561,27 @@ const PartnersPage: React.FC = () => {
                 {/* Contact Information */}
                 <div className="mb-6">
                   <h4 className="text-xl font-bold text-slate-900 mb-3">
-                    Contact Information
+                    {t("detailsModal.contactInfo")}
                   </h4>
                   <div className="bg-white border border-slate-200 rounded-xl p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <h5 className="font-semibold text-slate-900 mb-3">
-                          Primary Contact
+                          {t("detailsModal.primaryContact")}
                         </h5>
                         <div className="space-y-2">
                           <p>
-                            <span className="text-slate-600">Name:</span>{" "}
+                            <span className="text-slate-600">
+                              {t("detailsModal.nameLabel")}
+                            </span>{" "}
                             <span className="font-medium">
                               {selectedPartnerForDetails.contact.name}
                             </span>
                           </p>
                           <p>
-                            <span className="text-slate-600">Email:</span>{" "}
+                            <span className="text-slate-600">
+                              {t("detailsModal.emailLabel")}
+                            </span>{" "}
                             <a
                               href={`mailto:${selectedPartnerForDetails.contact.email}`}
                               className="font-medium text-emerald-600 hover:underline"
@@ -2584,7 +2590,9 @@ const PartnersPage: React.FC = () => {
                             </a>
                           </p>
                           <p>
-                            <span className="text-slate-600">Phone:</span>{" "}
+                            <span className="text-slate-600">
+                              {t("detailsModal.phoneLabel")}
+                            </span>{" "}
                             <a
                               href={`tel:${selectedPartnerForDetails.contact.phone}`}
                               className="font-medium text-emerald-600 hover:underline"
@@ -2593,7 +2601,9 @@ const PartnersPage: React.FC = () => {
                             </a>
                           </p>
                           <p>
-                            <span className="text-slate-600">Website:</span>{" "}
+                            <span className="text-slate-600">
+                              {t("detailsModal.websiteLabel")}
+                            </span>{" "}
                             <a
                               href={selectedPartnerForDetails.contact.website}
                               target="_blank"
@@ -2607,31 +2617,39 @@ const PartnersPage: React.FC = () => {
                       </div>
                       <div>
                         <h5 className="font-semibold text-slate-900 mb-3">
-                          Business Hours
+                          {t("detailsModal.businessHours")}
                         </h5>
                         <div className="space-y-2 text-sm">
                           <p>
                             <span className="text-slate-600">
-                              Monday - Friday:
+                              {t("detailsModal.monFri")}
                             </span>{" "}
                             <span className="font-medium">
-                              9:00 AM - 6:00 PM
+                              {t("detailsModal.monFriTime")}
                             </span>
                           </p>
                           <p>
-                            <span className="text-slate-600">Saturday:</span>{" "}
+                            <span className="text-slate-600">
+                              {t("detailsModal.saturday")}
+                            </span>{" "}
                             <span className="font-medium">
-                              9:00 AM - 2:00 PM
+                              {t("detailsModal.satTime")}
                             </span>
                           </p>
                           <p>
-                            <span className="text-slate-600">Sunday:</span>{" "}
-                            <span className="font-medium">Closed</span>
+                            <span className="text-slate-600">
+                              {t("detailsModal.sunday")}
+                            </span>{" "}
+                            <span className="font-medium">
+                              {t("detailsModal.sunTime")}
+                            </span>
                           </p>
                           <p>
-                            <span className="text-slate-600">Emergency:</span>{" "}
+                            <span className="text-slate-600">
+                              {t("detailsModal.emergency")}
+                            </span>{" "}
                             <span className="font-medium text-emerald-600">
-                              24/7 Available
+                              {t("detailsModal.emergencyTime")}
                             </span>
                           </p>
                         </div>
@@ -2648,13 +2666,13 @@ const PartnersPage: React.FC = () => {
                     }}
                     className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold"
                   >
-                    Contact This Partner
+                    {t("detailsModal.contactThisPartner")}
                   </button>
                   <button
                     onClick={() => setShowDetailsModal(false)}
                     className="px-6 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-semibold"
                   >
-                    Close
+                    {t("detailsModal.close")}
                   </button>
                 </div>
               </div>

@@ -1,0 +1,16 @@
+{
+  "dataGuardianAward": {
+    "title": "D-Secure Data Hygiene Assurance | Certified Data Protection Excellence",
+    "description": "D-Secure Assurance Badge recognizes organizations with complete data hygiene setup and processes. Verify certified companies and get your assurance badge today.",
+    "keywords": "D-Secure assurance badge, data hygiene certification, secure data protection, data erasure assurance, IT data security certification, trusted data partner"
+  },
+  "home": {
+    "title": "Eraser – Secure Erase Files from Hard Drives",
+    "description": "Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times"
+  },
+  "driveEraser": {
+    "title": "D-Secure Drive Eraser | Secure Data Erasure Software",
+    "description": "Permanently erase data from hard drives, SSDs, and servers with D-Secure Drive Eraser. NIST 800-88 and DoD compliant sanitization for enterprise and personal use.",
+    "keywords": "drive eraser, hard drive wiper, SSD secure erase, data sanitization software, NIST 800-88 compliance, DoD 5220.22-M, data destruction tool"
+  }
+}

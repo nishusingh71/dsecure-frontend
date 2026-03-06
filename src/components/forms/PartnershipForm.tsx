@@ -1,10 +1,11 @@
 import React, { useCallback, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useTranslation } from "react-i18next";
 import { useForm, validationRules } from "@/hooks";
 import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
 import { FormField } from "@/components/ui";
 import { showGlobalToast } from "@/utils/enhancedFormSystem";
-
+import { getLocalePath } from "@/utils/localePath";
 
 // Form input components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -67,9 +68,9 @@ const FormTextarea: React.FC<{
 );
 
 // Modal wrapper component - moved outside to prevent recreation on every render
-const ModalWrapper: React.FC<{ 
-  isModal: boolean; 
-  children: React.ReactNode 
+const ModalWrapper: React.FC<{
+  isModal: boolean;
+  children: React.ReactNode;
 }> = ({ isModal, children }) => {
   if (!isModal) return <>{children}</>;
 
@@ -150,14 +151,13 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
   preSelectedPartnerType,
   customConfig,
 }) => {
+  const { t } = useTranslation("partnershipForm");
   // Initialize form with useForm hook
   const partnerForm = useForm<PartnershipFormData>({
     ...defaultPartnershipFormData,
     partnerType:
       preSelectedPartnerType || defaultPartnershipFormData.partnerType,
   });
-
-
 
   // Setup form submission with our reusable system
   const { isSubmitting, submitForm } = useFormSubmission(
@@ -174,55 +174,98 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
         }
       },
       onError: (error: any) => {
-        console.error('Partnership form submission error:', error);
-        showGlobalToast('Failed to submit partnership application. Please try again.', 'error');
-      }
+        console.error("Partnership form submission error:", error);
+        showGlobalToast(t("toast.submitFailed"), "error");
+      },
     },
-    partnerForm.resetForm
+    partnerForm.resetForm,
   );
 
   // Handle form submission
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    // Validate form
-    const isValid = partnerForm.validateForm(partnershipValidationRules);
-    if (!isValid) {
-      showGlobalToast('Please fix the form errors before submitting.', 'error');
-      return;
-    }
+      // Validate form
+      const isValid = partnerForm.validateForm(partnershipValidationRules);
+      if (!isValid) {
+        showGlobalToast(t("toast.fixErrors"), "error");
+        return;
+      }
 
-    try {
-      // Submit using our reusable system
-      await submitForm(partnerForm.formData);
-      
-      // Reset form after successful submission
-      partnerForm.resetForm();
-    } catch (error) {
-      console.error('Partnership form submission failed:', error);
-      showGlobalToast('Submission failed. Please check your connection and try again.', 'error');
-    }
-  }, [partnerForm, submitForm]);
+      try {
+        // Submit using our reusable system
+        await submitForm(partnerForm.formData);
+
+        // Reset form after successful submission
+        partnerForm.resetForm();
+      } catch (error) {
+        console.error("Partnership form submission failed:", error);
+        showGlobalToast(t("toast.connectionError"), "error");
+      }
+    },
+    [partnerForm, submitForm],
+  );
 
   // Memoized partner type options
-  const partnerTypeOptions = useMemo(() => [
-    "ITAD Partner",
-    "Reseller Partner", 
-    "Technology Partner",
-    "Consulting Partner",
-    "Integration Partner",
-    "Distributor Partner",
-    "Other"
-  ], []);
+  const partnerTypeOptions = useMemo(
+    () => [
+      { value: "ITAD Partner", label: t("partnerTypeOptions.itad") },
+      { value: "Reseller Partner", label: t("partnerTypeOptions.reseller") },
+      {
+        value: "Technology Partner",
+        label: t("partnerTypeOptions.technology"),
+      },
+      {
+        value: "Consulting Partner",
+        label: t("partnerTypeOptions.consulting"),
+      },
+      {
+        value: "Integration Partner",
+        label: t("partnerTypeOptions.integration"),
+      },
+      {
+        value: "Distributor Partner",
+        label: t("partnerTypeOptions.distributor"),
+      },
+      { value: "Other", label: t("partnerTypeOptions.other") },
+    ],
+    [t],
+  );
 
   // Memoized country options
-  const countryOptions = useMemo(() => [
-    "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
-    "India", "China", "Japan", "South Korea", "Singapore", "Netherlands",
-    "Switzerland", "Sweden", "Norway", "Denmark", "Italy", "Spain", "Brazil",
-    "Mexico", "Russia", "Turkey", "South Africa", "United Arab Emirates",
-    "Saudi Arabia", "Hong Kong", "Other"
-  ], []);
+  const countryOptions = useMemo(
+    () => [
+      { value: "United States", label: t("countries.us") },
+      { value: "United Kingdom", label: t("countries.uk") },
+      { value: "Canada", label: t("countries.ca") },
+      { value: "Australia", label: t("countries.au") },
+      { value: "Germany", label: t("countries.de") },
+      { value: "France", label: t("countries.fr") },
+      { value: "India", label: t("countries.in") },
+      { value: "China", label: t("countries.cn") },
+      { value: "Japan", label: t("countries.jp") },
+      { value: "South Korea", label: t("countries.kr") },
+      { value: "Singapore", label: t("countries.sg") },
+      { value: "Netherlands", label: t("countries.nl") },
+      { value: "Switzerland", label: t("countries.ch") },
+      { value: "Sweden", label: t("countries.se") },
+      { value: "Norway", label: t("countries.no") },
+      { value: "Denmark", label: t("countries.dk") },
+      { value: "Italy", label: t("countries.it") },
+      { value: "Spain", label: t("countries.es") },
+      { value: "Brazil", label: t("countries.br") },
+      { value: "Mexico", label: t("countries.mx") },
+      { value: "Russia", label: t("countries.ru") },
+      { value: "Turkey", label: t("countries.tr") },
+      { value: "South Africa", label: t("countries.za") },
+      { value: "United Arab Emirates", label: t("countries.ae") },
+      { value: "Saudi Arabia", label: t("countries.sa") },
+      { value: "Hong Kong", label: t("countries.hk") },
+      { value: "Other", label: t("countries.other") },
+    ],
+    [t],
+  );
 
   return (
     <ModalWrapper isModal={isModal}>
@@ -255,12 +298,12 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
             className="p-6 space-y-4 partnership-form-scroll overflow-hidden"
           >
             <FormField
-              label="Full Name"
+              label={t("fullName")}
               name="fullName"
               type="text"
               value={partnerForm.formData.fullName}
               onChange={partnerForm.handleInputChange}
-              placeholder="Enter your full name"
+              placeholder={t("enterFullName")}
               required
               error={partnerForm.errors.fullName}
             />
@@ -270,7 +313,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                 <FormInput
                   type="email"
                   name="businessEmail"
-                  placeholder="Business Email*"
+                  placeholder={t("businessEmail")}
                   value={partnerForm.formData.businessEmail}
                   onChange={partnerForm.handleInputChange}
                   required
@@ -286,7 +329,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                 <FormInput
                   type="tel"
                   name="phoneNo"
-                  placeholder="Phone No*"
+                  placeholder={t("phoneNo")}
                   value={partnerForm.formData.phoneNo}
                   onChange={partnerForm.handleInputChange}
                   required
@@ -305,7 +348,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                 <FormInput
                   type="text"
                   name="companyName"
-                  placeholder="Company Name*"
+                  placeholder={t("companyName")}
                   value={partnerForm.formData.companyName}
                   onChange={partnerForm.handleInputChange}
                   required
@@ -321,7 +364,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                 <FormInput
                   type="url"
                   name="website"
-                  placeholder="Website*"
+                  placeholder={t("website")}
                   value={partnerForm.formData.website}
                   onChange={partnerForm.handleInputChange}
                   required
@@ -344,9 +387,9 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   required
                   className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-white"
                 >
-                  {countryOptions.map(country => (
-                    <option key={country} value={country}>
-                      {country}
+                  {countryOptions.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
                     </option>
                   ))}
                 </FormSelect>
@@ -365,10 +408,10 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   required
                   className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-white"
                 >
-                  <option value="">Partner Type*</option>
-                  {partnerTypeOptions.map(type => (
-                    <option key={type} value={type}>
-                      {type}
+                  <option value="">{t("partnerTypePlaceholder")}</option>
+                  {partnerTypeOptions.map((pt) => (
+                    <option key={pt.value} value={pt.value}>
+                      {pt.label}
                     </option>
                   ))}
                 </FormSelect>
@@ -383,7 +426,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
             <div>
               <FormTextarea
                 name="businessDescription"
-                placeholder="Tell us more about your business."
+                placeholder={t("businessDescription")}
                 value={partnerForm.formData.businessDescription}
                 onChange={partnerForm.handleInputChange}
                 rows={1}
@@ -396,18 +439,18 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
               )}
             </div>
 
-
-
             {/* Privacy Policy */}
             {showPrivacyPolicy && (
               <div className="text-sm text-slate-600">
-                I understand that the above information is protected by{" "}
-                <Link
-                  to="/privacy-policy"
+                {t("privacyText")}{" "}
+                <a
+                  href={getLocalePath("/privacy-policy")}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-brand hover:underline"
                 >
-                  D-Secure's Privacy Policy.
-                </Link>
+                  {t("privacyLink")}
+                </a>
               </div>
             )}
 
@@ -416,13 +459,29 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
               disabled={isSubmitting || partnerForm.isSubmitting}
               className="w-full bg-brand hover:bg-brand-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {(isSubmitting || partnerForm.isSubmitting) ? (
+              {isSubmitting || partnerForm.isSubmitting ? (
                 <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
-                  Submitting...
+                  {t("submitting")}
                 </>
               ) : (
                 submitButtonText

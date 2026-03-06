@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import Reveal from '@/components/Reveal'
 import { Helmet } from 'react-helmet-async'
 import { ENV } from '@/config/env'
+import { useTranslation } from "react-i18next";
 interface DashboardStats {
   monthlyErasures: number
   totalDevices: number
@@ -16,6 +17,7 @@ interface DashboardStats {
 }
 
 export default function EnhancedUserDashboard() {
+  const { t } = useTranslation();
   const { user, logout, hasRole, hasPermission } = useAuth()
   const currentUser = useCurrentUser() // Alternative way to get user from JWT
   const [stats, setStats] = useState<DashboardStats>({
@@ -98,7 +100,7 @@ export default function EnhancedUserDashboard() {
       <SEOHead seo={getSEOForPage("enhanced-user-dashboard")} />
       <Helmet>
         <link rel="canonical" href="https://dsecuretech.com/user/dashboard" />
-        <title>User Dashboard - D-Secure Tech | Data Erasure Management</title>
+        <title>{t("dashboard.enhancedUserDashboard.user_dashboard_dsecure_tech_data_erasure_mana")}</title>
         <meta
           name="description"
           content="Access your D-Secure Tech user dashboard to manage data erasure tasks, view certificates, and monitor system performance."
@@ -148,7 +150,7 @@ export default function EnhancedUserDashboard() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Start New Erasure
+                {t("dashboard.enhancedUserDashboard.start_new_erasure")}
               </button>
             </PermissionGuard>
 
@@ -162,7 +164,7 @@ export default function EnhancedUserDashboard() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                Admin Panel
+                {t("dashboard.enhancedUserDashboard.admin_panel")}
               </button>
             </RoleGuard>
 
@@ -179,27 +181,27 @@ export default function EnhancedUserDashboard() {
         <div className="mb-8">
           <Reveal>
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
-              <h3 className="text-lg font-semibold text-blue-900 mb-4">Authentication Status</h3>
+              <h3 className="text-lg font-semibold text-blue-900 mb-4">{t("dashboard.enhancedUserDashboard.authentication_status")}</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <span className="text-blue-600 font-medium">Authentication:</span>
-                  <span className="ml-2 text-green-600 font-semibold">✓ Active</span>
+                  <span className="text-blue-600 font-medium">{t("dashboard.enhancedUserDashboard.authentication")}</span>
+                  <span className="ml-2 text-green-600 font-semibold">{t("dashboard.enhancedUserDashboard._active")}</span>
                 </div>
                 <div>
-                  <span className="text-blue-600 font-medium">Token Expires:</span>
+                  <span className="text-blue-600 font-medium">{t("dashboard.enhancedUserDashboard.token_expires")}</span>
                   <span className={`ml-2 font-semibold ${tokenInfo.isAboutToExpire ? 'text-yellow-600' : 'text-green-600'}`}>
                     {formatTime(tokenInfo.timeUntilExpiry)}
                   </span>
                 </div>
                 <div>
-                  <span className="text-blue-600 font-medium">Permissions:</span>
+                  <span className="text-blue-600 font-medium">{t("dashboard.enhancedUserDashboard.permissions")}</span>
                   <span className="ml-2 text-slate-700">{authService.getPermissions().length} granted</span>
                 </div>
               </div>
 
               {/* Show user permissions */}
               <details className="mt-4">
-                <summary className="cursor-pointer text-blue-600 font-medium">View Permissions</summary>
+                <summary className="cursor-pointer text-blue-600 font-medium">{t("dashboard.enhancedUserDashboard.view_permissions")}</summary>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {authService.getPermissions().map(permission => (
                     <span
@@ -221,7 +223,7 @@ export default function EnhancedUserDashboard() {
             <div className="card p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Monthly Erasures</p>
+                  <p className="text-sm font-medium text-slate-600">{t("dashboard.enhancedUserDashboard.monthly_erasures")}</p>
                   <p className="text-2xl font-bold text-slate-900">
                     {loading ? '...' : stats.monthlyErasures.toLocaleString()}
                   </p>
@@ -240,7 +242,7 @@ export default function EnhancedUserDashboard() {
               <div className="card p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-slate-600">Total Devices</p>
+                    <p className="text-sm font-medium text-slate-600">{t("dashboard.enhancedUserDashboard.total_devices")}</p>
                     <p className="text-2xl font-bold text-slate-900">
                       {loading ? '...' : stats.totalDevices.toLocaleString()}
                     </p>
@@ -259,7 +261,7 @@ export default function EnhancedUserDashboard() {
             <div className="card p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Success Rate</p>
+                  <p className="text-sm font-medium text-slate-600">{t("dashboard.enhancedUserDashboard.success_rate")}</p>
                   <p className="text-2xl font-bold text-slate-900">
                     {loading ? '...' : stats.successRate}
                   </p>
@@ -277,7 +279,7 @@ export default function EnhancedUserDashboard() {
             <div className="card p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Storage Reclaimed</p>
+                  <p className="text-sm font-medium text-slate-600">{t("dashboard.enhancedUserDashboard.storage_reclaimed")}</p>
                   <p className="text-2xl font-bold text-slate-900">
                     {loading ? '...' : stats.storageReclaimed}
                   </p>
@@ -296,14 +298,14 @@ export default function EnhancedUserDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <Reveal>
             <div className="card p-6">
-              <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+              <h3 className="text-lg font-semibold mb-4">{t("dashboard.enhancedUserDashboard.quick_actions")}</h3>
               <div className="space-y-3">
                 <PermissionGuard permissions={['write:own']}>
                   <button className="w-full btn-primary text-left flex items-center gap-3">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                     </svg>
-                    Start New Erasure
+                    {t("dashboard.enhancedUserDashboard.start_new_erasure")}
                   </button>
                 </PermissionGuard>
 
@@ -311,7 +313,7 @@ export default function EnhancedUserDashboard() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                   </svg>
-                  Download Agent
+                  {t("dashboard.enhancedUserDashboard.download_agent")}
                 </button>
 
                 <PermissionGuard permissions={['read:own', 'access:reports']}>
@@ -319,7 +321,7 @@ export default function EnhancedUserDashboard() {
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    View Reports
+                    {t("dashboard.enhancedUserDashboard.view_reports")}
                   </button>
                 </PermissionGuard>
 
@@ -327,7 +329,7 @@ export default function EnhancedUserDashboard() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Get Support
+                  {t("dashboard.enhancedUserDashboard.get_support")}
                 </button>
               </div>
             </div>
@@ -336,7 +338,7 @@ export default function EnhancedUserDashboard() {
           {/* Recent Activity */}
           <Reveal delayMs={10}>
             <div className="card p-6">
-              <h3 className="text-lg font-semibold mb-4">Recent Erasures</h3>
+              <h3 className="text-lg font-semibold mb-4">{t("dashboard.enhancedUserDashboard.recent_erasures")}</h3>
               <div className="space-y-4">
                 {certificates.map((cert, index) => (
                   <div key={cert.id} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">
@@ -376,11 +378,11 @@ export default function EnhancedUserDashboard() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                JWT Debug Info
+                {t("dashboard.enhancedUserDashboard.jwt_debug_info")}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-medium text-slate-600 mb-2">Token Info</h4>
+                  <h4 className="font-medium text-slate-600 mb-2">{t("dashboard.enhancedUserDashboard.token_info")}</h4>
                   <pre className="bg-white p-3 rounded border text-xs overflow-auto">
                     {JSON.stringify({
                       isAuthenticated: authService.isAuthenticated(),
@@ -392,7 +394,7 @@ export default function EnhancedUserDashboard() {
                   </pre>
                 </div>
                 <div>
-                  <h4 className="font-medium text-slate-600 mb-2">User Permissions</h4>
+                  <h4 className="font-medium text-slate-600 mb-2">{t("dashboard.enhancedUserDashboard.user_permissions")}</h4>
                   <div className="bg-white p-3 rounded border">
                     {authService.getPermissions().map((permission: string) => (
                       <div key={permission} className="text-xs text-slate-600 mb-1">

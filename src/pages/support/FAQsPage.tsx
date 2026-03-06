@@ -2,7 +2,7 @@ import React, { useState, memo } from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 
 interface FAQ {
   id: number;

@@ -1,9 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/auth/AuthContext";
 import { useTranslation } from "react-i18next";
 import SEOHead from '../components/SEOHead';
 import { getSEOForPage } from '../utils/seo';
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 import {
   CheckIcon,
   HoverIcon,
@@ -30,7 +32,7 @@ export default function PricingPage() {
 }
 
 function PricingPageContent() {
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const { user } = useAuth();
   const { t } = useTranslation();
 

@@ -19,6 +19,7 @@ import { encodeEmail } from './encodeEmail';
 import { debugLog, debugError, debugWarn } from './debugLogger';
 
 import { ENV } from '../config/env';
+import { getLocalePath } from "@/utils/localePath";
 
 // API Base URL from environment
 const API_BASE_URL = ENV.API_BASE_URL;
@@ -281,9 +282,9 @@ function createApiInstance(): AxiosInstance {
           // Redirect to login page with expired flag
           // But if it was a logout request, just redirect cleanly
           if (error.config?.url?.includes("/logout")) {
-            window.location.href = "/login";
+            window.location.href = getLocalePath("/login");
           } else {
-            window.location.href = "/login";
+            window.location.href = getLocalePath("/login");
           }
         }
 

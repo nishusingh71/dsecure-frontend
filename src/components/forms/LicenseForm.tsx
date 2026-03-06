@@ -1,6 +1,13 @@
 import React, { useCallback, useMemo } from "react";
 import { useForm, validationRules } from "@/hooks";
-import { useEnhancedForm, formConfigurations, showGlobalToast, FORMSUBMIT_ENDPOINT } from "@/utils/enhancedFormSystem";
+import { useTranslation } from "react-i18next";
+import {
+  useEnhancedForm,
+  formConfigurations,
+  showGlobalToast,
+  FORMSUBMIT_ENDPOINT,
+} from "@/utils/enhancedFormSystem";
+import { getLocalePath } from "@/utils/localePath";
 
 // Form input components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -12,7 +19,16 @@ const FormInput: React.FC<{
   placeholder: string;
   required?: boolean;
   hasError?: boolean;
-}> = ({ type, name, value, onChange, className, placeholder, required, hasError }) => (
+}> = ({
+  type,
+  name,
+  value,
+  onChange,
+  className,
+  placeholder,
+  required,
+  hasError,
+}) => (
   <input
     type={type}
     name={name}
@@ -81,9 +97,9 @@ const FormRadio: React.FC<{
 );
 
 // Modal wrapper component - moved outside to prevent recreation on every render
-const ModalWrapper: React.FC<{ 
-  isModal: boolean; 
-  children: React.ReactNode 
+const ModalWrapper: React.FC<{
+  isModal: boolean;
+  children: React.ReactNode;
 }> = ({ isModal, children }) => {
   if (!isModal) return <>{children}</>;
 
@@ -143,7 +159,7 @@ export const defaultLicenseFormData: LicenseFormData = {
 export const licenseValidationRules = {
   fullName: [validationRules.required("Full Name")],
   email: [validationRules.required("Email"), validationRules.email()],
-  phone: [validationRules.phone()],  // Added phone validation
+  phone: [validationRules.phone()], // Added phone validation
   company: [validationRules.required("Company")],
   country: [validationRules.required("Country")],
   eraseOption: [validationRules.required("Erase Option")],
@@ -159,12 +175,15 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
   onClose,
   isModal = true,
   className = "",
-  title = "Request Free License",
+  title: titleProp,
   showHeader = true,
   showPrivacyPolicy = true,
-  submitButtonText = "Request Free License",
+  submitButtonText: submitButtonTextProp,
   customConfig,
 }) => {
+  const { t } = useTranslation("licenseForm");
+  const title = titleProp || t("title");
+  const submitButtonText = submitButtonTextProp || t("submitButton");
   // Initialize form with useForm hook
   const licenseForm = useForm<LicenseFormData>(defaultLicenseFormData);
 
@@ -186,62 +205,119 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
         licenseForm.resetForm();
       },
       onError: (error: any) => {
-        console.error('License form submission error:', error);
-        showGlobalToast('Failed to submit license request. Please try again.', 'error');
-      }
-    }
+        console.error("License form submission error:", error);
+        showGlobalToast(t("toast.submitFailed"), "error");
+      },
+    },
   );
 
   // Handle form submission
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    // Validate form first
-    const isValid = licenseForm.validateForm(licenseValidationRules);
-    if (!isValid) {
-      showGlobalToast('Please fix the form errors before submitting.', 'error');
-      return;
-    }
+      // Validate form first
+      const isValid = licenseForm.validateForm(licenseValidationRules);
+      if (!isValid) {
+        showGlobalToast(t("toast.fixErrors"), "error");
+        return;
+      }
 
-    // Submit using enhanced form system with toast notifications
-    const success = await submitForm(licenseForm.formData);
-    if (!success) {
-      showGlobalToast('Please check your inputs and try again.', 'error');
-    }
-  }, [licenseForm, submitForm]);
+      // Submit using enhanced form system with toast notifications
+      const success = await submitForm(licenseForm.formData);
+      if (!success) {
+        showGlobalToast(t("toast.checkInputs"), "error");
+      }
+    },
+    [licenseForm, submitForm],
+  );
 
   // Memoized country options
-  const countryOptions = useMemo(() => [
-    "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
-    "India", "China", "Japan", "South Korea", "Singapore", "Netherlands",
-    "Switzerland", "Sweden", "Norway", "Denmark", "Italy", "Spain", "Brazil",
-    "Mexico", "Russia", "Turkey", "South Africa", "United Arab Emirates",
-    "Saudi Arabia", "Hong Kong", "Other"
-  ], []);
+  const countryOptions = useMemo(
+    () => [
+      "United States",
+      "United Kingdom",
+      "Canada",
+      "Australia",
+      "Germany",
+      "France",
+      "India",
+      "China",
+      "Japan",
+      "South Korea",
+      "Singapore",
+      "Netherlands",
+      "Switzerland",
+      "Sweden",
+      "Norway",
+      "Denmark",
+      "Italy",
+      "Spain",
+      "Brazil",
+      "Mexico",
+      "Russia",
+      "Turkey",
+      "South Africa",
+      "United Arab Emirates",
+      "Saudi Arabia",
+      "Hong Kong",
+      "Other",
+    ],
+    [],
+  );
 
   // Memoized business type options
-  const businessTypeOptions = useMemo(() => [
-    "Technology/Software", "Healthcare", "Finance/Banking", "Education",
-    "Government", "Manufacturing", "Retail", "Consulting", "Non-profit",
-    "Legal", "Real Estate", "Other"
-  ], []);
+  const businessTypeOptions = useMemo(
+    () => [
+      { value: "Technology/Software", label: t("businessTypes.techSoftware") },
+      { value: "Healthcare", label: t("businessTypes.healthcare") },
+      { value: "Finance/Banking", label: t("businessTypes.finance") },
+      { value: "Education", label: t("businessTypes.education") },
+      { value: "Government", label: t("businessTypes.government") },
+      { value: "Manufacturing", label: t("businessTypes.manufacturing") },
+      { value: "Retail", label: t("businessTypes.retail") },
+      { value: "Consulting", label: t("businessTypes.consulting") },
+      { value: "Non-profit", label: t("businessTypes.nonprofit") },
+      { value: "Legal", label: t("businessTypes.legal") },
+      { value: "Real Estate", label: t("businessTypes.realEstate") },
+      { value: "Other", label: t("businessTypes.other") },
+    ],
+    [t],
+  );
 
   // Memoized compliance options
-  const complianceOptions = useMemo(() => [
-    "GDPR", "HIPAA", "SOX", "PCI DSS", "ISO 27001", "Other", "Not Required"
-  ], []);
+  const complianceOptions = useMemo(
+    () => [
+      { value: "GDPR", label: t("complianceOptions.gdpr") },
+      { value: "HIPAA", label: t("complianceOptions.hipaa") },
+      { value: "SOX", label: t("complianceOptions.sox") },
+      { value: "PCI DSS", label: t("complianceOptions.pciDss") },
+      { value: "ISO 27001", label: t("complianceOptions.iso27001") },
+      { value: "Other", label: t("complianceOptions.other") },
+      { value: "Not Required", label: t("complianceOptions.notRequired") },
+    ],
+    [t],
+  );
 
   // Memoized erase options
-  const eraseOptions = useMemo(() => [
-    "DoD 5220.22-M (3-pass)", "DoD 5220.22-M (7-pass)", "NIST 800-88",
-    "Gutmann (35-pass)", "Random Data (1-pass)", "Zero Fill (1-pass)",
-    "Custom Pattern"
-  ], []);
+  const eraseOptions = useMemo(
+    () => [
+      "DoD 5220.22-M (3-pass)",
+      "DoD 5220.22-M (7-pass)",
+      "NIST 800-88",
+      "Gutmann (35-pass)",
+      "Random Data (1-pass)",
+      "Zero Fill (1-pass)",
+      "Custom Pattern",
+    ],
+    [],
+  );
 
   // Memoized device count options
-  const deviceCountOptions = useMemo(() => [
-    "1-10", "11-50", "51-100", "101-500", "501-1000", "1000+"
-  ], []);
+  const deviceCountOptions = useMemo(
+    () => ["1-10", "11-50", "51-100", "101-500", "501-1000", "1000+"],
+    [],
+  );
 
   return (
     <ModalWrapper isModal={isModal}>
@@ -288,7 +364,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                     className="w-5 h-5 text-red-500 focus:ring-red-500"
                   />
                   <span className="text-lg font-medium text-gray-700">
-                    Business
+                    {t("business")}
                   </span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -300,7 +376,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                     className="w-5 h-5 text-gray-400 focus:ring-gray-400"
                   />
                   <span className="text-lg font-medium text-gray-700">
-                    Personal
+                    {t("personal")}
                   </span>
                 </label>
               </div>
@@ -315,7 +391,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 onChange={licenseForm.handleInputChange}
                 required
                 className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                placeholder="Full Name*"
+                placeholder={t("fullName")}
               />
               {licenseForm.errors.fullName && (
                 <p className="text-red-500 text-sm mt-1">
@@ -334,7 +410,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   onChange={licenseForm.handleInputChange}
                   required
                   className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                  placeholder="Business Email*"
+                  placeholder={t("businessEmail")}
                 />
                 {licenseForm.errors.email && (
                   <p className="text-red-500 text-sm mt-1">
@@ -378,7 +454,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                     onChange={licenseForm.handleInputChange}
                     required
                     className="flex-1 border border-gray-300 rounded-r-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                    placeholder="Phone No"
+                    placeholder={t("phoneNo")}
                   />
                 </div>
                 {licenseForm.errors.phone && (
@@ -397,10 +473,10 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 onChange={licenseForm.handleInputChange}
                 className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
               >
-                <option value="">Business Type</option>
-                {businessTypeOptions.map(option => (
-                  <option key={option} value={option}>
-                    {option}
+                <option value="">{t("businessTypePlaceholder")}</option>
+                {businessTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </FormSelect>
@@ -412,7 +488,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   onChange={licenseForm.handleInputChange}
                   required
                   className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                  placeholder="Company Name*"
+                  placeholder={t("companyName")}
                 />
                 {licenseForm.errors.company && (
                   <p className="text-red-500 text-sm mt-1">
@@ -432,33 +508,33 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   required
                   className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
                 >
-                  <option value="United States">United States</option>
-                  <option value="Canada">Canada</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Germany">Germany</option>
-                  <option value="France">France</option>
-                  <option value="Italy">Italy</option>
-                  <option value="Spain">Spain</option>
-                  <option value="Netherlands">Netherlands</option>
-                  <option value="Switzerland">Switzerland</option>
-                  <option value="Sweden">Sweden</option>
-                  <option value="Norway">Norway</option>
-                  <option value="Denmark">Denmark</option>
-                  <option value="India">India</option>
-                  <option value="China">China</option>
-                  <option value="Japan">Japan</option>
-                  <option value="South Korea">South Korea</option>
-                  <option value="Singapore">Singapore</option>
-                  <option value="Hong Kong">Hong Kong</option>
-                  <option value="Australia">Australia</option>
-                  <option value="UAE">United Arab Emirates</option>
-                  <option value="Saudi Arabia">Saudi Arabia</option>
-                  <option value="Brazil">Brazil</option>
-                  <option value="Mexico">Mexico</option>
-                  <option value="Russia">Russia</option>
-                  <option value="Turkey">Turkey</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Other">Other</option>
+                  <option value="United States">{t("countries.us")}</option>
+                  <option value="Canada">{t("countries.ca")}</option>
+                  <option value="United Kingdom">{t("countries.uk")}</option>
+                  <option value="Germany">{t("countries.de")}</option>
+                  <option value="France">{t("countries.fr")}</option>
+                  <option value="Italy">{t("countries.it")}</option>
+                  <option value="Spain">{t("countries.es")}</option>
+                  <option value="Netherlands">{t("countries.nl")}</option>
+                  <option value="Switzerland">{t("countries.ch")}</option>
+                  <option value="Sweden">{t("countries.se")}</option>
+                  <option value="Norway">{t("countries.no")}</option>
+                  <option value="Denmark">{t("countries.dk")}</option>
+                  <option value="India">{t("countries.in")}</option>
+                  <option value="China">{t("countries.cn")}</option>
+                  <option value="Japan">{t("countries.jp")}</option>
+                  <option value="South Korea">{t("countries.kr")}</option>
+                  <option value="Singapore">{t("countries.sg")}</option>
+                  <option value="Hong Kong">{t("countries.hk")}</option>
+                  <option value="Australia">{t("countries.au")}</option>
+                  <option value="UAE">{t("countries.ae")}</option>
+                  <option value="Saudi Arabia">{t("countries.sa")}</option>
+                  <option value="Brazil">{t("countries.br")}</option>
+                  <option value="Mexico">{t("countries.mx")}</option>
+                  <option value="Russia">{t("countries.ru")}</option>
+                  <option value="Turkey">{t("countries.tr")}</option>
+                  <option value="South Africa">{t("countries.za")}</option>
+                  <option value="Other">{t("countries.other")}</option>
                 </select>
                 {licenseForm.errors.country && (
                   <p className="text-red-500 text-sm mt-1">
@@ -472,13 +548,12 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 onChange={licenseForm.handleInputChange}
                 className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
               >
-                <option value="">Compliance Requirements</option>
-                <option value="GDPR">GDPR</option>
-                <option value="HIPAA">HIPAA</option>
-                <option value="SOX">SOX</option>
-                <option value="PCI DSS">PCI DSS</option>
-                <option value="ISO 27001">ISO 27001</option>
-                <option value="Other">Other</option>
+                <option value="">{t("compliancePlaceholder")}</option>
+                {complianceOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -492,12 +567,18 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   required
                   className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
                 >
-                  <option value="">I Want to Erase*</option>
-                  <option value="Hard Drives">Hard Drives</option>
-                  <option value="SSDs">SSDs</option>
-                  <option value="Mobile Devices">Mobile Devices</option>
-                  <option value="Servers">Servers</option>
-                  <option value="All Devices">All Devices</option>
+                  <option value="">{t("erasePlaceholder")}</option>
+                  <option value="Hard Drives">
+                    {t("eraseOptions.hardDrives")}
+                  </option>
+                  <option value="SSDs">{t("eraseOptions.ssds")}</option>
+                  <option value="Mobile Devices">
+                    {t("eraseOptions.mobileDevices")}
+                  </option>
+                  <option value="Servers">{t("eraseOptions.servers")}</option>
+                  <option value="All Devices">
+                    {t("eraseOptions.allDevices")}
+                  </option>
                 </select>
                 {licenseForm.errors.eraseOption && (
                   <p className="text-red-500 text-sm mt-1">
@@ -512,12 +593,12 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 required
                 className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
               >
-                <option value="">Number of Devices to Erase*</option>
-                <option value="1-10">1-10 Devices</option>
-                <option value="11-50">11-50 Devices</option>
-                <option value="51-100">51-100 Devices</option>
-                <option value="101-500">101-500 Devices</option>
-                <option value="500+">500+ Devices</option>
+                <option value="">{t("deviceCountPlaceholder")}</option>
+                <option value="1-10">{t("deviceCounts.d1_10")}</option>
+                <option value="11-50">{t("deviceCounts.d11_50")}</option>
+                <option value="51-100">{t("deviceCounts.d51_100")}</option>
+                <option value="101-500">{t("deviceCounts.d101_500")}</option>
+                <option value="500+">{t("deviceCounts.d500plus")}</option>
               </select>
             </div>
 
@@ -529,7 +610,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 onChange={licenseForm.handleInputChange}
                 rows={1}
                 className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg resize-none"
-                placeholder="Tell us more about your business.*"
+                placeholder={t("requirementsPlaceholder")}
               />
               {licenseForm.errors.requirements && (
                 <p className="text-red-500 text-sm mt-1">
@@ -538,17 +619,17 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
               )}
             </div>
 
-
-
             {/* Privacy Policy */}
             {showPrivacyPolicy && (
               <div className="text-sm text-gray-600">
-                I understand that the above information is protected by{" "}
+                {t("privacyText")}{" "}
                 <a
-                  href="/privacy-policy"
+                  href={getLocalePath("/privacy-policy")}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-red-500 hover:underline"
                 >
-                  D-Secure's Privacy Policy.
+                  {t("privacyLink")}
                 </a>
               </div>
             )}
@@ -560,10 +641,10 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 disabled={formState.isSubmitting}
                 className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 disabled:cursor-not-allowed text-white py-4 px-6 rounded-lg transition-all duration-300 font-bold text-lg"
               >
-                {formState.isSubmitting ? 'Submitting...' : submitButtonText}
+                {formState.isSubmitting ? t("submitting") : submitButtonText}
               </button>
               <p className="text-sm text-gray-500 mt-2 text-center">
-                *Required
+                {t("required")}
               </p>
             </div>
           </form>

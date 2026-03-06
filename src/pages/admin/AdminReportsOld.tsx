@@ -3,7 +3,9 @@ import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from "@/components/LocaleLink";
+import { useNavigate } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface Report {
   id: string
@@ -19,7 +21,7 @@ interface Report {
 
 export default function AdminReports() {
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedType, setSelectedType] = useState('all')
   const [selectedStatus, setSelectedStatus] = useState('all')

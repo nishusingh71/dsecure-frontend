@@ -2,7 +2,7 @@ import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage, getBlogSEO } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import { CloudIcon, LightningIcon, ShieldIcon, ArrowRightIcon, HoverIcon } from "@/components/FlatIcons";
 import EngagementSection from "./EngagementSection";
 import CommentSection from "./CommentSection";

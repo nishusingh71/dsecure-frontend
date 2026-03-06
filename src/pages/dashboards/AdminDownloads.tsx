@@ -1,12 +1,13 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { useState, useEffect } from 'react';
-import { apiClient } from '../../utils/enhancedApiClient';
-import { isDemoMode } from '@/data/demoData';
+import { Link } from "@/components/LocaleLink";
+import { Helmet } from "react-helmet-async";
+import { useState, useEffect } from "react";
+import { apiClient } from "../../utils/enhancedApiClient";
+import { isDemoMode } from "@/data/demoData";
 import { indexedDBService } from "@/services/indexedDBService";
 import { authService } from "@/utils/authService";
+import { useTranslation } from "react-i18next";
 
 interface DownloadStats {
   totalDownloads: number;
@@ -19,6 +20,7 @@ interface DownloadStats {
 }
 
 export default function AdminDownloads() {
+  const { t } = useTranslation();
   const isDemo = isDemoMode();
 
   // Aggregated product stats
@@ -240,16 +242,22 @@ export default function AdminDownloads() {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-downloads")} />
       <Helmet>
-        <title>Downloads - Admin Dashboard | D-Secure</title>
+        <title>
+          {t("dashboard.adminDownloads.downloads_admin_dashboard_dsecure")}
+        </title>
       </Helmet>
 
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Downloads</h1>
+            <h1 className="text-2xl font-bold text-slate-900">
+              {t("dashboard.adminDownloads.downloads")}
+            </h1>
             <p className="text-slate-600 mt-1">
-              Software downloads overview and statistics
+              {t(
+                "dashboard.adminDownloads.software_downloads_overview_and_statistics",
+              )}
             </p>
           </div>
           <Link to="/download" className="btn-primary flex items-center gap-2">
@@ -266,7 +274,7 @@ export default function AdminDownloads() {
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
               />
             </svg>
-            Go to Downloads
+            {t("dashboard.adminDownloads.go_to_downloads")}
           </Link>
         </div>
 
@@ -275,7 +283,9 @@ export default function AdminDownloads() {
           <div className="flex items-start">
             <span className="text-blue-500 text-xl font-bold mr-2">*</span>
             <p className="text-sm text-blue-900 font-medium pt-0.5">
-              For custom installer setup, please contact the support team.
+              {t(
+                "dashboard.adminDownloads.for_custom_installer_setup_please_contact_the",
+              )}
             </p>
           </div>
         </div>
@@ -386,7 +396,7 @@ export default function AdminDownloads() {
         <div className="card !p-0 overflow-hidden">
           <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
             <h3 className="text-lg font-semibold text-slate-900">
-              Product Downloads
+              {t("dashboard.adminDownloads.product_downloads")}
             </h3>
           </div>
           <div className="p-6 space-y-4">
@@ -428,7 +438,7 @@ export default function AdminDownloads() {
             ) : /* ********** END Shimmer UI ********** */
             products.length === 0 ? (
               <div className="text-center py-8 text-slate-500">
-                No download data available
+                {t("dashboard.adminDownloads.no_download_data_available")}
               </div>
             ) : (
               products.map((product) => (
@@ -442,7 +452,8 @@ export default function AdminDownloads() {
                         {product.name}
                       </h4>
                       <p className="text-sm text-slate-600 mt-1">
-                        Version {product.version}
+                        {t("dashboard.adminDownloads.version")}{" "}
+                        {product.version}
                       </p>
                     </div>
                     <div className="text-right">
@@ -450,7 +461,7 @@ export default function AdminDownloads() {
                         {product.downloads.toLocaleString()}
                       </p>
                       <p className="text-xs text-slate-500 mt-1">
-                        Total Downloads
+                        {t("dashboard.adminDownloads.total_downloads")}
                       </p>
                     </div>
                   </div>
@@ -467,7 +478,7 @@ export default function AdminDownloads() {
                           <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
                         </svg>
                         <span className="text-xs font-medium text-slate-700">
-                          Windows
+                          {t("dashboard.adminDownloads.platform_windows")}
                         </span>
                       </div>
                       <p className="text-lg font-bold text-blue-600">
@@ -485,7 +496,7 @@ export default function AdminDownloads() {
                           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
                         </svg>
                         <span className="text-xs font-medium text-slate-700">
-                          macOS
+                          {t("dashboard.adminDownloads.platform_macos")}
                         </span>
                       </div>
                       <p className="text-lg font-bold text-slate-700">
@@ -503,7 +514,7 @@ export default function AdminDownloads() {
                           <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z" />
                         </svg>
                         <span className="text-xs font-medium text-slate-700">
-                          Linux
+                          {t("dashboard.adminDownloads.platform_linux")}
                         </span>
                       </div>
                       <p className="text-lg font-bold text-orange-600">
@@ -514,14 +525,14 @@ export default function AdminDownloads() {
 
                   <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between">
                     <span className="text-sm text-slate-600">
-                      Last download:{" "}
+                      {t("dashboard.adminDownloads.last_download")}{" "}
                       {new Date(product.lastDownload).toLocaleDateString()}
                     </span>
                     <Link
                       to={`/download?product=${product.name.toLowerCase().replace(" ", "-")}`}
                       className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
                     >
-                      View Details →
+                      {t("dashboard.adminDownloads.view_details")}
                     </Link>
                   </div>
                 </div>

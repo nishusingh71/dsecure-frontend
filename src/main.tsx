@@ -9,7 +9,7 @@ import "./responsive.css";
 import { HelmetProvider } from "react-helmet-async";
 import { ToastProvider } from './components/Toast';
 import { preloadCriticalResources } from './utils/performanceOptimizer';
-import './utils/internationalization'; // Initialize i18n
+import './i18n/config'; // Initialize i18n with HttpBackend lazy loading
 
 // -------------------------------------------------------------------------------
 // ?? GLOBAL CONSOLE SUPPRESSOR - Keeps browser console clean

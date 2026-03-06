@@ -1,0 +1,288 @@
+{
+  "badge": "SECURE • COMPLIANT",
+  "chooseYour": "Choose Your",
+  "dsecure": "D-Secure",
+  "subtitle": "Professional data erasure solutions trusted by enterprises worldwide. NIST & DoD compliant with lifetime support and instant deployment.",
+  "earlyBirdOffer": "Early Bird Offer",
+  "osCompatibilityNote": "OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS | regulated: NIST SP 800-88, DoD 5220.22-M, Common Criteria",
+
+  "categories": {
+    "driveEraser": {
+      "name": "Drive Eraser",
+      "subtitle": "Erase HDDs, SSDs in PCs, Mac & Servers"
+    },
+    "fileEraser": {
+      "name": "File Eraser",
+      "subtitle": "Erase Files, Folders & Volumes"
+    }
+  },
+
+  "plans": {
+    "standard": {
+      "name": "Standard",
+      "description": "Essential data erasure features for individuals and small teams",
+      "category": "Platform & OS Support"
+    },
+    "corporate": {
+      "name": "Corporate",
+      "description": "Enhanced features with broader OS support and core capabilities",
+      "category": "Standard Business Solution"
+    },
+    "professional": {
+      "name": "Professional",
+      "description": "Professional solution with premium add-ons and customization",
+      "category": "Professional Solution"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "Complete enterprise solution with all features and dedicated support",
+      "category": "Complete Enterprise Solution"
+    },
+    "custom": {
+      "name": "Custom",
+      "description": "Tailored solution designed specifically for your organization's needs",
+      "category": "Custom Enterprise Solution"
+    }
+  },
+
+  "features": {
+    "windowsSupport": "Windows Support",
+    "linuxSupport": "Linux Support",
+    "macosSupport": "macOS Support",
+    "multiBootableOsSupport": "Multi-Bootable OS Support (3+)",
+    "coreErasureCapabilities": "Core Erasure Capabilities",
+    "internationalAlgorithms": "International Algorithms (DoD 5220, Crypto Erase)",
+    "fileFolderErase": "File & Folder Erase",
+    "eraseTracks": "Erase Tracks (Browser, System, App data)",
+    "freeSpaceCleaning": "Free Space Cleaning / Free Space File Cleaning",
+    "eraseVolume": "Erase Volume",
+    "eraseDisk": "Erase Disk (Full Devices)",
+    "scheduleErase": "Schedule Erase",
+    "cloudStorageErase": "Cloud Storage Erase (Google Drive without opening account)",
+    "localPdfReports": "Local PDF Reports",
+    "whiteLabelReports": "White Label Reports",
+    "complianceEmailReport": "Compliance Email Report Format",
+    "xmlReportFormat": "XML Report Format",
+    "auditGradeDocuments": "Audit Grade Regulatory Documents",
+    "inspectionLogs": "Inspection Logs",
+    "webDashboard": "Web Dashboard",
+    "cloudCommands": "Cloud Commands (Remote Jobs)",
+    "customInstaller": "Custom Installer (Auto-register functions)",
+    "multilevelUserLogic": "Multi-Level User Logic",
+    "privateCloudSupport": "Private Cloud Support (Included)",
+    "additionalUsbLicenses": "Additional USB Erasure Licenses (Included)",
+    "additionalVolumeLicenses": "Additional Volume Erasure Licenses (Included)",
+    "dataConnectionManager": "Data Connection Manager (Included)",
+    "extraSubUsers": "Extra Sub Users (Included)",
+    "extraPrivateClouds": "Extra Private Clouds (Included)",
+    "bootableIntegration": "Bootable Integration (MLO & Quick Tools) (Included)",
+    "dedicatedSlaManager": "Dedicated SLA/Support Manager (Included)",
+    "fullyCustomizedFeatureSet": "Fully Customized Feature Set",
+    "bespokeIntegration": "Bespoke Integration & Development",
+    "personalizedTraining": "Personalized Training & Onboarding",
+    "customCompliance": "Custom Compliance Requirements",
+    "flexibleLicensing": "Flexible Licensing Model",
+    "whitelabelSolutions": "White-label Solutions Available",
+    "customSla": "Custom SLA & Support Terms",
+    "dedicatedDevTeam": "Dedicated Development Team",
+    "priorityFeatureRequests": "Priority Feature Requests",
+    "addOnPrivateCloud": "Free + add-on Private Cloud Support",
+    "addOnUsbLicenses": "Free + add-on Additional USB Erasure Licenses",
+    "addOnVolumeLicenses": "Free + add-on Additional Volume Erasure Licenses",
+    "addOnDataConnection": "Free + add-on Data Connection Manager",
+    "addOnExtraSubUsers": "Free + add-on Extra Sub Users",
+    "addOnExtraPrivateClouds": "Free + add-on Extra Private Clouds",
+    "addOnBootable": "Free + add-on Bootable Integration (MLO & Quick Tools)",
+    "addOnDedicatedSla": "Free + add-on Dedicated SLA/Support Manager"
+  },
+
+  "featureStatus": {
+    "included": "INCLUDED",
+    "notIncluded": "NOT INCLUDED",
+    "addOn": "ADD-ON",
+    "custom": "CUSTOM"
+  },
+
+  "driveEraserFeatures": [
+    "Complete Hard Drive & SSD Erasure",
+    "Enterprise-Grade Security Standards",
+    "Multi-Platform Device Support",
+    "Compliance Reporting & Regulatory Documents",
+    "Real-time Progress Monitoring",
+    "Batch Processing Capabilities"
+  ],
+
+  "fileEraserFeatures": [
+    "Secure File & Folder Deletion",
+    "30+ International Erasure Algorithms",
+    "Real-time Progress Monitoring",
+    "Windows, Mac & Linux Support",
+    "Free Space Cleaning",
+    "Local PDF Reports",
+    "Enhanced Erasure Features",
+    "Cloud Report Upload/Sync",
+    "White-Label Reports",
+    "XML Report Format",
+    "Volume & Disk Erasure",
+    "Network Deployment",
+    "Web Dashboard Access",
+    "Cloud Commands (Remote Jobs)",
+    "Multi-Level User Logs"
+  ],
+
+  "products": {
+    "driveEraser": {
+      "title": "D-Secure Drive Eraser",
+      "subtitle": "Secure Data Erasure Software for HDD, SSD, PC, Laptop, Mac, Chromebook & Server",
+      "selectionLabel": "Number of Licenses:",
+      "selectionNote": "(Pay Per Use)"
+    },
+    "fileEraser": {
+      "title": "D-Secure File Eraser Professional",
+      "subtitle": "Complete File, Folder & Application Trace Elimination",
+      "selectionLabel": "Number of Licenses:",
+      "selectionNote": "(Pay Per License)"
+    }
+  },
+
+  "keyFeatures": "Key Features:",
+  "driveEraserKeyFeatures": "Drive Eraser - Key Features:",
+  "customQuantity": "Custom Quantity",
+  "licenses": "licenses",
+  "customQuote": "Custom Quote",
+  "getPersonalizedQuote": "Get Personalized Quote",
+  "tailoredToYourNeeds": "Tailored to your needs",
+  "comingSoon": "Coming Soon",
+  "requestCustomQuote": "Request Custom Quote",
+  "buyNow": "Buy Now",
+  "licenseType": "License Type:",
+  "driveEraserOnetimePurchase": "Drive Eraser is a one-time purchase",
+  "select": "Select",
+  "notProvided": "Not provided",
+  "notSpecified": "Not specified",
+  "direct": "Direct",
+
+  "form": {
+    "customLicenseRequest": "Custom License Request",
+    "specialPricingRequest": "Special Pricing Request",
+    "successCustom": "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours with a personalized quote.",
+    "errorCustom": "Failed to send your custom license request. Please try again or contact our sales team directly.",
+    "successSpecial": "Thank you! Your special pricing request has been submitted successfully. Our team will contact you within 24 hours with customized pricing for your organization.",
+    "errorSpecial": "Failed to send your special pricing request. Please try again or contact our sales team directly.",
+    "submissionErrorCustom": "Custom license form submission error:",
+    "submissionErrorSpecial": "Special pricing form submission error:",
+    "toastSuccess": "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours.",
+    "toastError": "Failed to send your custom license request. Please try again or contact our sales team directly.",
+    "invalidProduct": "Invalid product selection. Please try again.",
+    "productLinkNotFound": "Product link not found.",
+    "navigationError": "Navigation error:",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "submissionErrorLog": "Custom license submission error:"
+  },
+
+  "customModal": {
+    "title": "Custom License Request",
+    "subtitle": "Get a personalized quote for {{productName}}",
+    "companyName": "Company Name",
+    "contactPerson": "Contact Person",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "numberOfLicenses": "Number of Licenses",
+    "licenseDuration": "License Duration",
+    "specialRequirements": "Special Requirements",
+    "budgetRange": "Budget Range (Optional)",
+    "submitRequest": "Submit Request",
+    "submitting": "Submitting...",
+    "placeholderCompany": "Enter your company name",
+    "placeholderContact": "Your full name",
+    "placeholderEmail": "your.email@company.com",
+    "placeholderPhone": "+1 (555) 123-4567",
+    "placeholderLicenses": "e.g., 500",
+    "placeholderRequirements": "Describe any specific requirements, integrations, or features you need...",
+    "errorCompanyRequired": "Company name is required",
+    "errorContactRequired": "Contact name is required",
+    "errorEmailRequired": "Email is required",
+    "errorEmailInvalid": "Please enter a valid email address",
+    "errorLicensesRequired": "Number of licenses is required",
+    "errorLicensesInvalid": "Please enter a valid number of licenses (minimum 1)",
+    "duration1Year": "1 Year",
+    "duration2Years": "2 Years",
+    "duration3Years": "3 Years",
+    "duration5Years": "5 Years",
+    "durationLifetime": "Lifetime",
+    "budgetSelect": "Select budget range",
+    "budgetUnder10k": "Under $10,000",
+    "budget10k25k": "$10,000 - $25,000",
+    "budget25k50k": "$25,000 - $50,000",
+    "budget50k100k": "$50,000 - $100,000",
+    "budgetOver100k": "Over $100,000"
+  },
+
+  "specialModal": {
+    "title": "Special Pricing Request",
+    "subtitle": "MSP, Academic Institute & Non-Profit Pricing",
+    "availableFor": "Special Pricing Available For:",
+    "mspProviders": "Managed Service Providers (MSPs)",
+    "academicInstitutions": "Academic Institutions & Educational Organizations",
+    "nonProfitOrgs": "Non-Profit Organizations & Charities",
+    "governmentAgencies": "Government Agencies",
+    "organizationType": "Organization Type",
+    "organizationName": "Organization Name",
+    "contactName": "Contact Name",
+    "emailAddress": "Email Address",
+    "phoneNumber": "Phone Number",
+    "estimatedLicenses": "Estimated Number of Licenses",
+    "additionalInfo": "Additional Information",
+    "productInterest": "Product Interest:",
+    "submitRequest": "Submit Request",
+    "submitting": "Submitting...",
+    "placeholderSelectOrg": "Select Organization Type",
+    "optionMSP": "Managed Service Provider (MSP)",
+    "optionAcademic": "Academic Institution",
+    "optionNonProfit": "Non-Profit Organization",
+    "optionGovernment": "Government Agency",
+    "optionOther": "Other",
+    "placeholderOrgName": "Enter your organization name",
+    "placeholderContact": "Your full name",
+    "placeholderEmail": "your.email@organization.com",
+    "placeholderPhone": "+1 (555) 123-4567",
+    "placeholderLicenses": "e.g., 100, 500, 1000+",
+    "placeholderAdditionalInfo": "Please provide any additional details about your requirements, timeline, or specific needs...",
+    "errorOrgTypeRequired": "Organization type is required",
+    "errorOrgNameRequired": "Organization name is required",
+    "errorContactRequired": "Contact name is required",
+    "errorEmailRequired": "Email is required",
+    "errorEmailInvalid": "Email is invalid"
+  },
+
+  "faq": [
+    {
+      "question": "How do I get my License?",
+      "answer": "Each product license is assigned based on the number of devices you choose. You will receive login credentials to access D-Secure Cloud and the necessary installation files after your order is confirmed. The total number of licenses will correspond to the number of devices selected during purchase. Once the order is confirmed, your product access details will be delivered instantly."
+    },
+    {
+      "question": "If I order 1000 licenses, how many drives can I wipe?",
+      "answer": "Each license allows you to wipe one drive. So with 1000 licenses, you can wipe 1000 drives."
+    },
+    {
+      "question": "Are there any shipping charges?",
+      "answer": "We offer FREE shipping for all physical deliveries worldwide. For digital delivery, you receive instant access via email."
+    },
+    {
+      "question": "What payment methods do you accept?",
+      "answer": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, bank transfers, and purchase orders for enterprise customers."
+    },
+    {
+      "question": "Do you offer Volume discounts?",
+      "answer": "Yes! We offer discounts for bulk orders. Please submit a request via our Custom License form to receive a personalized quote with discounted pricing."
+    },
+    {
+      "question": "What kind of support do you provide?",
+      "answer": "All licenses include lifetime technical support via email, phone, and live chat. Enterprise customers receive priority support with dedicated account managers."
+    },
+    {
+      "question": "What ongoing support is provided?",
+      "answer": "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene."
+    }
+  ]
+}

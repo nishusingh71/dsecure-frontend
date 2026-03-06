@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useTranslation } from "react-i18next";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
@@ -25,19 +26,19 @@ import {
   User,
   X,
 } from "lucide-react";
-import { title } from "process";
 import { useToast } from "@/components/Toast";
 import { blogPosts } from "@/data/blogPosts";
 import { ENV } from "@/config/env";
 
-const getReadTime = (text: string) => {
+const getReadTime = (text: string, t: any) => {
   const wordsPerMinute = 200;
   const wordCount = text.split(/\s+/).length * 8; // Estimate based on content length
   const minutes = Math.ceil(wordCount / wordsPerMinute);
-  return `${minutes} min read`;
+  return t("common:blog.readTime", { count: minutes });
 };
 
 const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+  const { t } = useTranslation(["driveEraser", "common", "seo"]);
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -83,76 +84,15 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   }, []);
 
   // Gallery images array for lightbox navigation
-  const galleryImages = [
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/hhmrgqu1j8dmtlawjy5z.png",
-      alt: "Drive Eraser Screenshot 1",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bapyhtkbzh3swpj64t4x.png",
-      alt: "Drive Eraser Screenshot 2",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ye68dt372vdbwgoxvfux.png",
-      alt: "Drive Eraser Screenshot 3",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/ekvmur4pojkla41gnmd4.png",
-      alt: "Drive Eraser Screenshot 4",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/bezjifgihbakej2julde.png",
-      alt: "Drive Eraser Screenshot 5",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ucwxczg0fepj1u1ut7we.png",
-      alt: "Drive Eraser Screenshot 6",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/dvwnmwzlcb3wk88cyakl.png",
-      alt: "Drive Eraser Screenshot 7",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/xjqcegdsp1dsdndcziww.png",
-      alt: "Drive Eraser Screenshot 8",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/evjsbmqbynavpxnfwnxa.png",
-      alt: "Drive Eraser Screenshot 9",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/nt6v24wnqrwgkc5tdddu.png",
-      alt: "Drive Eraser Screenshot 10",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/osp0gdj81m08qspfmqdy.png",
-      alt: "Drive Eraser Screenshot 11",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/sr3c7bwx5lesgnrlsuty.png",
-      alt: "Drive Eraser Screenshot 12",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/iwsvvppdgbqjai40tcwb.png",
-      alt: "Drive Eraser Screenshot 13",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/sq3rvfji9f9wfghlvlqx.png",
-      alt: "Drive Eraser Screenshot 14",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/w77kkhcf6lecezokiybj.png",
-      alt: "Drive Eraser Screenshot 15",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bh1xablttwasjfwvvfio.png",
-      alt: "Drive Eraser Screenshot 16",
-    },
-    {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/icnd512glswldxkfl4kg.png",
-      alt: "Drive Eraser Screenshot 17",
-    },
-  ];
+  const galleryImagesDataRaw = t("galleryImagesData", {
+    returnObjects: true,
+  }) as any[];
+  const galleryImages = Array.isArray(galleryImagesDataRaw)
+    ? galleryImagesDataRaw.map((img) => ({
+        url: img.url,
+        alt: t(img.alt),
+      }))
+    : [];
 
   // Number of additional images beyond the 4th card (for "More" badge)
   const additionalImagesCount = galleryImages.length - 4;
@@ -190,15 +130,15 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   }, [selectedImageIndex]);
 
   const sectionNavItems = [
-    { id: "erase-types", label: "Erase Types" },
-    { id: "demo", label: "Demo" },
-    { id: "compliance", label: "Compliance" },
-    { id: "platforms", label: "Platforms" },
-    { id: "features", label: "Features" },
-    { id: "use-cases", label: "Use Cases" },
-    { id: "faq", label: "FAQ" },
-    { id: "blogs", label: "Blogs" },
-    { id: "contact", label: "Contact" },
+    { id: "erase-types", label: t("common:nav.erase_types") },
+    { id: "demo", label: t("common:nav.demo") },
+    { id: "compliance", label: t("common:nav.compliance") },
+    { id: "platforms", label: t("common:nav.platforms") },
+    { id: "features", label: t("common:nav.features") },
+    { id: "use-cases", label: t("common:nav.use_cases") },
+    { id: "faq", label: t("common:nav.faq") },
+    { id: "blogs", label: t("common:nav.blogs") },
+    { id: "contact", label: t("common:nav.contact") },
   ];
 
   useEffect(() => {
@@ -259,234 +199,176 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     }
   };
 
-  const eraseTypes = [
-    {
-      name: "PC & Laptops",
-      desc: "Certified data wiping for Windows, Mac, and Linux computers. Permanent erasure with tamper-proof certificates for audit compliance.",
-      icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          />
-        </svg>
-      ),
-      color: "from-blue-500 to-blue-600",
-    },
-    {
-      name: "Servers & RAID Arrays",
-      desc: "Secure erasure for enterprise servers and RAID configurations. DIY solution that generates certificates meeting global standards like GDPR, HIPAA, and ISO 27001.",
-      icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
-          />
-        </svg>
-      ),
-      color: "from-red-500 to-red-600",
-    },
-    {
-      name: "SSDs & NVMe Drives",
-      desc: "Specialized erasure for solid-state storage ensuring complete data destruction. Deploy via bootable USB or PXE network boot for maximum flexibility.",
-      icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
-          />
-        </svg>
-      ),
-      color: "from-cyan-500 to-cyan-600",
-    },
-    {
-      name: "HDDs & External Drives",
-      desc: "Permanent erasure for traditional hard drives and USB storage. Software supports remote deployment via MSI and provides audit trail for compliance reporting.",
-      icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
-          />
-        </svg>
-      ),
-      color: "from-teal-500 to-teal-600",
-    },
+  const eraseTypeIcons = [
+    <svg
+      className="w-8 h-8"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+      />
+    </svg>,
+    <svg
+      className="w-8 h-8"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
+      />
+    </svg>,
+    <svg
+      className="w-8 h-8"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+      />
+    </svg>,
+    <svg
+      className="w-8 h-8"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+      />
+    </svg>,
   ];
 
-  const platforms = [
-    {
-      name: "Windows",
-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
-      features: [
-        "Desktop & Laptop Support",
-        "Server Edition Available",
-        "Active Directory Integration",
-        "Group Policy Support",
-      ],
-      icon: (
-        <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
-        </svg>
-      ),
-    },
-    {
-      name: "macOS",
-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM), Intel (x64)",
-      features: [
-        "Intel & Apple Silicon",
-        "Full Disk Access",
-        "T2/M1/M2/M3 Chip Support",
-        "Native Performance",
-      ],
-      icon: (
-        <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-        </svg>
-      ),
-    },
-    {
-      name: "Linux",
-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
-      features: [
-        "CLI & GUI Options",
-        "Kernel Level Erasure",
-        "Enterprise Distros",
-        "Headless Server Mode",
-      ],
-      icon: (
-        <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.711-.072-.2-.052-.334.033-.466.204-.263.466-.399.795-.528.396-.2.762-.269 1.139-.268h.13zm4.006 2.933c-.009.04-.009.037-.012.071-.075.443-.134.8-.166 1.2-.028.332-.043.663-.044.998l.003.467.004.073.009.135.003.2.016.267c.09.333.15.6.313.8.082.103.17.2.27.27.136.07.272.135.41.135.074 0 .15-.015.223-.04.31-.112.48-.332.618-.59.109-.202.17-.403.217-.598.04-.195.067-.39.08-.545.031-.4.049-.664.049-.664l-.003-.402-.01-.267-.014-.202c-.012-.133-.03-.266-.053-.397v-.003L13 9.4v-.003l-.048-.2h.003l.025.003c-.038-.007-.077-.01-.116-.02-.062-.01-.124-.029-.184-.04z" />
-        </svg>
-      ),
-    },
+  const eraseTypeColors = [
+    "from-blue-500 to-blue-600",
+    "from-red-500 to-red-600",
+    "from-cyan-500 to-cyan-600",
+    "from-teal-500 to-teal-600",
   ];
 
-  const features = [
-    {
-      title: "Secure Drive Erasure",
-      desc: "NIST-tested software delivers erasure with  data destruction guarantee for all storage types.",
-      icon: <ShieldIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Cloud Console",
-      desc: "Centralized management platform for monitoring, reporting, and managing erasure tasks across all locations.",
-      icon: <CloudIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Supports Global Wiping Standards",
-      desc: "26+ international erasure standards including NIST 800-88, DoD, HMG.",
-      icon: <GlobeIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Multiple Deployment Solutions",
-      desc: "Deploy via USB boot, PXE network boot, or integrate directly with IT asset management systems.",
-      icon: <ServerIcon className="w-6 h-6" />,
-    },
-    {
-      title: "ERP Integration",
-      desc: "Seamlessly integrate with all enterprise systems via REST APIs.",
-      icon: <FileTextIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Simultaneous Data Wiping",
-      desc: "enables efficient large-scale data destruction, eliminating the need for manual data wiping processes.",
-      icon: <RefreshCwIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Automatic & MDM Detection",
-      desc: "Automatically detect hardware specifications, MDM profiles, and activation locks before erasure.",
-      icon: <CpuIcon className="w-6 h-6" />,
-    },
-    {
-      title: "License Don't Expire",
-      desc: "Pay-per-use licensing model with no expiration - use credits whenever you need them.",
-      icon: <LockIcon className="w-6 h-6" />,
-    },
+  const eraseTypesRaw = t("eraseTypesData", { returnObjects: true }) as any[];
+  const eraseTypes = Array.isArray(eraseTypesRaw)
+    ? eraseTypesRaw.map((type, i) => ({
+        ...type,
+        icon: eraseTypeIcons[i] || eraseTypeIcons[0],
+        color: eraseTypeColors[i] || eraseTypeColors[0],
+      }))
+    : [];
+
+  const architectureIcons = [
+    <span className="text-white font-bold text-base sm:text-lg">
+      {t("x64_title")}
+    </span>,
+    <span className="text-white font-bold text-xs sm:text-sm">
+      {t("arm64_title")}
+    </span>,
+    <span className="text-white font-bold text-base sm:text-lg">
+      {t("x86_title")}
+    </span>,
   ];
 
-  const useCases = [
-    {
-      title: "Disposal of RAID Servers",
-      desc: "Securely erase enterprise RAID arrays before disposal, and private data cannot be recovered.",
-      icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "IT Asset Redeployment",
-      desc: "Safely repurpose hardware within organization",
-      icon: <ServerIcon className="w-8 h-8" />,
-    },
-    {
-      title: "Device Recycling & Resale",
-      desc: "Prepare devices for resale programs",
-      icon: <RefreshCwIcon className="w-8 h-8" />,
-    },
-    {
-      title: "End-of-Lease IT Hardware",
-      desc: "Comply with lease return data requirements",
-      icon: <User className="w-8 h-8" />,
-    },
-    {
-      title: "Regulatory Compliance",
-      desc: "Meet GDPR, HIPAA, PCI-DSS requirements",
-      icon: <GlobeIcon className="w-8 h-8" />,
-    },
-    {
-      title: "Cloud Migration Projects",
-      desc: "Securely decommission on-premise storage",
-      icon: <GlobeIcon className="w-8 h-8" />,
-    },
+  const architectureDataRaw = t("architectureData", {
+    returnObjects: true,
+  }) as any[];
+  const architectureItems = Array.isArray(architectureDataRaw)
+    ? architectureDataRaw.map((arch, i) => ({
+        ...arch,
+        icon: architectureIcons[i] || architectureIcons[0],
+      }))
+    : [];
+
+  const osCompatIcons = [
+    <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+    </svg>,
+    <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+    </svg>,
+    <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.465-2.638-2.175-3.483-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.711-.072-.2-.052-.334.033-.466.204-.263.466-.399.795-.528.396-.2.762-.269 1.139-.268h.13zm4.006 2.933c-.009.04-.009.037-.012.071-.075.443-.134.8-.166 1.2-.028.332-.043.663-.044.998l.003.467.004.073.009.135.003.2.016.267c.09.333.15.6.313.8.082.103.17.2.27.27.136.07.272.135.41.135.074 0 .15-.015.223-.04.31-.112.48-.332.618-.59.109-.202.17-.403.217-.598.04-.195.067-.39.08-.545.031-.4.049-.664.049-.664l-.003-.402-.01-.267-.014-.202c-.012-.133-.03-.266-.053-.397v-.003L13 9.4v-.003l-.048-.2h.003l.025.003c-.038-.007-.077-.01-.116-.02-.062-.01-.124-.029-.184-.04z" />
+    </svg>,
   ];
+
+  const osCompatibilityRaw = t("osCompatibilityData", {
+    returnObjects: true,
+  }) as any[];
+  const platforms = Array.isArray(osCompatibilityRaw)
+    ? osCompatibilityRaw.map((os, i) => ({
+        ...os,
+        icon: osCompatIcons[i] || osCompatIcons[0],
+      }))
+    : [];
+
+  const featureIcons = [
+    <ShieldIcon className="w-6 h-6" />,
+    <CloudIcon className="w-6 h-6" />,
+    <GlobeIcon className="w-6 h-6" />,
+    <ServerIcon className="w-6 h-6" />,
+    <FileTextIcon className="w-6 h-6" />,
+    <RefreshCwIcon className="w-6 h-6" />,
+    <CpuIcon className="w-6 h-6" />,
+    <LockIcon className="w-6 h-6" />,
+  ];
+
+  const featuresDataRaw = t("featuresData", { returnObjects: true }) as any[];
+  const features = Array.isArray(featuresDataRaw)
+    ? featuresDataRaw.map((feat, i) => ({
+        ...feat,
+        icon: featureIcons[i] || featureIcons[0],
+      }))
+    : [];
+
+  const useCaseIcons = [
+    <svg
+      className="w-8 h-8"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+      />
+    </svg>,
+    <ServerIcon className="w-8 h-8" />,
+    <RefreshCwIcon className="w-8 h-8" />,
+    <User className="w-8 h-8" />,
+    <GlobeIcon className="w-8 h-8" />,
+    <GlobeIcon className="w-8 h-8" />,
+  ];
+
+  const useCasesDataRaw = t("useCasesData", { returnObjects: true }) as any[];
+  const useCases = Array.isArray(useCasesDataRaw)
+    ? useCasesDataRaw.map((useCase, i) => ({
+        ...useCase,
+        icon: useCaseIcons[i] || useCaseIcons[0],
+      }))
+    : [];
 
   const complianceStandards = [
-    { name: "NIST 800-88", desc: "US National Institute of Standards" },
-    { name: "DoD 5220.22-M", desc: "US Department of Defense" },
-    { name: "GDPR", desc: "EU General Data Protection" },
-    { name: "HIPAA", desc: "Healthcare Information Privacy" },
-    { name: "SOX", desc: "Sarbanes-Oxley Act" },
-    { name: "PCI-DSS", desc: "Payment Card Industry" },
+    { name: t("nist_800_88"), desc: t("common:compliance.nist_desc") },
+    { name: t("dod_5220_22_m"), desc: t("common:compliance.dod_desc") },
+    { name: t("gdpr"), desc: t("common:compliance.gdpr_desc") },
+    { name: t("hipaa"), desc: t("common:compliance.hipaa_desc") },
+    { name: t("sox"), desc: t("common:compliance.sox_desc") },
+    { name: t("pci_dss"), desc: t("common:compliance.pci_desc") },
   ];
 
   const handleInputChange = (
@@ -515,11 +397,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     link.click();
     document.body.removeChild(link);
   };
-  // Insights/Resources
   const insights = [
     {
-      type: "Blog",
-      title: "NIST 800-88 Explained: Complete Guide",
+      type: t("insight_blog"),
+      title: t("insight_nist_title"),
       icon: () => (
         <svg
           className="w-6 h-6"
@@ -537,8 +418,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      type: "Technical Article",
-      title: "SSD vs HDD Erasure Methods",
+      type: t("insight_tech_article"),
+      title: t("insight_ssd_hdd_title"),
       icon: () => (
         <svg
           className="w-6 h-6"
@@ -553,13 +434,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      type: "Knowledge Base",
-      title: "Deployment Best Practices",
+      type: t("insight_kb"),
+      title: t("insight_deployment_title"),
       icon: GlobeIcon,
     },
     {
-      type: "Product Video",
-      title: "Drive Eraser Demo",
+      type: t("insight_product_video"),
+      title: t("insight_demo_title"),
       icon: () => (
         <svg
           className="w-6 h-6"
@@ -578,15 +459,12 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     <>
       <SEOHead
         seo={{
-          title: "D-Secure Drive Eraser | Secure Disk & Drive Wiping Software",
-          description:
-            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Certified data destruction compliant with NIST 800-88, DoD, and GDPR.",
-          keywords:
-            "drive eraser, disk wiper, ssd secure erase, hard drive destruction, server wiping, NIST 800-88, data sanitization software",
-          canonicalUrl: "https://dsecuretech.com/products/drive-eraser",
+          ...getSEOForPage("driveEraser"),
+          title: t("seo:driveEraser.title"),
+          description: t("seo:driveEraser.description"),
+          keywords: t("seo:driveEraser.keywords"),
         }}
       />
-      <SEOHead seo={getSEOForPage("drive-eraser")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -635,25 +513,29 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 <div className="space-y-8">
                   <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
                     <ShieldIcon className="w-4 h-4" />
-                    Enterprise-Grade Drive Erasure
+                    {t("enterprisegrade_drive_erasure")}
                   </div>
 
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
-                    D-Secure{" "}
+                    {t("common:common.dsecure")}{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      Drive Eraser
+                      {t("drive_eraser")}
                     </span>
                   </h1>
 
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                    Permanently erase files, folders, system traces, and cloud
-                    data using internationally recognized erasure standards.
-                    Designed for privacy, security, and audit readiness.
+                    {t("permanently_erase_files_folders_system_traces")}
+                    {t("designed_for_privacy_security_and_audit_readi")}
                   </p>
 
                   {/* Compliance Badges */}
                   <div className="flex flex-wrap items-center gap-3">
-                    {["NIST 800-88", "GDPR", "HIPAA", "SOC 2"].map((badge) => (
+                    {[
+                      t("common:compliance.nist_title"),
+                      t("common:compliance.gdpr_title"),
+                      t("common:compliance.hipaa_title"),
+                      t("common:compliance.soc2_title"),
+                    ].map((badge) => (
                       <div
                         key={badge}
                         className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-emerald-100"
@@ -677,7 +559,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           <LightningIcon className="w-5 h-5" filled={filled} />
                         )}
                       </HoverIcon>
-                      Upcoming
+                      {t("upcoming")}
                     </Link>
                     <button
                       onClick={downloadCatalog}
@@ -697,7 +579,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      Download Datasheet
+                      {t("download_datasheet")}
                     </button>
                   </div>
                 </div>
@@ -750,7 +632,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         <div className="flex items-center gap-1.5 sm:gap-2">
                           <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
                           <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-slate-400 font-medium tracking-wider uppercase">
-                            Active
+                            {t("active")}
                           </span>
                         </div>
                         <div className="flex gap-1 sm:gap-1.5">
@@ -798,7 +680,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                                 </div>
                                 <div className="flex flex-col">
                                   <span className="text-[8px] sm:text-[9px] lg:text-xs text-emerald-400 font-semibold">
-                                    ERASING
+                                    {t("erasing")}
                                   </span>
                                   <div className="w-12 sm:w-16 lg:w-24 h-1 sm:h-1.5 lg:h-2 bg-slate-600 rounded-full overflow-hidden">
                                     <div
@@ -880,7 +762,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         {/* Erasure Status Text */}
                         <div className="text-center mt-2 sm:mt-3 lg:mt-4">
                           <p className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-lg">
-                            Drive Eraser
+                            {t("drive_eraser")}
                           </p>
                         </div>
                       </div>
@@ -889,25 +771,25 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       <div className="hidden sm:grid grid-cols-3 gap-2 sm:gap-3">
                         {/* <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
                           <p className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-base">26+</p>
-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">Standards</p>
+                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">{t("standards")}</p>
                         </div> */}
                         {/* <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
                           <p className="text-teal-400 font-bold text-xs sm:text-sm lg:text-base">100%</p>
-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">Verified</p>
+                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">{t("verified")}</p>
                         </div>
                         <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
                           <p className="text-cyan-400 font-bold text-xs sm:text-sm lg:text-base">∞</p>
-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">License</p>
+                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">{t("license")}</p>
                         </div> */}
                       </div>
 
                       {/* Branding Footer */}
                       <div className="mt-2 sm:mt-4 lg:mt-5 pt-2 sm:pt-3 lg:pt-4 border-t border-slate-700/30 flex items-center justify-between">
                         <span className="text-slate-500 text-[7px] sm:text-[8px] lg:text-[9px] tracking-widest uppercase">
-                          D-Secure™
+                          {t("common:common.dsecure")}
                         </span>
                         <span className="text-slate-600 text-[6px] sm:text-[7px] lg:text-[8px] tracking-wider">
-                          Drive Eraser Pro
+                          {t("drive_eraser_pro")}
                         </span>
                       </div>
 
@@ -956,11 +838,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  What You Can Erase
+                  {t("what_you_can_erase")}
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Comprehensive data destruction capabilities for all types of
-                  sensitive information
+                  {t("comprehensive_data_destruction_capabilities_for")}
                 </p>
               </div>
             </Reveal>
@@ -996,14 +877,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-6 sm:mb-10">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
-                  Try Drive Eraser{" "}
+                  {t("driveEraser:try_drive_eraser")}{" "}
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    Demo
+                    {t("driveEraser:demo")}
                   </span>
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Experience D-Secure Drive Eraser in action — explore the
-                  interface and features right here
+                  {t("experience_dsecure_drive_eraser_in_action_exp")}
                 </p>
               </div>
             </Reveal>
@@ -1024,7 +904,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     onClick={toggleFullscreen}
                     className="absolute top-12 right-4 z-50 p-2.5 bg-slate-900/80 hover:bg-emerald-600 text-white rounded-xl shadow-lg backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 flex items-center gap-2"
                     title={
-                      isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
+                      isFullscreen
+                        ? t("driveEraser.exit_fullscreen")
+                        : t("driveEraser.enter_fullscreen")
                     }
                   >
                     {isFullscreen ? (
@@ -1057,7 +939,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </svg>
                     )}
                     <span className="text-sm font-medium pr-1 hidden sm:block">
-                      {isFullscreen ? "Exit Fullscreen" : "Full Screen"}
+                      {isFullscreen
+                        ? t("driveEraser.exit_fullscreen")
+                        : t("driveEraser.full_screen")}
                     </span>
                   </button>
                 )}
@@ -1071,7 +955,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     {/* Screenshot Background */}
                     <img
                       src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035728/ddzt2ghea7hotem4bvz9.png"
-                      alt="D-Secure Drive Eraser Preview"
+                      alt={t("dsecure_drive_eraser_preview")}
                       className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
                     />
                     {/* Subtle overlay for play button visibility */}
@@ -1091,7 +975,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           </div>
                         </div>
                         <span className="text-sm font-semibold text-slate-700 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-200/80">
-                          Click to start interactive demo
+                          {t("click_to_start_interactive_demo")}
                         </span>
                       </div>
                     </div>
@@ -1101,7 +985,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <iframe
                     src="https://dsecure-drive-eraser.vercel.app/"
                     className="w-full h-full flex-1 border-0"
-                    title="D-Secure Drive Eraser Demo"
+                    title={t("dsecure_drive_eraser_demo")}
                     sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                     loading="lazy"
                     allow="clipboard-read; clipboard-write; fullscreen"
@@ -1114,8 +998,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             {/* Caption below demo */}
             <Reveal delayMs={200}>
               <p className="text-center text-sm text-slate-500 mt-4">
-                Interactive product demo — explore Drive Eraser features
-                directly in your browser
+                {t("interactive_product_demo_explore_drive_eraser")}
               </p>
             </Reveal>
 
@@ -1239,7 +1122,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     {additionalImagesCount > 0 && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                         <span className="text-white text-xl sm:text-2xl font-bold">
-                          +{additionalImagesCount} More
+                          +{additionalImagesCount} {t("more")}
                         </span>
                       </div>
                     )}
@@ -1297,14 +1180,15 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <div className="text-center mb-16">
                 <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
                   <GearIcon className="w-4 h-4" />
-                  Simple 4-Step Process
+                  {t("howItWorksSubtitle")}
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  How To Use <span className="text-emerald-600">D-Secure</span>{" "}
-                  Drive Eraser?
+                  {t("howItWorksTitle")}{" "}
+                  <span className="text-emerald-600">{t("dsecure")}</span>{" "}
+                  {t("drive_eraser_1")}
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Get started in minutes with our easy deployment options
+                  {t("get_started_in_minutes_with_our_easy_deployme")}
                 </p>
               </div>
             </Reveal>
@@ -1342,10 +1226,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">
-                        Download
+                        {t("download")}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Get the software from our secure portal
+                        {t("get_the_software_from_our_secure_portal")}
                       </p>
                     </div>
                     {/* Arrow for mobile/tablet */}
@@ -1378,20 +1262,22 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         <CloudIcon className="w-8 h-8 text-emerald-600" />
                       </div>
                       {/* Title */}
-                      <h3 className="font-bold text-slate-900 mb-2">Deploy</h3>
+                      <h3 className="font-bold text-slate-900 mb-2">
+                        {t("deploy")}
+                      </h3>
                       <p className="text-sm text-slate-500 mb-3">
-                        Multiple ways to deploy
+                        {t("multiple_ways_to_deploy")}
                       </p>
                       {/* Tags */}
                       <div className="flex flex-wrap justify-center gap-1.5">
                         <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
-                          USB ISO
+                          {t("usb_iso")}
                         </span>
                         <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
-                          PXE Boot
+                          {t("pxe_boot")}
                         </span>
                         <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
-                          MSI
+                          {t("msi")}
                         </span>
                       </div>
                     </div>
@@ -1429,10 +1315,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">
-                        Erase Devices
+                        {t("erase_devices")}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Securely wipe multiple devices simultaneously
+                        {t("securely_wipe_multiple_devices_simultaneously")}
                       </p>
                     </div>
                     {/* Arrow for mobile/tablet */}
@@ -1469,10 +1355,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">
-                        Save Reports
+                        {t("save_reports")}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Store erasure certificates on cloud
+                        {t("store_erasure_certificates_on_cloud")}
                       </p>
                     </div>
                   </div>
@@ -1485,18 +1371,20 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <div className="max-w-3xl mx-auto mt-12 text-center">
                 <p className="text-slate-600 leading-relaxed">
                   <strong className="text-slate-900">
-                    D-Secure Drive Eraser
+                    {t("dsecure_drive_eraser")}
                   </strong>{" "}
-                  offers the flexibility to wipe drives and devices in both
-                  internet-enabled locations and offline facilities. Deploy via{" "}
-                  <strong className="text-emerald-600">USB drive</strong>,{" "}
-                  <strong className="text-emerald-600">PXE boot</strong> over
-                  network, or{" "}
-                  <strong className="text-emerald-600">MSI package</strong> for
-                  remote wiping on Windows endpoints.
+                  {t("deploy_flexibility_p1")}{" "}
+                  <strong className="text-emerald-600">{t("usb_drive")}</strong>
+                  ,{" "}
+                  <strong className="text-emerald-600">{t("pxe_boot")}</strong>{" "}
+                  {t("deploy_flexibility_p2")}{" "}
+                  <strong className="text-emerald-600">
+                    {t("msi_package")}
+                  </strong>{" "}
+                  {t("deploy_flexibility_p3")}
                 </p>
                 <p className="text-sm text-slate-500 mt-4">
-                  *Offline variant available for Non-Internet locations
+                  {t("offlineNote")}
                 </p>
               </div>
             </Reveal>
@@ -1512,12 +1400,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-                  Compliance-Ready by Design
+                  {t("complianceTitle")}
                 </h2>
                 <p className="text-lg text-slate-300 max-w-3xl mx-auto">
-                  D-Secure Drive Eraser supports organizational compliance
-                  initiatives by aligning with widely accepted data protection
-                  principles and secure erasure best practices
+                  {t("complianceSubtitle")}
                 </p>
               </div>
             </Reveal>
@@ -1564,14 +1450,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
                     />
                   </svg>
-                  Cross-Platform Native
+                  {t("crossPlatformNative")}
                 </div>
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
-                  Multi-Architecture Support
+                  {t("multiArchTitle")}
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto px-2 sm:px-0">
-                  Native performance across all major CPU architectures and
-                  operating systems
+                  {t("multiArchSubtitle")}
                 </p>
               </div>
             </Reveal>
@@ -1579,116 +1464,42 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             {/* Architecture Cards */}
             <Reveal delayMs={100}>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
-                {/* x64 Architecture */}
-                <div className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl shadow-lg">
-                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-emerald-100 to-transparent rounded-tr-xl sm:rounded-tr-2xl"></div>
-                  <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                      <span className="text-white font-bold text-base sm:text-lg">
-                        x64
-                      </span>
+                {architectureItems.map((arch, index) => (
+                  <div
+                    key={index}
+                    className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 hover:border-emerald-300 transition-all duration-300 hover:shadow-xl shadow-lg"
+                  >
+                    <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-emerald-100 to-transparent rounded-tr-xl sm:rounded-tr-2xl"></div>
+                    <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
+                        <span className="text-white font-bold text-base sm:text-lg">
+                          {arch.title}
+                        </span>
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="text-lg sm:text-xl font-bold text-slate-900 truncate">
+                          {arch.subtitle}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-emerald-600">
+                          {arch.status}
+                        </p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 truncate">
-                        AMD64 / Intel 64
-                      </h3>
-                      <p className="text-xs sm:text-sm text-emerald-600">
-                        Most Common Architecture
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
-                    Standard 64-bit processors from Intel & AMD used in most
-                    desktops, laptops, and servers.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
-                      Intel Core
-                    </span>
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
-                      AMD Ryzen
-                    </span>
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
-                      Xeon
-                    </span>
-                    <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
-                      EPYC
-                    </span>
-                  </div>
-                </div>
-
-                {/* ARM64 Architecture */}
-                <div className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 hover:border-teal-300 transition-all duration-300 hover:shadow-xl shadow-lg">
-                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-teal-100 to-transparent rounded-tr-xl sm:rounded-tr-2xl"></div>
-                  <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                      <span className="text-white font-bold text-xs sm:text-sm">
-                        ARM64
-                      </span>
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900">
-                        ARM64
-                      </h3>
-                      <p className="text-xs sm:text-sm text-teal-600">
-                        Growing Ecosystem
-                      </p>
+                    <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
+                      {arch.desc}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {arch.tags?.map((tag: string, tagIndex: number) => (
+                        <span
+                          key={tagIndex}
+                          className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
-                    Modern ARM-based processors for power-efficient computing on
-                    mobile, Mac, and servers.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
-                      Apple Silicon
-                    </span>
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
-                      Snapdragon
-                    </span>
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
-                      Graviton
-                    </span>
-                    <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
-                      Ampere
-                    </span>
-                  </div>
-                </div>
-
-                {/* x86 Architecture */}
-                <div className="group relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 hover:border-cyan-300 transition-all duration-300 hover:shadow-xl shadow-lg sm:col-span-2 md:col-span-1">
-                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-cyan-100 to-transparent rounded-tr-xl sm:rounded-tr-2xl"></div>
-                  <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform flex-shrink-0">
-                      <span className="text-white font-bold text-base sm:text-lg">
-                        x86
-                      </span>
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900">
-                        x86 (32-bit)
-                      </h3>
-                      <p className="text-xs sm:text-sm text-cyan-600">
-                        Legacy Support
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
-                    Legacy 32-bit processors for older systems still in
-                    enterprise use requiring secure erasure.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
-                      Legacy Intel
-                    </span>
-                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
-                      Pentium
-                    </span>
-                    <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
-                      Atom
-                    </span>
-                  </div>
-                </div>
+                ))}
               </div>
             </Reveal>
 
@@ -1696,75 +1507,37 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal delayMs={200}>
               <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200 shadow-lg">
                 <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 sm:mb-6 text-center">
-                  Operating System Compatibility
+                  {t("osCompatibility")}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                  {/* Windows */}
-                  <div className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-blue-500 flex items-center justify-center bg-blue-50 rounded-lg sm:rounded-xl border border-blue-200">
-                      <svg
-                        className="w-6 h-6 sm:w-8 sm:h-8"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
+                  {platforms.map((platform, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200"
+                    >
+                      <div
+                        className={`w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-${platform.color}-500 flex items-center justify-center bg-${platform.color}-50 rounded-lg sm:rounded-xl border border-${platform.color}-200`}
                       >
-                        <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
-                      </svg>
+                        {platform.icon}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-900">
+                          {platform.name}
+                        </h4>
+                        <p className="text-xs text-slate-500">
+                          {platform.desc}
+                        </p>
+                      </div>
+                      <div className="ml-auto flex gap-1">
+                        {Array.from({ length: platform.level }).map((_, i) => (
+                          <span
+                            key={i}
+                            className="w-2 h-2 bg-emerald-500 rounded-full"
+                          ></span>
+                        ))}
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-slate-900">Windows</h4>
-                      <p className="text-xs text-slate-500">x64, ARM64, x86</p>
-                    </div>
-                    <div className="ml-auto flex gap-1">
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    </div>
-                  </div>
-
-                  {/* macOS */}
-                  <div className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-slate-700 flex items-center justify-center bg-slate-100 rounded-lg sm:rounded-xl border border-slate-300">
-                      <svg
-                        className="w-6 h-6 sm:w-8 sm:h-8"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-slate-900">macOS</h4>
-                      <p className="text-xs text-slate-500">
-                        x64, ARM64 (Apple Silicon)
-                      </p>
-                    </div>
-                    <div className="ml-auto flex gap-1">
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    </div>
-                  </div>
-
-                  {/* Linux */}
-                  <div className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-yellow-600 flex items-center justify-center bg-yellow-50 rounded-lg sm:rounded-xl border border-yellow-200">
-                      <svg
-                        className="w-6 h-6 sm:w-8 sm:h-8"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489.117.779.456 1.456 1.003 1.959.508.466 1.17.77 1.924.888.75.12 1.56.083 2.4-.066.93-.164 1.88-.476 2.793-.873l.185-.078c.64-.27 1.29-.56 1.87-.9.574-.334 1.09-.704 1.5-1.128.406-.423.69-.907.815-1.463.124-.552.084-1.172-.128-1.863-.21-.688-.557-1.396-.99-2.112-.433-.718-.94-1.423-1.48-2.09-.107-.132-.218-.264-.33-.396.112-.134.225-.267.34-.4.56-.653 1.11-1.318 1.6-2.01.493-.694.92-1.414 1.23-2.173.156-.38.278-.77.353-1.172.074-.4.106-.815.08-1.244-.05-.857-.34-1.757-.9-2.524-.563-.773-1.376-1.39-2.338-1.77-.963-.38-2.058-.535-3.17-.478-.106.005-.21.015-.315.025V0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-slate-900">Linux</h4>
-                      <p className="text-xs text-slate-500">x64, ARM64, x86</p>
-                    </div>
-                    <div className="ml-auto flex gap-1">
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                      <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 {/* Legend */}
@@ -1775,14 +1548,14 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
                     </div>
-                    <span>All Architectures</span>
+                    <span>{t("allArchitectures")}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-slate-600">
                     <div className="flex gap-0.5">
                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
                     </div>
-                    <span>x64 & ARM64</span>
+                    <span>{t("x64AndArm64")}</span>
                   </div>
                 </div>
               </div>
@@ -1796,11 +1569,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Powerful Features
+                  {t("featuresTitle")}
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Enterprise-grade capabilities designed for security
-                  professionals
+                  {t("featuresSubtitle")}
                 </p>
               </div>
             </Reveal>
@@ -1832,10 +1604,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Use Cases
+                  {t("useCasesTitle")}
                 </h2>
                 <p className="text-lg text-slate-600">
-                  Trusted by individuals and enterprises worldwide
+                  {t("useCasesSubtitle")}
                 </p>
               </div>
             </Reveal>
@@ -1870,45 +1642,14 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Frequently Asked Questions
+                  {t("faqTitle")}
                 </h2>
-                <p className="text-lg text-slate-600">
-                  Everything you need to know about D-Secure Drive Eraser
-                </p>
+                <p className="text-lg text-slate-600">{t("faqSubtitle")}</p>
               </div>
             </Reveal>
 
             <div className="space-y-4">
-              {[
-                {
-                  q: "How many drives can I erase at a time on one machine?",
-                  a: "D-Secure Drive Eraser supports simultaneous erasure of up to 32 drives per machine, depending on your hardware configuration. For bulk operations, you can use our cloud console to manage multiple machines.",
-                },
-                {
-                  q: "Does the software support Partition Deletion Wipe?",
-                  a: "Yes, D-Secure supports partition-level erasure in addition to full drive erasure. You can selectively wipe specific partitions while keeping others intact.",
-                },
-                {
-                  q: "Do I need Technical Skills?",
-                  a: "No, D-Secure is designed with a user-friendly interface. Simply boot from USB, select your drive and erasure standard, and the software handles everything automatically.",
-                },
-                {
-                  q: "Can I sign my file, like XML, jar file with my e-Signature?",
-                  a: "Yes, D-Secure supports custom digital signatures for reports. You can integrate your organization's PKI for enhanced security.",
-                },
-                {
-                  q: "Does D-Secure integrate with ServiceNow?",
-                  a: "Yes, D-Secure offers native integration with ServiceNow via REST APIs. You can automatically update CMDB records and create incident tickets upon erasure completion.",
-                },
-                {
-                  q: "Can I track separate Inventory for different types of Drives (SSD/HDD, Mobile, etc)?",
-                  a: "Absolutely. The cloud console provides detailed categorization and filtering by device type, making it easy to track and report on different asset categories.",
-                },
-                {
-                  q: "What ongoing support is provided?",
-                  a: "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
-                },
-              ].map((faq, i) => (
+              {(t("faq", { returnObjects: true }) as any[]).map((faq, i) => (
                 <Reveal key={i} delayMs={i * 50}>
                   <details className="group bg-slate-50 rounded-lg sm:rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors">
                     <summary className="flex items-center justify-between p-4 sm:p-6 cursor-pointer list-none">
@@ -1948,18 +1689,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
                 <div>
                   <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                    Technical Blogs
+                    {t("driveEraser:blogsTitle")}
                   </h2>
                   <p className="text-lg text-slate-600 max-w-2xl">
-                    Expert insights on data security, erasure standards, and
-                    best practices
+                    {t("driveEraser:blogsSubtitle")}
                   </p>
                 </div>
                 <Link
                   to="/blog"
                   className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors group"
                 >
-                  View More
+                  {t("viewMore")}
                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -1972,22 +1712,31 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     <div className="bg-slate-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-100 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 h-full flex flex-col">
                       <div className="mb-4">
                         <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">
-                          {blog.tag}
+                          {t(`blog_${blog.id}_tag`, { defaultValue: blog.tag })}
                         </span>
                       </div>
                       <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
-                        {blog.title}
+                        {t(`blog_${blog.id}_title`, {
+                          defaultValue: blog.title,
+                        })}
                       </h3>
                       <p className="text-slate-600 text-sm mb-4 leading-relaxed flex-grow line-clamp-3">
-                        {blog.excerpt}
+                        {t(`blog_${blog.id}_excerpt`, {
+                          defaultValue: blog.excerpt,
+                        })}
                       </p>
                       <div className="flex items-center text-emerald-600 font-semibold text-sm mb-4 group-hover:gap-2 gap-1 transition-all">
-                        Read Article <ArrowRightIcon className="w-4 h-4" />
+                        {t("readArticle")}{" "}
+                        <ArrowRightIcon className="w-4 h-4" />
                       </div>
                       <div className="flex items-center justify-between text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
-                        <span>{blog.publishDate}</span>
                         <span>
-                          {blog.readTime || getReadTime(blog.excerpt)}
+                          {t(`blog_${blog.id}_date`, {
+                            defaultValue: blog.publishDate,
+                          })}
+                        </span>
+                        <span>
+                          {blog.readTime || getReadTime(blog.excerpt, t)}
                         </span>
                       </div>
                     </div>
@@ -2008,20 +1757,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <Reveal>
                 <div className="space-y-6">
                   <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
-                    Talk to Our Data Security Experts
+                    {t("ctaTitle")}
                   </h2>
                   <p className="text-lg text-slate-600 leading-relaxed">
-                    Get personalized guidance on deployment, licensing, and
-                    audit-ready data erasure strategies tailored to your
-                    organization's needs.
+                    {t("ctaSubtitle")}
                   </p>
                   <ul className="space-y-4">
-                    {[
-                      "Enterprise & SMB licensing options",
-                      "Compliance-focused implementation",
-                      "White-label branding available",
-                      "No-obligation consultation",
-                    ].map((item) => (
+                    {(
+                      t("ctaBenefits", {
+                        returnObjects: true,
+                      }) as string[]
+                    ).map((item) => (
                       <li key={item} className="flex items-center gap-3">
                         <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
                           <CheckIcon className="w-4 h-4 text-emerald-600" />
@@ -2036,7 +1782,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       to="/contact"
                       className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
                     >
-                      Or contact us directly
+                      {t("ctaContactDirectly")}
                       <ArrowRightIcon className="w-5 h-5" />
                     </Link>
                   </div>
@@ -2046,7 +1792,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <Reveal delayMs={100}>
                 <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl">
                   <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
-                    Request Information
+                    {t("ctaFormTitle")}
                   </h3>
                   <form
                     className="space-y-5"
@@ -2134,10 +1880,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           message: "",
                         });
                         setIsLoading(false);
-                        showToast(
-                          "Thank you! Your enquiry has been submitted successfully.",
-                          "success",
-                        );
+                        showToast(t("ctaFormSuccess"), "success");
 
                         try {
                           // === 1. SUBMIT TO BACKEND API (DATABASE) ===
@@ -2181,17 +1924,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         } catch (error: any) {
                           console.error("Form error:", error);
                           showToast(
-                            error.message ||
-                              "Failed to send message. Please try again later.",
+                            error.message || t("ctaFormErrorSend"),
                             "error",
                           );
                         }
                       } catch (error) {
                         console.error("FormSubmit error:", error);
-                        showToast(
-                          "Failed to submit enquiry. Please try again.",
-                          "error",
-                        );
+                        showToast(t("ctaFormErrorSubmit"), "error");
                         setIsLoading(false);
                       }
                     }}
@@ -2202,7 +1941,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        placeholder="Full Name *"
+                        placeholder={t("full_name")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
                         required
                       />
@@ -2213,7 +1952,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        placeholder="Email *"
+                        placeholder={t("email")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
                         required
                       />
@@ -2224,7 +1963,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         name="organization"
                         value={formData.organization}
                         onChange={handleInputChange}
-                        placeholder="Organization"
+                        placeholder={t("organization")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
                       />
                     </div>
@@ -2234,7 +1973,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         value={formData.message}
                         onChange={handleInputChange}
                         rows={4}
-                        placeholder="How can we help you?"
+                        placeholder={t("how_can_we_help_you")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors resize-none"
                       ></textarea>
                     </div>
@@ -2243,7 +1982,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       disabled={isLoading}
                       className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? "Submitting..." : "Submit Enquiry"}
+                      {isLoading ? t("ctaFormSubmitting") : t("ctaFormSubmit")}
                     </button>
                   </form>
                 </div>

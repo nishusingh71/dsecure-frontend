@@ -1,6 +1,6 @@
 import Reveal from '@/components/Reveal'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "@/components/LocaleLink";
 import SEOHead from '@/components/SEOHead'
 import { getSEOForPage } from '@/utils/seo'
 import {

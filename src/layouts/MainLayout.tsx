@@ -1,4 +1,5 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink } from "@/components/LocaleLink";
+import { Outlet } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect, useCallback, memo } from "react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
@@ -11,6 +12,7 @@ import BlogPage from "@/components/BlogPage";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useTranslation } from "react-i18next";
 import { useIdleTimer } from "@/hooks/useIdleTimer";
+import { getLocalePath } from "@/utils/localePath";
 
 export default function MainLayout() {
   const { user, logout } = useAuth();
@@ -114,7 +116,7 @@ export default function MainLayout() {
             <Link
               to="/"
               className="flex items-center gap-2 xs:gap-3 font-bold text-slate-800 hover:opacity-80 transition-opacity"
-              aria-label="D-Secure homepage"
+              aria-label={t("layout.dsecure_homepage")}
             >
               <ThemeAwareLogo
                 className="h-6 xs:h-7 sm:h-8 md:h-9 lg:h-10 xl:h-11 xxl:h-12 w-auto"
@@ -152,11 +154,11 @@ export default function MainLayout() {
                     <div className="border-b border-slate-200 px-6 py-5">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-emerald-700 border-b-2 border-emerald-500 pb-1">
-                          Eraser
+                          {t("nav.eraser")}
                         </span>
                       </div>
                       <p className="text-xs text-slate-500 mt-1">
-                        Wiping Of Sensitive Data Across Storage Devices.
+                        {t("nav.eraserDesc")}
                       </p>
                     </div>
 
@@ -185,11 +187,10 @@ export default function MainLayout() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
-                            Drive Eraser
+                            {t("nav.driveEraser")}
                           </h4>
                           <p className="text-sm text-slate-500 leading-relaxed">
-                            Software to Erase Data From HDD, SSD, PC, Mac,
-                            Chromebook & Server
+                            {t("nav.driveEraserNavDesc")}
                           </p>
                         </div>
                       </Link>
@@ -217,11 +218,10 @@ export default function MainLayout() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
-                            File Eraser
+                            {t("nav.fileEraser")}
                           </h4>
                           <p className="text-sm text-slate-500 leading-relaxed">
-                            Software to Wipe Files, Folders, Traces, Browser
-                            History Etc.
+                            {t("nav.fileEraserNavDesc")}
                           </p>
                         </div>
                       </Link>
@@ -271,7 +271,7 @@ export default function MainLayout() {
                   " inline-flex items-center gap-2 py-2"
                 }
               >
-                Trust Certificate
+                {t("nav.trustCertificate")}
               </NavLink>
               <NavLink
                 to="/support"
@@ -317,7 +317,7 @@ export default function MainLayout() {
                           d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                         />
                       </svg>
-                      Dashboard
+                      {t("nav.dashboard")}
                     </NavLink>
                     <button
                       onClick={logout}
@@ -336,7 +336,7 @@ export default function MainLayout() {
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                         />
                       </svg>
-                      Logout
+                      {t("nav.logout")}
                     </button>
                   </>
                 ) : (
@@ -378,7 +378,9 @@ export default function MainLayout() {
                 }`}
                 onClick={toggleMobileMenu}
                 aria-label={
-                  open ? "Close navigation menu" : "Open navigation menu"
+                  open
+                    ? t("layout.close_navigation_menu")
+                    : t("layout.open_navigation_menu")
                 }
                 aria-expanded={open}
                 aria-controls="mobile-menu"
@@ -417,7 +419,7 @@ export default function MainLayout() {
                   : "bg-white/95 backdrop-blur-md"
               }`}
               role="navigation"
-              aria-label="Mobile navigation menu"
+              aria-label={t("layout.mobile_navigation_menu")}
             >
               <div className="mx-auto max-w-7xl px-4 xs:px-4 sm:px-6 md:px-6 py-4 xs:py-5 sm:py-6 md:py-6 space-y-1 xs:space-y-2 sm:space-y-2 md:space-y-2">
                 {/* Mobile Products Section with Sub-items */}
@@ -426,7 +428,7 @@ export default function MainLayout() {
                     onClick={() => setOpen(false)}
                     to="/#products"
                     className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                    aria-label="View all security products"
+                    aria-label={t("layout.view_all_security_products")}
                   >
                     <svg
                       className="w-5 h-5 text-slate-400"
@@ -466,9 +468,11 @@ export default function MainLayout() {
                         </svg>
                       </div>
                       <div>
-                        <span className="font-medium">Drive Eraser</span>
+                        <span className="font-medium">
+                          {t("nav.driveEraser")}
+                        </span>
                         <p className="text-xs text-slate-400">
-                          HDD, SSD, Mac, Server
+                          {t("nav.driveEraserShortDesc")}
                         </p>
                       </div>
                     </Link>
@@ -493,9 +497,11 @@ export default function MainLayout() {
                         </svg>
                       </div>
                       <div>
-                        <span className="font-medium">File Eraser</span>
+                        <span className="font-medium">
+                          {t("nav.fileEraser")}
+                        </span>
                         <p className="text-xs text-slate-400">
-                          Files, Folders, Traces
+                          {t("nav.fileEraserShortDesc")}
                         </p>
                       </div>
                     </Link>
@@ -505,7 +511,7 @@ export default function MainLayout() {
                   onClick={() => setOpen(false)}
                   to="/solutions"
                   className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="View all data security solutions"
+                  aria-label={t("layout.view_all_data_security_solutions")}
                 >
                   <svg
                     className="w-5 h-5 text-slate-400"
@@ -526,7 +532,7 @@ export default function MainLayout() {
                   onClick={() => setOpen(false)}
                   to="/resources"
                   className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="Access documentation and resources"
+                  aria-label={t("layout.access_documentation_and_resources")}
                 >
                   <svg
                     className="w-5 h-5 text-slate-400"
@@ -547,7 +553,7 @@ export default function MainLayout() {
                   onClick={() => setOpen(false)}
                   to="/partners"
                   className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="Partner with D-Secure"
+                  aria-label={t("layout.partner_with_dsecure")}
                 >
                   <svg
                     className="w-5 h-5 text-slate-400"
@@ -568,7 +574,9 @@ export default function MainLayout() {
                   onClick={() => setOpen(false)}
                   to="/data-guardian-award"
                   className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="D-Secure Data Guardian Award certification"
+                  aria-label={t(
+                    "layout.dsecure_data_guardian_award_certification",
+                  )}
                 >
                   <svg
                     className="w-5 h-5 text-slate-400"
@@ -577,13 +585,13 @@ export default function MainLayout() {
                   >
                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                   </svg>
-                  Data Guardian Award
+                  {t("nav.dataGuardianAward")}
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
                   to="/support"
                   className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="Get customer support"
+                  aria-label={t("layout.get_customer_support")}
                 >
                   <svg
                     className="w-5 h-5 text-slate-400"
@@ -604,7 +612,7 @@ export default function MainLayout() {
                 onClick={() => setOpen(false)}
                 to="/contact"
                 className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                aria-label="Contact us for support and inquiries"
+                aria-label={t("layout.contact_us_for_support_and_inquiries")}
               >
                 <svg
                   className="w-5 h-5 text-slate-400"
@@ -647,7 +655,7 @@ export default function MainLayout() {
                           d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                         />
                       </svg>
-                      Dashboard
+                      {t("nav.dashboard")}
                     </NavLink>
                     <button
                       onClick={() => {
@@ -669,7 +677,7 @@ export default function MainLayout() {
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                         />
                       </svg>
-                      Logout
+                      {t("nav.logout")}
                     </button>
                   </div>
                 ) : (
@@ -679,7 +687,7 @@ export default function MainLayout() {
                       onClick={() => setOpen(false)}
                       className="flex items-center justify-center gap-2 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors border border-slate-200"
                     >
-                      Login
+                      {t("nav.login")}
                     </NavLink>
                     {/* <NavLink 
                     to="/register" 
@@ -722,7 +730,7 @@ export default function MainLayout() {
         <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
           <input
             type="email"
-            placeholder="Enter your email address"
+            placeholder={t("layout.enter_your_email_address")}
             className="flex-1 px-4 py-3 bg-white/10 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent backdrop-blur-sm"
           />
           <button
@@ -746,7 +754,7 @@ export default function MainLayout() {
                   <Link
                     to="/"
                     className="flex items-center gap-2 xs:gap-3 font-bold text-white hover:opacity-80 transition-opacity mb-4 xs:mb-5 sm:mb-6"
-                    aria-label="D-Secure homepage"
+                    aria-label={t("layout.dsecure_homepage")}
                   >
                     <ThemeAwareLogoFooter
                       className="h-8 xs:h-9 sm:h-10 md:h-11 lg:h-12 xl:h-13 xxl:h-14 w-auto"
@@ -760,12 +768,12 @@ export default function MainLayout() {
 
                   {/* Trust Indicators */}
                   {/* <div className="mb-8">
-            <p className="text-slate-400 text-sm mb-3">Trusted by 1000+ companies worldwide</p>
+            <p className="text-slate-400 text-sm mb-3">{t("layout.trusted_by_1000_companies_worldwide")}</p>
             <div className="flex items-center gap-6 opacity-60">
-              <div className="text-slate-400 text-xs font-mono">ISO 27001</div>
-              <div className="text-slate-400 text-xs font-mono">SOC 2</div>
-              <div className="text-slate-400 text-xs font-mono">GDPR</div>
-              <div className="text-slate-400 text-xs font-mono">HIPAA</div>
+              <div className="text-slate-400 text-xs font-mono">{t("layout.iso_27001")}</div>
+              <div className="text-slate-400 text-xs font-mono">{t("layout.soc_2")}</div>
+              <div className="text-slate-400 text-xs font-mono">{t("layout.gdpr")}</div>
+              <div className="text-slate-400 text-xs font-mono">{t("layout.hipaa")}</div>
             </div>
           </div> */}
 
@@ -774,7 +782,7 @@ export default function MainLayout() {
                     <a
                       href="https://twitter.com/dsecuretech"
                       className="text-slate-400 hover:text-brand transition-colors group"
-                      aria-label="Follow D-Secure on Twitter"
+                      aria-label={t("layout.follow_dsecure_on_twitter")}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -789,7 +797,7 @@ export default function MainLayout() {
                     <a
                       href="https://linkedin.com/company/dsecuretech"
                       className="text-slate-400 hover:text-brand transition-colors group"
-                      aria-label="Connect with D-Secure on LinkedIn"
+                      aria-label={t("layout.connect_with_dsecure_on_linkedin")}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -804,7 +812,7 @@ export default function MainLayout() {
                     <a
                       href="https://github.com/dsecuretech"
                       className="text-slate-400 hover:text-brand transition-colors group"
-                      aria-label="View D-Secure projects on GitHub"
+                      aria-label={t("layout.view_dsecure_projects_on_github")}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -823,7 +831,9 @@ export default function MainLayout() {
                     <a
                       href="https://youtube.com/dsecuretech"
                       className="text-slate-400 hover:text-brand transition-colors group"
-                      aria-label="Subscribe to D-Secure YouTube channel"
+                      aria-label={t(
+                        "layout.subscribe_to_dsecure_youtube_channel",
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -897,11 +907,11 @@ export default function MainLayout() {
                     <ul className="space-y-4 text-slate-300">
                       <li>
                         <Link
-                          to="/#industries"
+                          to="/solutions"
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                           onClick={(e) => {
                             e.preventDefault();
-                            window.location.href = "/#industries";
+                            window.location.href = getLocalePath("/solutions");
                           }}
                         >
                           {t("footer.allSolutions")}
@@ -1064,44 +1074,48 @@ export default function MainLayout() {
                   <Link
                     to="/privacy-policy"
                     className="hover:text-brand transition-colors"
-                    aria-label="Read our Privacy Policy"
+                    aria-label={t("layout.read_our_privacy_policy")}
                   >
                     {t("footer.privacyPolicy")}
                   </Link>
                   <Link
                     to="/legal-policy"
                     className="hover:text-brand transition-colors"
-                    aria-label="Read our Legal Policy"
+                    aria-label={t("layout.read_our_legal_policy")}
                   >
                     {t("footer.legalPolicy")}
                   </Link>
                   <Link
                     to="/terms-of-service"
                     className="hover:text-brand transition-colors"
-                    aria-label="Read our Terms of Service"
+                    aria-label={t("layout.read_our_terms_of_service")}
                   >
                     {t("footer.termsOfService")}
                   </Link>
                   <Link
                     to="/cookie-policy"
                     className="hover:text-brand transition-colors"
-                    aria-label="Read our Cookie Policy"
+                    aria-label={t("layout.read_our_cookie_policy")}
                   >
                     {t("footer.cookiePolicy")}
                   </Link>
                   <Link
                     to="/security"
                     className="hover:text-brand transition-colors"
-                    aria-label="View our security practices and certifications"
+                    aria-label={t(
+                      "layout.view_our_security_practices_and_certification",
+                    )}
                   >
                     {t("footer.security")}
                   </Link>
                   <Link
                     to="/status"
                     className="hover:text-brand transition-colors"
-                    aria-label="Check system status and service availability"
+                    aria-label={t(
+                      "layout.check_system_status_and_service_availability",
+                    )}
                   >
-                    Status
+                    {t("layout.status")}
                   </Link>
                 </div>
               </div>

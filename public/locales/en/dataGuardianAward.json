@@ -1,0 +1,135 @@
+{
+  "titlePrefix": "D-Secure",
+  "titleHighlight": "Data Hygiene",
+  "titleSuffix": "Assurance",
+  "subtitle": "We don't just give you a certificate - we give you our assurance that your organization has the complete setup, processes, and discipline to keep data safe. This badge represents that you are a trusted, safe, and reliable partner for data security.",
+  "buttons": {
+    "getCertified": "Get Certified",
+    "learnMore": "Learn More"
+  },
+  "certificate": {
+    "brand": "D-SECURE",
+    "title": "Data Hygiene",
+    "subtitle": "Assurance Certificate",
+    "badge": "Verified Securely"
+  },
+  "whatIsBadge": {
+    "badge": "Assurance Badge",
+    "titleHighlight": "Assurance Badge?",
+    "titlePrefix": "What is the D-Secure",
+    "desc": "Your gateway to a safe way to trade digital data. The D-Secure Assurance Badge signifies that your organization operates within a trusted ecosystem, enabling secure and reliable data transactions with partners worldwide.",
+    "features": {
+      "verifiableErasure": "Verifiable Erasure",
+      "verifiableErasureDesc": "Tamper-proof certificates with digital signatures and cryptographic verification",
+      "auditReady": "Audit-Ready Reports",
+      "auditReadyDesc": "Comprehensive documentation for compliance audits and regulatory requirements",
+      "trustedBrand": "Trusted Brand",
+      "trustedBrandDesc": "Build customer confidence with D-Secure certified data handling practices"
+    }
+  },
+  "setup": {
+    "badge": "Complete Setup",
+    "titlePrefix": "The D-Secure",
+    "titleHighlight": "Data Hygiene Setup",
+    "desc": "The Assurance Badge is not just about buying a product. It's about implementing a complete data hygiene process that we can audit and verify anytime.",
+    "features": {
+      "eraser": "D-Secure Eraser",
+      "eraserDesc": "Automated secure deletion that goes beyond standard recycle bin. Every deleted file is securely wiped on schedule.",
+      "freeSpaceWipe": "Free Space Wipe",
+      "freeSpaceWipeDesc": "Monthly scheduled sanitization of all free space, eliminating any recoverable data fragments.",
+      "auditLogs": "Audit-Ready Logs",
+      "auditLogsDesc": "Complete cloud & desktop reporting with timestamps and verification data for compliance."
+    }
+  },
+  "industries": {
+    "badge": "Trusted Partners",
+    "titlePrefix": "We",
+    "titleHighlight": "Recognized",
+    "desc": "The D-Secure Assurance Badge is trusted by businesses of all sizes.",
+    "list": {
+      "schools": "Schools",
+      "schoolsDesc": "Educational Institutions",
+      "studios": "Studios",
+      "studiosDesc": "Creative Agencies",
+      "startups": "Startups",
+      "startupsDesc": "New Ventures",
+      "smbs": "SMBs",
+      "smbsDesc": "Small Business",
+      "freelancers": "Freelancers",
+      "freelancersDesc": "Independent Professionals",
+      "coworking": "Co-working",
+      "coworkingDesc": "Shared Spaces",
+      "hospitals": "Hospitals",
+      "hospitalsDesc": "Healthcare Providers",
+      "lawFirms": "Law Firms",
+      "lawFirmsDesc": "Legal Services",
+      "itCompanies": "IT Companies",
+      "itCompaniesDesc": "Tech Solutions",
+      "retailers": "Retailers",
+      "retailersDesc": "E-commerce & Stores",
+      "finance": "Finance",
+      "financeDesc": "Banking & Insurance",
+      "consultants": "Consultants",
+      "consultantsDesc": "Advisory Services"
+    }
+  },
+  "map": {
+    "badge": "Verify Certified Organizations",
+    "title": "Search for Certified Company",
+    "desc": "Check if an organization has achieved D-Secure Data Hygiene Assurance",
+    "searchPlaceholder": "Enter company name or location...",
+    "searchBtn": "Search",
+    "found": "Found {{count}} certified organization(s):",
+    "notFound": "No certified organizations found matching \"{{query}}\"",
+    "certifiedTo": "CERTIFIED TO:",
+    "certifiedType": "Data Hygiene Assurance",
+    "searchButton": "Search",
+    "openstreetmap": "OpenStreetMap",
+    "infotree_computers": "InfoTree Computers",
+    "revent_store": "Revent Store"
+  },
+  "faq": {
+    "badge": "FAQ",
+    "titlePrefix": "Frequently Asked",
+    "titleHighlight": "Questions",
+    "questions": {
+      "q1": "What is the D-Secure Assurance Badge?",
+      "a1": "The D-Secure Assurance Badge is our certification that confirms your organization has implemented proper data hygiene processes. It's not just a certificate - it's our guarantee that you have the complete setup, processes, and discipline to keep data safe and secure.",
+      "q2": "How long does the certification process take?",
+      "a2": "The typical certification process takes 2-4 weeks, depending on your organization's size and readiness. This includes assessment, implementation support, and final verification.",
+      "q3": "What are the prerequisites for certification?",
+      "a3": "Organizations must implement D-Secure data hygiene tools including our automated eraser system, Free Space Wipe. We provide complete guidance on setup and implementation.",
+      "q4": "How do audits work?",
+      "a4": "We conduct both scheduled and random audits to verify compliance. This includes checking erasure logs, process documentation, and system configurations. Our automated tools make this process seamless and non-intrusive.",
+      "q5": "What ongoing support is provided?",
+      "a5": "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene."
+    }
+  },
+  "formSection": {
+    "title": "Apply for Assurance Badge",
+    "desc": "Get your organization certified with D-Secure Data Hygiene Assurance",
+    "usage": "Usage:",
+    "personalNotice": "Free License is only available for business usage. In case you have any query, fill the form below.",
+    "privacyNoticeLink": "D-Secure Privacy Policy",
+    "form": {
+      "subject": "New Data Hygiene Assurance Enquiry - D-Secure Tech",
+      "source": "Data Guardian Award Page"
+    }
+  },
+  "contactInfo": {
+    "response": "Response within 12 Hours",
+    "desc": "Contact the right team for your needs:",
+    "teams": {
+      "sales": "Sales Team",
+      "support": "Technical Support",
+      "legal": "Legal Team"
+    }
+  },
+  "cta": {
+    "badge": "Get Certified Today",
+    "titlePrefix": "Ready to Get Your",
+    "titleHighlight": "Assurance Badge?",
+    "desc": "Join organizations worldwide that trust D-Secure for their data hygiene needs. Get your Assurance Badge and demonstrate your commitment to data security.",
+    "button": "Contact Sales"
+  }
+}

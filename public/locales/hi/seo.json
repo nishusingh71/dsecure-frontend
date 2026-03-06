@@ -1,0 +1,16 @@
+{
+  "dataGuardianAward": {
+    "title": "D-Secure डेटा हाइजीन एश्योरेंस | प्रमाणित डेटा सुरक्षा उत्कृष्टता",
+    "description": "D-Secure एश्योरेंस बैज उन संगठनों को मान्यता देता है जिनके पास पूर्ण डेटा हाइजीन सेटअप और प्रक्रियाएं हैं। प्रमाणित कंपनियों को सत्यापित करें और आज ही अपना एश्योरेंस बैज प्राप्त करें।",
+    "keywords": "D-Secure assurance badge, data hygiene certification, secure data protection, data erasure assurance, IT data security certification, trusted data partner"
+  },
+  "home": {
+    "title": "इरेज़र - हार्ड ड्राइव से फ़ाइलें सुरक्षित रूप से मिटाएं",
+    "description": "इरेज़र Windows के लिए एक उन्नत सुरक्षा उपकरण है जो आपको अपने हार्ड ड्राइव से संवेदनशील डेटा को कई बार अधिलेखित करके पूरी तरह से हटाने की अनुमति देता है"
+  },
+  "driveEraser": {
+    "title": "D-Secure Drive Eraser | सुरक्षित डेटा विलोपन सॉफ्टवेयर",
+    "description": "D-Secure Drive Eraser के साथ हार्ड ड्राइव, SSD और सर्वर से डेटा स्थायी रूप से मिटाएं। उद्यम और व्यक्तिगत उपयोग के लिए NIST 800-88 और DoD अनुपालन स्वच्छता।",
+    "keywords": "drive eraser, hard drive wiper, SSD secure erase, data sanitization software, NIST 800-88 compliance, DoD 5220.22-M, data destruction tool"
+  }
+}

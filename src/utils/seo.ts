@@ -35,10 +35,15 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
   ...BLOG_SEO,
   // Add core pages
   home: {
-    title: "Eraser – Secure Erase Files from Hard Drives",
-    description:
-      "Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times",
+    // Title and description will be passed from the component to ensure localization
+    title: "",
+    description: "",
     canonicalUrl: getCanonicalUrl("/"),
+  },
+  driveEraser: {
+    title: "",
+    description: "",
+    canonicalUrl: getCanonicalUrl("/drive-eraser"),
   },
 };
 

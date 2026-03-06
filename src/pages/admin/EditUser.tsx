@@ -4,6 +4,7 @@ import { getSEOForPage } from "../../utils/seo";
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface UserFormData {
   name: string
@@ -16,7 +17,7 @@ interface UserFormData {
 
 export default function EditUser() {
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const { userId } = useParams()
   const [isLoading, setIsLoading] = useState(false)
   const [userNotFound, setUserNotFound] = useState(false)

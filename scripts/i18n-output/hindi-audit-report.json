@@ -1,0 +1,4707 @@
+{
+  "timestamp": "2026-03-03T08:05:12.670Z",
+  "summary": {
+    "totalMissing": 656,
+    "totalEnglishInHindi": 422
+  },
+  "files": {
+    "common": {
+      "missingKeys": [
+        "pricing.customlicensedata",
+        "pricing.license",
+        "pricing.professional_data_erasure_solutions_trusted_b",
+        "pricing.configure_your_license",
+        "pricing.select_plan",
+        "pricing.features_will_update_based_on_your_selection",
+        "pricing.are_you_an_msp_academic_institute_or_nonprofi",
+        "pricing.organization",
+        "pricing.contact_us_for_special_pricing",
+        "pricing.instant_delivery_available",
+        "pricing.1_year",
+        "pricing.onetime_purchase",
+        "pricing.30day_moneyback_guarantee"
+      ],
+      "englishInHindi": [
+        {
+          "key": "layout.dsecure_homepage",
+          "value": "D-Secure होमपेज",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "layout.partner_with_dsecure",
+          "value": "D-Secure के साथ साझेदारी करें",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "layout.dsecure_data_guardian_award_certification",
+          "value": "D-Secure डेटा गार्जियन अवार्ड प्रमाणन",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "layout.follow_dsecure_on_twitter",
+          "value": "ट्विटर पर D-Secure को फॉलो करें",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "layout.connect_with_dsecure_on_linkedin",
+          "value": "लिंक्डइन पर D-Secure से जुड़ें",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "layout.view_dsecure_projects_on_github",
+          "value": "GitHub पर D-Secure प्रोजेक्ट देखें",
+          "englishWords": [
+            "GitHub",
+            "Secure"
+          ]
+        },
+        {
+          "key": "layout.subscribe_to_dsecure_youtube_channel",
+          "value": "D-Secure यूट्यूब चैनल को सब्सक्राइब करें",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "layout.soc_2",
+          "value": "SOC 2",
+          "englishWords": [
+            "SOC"
+          ]
+        },
+        {
+          "key": "layout.gdpr",
+          "value": "GDPR",
+          "englishWords": [
+            "GDPR"
+          ]
+        },
+        {
+          "key": "layout.hipaa",
+          "value": "HIPAA",
+          "englishWords": [
+            "HIPAA"
+          ]
+        },
+        {
+          "key": "footer.copyright",
+          "value": "D-Secure Inc. सर्वाधिकार सुरक्षित।",
+          "englishWords": [
+            "Secure Inc"
+          ]
+        },
+        {
+          "key": "auth.enterOtp",
+          "value": "OTP दर्ज करें",
+          "englishWords": [
+            "OTP"
+          ]
+        },
+        {
+          "key": "auth.otpSentTo",
+          "value": "OTP आपके ईमेल पर भेजा गया",
+          "englishWords": [
+            "OTP"
+          ]
+        },
+        {
+          "key": "auth.verifyOtp",
+          "value": "OTP सत्यापित करें",
+          "englishWords": [
+            "OTP"
+          ]
+        },
+        {
+          "key": "auth.sendOtp",
+          "value": "OTP भेजें",
+          "englishWords": [
+            "OTP"
+          ]
+        },
+        {
+          "key": "auth.resendOtp",
+          "value": "OTP नहीं मिला? पुनः भेजें",
+          "englishWords": [
+            "OTP"
+          ]
+        },
+        {
+          "key": "auth.demoModeSubtitle",
+          "value": "नमूना डेटा के साथ D-Secure का अनुभव करें",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "auth.otpVerifyIdentity",
+          "value": "हम आपकी पहचान सत्यापित करने के लिए आपको एक OTP भेजेंगे",
+          "englishWords": [
+            "OTP"
+          ]
+        },
+        {
+          "key": "auth.formSubmitNote",
+          "value": "नोट:- FormSubmit.co से प्रारंभिक सक्रियण लिंक की पुष्टि करने के बाद, आपको सभी भव",
+          "englishWords": [
+            "FormSubmit",
+            "OTP"
+          ]
+        },
+        {
+          "key": "blog.readTime",
+          "value": "{{count}} मिनट का पठन",
+          "englishWords": [
+            "count"
+          ]
+        },
+        {
+          "key": "blog.readTime_plural",
+          "value": "{{count}} मिनट का पठन",
+          "englishWords": [
+            "count"
+          ]
+        },
+        {
+          "key": "dashboard.ipAddress",
+          "value": "IP पता",
+          "englishWords": [
+            "IP"
+          ]
+        },
+        {
+          "key": "dashboard.machineId",
+          "value": "मशीन ID",
+          "englishWords": [
+            "ID"
+          ]
+        },
+        {
+          "key": "dashboard.osType",
+          "value": "OS प्रकार",
+          "englishWords": [
+            "OS"
+          ]
+        },
+        {
+          "key": "dashboard.ipAddresses",
+          "value": "IP पते",
+          "englishWords": [
+            "IP"
+          ]
+        },
+        {
+          "key": "dashboard.cpuUsage",
+          "value": "CPU उपयोग",
+          "englishWords": [
+            "CPU"
+          ]
+        },
+        {
+          "key": "dashboard.adminSessions.arrayisarraycached",
+          "value": "Array.isArray(कैश्ड) &&",
+          "englishWords": [
+            "Array"
+          ]
+        },
+        {
+          "key": "dashboard.adminPerformance.dsecuretech_performance_system_performance",
+          "value": "DSecureTech प्रदर्शन | ",
+          "englishWords": [
+            "DSecureTech"
+          ]
+        },
+        {
+          "key": "dashboard.adminReports.yyyymmdd",
+          "value": "(YYYY-MM-DD)",
+          "englishWords": [
+            "YYYY",
+            "MM",
+            "DD"
+          ]
+        },
+        {
+          "key": "dashboard.adminReports.nendobjn2_0_objn",
+          "value": "\\nendobj\\n2 0 obj\\n",
+          "englishWords": [
+            "nendobj"
+          ]
+        },
+        {
+          "key": "dashboard.adminReports.nendobjn3_0_objn",
+          "value": "\\nendobj\\n3 0 obj\\n",
+          "englishWords": [
+            "nendobj"
+          ]
+        },
+        {
+          "key": "dashboard.adminReports.nendobjn4_0_objn",
+          "value": "\\nendobj\\n4 0 obj\\n",
+          "englishWords": [
+            "nendobj"
+          ]
+        },
+        {
+          "key": "dashboard.adminReports.nstreamnbtnf1_24_tfn100_700_tdndemo_pdf_repor",
+          "value": "\\nstream\\nBT\\n/F1 24 Tf\\n100 700 Td\\n(डेमो पीडीएफ रिपोर्ट) Tj\\nET\\nendstream\\nen",
+          "englishWords": [
+            "Tf",
+            "Td",
+            "Tj",
+            "nstream",
+            "nendstream",
+            "nendobj",
+            "nxref"
+          ]
+        },
+        {
+          "key": "dashboard.adminReports.nstreamnbtnf1_24_tfn100_700_tdndemo_pdf_previ",
+          "value": "\\nstream\\nBT\\n/F1 24 Tf\\n100 700 Td\\n(डेमो पीडीएफ पूर्वावलोकन रिपोर्ट) Tj\\nET\\ne",
+          "englishWords": [
+            "Tf",
+            "Td",
+            "Tj",
+            "nstream",
+            "nendstream",
+            "nendobj",
+            "nxref"
+          ]
+        },
+        {
+          "key": "dashboard.userDashboard.dsecuretech_compliance_data_erasure_standards",
+          "value": "DSecureTech अनुपालन | ",
+          "englishWords": [
+            "DSecureTech"
+          ]
+        },
+        {
+          "key": "dashboard.privateCloudSetup.servermyserverdatabasewindowsnetdatabasemydbu",
+          "value": "सर्वर=myserver.database.windows.net;डेटाबेस=mydb;उपयोगकर्ता आईडी=myuser;पासवर्ड=",
+          "englishWords": [
+            "myserver",
+            "database",
+            "windows",
+            "mydb",
+            "myuser",
+            "mypass"
+          ]
+        },
+        {
+          "key": "dashboard.privateCloudSetup.post_apiprivatecloudvalidateschema",
+          "value": "POST /api/PrivateCloud/validate-schema",
+          "englishWords": [
+            "POST",
+            "PrivateCloud",
+            "validate",
+            "schema"
+          ]
+        },
+        {
+          "key": "dashboard.enhancedUserDashboard.jwt_debug_info",
+          "value": "JWT डिबग जानकारी",
+          "englishWords": [
+            "JWT"
+          ]
+        },
+        {
+          "key": "dashboard.downloadAgentPage.get_the_latest_dsecure_agents_for_your_platfo",
+          "value": "अपने प्लेटफ़ॉर्म के लिए नवीनतम DSecure एजेंट प्राप्त करें",
+          "englishWords": [
+            "DSecure"
+          ]
+        },
+        {
+          "key": "dashboard.adminDashboard.europelondon_gmt",
+          "value": "यूरोपलंडन Gmt",
+          "englishWords": [
+            "Gmt"
+          ]
+        },
+        {
+          "key": "dashboard.adminDashboard.asiatokyo_jst",
+          "value": "एशियाटोक्यो Jst",
+          "englishWords": [
+            "Jst"
+          ]
+        },
+        {
+          "key": "dashboard.adminDashboard.utc",
+          "value": "UTC",
+          "englishWords": [
+            "UTC"
+          ]
+        },
+        {
+          "key": "dashboard.adminDashboard.servermyserverdatabasemydbuser_idmyuserpasswo",
+          "value": "Servermyserverdatabasemydbuser Idmyuserpasswo",
+          "englishWords": [
+            "Servermyserverdatabasemydbuser Idmyuserpasswo"
+          ]
+        },
+        {
+          "key": "pricingPage.badge",
+          "value": "SECURE • COMPLIANT",
+          "englishWords": [
+            "SECURE",
+            "COMPLIANT"
+          ]
+        },
+        {
+          "key": "pricingPage.chooseYour",
+          "value": "Choose Your",
+          "englishWords": [
+            "Choose Your"
+          ]
+        },
+        {
+          "key": "pricingPage.license",
+          "value": "License",
+          "englishWords": [
+            "License"
+          ]
+        },
+        {
+          "key": "pricingPage.configureYourLicense",
+          "value": "Configure Your License",
+          "englishWords": [
+            "Configure Your License"
+          ]
+        },
+        {
+          "key": "pricingPage.selectPlan",
+          "value": "Select Plan:",
+          "englishWords": [
+            "Select Plan"
+          ]
+        },
+        {
+          "key": "pricingPage.featuresUpdateNote",
+          "value": "Features will update based on your selection",
+          "englishWords": [
+            "Features",
+            "will",
+            "update",
+            "based",
+            "your",
+            "selection"
+          ]
+        },
+        {
+          "key": "pricingPage.customQuantity",
+          "value": "Custom Quantity",
+          "englishWords": [
+            "Custom Quantity"
+          ]
+        },
+        {
+          "key": "pricingPage.licenses",
+          "value": "licenses",
+          "englishWords": [
+            "licenses"
+          ]
+        },
+        {
+          "key": "pricingPage.oneYear",
+          "value": "1 Year",
+          "englishWords": [
+            "Year"
+          ]
+        },
+        {
+          "key": "pricingPage.oneTimePurchase",
+          "value": "One-time Purchase",
+          "englishWords": [
+            "One",
+            "Purchase",
+            "time"
+          ]
+        },
+        {
+          "key": "pricingPage.specialPricingTitle",
+          "value": "Are You An MSP, Academic Institute or Non-Profit Organization?",
+          "englishWords": [
+            "Are You An MSP",
+            "Academic Institute",
+            "Non",
+            "Profit Organization"
+          ]
+        },
+        {
+          "key": "pricingPage.specialPricingCta",
+          "value": "Contact Us For Special Pricing",
+          "englishWords": [
+            "Contact Us For Special Pricing"
+          ]
+        },
+        {
+          "key": "pricingPage.comingSoon",
+          "value": "Coming Soon",
+          "englishWords": [
+            "Coming Soon"
+          ]
+        },
+        {
+          "key": "pricingPage.requestCustomQuote",
+          "value": "Request Custom Quote",
+          "englishWords": [
+            "Request Custom Quote"
+          ]
+        },
+        {
+          "key": "pricingPage.buyNow",
+          "value": "Buy Now",
+          "englishWords": [
+            "Buy Now"
+          ]
+        },
+        {
+          "key": "pricingPage.freeShipping",
+          "value": "Free worldwide shipping",
+          "englishWords": [
+            "Free",
+            "worldwide",
+            "shipping"
+          ]
+        },
+        {
+          "key": "pricingPage.instantActivation",
+          "value": "Instant activation & support",
+          "englishWords": [
+            "Instant",
+            "activation",
+            "support"
+          ]
+        },
+        {
+          "key": "pricingPage.moneyBackGuarantee",
+          "value": "30-day money-back guarantee",
+          "englishWords": [
+            "money",
+            "back",
+            "guarantee"
+          ]
+        },
+        {
+          "key": "pricingPage.faqTitle",
+          "value": "Frequently Asked Questions",
+          "englishWords": [
+            "Frequently Asked Questions"
+          ]
+        },
+        {
+          "key": "pricingPage.customQuote",
+          "value": "Custom Quote",
+          "englishWords": [
+            "Custom Quote"
+          ]
+        },
+        {
+          "key": "pricingPage.getPersonalizedQuote",
+          "value": "Get Personalized Quote",
+          "englishWords": [
+            "Get Personalized Quote"
+          ]
+        },
+        {
+          "key": "pricingPage.tailoredToYourNeeds",
+          "value": "Tailored to your needs",
+          "englishWords": [
+            "Tailored",
+            "your",
+            "needs"
+          ]
+        },
+        {
+          "key": "pricingPage.faq1Q",
+          "value": "How do I get my License?",
+          "englishWords": [
+            "How",
+            "License"
+          ]
+        },
+        {
+          "key": "pricingPage.faq1A",
+          "value": "Each product license is assigned based on the number of devices you choose. You ",
+          "englishWords": [
+            "Each",
+            "You",
+            "Secure Cloud",
+            "The",
+            "Once",
+            "product",
+            "license",
+            "assigned",
+            "based",
+            "number",
+            "devices",
+            "choose",
+            "will",
+            "receive",
+            "login",
+            "credentials",
+            "access",
+            "necessary",
+            "installation",
+            "files",
+            "after",
+            "your",
+            "order",
+            "confirmed",
+            "total",
+            "licenses",
+            "correspond",
+            "selected",
+            "during",
+            "purchase",
+            "details",
+            "delivered",
+            "instantly"
+          ]
+        },
+        {
+          "key": "pricingPage.faq2Q",
+          "value": "If I order 1000 licenses, how many drives can I wipe?",
+          "englishWords": [
+            "If I",
+            "order",
+            "licenses",
+            "many",
+            "drives",
+            "wipe"
+          ]
+        },
+        {
+          "key": "pricingPage.faq2A",
+          "value": "Each license allows you to wipe one drive. So with 1000 licenses, you can wipe 1",
+          "englishWords": [
+            "Each",
+            "So",
+            "license",
+            "allows",
+            "wipe",
+            "drive",
+            "with",
+            "licenses",
+            "drives"
+          ]
+        },
+        {
+          "key": "pricingPage.faq3Q",
+          "value": "Are there any shipping charges?",
+          "englishWords": [
+            "Are",
+            "there",
+            "shipping",
+            "charges"
+          ]
+        },
+        {
+          "key": "pricingPage.faq3A",
+          "value": "We offer FREE shipping for all physical deliveries worldwide. For digital delive",
+          "englishWords": [
+            "We",
+            "FREE",
+            "For",
+            "offer",
+            "shipping",
+            "physical",
+            "deliveries",
+            "worldwide",
+            "digital",
+            "delivery",
+            "receive",
+            "instant",
+            "access",
+            "email"
+          ]
+        },
+        {
+          "key": "pricingPage.faq4Q",
+          "value": "What payment methods do you accept?",
+          "englishWords": [
+            "What",
+            "payment",
+            "methods",
+            "accept"
+          ]
+        },
+        {
+          "key": "pricingPage.faq4A",
+          "value": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, b",
+          "englishWords": [
+            "We",
+            "Visa",
+            "MasterCard",
+            "American Express",
+            "PayPal",
+            "accept",
+            "major",
+            "credit",
+            "cards",
+            "bank",
+            "transfers",
+            "purchase",
+            "orders",
+            "enterprise",
+            "customers"
+          ]
+        },
+        {
+          "key": "pricingPage.faq5Q",
+          "value": "Do you offer Volume discounts?",
+          "englishWords": [
+            "Do",
+            "Volume",
+            "offer",
+            "discounts"
+          ]
+        },
+        {
+          "key": "pricingPage.faq5A",
+          "value": "Yes! We offer discounts for bulk orders. Please submit a request via our Custom ",
+          "englishWords": [
+            "Yes",
+            "We",
+            "Please",
+            "Custom License",
+            "offer",
+            "discounts",
+            "bulk",
+            "orders",
+            "submit",
+            "request",
+            "form",
+            "receive",
+            "personalized",
+            "quote",
+            "with",
+            "discounted",
+            "pricing"
+          ]
+        },
+        {
+          "key": "pricingPage.faq6Q",
+          "value": "What kind of support do you provide?",
+          "englishWords": [
+            "What",
+            "kind",
+            "support",
+            "provide"
+          ]
+        },
+        {
+          "key": "pricingPage.faq6A",
+          "value": "All licenses include lifetime technical support via email, phone, and live chat.",
+          "englishWords": [
+            "All",
+            "Enterprise",
+            "licenses",
+            "include",
+            "lifetime",
+            "technical",
+            "support",
+            "email",
+            "phone",
+            "live",
+            "chat",
+            "customers",
+            "receive",
+            "priority",
+            "with",
+            "dedicated",
+            "account",
+            "managers"
+          ]
+        },
+        {
+          "key": "pricingPage.faq7Q",
+          "value": "What ongoing support is provided?",
+          "englishWords": [
+            "What",
+            "ongoing",
+            "support",
+            "provided"
+          ]
+        },
+        {
+          "key": "pricingPage.faq7A",
+          "value": "We provide continuous support including regular software updates, technical assi",
+          "englishWords": [
+            "We",
+            "Think",
+            "provide",
+            "continuous",
+            "support",
+            "including",
+            "regular",
+            "software",
+            "updates",
+            "technical",
+            "assistance",
+            "compliance",
+            "monitoring",
+            "renewal",
+            "coordination",
+            "your",
+            "ongoing",
+            "partner",
+            "data",
+            "hygiene"
+          ]
+        },
+        {
+          "key": "pricingPage.driveEraserKeyFeatures",
+          "value": "Drive Eraser - Key Features:",
+          "englishWords": [
+            "Drive Eraser",
+            "Key Features"
+          ]
+        },
+        {
+          "key": "pricingPage.keyFeatures",
+          "value": "Key Features:",
+          "englishWords": [
+            "Key Features"
+          ]
+        },
+        {
+          "key": "pricingPage.driveFeature1",
+          "value": "Complete Hard Drive & SSD Erasure",
+          "englishWords": [
+            "Complete Hard Drive",
+            "SSD Erasure"
+          ]
+        },
+        {
+          "key": "pricingPage.driveFeature2",
+          "value": "Enterprise-Grade Security Standards",
+          "englishWords": [
+            "Enterprise",
+            "Grade Security Standards"
+          ]
+        },
+        {
+          "key": "pricingPage.driveFeature3",
+          "value": "Multi-Platform Device Support",
+          "englishWords": [
+            "Multi",
+            "Platform Device Support"
+          ]
+        },
+        {
+          "key": "pricingPage.driveFeature4",
+          "value": "Compliance Reporting & Regulatory Documents",
+          "englishWords": [
+            "Compliance Reporting",
+            "Regulatory Documents"
+          ]
+        },
+        {
+          "key": "pricingPage.driveFeature5",
+          "value": "Real-time Progress Monitoring",
+          "englishWords": [
+            "Real",
+            "Progress Monitoring",
+            "time"
+          ]
+        },
+        {
+          "key": "pricingPage.driveFeature6",
+          "value": "Batch Processing Capabilities",
+          "englishWords": [
+            "Batch Processing Capabilities"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature1",
+          "value": "Secure File & Folder Deletion",
+          "englishWords": [
+            "Secure File",
+            "Folder Deletion"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature2",
+          "value": "30+ International Erasure Algorithms",
+          "englishWords": [
+            "International Erasure Algorithms"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature3",
+          "value": "Real-time Progress Monitoring",
+          "englishWords": [
+            "Real",
+            "Progress Monitoring",
+            "time"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature4",
+          "value": "Windows, Mac & Linux Support",
+          "englishWords": [
+            "Windows",
+            "Mac",
+            "Linux Support"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature5",
+          "value": "Free Space Cleaning",
+          "englishWords": [
+            "Free Space Cleaning"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature6",
+          "value": "Local PDF Reports",
+          "englishWords": [
+            "Local PDF Reports"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature7",
+          "value": "Enhanced Erasure Features",
+          "englishWords": [
+            "Enhanced Erasure Features"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature8",
+          "value": "Cloud Report Upload/Sync",
+          "englishWords": [
+            "Cloud Report Upload",
+            "Sync"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature9",
+          "value": "White-Label Reports",
+          "englishWords": [
+            "White",
+            "Label Reports"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature10",
+          "value": "XML Report Format",
+          "englishWords": [
+            "XML Report Format"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature11",
+          "value": "Volume & Disk Erasure",
+          "englishWords": [
+            "Volume",
+            "Disk Erasure"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature12",
+          "value": "Network Deployment",
+          "englishWords": [
+            "Network Deployment"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature13",
+          "value": "Web Dashboard Access",
+          "englishWords": [
+            "Web Dashboard Access"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature14",
+          "value": "Cloud Commands (Remote Jobs)",
+          "englishWords": [
+            "Cloud Commands",
+            "Remote Jobs"
+          ]
+        },
+        {
+          "key": "pricingPage.fileFeature15",
+          "value": "Multi-Level User Logs",
+          "englishWords": [
+            "Multi",
+            "Level User Logs"
+          ]
+        }
+      ],
+      "stats": {
+        "enKeys": 1048,
+        "hiKeys": 1035,
+        "missing": 13,
+        "englishDetected": 102
+      }
+    },
+    "dataGuardianAward": {
+      "missingKeys": [],
+      "englishInHindi": [
+        {
+          "key": "titlePrefix",
+          "value": "D-Secure",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "certificate.brand",
+          "value": "D-SECURE",
+          "englishWords": [
+            "SECURE"
+          ]
+        },
+        {
+          "key": "whatIsBadge.titlePrefix",
+          "value": "D-Secure",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "whatIsBadge.desc",
+          "value": "डिजिटल डेटा का व्यापार करने के सुरक्षित तरीके का आपका मार्ग। D-Secure एश्योरेंस ",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "whatIsBadge.features.trustedBrandDesc",
+          "value": "D-Secure प्रमाणित डेटा संचालन प्रथाओं के साथ ग्राहकों का विश्वास बनाएं",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "setup.titlePrefix",
+          "value": "D-Secure",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "setup.features.eraser",
+          "value": "D-Secure इरेज़र",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "industries.desc",
+          "value": "D-Secure एश्योरेंस बैज सभी आकार के व्यवसायों द्वारा विश्वसनीय है।",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "industries.list.smbs",
+          "value": "SMBs",
+          "englishWords": [
+            "SMBs"
+          ]
+        },
+        {
+          "key": "industries.list.itCompanies",
+          "value": "IT कंपनियां",
+          "englishWords": [
+            "IT"
+          ]
+        },
+        {
+          "key": "map.desc",
+          "value": "जाँचें कि क्या किसी संगठन ने D-Secure डेटा हाइजीन एश्योरेंस प्राप्त किया है",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "map.found",
+          "value": "{{count}} प्रमाणित संगठन मिले:",
+          "englishWords": [
+            "count"
+          ]
+        },
+        {
+          "key": "map.notFound",
+          "value": "\"{{query}}\" से मेल खाने वाले कोई प्रमाणित संगठन नहीं मिले",
+          "englishWords": [
+            "query"
+          ]
+        },
+        {
+          "key": "map.openstreetmap",
+          "value": "OpenStreetMap",
+          "englishWords": [
+            "OpenStreetMap"
+          ]
+        },
+        {
+          "key": "map.infotree_computers",
+          "value": "InfoTree Computers",
+          "englishWords": [
+            "InfoTree Computers"
+          ]
+        },
+        {
+          "key": "map.revent_store",
+          "value": "Revent Store",
+          "englishWords": [
+            "Revent Store"
+          ]
+        },
+        {
+          "key": "faq.questions.q1",
+          "value": "D-Secure एश्योरेंस बैज क्या है?",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "faq.questions.a1",
+          "value": "D-Secure एश्योरेंस बैज हमारा प्रमाणन है जो पुष्टि करता है कि आपके संगठन ने उचित ",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "faq.questions.a3",
+          "value": "संगठनों को D-Secure डेटा स्वच्छता उपकरणों को लागू करना होगा जिसमें हमारा स्वचालि",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "formSection.desc",
+          "value": "अपने संगठन को D-Secure डेटा हाइजीन एश्योरेंस से प्रमाणित कराएं",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "formSection.privacyNoticeLink",
+          "value": "D-Secure डेटा गोपनीयता नीति",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "formSection.form.subject",
+          "value": "New Data Hygiene Assurance Enquiry - D-Secure Tech (नई डेटा हाइजीन एश्योरेंस पूछ",
+          "englishWords": [
+            "New Data Hygiene Assurance Enquiry",
+            "Secure Tech"
+          ]
+        },
+        {
+          "key": "formSection.form.source",
+          "value": "Data Guardian Award Page",
+          "englishWords": [
+            "Data Guardian Award Page"
+          ]
+        },
+        {
+          "key": "cta.desc",
+          "value": "दुनिया भर के उन संगठनों में शामिल हों जो अपनी डेटा स्वच्छता आवश्यकताओं के लिए D-",
+          "englishWords": [
+            "Secure"
+          ]
+        }
+      ],
+      "stats": {
+        "enKeys": 101,
+        "hiKeys": 101,
+        "missing": 0,
+        "englishDetected": 24
+      }
+    },
+    "driveEraser": {
+      "missingKeys": [
+        "simple_4_step_process",
+        "how_to_use",
+        "offline_variant_available"
+      ],
+      "englishInHindi": [
+        {
+          "key": "pageTitle",
+          "value": "D-Secure Drive Eraser",
+          "englishWords": [
+            "Secure Drive Eraser"
+          ]
+        },
+        {
+          "key": "deployDesc",
+          "value": "D-Secure ड्राइव इरेज़र इंटरनेट-सक्षम स्थानों और ऑफ़लाइन सुविधाओं दोनों में ड्राइ",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "complianceSubtitle",
+          "value": "D-Secure ड्राइव इरेज़र व्यापक रूप से स्वीकृत डेटा सुरक्षा सिद्धांतों और सुरक्षित",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "faqSubtitle",
+          "value": "D-Secure ड्राइव इरेज़र के बारे में वह सब कुछ जो आपको जानना आवश्यक है",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "dsecure",
+          "value": "D-Secure",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "experience_dsecure_drive_eraser_in_action_exp",
+          "value": "D-Secure ड्राइव इरेज़र को क्रियान्वित होते देखें — यहीं इंटरफेस और सुविधाओं का अ",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "dsecure_drive_eraser_preview",
+          "value": "D-Secure ड्राइव इरेज़र पूर्वावलोकन",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "dsecure_drive_eraser_demo",
+          "value": "D-Secure ड्राइव इरेज़र डेमो",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "dsecure_drive_eraser",
+          "value": "D-Secure ड्राइव इरेज़र",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "gallery_screenshot_alt",
+          "value": "ड्राइव इरेज़र स्क्रीनशॉट {{index}}",
+          "englishWords": [
+            "index"
+          ]
+        },
+        {
+          "key": "drive_eraser_hero_alt",
+          "value": "D-Secure Drive Eraser डैशबोर्ड",
+          "englishWords": [
+            "Secure Drive Eraser"
+          ]
+        }
+      ],
+      "stats": {
+        "enKeys": 381,
+        "hiKeys": 378,
+        "missing": 3,
+        "englishDetected": 11
+      }
+    },
+    "fileEraser": {
+      "missingKeys": [],
+      "englishInHindi": [
+        {
+          "key": "regulatory_fines_can_bankrupt_a_business",
+          "value": "नियामक दंड एक व्यवसाय को दिवालिया कर सकते हैं। सत्यापन योग्य डेटा विनाश को साबित",
+          "englishWords": [
+            "GDPR",
+            "HIPAA",
+            "SOX"
+          ]
+        },
+        {
+          "key": "protects_sensitive_patient_health_inform",
+          "value": "अनधिकृत पहुंच से संवेदनशील रोगी स्वास्थ्य जानकारी (PHI) की रक्षा करता है।",
+          "englishWords": [
+            "PHI"
+          ]
+        },
+        {
+          "key": "the",
+          "value": "The",
+          "englishWords": [
+            "The"
+          ]
+        },
+        {
+          "key": "min_read_time",
+          "value": "{{minutes}} मिनट पढ़ें",
+          "englishWords": [
+            "minutes"
+          ]
+        },
+        {
+          "key": "d_secure_file_eraser_supports_27_erasure",
+          "value": "डी-सिक्योर फ़ाइल इरेज़र एनआईएसटी 800-88 क्लियर/पर्ज, डीओडी 5220.22-एम (3-पास और ",
+          "englishWords": [
+            "II"
+          ]
+        },
+        {
+          "key": "yes_d_secure_file_eraser_supports_secure",
+          "value": "हाँ! डी-सिक्योर फ़ाइल इरेज़र गूगल ड्राइव, माइक्रोसॉफ्ट वनड्राइव, ड्रॉपबॉक्स और आ",
+          "englishWords": [
+            "OAuth"
+          ]
+        }
+      ],
+      "stats": {
+        "enKeys": 188,
+        "hiKeys": 188,
+        "missing": 0,
+        "englishDetected": 6
+      }
+    },
+    "home": {
+      "missingKeys": [
+        "hero._OLD_title",
+        "hero._OLD_titleHighlight",
+        "hero._OLD_subtitle",
+        "home._OLD_heroTitle",
+        "home._OLD_heroHighlight",
+        "home._OLD_heroSubtitle",
+        "solutions.pageTitle",
+        "solutions.pageSubtitle",
+        "solutions.chooseIndustry",
+        "solutions.learnMore",
+        "solutions.requestDemo",
+        "solutions.enterpriseSubtitle",
+        "solutions.enterpriseDesc",
+        "solutions.enterpriseBenefit1",
+        "solutions.enterpriseBenefit2",
+        "solutions.enterpriseBenefit3",
+        "solutions.enterpriseBenefit4",
+        "solutions.enterpriseBenefit5",
+        "solutions.enterpriseBenefit6",
+        "solutions.enterpriseUseCase1Title",
+        "solutions.enterpriseUseCase1Desc",
+        "solutions.enterpriseUseCase2Title",
+        "solutions.enterpriseUseCase2Desc",
+        "solutions.enterpriseUseCase3Title",
+        "solutions.enterpriseUseCase3Desc",
+        "solutions.enterpriseUseCase4Title",
+        "solutions.enterpriseUseCase4Desc",
+        "solutions.enterpriseUseCase5Title",
+        "solutions.enterpriseUseCase5Desc",
+        "solutions.enterpriseUseCase6Title",
+        "solutions.enterpriseUseCase6Desc",
+        "solutions.itad",
+        "solutions.itadSubtitle",
+        "solutions.itadDesc",
+        "solutions.itadBenefit1",
+        "solutions.itadBenefit2",
+        "solutions.itadBenefit3",
+        "solutions.itadBenefit4",
+        "solutions.itadBenefit5",
+        "solutions.itadBenefit6",
+        "solutions.itadUseCase1Title",
+        "solutions.itadUseCase1Desc",
+        "solutions.itadUseCase2Title",
+        "solutions.itadUseCase2Desc",
+        "solutions.itadUseCase3Title",
+        "solutions.itadUseCase3Desc",
+        "solutions.itadUseCase4Title",
+        "solutions.itadUseCase4Desc",
+        "solutions.itadUseCase5Title",
+        "solutions.itadUseCase5Desc",
+        "solutions.itadUseCase6Title",
+        "solutions.itadUseCase6Desc",
+        "solutions.healthcareSubtitle",
+        "solutions.healthcareDesc",
+        "solutions.healthcareBenefit1",
+        "solutions.healthcareBenefit2",
+        "solutions.healthcareBenefit3",
+        "solutions.healthcareBenefit4",
+        "solutions.healthcareUseCase1Title",
+        "solutions.healthcareUseCase1Desc",
+        "solutions.healthcareUseCase2Title",
+        "solutions.healthcareUseCase2Desc",
+        "solutions.healthcareUseCase3Title",
+        "solutions.healthcareUseCase3Desc",
+        "solutions.healthcareUseCase4Title",
+        "solutions.healthcareUseCase4Desc",
+        "solutions.financialSubtitle",
+        "solutions.financialDesc",
+        "solutions.financialBenefit1",
+        "solutions.financialBenefit2",
+        "solutions.financialBenefit3",
+        "solutions.financialBenefit4",
+        "solutions.financialUseCase1Title",
+        "solutions.financialUseCase1Desc",
+        "solutions.financialUseCase2Title",
+        "solutions.financialUseCase2Desc",
+        "solutions.financialUseCase3Title",
+        "solutions.financialUseCase3Desc",
+        "solutions.financialUseCase4Title",
+        "solutions.financialUseCase4Desc",
+        "solutions.governmentSubtitle",
+        "solutions.governmentDesc",
+        "solutions.governmentBenefit1",
+        "solutions.governmentBenefit2",
+        "solutions.governmentBenefit3",
+        "solutions.governmentBenefit4",
+        "solutions.governmentBenefit5",
+        "solutions.governmentBenefit6",
+        "solutions.governmentBenefit7",
+        "solutions.governmentUseCase1Title",
+        "solutions.governmentUseCase1Desc",
+        "solutions.governmentUseCase2Title",
+        "solutions.governmentUseCase2Desc",
+        "solutions.governmentUseCase3Title",
+        "solutions.governmentUseCase3Desc",
+        "solutions.governmentUseCase4Title",
+        "solutions.governmentUseCase4Desc",
+        "solutions.governmentUseCase5Title",
+        "solutions.governmentUseCase5Desc",
+        "solutions.governmentUseCase6Title",
+        "solutions.governmentUseCase6Desc",
+        "solutions.serviceProviders",
+        "solutions.serviceProvidersSubtitle",
+        "solutions.serviceProvidersDesc",
+        "solutions.serviceProvidersBenefit1",
+        "solutions.serviceProvidersBenefit2",
+        "solutions.serviceProvidersBenefit3",
+        "solutions.serviceProvidersBenefit4",
+        "solutions.serviceProvidersUseCase1Title",
+        "solutions.serviceProvidersUseCase1Desc",
+        "solutions.serviceProvidersUseCase2Title",
+        "solutions.serviceProvidersUseCase2Desc",
+        "solutions.serviceProvidersUseCase3Title",
+        "solutions.serviceProvidersUseCase3Desc",
+        "solutions.keyBenefits",
+        "solutions.useCases",
+        "solutions.caseStudies",
+        "solutions.caseStudy1Company",
+        "solutions.caseStudy1Industry",
+        "solutions.caseStudy1Challenge",
+        "solutions.caseStudy1Solution",
+        "solutions.caseStudy1Results",
+        "solutions.caseStudy2Company",
+        "solutions.caseStudy2Industry",
+        "solutions.caseStudy2Challenge",
+        "solutions.caseStudy2Solution",
+        "solutions.caseStudy2Results",
+        "solutions.caseStudy3Company",
+        "solutions.caseStudy3Industry",
+        "solutions.caseStudy3Challenge",
+        "solutions.caseStudy3Solution",
+        "solutions.caseStudy3Results",
+        "solutions.challenge",
+        "solutions.solution",
+        "solutions.results",
+        "solutions.heroTag",
+        "solutions.heroTitle",
+        "solutions.heroTitleHighlight",
+        "solutions.heroSubtitle",
+        "solutions.discussNeeds",
+        "solutions.exploreSolutions",
+        "solutions.industriesServed",
+        "solutions.complianceRate",
+        "solutions.expertSupport",
+        "fileEraser.610",
+        "fileEraser.dsecure",
+        "fileEraser.cloud",
+        "fileEraser.enterprisegrade_file_erasure",
+        "fileEraser.file_eraser",
+        "fileEraser.permanently_erase_files_folders_system_traces",
+        "fileEraser.designed_for_privacy_security_and_audit_readi",
+        "fileEraser.buy_now",
+        "fileEraser.download_datasheet",
+        "fileEraser.secure_data_destruction",
+        "fileEraser.certified_erasure",
+        "fileEraser.what_you_can_erase",
+        "fileEraser.comprehensive_data_destruction_capabilities_f",
+        "fileEraser.see_file_eraser_in_action",
+        "fileEraser.watch_how_dsecure_file_eraser_permanently_des",
+        "fileEraser.dsecure_file_eraser_preview",
+        "fileEraser.click_to_start_interactive_demo",
+        "fileEraser.dsecure_file_eraser_demo",
+        "fileEraser.dashboard_view",
+        "fileEraser.erasure_report",
+        "fileEraser.file_selection",
+        "fileEraser.erasure_progress",
+        "fileEraser.file_eraser_1",
+        "fileEraser.downloadable_software_for_windows_mac_linux_o",
+        "fileEraser.download_dsecure_file_eraser_software",
+        "fileEraser.install_dsecure_file_eraser",
+        "fileEraser.erase_save_report",
+        "fileEraser.dsecure_file_eraser",
+        "fileEraser.windows_mac_and_linux",
+        "fileEraser.help_manual",
+        "fileEraser.complianceready_by_design",
+        "fileEraser.dsecure_file_eraser_supports_organizational_c",
+        "fileEraser.multiplatform_support",
+        "fileEraser.full_support_across_your_entire_technology_ec",
+        "fileEraser.powerful_features",
+        "fileEraser.enterprisegrade_capabilities_designed_for_sec",
+        "fileEraser.use_cases",
+        "fileEraser.trusted_by_individuals_and_enterprises_worldw",
+        "fileEraser.technical_blogs",
+        "fileEraser.expert_insights_on_data_security_erasure_stan",
+        "fileEraser.view_more",
+        "fileEraser.frequently_asked_questions",
+        "fileEraser.everything_you_need_to_know_about_dsecure_fil",
+        "fileEraser.talk_to_our_data_security_experts",
+        "fileEraser.get_personalized_guidance_on_deployment_licen",
+        "fileEraser.or_contact_us_directly",
+        "fileEraser.request_information",
+        "fileEraser.full_name",
+        "fileEraser.email",
+        "fileEraser.organization",
+        "fileEraser.how_can_we_help_you",
+        "fileEraser.select_filesfolders_volumes_to_erase",
+        "fileEraser.select_the_files_or_folders_or_search_th",
+        "dataGuardian.getCertified",
+        "dataGuardian.learnMore",
+        "dataGuardian.assuranceBadge",
+        "dataGuardian.completeSetup",
+        "dataGuardian.trustedPartners",
+        "dataGuardian.verifyCertified",
+        "dataGuardian.faq",
+        "dataGuardian.businessType",
+        "dataGuardian.enterprise",
+        "dataGuardian.government",
+        "dataGuardian.healthcare",
+        "dataGuardian.education",
+        "dataGuardian.legal",
+        "dataGuardian.technology",
+        "dataGuardian.other",
+        "dataGuardian.heroTitle1",
+        "dataGuardian.heroTitle2",
+        "dataGuardian.heroTitle3",
+        "dataGuardian.heroDesc",
+        "dataGuardian.dataHygiene",
+        "dataGuardian.assuranceCertificate",
+        "dataGuardian.verifiedSecurely",
+        "dataGuardian.whatIsAssurance",
+        "dataGuardian.assuranceBadgeTitle",
+        "dataGuardian.assuranceBadgeDesc",
+        "dataGuardian.verifiableErasure",
+        "dataGuardian.verifiableErasureDesc",
+        "dataGuardian.auditReadyReports",
+        "dataGuardian.auditReadyReportsDesc",
+        "dataGuardian.trustedBrand",
+        "dataGuardian.trustedBrandDesc",
+        "dataGuardian.dataHygieneSetup",
+        "dataGuardian.dataHygieneSetupDesc",
+        "dataGuardian.dSecureEraser",
+        "dataGuardian.dSecureEraserDesc",
+        "dataGuardian.freeSpaceWipe",
+        "dataGuardian.freeSpaceWipeDesc",
+        "dataGuardian.auditReadyLogs",
+        "dataGuardian.auditReadyLogsDesc",
+        "dataGuardian.weRecognized",
+        "dataGuardian.recognized",
+        "dataGuardian.recognizedDesc",
+        "dataGuardian.searchCertified",
+        "dataGuardian.searchCertifiedDesc",
+        "dataGuardian.searchPlaceholder",
+        "dataGuardian.search",
+        "dataGuardian.foundResults",
+        "dataGuardian.noResults",
+        "dataGuardian.certifiedTo",
+        "dataGuardian.dataHygieneAssurance",
+        "dataGuardian.faqTitle",
+        "dataGuardian.faqTitleHighlight",
+        "dataGuardian.faq1Q",
+        "dataGuardian.faq1A",
+        "dataGuardian.faq2Q",
+        "dataGuardian.faq2A",
+        "dataGuardian.faq3Q",
+        "dataGuardian.faq3A",
+        "dataGuardian.faq4Q",
+        "dataGuardian.faq4A",
+        "dataGuardian.faq5Q",
+        "dataGuardian.faq5A",
+        "dataGuardian.applyForBadge",
+        "dataGuardian.applyForBadgeDesc",
+        "dataGuardian.usage",
+        "dataGuardian.business",
+        "dataGuardian.personal",
+        "dataGuardian.fullName",
+        "dataGuardian.businessEmail",
+        "dataGuardian.phoneNumber",
+        "dataGuardian.company",
+        "dataGuardian.country",
+        "dataGuardian.solutionType",
+        "dataGuardian.complianceReqs",
+        "dataGuardian.message",
+        "dataGuardian.submitEnquiry",
+        "dataGuardian.submitting",
+        "dataGuardian.schools",
+        "dataGuardian.schoolsDesc",
+        "dataGuardian.studios",
+        "dataGuardian.studiosDesc",
+        "dataGuardian.startups",
+        "dataGuardian.startupsDesc",
+        "dataGuardian.smbs",
+        "dataGuardian.smbsDesc",
+        "dataGuardian.freelancers",
+        "dataGuardian.freelancersDesc",
+        "dataGuardian.coworking",
+        "dataGuardian.coworkingDesc",
+        "dataGuardian.hospitals",
+        "dataGuardian.hospitalsDesc",
+        "dataGuardian.lawFirms",
+        "dataGuardian.lawFirmsDesc",
+        "dataGuardian.itCompanies",
+        "dataGuardian.itCompaniesDesc",
+        "dataGuardian.retailers",
+        "dataGuardian.retailersDesc",
+        "dataGuardian.finance",
+        "dataGuardian.financeDesc",
+        "dataGuardian.consultants",
+        "dataGuardian.consultantsDesc",
+        "dataGuardian.data_hygiene",
+        "dataGuardian.assurance",
+        "dataGuardian.assurance_certificate",
+        "dataGuardian.assurance_badge",
+        "dataGuardian.verifiable_erasure",
+        "dataGuardian.tamperproof_certificates_with_digital_signatu",
+        "dataGuardian.auditready_reports",
+        "dataGuardian.comprehensive_documentation_for_compliance_au",
+        "dataGuardian.trusted_brand",
+        "dataGuardian.build_customer_confidence_with_dsecure_certif",
+        "dataGuardian.data_hygiene_setup",
+        "dataGuardian.the_assurance_badge_is_not_just_about_buying",
+        "dataGuardian.dsecure_eraser",
+        "dataGuardian.automated_secure_deletion_that_goes_beyond_st",
+        "dataGuardian.free_space_wipe",
+        "dataGuardian.auditready_logs",
+        "dataGuardian.complete_cloud_desktop_reporting_with_timesta",
+        "dataGuardian.the_dsecure_assurance_badge_is_trusted_by_bus",
+        "dataGuardian.enter_company_name_or_location",
+        "dataGuardian.openstreetmap",
+        "dataGuardian.infotree_computers",
+        "dataGuardian.certified_to",
+        "dataGuardian.data_hygiene_assurance",
+        "dataGuardian.revent_store",
+        "dataGuardian.free_license_is_only_available_for_business_u",
+        "dataGuardian.full_name",
+        "dataGuardian.business_email",
+        "dataGuardian.phone_no",
+        "dataGuardian.phone_number",
+        "dataGuardian.business_type",
+        "dataGuardian.financial_services",
+        "dataGuardian.company_name",
+        "dataGuardian.united_states",
+        "dataGuardian.india",
+        "dataGuardian.united_kingdom",
+        "dataGuardian.canada",
+        "dataGuardian.email",
+        "dataGuardian.please_let_us_know_your_requirements_in_detai",
+        "dataGuardian.i_understand_that_the_above_information_is_pr",
+        "dataGuardian.dsecure_privacy_policy",
+        "dataGuardian.contact_the_right_team_for_your_needs",
+        "dataGuardian.sales_team",
+        "dataGuardian.technical_support",
+        "dataGuardian.legal_team",
+        "dataGuardian.get_certified_today",
+        "dataGuardian.join_organizations_worldwide_that_trust_dsecu",
+        "dataGuardian.contact_sales",
+        "manual.dsecure_file_eraser",
+        "manual.in_addition_it_can_erase_unused_space_complet",
+        "manual.key_features",
+        "manual.operating_system",
+        "manual.erase_files_and_folders",
+        "manual.erase_free_space",
+        "manual.setting_schedule_erasure",
+        "manual.generate_and_save_reports",
+        "manual.report_settings",
+        "manual.search_report",
+        "manual.preview_report",
+        "manual.save_report_to_dsecure_cloud",
+        "manual.supported_erasure_standards_and_verification",
+        "manual.search_and_erase",
+        "manual.supports_multiple_themes",
+        "manual.about_dsecure_file_eraser",
+        "manual.about_the_guide",
+        "manual.getting_started",
+        "manual.working_with_dsecure_file_eraser",
+        "manual.frequently_asked_questions_faqs",
+        "manual.about_dsecure",
+        "manual.this_guide_has_the_following_features_for_eas",
+        "manual.select_a_topic_from_the_list_of_topics_given",
+        "manual.notes",
+        "manual.tips",
+        "manual.this_is_a_webbased_guide_and_requires_an_acti",
+        "manual.chrome",
+        "manual.follow_these_comprehensive_steps_to_successfu",
+        "manual.file_eraser_on_your_system",
+        "manual.navigate_to_the_official_dsecure_website_usin",
+        "manual.downloads_folder",
+        "manual.once_the_download_is_complete_navigate_to_you",
+        "manual.the_installation_wizard_will_launch_presentin",
+        "manual.4_choose_installation_directory",
+        "manual.dsecure_file_eraser_will_be_installed_you_can",
+        "manual.5_complete_the_installation",
+        "manual.applications_folder_ready_to_launch_and_use",
+        "manual.to_completely_allow_the_software_to_scan_and",
+        "manual.steps_to_assign_full_disk_access_for_macos",
+        "manual.steps_to_assign_full_disk_access_for_macos_1",
+        "manual.the_dsecure_interface_includes_tabs_for_diffe",
+        "manual.navbar_icons",
+        "manual.support_documentation",
+        "manual.support_and_documentation",
+        "manual.software_update",
+        "manual.software_update_1",
+        "manual.help_manual",
+        "manual.help_manual_1",
+        "manual.dashboard_overview",
+        "manual.dashboard_view",
+        "manual.dashboard",
+        "manual.dashboard_details",
+        "manual.dashboard_details_1",
+        "manual.alternatively_click_on_buy_online_icon_on_the",
+        "manual.select_either_of_the_methods_given_above_to_p",
+        "manual.once_the_order_is_confirmed_you_receive_an_ac",
+        "manual.activate_dsecure_with_your_license_key",
+        "manual.access_and_cloud_login",
+        "manual.online_activation",
+        "manual.offline_activation",
+        "manual.dsecure_support_team_once_you_receive_the_act",
+        "manual.response_code_from_them_enter_it_into_the_des",
+        "manual.dsecure_support_team_once_generated_the_code",
+        "manual.dsecure_automatically_checks_for_updates_you",
+        "manual.support_hours",
+        "manual.to_securely_erase_files_and_folders",
+        "manual.access_file_erasure_mode",
+        "manual.the_main_interface_will_display_a_designated",
+        "manual.select_files_or_folders_manually",
+        "manual.review_the_erasure_list",
+        "manual.type_and_its_size_confirm_all_items_are_corre",
+        "manual.initiate_erasure",
+        "manual.items_selected_and_the_total_files_to_erase_r",
+        "manual.erasure_process_and_monitoring",
+        "manual.dsecureerase_will_now_begin_shredding_the_fil",
+        "manual.progress_bar_the_interface_also_displays_the",
+        "manual.review_file_erasure_summary",
+        "manual.erase_files_folders_product_screenshots",
+        "manual.erase_files_and_folders_step_1",
+        "manual.erase_files_and_folders_step_2",
+        "manual.erase_files_and_folders_step_3",
+        "manual.erasing_free_space_removes_traces_of_previous",
+        "manual.permanently_wipe_selected_volume_confirm_the",
+        "manual.monitor_erasure_progress_after_confirming_the",
+        "manual.finalizing_erasure_as_the_process_nears_compl",
+        "manual.volume_erasure_information_box_will_appear_co",
+        "manual.drive_reformatting_after_the_volume_erasure_i",
+        "manual.format_volume_for_reuse_to_make_the_erased_dr",
+        "manual.formatting_complete_once_the_quick_format_is",
+        "manual.volume_eraser_product_screenshots",
+        "manual.volume_eraser_select_volume",
+        "manual.volume_eraser_select_volume_1",
+        "manual.volume_eraser_confirm_erasure",
+        "manual.volume_eraser_confirm_erasure_1",
+        "manual.volume_eraser_progress",
+        "manual.volume_eraser_progress_1",
+        "manual.volume_eraser_complete",
+        "manual.volume_eraser_complete_1",
+        "manual.deleted_data_eraser_product_screenshots",
+        "manual.deleted_data_eraser_select_drive",
+        "manual.deleted_data_eraser_select_drive_1",
+        "manual.deleted_data_eraser_scanning",
+        "manual.deleted_data_eraser_scanning_1",
+        "manual.deleted_data_eraser_erasing",
+        "manual.deleted_data_eraser_erasing_1",
+        "manual.deleted_data_eraser_complete",
+        "manual.deleted_data_eraser_complete_1",
+        "manual.dsecure_file_eraser_allows_you_to_securely_er",
+        "manual.note_you_must_be_logged_into_your_google_acco",
+        "manual.dsecure_to_proceed",
+        "manual.once_the_permissions_are_granted_the_browser",
+        "manual.navigate_deeper_into_the_directory_tree_to_lo",
+        "manual.once_confirmed_the_application_begins_the_sec",
+        "manual.as_the_operation_advances_the_progress_bar_up",
+        "manual.important_notes",
+        "manual.erased_files_are_permanently_deleted_from_goo",
+        "manual.this_feature_requires_an_active_internet_conn",
+        "manual.google_drive_authorization_is_required_for_fi",
+        "manual.erasure_reports_are_generated_for_cloud_stora",
+        "manual.cloud_erase_product_screenshots",
+        "manual.cloud_erase_main_interface",
+        "manual.cloud_erase_main_interface_1",
+        "manual.cloud_erase_connect_account",
+        "manual.cloud_erase_connect_account_1",
+        "manual.cloud_erase_file_folder_erase_confirmation",
+        "manual.confirm_the_cloud_file_and_folder_erasure_ope",
+        "manual.cloud_erase_file_folder_erase_confirmation_1",
+        "manual.cloud_erase_file_folder_erase_progress",
+        "manual.monitor_the_cloud_file_and_folder_erasure_pro",
+        "manual.cloud_erase_file_folder_erase_progress_1",
+        "manual.cloud_erase_browse_files",
+        "manual.cloud_erase_browse_files_1",
+        "manual.cloud_erase_select_items",
+        "manual.cloud_erase_select_items_1",
+        "manual.cloud_erase_confirm_selection",
+        "manual.cloud_erase_confirm_selection_1",
+        "manual.cloud_erase_erasure_progress",
+        "manual.cloud_erase_erasure_progress_1",
+        "manual.cloud_erase_processing",
+        "manual.cloud_erase_processing_1",
+        "manual.cloud_erase_summary",
+        "manual.cloud_erase_summary_1",
+        "manual.cloud_erase_volume_overview",
+        "manual.cloud_erase_volume_overview_1",
+        "manual.cloud_erase_volume_erasure",
+        "manual.cloud_erase_volume_erasure_1",
+        "manual.cloud_erase_volume_progress",
+        "manual.cloud_erase_volume_progress_1",
+        "manual.cloud_erase_completion",
+        "manual.cloud_erase_completion_1",
+        "manual.cloud_erase_final_report",
+        "manual.cloud_erase_final_report_1",
+        "manual.automate_erasure_tasks_by_creating_schedules",
+        "manual.open_scheduler_tab",
+        "manual.configure_task_details",
+        "manual.define_the_parameters_for_your_automated_eras",
+        "manual.21_frequency_timing",
+        "manual.22_task_identification",
+        "manual.23_select_data",
+        "manual.browse_and_select_items",
+        "manual.finalize_and_save_task",
+        "manual.once_you_have_added_the_items_from_the_browse",
+        "manual.confirm_and_save_schedule",
+        "manual.review_your_finalized_task_in_the_list_to_ens",
+        "manual.name_size_and_type_eg_folder_are_displayed_cl",
+        "manual.finalize_and_confirm_task",
+        "manual.after_selecting_your_items_they_will_be_liste",
+        "manual.manage_existing_tasks",
+        "manual.edit_an_existing_task",
+        "manual.update_task_and_confirm",
+        "manual.monitor_scheduled_execution",
+        "manual.final_completion_and_report_generation",
+        "manual.scheduler_product_screenshots",
+        "manual.scheduler_main_interface",
+        "manual.scheduler_main_interface_1",
+        "manual.scheduler_task_configuration",
+        "manual.scheduler_task_configuration_1",
+        "manual.scheduler_browse_items",
+        "manual.scheduler_browse_items_1",
+        "manual.scheduler_task_list",
+        "manual.scheduler_task_list_1",
+        "manual.scheduler_execution",
+        "manual.scheduler_execution_1",
+        "manual.the_preview_report_feature_allows_you_to_revi",
+        "manual.1_access_reports_section",
+        "manual.2_select_report_to_preview",
+        "manual.3_click_preview_button",
+        "manual.4_review_report_details",
+        "manual.5_navigate_report_sections",
+        "manual.detailed_item_list_algorithm_information_and",
+        "manual.verification_results_this_allows_you_to_thoro",
+        "manual.6_close_or_proceed",
+        "manual.reports_product_screenshots",
+        "manual.reports_overview",
+        "manual.reports_overview_1",
+        "manual.reports_report_details",
+        "manual.reports_report_details_1",
+        "manual.saving_erasure_reports_provides_tamperproof_d",
+        "manual.1_select_report_from_reports_tab",
+        "manual.2_click_save_report_button",
+        "manual.3_choose_report_format",
+        "manual.pdf_format_for_professional_universally_compa",
+        "manual.4_select_destination_folder",
+        "manual.5_configure_file_name",
+        "manual.6_complete_save_process",
+        "manual.a_progress_indicator_will_appear_briefly_and",
+        "manual.dsecure_cloud_provides_secure_encrypted_cloud",
+        "manual.1_verify_cloud_account_login",
+        "manual.dsecure_cloud_account_check_the_cloud_status",
+        "manual.2_navigate_to_reports_section",
+        "manual.reports_tab_from_the_main_navigation_menu_thi",
+        "manual.3_select_reports_for_upload",
+        "manual.dsecure_cloud_by_checking_the_boxes_next_to_e",
+        "manual.4_initiate_cloud_upload",
+        "manual.5_confirm_upload_operation",
+        "manual.6_monitor_upload_progress",
+        "manual.dsecure_cloud_console",
+        "manual.report_settings_allow_you_to_customize_the_ap",
+        "manual.1_access_settings_menu",
+        "manual.settings_icon_gearcog_icon_located_in_the_top",
+        "manual.2_navigate_to_report_settings",
+        "manual.3_configure_company_information",
+        "manual.4_upload_company_logo",
+        "manual.svg_the_logo_will_be_displayed_prominently_on",
+        "manual.5_set_technician_information",
+        "manual.6_customize_report_fields",
+        "manual.7_save_configuration",
+        "manual.dsecure_file_eraser_supports_multiple_visual",
+        "manual.1_open_settings_panel",
+        "manual.settings_icon_gearcog_located_in_the_main",
+        "manual.this_will_open_the_comprehensive_settings",
+        "manual.2_navigate_to_general_settings",
+        "manual.this_section_contains_interface_customization",
+        "manual.3_locate_theme_options",
+        "manual.general_settings_you_will_see_three_available",
+        "manual.each_option_includes_a_preview_showing_how_th",
+        "manual.4_select_light_mode",
+        "manual.5_select_dark_mode",
+        "manual.6_select_system_default",
+        "manual.7_apply_theme_changes",
+        "manual.settings_product_screenshots",
+        "manual.settings_general",
+        "manual.settings_general_1",
+        "manual.settings_ignore_list",
+        "manual.settings_ignore_list_1",
+        "manual.settings_appearance",
+        "manual.settings_appearance_1",
+        "manual.settings_language",
+        "manual.settings_language_1",
+        "manual.erasure_options_allow_you_to_configure_the_de",
+        "manual.settings_icon_in_the_main_navigation_bar_to_o",
+        "manual.2_navigate_to_erasure_settings",
+        "manual.this_section_contains_all_configuration_optio",
+        "manual.3_select_default_erasure_algorithm",
+        "manual.4_configure_verification_method",
+        "manual.5_set_additional_preferences",
+        "manual.6_configure_performance_options",
+        "manual.access_activation_window_click_the_key_icon_i",
+        "manual.enter_credentials_enter_your_registered_email",
+        "manual.submit_and_activate_share_the_generated_code",
+        "manual.support_team_to_receive_your_activation_respo",
+        "manual.the_demo_version_of_the_software_only_allows",
+        "manual.when_you_delete_a_file_from_your_system_the_d",
+        "manual.erase_free_space_1",
+        "manual.yes_you_can_erase_specific_files_by_adding_th",
+        "manual.search_erase",
+        "manual.erase_files_and_folders_1",
+        "manual.it_happens_in_case_you_have_not_closed_the_ap",
+        "manual.this_problem_arises_if_you_view_the_recently",
+        "manual.passes_in_erasing_algorithms_are_number_of_ti",
+        "manual.it_depends_upon_how_many_times_an_algorithm_o",
+        "manual.each_algorithm_performs_a_different_set_of_fe",
+        "manual.list_of_erasure_algorithms_and_their_descript",
+        "manual.it_depends_on_the_size_of_the_data_you_are_er",
+        "manual.not_everyone_agrees_on_a_data_sanitization_al",
+        "manual.system_files_are_crucial_files_that_are_used",
+        "manual.yes_you_can_choose_specific_items_or_internet",
+        "manual.erase_internet_traces",
+        "manual.the_application_provides_functionality_to_sen",
+        "manual.send_report_to_dsecure_cloud",
+        "manual.preview",
+        "manual.reports",
+        "manual.free_space",
+        "manual.to_schedule_an_erasure_task_for_a_specific_br",
+        "manual.follow_the_steps_below_to_schedule_an_erase_t",
+        "manual.settings",
+        "manual.erase_traces",
+        "manual.internet_activity",
+        "manual.schedule_erasure",
+        "manual.select_option",
+        "manual.choose_the_required_frequency_period_and_spec",
+        "manual.once_you_have_scheduled_the_erase_traces_task",
+        "manual.set_schedule_erasure_for_erase_traces",
+        "manual.set_schedule_erasure_for_files_and_folders",
+        "manual.dsecure_is_a_leading_provider_of_data_sanitiz"
+      ],
+      "englishInHindi": [
+        {
+          "key": "hero.subtitle",
+          "value": "D-Secure संगठनों को उपकरणों और क्लाउड में डेटा को स्थायी रूप से मिटाने में मदद क",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.brandName",
+          "value": "D-Secure",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.heroSubtitle",
+          "value": "D-Secure संगठनों को उपकरणों और क्लाउड में डेटा को स्थायी रूप से मिटाने में मदद क",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.whyChooseTitle",
+          "value": "D-Secure क्यों चुनें?",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.encryption",
+          "value": "SSL एन्क्रिप्शन",
+          "englishWords": [
+            "SSL"
+          ]
+        },
+        {
+          "key": "home.testimonial1Quote",
+          "value": "D-Secure ने हमारे डेटा सुरक्षा के तरीके को बदल दिया है। केवल अनुपालन रिपोर्टिंग ",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.testimonial3Quote",
+          "value": "GDPR अनुपालन सरल बनाया गया। D-Secure के स्वचालित वर्कफ़्लो ने हमारे संपूर्ण डेटा",
+          "englishWords": [
+            "GDPR",
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.ctaSubtitle",
+          "value": "हजारों संगठनों में शामिल हों जो D-Secure के साथ अपनी संवेदनशील जानकारी की सुरक्ष",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.driveEraserTitle",
+          "value": "D-Secure Drive Eraser",
+          "englishWords": [
+            "Secure Drive Eraser"
+          ]
+        },
+        {
+          "key": "home.driveEraserDesc",
+          "value": "सुरक्षित ड्राइव वाइपिंग सॉफ्टवेयर - हार्ड ड्राइव, SSD, PC, लैपटॉप, Mac® और सर्वर",
+          "englishWords": [
+            "SSD",
+            "PC",
+            "Mac",
+            "USB",
+            "PXE"
+          ]
+        },
+        {
+          "key": "home.driveEraserFeature3",
+          "value": "USB, PXE बूट और EXE",
+          "englishWords": [
+            "USB",
+            "PXE",
+            "EXE"
+          ]
+        },
+        {
+          "key": "home.fileEraserTitle",
+          "value": "D-Secure File Eraser",
+          "englishWords": [
+            "Secure File Eraser"
+          ]
+        },
+        {
+          "key": "home.trustedSubtitle",
+          "value": "D-Secure सुरक्षित डेटा इरेज़र के लिए वैश्विक मानक बन गया है, लाखों उपकरणों की सु",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.testimonial1",
+          "value": "हमें अपने स्टार्टअप के लिए एक विश्वसनीय डेटा विलोपन समाधान की आवश्यकता थी। D-Sec",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.testimonial2",
+          "value": "शुरुआती अपनाने वाले के रूप में, मैं D-Secure के डेटा सुरक्षा के प्रति नवीन दृष्ट",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "home.testimonial3",
+          "value": "D-Secure का डेटा विलोपन पर नया दृष्टिकोण बाजार की आवश्यकता है। सरल, सुरक्षित, और",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "products.title",
+          "value": "D-Secure डेटा मिटाने के समाधान",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "products.driveEraserTitle",
+          "value": "D-Secure ड्राइव इरेज़र",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "products.fileEraserTitle",
+          "value": "D-Secure फ़ाइल इरेज़र",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "products.compareAllFeatures",
+          "value": "D-Secure फ़ाइल इरेज़र के लिए सभी विशेषताओं और योजनाओं की तुलना करें। ड्राइव इरेज",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "products.base",
+          "value": "Standard",
+          "englishWords": [
+            "Standard"
+          ]
+        },
+        {
+          "key": "products.standard",
+          "value": "Corporate",
+          "englishWords": [
+            "Corporate"
+          ]
+        },
+        {
+          "key": "products.platformOsSupport",
+          "value": "प्लेटफ़ॉर्म और OS समर्थन",
+          "englishWords": [
+            "OS"
+          ]
+        },
+        {
+          "key": "products.multiLanguageUI",
+          "value": "बहु-भाषा UI और रिपोर्ट (17+)",
+          "englishWords": [
+            "UI"
+          ]
+        },
+        {
+          "key": "products.thirtyAlgorithms",
+          "value": "30+ अंतर्राष्ट्रीय एल्गोरिदम (SSD ट्रिम, क्रिप्टो मिटाना)",
+          "englishWords": [
+            "SSD"
+          ]
+        },
+        {
+          "key": "products.localPdfReports",
+          "value": "स्थानीय PDF रिपोर्ट",
+          "englishWords": [
+            "PDF"
+          ]
+        },
+        {
+          "key": "products.xmlReportFormat",
+          "value": "XML रिपोर्ट प्रारूप",
+          "englishWords": [
+            "XML"
+          ]
+        },
+        {
+          "key": "products.bespokeIntegrations",
+          "value": "कस्टम एकीकरण (SIEM, IT उपकरण, आदि)",
+          "englishWords": [
+            "SIEM",
+            "IT"
+          ]
+        },
+        {
+          "key": "products.dedicatedSlaSupport",
+          "value": "समर्पित SLA/समर्थन प्रबंधक",
+          "englishWords": [
+            "SLA"
+          ]
+        },
+        {
+          "key": "products.joinThousands",
+          "value": "दुनिया भर के हजारों उद्यमों में शामिल हों जो D-Secure को विनियमित, अनुरूप डेटा म",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "products.windows",
+          "value": "Windows",
+          "englishWords": [
+            "Windows"
+          ]
+        },
+        {
+          "key": "products.linux",
+          "value": "Linux",
+          "englishWords": [
+            "Linux"
+          ]
+        },
+        {
+          "key": "products.googleDriveErasure",
+          "value": "Google ड्राइव मिटाना",
+          "englishWords": [
+            "Google"
+          ]
+        },
+        {
+          "key": "products.basePlan",
+          "value": "Standard Plan",
+          "englishWords": [
+            "Standard Plan"
+          ]
+        },
+        {
+          "key": "products.standardPlan",
+          "value": "Corporate Plan",
+          "englishWords": [
+            "Corporate Plan"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.titlePrefix",
+          "value": "D-Secure",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.titleHighlight",
+          "value": "Data Hygiene",
+          "englishWords": [
+            "Data Hygiene"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.titleSuffix",
+          "value": "Assurance",
+          "englishWords": [
+            "Assurance"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.subtitle",
+          "value": "We don't just give you a certificate - we give you our assurance that your organ",
+          "englishWords": [
+            "We",
+            "This",
+            "just",
+            "give",
+            "certificate",
+            "assurance",
+            "that",
+            "your",
+            "organization",
+            "complete",
+            "setup",
+            "processes",
+            "discipline",
+            "keep",
+            "data",
+            "safe",
+            "badge",
+            "represents",
+            "trusted",
+            "reliable",
+            "partner",
+            "security"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.buttons.getCertified",
+          "value": "Get Certified",
+          "englishWords": [
+            "Get Certified"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.buttons.learnMore",
+          "value": "Learn More",
+          "englishWords": [
+            "Learn More"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.certificate.brand",
+          "value": "D-SECURE",
+          "englishWords": [
+            "SECURE"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.certificate.title",
+          "value": "Data Hygiene",
+          "englishWords": [
+            "Data Hygiene"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.certificate.subtitle",
+          "value": "Assurance Certificate",
+          "englishWords": [
+            "Assurance Certificate"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.certificate.badge",
+          "value": "Verified Securely",
+          "englishWords": [
+            "Verified Securely"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.badge",
+          "value": "Assurance Badge",
+          "englishWords": [
+            "Assurance Badge"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.titleHighlight",
+          "value": "Assurance Badge?",
+          "englishWords": [
+            "Assurance Badge"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.titlePrefix",
+          "value": "What is the D-Secure",
+          "englishWords": [
+            "What",
+            "Secure"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.desc",
+          "value": "Your gateway to a safe way to trade digital data. The D-Secure Assurance Badge s",
+          "englishWords": [
+            "Your",
+            "The D",
+            "Secure Assurance Badge",
+            "gateway",
+            "safe",
+            "trade",
+            "digital",
+            "data",
+            "signifies",
+            "that",
+            "your",
+            "organization",
+            "operates",
+            "within",
+            "trusted",
+            "ecosystem",
+            "enabling",
+            "secure",
+            "reliable",
+            "transactions",
+            "with",
+            "partners",
+            "worldwide"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.features.verifiableErasure",
+          "value": "Verifiable Erasure",
+          "englishWords": [
+            "Verifiable Erasure"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.features.verifiableErasureDesc",
+          "value": "Tamper-proof certificates with digital signatures and cryptographic verification",
+          "englishWords": [
+            "Tamper",
+            "proof",
+            "certificates",
+            "with",
+            "digital",
+            "signatures",
+            "cryptographic",
+            "verification"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.features.auditReady",
+          "value": "Audit-Ready Reports",
+          "englishWords": [
+            "Audit",
+            "Ready Reports"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.features.auditReadyDesc",
+          "value": "Comprehensive documentation for compliance audits and regulatory requirements",
+          "englishWords": [
+            "Comprehensive",
+            "documentation",
+            "compliance",
+            "audits",
+            "regulatory",
+            "requirements"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.features.trustedBrand",
+          "value": "Trusted Brand",
+          "englishWords": [
+            "Trusted Brand"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.whatIsBadge.features.trustedBrandDesc",
+          "value": "Build customer confidence with D-Secure certified data handling practices",
+          "englishWords": [
+            "Build",
+            "Secure",
+            "customer",
+            "confidence",
+            "with",
+            "certified",
+            "data",
+            "handling",
+            "practices"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.badge",
+          "value": "Complete Setup",
+          "englishWords": [
+            "Complete Setup"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.titlePrefix",
+          "value": "The D-Secure",
+          "englishWords": [
+            "The D",
+            "Secure"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.titleHighlight",
+          "value": "Data Hygiene Setup",
+          "englishWords": [
+            "Data Hygiene Setup"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.desc",
+          "value": "The Assurance Badge is not just about buying a product. It's about implementing ",
+          "englishWords": [
+            "The Assurance Badge",
+            "It",
+            "just",
+            "about",
+            "buying",
+            "product",
+            "implementing",
+            "complete",
+            "data",
+            "hygiene",
+            "process",
+            "that",
+            "audit",
+            "verify",
+            "anytime"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.features.eraser",
+          "value": "D-Secure Eraser",
+          "englishWords": [
+            "Secure Eraser"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.features.eraserDesc",
+          "value": "Automated secure deletion that goes beyond standard recycle bin. Every deleted f",
+          "englishWords": [
+            "Automated",
+            "Every",
+            "secure",
+            "deletion",
+            "that",
+            "goes",
+            "beyond",
+            "standard",
+            "recycle",
+            "deleted",
+            "file",
+            "securely",
+            "wiped",
+            "schedule"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.features.freeSpaceWipe",
+          "value": "Free Space Wipe",
+          "englishWords": [
+            "Free Space Wipe"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.features.freeSpaceWipeDesc",
+          "value": "Monthly scheduled sanitization of all free space, eliminating any recoverable da",
+          "englishWords": [
+            "Monthly",
+            "scheduled",
+            "sanitization",
+            "free",
+            "space",
+            "eliminating",
+            "recoverable",
+            "data",
+            "fragments"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.features.auditLogs",
+          "value": "Audit-Ready Logs",
+          "englishWords": [
+            "Audit",
+            "Ready Logs"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.setup.features.auditLogsDesc",
+          "value": "Complete cloud & desktop reporting with timestamps and verification data for com",
+          "englishWords": [
+            "Complete",
+            "cloud",
+            "desktop",
+            "reporting",
+            "with",
+            "timestamps",
+            "verification",
+            "data",
+            "compliance"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.badge",
+          "value": "Trusted Partners",
+          "englishWords": [
+            "Trusted Partners"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.titlePrefix",
+          "value": "We",
+          "englishWords": [
+            "We"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.titleHighlight",
+          "value": "Recognized",
+          "englishWords": [
+            "Recognized"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.desc",
+          "value": "The D-Secure Assurance Badge is trusted by businesses of all sizes.",
+          "englishWords": [
+            "The D",
+            "Secure Assurance Badge",
+            "trusted",
+            "businesses",
+            "sizes"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.schools",
+          "value": "Schools",
+          "englishWords": [
+            "Schools"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.schoolsDesc",
+          "value": "Educational Institutions",
+          "englishWords": [
+            "Educational Institutions"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.studios",
+          "value": "Studios",
+          "englishWords": [
+            "Studios"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.studiosDesc",
+          "value": "Creative Agencies",
+          "englishWords": [
+            "Creative Agencies"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.startups",
+          "value": "Startups",
+          "englishWords": [
+            "Startups"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.startupsDesc",
+          "value": "New Ventures",
+          "englishWords": [
+            "New Ventures"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.smbs",
+          "value": "SMBs",
+          "englishWords": [
+            "SMBs"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.smbsDesc",
+          "value": "Small Business",
+          "englishWords": [
+            "Small Business"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.freelancers",
+          "value": "Freelancers",
+          "englishWords": [
+            "Freelancers"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.freelancersDesc",
+          "value": "Independent Professionals",
+          "englishWords": [
+            "Independent Professionals"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.coworking",
+          "value": "Co-working",
+          "englishWords": [
+            "Co",
+            "working"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.coworkingDesc",
+          "value": "Shared Spaces",
+          "englishWords": [
+            "Shared Spaces"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.hospitals",
+          "value": "Hospitals",
+          "englishWords": [
+            "Hospitals"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.hospitalsDesc",
+          "value": "Healthcare Providers",
+          "englishWords": [
+            "Healthcare Providers"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.lawFirms",
+          "value": "Law Firms",
+          "englishWords": [
+            "Law Firms"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.lawFirmsDesc",
+          "value": "Legal Services",
+          "englishWords": [
+            "Legal Services"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.itCompanies",
+          "value": "IT Companies",
+          "englishWords": [
+            "IT Companies"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.itCompaniesDesc",
+          "value": "Tech Solutions",
+          "englishWords": [
+            "Tech Solutions"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.retailers",
+          "value": "Retailers",
+          "englishWords": [
+            "Retailers"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.retailersDesc",
+          "value": "E-commerce & Stores",
+          "englishWords": [
+            "Stores",
+            "commerce"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.finance",
+          "value": "Finance",
+          "englishWords": [
+            "Finance"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.financeDesc",
+          "value": "Banking & Insurance",
+          "englishWords": [
+            "Banking",
+            "Insurance"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.consultants",
+          "value": "Consultants",
+          "englishWords": [
+            "Consultants"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.industries.list.consultantsDesc",
+          "value": "Advisory Services",
+          "englishWords": [
+            "Advisory Services"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.badge",
+          "value": "Verify Certified Organizations",
+          "englishWords": [
+            "Verify Certified Organizations"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.title",
+          "value": "Search for Certified Company",
+          "englishWords": [
+            "Search",
+            "Certified Company"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.desc",
+          "value": "Check if an organization has achieved D-Secure Data Hygiene Assurance",
+          "englishWords": [
+            "Check",
+            "Secure Data Hygiene Assurance",
+            "organization",
+            "achieved"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.searchPlaceholder",
+          "value": "Enter company name or location...",
+          "englishWords": [
+            "Enter",
+            "company",
+            "name",
+            "location"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.searchBtn",
+          "value": "Search",
+          "englishWords": [
+            "Search"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.found",
+          "value": "Found {{count}} certified organization(s):",
+          "englishWords": [
+            "Found",
+            "count",
+            "certified",
+            "organization"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.notFound",
+          "value": "No certified organizations found matching \"{{query}}\"",
+          "englishWords": [
+            "No",
+            "certified",
+            "organizations",
+            "found",
+            "matching",
+            "query"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.certifiedTo",
+          "value": "CERTIFIED TO:",
+          "englishWords": [
+            "CERTIFIED TO"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.certifiedType",
+          "value": "Data Hygiene Assurance",
+          "englishWords": [
+            "Data Hygiene Assurance"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.searchButton",
+          "value": "Search",
+          "englishWords": [
+            "Search"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.openstreetmap",
+          "value": "OpenStreetMap",
+          "englishWords": [
+            "OpenStreetMap"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.infotree_computers",
+          "value": "InfoTree Computers",
+          "englishWords": [
+            "InfoTree Computers"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.map.revent_store",
+          "value": "Revent Store",
+          "englishWords": [
+            "Revent Store"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.badge",
+          "value": "FAQ",
+          "englishWords": [
+            "FAQ"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.titlePrefix",
+          "value": "Frequently Asked",
+          "englishWords": [
+            "Frequently Asked"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.titleHighlight",
+          "value": "Questions",
+          "englishWords": [
+            "Questions"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.q1",
+          "value": "What is the D-Secure Assurance Badge?",
+          "englishWords": [
+            "What",
+            "Secure Assurance Badge"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.a1",
+          "value": "The D-Secure Assurance Badge is our certification that confirms your organizatio",
+          "englishWords": [
+            "The D",
+            "Secure Assurance Badge",
+            "It",
+            "certification",
+            "that",
+            "confirms",
+            "your",
+            "organization",
+            "implemented",
+            "proper",
+            "data",
+            "hygiene",
+            "processes",
+            "just",
+            "certificate",
+            "guarantee",
+            "have",
+            "complete",
+            "setup",
+            "discipline",
+            "keep",
+            "safe",
+            "secure"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.q2",
+          "value": "How long does the certification process take?",
+          "englishWords": [
+            "How",
+            "long",
+            "does",
+            "certification",
+            "process",
+            "take"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.a2",
+          "value": "The typical certification process takes 2-4 weeks, depending on your organizatio",
+          "englishWords": [
+            "The",
+            "This",
+            "typical",
+            "certification",
+            "process",
+            "takes",
+            "weeks",
+            "depending",
+            "your",
+            "organization",
+            "size",
+            "readiness",
+            "includes",
+            "assessment",
+            "implementation",
+            "support",
+            "final",
+            "verification"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.q3",
+          "value": "What are the prerequisites for certification?",
+          "englishWords": [
+            "What",
+            "prerequisites",
+            "certification"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.a3",
+          "value": "Organizations must implement D-Secure data hygiene tools including our automated",
+          "englishWords": [
+            "Organizations",
+            "Secure",
+            "Free Space Wipe",
+            "We",
+            "must",
+            "implement",
+            "data",
+            "hygiene",
+            "tools",
+            "including",
+            "automated",
+            "eraser",
+            "system",
+            "provide",
+            "complete",
+            "guidance",
+            "setup",
+            "implementation"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.q4",
+          "value": "How do audits work?",
+          "englishWords": [
+            "How",
+            "audits",
+            "work"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.a4",
+          "value": "We conduct both scheduled and random audits to verify compliance. This includes ",
+          "englishWords": [
+            "We",
+            "This",
+            "Our",
+            "conduct",
+            "both",
+            "scheduled",
+            "random",
+            "audits",
+            "verify",
+            "compliance",
+            "includes",
+            "checking",
+            "erasure",
+            "logs",
+            "process",
+            "documentation",
+            "system",
+            "configurations",
+            "automated",
+            "tools",
+            "make",
+            "this",
+            "seamless",
+            "intrusive"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.q5",
+          "value": "What ongoing support is provided?",
+          "englishWords": [
+            "What",
+            "ongoing",
+            "support",
+            "provided"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.faq.questions.a5",
+          "value": "We provide continuous support including regular software updates, technical assi",
+          "englishWords": [
+            "We",
+            "Think",
+            "provide",
+            "continuous",
+            "support",
+            "including",
+            "regular",
+            "software",
+            "updates",
+            "technical",
+            "assistance",
+            "compliance",
+            "monitoring",
+            "renewal",
+            "coordination",
+            "your",
+            "ongoing",
+            "partner",
+            "data",
+            "hygiene"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.title",
+          "value": "Apply for Assurance Badge",
+          "englishWords": [
+            "Apply",
+            "Assurance Badge"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.desc",
+          "value": "Get your organization certified with D-Secure Data Hygiene Assurance",
+          "englishWords": [
+            "Get",
+            "Secure Data Hygiene Assurance",
+            "your",
+            "organization",
+            "certified",
+            "with"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.usage",
+          "value": "Usage:",
+          "englishWords": [
+            "Usage"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.business",
+          "value": "Business",
+          "englishWords": [
+            "Business"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.personal",
+          "value": "Personal",
+          "englishWords": [
+            "Personal"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.personalNotice",
+          "value": "Free License is only available for business usage. In case you have any query, f",
+          "englishWords": [
+            "Free License",
+            "In",
+            "only",
+            "available",
+            "business",
+            "usage",
+            "case",
+            "have",
+            "query",
+            "fill",
+            "form",
+            "below"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.privacyNotice1",
+          "value": "I understand that the above information is protected by",
+          "englishWords": [
+            "understand",
+            "that",
+            "above",
+            "information",
+            "protected"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.privacyNoticeLink",
+          "value": "D-Secure Privacy Policy",
+          "englishWords": [
+            "Secure Privacy Policy"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.fullName",
+          "value": "Full Name",
+          "englishWords": [
+            "Full Name"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.email",
+          "value": "Business Email",
+          "englishWords": [
+            "Business Email"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.personalEmail",
+          "value": "Email",
+          "englishWords": [
+            "Email"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.phone",
+          "value": "Phone Number",
+          "englishWords": [
+            "Phone Number"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessType",
+          "value": "Business Type",
+          "englishWords": [
+            "Business Type"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.company",
+          "value": "Company Name",
+          "englishWords": [
+            "Company Name"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.country",
+          "value": "Country",
+          "englishWords": [
+            "Country"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.message",
+          "value": "Please let us know your requirements in detail.",
+          "englishWords": [
+            "Please",
+            "know",
+            "your",
+            "requirements",
+            "detail"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.submitting",
+          "value": "Submitting...",
+          "englishWords": [
+            "Submitting"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.submit",
+          "value": "Apply for Certification",
+          "englishWords": [
+            "Apply",
+            "Certification"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.enterprise",
+          "value": "Enterprise",
+          "englishWords": [
+            "Enterprise"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.government",
+          "value": "Government",
+          "englishWords": [
+            "Government"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.healthcare",
+          "value": "Healthcare",
+          "englishWords": [
+            "Healthcare"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.education",
+          "value": "Education",
+          "englishWords": [
+            "Education"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.financial",
+          "value": "Financial Services",
+          "englishWords": [
+            "Financial Services"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.legal",
+          "value": "Legal Team",
+          "englishWords": [
+            "Legal Team"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.technology",
+          "value": "Technology",
+          "englishWords": [
+            "Technology"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.manufacturing",
+          "value": "Manufacturing",
+          "englishWords": [
+            "Manufacturing"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.businessTypes.other",
+          "value": "Other",
+          "englishWords": [
+            "Other"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.countries.us",
+          "value": "United States",
+          "englishWords": [
+            "United States"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.countries.in",
+          "value": "India",
+          "englishWords": [
+            "India"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.countries.uk",
+          "value": "United Kingdom",
+          "englishWords": [
+            "United Kingdom"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.countries.ca",
+          "value": "Canada",
+          "englishWords": [
+            "Canada"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.countries.other",
+          "value": "Other",
+          "englishWords": [
+            "Other"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.success",
+          "value": "Thank you! Your enquiry has been submitted successfully.",
+          "englishWords": [
+            "Thank",
+            "Your",
+            "enquiry",
+            "been",
+            "submitted",
+            "successfully"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.error",
+          "value": "Failed to send message. Please try again later.",
+          "englishWords": [
+            "Failed",
+            "Please",
+            "send",
+            "message",
+            "again",
+            "later"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.subject",
+          "value": "New Data Hygiene Assurance Enquiry - D-Secure Tech",
+          "englishWords": [
+            "New Data Hygiene Assurance Enquiry",
+            "Secure Tech"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.source",
+          "value": "Data Guardian Award Page",
+          "englishWords": [
+            "Data Guardian Award Page"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.validation.nameRequired",
+          "value": "Name is required",
+          "englishWords": [
+            "Name",
+            "required"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.validation.emailRequired",
+          "value": "Email is required",
+          "englishWords": [
+            "Email",
+            "required"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.validation.emailInvalid",
+          "value": "Please enter a valid email address",
+          "englishWords": [
+            "Please",
+            "enter",
+            "valid",
+            "email",
+            "address"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.validation.messageRequired",
+          "value": "Message is required",
+          "englishWords": [
+            "Message",
+            "required"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.labels.business",
+          "value": "Business",
+          "englishWords": [
+            "Business"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.labels.personal",
+          "value": "Personal",
+          "englishWords": [
+            "Personal"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.labels.email",
+          "value": "Email",
+          "englishWords": [
+            "Email"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.labels.country",
+          "value": "Country",
+          "englishWords": [
+            "Country"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.formSection.form.labels.submit",
+          "value": "Apply for Certification",
+          "englishWords": [
+            "Apply",
+            "Certification"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.contactInfo.response",
+          "value": "Response within 12 Hours",
+          "englishWords": [
+            "Response",
+            "Hours",
+            "within"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.contactInfo.desc",
+          "value": "Contact the right team for your needs:",
+          "englishWords": [
+            "Contact",
+            "right",
+            "team",
+            "your",
+            "needs"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.contactInfo.teams.sales",
+          "value": "Sales Team",
+          "englishWords": [
+            "Sales Team"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.contactInfo.teams.support",
+          "value": "Technical Support",
+          "englishWords": [
+            "Technical Support"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.contactInfo.teams.legal",
+          "value": "Legal Team",
+          "englishWords": [
+            "Legal Team"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.cta.badge",
+          "value": "Get Certified Today",
+          "englishWords": [
+            "Get Certified Today"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.cta.titlePrefix",
+          "value": "Ready to Get Your",
+          "englishWords": [
+            "Ready",
+            "Get Your"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.cta.titleHighlight",
+          "value": "Assurance Badge?",
+          "englishWords": [
+            "Assurance Badge"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.cta.desc",
+          "value": "Join organizations worldwide that trust D-Secure for their data hygiene needs. G",
+          "englishWords": [
+            "Join",
+            "Secure",
+            "Get",
+            "Assurance Badge",
+            "organizations",
+            "worldwide",
+            "that",
+            "trust",
+            "their",
+            "data",
+            "hygiene",
+            "needs",
+            "your",
+            "demonstrate",
+            "commitment",
+            "security"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.cta.button",
+          "value": "Contact Sales",
+          "englishWords": [
+            "Contact Sales"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.seo.title",
+          "value": "D-Secure Data Hygiene Assurance | Certified Data Protection Excellence",
+          "englishWords": [
+            "Secure Data Hygiene Assurance",
+            "Certified Data Protection Excellence"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.seo.description",
+          "value": "D-Secure Assurance Badge recognizes organizations with complete data hygiene set",
+          "englishWords": [
+            "Secure Assurance Badge",
+            "Verify",
+            "recognizes",
+            "organizations",
+            "with",
+            "complete",
+            "data",
+            "hygiene",
+            "setup",
+            "processes",
+            "certified",
+            "companies",
+            "your",
+            "assurance",
+            "badge",
+            "today"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.seo.keywords",
+          "value": "D-Secure assurance badge, data hygiene certification, secure data protection, da",
+          "englishWords": [
+            "Secure",
+            "IT",
+            "assurance",
+            "badge",
+            "data",
+            "hygiene",
+            "certification",
+            "secure",
+            "protection",
+            "erasure",
+            "security",
+            "trusted",
+            "partner"
+          ]
+        },
+        {
+          "key": "manual.pageTitle",
+          "value": "D-Secure File Eraser - Complete Manual",
+          "englishWords": [
+            "Secure File Eraser",
+            "Complete Manual"
+          ]
+        },
+        {
+          "key": "manual.searchPlaceholder",
+          "value": "Search sections...",
+          "englishWords": [
+            "Search",
+            "sections"
+          ]
+        },
+        {
+          "key": "manual.backToTop",
+          "value": "Back to top",
+          "englishWords": [
+            "Back"
+          ]
+        },
+        {
+          "key": "manual.tableOfContents",
+          "value": "Table of Contents",
+          "englishWords": [
+            "Table",
+            "Contents"
+          ]
+        },
+        {
+          "key": "manual.onThisPage",
+          "value": "On this page",
+          "englishWords": [
+            "On",
+            "this",
+            "page"
+          ]
+        },
+        {
+          "key": "manual.aboutTitle",
+          "value": "About D-Secure File Eraser",
+          "englishWords": [
+            "About D",
+            "Secure File Eraser"
+          ]
+        },
+        {
+          "key": "manual.aboutDesc1",
+          "value": "D-Secure File Eraser is a complete solution to maintain your computer privacy by",
+          "englishWords": [
+            "Secure File Eraser",
+            "Erased",
+            "Unused",
+            "System",
+            "complete",
+            "solution",
+            "maintain",
+            "your",
+            "computer",
+            "privacy",
+            "erasing",
+            "unwanted",
+            "information",
+            "from",
+            "data",
+            "beyond",
+            "recovery",
+            "used",
+            "erase",
+            "files",
+            "folders",
+            "space",
+            "traces"
+          ]
+        },
+        {
+          "key": "manual.aboutDesc2",
+          "value": "D-Secure File Eraser erases files & folders completely from the hard drive. You ",
+          "englishWords": [
+            "Secure File Eraser",
+            "You",
+            "Once",
+            "The",
+            "erases",
+            "files",
+            "folders",
+            "completely",
+            "from",
+            "hard",
+            "drive",
+            "select",
+            "multiple",
+            "time",
+            "erasure",
+            "erased",
+            "using",
+            "data",
+            "recovered",
+            "back",
+            "software",
+            "allows",
+            "generate",
+            "save",
+            "reports",
+            "completed",
+            "process"
+          ]
+        },
+        {
+          "key": "manual.aboutDesc3",
+          "value": "In addition, it can erase unused space completely such that all the traces of pr",
+          "englishWords": [
+            "In",
+            "When",
+            "addition",
+            "erase",
+            "unused",
+            "space",
+            "completely",
+            "such",
+            "that",
+            "traces",
+            "previously",
+            "stored",
+            "data",
+            "removed",
+            "delete",
+            "from",
+            "hard",
+            "drive",
+            "content",
+            "deleted",
+            "entirely",
+            "instead",
+            "occupied",
+            "marked",
+            "written"
+          ]
+        },
+        {
+          "key": "manual.aboutDesc4",
+          "value": "D-Secure File Eraser also erases all the system traces. Operating systems store ",
+          "englishWords": [
+            "Secure File Eraser",
+            "Operating",
+            "Internet",
+            "also",
+            "erases",
+            "system",
+            "traces",
+            "systems",
+            "store",
+            "records",
+            "activities",
+            "such",
+            "browsing",
+            "opening",
+            "documents",
+            "constantly"
+          ]
+        },
+        {
+          "key": "manual.aboutDesc5",
+          "value": "D-Secure File Eraser has a set of 20+ different erasure algorithms, that are acc",
+          "englishWords": [
+            "Secure File Eraser",
+            "You",
+            "The",
+            "different",
+            "erasure",
+            "algorithms",
+            "that",
+            "accepted",
+            "globally",
+            "ensure",
+            "permanent",
+            "data",
+            "deletion",
+            "choose",
+            "process",
+            "software",
+            "menu",
+            "driven",
+            "simple",
+            "with",
+            "intuitive",
+            "interface",
+            "requires",
+            "prior",
+            "technical",
+            "skill"
+          ]
+        },
+        {
+          "key": "manual.keyFeatures",
+          "value": "Key Features:",
+          "englishWords": [
+            "Key Features"
+          ]
+        },
+        {
+          "key": "manual.featureOS",
+          "value": "Operating System",
+          "englishWords": [
+            "Operating System"
+          ]
+        },
+        {
+          "key": "manual.featureOSDesc",
+          "value": "- Compatible with Windows 10/11, macOS 10.15+, and Linux distributions.",
+          "englishWords": [
+            "Compatible",
+            "Windows",
+            "Linux",
+            "with",
+            "distributions"
+          ]
+        },
+        {
+          "key": "manual.featureEraseFiles",
+          "value": "Erase Files and folders",
+          "englishWords": [
+            "Erase Files",
+            "folders"
+          ]
+        },
+        {
+          "key": "manual.featureEraseFilesDesc",
+          "value": "- Option to erase selected files or folders from the hard drive.",
+          "englishWords": [
+            "Option",
+            "erase",
+            "selected",
+            "files",
+            "folders",
+            "from",
+            "hard",
+            "drive"
+          ]
+        },
+        {
+          "key": "manual.featureEraseSpace",
+          "value": "Erase Free Space",
+          "englishWords": [
+            "Erase Free Space"
+          ]
+        },
+        {
+          "key": "manual.featureEraseSpaceDesc",
+          "value": "- Option to erase the free space to secure privacy from the selected volumes.",
+          "englishWords": [
+            "Option",
+            "erase",
+            "free",
+            "space",
+            "secure",
+            "privacy",
+            "from",
+            "selected",
+            "volumes"
+          ]
+        },
+        {
+          "key": "manual.featureSchedule",
+          "value": "Setting Schedule Erasure",
+          "englishWords": [
+            "Setting Schedule Erasure"
+          ]
+        },
+        {
+          "key": "manual.featureScheduleDesc",
+          "value": "- Supports schedule erasing tasks to run them automatically at specified periods",
+          "englishWords": [
+            "Supports",
+            "schedule",
+            "erasing",
+            "tasks",
+            "them",
+            "automatically",
+            "specified",
+            "periods"
+          ]
+        },
+        {
+          "key": "manual.featureReports",
+          "value": "Generate and Save Reports",
+          "englishWords": [
+            "Generate",
+            "Save Reports"
+          ]
+        },
+        {
+          "key": "manual.featureReportsDesc",
+          "value": "- Option to generate and save 100% secure and tamper-proof erasure reports in va",
+          "englishWords": [
+            "Option",
+            "PDF",
+            "generate",
+            "save",
+            "secure",
+            "tamper",
+            "proof",
+            "erasure",
+            "reports",
+            "various",
+            "formats",
+            "such"
+          ]
+        },
+        {
+          "key": "manual.featureReportSettings",
+          "value": "Report Settings",
+          "englishWords": [
+            "Report Settings"
+          ]
+        },
+        {
+          "key": "manual.featureReportSettingsDesc",
+          "value": "- Option to customise the reports before saving the report.",
+          "englishWords": [
+            "Option",
+            "customise",
+            "reports",
+            "before",
+            "saving",
+            "report"
+          ]
+        },
+        {
+          "key": "manual.featureSearchReport",
+          "value": "Search Report",
+          "englishWords": [
+            "Search Report"
+          ]
+        },
+        {
+          "key": "manual.featureSearchReportDesc",
+          "value": "- Option to search reports by selecting the appropriate date range or erasure ty",
+          "englishWords": [
+            "Option",
+            "search",
+            "reports",
+            "selecting",
+            "appropriate",
+            "date",
+            "range",
+            "erasure",
+            "type"
+          ]
+        },
+        {
+          "key": "manual.featurePreviewReport",
+          "value": "Preview Report",
+          "englishWords": [
+            "Preview Report"
+          ]
+        },
+        {
+          "key": "manual.featurePreviewReportDesc",
+          "value": "- Option to preview the report before saving.",
+          "englishWords": [
+            "Option",
+            "preview",
+            "report",
+            "before",
+            "saving"
+          ]
+        },
+        {
+          "key": "manual.featureSaveCloud",
+          "value": "Save Report to D-Secure Cloud",
+          "englishWords": [
+            "Save Report",
+            "Secure Cloud"
+          ]
+        },
+        {
+          "key": "manual.featureSaveCloudDesc",
+          "value": "- Automatic report uploaded to D-Secure Cloud Console.",
+          "englishWords": [
+            "Automatic",
+            "Secure Cloud Console",
+            "report",
+            "uploaded"
+          ]
+        },
+        {
+          "key": "manual.featureStandards",
+          "value": "Supported Erasure Standards and Verification Methods",
+          "englishWords": [
+            "Supported Erasure Standards",
+            "Verification Methods"
+          ]
+        },
+        {
+          "key": "manual.featureStandardsDesc",
+          "value": "- Provides 20+ different erasing algorithms with 3 verification methods to erase",
+          "englishWords": [
+            "Provides",
+            "different",
+            "erasing",
+            "algorithms",
+            "with",
+            "verification",
+            "methods",
+            "erase",
+            "data",
+            "permanently"
+          ]
+        },
+        {
+          "key": "manual.featureSearchErase",
+          "value": "Search and Erase",
+          "englishWords": [
+            "Search",
+            "Erase"
+          ]
+        },
+        {
+          "key": "manual.featureSearchEraseDesc",
+          "value": "- Option to search specific files using name or extension on the system and eras",
+          "englishWords": [
+            "Option",
+            "search",
+            "specific",
+            "files",
+            "using",
+            "name",
+            "extension",
+            "system",
+            "erase",
+            "them",
+            "suitable",
+            "algorithm"
+          ]
+        },
+        {
+          "key": "manual.featureThemes",
+          "value": "Supports Multiple Themes",
+          "englishWords": [
+            "Supports Multiple Themes"
+          ]
+        },
+        {
+          "key": "manual.featureThemesDesc",
+          "value": "- Option to switch between light and dark modes.",
+          "englishWords": [
+            "Option",
+            "switch",
+            "between",
+            "light",
+            "dark",
+            "modes"
+          ]
+        },
+        {
+          "key": "manual.guideTitle",
+          "value": "About the Guide",
+          "englishWords": [
+            "About",
+            "Guide"
+          ]
+        },
+        {
+          "key": "manual.guideDesc",
+          "value": "This user guide contains steps to assist you in various functions of D-Secure Fi",
+          "englishWords": [
+            "This",
+            "Secure File Eraser",
+            "Each",
+            "user",
+            "guide",
+            "contains",
+            "steps",
+            "assist",
+            "various",
+            "functions",
+            "function",
+            "explained",
+            "detail",
+            "corresponding",
+            "sections",
+            "covers",
+            "following",
+            "major",
+            "topics"
+          ]
+        },
+        {
+          "key": "manual.guideTopics[0]",
+          "value": "About D-Secure File Eraser",
+          "englishWords": [
+            "About D",
+            "Secure File Eraser"
+          ]
+        },
+        {
+          "key": "manual.guideTopics[1]",
+          "value": "About the Guide",
+          "englishWords": [
+            "About",
+            "Guide"
+          ]
+        },
+        {
+          "key": "manual.guideTopics[2]",
+          "value": "Getting Started",
+          "englishWords": [
+            "Getting Started"
+          ]
+        },
+        {
+          "key": "manual.guideTopics[3]",
+          "value": "Working with D-Secure File Eraser",
+          "englishWords": [
+            "Working",
+            "Secure File Eraser",
+            "with"
+          ]
+        },
+        {
+          "key": "manual.guideTopics[4]",
+          "value": "Frequently Asked Questions (FAQs)",
+          "englishWords": [
+            "Frequently Asked Questions",
+            "FAQs"
+          ]
+        },
+        {
+          "key": "manual.guideTopics[5]",
+          "value": "About D-Secure",
+          "englishWords": [
+            "About D",
+            "Secure"
+          ]
+        },
+        {
+          "key": "manual.guideNavFeatures",
+          "value": "This guide has the following features for easy navigation and understanding:",
+          "englishWords": [
+            "This",
+            "guide",
+            "following",
+            "features",
+            "easy",
+            "navigation",
+            "understanding"
+          ]
+        },
+        {
+          "key": "manual.guideNavTip1",
+          "value": "Select a topic from the list of topics given on the left of the navigation pane.",
+          "englishWords": [
+            "Select",
+            "topic",
+            "from",
+            "list",
+            "topics",
+            "given",
+            "left",
+            "navigation",
+            "pane"
+          ]
+        },
+        {
+          "key": "manual.guideNavTip2",
+          "value": "There are Notes and Tips in some topics of this guide for better understanding a",
+          "englishWords": [
+            "There",
+            "Notes",
+            "Tips",
+            "some",
+            "topics",
+            "this",
+            "guide",
+            "better",
+            "understanding",
+            "ease",
+            "work"
+          ]
+        },
+        {
+          "key": "manual.guideBrowser",
+          "value": "This is a web-based guide and requires an active internet connection. You can re",
+          "englishWords": [
+            "This",
+            "You",
+            "Chrome",
+            "Firefox",
+            "Internet Explorer",
+            "Safari",
+            "For",
+            "based",
+            "guide",
+            "requires",
+            "active",
+            "internet",
+            "connection",
+            "read",
+            "this",
+            "with",
+            "popular",
+            "browsers",
+            "like",
+            "better",
+            "viewing",
+            "experience",
+            "recommended",
+            "browser"
+          ]
+        },
+        {
+          "key": "manual.gettingStartedTitle",
+          "value": "Getting Started",
+          "englishWords": [
+            "Getting Started"
+          ]
+        },
+        {
+          "key": "manual.installationTitle",
+          "value": "Installation D-Secure File Eraser",
+          "englishWords": [
+            "Installation D",
+            "Secure File Eraser"
+          ]
+        },
+        {
+          "key": "manual.installationIntro",
+          "value": "Follow these comprehensive steps to successfully install D-Secure File Eraser on",
+          "englishWords": [
+            "Follow",
+            "Secure File Eraser",
+            "these",
+            "comprehensive",
+            "steps",
+            "successfully",
+            "install",
+            "your",
+            "system"
+          ]
+        },
+        {
+          "key": "manual.diskAccessTitle",
+          "value": "Assign Full Disk Access",
+          "englishWords": [
+            "Assign Full Disk Access"
+          ]
+        },
+        {
+          "key": "manual.uiTitle",
+          "value": "Getting Familiar with User Interface",
+          "englishWords": [
+            "Getting Familiar",
+            "User Interface",
+            "with"
+          ]
+        },
+        {
+          "key": "manual.tabsButtonsTitle",
+          "value": "Getting Familiar with Tabs and Buttons",
+          "englishWords": [
+            "Getting Familiar",
+            "Tabs",
+            "Buttons",
+            "with"
+          ]
+        },
+        {
+          "key": "manual.orderingTitle",
+          "value": "Ordering the Software",
+          "englishWords": [
+            "Ordering",
+            "Software"
+          ]
+        },
+        {
+          "key": "manual.activatingTitle",
+          "value": "Activating the Software",
+          "englishWords": [
+            "Activating",
+            "Software"
+          ]
+        },
+        {
+          "key": "manual.updatingTitle",
+          "value": "Updating the Software",
+          "englishWords": [
+            "Updating",
+            "Software"
+          ]
+        },
+        {
+          "key": "manual.contactTitle",
+          "value": "Contact Information",
+          "englishWords": [
+            "Contact Information"
+          ]
+        },
+        {
+          "key": "manual.workingTitle",
+          "value": "Working with D-Secure File Eraser",
+          "englishWords": [
+            "Working",
+            "Secure File Eraser",
+            "with"
+          ]
+        },
+        {
+          "key": "manual.eraseFilesTitle",
+          "value": "Erase Files and Folders",
+          "englishWords": [
+            "Erase Files",
+            "Folders"
+          ]
+        },
+        {
+          "key": "manual.eraseSpaceTitle",
+          "value": "Erase Free Space",
+          "englishWords": [
+            "Erase Free Space"
+          ]
+        },
+        {
+          "key": "manual.cloudStorageTitle",
+          "value": "Erase Cloud Storage (Google Drive)",
+          "englishWords": [
+            "Erase Cloud Storage",
+            "Google Drive"
+          ]
+        },
+        {
+          "key": "manual.scheduleTitle",
+          "value": "Setting Schedule Erasure",
+          "englishWords": [
+            "Setting Schedule Erasure"
+          ]
+        },
+        {
+          "key": "manual.reportsTitle",
+          "value": "Working on Reports",
+          "englishWords": [
+            "Working",
+            "Reports"
+          ]
+        },
+        {
+          "key": "manual.previewReportTitle",
+          "value": "Preview Report",
+          "englishWords": [
+            "Preview Report"
+          ]
+        },
+        {
+          "key": "manual.saveReportTitle",
+          "value": "Save Report",
+          "englishWords": [
+            "Save Report"
+          ]
+        },
+        {
+          "key": "manual.reportSettingsTitle",
+          "value": "Report Settings",
+          "englishWords": [
+            "Report Settings"
+          ]
+        },
+        {
+          "key": "manual.searchReportTitle",
+          "value": "Search Report",
+          "englishWords": [
+            "Search Report"
+          ]
+        },
+        {
+          "key": "manual.searchEraseTitle",
+          "value": "Search and Erase",
+          "englishWords": [
+            "Search",
+            "Erase"
+          ]
+        },
+        {
+          "key": "manual.faqTitle",
+          "value": "Frequently Asked Questions (FAQs)",
+          "englishWords": [
+            "Frequently Asked Questions",
+            "FAQs"
+          ]
+        },
+        {
+          "key": "manual.faq1Q",
+          "value": "What is D-Secure File Eraser?",
+          "englishWords": [
+            "What",
+            "Secure File Eraser"
+          ]
+        },
+        {
+          "key": "manual.faq1A",
+          "value": "D-Secure File Eraser is a professional-grade data erasure tool that permanently ",
+          "englishWords": [
+            "Secure File Eraser",
+            "professional",
+            "grade",
+            "data",
+            "erasure",
+            "tool",
+            "that",
+            "permanently",
+            "deletes",
+            "files",
+            "folders",
+            "traces",
+            "from",
+            "your",
+            "system",
+            "making",
+            "them",
+            "unrecoverable",
+            "means"
+          ]
+        },
+        {
+          "key": "manual.faq2Q",
+          "value": "Is erased data recoverable?",
+          "englishWords": [
+            "Is",
+            "erased",
+            "data",
+            "recoverable"
+          ]
+        },
+        {
+          "key": "manual.faq2A",
+          "value": "No, once data is erased using D-Secure File Eraser with any of the supported alg",
+          "englishWords": [
+            "No",
+            "Secure File Eraser",
+            "once",
+            "data",
+            "erased",
+            "using",
+            "with",
+            "supported",
+            "algorithms",
+            "permanently",
+            "irrecoverably",
+            "destroyed"
+          ]
+        },
+        {
+          "key": "manual.faq3Q",
+          "value": "Which operating systems are supported?",
+          "englishWords": [
+            "Which",
+            "operating",
+            "systems",
+            "supported"
+          ]
+        },
+        {
+          "key": "manual.faq3A",
+          "value": "D-Secure File Eraser supports Windows 10/11, macOS 10.15+, and major Linux distr",
+          "englishWords": [
+            "Secure File Eraser",
+            "Windows",
+            "Linux",
+            "supports",
+            "major",
+            "distributions"
+          ]
+        },
+        {
+          "key": "manual.faq4Q",
+          "value": "How many erasure algorithms are available?",
+          "englishWords": [
+            "How",
+            "many",
+            "erasure",
+            "algorithms",
+            "available"
+          ]
+        },
+        {
+          "key": "manual.faq4A",
+          "value": "The software includes 20+ internationally accepted erasure algorithms including ",
+          "englishWords": [
+            "The",
+            "DoD",
+            "NIST",
+            "Gutmann",
+            "software",
+            "includes",
+            "internationally",
+            "accepted",
+            "erasure",
+            "algorithms",
+            "including",
+            "others"
+          ]
+        },
+        {
+          "key": "manual.faq5Q",
+          "value": "Can I erase cloud storage data?",
+          "englishWords": [
+            "Can I",
+            "erase",
+            "cloud",
+            "storage",
+            "data"
+          ]
+        },
+        {
+          "key": "manual.faq5A",
+          "value": "Yes, D-Secure File Eraser supports Google Drive erasure. You can securely delete",
+          "englishWords": [
+            "Yes",
+            "Secure File Eraser",
+            "Google Drive",
+            "You",
+            "supports",
+            "erasure",
+            "securely",
+            "delete",
+            "files",
+            "folders",
+            "entire",
+            "cloud",
+            "storage",
+            "volumes"
+          ]
+        },
+        {
+          "key": "manual.faq6Q",
+          "value": "Are erasure reports generated automatically?",
+          "englishWords": [
+            "Are",
+            "erasure",
+            "reports",
+            "generated",
+            "automatically"
+          ]
+        },
+        {
+          "key": "manual.faq6A",
+          "value": "Yes, tamper-proof PDF reports are automatically generated after each erasure ope",
+          "englishWords": [
+            "Yes",
+            "PDF",
+            "Reports",
+            "Secure Cloud",
+            "tamper",
+            "proof",
+            "reports",
+            "automatically",
+            "generated",
+            "after",
+            "each",
+            "erasure",
+            "operation",
+            "saved",
+            "locally",
+            "uploaded"
+          ]
+        },
+        {
+          "key": "manual.faq7Q",
+          "value": "Can I schedule automatic erasure?",
+          "englishWords": [
+            "Can I",
+            "schedule",
+            "automatic",
+            "erasure"
+          ]
+        },
+        {
+          "key": "manual.faq7A",
+          "value": "Yes, the Scheduler feature allows you to set up automated erasure tasks with cus",
+          "englishWords": [
+            "Yes",
+            "Scheduler",
+            "feature",
+            "allows",
+            "automated",
+            "erasure",
+            "tasks",
+            "with",
+            "customizable",
+            "frequency",
+            "once",
+            "daily",
+            "weekly",
+            "monthly",
+            "timing"
+          ]
+        },
+        {
+          "key": "manual.faq8Q",
+          "value": "Does the software support multiple themes?",
+          "englishWords": [
+            "Does",
+            "software",
+            "support",
+            "multiple",
+            "themes"
+          ]
+        },
+        {
+          "key": "manual.faq8A",
+          "value": "Yes, you can switch between light and dark mode themes for comfortable viewing.",
+          "englishWords": [
+            "Yes",
+            "switch",
+            "between",
+            "light",
+            "dark",
+            "mode",
+            "themes",
+            "comfortable",
+            "viewing"
+          ]
+        },
+        {
+          "key": "manual.aboutDSecureTitle",
+          "value": "About D-Secure",
+          "englishWords": [
+            "About D",
+            "Secure"
+          ]
+        },
+        {
+          "key": "manual.aboutDSecureDesc",
+          "value": "D-Secure is a leading provider of enterprise-grade data erasure solutions, trust",
+          "englishWords": [
+            "Secure",
+            "leading",
+            "provider",
+            "enterprise",
+            "grade",
+            "data",
+            "erasure",
+            "solutions",
+            "trusted",
+            "organizations",
+            "worldwide",
+            "secure",
+            "compliant",
+            "certified",
+            "destruction"
+          ]
+        },
+        {
+          "key": "manual.email",
+          "value": "Email:",
+          "englishWords": [
+            "Email"
+          ]
+        },
+        {
+          "key": "manual.website",
+          "value": "Website:",
+          "englishWords": [
+            "Website"
+          ]
+        },
+        {
+          "key": "manual.supportHours",
+          "value": "Support Hours:",
+          "englishWords": [
+            "Support Hours"
+          ]
+        },
+        {
+          "key": "manual.supportHoursValue",
+          "value": "24/7 Business Hours",
+          "englishWords": [
+            "Business Hours"
+          ]
+        },
+        {
+          "key": "manual.needAssistance",
+          "value": "Need further assistance?",
+          "englishWords": [
+            "Need",
+            "further",
+            "assistance"
+          ]
+        },
+        {
+          "key": "manual.contactSupport",
+          "value": "Contact Support",
+          "englishWords": [
+            "Contact Support"
+          ]
+        },
+        {
+          "key": "manual.allRightsReserved",
+          "value": "All rights reserved.",
+          "englishWords": [
+            "All",
+            "rights",
+            "reserved"
+          ]
+        }
+      ],
+      "stats": {
+        "enKeys": 1218,
+        "hiKeys": 580,
+        "missing": 640,
+        "englishDetected": 272
+      }
+    },
+    "seo": {
+      "missingKeys": [],
+      "englishInHindi": [
+        {
+          "key": "dataGuardianAward.title",
+          "value": "D-Secure डेटा हाइजीन एश्योरेंस | प्रमाणित डेटा सुरक्षा उत्कृष्टता",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.description",
+          "value": "D-Secure एश्योरेंस बैज उन संगठनों को मान्यता देता है जिनके पास पूर्ण डेटा हाइजीन",
+          "englishWords": [
+            "Secure"
+          ]
+        },
+        {
+          "key": "dataGuardianAward.keywords",
+          "value": "D-Secure assurance badge, data hygiene certification, secure data protection, da",
+          "englishWords": [
+            "Secure",
+            "IT",
+            "assurance",
+            "badge",
+            "data",
+            "hygiene",
+            "certification",
+            "secure",
+            "protection",
+            "erasure",
+            "security",
+            "trusted",
+            "partner"
+          ]
+        },
+        {
+          "key": "home.description",
+          "value": "इरेज़र Windows के लिए एक उन्नत सुरक्षा उपकरण है जो आपको अपने हार्ड ड्राइव से संव",
+          "englishWords": [
+            "Windows"
+          ]
+        },
+        {
+          "key": "driveEraser.title",
+          "value": "D-Secure Drive Eraser | सुरक्षित डेटा विलोपन सॉफ्टवेयर",
+          "englishWords": [
+            "Secure Drive Eraser"
+          ]
+        },
+        {
+          "key": "driveEraser.description",
+          "value": "D-Secure Drive Eraser के साथ हार्ड ड्राइव, SSD और सर्वर से डेटा स्थायी रूप से मि",
+          "englishWords": [
+            "Secure Drive Eraser",
+            "SSD",
+            "NIST",
+            "DoD"
+          ]
+        },
+        {
+          "key": "driveEraser.keywords",
+          "value": "drive eraser, hard drive wiper, SSD secure erase, data sanitization software, NI",
+          "englishWords": [
+            "SSD",
+            "NIST",
+            "DoD",
+            "drive",
+            "eraser",
+            "hard",
+            "wiper",
+            "secure",
+            "erase",
+            "data",
+            "sanitization",
+            "software",
+            "compliance",
+            "destruction",
+            "tool"
+          ]
+        }
+      ],
+      "stats": {
+        "enKeys": 8,
+        "hiKeys": 8,
+        "missing": 0,
+        "englishDetected": 7
+      }
+    }
+  }
+}

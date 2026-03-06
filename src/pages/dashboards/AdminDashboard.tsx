@@ -6,7 +6,8 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Helmet } from "react-helmet-async";
 // ✅ NAYA CODE: Added startTransition to allow navigation to interrupt data-sync updates
 import { useState, useMemo, useEffect, startTransition } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   PieChart,
@@ -58,7 +59,11 @@ import {
   useUpdateSubuser,
   useDeleteSubuser,
 } from "@/hooks/useSubusers";
-import { useDashboardData, useDashboardLicenseList, useDashboardSessions } from "@/hooks/useDashboardData";
+import {
+  useDashboardData,
+  useDashboardLicenseList,
+  useDashboardSessions,
+} from "@/hooks/useDashboardData";
 import {
   useUserMachines,
   useActiveLicensesCount,
@@ -137,7 +142,7 @@ export const buildWhereClause = (user: Partial<CurrentUser>) => {
         ...base,
         ownerId: user.id,
       };
-    
+
     // SubUser handled separately (often inherits parent's context)
     case Roles.SUB_USER:
       // SubUser: WHERE owner_id = parentUserId AND sub_user_id = userId AND department_id = departmentId
@@ -463,6 +468,8 @@ import {
   DEMO_SESSIONS,
 } from "@/data/demoData";
 import { decodeEmail, encodeEmail } from "@/utils/encodeEmail";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
+import { getLocalePath } from "@/utils/localePath";
 
 // ✅ DEMO MODE: Suppress all console logs in demo mode
 const devLog = (...args: any[]) => {
@@ -496,7 +503,7 @@ export default function AdminDashboard() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { showSuccess, showError, showInfo } = useNotification();
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const [activeTab, setActiveTab] = useState("overview");
 
   // ✅ RBAC: Role detection functions
@@ -920,7 +927,9 @@ export default function AdminDashboard() {
   // ✅ NAYA CODE: Enabled dashboardData for 'groups' tab so React Query cached data is available immediately
   // PURANA CODE: activeTab === "overview" || activeTab === "licenses";
   const dashboardDataEnabled =
-    activeTab === "overview" || activeTab === "licenses" || activeTab === "groups";
+    activeTab === "overview" ||
+    activeTab === "licenses" ||
+    activeTab === "groups";
   const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
 
   // PURANA CODE: console.log("dashboardQuery>>>>>>>>>>>>>>>>", dashboardQuery);
@@ -1013,7 +1022,9 @@ export default function AdminDashboard() {
   const enhancedAuditReportsQuery = useEnhancedAuditReports(
     userEmail,
     // ✅ NAYA CODE: Keep query enabled on overview and reports tabs to maintain cache
-    !!userEmail && (activeTab === "overview" || activeTab === "reports") && !isDemo,
+    !!userEmail &&
+      (activeTab === "overview" || activeTab === "reports") &&
+      !isDemo,
   );
 
   // ✅ React Query: Get active licenses count directly from cache (disabled in demo mode)
@@ -1098,10 +1109,13 @@ export default function AdminDashboard() {
               const parsed = JSON.parse(licenseDetailsJson);
               if (parsed.plans && parsed.summary) {
                 combinedBillingInfo = {
-                  activePlanTypes: parsed.summary.activePlanTypes?.join(", ") || "N/A",
-                  activePlanIds: parsed.summary.activePlanIds?.join(", ") || "N/A",
+                  activePlanTypes:
+                    parsed.summary.activePlanTypes?.join(", ") || "N/A",
+                  activePlanIds:
+                    parsed.summary.activePlanIds?.join(", ") || "N/A",
                   totalPurchases: parsed.summary.totalPurchases || 0,
-                  totalLicenses: parsed.summary.totalLicensesAcrossAllPlans || 0,
+                  totalLicenses:
+                    parsed.summary.totalLicensesAcrossAllPlans || 0,
                   availableLicenses: parsed.summary.totalAvailableLicenses || 0,
                   consumedLicenses: parsed.summary.totalConsumedLicenses || 0,
                   usedLicenses: parsed.summary.totalConsumedLicenses || 0,
@@ -1111,34 +1125,91 @@ export default function AdminDashboard() {
 
                 if (parsed.plans.length > 0) {
                   const firstPlan = parsed.plans[0];
-                  combinedBillingInfo.planType = firstPlan.planType || firstPlan.plan_type || combinedBillingInfo.activePlanTypes;
-                  combinedBillingInfo.totalLicenses = firstPlan.totalLicenses || firstPlan.total_licenses || combinedBillingInfo.totalLicenses || 0;
-                  combinedBillingInfo.purchaseDate = formatDateLocal(firstPlan.purchaseDate);
-                  combinedBillingInfo.startDate = formatDateLocal(firstPlan.startDate || firstPlan.purchaseDate);
-                  combinedBillingInfo.validityYears = firstPlan.validityYears || firstPlan.validity_years || "N/A";
-                  combinedBillingInfo.expiryDate = formatDateLocal(firstPlan.expiryDate);
-                  combinedBillingInfo.billingCycle = firstPlan.billingCycle || firstPlan.billing_cycle || "Annual";
-                  combinedBillingInfo.amount = firstPlan.amount || firstPlan.price || "N/A";
-                  combinedBillingInfo.features = Array.isArray(firstPlan.features) ? firstPlan.features.join(", ") : firstPlan.features || "Standard Features";
+                  combinedBillingInfo.planType =
+                    firstPlan.planType ||
+                    firstPlan.plan_type ||
+                    combinedBillingInfo.activePlanTypes;
+                  combinedBillingInfo.totalLicenses =
+                    firstPlan.totalLicenses ||
+                    firstPlan.total_licenses ||
+                    combinedBillingInfo.totalLicenses ||
+                    0;
+                  combinedBillingInfo.purchaseDate = formatDateLocal(
+                    firstPlan.purchaseDate,
+                  );
+                  combinedBillingInfo.startDate = formatDateLocal(
+                    firstPlan.startDate || firstPlan.purchaseDate,
+                  );
+                  combinedBillingInfo.validityYears =
+                    firstPlan.validityYears ||
+                    firstPlan.validity_years ||
+                    "N/A";
+                  combinedBillingInfo.expiryDate = formatDateLocal(
+                    firstPlan.expiryDate,
+                  );
+                  combinedBillingInfo.billingCycle =
+                    firstPlan.billingCycle ||
+                    firstPlan.billing_cycle ||
+                    "Annual";
+                  combinedBillingInfo.amount =
+                    firstPlan.amount || firstPlan.price || "N/A";
+                  combinedBillingInfo.features = Array.isArray(
+                    firstPlan.features,
+                  )
+                    ? firstPlan.features.join(", ")
+                    : firstPlan.features || "Standard Features";
                 }
               } else {
                 combinedBillingInfo = {
-                  activePlanTypes: parsed.plan_type || parsed.planType || parsed.activePlanTypes || "Standard",
-                  activePlanIds: parsed.plan_id || parsed.planId || parsed.activePlanIds || "N/A",
-                  totalPurchases: parsed.total_purchases || parsed.totalPurchases || 1,
-                  totalLicenses: parsed.total_licenses || parsed.totalLicenses || parsed.licenses || parsed.totalLicenses || 0,
-                  availableLicenses: parsed.available_licenses || parsed.availableLicenses || 0,
-                  consumedLicenses: parsed.consumed_licenses || parsed.consumedLicenses || parsed.usedLicenses || 0,
-                  usedLicenses: parsed.used_licenses || parsed.usedLicenses || parsed.consumedLicenses || 0,
-                  validityYears: parsed.validity_years || parsed.validityYears || "1",
-                  purchaseDate: formatDateLocal(parsed.purchase_date || parsed.purchaseDate),
-                  startDate: formatDateLocal(parsed.start_date || parsed.startDate),
-                  expiryDate: formatDateLocal(parsed.expiry_date || parsed.expiryDate),
-                  billingCycle: parsed.billing_cycle || parsed.billingCycle || "Annual",
+                  activePlanTypes:
+                    parsed.plan_type ||
+                    parsed.planType ||
+                    parsed.activePlanTypes ||
+                    "Standard",
+                  activePlanIds:
+                    parsed.plan_id ||
+                    parsed.planId ||
+                    parsed.activePlanIds ||
+                    "N/A",
+                  totalPurchases:
+                    parsed.total_purchases || parsed.totalPurchases || 1,
+                  totalLicenses:
+                    parsed.total_licenses ||
+                    parsed.totalLicenses ||
+                    parsed.licenses ||
+                    parsed.totalLicenses ||
+                    0,
+                  availableLicenses:
+                    parsed.available_licenses || parsed.availableLicenses || 0,
+                  consumedLicenses:
+                    parsed.consumed_licenses ||
+                    parsed.consumedLicenses ||
+                    parsed.usedLicenses ||
+                    0,
+                  usedLicenses:
+                    parsed.used_licenses ||
+                    parsed.usedLicenses ||
+                    parsed.consumedLicenses ||
+                    0,
+                  validityYears:
+                    parsed.validity_years || parsed.validityYears || "1",
+                  purchaseDate: formatDateLocal(
+                    parsed.purchase_date || parsed.purchaseDate,
+                  ),
+                  startDate: formatDateLocal(
+                    parsed.start_date || parsed.startDate,
+                  ),
+                  expiryDate: formatDateLocal(
+                    parsed.expiry_date || parsed.expiryDate,
+                  ),
+                  billingCycle:
+                    parsed.billing_cycle || parsed.billingCycle || "Annual",
                   amount: parsed.amount || parsed.price || "N/A",
                   status: parsed.status || "Active",
                   userEmail: parsed.user_email || parsed.userEmail || userEmail,
-                  features: Array.isArray(parsed.features) ? parsed.features.join(", ") : parsed.features || "Standard Features",
+                  features: Array.isArray(parsed.features)
+                    ? parsed.features.join(", ")
+                    : parsed.features || "Standard Features",
                 };
               }
             } catch (e) {
@@ -1151,7 +1222,10 @@ export default function AdminDashboard() {
           if (paymentDetailsJson && paymentDetailsJson !== "{}") {
             try {
               const paymentParsed = JSON.parse(paymentDetailsJson);
-              combinedBillingInfo = { ...combinedBillingInfo, ...paymentParsed };
+              combinedBillingInfo = {
+                ...combinedBillingInfo,
+                ...paymentParsed,
+              };
             } catch (e) {
               devError("❌ Failed to parse payment details:", e);
             }
@@ -1168,7 +1242,9 @@ export default function AdminDashboard() {
 
     fetchBillingDetails();
 
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [isSuperAdmin, isDemo, userEmail]);
 
   useEffect(() => {
@@ -1844,7 +1920,8 @@ export default function AdminDashboard() {
                   `${userIndex + 1}`;
                 return {
                   id: parseInt(cleanUserId) || userIndex + 1,
-                  name: user.name || "Unknown",
+                  name:
+                    user.name || t("dashboard.adminDashboard.unknown_device"),
                   email: user.email || "",
                   /* 
                   // OLD CODE (STALE MAPPING) - COMMENTED FOR REFERENCE
@@ -2060,28 +2137,28 @@ export default function AdminDashboard() {
 
     return [
       {
-        label: "Total Licenses",
+        label: t("dashboard.adminDashboard.total_licenses"),
         value: statsData.totalLicenses || "0",
         change: statsData.changes?.totalLicenses?.value || "0",
         trend: statsData.changes?.totalLicenses?.trend || "up",
         color: "bg-blue-500",
       },
       {
-        label: "Active Users",
+        label: t("dashboard.adminDashboard.active_users"),
         value: statsData.activeUsers,
         change: statsData.changes?.activeUsers?.value || "0",
         trend: statsData.changes?.activeUsers?.trend || "up",
         color: "bg-emerald-500",
       },
       {
-        label: "Available Licenses",
+        label: t("dashboard.adminDashboard.available_licenses"),
         value: statsData.availableLicenses,
         change: statsData.changes?.availableLicenses?.value || "0",
         trend: statsData.changes?.availableLicenses?.trend || "up",
         color: "bg-orange-500",
       },
       {
-        label: "Success Rate",
+        label: t("dashboard.adminDashboard.success_rate"),
         value: isDemo
           ? statsData.successRate
           : performanceData.successRate || "0%",
@@ -2090,7 +2167,7 @@ export default function AdminDashboard() {
         color: "bg-purple-500",
       },
     ];
-  }, [dashboardStats, isDemo, performanceData]);
+  }, [dashboardStats, isDemo, performanceData, t]);
 
   // Calculate active users count (status === 'active' or 'Active')
   const activeUsersCount = useMemo(() => {
@@ -2478,13 +2555,14 @@ export default function AdminDashboard() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-                {t("dashboard.adminDashboard")}
+                {t("dashboard.adminDashboardTitle")}
               </h1>
               {/* Role Badge */}
               <span
                 className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${roleInfo.bgColor} ${roleInfo.color}`}
               >
-                {roleInfo.label}
+                {t(`dashboard.adminDashboard.role_${currentUserRole}`) ||
+                  roleInfo.label}
               </span>
             </div>
             <p className="mt-2 text-slate-600 flex items-center gap-2">
@@ -2506,7 +2584,8 @@ export default function AdminDashboard() {
               </span>
               <span className="hidden sm:inline text-slate-400">•</span>
               <span className="hidden sm:inline text-sm text-slate-500">
-                {roleInfo.description}
+                {t(`dashboard.adminDashboard.role_desc_${currentUserRole}`) ||
+                  roleInfo.description}
               </span>
             </p>
           </div>
@@ -2535,7 +2614,7 @@ export default function AdminDashboard() {
             <button
               onClick={() => navigate("/admin/private-cloud-setup")}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 rounded-lg transition-all duration-200 shadow-lg"
-              title="Private Cloud Setup"
+              title={t("dashboard.adminDashboard.private_cloud_setup")}
             >
               <svg
                 className="w-5 h-5"
@@ -2550,7 +2629,9 @@ export default function AdminDashboard() {
                   d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
                 />
               </svg>
-              <span className="hidden sm:inline">Private Cloud</span>
+              <span className="hidden sm:inline">
+                {t("dashboard.adminDashboard.private_cloud")}
+              </span>
             </button>
 
             {/* Settings Button - Billing & Password */}
@@ -2566,7 +2647,7 @@ export default function AdminDashboard() {
                 setSettingsTab(isSuperAdmin ? "billing" : "password");
               }}
               className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-all duration-200 shadow-sm"
-              title="Settings"
+              title={t("dashboard.adminDashboard.settings")}
             >
               <svg
                 className="w-5 h-5"
@@ -2587,7 +2668,9 @@ export default function AdminDashboard() {
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <span className="hidden sm:inline">Settings</span>
+              <span className="hidden sm:inline">
+                {t("dashboard.adminDashboard.settings")}
+              </span>
             </button>
 
             {/* Private Cloud Button - For Superadmin (Not Demo) */}
@@ -2623,7 +2706,7 @@ export default function AdminDashboard() {
             {/* Renew License Button */}
             {/* <button 
             onClick={() => {
-              window.location.href = '/pricing';
+              window.location.href = getLocalePath("/pricing");
             }}
             className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-600 hover:to-emerald-800 rounded-lg transition-all duration-200 shadow-lg"
             title="Renew Your License"
@@ -2654,7 +2737,7 @@ export default function AdminDashboard() {
                       d="M12 4v16m8-8H4"
                     />
                   </svg>
-                  <span>Add User</span>
+                  <span>{t("dashboard.adminDashboard.add_user")}</span>
                 </button>
               </RoleBased>
             )}
@@ -2809,7 +2892,7 @@ export default function AdminDashboard() {
                   },
                   {
                     id: "mydownloads",
-                    name: "My Downloads",
+                    name: t("dashboard.adminDashboard.my_downloads"),
                     permission: "canViewDashboard", // All roles can see
                     iconSvg: (
                       <svg
@@ -2974,10 +3057,12 @@ export default function AdminDashboard() {
                     />
                   </svg>
                   <h3 className="text-lg font-medium text-slate-900 mb-2">
-                    No Statistics Available
+                    {t("dashboard.adminDashboard.no_statistics_available")}
                   </h3>
                   <p className="text-sm text-slate-600">
-                    Dashboard statistics are not available from the server.
+                    {t(
+                      "dashboard.adminDashboard.dashboard_statistics_are_not_available_from_t",
+                    )}
                   </p>
                 </div>
               )}
@@ -2990,49 +3075,57 @@ export default function AdminDashboard() {
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      Total Licenses
+                      {t("dashboard.adminDashboard.total_licenses")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {dashboardStats?.totalLicenses || 0}
                   </p>
-                  <p className="text-sm text-slate-500 mt-2">All licenses</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    {t("dashboard.adminDashboard.all_licenses")}
+                  </p>
                 </div>
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      Active Users
+                      {t("dashboard.adminDashboard.active_users")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {activeUsersCount}
                   </p>
-                  <p className="text-sm text-slate-500 mt-2">Team members</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    {t("dashboard.adminDashboard.team_members")}
+                  </p>
                 </div>
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-orange-400 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      Licenses Assigned
+                      {t("dashboard.adminDashboard.licenses_assigned")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {activeLicensesFromCache || 0}
                   </p>
-                  <p className="text-sm text-slate-500 mt-2">In use</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    {t("dashboard.adminDashboard.in_use")}
+                  </p>
                 </div>
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-purple-400 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      Reports Generated
+                      {t("dashboard.adminDashboard.reports_generated")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {auditReports.length}
                   </p>
-                  <p className="text-sm text-slate-500 mt-2">This month</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    {t("dashboard.adminDashboard.this_month")}
+                  </p>
                 </div>
               </div>
             </RoleBased>
@@ -3044,50 +3137,56 @@ export default function AdminDashboard() {
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      Total Licenses
+                      {t("dashboard.adminDashboard.total_licenses")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {dashboardStats?.totalLicenses || 0}
                   </p>
-                  <p className="text-sm text-slate-500 mt-2">All licenses</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    {t("dashboard.adminDashboard.all_licenses")}
+                  </p>
                 </div>
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-emerald-500 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      Active Users
+                      {t("dashboard.adminDashboard.active_users")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {activeUsersCount}
                   </p>
-                  <p className="text-sm text-slate-500 mt-2">Team members</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    {t("dashboard.adminDashboard.team_members")}
+                  </p>
                 </div>
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-orange-400 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      My Licenses
+                      {t("dashboard.adminDashboard.my_licenses")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {activeLicensesFromCache || 0}
                   </p>
-                  <p className="text-sm text-slate-500 mt-2">Active licenses</p>
+                  <p className="text-sm text-slate-500 mt-2">
+                    {t("dashboard.adminDashboard.active_licenses")}
+                  </p>
                 </div>
                 <div className="card !p-4 lg:!p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-3 h-3 rounded-full bg-purple-400 flex-shrink-0"></div>
                     <p className="text-sm font-medium text-slate-600">
-                      Available Reports
+                      {t("dashboard.adminDashboard.available_reports")}
                     </p>
                   </div>
                   <p className="text-2xl lg:text-3xl font-bold text-slate-900">
                     {dashboardStats?.totalReports || 0}
                   </p>
                   <p className="text-sm text-slate-500 mt-2">
-                    Ready to download
+                    {t("dashboard.adminDashboard.ready_to_download")}
                   </p>
                 </div>
               </div>
@@ -3100,13 +3199,13 @@ export default function AdminDashboard() {
                 <div className="card !p-0 min-w-0">
                   <div className="px-4 sm:px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                     <h2 className="font-semibold text-slate-900">
-                      Recent Reports
+                      {t("dashboard.adminDashboard.recent_reports")}
                     </h2>
                     <Link
                       to="/admin/reports"
                       className="text-emerald-600 hover:text-emerald-700 text-sm font-medium"
                     >
-                      View All
+                      {t("dashboard.adminDashboard.view_all")}
                     </Link>
                   </div>
                   <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto scrollbar-hide">
@@ -3195,10 +3294,12 @@ export default function AdminDashboard() {
                           </svg>
                         </div>
                         <h3 className="text-lg font-medium text-slate-900 mb-2">
-                          No Data Available
+                          {t("dashboard.adminDashboard.no_data_available")}
                         </h3>
                         <p className="text-sm text-slate-600">
-                          No reports data available from the server.
+                          {t(
+                            "dashboard.adminDashboard.no_reports_data_available_from_the_server",
+                          )}
                         </p>
                       </div>
                     )}
@@ -3208,7 +3309,7 @@ export default function AdminDashboard() {
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 sm:px-6 py-3 border-t border-slate-200 bg-slate-50">
                       <div className="flex items-center gap-2">
                         <label className="text-xs text-slate-600">
-                          Rows per page:
+                          {t("dashboard.adminDashboard.rows_per_page")}
                         </label>
                         <select
                           value={recentReportsPageSize}
@@ -3227,22 +3328,24 @@ export default function AdminDashboard() {
                           ))}
                         </select>
                         <span className="text-xs text-slate-500">
-                          Showing{" "}
+                          {t("dashboard.adminDashboard.showing")}{" "}
                           {Math.min(
                             (recentReportsPage - 1) * recentReportsPageSize + 1,
                             auditReports.length,
                           )}{" "}
-                          to{" "}
+                          {t("dashboard.adminDashboard.to")}{" "}
                           {Math.min(
                             recentReportsPage * recentReportsPageSize,
                             auditReports.length,
                           )}{" "}
-                          of {auditReports.length}
+                          {t("dashboard.adminDashboard.of")}{" "}
+                          {auditReports.length}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-slate-600">
-                          Page {recentReportsPage} of{" "}
+                          {t("dashboard.adminDashboard.page")}{" "}
+                          {recentReportsPage} {t("dashboard.adminDashboard.of")}{" "}
                           {Math.ceil(
                             auditReports.length / recentReportsPageSize,
                           )}
@@ -3257,7 +3360,7 @@ export default function AdminDashboard() {
                             disabled={recentReportsPage === 1}
                             className="px-2 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            Prev
+                            {t("dashboard.adminDashboard.prev")}
                           </button>
                           <button
                             onClick={() =>
@@ -3278,7 +3381,7 @@ export default function AdminDashboard() {
                             }
                             className="px-2 py-1 text-xs font-medium text-slate-700 bg-white border border-slate-300 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            Next
+                            {t("dashboard.adminDashboard.next")}
                           </button>
                         </div>
                       </div>
@@ -3290,13 +3393,13 @@ export default function AdminDashboard() {
                 <div className="card !p-0 min-w-0">
                   <div className="px-4 sm:px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                     <h2 className="font-semibold text-slate-900">
-                      Recent Sessions
+                      {t("dashboard.adminDashboard.recent_sessions")}
                     </h2>
                     <Link
                       to="/admin/sessions"
                       className="text-emerald-600 hover:text-emerald-700 text-sm font-medium"
                     >
-                      View All
+                      {t("dashboard.adminDashboard.view_all")}
                     </Link>
                   </div>
                   <div className="card-content divide-y divide-slate-200 max-h-[300px] min-h-[300px] overflow-y-auto scrollbar-hide">
@@ -3328,7 +3431,10 @@ export default function AdminDashboard() {
                                           : "bg-slate-100 text-slate-700"
                                     }`}
                                   >
-                                    {session.session_status || "Unknown"}
+                                    {session.session_status ||
+                                      t(
+                                        "dashboard.adminDashboard.unknown_device",
+                                      )}
                                   </span>
                                 </div>
 
@@ -3336,11 +3442,18 @@ export default function AdminDashboard() {
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start justify-between gap-2 mb-1">
                                     <p className="font-medium text-slate-900 text-sm truncate">
-                                      {session.user_email || "Unknown User"}
+                                      {session.user_email ||
+                                        t(
+                                          "dashboard.adminDashboard.unknown_user",
+                                        )}
                                     </p>
                                     <span className="text-xs text-slate-500 flex-shrink-0">
                                       {session.login_time
-                                        ? "Login: " + formatSessionDate(session.login_time)
+                                        ? t(
+                                            "dashboard.adminDashboard.login_label",
+                                          ) +
+                                          " " +
+                                          formatSessionDate(session.login_time)
                                         : "N/A"}
                                     </span>
                                   </div>
@@ -3367,7 +3480,8 @@ export default function AdminDashboard() {
                                     )}
                                     {session.logout_time && (
                                       <span className="truncate text-slate-400">
-                                        Logout: {formatSessionDate(session.logout_time)}
+                                        {t("dashboard.adminDashboard.logout")}:{" "}
+                                        {formatSessionDate(session.logout_time)}
                                       </span>
                                     )}
                                   </div>
@@ -3394,10 +3508,12 @@ export default function AdminDashboard() {
                           </svg>
                         </div>
                         <h3 className="text-lg font-medium text-slate-900 mb-2">
-                          No Sessions Found
+                          {t("dashboard.adminDashboard.no_sessions_found")}
                         </h3>
                         <p className="text-sm text-slate-600">
-                          No recent sessions available at this time.
+                          {t(
+                            "dashboard.adminDashboard.no_recent_sessions_available_at_this_time",
+                          )}
                         </p>
                       </div>
                     )}
@@ -3406,7 +3522,9 @@ export default function AdminDashboard() {
                   {recentSessions.length > 0 && (
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 sm:px-6 py-4 border-t border-slate-200">
                       <div className="flex items-center gap-2">
-                        <label className="text-xs text-slate-600">Rows:</label>
+                        <label className="text-xs text-slate-600">
+                          {t("dashboard.adminDashboard.rows")}
+                        </label>
                         <select
                           value={systemLogsPageSize}
                           onChange={(e) => {
@@ -3423,7 +3541,8 @@ export default function AdminDashboard() {
                         </select>
                       </div>
                       <span className="text-sm text-slate-600">
-                        Page {systemLogsPage} of{" "}
+                        {t("dashboard.adminDashboard.page")} {systemLogsPage}{" "}
+                        {t("dashboard.adminDashboard.of")}{" "}
                         {Math.ceil(recentSessions.length / systemLogsPageSize)}
                       </span>
                       <div className="flex gap-2">
@@ -3434,7 +3553,7 @@ export default function AdminDashboard() {
                           disabled={systemLogsPage === 1}
                           className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Previous
+                          {t("dashboard.adminDashboard.previous")}
                         </button>
                         <button
                           onClick={() =>
@@ -3455,7 +3574,7 @@ export default function AdminDashboard() {
                           }
                           className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Next
+                          {t("dashboard.adminDashboard.next")}
                         </button>
                       </div>
                     </div>
@@ -3532,8 +3651,8 @@ export default function AdminDashboard() {
                     </svg>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-slate-900">System Settings</div>
-                    <div className="text-sm text-slate-500">Configure system preferences</div>
+                    <div className="font-medium text-slate-900">{t("dashboard.adminDashboard.system_settings")}</div>
+                    <div className="text-sm text-slate-500">{t("dashboard.adminDashboard.configure_system_preferences")}</div>
                   </div>
                 </button>
               </RoleBased>
@@ -3616,14 +3735,17 @@ export default function AdminDashboard() {
                   <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                     <div>
                       <h2 className="font-semibold text-slate-900">
-                        License Details
+                        {t("dashboard.adminDashboard.license_details")}
                       </h2>
                       <p className="text-sm text-slate-600 mt-1">
-                        Manage and monitor your software licenses
+                        {t(
+                          "dashboard.adminDashboard.manage_and_monitor_your_software_licenses",
+                        )}
                       </p>
                     </div>
                     <span className="text-sm text-slate-500">
-                      {dashboardLicenseList.length} found
+                      {dashboardLicenseList.length}{" "}
+                      {t("dashboard.adminDashboard.found")}
                     </span>
                   </div>
                   <div className="overflow-x-auto max-h-[500px] min-h-[300px] overflow-y-auto scrollbar-hide">
@@ -3631,19 +3753,19 @@ export default function AdminDashboard() {
                       <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
                         <tr>
                           <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            License Key
+                            {t("dashboard.adminDashboard.license_key")}
                           </th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            User Email
+                            {t("dashboard.adminDashboard.user_email")}
                           </th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Type
+                            {t("dashboard.adminDashboard.type")}
                           </th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Status
+                            {t("dashboard.adminDashboard.status_label")}
                           </th>
                           <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                            Expires
+                            {t("dashboard.adminDashboard.expires")}
                           </th>
                         </tr>
                       </thead>
@@ -3674,7 +3796,7 @@ export default function AdminDashboard() {
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                   ></path>
                                 </svg>
-                                Loading licenses...
+                                {t("dashboard.adminDashboard.loading_licenses")}
                               </div>
                             </td>
                           </tr>
@@ -3715,8 +3837,11 @@ export default function AdminDashboard() {
                                     }`}
                                   >
                                     {license.status?.toUpperCase() === "IN_USE"
-                                      ? "Inactive"
-                                      : license.status || "Unknown"}
+                                      ? t("dashboard.adminDashboard.inactive")
+                                      : license.status ||
+                                        t(
+                                          "dashboard.adminDashboard.unknown_device",
+                                        )}
                                   </span>
                                 </td>
                                 <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-600">
@@ -3734,7 +3859,9 @@ export default function AdminDashboard() {
                               colSpan={5}
                               className="py-8 text-center text-slate-500"
                             >
-                              No license data available
+                              {t(
+                                "dashboard.adminDashboard.no_license_data_available",
+                              )}
                             </td>
                           </tr>
                         )}
@@ -3746,7 +3873,7 @@ export default function AdminDashboard() {
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 sm:px-6 py-3 border-t border-slate-200 bg-slate-50">
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                         <label className="text-xs sm:text-sm text-slate-600">
-                          Rows:
+                          {t("dashboard.adminDashboard.rows")}
                         </label>
                         <select
                           value={licensePageSize}
@@ -3763,22 +3890,25 @@ export default function AdminDashboard() {
                           ))}
                         </select>
                         <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                          Showing{" "}
+                          {t("dashboard.adminDashboard.showing")}{" "}
                           {Math.min(
                             (licenseDetailsPage - 1) * licensePageSize + 1,
                             dashboardLicenseList.length,
                           )}{" "}
-                          to{" "}
+                          {t("dashboard.adminDashboard.to")}{" "}
                           {Math.min(
                             licenseDetailsPage * licensePageSize,
                             dashboardLicenseList.length,
                           )}{" "}
-                          of {dashboardLicenseList.length}
+                          {t("dashboard.adminDashboard.of")}{" "}
+                          {dashboardLicenseList.length}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 sm:gap-3">
                         <span className="text-xs sm:text-sm text-slate-600">
-                          Page {licenseDetailsPage} of{" "}
+                          {t("dashboard.adminDashboard.page")}{" "}
+                          {licenseDetailsPage}{" "}
+                          {t("dashboard.adminDashboard.of")}{" "}
                           {Math.ceil(
                             dashboardLicenseList.length / licensePageSize,
                           )}
@@ -3793,8 +3923,12 @@ export default function AdminDashboard() {
                             disabled={licenseDetailsPage === 1}
                             className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            <span className="sm:hidden">Prev</span>
-                            <span className="hidden sm:inline">Previous</span>
+                            <span className="sm:hidden">
+                              {t("dashboard.adminDashboard.prev")}
+                            </span>
+                            <span className="hidden sm:inline">
+                              {t("dashboard.adminDashboard.previous")}
+                            </span>
                           </button>
                           <button
                             onClick={() =>
@@ -3816,7 +3950,7 @@ export default function AdminDashboard() {
                             }
                             className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            Next
+                            {t("dashboard.adminDashboard.next")}
                           </button>
                         </div>
                       </div>
@@ -3833,9 +3967,11 @@ export default function AdminDashboard() {
                   <div className="card">
                     <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                       <div>
-                        <h2 className="font-semibold text-slate-900">Users</h2>
+                        <h2 className="font-semibold text-slate-900">
+                          {t("dashboard.adminDashboard.users")}
+                        </h2>
                         <p className="text-sm text-slate-600 mt-1">
-                          Manage all users
+                          {t("dashboard.adminDashboard.manage_all_users")}
                         </p>
                       </div>
                       {/* Add User button */}
@@ -3857,7 +3993,7 @@ export default function AdminDashboard() {
                               d="M12 4v16m8-8H4"
                             />
                           </svg>
-                          Add User
+                          {t("dashboard.adminDashboard.add_user")}
                         </button>
                       </div>
                     </div>
@@ -3868,7 +4004,7 @@ export default function AdminDashboard() {
                           <div className="text-center">
                             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
                             <p className="mt-4 text-sm text-slate-600">
-                              Loading users data...
+                              {t("dashboard.adminDashboard.loading_users_data")}
                             </p>
                           </div>
                         </div>
@@ -3894,12 +4030,14 @@ export default function AdminDashboard() {
                               </svg>
                             </div>
                             <h3 className="text-lg font-medium text-slate-900 mb-2">
-                              No Users Found
+                              {t("dashboard.adminDashboard.no_users_found")}
                             </h3>
                             <p className="text-sm text-slate-600">
                               {isCurrentUserSubuser
-                                ? "You don't have any subusers associated with your account."
-                                : "Click 'Manage Users' to load user data or create a new subuser."}
+                                ? t("dashboard.adminDashboard.no_subusers_msg")
+                                : t(
+                                    "dashboard.adminDashboard.manage_users_msg",
+                                  )}
                             </p>
                           </div>
                         )}
@@ -3912,25 +4050,31 @@ export default function AdminDashboard() {
                               <thead className="sticky top-0 bg-white shadow-sm z-10">
                                 <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                    Email
+                                    {t("dashboard.adminDashboard.email_label")}
                                   </th>
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                    Role
+                                    {t(
+                                      "dashboard.adminDashboard.role_field_label",
+                                    )}
                                   </th>
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden md:table-cell">
-                                    Department
+                                    {t(
+                                      "dashboard.adminDashboard.department_label",
+                                    )}
                                   </th>
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                    Status
+                                    {t("dashboard.adminDashboard.status_label")}
                                   </th>
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden lg:table-cell">
-                                    Group
+                                    {t("dashboard.adminDashboard.group_label")}
                                   </th>
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">
-                                    Last Login
+                                    {t("dashboard.adminDashboard.last_login")}
                                   </th>
                                   <th className="pb-3 font-medium whitespace-nowrap hidden xl:table-cell">
-                                    License Allocation
+                                    {t(
+                                      "dashboard.adminDashboard.license_allocation",
+                                    )}
                                   </th>
                                 </tr>
                               </thead>
@@ -4069,7 +4213,7 @@ export default function AdminDashboard() {
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                                 <label className="text-xs sm:text-sm text-slate-600">
-                                  Rows:
+                                  {t("dashboard.adminDashboard.rows_label")}
                                 </label>
                                 <select
                                   value={usersPageSize}
@@ -4088,22 +4232,24 @@ export default function AdminDashboard() {
                                   ))}
                                 </select>
                                 <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                                  Showing{" "}
+                                  {t("dashboard.adminDashboard.showing")}{" "}
                                   {Math.min(
                                     (usersPage - 1) * usersPageSize + 1,
                                     displaySubusersData.length,
                                   )}{" "}
-                                  to{" "}
+                                  {t("dashboard.adminDashboard.to")}{" "}
                                   {Math.min(
                                     usersPage * usersPageSize,
                                     displaySubusersData.length,
                                   )}{" "}
-                                  of {displaySubusersData.length}
+                                  {t("dashboard.adminDashboard.of")}{" "}
+                                  {displaySubusersData.length}
                                 </span>
                               </div>
                               <div className="flex items-center gap-2 sm:gap-3">
                                 <span className="text-xs sm:text-sm text-slate-600">
-                                  Page {usersPage} of{" "}
+                                  {t("dashboard.adminDashboard.page")}{" "}
+                                  {usersPage} {t("dashboard.adminDashboard.of")}{" "}
                                   {Math.ceil(
                                     displaySubusersData.length / usersPageSize,
                                   )}
@@ -4118,9 +4264,11 @@ export default function AdminDashboard() {
                                     disabled={usersPage === 1}
                                     className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                   >
-                                    <span className="sm:hidden">Prev</span>
+                                    <span className="sm:hidden">
+                                      {t("dashboard.adminDashboard.prev")}
+                                    </span>
                                     <span className="hidden sm:inline">
-                                      Previous
+                                      {t("dashboard.adminDashboard.previous")}
                                     </span>
                                   </button>
                                   <button
@@ -4144,7 +4292,7 @@ export default function AdminDashboard() {
                                     }
                                     className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                   >
-                                    Next
+                                    {t("dashboard.adminDashboard.next")}
                                   </button>
                                 </div>
                               </div>
@@ -4173,10 +4321,12 @@ export default function AdminDashboard() {
                     </svg>
                   </div>
                   <h3 className="text-lg font-medium text-slate-900 mb-2">
-                    Feature Disabled
+                    {t("dashboard.adminDashboard.feature_disabled")}
                   </h3>
                   <p className="text-sm text-slate-600">
-                    User management is currently disabled for your account.
+                    {t(
+                      "dashboard.adminDashboard.user_management_is_currently_disabled_for_you",
+                    )}
                   </p>
                 </div>
               ))}
@@ -4189,10 +4339,12 @@ export default function AdminDashboard() {
                     <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                       <div>
                         <h2 className="font-semibold text-slate-900">
-                          Groups & Members
+                          {t("dashboard.adminDashboard.groups_members")}
                         </h2>
                         <p className="text-sm text-slate-600 mt-1">
-                          View all groups and their members
+                          {t(
+                            "dashboard.adminDashboard.view_all_groups_and_their_members",
+                          )}
                         </p>
                       </div>
                     </div>
@@ -4203,7 +4355,9 @@ export default function AdminDashboard() {
                           <div className="text-center">
                             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
                             <p className="mt-4 text-sm text-slate-600">
-                              Loading groups data...
+                              {t(
+                                "dashboard.adminDashboard.loading_groups_data",
+                              )}
                             </p>
                           </div>
                         </div>
@@ -4228,10 +4382,12 @@ export default function AdminDashboard() {
                             </svg>
                           </div>
                           <h3 className="text-lg font-medium text-slate-900 mb-2">
-                            No Groups Found
+                            {t("dashboard.adminDashboard.no_groups_found")}
                           </h3>
                           <p className="text-sm text-slate-600">
-                            No groups are available in your organization.
+                            {t(
+                              "dashboard.adminDashboard.no_groups_are_available_in_your_organization",
+                            )}
                           </p>
                         </div>
                       )}
@@ -4263,10 +4419,13 @@ export default function AdminDashboard() {
                                   </div>
                                   <div className="flex items-center gap-4">
                                     <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
-                                      {group.users.length} users
+                                      {group.users.length}{" "}
+                                      {t(
+                                        "dashboard.adminDashboard.users_count",
+                                      )}
                                     </span>
                                     <span className="text-sm text-slate-500">
-                                      Created:{" "}
+                                      {t("dashboard.adminDashboard.created")}:{" "}
                                       {new Date(
                                         group.created,
                                       ).toLocaleDateString()}
@@ -4302,19 +4461,29 @@ export default function AdminDashboard() {
                                     <thead className="bg-slate-100 border-b border-slate-200">
                                       <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                          User Name
+                                          {t(
+                                            "dashboard.adminDashboard.user_name",
+                                          )}
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                          Email
+                                          {t(
+                                            "dashboard.adminDashboard.email_label",
+                                          )}
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                          Role
+                                          {t(
+                                            "dashboard.adminDashboard.role_field_label",
+                                          )}
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                          License
+                                          {t(
+                                            "dashboard.adminDashboard.license",
+                                          )}
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                                          Profile
+                                          {t(
+                                            "dashboard.adminDashboard.profile_label",
+                                          )}
                                         </th>
                                       </tr>
                                     </thead>
@@ -4395,10 +4564,12 @@ export default function AdminDashboard() {
                     </svg>
                   </div>
                   <h3 className="text-lg font-medium text-slate-900 mb-2">
-                    Feature Disabled
+                    {t("dashboard.adminDashboard.feature_disabled")}
                   </h3>
                   <p className="text-sm text-slate-600">
-                    Group management is currently disabled for your account.
+                    {t(
+                      "dashboard.adminDashboard.group_management_is_currently_disabled_for_yo",
+                    )}
                   </p>
                 </div>
               ))}
@@ -4409,10 +4580,12 @@ export default function AdminDashboard() {
                   <div className="px-6 py-5 border-b border-slate-200">
                     <div>
                       <h2 className="font-semibold text-slate-900">
-                        Cloud Users Activity
+                        {t("dashboard.adminDashboard.cloud_users_activity")}
                       </h2>
                       <p className="text-sm text-slate-600 mt-1">
-                        Monitor user login and logout activity
+                        {t(
+                          "dashboard.adminDashboard.monitor_user_login_and_logout_activity",
+                        )}
                       </p>
                     </div>
                   </div>
@@ -4442,10 +4615,12 @@ export default function AdminDashboard() {
                               </svg>
                             </div>
                             <h3 className="text-lg font-medium text-slate-900 mb-2">
-                              No Data Available
+                              {t("dashboard.adminDashboard.no_data_available")}
                             </h3>
                             <p className="text-slate-600 mb-6">
-                              No user activity data available from the server.
+                              {t(
+                                "dashboard.adminDashboard.no_user_activity_data_available_from_the_serv",
+                              )}
                             </p>
                           </div>
                         );
@@ -4457,16 +4632,16 @@ export default function AdminDashboard() {
                               <thead className="sticky top-0 bg-white shadow-sm z-10">
                                 <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                    User Email
+                                    {t("dashboard.adminDashboard.user_email")}
                                   </th>
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                    Login Time
+                                    {t("dashboard.adminDashboard.login_time")}
                                   </th>
                                   <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">
-                                    Logout Time
+                                    {t("dashboard.adminDashboard.logout_time")}
                                   </th>
                                   <th className="pb-3 font-medium whitespace-nowrap">
-                                    Status
+                                    {t("dashboard.adminDashboard.status_label")}
                                   </th>
                                 </tr>
                               </thead>
@@ -4518,7 +4693,7 @@ export default function AdminDashboard() {
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                               <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                                 <label className="text-xs sm:text-sm text-slate-600">
-                                  Rows:
+                                  {t("dashboard.adminDashboard.rows_label")}
                                 </label>
                                 <select
                                   value={activityPageSize}
@@ -4537,23 +4712,26 @@ export default function AdminDashboard() {
                                   ))}
                                 </select>
                                 <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                                  Showing{" "}
+                                  {t("dashboard.adminDashboard.showing")}{" "}
                                   {Math.min(
                                     (userActivityPage - 1) * activityPageSize +
                                       1,
                                     activityData.length,
                                   )}{" "}
-                                  to{" "}
+                                  {t("dashboard.adminDashboard.to")}{" "}
                                   {Math.min(
                                     userActivityPage * activityPageSize,
                                     activityData.length,
                                   )}{" "}
-                                  of {activityData.length}
+                                  {t("dashboard.adminDashboard.of")}{" "}
+                                  {activityData.length}
                                 </span>
                               </div>
                               <div className="flex items-center gap-2 sm:gap-3">
                                 <span className="text-xs sm:text-sm text-slate-600">
-                                  Page {userActivityPage} of{" "}
+                                  {t("dashboard.adminDashboard.page")}{" "}
+                                  {userActivityPage}{" "}
+                                  {t("dashboard.adminDashboard.of")}{" "}
                                   {Math.ceil(
                                     activityData.length / activityPageSize,
                                   )}
@@ -4568,9 +4746,11 @@ export default function AdminDashboard() {
                                     disabled={userActivityPage === 1}
                                     className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                   >
-                                    <span className="sm:hidden">Prev</span>
+                                    <span className="sm:hidden">
+                                      {t("dashboard.adminDashboard.prev")}
+                                    </span>
                                     <span className="hidden sm:inline">
-                                      Previous
+                                      {t("dashboard.adminDashboard.previous")}
                                     </span>
                                   </button>
                                   <button
@@ -4593,7 +4773,7 @@ export default function AdminDashboard() {
                                     }
                                     className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                   >
-                                    Next
+                                    {t("dashboard.adminDashboard.next")}
                                   </button>
                                 </div>
                               </div>
@@ -4622,10 +4802,12 @@ export default function AdminDashboard() {
                     </svg>
                   </div>
                   <h3 className="text-lg font-medium text-slate-900 mb-2">
-                    Feature Disabled
+                    {t("dashboard.adminDashboard.feature_disabled")}
                   </h3>
                   <p className="text-sm text-slate-600">
-                    UserActivity is currently disabled for your account.
+                    {t(
+                      "dashboard.adminDashboard.useractivity_is_currently_disabled_for_your_a",
+                    )}
                   </p>
                 </div>
               ))}
@@ -4635,14 +4817,16 @@ export default function AdminDashboard() {
                 <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                   <div>
                     <h2 className="font-semibold text-slate-900">
-                      Erasure Reports
+                      {t("dashboard.adminDashboard.erasure_reports")}
                     </h2>
                     <p className="text-sm text-slate-600 mt-1">
-                      View and manage data erasure reports
+                      {t(
+                        "dashboard.adminDashboard.view_and_manage_data_erasure_reports",
+                      )}
                     </p>
                   </div>
                   <Link to="/admin/reports" className="btn-primary text-sm">
-                    View All Reports
+                    {t("dashboard.adminDashboard.view_all_reports")}
                   </Link>
                 </div>
 
@@ -4665,10 +4849,12 @@ export default function AdminDashboard() {
                         </svg>
                       </div>
                       <h3 className="text-lg font-medium text-slate-900 mb-2">
-                        No Data Available
+                        {t("dashboard.adminDashboard.no_data_available")}
                       </h3>
                       <p className="text-slate-600 mb-6">
-                        No reports data available from the server.
+                        {t(
+                          "dashboard.adminDashboard.no_reports_data_available_from_the_server",
+                        )}
                       </p>
                     </div>
                   ) : (
@@ -4678,20 +4864,20 @@ export default function AdminDashboard() {
                           <thead className="sticky top-0 bg-white shadow-sm z-10">
                             <tr className="text-left text-sm text-slate-500 border-b border-slate-200">
                               <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                Report ID
+                                {t("dashboard.adminDashboard.report_id")}
                               </th>
                               <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                Type
+                                {t("dashboard.adminDashboard.type")}
                               </th>
                               {/* <th className="pb-3 font-medium">Devices</th> */}
                               <th className="pb-3 pr-4 font-medium whitespace-nowrap">
-                                Status
+                                {t("dashboard.adminDashboard.status_label")}
                               </th>
                               <th className="pb-3 pr-4 font-medium whitespace-nowrap hidden sm:table-cell">
-                                Date
+                                {t("dashboard.adminDashboard.date")}
                               </th>
                               <th className="pb-3 font-medium whitespace-nowrap hidden md:table-cell">
-                                Method
+                                {t("dashboard.adminDashboard.method")}
                               </th>
                             </tr>
                           </thead>
@@ -4863,7 +5049,7 @@ export default function AdminDashboard() {
                         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-4 border-t border-slate-200 bg-white">
                           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                             <label className="text-xs sm:text-sm text-slate-600">
-                              Rows:
+                              {t("dashboard.adminDashboard.rows_label")}
                             </label>
                             <select
                               value={reportsPageSize}
@@ -4882,22 +5068,24 @@ export default function AdminDashboard() {
                               ))}
                             </select>
                             <span className="text-xs sm:text-sm text-slate-500 hidden sm:inline">
-                              Showing{" "}
+                              {t("dashboard.adminDashboard.showing")}{" "}
                               {Math.min(
                                 (reportsPage - 1) * reportsPageSize + 1,
                                 auditReports.length,
                               )}{" "}
-                              to{" "}
+                              {t("dashboard.adminDashboard.to")}{" "}
                               {Math.min(
                                 reportsPage * reportsPageSize,
                                 auditReports.length,
                               )}{" "}
-                              of {auditReports.length}
+                              {t("dashboard.adminDashboard.of")}{" "}
+                              {auditReports.length}
                             </span>
                           </div>
                           <div className="flex items-center gap-2 sm:gap-3">
                             <span className="text-xs sm:text-sm text-slate-600">
-                              Page {reportsPage} of{" "}
+                              {t("dashboard.adminDashboard.page")} {reportsPage}{" "}
+                              {t("dashboard.adminDashboard.of")}{" "}
                               {Math.ceil(auditReports.length / reportsPageSize)}
                             </span>
                             <div className="flex gap-1 sm:gap-2">
@@ -4910,9 +5098,11 @@ export default function AdminDashboard() {
                                 disabled={reportsPage === 1}
                                 className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                               >
-                                <span className="sm:hidden">Prev</span>
+                                <span className="sm:hidden">
+                                  {t("dashboard.adminDashboard.prev")}
+                                </span>
                                 <span className="hidden sm:inline">
-                                  Previous
+                                  {t("dashboard.adminDashboard.previous")}
                                 </span>
                               </button>
                               <button
@@ -4934,7 +5124,7 @@ export default function AdminDashboard() {
                                 }
                                 className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                               >
-                                Next
+                                {t("dashboard.adminDashboard.next")}
                               </button>
                             </div>
                           </div>
@@ -4953,10 +5143,12 @@ export default function AdminDashboard() {
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">
-                      Performance
+                      {t("dashboard.adminDashboard.performance")}
                     </h2>
                     <p className="text-sm text-slate-600 mt-1">
-                      Monitor system performance and erasure metrics
+                      {t(
+                        "dashboard.adminDashboard.monitor_system_performance_and_erasure_metric",
+                      )}
                     </p>
                   </div>
                 </div>
@@ -4965,7 +5157,9 @@ export default function AdminDashboard() {
                   <div className="flex items-center justify-center py-12">
                     <div className="text-center">
                       <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-                      <p className="mt-4 text-sm text-slate-600">Loading performance data...</p>
+                      <p className="mt-4 text-sm text-slate-600">
+                        {t("dashboard.adminDashboard.loading_performance_data")}
+                      </p>
                     </div>
                   </div>
                 ) : erasureMetricsError || !displayErasureMetrics ? (
@@ -4984,11 +5178,14 @@ export default function AdminDashboard() {
                       />
                     </svg>
                     <h3 className="text-lg font-medium text-slate-900 mb-2">
-                      No Performance Metrics Available
+                      {t(
+                        "dashboard.adminDashboard.no_performance_metrics_available",
+                      )}
                     </h3>
                     <p className="text-slate-600">
-                      There are no performance metrics to display for this
-                      account.
+                      {t(
+                        "dashboard.adminDashboard.there_are_no_performance_metrics_to_display_f",
+                      )}
                     </p>
                   </div>
                 ) : (
@@ -5002,7 +5199,9 @@ export default function AdminDashboard() {
                       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col min-h-[400px]">
                         <div className="mb-6">
                           <p className="text-base md:text-lg text-slate-500 mb-2 font-medium">
-                            Erasure Method Breakdown
+                            {t(
+                              "dashboard.adminDashboard.erasure_method_breakdown",
+                            )}
                           </p>
                           <p className="text-3xl md:text-4xl font-bold text-slate-900">
                             {displayErasureMetrics?.methodMetrics &&
@@ -5018,7 +5217,9 @@ export default function AdminDashboard() {
                           </p>
                         </div>
                         <div className="flex-1 w-full relative min-h-[300px]">
-                          <ErasureMethodPieChart methodMetrics={displayErasureMetrics?.methodMetrics} />
+                          <ErasureMethodPieChart
+                            methodMetrics={displayErasureMetrics?.methodMetrics}
+                          />
                         </div>
                       </div>
 
@@ -5325,10 +5526,14 @@ export default function AdminDashboard() {
                       </div>
                       <div>
                         <h3 className="text-lg font-semibold text-slate-900">
-                          Bulk License Assignment
+                          {t(
+                            "dashboard.adminDashboard.bulk_license_assignment",
+                          )}
                         </h3>
                         <p className="text-sm text-slate-600">
-                          Assign licenses to multiple users at once
+                          {t(
+                            "dashboard.adminDashboard.assign_licenses_to_multiple_users_at_once",
+                          )}
                         </p>
                       </div>
                     </div>
@@ -5336,7 +5541,7 @@ export default function AdminDashboard() {
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Number of Users
+                          {t("dashboard.adminDashboard.number_of_users")}
                         </label>
                         <input
                           type="number"
@@ -5344,14 +5549,16 @@ export default function AdminDashboard() {
                           value={bulkUserCount}
                           onChange={(e) => setBulkUserCount(e.target.value)}
                           className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Enter number of users"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_number_of_users",
+                          )}
                           disabled={isLoading}
                         />
                       </div>
 
                       <div>
                         <label className="block text-sm font-medium text-slate-700 mb-2">
-                          Licenses per User
+                          {t("dashboard.adminDashboard.licenses_per_user")}
                         </label>
                         <input
                           type="number"
@@ -5359,7 +5566,9 @@ export default function AdminDashboard() {
                           value={bulkLicenseCount}
                           onChange={(e) => setBulkLicenseCount(e.target.value)}
                           className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="Enter licenses per user"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_licenses_per_user",
+                          )}
                           disabled={isLoading}
                         />
                       </div>
@@ -5371,19 +5580,29 @@ export default function AdminDashboard() {
                           <div className="bg-blue-50 p-3 rounded-lg">
                             <div className="text-sm text-slate-600">
                               <div className="flex justify-between">
-                                <span>Total Users:</span>
+                                <span>
+                                  {t("dashboard.adminDashboard.total_users")}
+                                </span>
                                 <span className="font-medium">
                                   {Number(bulkUserCount).toLocaleString()}
                                 </span>
                               </div>
                               <div className="flex justify-between">
-                                <span>Licenses per User:</span>
+                                <span>
+                                  {t(
+                                    "dashboard.adminDashboard.licenses_per_user_1",
+                                  )}
+                                </span>
                                 <span className="font-medium">
                                   {Number(bulkLicenseCount).toLocaleString()}
                                 </span>
                               </div>
                               <div className="flex justify-between text-blue-600 font-medium mt-1 pt-1 border-t">
-                                <span>Total Licenses:</span>
+                                <span>
+                                  {t(
+                                    "dashboard.adminDashboard.total_licenses_1",
+                                  )}
+                                </span>
                                 <span>
                                   {(
                                     Number(bulkUserCount) *
@@ -5472,10 +5691,12 @@ export default function AdminDashboard() {
                         </div>
                         <div>
                           <h3 className="text-xl font-semibold text-slate-900">
-                            License Audit Report
+                            {t("dashboard.adminDashboard.license_audit_report")}
                           </h3>
                           <p className="text-sm text-slate-600">
-                            Comprehensive overview of license usage and
+                            {t(
+                              "dashboard.adminDashboard.comprehensive_overview_of_license_usage_and",
+                            )}
                             analytics
                           </p>
                         </div>
@@ -5521,10 +5742,14 @@ export default function AdminDashboard() {
                           </svg>
                         </div>
                         <h3 className="text-lg font-medium text-slate-900 mb-2">
-                          No License Data Available
+                          {t(
+                            "dashboard.adminDashboard.no_license_data_available_1",
+                          )}
                         </h3>
                         <p className="text-slate-600">
-                          License audit data is not available from the server.
+                          {t(
+                            "dashboard.adminDashboard.license_audit_data_is_not_available_from_the",
+                          )}
                         </p>
                       </div>
                     ) : (
@@ -5573,7 +5798,9 @@ export default function AdminDashboard() {
                                     </div>
                                     <div>
                                       <div className="text-sm font-medium text-blue-700">
-                                        Total Licenses
+                                        {t(
+                                          "dashboard.adminDashboard.total_licenses",
+                                        )}
                                       </div>
                                       <div className="text-2xl font-bold text-blue-900">
                                         {totalLicenses.toLocaleString()}
@@ -5601,7 +5828,9 @@ export default function AdminDashboard() {
                                     </div>
                                     <div>
                                       <div className="text-sm font-medium text-emerald-700">
-                                        Active/Used Licenses
+                                        {t(
+                                          "dashboard.adminDashboard.activeused_licenses",
+                                        )}
                                       </div>
                                       <div className="text-2xl font-bold text-emerald-900">
                                         {consumedLicenses.toLocaleString()}
@@ -5629,7 +5858,9 @@ export default function AdminDashboard() {
                                     </div>
                                     <div>
                                       <div className="text-sm font-medium text-orange-700">
-                                        Available
+                                        {t(
+                                          "dashboard.adminDashboard.available",
+                                        )}
                                       </div>
                                       <div className="text-2xl font-bold text-orange-900">
                                         {availableLicenses.toLocaleString()}
@@ -5657,7 +5888,9 @@ export default function AdminDashboard() {
                                     </div>
                                     <div>
                                       <div className="text-sm font-medium text-purple-700">
-                                        Utilization
+                                        {t(
+                                          "dashboard.adminDashboard.utilization",
+                                        )}
                                       </div>
                                       <div className="text-2xl font-bold text-purple-900">
                                         {utilizationPercent}%
@@ -5670,12 +5903,16 @@ export default function AdminDashboard() {
                               {/* Utilization Chart - Dynamic Data */}
                               <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200 mb-8">
                                 <h4 className="text-lg font-semibold text-slate-900 mb-4">
-                                  License Utilization Overview
+                                  {t(
+                                    "dashboard.adminDashboard.license_utilization_overview",
+                                  )}
                                 </h4>
                                 <div className="space-y-4">
                                   <div className="flex items-center justify-between">
                                     <span className="text-sm font-medium text-slate-700">
-                                      Overall Utilization
+                                      {t(
+                                        "dashboard.adminDashboard.overall_utilization",
+                                      )}
                                     </span>
                                     <span className="text-lg font-bold text-emerald-600">
                                       {utilizationPercent}%
@@ -5701,7 +5938,9 @@ export default function AdminDashboard() {
                                     </div>
                                     <div className="text-center">
                                       <div className="font-medium text-slate-900">
-                                        Available
+                                        {t(
+                                          "dashboard.adminDashboard.available",
+                                        )}
                                       </div>
                                       <div className="text-orange-600 font-semibold">
                                         {availableLicenses.toLocaleString()} (
@@ -5715,7 +5954,7 @@ export default function AdminDashboard() {
                                     </div>
                                     <div className="text-center">
                                       <div className="font-medium text-slate-900">
-                                        Products
+                                        {t("dashboard.adminDashboard.products")}
                                       </div>
                                       <div className="text-blue-600 font-semibold">
                                         {userLicenseDetails.length}
@@ -5732,7 +5971,9 @@ export default function AdminDashboard() {
                         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
                           <div className="p-4 bg-slate-50 border-b border-slate-200">
                             <h4 className="text-lg font-semibold text-slate-900">
-                              License Breakdown by Product
+                              {t(
+                                "dashboard.adminDashboard.license_breakdown_by_product",
+                              )}
                             </h4>
                           </div>
                           <div className="overflow-x-auto">
@@ -5740,22 +5981,22 @@ export default function AdminDashboard() {
                               <thead className="bg-slate-50">
                                 <tr>
                                   <th className="text-left p-4 font-semibold text-slate-700">
-                                    Product
+                                    {t("dashboard.adminDashboard.product")}
                                   </th>
                                   <th className="text-left p-4 font-semibold text-slate-700">
-                                    Total
+                                    {t("dashboard.adminDashboard.total")}
                                   </th>
                                   <th className="text-left p-4 font-semibold text-slate-700">
-                                    Used
+                                    {t("dashboard.adminDashboard.used")}
                                   </th>
                                   <th className="text-left p-4 font-semibold text-slate-700">
-                                    Available
+                                    {t("dashboard.adminDashboard.available")}
                                   </th>
                                   <th className="text-left p-4 font-semibold text-slate-700">
-                                    Utilization
+                                    {t("dashboard.adminDashboard.utilization")}
                                   </th>
                                   <th className="text-left p-4 font-semibold text-slate-700">
-                                    Status
+                                    {t("dashboard.adminDashboard.status_label")}
                                   </th>
                                 </tr>
                               </thead>
@@ -5773,10 +6014,12 @@ export default function AdminDashboard() {
                                         : "blue";
                                   const statusText =
                                     usagePercent > 80
-                                      ? "High Usage"
+                                      ? t("dashboard.adminDashboard.high_usage")
                                       : usagePercent > 60
-                                        ? "Moderate"
-                                        : "Low Usage";
+                                        ? t("dashboard.adminDashboard.moderate")
+                                        : t(
+                                            "dashboard.adminDashboard.low_usage",
+                                          );
                                   const progressColor =
                                     usagePercent > 80
                                       ? "bg-red-500"
@@ -5840,8 +6083,8 @@ export default function AdminDashboard() {
                       <button
                         onClick={() => {
                           showInfo(
-                            "Report Exported",
-                            "Detailed license audit report has been sent to your email",
+                            t("dashboard.adminDashboard.report_exported"),
+                            t("dashboard.adminDashboard.report_exported_msg"),
                           );
                           setShowLicenseAuditModal(false);
                         }}
@@ -5860,13 +6103,15 @@ export default function AdminDashboard() {
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                           />
                         </svg>
-                        Export Detailed Report
+                        {t("dashboard.adminDashboard.export_detailed_report")}
                       </button>
                       <button
                         onClick={() =>
                           showInfo(
-                            "Optimization Report",
-                            "License optimization suggestions have been generated and will be sent to your email",
+                            t("dashboard.adminDashboard.optimization_report"),
+                            t(
+                              "dashboard.adminDashboard.optimization_report_msg",
+                            ),
                           )
                         }
                         className="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
@@ -5884,13 +6129,13 @@ export default function AdminDashboard() {
                             d="M13 10V3L4 14h7v7l9-11h-7z"
                           />
                         </svg>
-                        Get Optimization Report
+                        {t("dashboard.adminDashboard.get_optimization_report")}
                       </button>
                       <button
                         onClick={() => setShowLicenseAuditModal(false)}
                         className="flex items-center justify-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
                       >
-                        Close
+                        {t("dashboard.adminDashboard.close")}
                       </button>
                     </div>
                   </div>
@@ -5928,7 +6173,9 @@ export default function AdminDashboard() {
                   {/* Modal Header with Theme Gradient Background */}
                   <div className="bg-gradient-to-r from-brand-600 via-brand-500 to-brand-700 px-6 py-6 rounded-t-xl text-white">
                     <h2 className="text-xl font-bold mb-0">
-                      {isEditingProfile ? "Edit Profile" : "Profile"}
+                      {isEditingProfile
+                        ? t("dashboard.adminDashboard.profile_modal_edit_title")
+                        : t("dashboard.profile")}
                     </h2>
                   </div>
 
@@ -5949,7 +6196,7 @@ export default function AdminDashboard() {
                         <div className="space-y-3 text-sm">
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              Name:
+                              {t("dashboard.adminDashboard.name_label")}:
                             </span>
                             <span className="text-slate-900">
                               {storedUserData?.name ||
@@ -5968,7 +6215,7 @@ export default function AdminDashboard() {
 
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              Email:
+                              {t("dashboard.adminDashboard.email_label")}:
                             </span>
                             <span className="text-slate-900 text-right">
                               {profileData?.email ||
@@ -5980,18 +6227,18 @@ export default function AdminDashboard() {
 
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              Phone:
+                              {t("dashboard.adminDashboard.phone_label")}:
                             </span>
                             <span className="text-slate-900">
                               {profileData?.phone ||
                                 storedUserData?.phone_number ||
-                                "Not provided"}
+                                t("dashboard.adminDashboard.not_provided")}
                             </span>
                           </div>
 
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              Role:
+                              {t("dashboard.adminDashboard.role_field_label")}:
                             </span>
                             <span className="text-slate-900 font-semibold capitalize">
                               {profileData?.userRole ||
@@ -6007,23 +6254,23 @@ export default function AdminDashboard() {
 
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              Department:
+                              {t("dashboard.adminDashboard.department_label")}:
                             </span>
                             <span className="text-slate-900">
                               {profileData?.department ||
                                 storedUserData?.department ||
-                                "N/A"}
+                                t("dashboard.adminDashboard.na")}
                             </span>
                           </div>
 
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              User Group:
+                              {t("dashboard.adminDashboard.user_group")}
                             </span>
                             <span className="text-slate-900">
                               {storedUserData?.user_group ||
                                 storedUserData?.department ||
-                                "N/A"}
+                                t("dashboard.adminDashboard.na")}
                             </span>
                           </div>
 
@@ -6032,7 +6279,9 @@ export default function AdminDashboard() {
                             storedUserData?.parent_user_email && (
                               <div className="flex justify-between bg-purple-50 -mx-2 px-2 py-2 rounded-md border border-purple-200">
                                 <span className="font-medium text-purple-700">
-                                  Parent User Email:
+                                  {t(
+                                    "dashboard.adminDashboard.parent_user_email",
+                                  )}
                                 </span>
                                 <span className="text-purple-900 font-semibold text-right break-all">
                                   {storedUserData.parent_user_email}
@@ -6042,7 +6291,7 @@ export default function AdminDashboard() {
 
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              Time Zone:
+                              {t("dashboard.adminDashboard.time_zone")}
                             </span>
                             <span className="text-slate-900">
                               {profileData?.timezone ||
@@ -6053,7 +6302,7 @@ export default function AdminDashboard() {
 
                           <div className="flex justify-between">
                             <span className="font-medium text-slate-700">
-                              Login Time:
+                              {t("dashboard.adminDashboard.login_time_1")}
                             </span>
                             <span className="text-slate-900 text-right text-xs">
                               {(() => {
@@ -6118,7 +6367,7 @@ export default function AdminDashboard() {
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                               />
                             </svg>
-                            Edit Profile
+                            {t("dashboard.adminDashboard.edit_profile")}
                           </button>
                         </div>
                       </>
@@ -6136,8 +6385,10 @@ export default function AdminDashboard() {
                                 profileData?.email || user?.email;
                               if (!userEmail) {
                                 showError(
-                                  "Update Failed",
-                                  "User email not found",
+                                  t("dashboard.adminDashboard.update_failed"),
+                                  t(
+                                    "dashboard.adminDashboard.user_email_not_found",
+                                  ),
                                 );
                                 return;
                               }
@@ -6222,23 +6473,32 @@ export default function AdminDashboard() {
                                 }
 
                                 showSuccess(
-                                  "Profile Updated",
-                                  "Your profile and timezone have been updated successfully",
+                                  t("dashboard.adminDashboard.profile_updated"),
+                                  t(
+                                    "dashboard.adminDashboard.profile_updated_msg",
+                                  ),
                                 );
                                 setIsEditingProfile(false);
                               } else {
                                 const errorMsg =
                                   profileResponse.error ||
                                   timezoneResponse.error ||
-                                  "Failed to update profile";
+                                  t(
+                                    "dashboard.adminDashboard.failed_to_update_profile",
+                                  );
                                 devError("❌ API Error:", errorMsg);
-                                showError("Update Failed", errorMsg);
+                                showError(
+                                  t("dashboard.adminDashboard.update_failed"),
+                                  errorMsg,
+                                );
                               }
                             } catch (error) {
                               devError("❌ Profile update error:", error);
                               showError(
-                                "Update Failed",
-                                "An error occurred while updating profile",
+                                t("dashboard.adminDashboard.update_failed"),
+                                t(
+                                  "dashboard.adminDashboard.error_updating_profile",
+                                ),
                               );
                             } finally {
                               setProfileUpdateLoading(false);
@@ -6248,7 +6508,8 @@ export default function AdminDashboard() {
                           {/* Editable: Name */}
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">
-                              Name <span className="text-red-500">*</span>
+                              {t("dashboard.adminDashboard.name_label")}{" "}
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="text"
@@ -6260,7 +6521,9 @@ export default function AdminDashboard() {
                                 }))
                               }
                               className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                              placeholder="Enter your name"
+                              placeholder={t(
+                                "dashboard.adminDashboard.enter_your_name",
+                              )}
                               required
                             />
                           </div>
@@ -6268,7 +6531,7 @@ export default function AdminDashboard() {
                           {/* Editable: Phone Number */}
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">
-                              Phone Number
+                              {t("dashboard.adminDashboard.phone_number")}
                             </label>
                             <input
                               type="tel"
@@ -6280,7 +6543,9 @@ export default function AdminDashboard() {
                                 }))
                               }
                               className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                              placeholder="Enter phone number"
+                              placeholder={t(
+                                "dashboard.adminDashboard.enter_phone_number",
+                              )}
                             />
                           </div>
 
@@ -6288,7 +6553,7 @@ export default function AdminDashboard() {
                           <div>
                             <div className="flex items-center justify-between mb-2">
                               <label className="block text-sm font-medium text-slate-700">
-                                Time Zone
+                                {t("dashboard.adminDashboard.time_zone_1")}
                               </label>
                               <button
                                 type="button"
@@ -6302,8 +6567,10 @@ export default function AdminDashboard() {
                                     timezone: detectedTimezone,
                                   }));
                                   showInfo(
-                                    "Timezone Detected",
-                                    `Automatically detected: ${detectedTimezone}`,
+                                    t(
+                                      "dashboard.adminDashboard.timezone_detected",
+                                    ),
+                                    `${t("dashboard.adminDashboard.timezone_auto_detected_msg")}: ${detectedTimezone}`,
                                   );
                                 }}
                                 className="text-xs text-brand hover:text-brand-700 font-medium flex items-center gap-1"
@@ -6327,7 +6594,7 @@ export default function AdminDashboard() {
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                   />
                                 </svg>
-                                Auto-Detect
+                                {t("dashboard.adminDashboard.auto_detect")}
                               </button>
                             </div>
                             <select
@@ -6341,48 +6608,62 @@ export default function AdminDashboard() {
                               className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                             >
                               <option value="Asia/Kolkata">
-                                Asia/Kolkata (IST)
+                                {t("dashboard.adminDashboard.asiakolkata_ist")}
                               </option>
                               <option value="America/New_York">
-                                America/New York (EST)
+                                {t(
+                                  "dashboard.adminDashboard.americanew_york_est",
+                                )}
                               </option>
                               <option value="America/Los_Angeles">
-                                America/Los Angeles (PST)
+                                {t(
+                                  "dashboard.adminDashboard.americalos_angeles_pst",
+                                )}
                               </option>
                               <option value="America/Chicago">
-                                America/Chicago (CST)
+                                {t(
+                                  "dashboard.adminDashboard.americachicago_cst",
+                                )}
                               </option>
                               <option value="Europe/London">
-                                Europe/London (GMT)
+                                {t("dashboard.adminDashboard.europelondon_gmt")}
                               </option>
                               <option value="Europe/Paris">
-                                Europe/Paris (CET)
+                                {t("dashboard.adminDashboard.europeparis_cet")}
                               </option>
                               <option value="Europe/Berlin">
-                                Europe/Berlin (CET)
+                                {t("dashboard.adminDashboard.europeberlin_cet")}
                               </option>
                               <option value="Asia/Tokyo">
-                                Asia/Tokyo (JST)
+                                {t("dashboard.adminDashboard.asiatokyo_jst")}
                               </option>
                               <option value="Asia/Shanghai">
-                                Asia/Shanghai (CST)
+                                {t("dashboard.adminDashboard.asiashanghai_cst")}
                               </option>
                               <option value="Asia/Dubai">
-                                Asia/Dubai (GST)
+                                {t("dashboard.adminDashboard.asiadubai_gst")}
                               </option>
                               <option value="Asia/Singapore">
-                                Asia/Singapore (SGT)
+                                {t(
+                                  "dashboard.adminDashboard.asiasingapore_sgt",
+                                )}
                               </option>
                               <option value="Australia/Sydney">
-                                Australia/Sydney (AEDT)
+                                {t(
+                                  "dashboard.adminDashboard.australiasydney_aedt",
+                                )}
                               </option>
                               <option value="Pacific/Auckland">
-                                Pacific/Auckland (NZDT)
+                                {t(
+                                  "dashboard.adminDashboard.pacificauckland_nzdt",
+                                )}
                               </option>
-                              <option value="UTC">UTC</option>
+                              <option value="UTC">
+                                {t("dashboard.adminDashboard.utc")}
+                              </option>
                             </select>
                             <p className="text-xs text-slate-500 mt-1">
-                              Current time:{" "}
+                              {t("dashboard.adminDashboard.current_time")}:{" "}
                               {new Date().toLocaleString("en-IN", {
                                 timeZone: profileEditForm.timezone,
                                 hour: "2-digit",
@@ -6426,7 +6707,7 @@ export default function AdminDashboard() {
                               className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-50 transition-colors"
                               disabled={profileUpdateLoading}
                             >
-                              Cancel
+                              {t("dashboard.adminDashboard.cancel")}
                             </button>
                             <button
                               type="submit"
@@ -6454,10 +6735,10 @@ export default function AdminDashboard() {
                                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                     ></path>
                                   </svg>
-                                  Saving...
+                                  {t("dashboard.adminDashboard.saving")}
                                 </>
                               ) : (
-                                "Save Changes"
+                                t("dashboard.adminDashboard.save_changes")
                               )}
                             </button>
                           </div>
@@ -6477,10 +6758,12 @@ export default function AdminDashboard() {
                   <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
                     <div>
                       <h3 className="text-xl font-semibold text-slate-900">
-                        Settings
+                        {t("dashboard.adminDashboard.settings_title")}
                       </h3>
                       <p className="text-sm text-slate-600 mt-1">
-                        Manage your billing and security settings
+                        {t(
+                          "dashboard.adminDashboard.manage_your_billing_and_security_settings",
+                        )}
                       </p>
                     </div>
                     <button
@@ -6536,7 +6819,7 @@ export default function AdminDashboard() {
                                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
                               />
                             </svg>
-                            Billing Usage
+                            {t("dashboard.adminDashboard.billing_usage")}
                           </div>
                         </button>
                       )}
@@ -6562,7 +6845,7 @@ export default function AdminDashboard() {
                               d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                             />
                           </svg>
-                          Change Password
+                          {t("dashboard.adminDashboard.change_password")}
                         </div>
                       </button>
                     </div>
@@ -6574,7 +6857,7 @@ export default function AdminDashboard() {
                       <div className="space-y-6">
                         <div className="flex justify-between items-center mb-4">
                           <h4 className="text-lg font-semibold text-slate-900">
-                            Billing Usage
+                            {t("dashboard.adminDashboard.billing_usage")}
                           </h4>
                           {/* <button
                             type="button"
@@ -6723,10 +7006,14 @@ export default function AdminDashboard() {
                                   </div>
                                   <div className="text-left">
                                     <h5 className="text-lg font-semibold text-slate-900">
-                                      Active License Plan
+                                      {t(
+                                        "dashboard.adminDashboard.active_license_plan",
+                                      )}
                                     </h5>
                                     <p className="text-sm text-slate-600">
-                                      Your current subscription details
+                                      {t(
+                                        "dashboard.adminDashboard.your_current_subscription_details",
+                                      )}
                                     </p>
                                   </div>
                                 </div>
@@ -6794,37 +7081,45 @@ export default function AdminDashboard() {
                                       </div>
                                       */}
 
-                                      {/* NAYA CODE */}
-                                      <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
-                                        <p className="text-xs text-slate-600 mb-1">
-                                          Plan Type
-                                        </p>
-                                        <p className="text-lg font-bold text-brand">
-                                          {dashboardLicenseList.length > 0
-                                            ? Array.from(
-                                                new Set(
-                                                  dashboardLicenseList.map(
-                                                    (l) => l.license_type || l.edition || l.type || "D-Secure File Eraser"
-                                                  )
-                                                )
-                                              ).join(", ")
-                                            : "D-Secure File Eraser"}
-                                        </p>
-                                      </div>
-                                      <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
-                                        <p className="text-xs text-slate-600 mb-1">
-                                          Total Licenses
-                                        </p>
-                                        <p className="text-lg font-bold text-slate-900">
-                                          {activeLicensesFromCache ||
-                                            dashboardStats?.totalLicenses ||
-                                            0}
-                                        </p>
-                                      </div>
+                                    {/* NAYA CODE */}
+                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
+                                      <p className="text-xs text-slate-600 mb-1">
+                                        {t(
+                                          "dashboard.adminDashboard.plan_type",
+                                        )}
+                                      </p>
+                                      <p className="text-lg font-bold text-brand">
+                                        {dashboardLicenseList.length > 0
+                                          ? Array.from(
+                                              new Set(
+                                                dashboardLicenseList.map(
+                                                  (l) =>
+                                                    l.license_type ||
+                                                    l.edition ||
+                                                    l.type ||
+                                                    "D-Secure File Eraser",
+                                                ),
+                                              ),
+                                            ).join(", ")
+                                          : "D-Secure File Eraser"}
+                                      </p>
+                                    </div>
+                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4">
+                                      <p className="text-xs text-slate-600 mb-1">
+                                        {t(
+                                          "dashboard.adminDashboard.total_licenses",
+                                        )}
+                                      </p>
+                                      <p className="text-lg font-bold text-slate-900">
+                                        {activeLicensesFromCache ||
+                                          dashboardStats?.totalLicenses ||
+                                          0}
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
                               </div>
+                            </div>
 
                             {/* Accordion 2: License Usage Stats */}
                             {/* <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
@@ -6928,10 +7223,14 @@ export default function AdminDashboard() {
                                   </div>
                                   <div className="text-left">
                                     <h5 className="text-base font-semibold text-slate-900">
-                                      Plan Information
+                                      {t(
+                                        "dashboard.adminDashboard.plan_information",
+                                      )}
                                     </h5>
                                     <p className="text-sm text-slate-600">
-                                      Detailed plan and billing info
+                                      {t(
+                                        "dashboard.adminDashboard.detailed_plan_and_billing_info",
+                                      )}
                                     </p>
                                   </div>
                                 </div>
@@ -6963,353 +7262,70 @@ export default function AdminDashboard() {
                               >
                                 <div className="px-6 pb-6 space-y-4">
                                   {/* Display parsed billing details - Filter sensitive data */}
-                                  
+
                                   {/* NEW STATIC FEATURES DISPLAY */}
                                   {(() => {
-                                    const expiryRaw = dashboardLicenseList.length > 0 
-                                      ? dashboardLicenseList[0]?.expires_at || dashboardLicenseList[0]?.expiryDate 
-                                      : userLicenseDetails?.length > 0 
-                                      ? (userLicenseDetails[0] as any)?.expires_at || (userLicenseDetails[0] as any)?.expiryDate || (userLicenseDetails[0] as any)?.expiry_date
-                                      : billingDetails?.expiry_date || billingDetails?.expires_at || "N/A";
-                                      
+                                    const expiryRaw =
+                                      dashboardLicenseList.length > 0
+                                        ? dashboardLicenseList[0]?.expires_at ||
+                                          dashboardLicenseList[0]?.expiryDate
+                                        : userLicenseDetails?.length > 0
+                                          ? (userLicenseDetails[0] as any)
+                                              ?.expires_at ||
+                                            (userLicenseDetails[0] as any)
+                                              ?.expiryDate ||
+                                            (userLicenseDetails[0] as any)
+                                              ?.expiry_date
+                                          : billingDetails?.expiry_date ||
+                                            billingDetails?.expires_at ||
+                                            "N/A";
+
                                     let displayExpiry = String(expiryRaw);
                                     let isExpired = false;
-                                    
-                                    if (typeof expiryRaw === "string" && !isNaN(Date.parse(expiryRaw))) {
-                                      try { 
-                                        const expiryDateObj = new Date(expiryRaw);
-                                        displayExpiry = expiryDateObj.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); 
+
+                                    if (
+                                      typeof expiryRaw === "string" &&
+                                      !isNaN(Date.parse(expiryRaw))
+                                    ) {
+                                      try {
+                                        const expiryDateObj = new Date(
+                                          expiryRaw,
+                                        );
+                                        displayExpiry =
+                                          expiryDateObj.toLocaleDateString(
+                                            undefined,
+                                            {
+                                              year: "numeric",
+                                              month: "short",
+                                              day: "numeric",
+                                            },
+                                          );
                                         isExpired = expiryDateObj < new Date();
                                       } catch {}
                                     }
 
-                                    const planStatus = isExpired ? "Expired" : (billingDetails?.status || (dashboardLicenseList.length > 0 ? dashboardLicenseList[0]?.status : "Active"));
+                                    const planStatus = isExpired
+                                      ? t("dashboard.adminDashboard.expired_status")
+                                      : billingDetails?.status ||
+                                        (dashboardLicenseList.length > 0
+                                          ? dashboardLicenseList[0]?.status
+                                          : t("dashboard.adminDashboard.active_status"));
                                     const statusDisplay = String(planStatus);
 
-                                    const InfoRow = ({ label, value, isStatus = false }: { label: string, value: string, isStatus?: boolean }) => {
-                                      const icon = label === "Expiry Date" ? (
-                                        <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                      ) : (
-                                        <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                      );
-
-                                      let valueClass = "text-slate-900";
-                                      if (isStatus) {
-                                        valueClass = value.toLowerCase() === "active" ? "text-emerald-600" : "text-red-600";
-                                      } else if (value === "Enabled") {
-                                        valueClass = "text-emerald-600";
-                                      } else if (value === "Disabled") {
-                                        valueClass = "text-slate-500";
-                                      }
-
-                                      return (
-                                        <div className="py-3 border-b border-slate-200 last:border-0">
-                                          <div className="flex items-center gap-3">
-                                            {icon}
-                                            <div className="flex-1 flex justify-between items-center">
-                                              <span className="text-sm font-medium text-slate-700 capitalize">{label}</span>
-                                              <span className={`text-sm font-semibold capitalize ${valueClass}`}>
-                                                {value}
-                                              </span>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      );
-                                    };
-
-                                    return (
-                                      <>
-                                        <InfoRow label="Status" value={statusDisplay} isStatus={true} />
-                                        <InfoRow label="Expiry Date" value={displayExpiry} />
-                                        <InfoRow label="Subusers" value={profileData?.is_subusers_enabled ? "Enabled" : "Disabled"} />
-                                        <InfoRow label="Groups" value={profileData?.is_groups_enabled ? "Enabled" : "Disabled"} />
-                                        <InfoRow label="Private Cloud" value={profileData?.is_private_cloud ? "Enabled" : "Disabled"} />
-                                      </>
-                                    );
-                                  })()}
-
-                                  {/* PREVIOUS NAYA CODE */}
-                                  {false && Object.entries(billingDetails).map(([key, value]) => {
-                                    const allowedFields = ["status", "expirydate", "expiry_date", "expires_at", "expiredate", "valid_till"];
-                                    if (!allowedFields.includes(key.toLowerCase())) return null;
-
-                                    let displayLabel = key.replace(/_/g, " ").replace(/([A-Z])/g, " $1").trim();
-                                    if (key.toLowerCase() === "status") displayLabel = "Status";
-                                    else if (key.toLowerCase().includes("expir")) displayLabel = "Expiry Date";
-
-                                    const icon = key.toLowerCase().includes("expir") || key.toLowerCase().includes("date") ? (
-                                      <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                    ) : (
-                                      <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    );
-
-                                    let displayValue = String(value);
-                                    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)) {
-                                      try { displayValue = new Date(value).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch {}
-                                    }
-
-                                    return (
-                                      <div key={key} className="py-3 border-b border-slate-200 last:border-0">
-                                        <div className="flex items-center gap-3">
-                                          {icon}
-                                          <div className="flex-1 flex justify-between items-center">
-                                            <span className="text-sm font-medium text-slate-700 capitalize">{displayLabel}</span>
-                                            <span className={`text-sm font-semibold capitalize ${key.toLowerCase() === "status" ? (displayValue.toLowerCase() === "active" ? "text-emerald-600" : "text-red-600") : "text-slate-900"}`}>
-                                              {displayValue}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-
-                                  {/* PURANA CODE */}
-                                  {false && Object.entries(billingDetails).map(
-                                    ([key, value]) => {
-                                      // Skip fields already shown in cards above and raw JSON fields
-                                      const skipFields = [
-                                        "activePlanTypes",
-                                        "totalPurchases",
-                                        "totalLicenses",
-                                        "consumedLicenses",
-                                        "availableLicenses",
-                                        // Hide raw JSON array/object fields
-                                        "plans",
-                                        "summary",
-                                        "activeBindings",
-                                        "useremail",
-                                        "machines",
-                                        "bindings",
-                                        // Duplicate/internal fields
-                                        "activePlanIds",
-                                        "usedLicenses",
-                                        // Payment/gateway internal fields
-                                        "paymentGate",
-                                        "paymentGateway",
-                                        "payment_gate",
-                                        "payment_gateway",
-                                        "gatewayId",
-                                        "gateway_id",
-                                        "transactionId",
-                                        "transaction_id",
-                                        "orderId",
-                                        "order_id",
-                                        // Internal IDs and timestamps
-                                        "purchaseId",
-                                        "purchase_id",
-                                        "invoiceId",
-                                        "invoice_id",
-                                        "unbindCount",
-                                        "licenseTransferAllowed",
-                                        "planNotes",
-                                        "plan_notes",
-                                        // Additional payment/internal fields
-                                        "paymentVerified",
-                                        "payment_verified",
-                                        "paymentId",
-                                        "payment_id",
-                                        "currency",
-                                        // Nested objects to hide
-                                        "purchaseDetails",
-                                        "purchase_details",
-                                        // Additional internal/timestamp fields
-                                        "transactionDate",
-                                        "transaction_date",
-                                        "transactionStatus",
-                                        "transaction_status",
-                                        "updatedAt",
-                                        "updated_at",
-                                        "userEmail",
-                                        "user_email",
-                                        // ✅ NAYA CODE: hide license allocations
-                                        // "licenseAllocations",
-                                        // "license_allocations",
-                                        // "allocations"
-                                      ];
-
-                                      if (skipFields.includes(key)) {
-                                        return null;
-                                      }
-
-                                      // List of sensitive fields to hide
-                                      const sensitiveFields = [
-                                        "card_number",
-                                        "cardNumber",
-                                        "card",
-                                        "cardnumber",
-                                        "cvv",
-                                        "cvc",
-                                        "securityCode",
-                                        "security_code",
-                                        "card_cvv",
-                                        "card_cvc",
-                                        "pin",
-                                        "password",
-                                        "secret",
-                                        "account_number",
-                                        "accountNumber",
-                                        "routing_number",
-                                        "routingNumber",
-                                        "ssn",
-                                        "social_security",
-                                      ];
-
-                                      // Check if field is sensitive (case-insensitive)
-                                      const isSensitive = sensitiveFields.some(
-                                        (field) =>
-                                          key
-                                            .toLowerCase()
-                                            .includes(field.toLowerCase()),
-                                      );
-
-                                      // Skip sensitive fields
-                                      if (isSensitive) {
-                                        return null;
-                                      }
-
-                                      if (
-                                        Object.keys(billingDetails).includes(
-                                          "{}",
-                                        )
-                                      )
-                                        return "No billing details available";
-
-                                      // Special handling for address objects
-                                      if (
-                                        typeof value === "object" &&
-                                        value !== null
-                                      ) {
-                                        // ✅ Skip arrays entirely (like activeBindings, machines, etc.)
-                                        if (Array.isArray(value)) {
-                                          return null;
-                                        }
-                                        // Check if it's an address object
-                                        const isAddress = [
-                                          "street",
-                                          "city",
-                                          "state",
-                                          "country",
-                                          "zipCode",
-                                          "zip",
-                                          "postal",
-                                        ].some((field) =>
-                                          Object.keys(value).some((k) =>
-                                            k.toLowerCase().includes(field),
-                                          ),
-                                        );
-
-                                        if (isAddress) {
-                                          const addr = value as any;
-                                          const addressLine = [
-                                            addr.street || addr.address || "",
-                                            addr.city || "",
-                                            addr.state || "",
-                                            addr.country || "",
-                                            addr.zipCode ||
-                                              addr.zip ||
-                                              addr.postalCode ||
-                                              "",
-                                          ]
-                                            .filter(Boolean)
-                                            .join(", ");
-
-                                          return (
-                                            <div
-                                              key={key}
-                                              className="py-3 border-b border-slate-200 last:border-0"
-                                            >
-                                              <div className="flex items-start gap-3">
-                                                <svg
-                                                  className="w-5 h-5 text-brand mt-0.5 flex-shrink-0"
-                                                  fill="none"
-                                                  stroke="currentColor"
-                                                  viewBox="0 0 24 24"
-                                                >
-                                                  <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                                  />
-                                                  <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                                  />
-                                                </svg>
-                                                <div className="flex-1">
-                                                  <span className="block text-sm font-medium text-slate-700 mb-1 capitalize">
-                                                    {key.replace(/_/g, " ")}
-                                                  </span>
-                                                  <span className="text-sm text-slate-900 leading-relaxed">
-                                                    {addressLine}
-                                                  </span>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          );
-                                        }
-
-                                        // For other objects, show prettified JSON
-                                        return (
-                                          <div
-                                            key={key}
-                                            className="py-3 border-b border-slate-200 last:border-0"
-                                          >
-                                            <span className="block text-sm font-medium text-slate-700 mb-1 capitalize">
-                                              {key.replace(/_/g, " ")}
-                                            </span>
-                                            <pre className="text-xs text-slate-900 bg-white p-2 rounded border border-slate-200 overflow-auto">
-                                              {JSON.stringify(value, null, 2)}
-                                            </pre>
-                                          </div>
-                                        );
-                                      }
-
-                                      // Regular field display with icon
-                                      let icon = null;
-                                      let displayLabel = key
-                                        .replace(/_/g, " ")
-                                        .replace(/([A-Z])/g, " $1")
-                                        .trim();
-
-                                      // Customize display labels for specific fields
-                                      const labelMap: {
-                                        [key: string]: string;
-                                      } = {
-                                        activePlanIds: "Plan ID",
-                                        purchaseDate: "Purchase Date",
-                                        expiryDate: "Expiry Date",
-                                        validityYears: "Validity Period",
-                                        userEmail: "Account Email",
-                                      };
-
-                                      if (labelMap[key]) {
-                                        displayLabel = labelMap[key];
-                                      }
-
-                                      // Select appropriate icon
-                                      if (key.toLowerCase().includes("email")) {
-                                        icon = (
-                                          <svg
-                                            className="w-5 h-5 text-brand"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                            />
-                                          </svg>
-                                        );
-                                      } else if (
-                                        key.toLowerCase().includes("date")
-                                      ) {
-                                        icon = (
+                                    const InfoRow = ({
+                                      label,
+                                      value,
+                                      isStatus = false,
+                                    }: {
+                                      label: string;
+                                      value: string;
+                                      isStatus?: boolean;
+                                    }) => {
+                                      const icon =
+                                        label ===
+                                        t(
+                                          "dashboard.adminDashboard.expiry_date_label",
+                                        ) ? (
                                           <svg
                                             className="w-5 h-5 text-brand"
                                             fill="none"
@@ -7323,49 +7339,7 @@ export default function AdminDashboard() {
                                               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                                             />
                                           </svg>
-                                        );
-                                      } else if (
-                                        key
-                                          .toLowerCase()
-                                          .includes("validity") ||
-                                        key.toLowerCase().includes("years")
-                                      ) {
-                                        icon = (
-                                          <svg
-                                            className="w-5 h-5 text-brand"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                                            />
-                                          </svg>
-                                        );
-                                      } else if (
-                                        key.toLowerCase().includes("plan") ||
-                                        key.toLowerCase().includes("id")
-                                      ) {
-                                        icon = (
-                                          <svg
-                                            className="w-5 h-5 text-brand"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                                            />
-                                          </svg>
-                                        );
-                                      } else {
-                                        icon = (
+                                        ) : (
                                           <svg
                                             className="w-5 h-5 text-brand"
                                             fill="none"
@@ -7380,59 +7354,581 @@ export default function AdminDashboard() {
                                             />
                                           </svg>
                                         );
-                                      }
 
-                                      // Format display value
-                                      let displayValue = String(value);
-
-                                      // Detect and format ISO date strings (e.g., 2024-12-01T10:05:00Z)
-                                      const isoDateRegex =
-                                        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
-                                      if (
-                                        typeof value === "string" &&
-                                        isoDateRegex.test(value)
+                                      let valueClass = "text-slate-900";
+                                      if (isStatus) {
+                                        valueClass =
+                                          value.toLowerCase() === "active"
+                                            ? "text-emerald-600"
+                                            : "text-red-600";
+                                      } else if (
+                                        value ===
+                                        t("dashboard.adminDashboard.enabled")
                                       ) {
-                                        try {
-                                          displayValue = new Date(
-                                            value,
-                                          ).toLocaleDateString(undefined, {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric",
-                                          });
-                                        } catch {
-                                          // Keep original value if parsing fails
-                                        }
-                                      }
-
-                                      if (key === "validityYears") {
-                                        displayValue = `${value} ${
-                                          parseInt(String(value)) === 1
-                                            ? "Year"
-                                            : "Years"
-                                        }`;
+                                        valueClass = "text-emerald-600";
+                                      } else if (
+                                        value ===
+                                        t("dashboard.adminDashboard.disabled")
+                                      ) {
+                                        valueClass = "text-slate-500";
                                       }
 
                                       return (
-                                        <div
-                                          key={key}
-                                          className="py-3 border-b border-slate-200 last:border-0"
-                                        >
+                                        <div className="py-3 border-b border-slate-200 last:border-0">
                                           <div className="flex items-center gap-3">
                                             {icon}
                                             <div className="flex-1 flex justify-between items-center">
-                                              <span className="text-sm font-medium text-slate-700">
-                                                {displayLabel}
+                                              <span className="text-sm font-medium text-slate-700 capitalize">
+                                                {label}
                                               </span>
-                                              <span className="text-sm text-slate-900 font-semibold">
-                                                {displayValue}
+                                              <span
+                                                className={`text-sm font-semibold capitalize ${valueClass}`}
+                                              >
+                                                {value}
                                               </span>
                                             </div>
                                           </div>
                                         </div>
                                       );
-                                    },
-                                  )}
+                                    };
+
+                                    return (
+                                      <>
+                                        <InfoRow
+                                          label={t(
+                                            "dashboard.adminDashboard.status_label",
+                                          )}
+                                          value={statusDisplay}
+                                          isStatus={true}
+                                        />
+                                        <InfoRow
+                                          label={t(
+                                            "dashboard.adminDashboard.expiry_date_label",
+                                          )}
+                                          value={displayExpiry}
+                                        />
+                                        <InfoRow
+                                          label={t(
+                                            "dashboard.adminDashboard.subusers_label",
+                                          )}
+                                          value={
+                                            profileData?.is_subusers_enabled
+                                              ? t(
+                                                  "dashboard.adminDashboard.enabled",
+                                                )
+                                              : t(
+                                                  "dashboard.adminDashboard.disabled",
+                                                )
+                                          }
+                                        />
+                                        <InfoRow
+                                          label={t(
+                                            "dashboard.adminDashboard.groups_label",
+                                          )}
+                                          value={
+                                            profileData?.is_groups_enabled
+                                              ? t(
+                                                  "dashboard.adminDashboard.enabled",
+                                                )
+                                              : t(
+                                                  "dashboard.adminDashboard.disabled",
+                                                )
+                                          }
+                                        />
+                                        <InfoRow
+                                          label={t(
+                                            "dashboard.adminDashboard.private_cloud_label",
+                                          )}
+                                          value={
+                                            profileData?.is_private_cloud
+                                              ? t(
+                                                  "dashboard.adminDashboard.enabled",
+                                                )
+                                              : t(
+                                                  "dashboard.adminDashboard.disabled",
+                                                )
+                                          }
+                                        />
+                                      </>
+                                    );
+                                  })()}
+
+                                  {/* PREVIOUS NAYA CODE */}
+                                  {false &&
+                                    Object.entries(billingDetails).map(
+                                      ([key, value]) => {
+                                        const allowedFields = [
+                                          "status",
+                                          "expirydate",
+                                          "expiry_date",
+                                          "expires_at",
+                                          "expiredate",
+                                          "valid_till",
+                                        ];
+                                        if (
+                                          !allowedFields.includes(
+                                            key.toLowerCase(),
+                                          )
+                                        )
+                                          return null;
+
+                                        let displayLabel = key
+                                          .replace(/_/g, " ")
+                                          .replace(/([A-Z])/g, " $1")
+                                          .trim();
+                                        if (key.toLowerCase() === "status")
+                                          displayLabel = "Status";
+                                        else if (
+                                          key.toLowerCase().includes("expir")
+                                        )
+                                          displayLabel = "Expiry Date";
+
+                                        const icon =
+                                          key.toLowerCase().includes("expir") ||
+                                          key.toLowerCase().includes("date") ? (
+                                            <svg
+                                              className="w-5 h-5 text-brand"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                              />
+                                            </svg>
+                                          ) : (
+                                            <svg
+                                              className="w-5 h-5 text-brand"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                              />
+                                            </svg>
+                                          );
+
+                                        let displayValue = String(value);
+                                        if (
+                                          typeof value === "string" &&
+                                          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(
+                                            value,
+                                          )
+                                        ) {
+                                          try {
+                                            displayValue = new Date(
+                                              value,
+                                            ).toLocaleDateString(undefined, {
+                                              year: "numeric",
+                                              month: "short",
+                                              day: "numeric",
+                                            });
+                                          } catch {}
+                                        }
+
+                                        return (
+                                          <div
+                                            key={key}
+                                            className="py-3 border-b border-slate-200 last:border-0"
+                                          >
+                                            <div className="flex items-center gap-3">
+                                              {icon}
+                                              <div className="flex-1 flex justify-between items-center">
+                                                <span className="text-sm font-medium text-slate-700 capitalize">
+                                                  {displayLabel}
+                                                </span>
+                                                <span
+                                                  className={`text-sm font-semibold capitalize ${key.toLowerCase() === "status" ? (displayValue.toLowerCase() === "active" ? "text-emerald-600" : "text-red-600") : "text-slate-900"}`}
+                                                >
+                                                  {displayValue}
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      },
+                                    )}
+
+                                  {/* PURANA CODE */}
+                                  {false &&
+                                    Object.entries(billingDetails).map(
+                                      ([key, value]) => {
+                                        // Skip fields already shown in cards above and raw JSON fields
+                                        const skipFields = [
+                                          "activePlanTypes",
+                                          "totalPurchases",
+                                          "totalLicenses",
+                                          "consumedLicenses",
+                                          "availableLicenses",
+                                          // Hide raw JSON array/object fields
+                                          "plans",
+                                          "summary",
+                                          "activeBindings",
+                                          "useremail",
+                                          "machines",
+                                          "bindings",
+                                          // Duplicate/internal fields
+                                          "activePlanIds",
+                                          "usedLicenses",
+                                          // Payment/gateway internal fields
+                                          "paymentGate",
+                                          "paymentGateway",
+                                          "payment_gate",
+                                          "payment_gateway",
+                                          "gatewayId",
+                                          "gateway_id",
+                                          "transactionId",
+                                          "transaction_id",
+                                          "orderId",
+                                          "order_id",
+                                          // Internal IDs and timestamps
+                                          "purchaseId",
+                                          "purchase_id",
+                                          "invoiceId",
+                                          "invoice_id",
+                                          "unbindCount",
+                                          "licenseTransferAllowed",
+                                          "planNotes",
+                                          "plan_notes",
+                                          // Additional payment/internal fields
+                                          "paymentVerified",
+                                          "payment_verified",
+                                          "paymentId",
+                                          "payment_id",
+                                          "currency",
+                                          // Nested objects to hide
+                                          "purchaseDetails",
+                                          "purchase_details",
+                                          // Additional internal/timestamp fields
+                                          "transactionDate",
+                                          "transaction_date",
+                                          "transactionStatus",
+                                          "transaction_status",
+                                          "updatedAt",
+                                          "updated_at",
+                                          "userEmail",
+                                          "user_email",
+                                          // ✅ NAYA CODE: hide license allocations
+                                          // "licenseAllocations",
+                                          // "license_allocations",
+                                          // "allocations"
+                                        ];
+
+                                        if (skipFields.includes(key)) {
+                                          return null;
+                                        }
+
+                                        // List of sensitive fields to hide
+                                        const sensitiveFields = [
+                                          "card_number",
+                                          "cardNumber",
+                                          "card",
+                                          "cardnumber",
+                                          "cvv",
+                                          "cvc",
+                                          "securityCode",
+                                          "security_code",
+                                          "card_cvv",
+                                          "card_cvc",
+                                          "pin",
+                                          "password",
+                                          "secret",
+                                          "account_number",
+                                          "accountNumber",
+                                          "routing_number",
+                                          "routingNumber",
+                                          "ssn",
+                                          "social_security",
+                                        ];
+
+                                        // Check if field is sensitive (case-insensitive)
+                                        const isSensitive =
+                                          sensitiveFields.some((field) =>
+                                            key
+                                              .toLowerCase()
+                                              .includes(field.toLowerCase()),
+                                          );
+
+                                        // Skip sensitive fields
+                                        if (isSensitive) {
+                                          return null;
+                                        }
+
+                                        if (
+                                          Object.keys(billingDetails).includes(
+                                            "{}",
+                                          )
+                                        )
+                                          return "No billing details available";
+
+                                        // Special handling for address objects
+                                        if (
+                                          typeof value === "object" &&
+                                          value !== null
+                                        ) {
+                                          // ✅ Skip arrays entirely (like activeBindings, machines, etc.)
+                                          if (Array.isArray(value)) {
+                                            return null;
+                                          }
+                                          // Check if it's an address object
+                                          const isAddress = [
+                                            "street",
+                                            "city",
+                                            "state",
+                                            "country",
+                                            "zipCode",
+                                            "zip",
+                                            "postal",
+                                          ].some((field) =>
+                                            Object.keys(value).some((k) =>
+                                              k.toLowerCase().includes(field),
+                                            ),
+                                          );
+
+                                          if (isAddress) {
+                                            const addr = value as any;
+                                            const addressLine = [
+                                              addr.street || addr.address || "",
+                                              addr.city || "",
+                                              addr.state || "",
+                                              addr.country || "",
+                                              addr.zipCode ||
+                                                addr.zip ||
+                                                addr.postalCode ||
+                                                "",
+                                            ]
+                                              .filter(Boolean)
+                                              .join(", ");
+
+                                            return (
+                                              <div
+                                                key={key}
+                                                className="py-3 border-b border-slate-200 last:border-0"
+                                              >
+                                                <div className="flex items-start gap-3">
+                                                  <svg
+                                                    className="w-5 h-5 text-brand mt-0.5 flex-shrink-0"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                  >
+                                                    <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      strokeWidth={2}
+                                                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                                    />
+                                                    <path
+                                                      strokeLinecap="round"
+                                                      strokeLinejoin="round"
+                                                      strokeWidth={2}
+                                                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    />
+                                                  </svg>
+                                                  <div className="flex-1">
+                                                    <span className="block text-sm font-medium text-slate-700 mb-1 capitalize">
+                                                      {key.replace(/_/g, " ")}
+                                                    </span>
+                                                    <span className="text-sm text-slate-900 leading-relaxed">
+                                                      {addressLine}
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            );
+                                          }
+
+                                          // For other objects, show prettified JSON
+                                          return (
+                                            <div
+                                              key={key}
+                                              className="py-3 border-b border-slate-200 last:border-0"
+                                            >
+                                              <span className="block text-sm font-medium text-slate-700 mb-1 capitalize">
+                                                {key.replace(/_/g, " ")}
+                                              </span>
+                                              <pre className="text-xs text-slate-900 bg-white p-2 rounded border border-slate-200 overflow-auto">
+                                                {JSON.stringify(value, null, 2)}
+                                              </pre>
+                                            </div>
+                                          );
+                                        }
+
+                                        // Regular field display with icon
+                                        let icon = null;
+                                        let displayLabel = key
+                                          .replace(/_/g, " ")
+                                          .replace(/([A-Z])/g, " $1")
+                                          .trim();
+
+                                        // Customize display labels for specific fields
+                                        const labelMap: {
+                                          [key: string]: string;
+                                        } = {
+                                          activePlanIds: "Plan ID",
+                                          purchaseDate: "Purchase Date",
+                                          expiryDate: "Expiry Date",
+                                          validityYears: "Validity Period",
+                                          userEmail: "Account Email",
+                                        };
+
+                                        if (labelMap[key]) {
+                                          displayLabel = labelMap[key];
+                                        }
+
+                                        // Select appropriate icon
+                                        if (
+                                          key.toLowerCase().includes("email")
+                                        ) {
+                                          icon = (
+                                            <svg
+                                              className="w-5 h-5 text-brand"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                              />
+                                            </svg>
+                                          );
+                                        } else if (
+                                          key.toLowerCase().includes("date")
+                                        ) {
+                                          icon = (
+                                            <svg
+                                              className="w-5 h-5 text-brand"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                              />
+                                            </svg>
+                                          );
+                                        } else if (
+                                          key
+                                            .toLowerCase()
+                                            .includes("validity") ||
+                                          key.toLowerCase().includes("years")
+                                        ) {
+                                          icon = (
+                                            <svg
+                                              className="w-5 h-5 text-brand"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                              />
+                                            </svg>
+                                          );
+                                        } else if (
+                                          key.toLowerCase().includes("plan") ||
+                                          key.toLowerCase().includes("id")
+                                        ) {
+                                          icon = (
+                                            <svg
+                                              className="w-5 h-5 text-brand"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                                              />
+                                            </svg>
+                                          );
+                                        } else {
+                                          icon = (
+                                            <svg
+                                              className="w-5 h-5 text-brand"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              viewBox="0 0 24 24"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                              />
+                                            </svg>
+                                          );
+                                        }
+
+                                        // Format display value
+                                        let displayValue = String(value);
+
+                                        // Detect and format ISO date strings (e.g., 2024-12-01T10:05:00Z)
+                                        const isoDateRegex =
+                                          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+                                        if (
+                                          typeof value === "string" &&
+                                          isoDateRegex.test(value)
+                                        ) {
+                                          try {
+                                            displayValue = new Date(
+                                              value,
+                                            ).toLocaleDateString(undefined, {
+                                              year: "numeric",
+                                              month: "long",
+                                              day: "numeric",
+                                            });
+                                          } catch {
+                                            // Keep original value if parsing fails
+                                          }
+                                        }
+
+                                        if (key === "validityYears") {
+                                          displayValue = `${value} ${
+                                            parseInt(String(value)) === 1
+                                              ? "Year"
+                                              : "Years"
+                                          }`;
+                                        }
+
+                                        return (
+                                          <div
+                                            key={key}
+                                            className="py-3 border-b border-slate-200 last:border-0"
+                                          >
+                                            <div className="flex items-center gap-3">
+                                              {icon}
+                                              <div className="flex-1 flex justify-between items-center">
+                                                <span className="text-sm font-medium text-slate-700">
+                                                  {displayLabel}
+                                                </span>
+                                                <span className="text-sm text-slate-900 font-semibold">
+                                                  {displayValue}
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      },
+                                    )}
                                 </div>
                               </div>
                             </div>
@@ -7453,10 +7949,14 @@ export default function AdminDashboard() {
                               />
                             </svg>
                             <p className="text-base font-medium">
-                              No billing details available
+                              {t(
+                                "dashboard.adminDashboard.no_billing_details_available",
+                              )}
                             </p>
                             <p className="text-sm mt-1">
-                              Your billing information will appear here once you
+                              {t(
+                                "dashboard.adminDashboard.your_billing_information_will_appear_here_onc",
+                              )}
                               subscribe
                             </p>
                           </div>
@@ -7465,7 +7965,7 @@ export default function AdminDashboard() {
                     ) : (
                       <div className="space-y-4">
                         <h4 className="text-lg font-semibold text-slate-900 mb-4">
-                          Change Password
+                          {t("dashboard.adminDashboard.change_password")}
                         </h4>
 
                         <form
@@ -7491,7 +7991,12 @@ export default function AdminDashboard() {
                               const userEmail =
                                 profileData?.email || user?.email;
                               if (!userEmail) {
-                                showError("Error", "User email not found");
+                                showError(
+                                  t("dashboard.adminDashboard.error"),
+                                  t(
+                                    "dashboard.adminDashboard.user_email_not_found",
+                                  ),
+                                );
                                 return;
                               }
 
@@ -7502,8 +8007,12 @@ export default function AdminDashboard() {
 
                               if (response.success) {
                                 showSuccess(
-                                  "Password Changed",
-                                  "Your password has been updated successfully",
+                                  t(
+                                    "dashboard.adminDashboard.password_changed",
+                                  ),
+                                  t(
+                                    "dashboard.adminDashboard.password_changed_msg",
+                                  ),
                                 );
                                 setChangePasswordForm({
                                   currentPassword: "",
@@ -7512,15 +8021,20 @@ export default function AdminDashboard() {
                                 setShowSettingsModal(false);
                               } else {
                                 showError(
-                                  "Change Failed",
-                                  response.error || "Failed to change password",
+                                  t("dashboard.adminDashboard.change_failed"),
+                                  response.error ||
+                                    t(
+                                      "dashboard.adminDashboard.failed_to_change_password",
+                                    ),
                                 );
                               }
                             } catch (error) {
                               devError("Password change error:", error);
                               showError(
-                                "Error",
-                                "An error occurred while changing password",
+                                t("dashboard.adminDashboard.error"),
+                                t(
+                                  "dashboard.adminDashboard.error_changing_password",
+                                ),
                               );
                             } finally {
                               setPasswordChangeLoading(false);
@@ -7531,7 +8045,7 @@ export default function AdminDashboard() {
                             {/* Current Password */}
                             <div>
                               <label className="block text-sm font-medium text-slate-700 mb-2">
-                                Current Password{" "}
+                                {t("dashboard.adminDashboard.current_password")}{" "}
                                 <span className="text-red-500">*</span>
                               </label>
                               <input
@@ -7544,7 +8058,9 @@ export default function AdminDashboard() {
                                   }))
                                 }
                                 className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-brand/50 focus:border-brand"
-                                placeholder="Enter current password"
+                                placeholder={t(
+                                  "dashboard.adminDashboard.enter_current_password",
+                                )}
                                 required
                               />
                             </div>
@@ -7552,7 +8068,7 @@ export default function AdminDashboard() {
                             {/* New Password */}
                             <div>
                               <label className="block text-sm font-medium text-slate-700 mb-2">
-                                New Password{" "}
+                                {t("dashboard.adminDashboard.new_password")}{" "}
                                 <span className="text-red-500">*</span>
                               </label>
                               <input
@@ -7565,7 +8081,9 @@ export default function AdminDashboard() {
                                   }))
                                 }
                                 className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-brand/50 focus:border-brand"
-                                placeholder="Enter new password (min 6 characters)"
+                                placeholder={t(
+                                  "dashboard.adminDashboard.enter_new_password_min_6_characters",
+                                )}
                                 required
                                 minLength={6}
                               />
@@ -7599,7 +8117,7 @@ export default function AdminDashboard() {
                                 }}
                                 className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-md transition-colors"
                               >
-                                Cancel
+                                {t("dashboard.adminDashboard.cancel")}
                               </button>
                               <button
                                 type="submit"
@@ -7627,10 +8145,10 @@ export default function AdminDashboard() {
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                       ></path>
                                     </svg>
-                                    Changing...
+                                    {t("dashboard.adminDashboard.changing")}
                                   </>
                                 ) : (
-                                  "Change Password"
+                                  t("dashboard.adminDashboard.change_password")
                                 )}
                               </button>
                             </div>
@@ -7658,7 +8176,7 @@ export default function AdminDashboard() {
                           htmlFor="userName"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          Full Name *
+                          {t("dashboard.adminDashboard.full_name")} *
                         </label>
                         <input
                           type="text"
@@ -7671,7 +8189,9 @@ export default function AdminDashboard() {
                             }))
                           }
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                          placeholder="Enter full name"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_full_name",
+                          )}
                         />
                       </div>
                       <div>
@@ -7679,7 +8199,10 @@ export default function AdminDashboard() {
                           htmlFor="licenseAllocation"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          License Allocation *
+                          {t(
+                            "dashboard.adminDashboard.license_allocation_label",
+                          )}{" "}
+                          *
                         </label>
                         <input
                           type="number"
@@ -7692,7 +8215,9 @@ export default function AdminDashboard() {
                             }))
                           }
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                          placeholder="Enter license allocation"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_license_allocation",
+                          )}
                         />
                       </div>
                     </div>
@@ -7701,7 +8226,7 @@ export default function AdminDashboard() {
                         htmlFor="userEmail"
                         className="block text-sm font-medium text-slate-700 mb-2"
                       >
-                        Email Address *
+                        {t("dashboard.adminDashboard.email_address")} *
                       </label>
                       <input
                         type="email"
@@ -7714,7 +8239,9 @@ export default function AdminDashboard() {
                           }))
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                        placeholder="Enter email address"
+                        placeholder={t(
+                          "dashboard.adminDashboard.enter_email_address",
+                        )}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -7723,7 +8250,7 @@ export default function AdminDashboard() {
                           htmlFor="userDepartment"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          Department
+                          {t("dashboard.adminDashboard.department_label")}
                         </label>
                         <input
                           type="text"
@@ -7736,7 +8263,9 @@ export default function AdminDashboard() {
                             }))
                           }
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                          placeholder="Enter department"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_department",
+                          )}
                         />
                       </div>
                       <div>
@@ -7744,7 +8273,7 @@ export default function AdminDashboard() {
                           htmlFor="userRole"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          Role
+                          {t("dashboard.adminDashboard.role_field_label")}
                         </label>
                         <input
                           type="text"
@@ -7757,7 +8286,9 @@ export default function AdminDashboard() {
                             }))
                           }
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                          placeholder="Enter role (e.g., user, admin, manager)"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_role_eg_user_admin_manager",
+                          )}
                         />
                       </div>
                     </div>
@@ -7766,7 +8297,7 @@ export default function AdminDashboard() {
                         htmlFor="userPassword"
                         className="block text-sm font-medium text-slate-700 mb-2"
                       >
-                        Password *
+                        {t("dashboard.adminDashboard.password_label")} *
                       </label>
                       <input
                         type="password"
@@ -7779,7 +8310,9 @@ export default function AdminDashboard() {
                           }))
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                        placeholder="Enter password"
+                        placeholder={t(
+                          "dashboard.adminDashboard.enter_password",
+                        )}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -7788,7 +8321,7 @@ export default function AdminDashboard() {
                           htmlFor="userPhone"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          Phone Number *
+                          {t("dashboard.adminDashboard.phone_number")} *
                         </label>
                         <input
                           type="tel"
@@ -7801,7 +8334,9 @@ export default function AdminDashboard() {
                             }))
                           }
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                          placeholder="Enter phone number"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_phone_number",
+                          )}
                         />
                       </div>
                       <div>
@@ -7809,7 +8344,7 @@ export default function AdminDashboard() {
                           htmlFor="userGroup"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          Group
+                          {t("dashboard.adminDashboard.group_label")}
                         </label>
                         <input
                           type="text"
@@ -7822,7 +8357,9 @@ export default function AdminDashboard() {
                             }))
                           }
                           className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                          placeholder="Enter group"
+                          placeholder={t(
+                            "dashboard.adminDashboard.enter_group",
+                          )}
                         />
                       </div>
                     </div>
@@ -7844,14 +8381,16 @@ export default function AdminDashboard() {
                       }}
                       className="flex-1 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
                     >
-                      Cancel
+                      {t("dashboard.adminDashboard.cancel")}
                     </button>
                     <button
                       onClick={handleAddUserSubmit}
                       disabled={isLoading}
                       className="flex-1 px-4 py-2 text-sm font-medium text-white bg-brand hover:bg-brand-700 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors disabled:opacity-50"
                     >
-                      {isLoading ? "Creating..." : "Create User"}
+                      {isLoading
+                        ? t("dashboard.adminDashboard.creating")
+                        : t("dashboard.adminDashboard.create_user")}
                     </button>
                   </div>
                 </div>
@@ -7864,10 +8403,10 @@ export default function AdminDashboard() {
                 <div className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
                   <div className="px-6 py-5 border-b border-slate-200">
                     <h3 className="text-xl font-semibold text-slate-900">
-                      Add New Group
+                      {t("dashboard.adminDashboard.add_new_group")}
                     </h3>
                     <p className="text-sm text-slate-600 mt-1">
-                      Create a new user group
+                      {t("dashboard.adminDashboard.create_a_new_user_group")}
                     </p>
                   </div>
                   <div className="px-6 py-5 space-y-4">
@@ -7876,7 +8415,7 @@ export default function AdminDashboard() {
                         htmlFor="groupName"
                         className="block text-sm font-medium text-slate-700 mb-2"
                       >
-                        Group Name *
+                        {t("dashboard.adminDashboard.group_name")} *
                       </label>
                       <input
                         type="text"
@@ -7889,7 +8428,9 @@ export default function AdminDashboard() {
                           }))
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                        placeholder="Enter group name"
+                        placeholder={t(
+                          "dashboard.adminDashboard.enter_group_name",
+                        )}
                       />
                     </div>
                     <div>
@@ -7910,7 +8451,9 @@ export default function AdminDashboard() {
                           }))
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                        placeholder="Enter group description"
+                        placeholder={t(
+                          "dashboard.adminDashboard.enter_group_description",
+                        )}
                       />
                     </div>
                     <div>
@@ -7918,7 +8461,7 @@ export default function AdminDashboard() {
                         htmlFor="groupLicenses"
                         className="block text-sm font-medium text-slate-700 mb-2"
                       >
-                        Initial License Count
+                        {t("dashboard.adminDashboard.initial_license_count")}
                       </label>
                       <input
                         type="number"
@@ -7968,7 +8511,7 @@ export default function AdminDashboard() {
                 <div className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
                   <div className="px-6 py-5 border-b border-slate-200">
                     <h3 className="text-xl font-semibold text-slate-900">
-                      Assign Licenses
+                      {t("dashboard.adminDashboard.assign_licenses")}
                     </h3>
                     <p className="text-sm text-slate-600 mt-1">
                       Assign licenses to group:{" "}
@@ -7997,7 +8540,9 @@ export default function AdminDashboard() {
                           }))
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
-                        placeholder="Enter license count"
+                        placeholder={t(
+                          "dashboard.adminDashboard.enter_license_count",
+                        )}
                       />
                     </div>
                     <div>
@@ -8005,7 +8550,7 @@ export default function AdminDashboard() {
                         htmlFor="licenseType"
                         className="block text-sm font-medium text-slate-700 mb-2"
                       >
-                        License Type
+                        {t("dashboard.adminDashboard.license_type")}
                       </label>
                       <select
                         id="licenseType"
@@ -8018,9 +8563,15 @@ export default function AdminDashboard() {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand"
                       >
-                        <option value="basic">Basic</option>
-                        <option value="premium">Premium</option>
-                        <option value="enterprise">Enterprise</option>
+                        <option value="basic">
+                          {t("dashboard.adminDashboard.basic")}
+                        </option>
+                        <option value="premium">
+                          {t("dashboard.adminDashboard.premium")}
+                        </option>
+                        <option value="enterprise">
+                          {t("dashboard.adminDashboard.enterprise")}
+                        </option>
                       </select>
                     </div>
                     <div>
@@ -8077,10 +8628,12 @@ export default function AdminDashboard() {
                 <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                   <div className="px-6 py-5 border-b border-slate-200">
                     <h3 className="text-xl font-semibold text-slate-900">
-                      System Settings
+                      {t("dashboard.adminDashboard.system_settings")}
                     </h3>
                     <p className="text-sm text-slate-600 mt-1">
-                      Configure system-wide settings and preferences
+                      {t(
+                        "dashboard.adminDashboard.configure_systemwide_settings_and_preferences",
+                      )}
                     </p>
                   </div>
                   <div className="px-6 py-5 space-y-6">
@@ -8090,7 +8643,7 @@ export default function AdminDashboard() {
                           htmlFor="systemName"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          System Name
+                          {t("dashboard.adminDashboard.system_name")}
                         </label>
                         <input
                           type="text"
@@ -8104,7 +8657,7 @@ export default function AdminDashboard() {
                           htmlFor="adminEmail"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          Admin Email
+                          {t("dashboard.adminDashboard.admin_email")}
                         </label>
                         <input
                           type="email"
@@ -8116,13 +8669,15 @@ export default function AdminDashboard() {
                     </div>
                     <div className="border-t border-slate-200 pt-4">
                       <h4 className="font-medium text-slate-900 mb-3">
-                        Security Settings
+                        {t("dashboard.adminDashboard.security_settings")}
                       </h4>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <div>
                             <span className="text-sm font-medium text-slate-700">
-                              Two-Factor Authentication
+                              {t(
+                                "dashboard.adminDashboard.twofactor_authentication",
+                              )}
                             </span>
                             <p className="text-xs text-slate-500">
                               Require 2FA for all admin users
@@ -8139,26 +8694,38 @@ export default function AdminDashboard() {
                               Auto-logout
                             </span>
                             <p className="text-xs text-slate-500">
-                              Automatic logout after inactivity
+                              {t(
+                                "dashboard.adminDashboard.automatic_logout_after_inactivity",
+                              )}
                             </p>
                           </div>
                           <select className="text-sm border border-slate-300 rounded px-2 py-1">
-                            <option>30 minutes</option>
-                            <option>1 hour</option>
-                            <option>4 hours</option>
-                            <option>Never</option>
+                            <option>
+                              {t("dashboard.adminDashboard.30_minutes")}
+                            </option>
+                            <option>
+                              {t("dashboard.adminDashboard.1_hour")}
+                            </option>
+                            <option>
+                              {t("dashboard.adminDashboard.4_hours")}
+                            </option>
+                            <option>
+                              {t("dashboard.adminDashboard.never")}
+                            </option>
                           </select>
                         </div>
                       </div>
                     </div>
                     <div className="border-t border-slate-200 pt-4">
                       <h4 className="font-medium text-slate-900 mb-3">
-                        License Settings
+                        {t("dashboard.adminDashboard.license_settings")}
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Default License Duration (days)
+                            {t(
+                              "dashboard.adminDashboard.default_license_duration_days",
+                            )}
                           </label>
                           <input
                             type="number"
@@ -8168,7 +8735,9 @@ export default function AdminDashboard() {
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Max Licenses Per User
+                            {t(
+                              "dashboard.adminDashboard.max_licenses_per_user",
+                            )}
                           </label>
                           <input
                             type="number"
@@ -8196,7 +8765,7 @@ export default function AdminDashboard() {
                       }}
                       className="flex-1 px-4 py-2 text-sm font-medium text-white bg-brand hover:bg-brand-700 rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
                     >
-                      Save Settings
+                      {t("dashboard.adminDashboard.save_settings")}
                     </button>
                   </div>
                 </div>
@@ -8209,10 +8778,12 @@ export default function AdminDashboard() {
                 <div className="card">
                   <div className="px-6 py-5 border-b border-slate-200">
                     <h2 className="font-semibold text-slate-900">
-                      Software Downloads
+                      {t("dashboard.adminDashboard.software_downloads")}
                     </h2>
                     <p className="text-sm text-slate-600 mt-1">
-                      Download D-Secure software installers for your platform
+                      {t(
+                        "dashboard.adminDashboard.download_dsecure_software_installers_for_your",
+                      )}
                     </p>
                   </div>
                   <div className="p-6">
@@ -8237,16 +8808,18 @@ export default function AdminDashboard() {
                           </div>
                           <div>
                             <h3 className="text-lg font-bold text-slate-900">
-                              File Eraser
+                              {t("dashboard.adminDashboard.file_eraser")}
                             </h3>
                             <p className="text-xs text-slate-600">
-                              Version 2.0.1
+                              {t("dashboard.adminDashboard.version_label")} 2.0.1
                             </p>
                           </div>
                         </div>
                         <p className="text-sm text-slate-700 mb-4">
-                          Securely erase files and folders with military-grade
-                          algorithms
+                          {t(
+                            "dashboard.adminDashboard.securely_erase_files_and_folders_with_militar",
+                          )}
+                          
                         </p>
                         <Link
                           to="/download?product=file-eraser"
@@ -8265,7 +8838,7 @@ export default function AdminDashboard() {
                               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                             />
                           </svg>
-                          Download Now
+                          {t("dashboard.adminDashboard.download_now")}
                         </Link>
                       </div>
 
@@ -8289,15 +8862,17 @@ export default function AdminDashboard() {
                           </div>
                           <div>
                             <h3 className="text-lg font-bold text-slate-900">
-                              Drive Eraser
+                              {t("dashboard.adminDashboard.drive_eraser")}
                             </h3>
                             <p className="text-xs text-slate-600">
-                              Version 2.0.1
+                              {t("dashboard.adminDashboard.version_label")} 2.0.1
                             </p>
                           </div>
                         </div>
                         <p className="text-sm text-slate-700 mb-4">
-                          Complete drive sanitization for HDDs and SSDs
+                          {t(
+                            "dashboard.adminDashboard.complete_drive_sanitization_for_hdds_and_ssds",
+                          )}
                         </p>
                         <Link
                           to="/download?product=drive-eraser"
@@ -8316,7 +8891,7 @@ export default function AdminDashboard() {
                               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                             />
                           </svg>
-                          Download Now
+                          {t("dashboard.adminDashboard.download_now")}
                         </Link>
                       </div>
 
@@ -8413,10 +8988,12 @@ export default function AdminDashboard() {
                       </div>
                       <div>
                         <h3 className="text-xl font-semibold text-white">
-                          Private Cloud Setup
+                          {t("dashboard.adminDashboard.private_cloud_setup")}
                         </h3>
                         <p className="text-sm text-purple-100 mt-1">
-                          Configure your private cloud database connection
+                          {t(
+                            "dashboard.adminDashboard.configure_your_private_cloud_database_connect",
+                          )}
                         </p>
                       </div>
                     </div>
@@ -8438,12 +9015,16 @@ export default function AdminDashboard() {
                             connectionString: e.target.value,
                           })
                         }
-                        placeholder="Server=myserver;Database=mydb;User Id=myuser;Password=mypass;"
+                        placeholder={t(
+                          "dashboard.adminDashboard.servermyserverdatabasemydbuser_idmyuserpasswo",
+                        )}
                         rows={3}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
                       />
                       <p className="text-xs text-slate-500 mt-1">
-                        Enter your database connection string
+                        {t(
+                          "dashboard.adminDashboard.enter_your_database_connection_string",
+                        )}
                       </p>
                     </div>
 
@@ -8532,10 +9113,12 @@ export default function AdminDashboard() {
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                               />
                             </svg>
-                            Migrate Data
+                            {t("dashboard.adminDashboard.migrate_data")}
                           </label>
                           <p className="text-xs text-slate-600 mt-1 ml-7">
-                            Transfer existing data to private cloud
+                            {t(
+                              "dashboard.adminDashboard.transfer_existing_data_to_private_cloud",
+                            )}
                           </p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
@@ -8573,10 +9156,12 @@ export default function AdminDashboard() {
                                 d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                               />
                             </svg>
-                            Migrate Tables
+                            {t("dashboard.adminDashboard.migrate_tables")}
                           </label>
                           <p className="text-xs text-slate-600 mt-1 ml-7">
-                            Sync table structure to private cloud
+                            {t(
+                              "dashboard.adminDashboard.sync_table_structure_to_private_cloud",
+                            )}
                           </p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
@@ -8614,7 +9199,7 @@ export default function AdminDashboard() {
                         </svg>
                         <div>
                           <h4 className="text-sm font-medium text-amber-900 mb-1">
-                            Important Note
+                            {t("dashboard.adminDashboard.important_note")}
                           </h4>
                           <ul className="text-xs text-amber-800 space-y-1">
                             <li>
@@ -8625,7 +9210,11 @@ export default function AdminDashboard() {
                               • Data migration may take time depending on data
                               volume
                             </li>
-                            <li>• Backup your data before migration</li>
+                            <li>
+                              {t(
+                                "dashboard.adminDashboard._backup_your_data_before_migration",
+                              )}
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -8720,7 +9309,7 @@ export default function AdminDashboard() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             ></path>
                           </svg>
-                          Setting Up...
+                          {t("dashboard.adminDashboard.setting_up")}
                         </span>
                       ) : (
                         "Setup Private Cloud"

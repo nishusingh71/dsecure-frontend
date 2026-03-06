@@ -1,6 +1,6 @@
 import Reveal from "@/components/Reveal";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import { useTranslation } from "react-i18next";
 import {
   DollarIcon,
@@ -95,7 +95,7 @@ interface Office {
 }
 
 function ContactPageContent() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("contact");
   const [usageType, setUsageType] = useState<"business" | "personal">(
     "business",
   );
@@ -174,13 +174,13 @@ function ContactPageContent() {
 
     // Validation
     const errors: string[] = [];
-    if (!formData.name?.trim()) errors.push("Name is required");
+    if (!formData.name?.trim()) errors.push(t("validation.nameRequired"));
     if (!formData.email?.trim()) {
-      errors.push("Email is required");
+      errors.push(t("validation.emailRequired"));
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errors.push("Please enter a valid email address");
+      errors.push(t("validation.emailInvalid"));
     }
-    if (!formData.message?.trim()) errors.push("Message is required");
+    if (!formData.message?.trim()) errors.push(t("validation.messageRequired"));
 
     if (errors.length > 0) {
       showToast(errors.join(", "), "error");
@@ -282,10 +282,7 @@ function ContactPageContent() {
       });
       setIsLoading(false);
       // === SUCCESS ===
-      showToast(
-        "Thank you! Your enquiry has been submitted successfully.",
-        "success",
-      );
+      showToast(t("toast.success"), "success");
       try {
         const API_BASE = ENV.API_BASE_URL;
         const apiResponse = await fetch(
@@ -319,10 +316,7 @@ function ContactPageContent() {
           const errorData = await apiResponse.json();
           // Log but don't stop execution - let FormSubmit try as fallback/email handler
           console.error("Backend submission failed:", errorData);
-          throw new Error(
-            errorData.message ||
-              "Failed to send message. Please try again later.",
-          );
+          throw new Error(errorData.message || t("toast.error"));
 
           // Optionally show error if it's a validation error meant for the user
           if (errorData.errors) {
@@ -333,10 +327,7 @@ function ContactPageContent() {
         // Reset form
       } catch (error: any) {
         console.error("Form error:", error);
-        showToast(
-          error.message || "Failed to send message. Please try again later.",
-          "error",
-        );
+        showToast(error.message || t("toast.error"), "error");
       }
 
       /*
@@ -475,27 +466,27 @@ function ContactPageContent() {
       id: 1,
       // Company Information
       company: {
-        name: "InfoTree Computers LLC",
+        name: t("offices.office1.companyName"),
         logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1760288669/zlfj7dsd91i7dqrd9x9x.png", // Can be replaced with actual logo path in future
         website: "https://infotreeit.com",
         established: "2015",
       },
       // Location Details
       location: {
-        city: "Dubai",
-        country: "UAE",
+        city: t("offices.office1.city"),
+        country: t("offices.office1.country"),
         countryCode: "AE",
         flag: "🇦🇪",
-        address: "Dubai, UAE",
+        address: t("offices.office1.address"),
         coordinates: { lat: 25.2048, lng: 55.2708 },
-        timezone: "GST (UTC+4)",
-        workingHours: "9 AM - 6 PM GST",
+        timezone: t("offices.office1.timezone"),
+        workingHours: t("offices.office1.workingHours"),
       },
       // Contact Information
       contacts: {
         primary: {
-          name: "Varun Kumar Singh",
-          title: "Managing Director",
+          name: t("offices.office1.contactName"),
+          title: t("offices.office1.title"),
           // phone: "(971)564427403",
           // email: "info@infotreeit.com",
           // directEmail: "varun@infotreeit.com",
@@ -511,9 +502,9 @@ function ContactPageContent() {
       },
       // Additional Details
       services: [
-        "Data Erasure Solutions",
-        "IT Consulting",
-        "Hardware Services",
+        t("offices.services.dataErasure"),
+        t("offices.services.itConsulting"),
+        t("offices.services.hardware"),
       ],
       languages: ["English", "Hindi", "Arabic"],
       isHeadquarter: false,
@@ -522,25 +513,25 @@ function ContactPageContent() {
     {
       id: 2,
       company: {
-        name: "D-Secure Technologies",
+        name: t("offices.office2.companyName"),
         logo: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1759503993/ec8v6wcjdpwgpplobi3w.svg",
         website: "https://dsecuretech.com",
         established: "2025",
       },
       location: {
-        city: "Noida",
-        country: "India",
+        city: t("offices.office2.city"),
+        country: t("offices.office2.country"),
         countryCode: "IN",
         flag: "in",
-        address: "Sec-62,Noida, UP 201301",
+        address: t("offices.office2.address"),
         coordinates: { lat: 28.5355, lng: 77.391 },
-        timezone: "IST (UTC+5:30)",
-        workingHours: "9 AM - 6 PM IST",
+        timezone: t("offices.office2.timezone"),
+        workingHours: t("offices.office2.workingHours"),
       },
       contacts: {
         primary: {
-          name: "Dhruv Rai",
-          title: "CEO",
+          name: t("offices.office2.contactName"),
+          title: t("offices.office2.title"),
           // phone: "8527346992",
           // email: "dhruv.rai@dsecuretech.com",
           // directEmail: "dhruv.rai@dsecuretech.com",
@@ -554,7 +545,7 @@ function ContactPageContent() {
         //   email: "support@dsecuretech.com",
         // },
       },
-      services: ["Data Erasure Solutions"],
+      services: [t("offices.services.dataErasure")],
       languages: ["English", "Hindi"],
       isHeadquarter: true,
       isActive: true,
@@ -643,8 +634,8 @@ function ContactPageContent() {
 
   const supportOptions = [
     {
-      title: "Sales Inquiries",
-      description: "Get pricing information and discuss your requirements",
+      title: t("support.salesTitle"),
+      description: t("support.salesDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <DollarIcon className="w-6 h-6" filled={filled} />}
@@ -654,8 +645,8 @@ function ContactPageContent() {
       hours: "9 AM - 6 PM PST",
     },
     {
-      title: "Technical Support",
-      description: "24/7 support for existing customers",
+      title: t("support.techTitle"),
+      description: t("support.techDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <GearIcon className="w-6 h-6" filled={filled} />}
@@ -760,14 +751,12 @@ function ContactPageContent() {
           <div className="text-center max-w-3xl mx-auto">
             <Reveal>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
-                Get in Touch
+                {t("hero.title")}
               </h1>
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Ready to secure your data with industry-leading erasure
-                solutions? Our experts are here to help you find the perfect fit
-                for your organization.
+                {t("hero.subtitle")}
               </p>
             </Reveal>
           </div>
@@ -783,14 +772,14 @@ function ContactPageContent() {
               <Reveal>
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-8 md:p-12">
                   <h2 className="text-2xl font-bold text-slate-900 mb-6 text-center">
-                    Submit Enquiry
+                    {t("form.submitEnquiry")}
                   </h2>
 
                   {/* Usage Type Toggle */}
                   <div className="mb-8">
                     <div className="flex items-center justify-center gap-8">
                       <span className="text-lg font-medium text-slate-700">
-                        Usage:
+                        {t("form.usage")}
                       </span>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -805,7 +794,9 @@ function ContactPageContent() {
                           }
                           className="w-5 h-5 text-red-600"
                         />
-                        <span className="text-lg font-medium">Business</span>
+                        <span className="text-lg font-medium">
+                          {t("form.business")}
+                        </span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -820,7 +811,9 @@ function ContactPageContent() {
                           }
                           className="w-5 h-5 text-red-600"
                         />
-                        <span className="text-lg font-medium">Personal</span>
+                        <span className="text-lg font-medium">
+                          {t("form.personal")}
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -828,8 +821,7 @@ function ContactPageContent() {
                   {/* Conditional Message for Personal */}
                   {usageType === "personal" && (
                     <div className="mb-6 text-center text-blue-600">
-                      Free License is only available for business usage. In case
-                      you have any query, fill the form below.
+                      {t("form.personalNote")}
                     </div>
                   )}
 
@@ -843,7 +835,8 @@ function ContactPageContent() {
                               htmlFor="name"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Full Name<span className="text-red-500">*</span>
+                              {t("form.fullName")}
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="text"
@@ -853,7 +846,7 @@ function ContactPageContent() {
                               value={formData.name}
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
-                              placeholder="Full Name"
+                              placeholder={t("form.fullName")}
                             />
                           </div>
                           <div>
@@ -861,7 +854,7 @@ function ContactPageContent() {
                               htmlFor="email"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Business Email
+                              {t("form.businessEmail")}
                               <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -872,7 +865,7 @@ function ContactPageContent() {
                               value={formData.email}
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
-                              placeholder="Business Email"
+                              placeholder={t("form.businessEmail")}
                             />
                           </div>
                         </div>
@@ -883,7 +876,7 @@ function ContactPageContent() {
                               htmlFor="phone"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Phone No
+                              {t("form.phoneNo")}
                             </label>
                             <div className="flex">
                               <select
@@ -925,7 +918,7 @@ function ContactPageContent() {
                                 value={formData.phone}
                                 onChange={handleChange}
                                 className="flex-1 px-4 py-3 border border-l-0 border-slate-300 rounded-r-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
-                                placeholder="Phone No"
+                                placeholder={t("form.phoneNo")}
                               />
                             </div>
                           </div>
@@ -934,7 +927,7 @@ function ContactPageContent() {
                               htmlFor="businessType"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Business Type
+                              {t("form.businessType")}
                             </label>
                             <select
                               id="businessType"
@@ -943,20 +936,36 @@ function ContactPageContent() {
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
-                              <option value="">Business Type</option>
-                              <option value="enterprise">Enterprise</option>
-                              <option value="government">Government</option>
-                              <option value="healthcare">Healthcare</option>
-                              <option value="education">Education</option>
+                              <option value="">
+                                {t("businessTypes.placeholder")}
+                              </option>
+                              <option value="enterprise">
+                                {t("businessTypes.enterprise")}
+                              </option>
+                              <option value="government">
+                                {t("businessTypes.government")}
+                              </option>
+                              <option value="healthcare">
+                                {t("businessTypes.healthcare")}
+                              </option>
+                              <option value="education">
+                                {t("businessTypes.education")}
+                              </option>
                               <option value="financial">
-                                Financial Services
+                                {t("businessTypes.financial")}
                               </option>
-                              <option value="legal">Legal</option>
-                              <option value="technology">Technology</option>
+                              <option value="legal">
+                                {t("businessTypes.legal")}
+                              </option>
+                              <option value="technology">
+                                {t("businessTypes.technology")}
+                              </option>
                               <option value="manufacturing">
-                                Manufacturing
+                                {t("businessTypes.manufacturing")}
                               </option>
-                              <option value="other">Other</option>
+                              <option value="other">
+                                {t("businessTypes.other")}
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -967,7 +976,7 @@ function ContactPageContent() {
                               htmlFor="company"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Company Name
+                              {t("form.companyName")}
                               <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -978,7 +987,7 @@ function ContactPageContent() {
                               value={formData.company}
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
-                              placeholder="Company Name"
+                              placeholder={t("form.companyName")}
                             />
                           </div>
                           <div>
@@ -986,7 +995,7 @@ function ContactPageContent() {
                               htmlFor="country"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Country
+                              {t("form.country")}
                             </label>
                             <select
                               id="country"
@@ -996,36 +1005,84 @@ function ContactPageContent() {
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
                               <option value="United States">
-                                United States
+                                {t("countries.unitedStates")}
                               </option>
-                              <option value="Canada">Canada</option>
+                              <option value="Canada">
+                                {t("countries.canada")}
+                              </option>
                               <option value="United Kingdom">
-                                United Kingdom
+                                {t("countries.unitedKingdom")}
                               </option>
-                              <option value="Germany">Germany</option>
-                              <option value="France">France</option>
-                              <option value="Italy">Italy</option>
-                              <option value="Spain">Spain</option>
-                              <option value="Netherlands">Netherlands</option>
-                              <option value="Switzerland">Switzerland</option>
-                              <option value="Sweden">Sweden</option>
-                              <option value="Norway">Norway</option>
-                              <option value="Denmark">Denmark</option>
-                              <option value="India">India</option>
-                              <option value="China">China</option>
-                              <option value="Japan">Japan</option>
-                              <option value="South Korea">South Korea</option>
-                              <option value="Singapore">Singapore</option>
-                              <option value="Hong Kong">Hong Kong</option>
-                              <option value="Australia">Australia</option>
-                              <option value="UAE">United Arab Emirates</option>
-                              <option value="Saudi Arabia">Saudi Arabia</option>
-                              <option value="Brazil">Brazil</option>
-                              <option value="Mexico">Mexico</option>
-                              <option value="Russia">Russia</option>
-                              <option value="Turkey">Turkey</option>
-                              <option value="South Africa">South Africa</option>
-                              <option value="Other">Other</option>
+                              <option value="Germany">
+                                {t("countries.germany")}
+                              </option>
+                              <option value="France">
+                                {t("countries.france")}
+                              </option>
+                              <option value="Italy">
+                                {t("countries.italy")}
+                              </option>
+                              <option value="Spain">
+                                {t("countries.spain")}
+                              </option>
+                              <option value="Netherlands">
+                                {t("countries.netherlands")}
+                              </option>
+                              <option value="Switzerland">
+                                {t("countries.switzerland")}
+                              </option>
+                              <option value="Sweden">
+                                {t("countries.sweden")}
+                              </option>
+                              <option value="Norway">
+                                {t("countries.norway")}
+                              </option>
+                              <option value="Denmark">
+                                {t("countries.denmark")}
+                              </option>
+                              <option value="India">
+                                {t("countries.india")}
+                              </option>
+                              <option value="China">
+                                {t("countries.china")}
+                              </option>
+                              <option value="Japan">
+                                {t("countries.japan")}
+                              </option>
+                              <option value="South Korea">
+                                {t("countries.southKorea")}
+                              </option>
+                              <option value="Singapore">
+                                {t("countries.singapore")}
+                              </option>
+                              <option value="Hong Kong">
+                                {t("countries.hongKong")}
+                              </option>
+                              <option value="Australia">
+                                {t("countries.australia")}
+                              </option>
+                              <option value="UAE">{t("countries.uae")}</option>
+                              <option value="Saudi Arabia">
+                                {t("countries.saudiArabia")}
+                              </option>
+                              <option value="Brazil">
+                                {t("countries.brazil")}
+                              </option>
+                              <option value="Mexico">
+                                {t("countries.mexico")}
+                              </option>
+                              <option value="Russia">
+                                {t("countries.russia")}
+                              </option>
+                              <option value="Turkey">
+                                {t("countries.turkey")}
+                              </option>
+                              <option value="South Africa">
+                                {t("countries.southAfrica")}
+                              </option>
+                              <option value="Other">
+                                {t("countries.other")}
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -1036,7 +1093,7 @@ function ContactPageContent() {
                               htmlFor="solutionType"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Select Solution Type{" "}
+                              {t("form.selectSolutionType")}{" "}
                               <span className="text-red-500">*</span>
                             </label>
                             <select
@@ -1047,12 +1104,14 @@ function ContactPageContent() {
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
-                              <option value="">Select Solution Type *</option>
+                              <option value="">
+                                {t("form.selectSolutionTypeRequired")}
+                              </option>
                               <option value="device-erasure">
-                                File Eraser
+                                {t("solutionTypes.business.fileEraser")}
                               </option>
                               <option value="network-erasure">
-                                Drive Eraser
+                                {t("solutionTypes.business.driveEraser")}
                               </option>
                               {/* <option value="cloud-erasure">
                                 Cloud Erasure
@@ -1061,7 +1120,7 @@ function ContactPageContent() {
                                 Enterprise Suite
                               </option> */}
                               <option value="custom-solution">
-                                Custom Solution
+                                {t("solutionTypes.business.customSolution")}
                               </option>
                             </select>
                           </div>
@@ -1070,7 +1129,7 @@ function ContactPageContent() {
                               htmlFor="complianceRequirements"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Compliance Requirements
+                              {t("form.complianceRequirements")}
                             </label>
                             <select
                               id="complianceRequirements"
@@ -1079,15 +1138,27 @@ function ContactPageContent() {
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
-                              <option value="">Compliance Requirements</option>
-                              <option value="nist-800-88">NIST 800-88</option>
-                              <option value="dod-5220">DoD 5220.22-M</option>
-                              <option value="gdpr">GDPR</option>
-                              <option value="hipaa">HIPAA</option>
-                              <option value="sox">SOX</option>
-                              <option value="iso-27001">ISO 27001</option>
+                              <option value="">
+                                {t("compliance.placeholder")}
+                              </option>
+                              <option value="nist-800-88">
+                                {t("compliance.nist")}
+                              </option>
+                              <option value="dod-5220">
+                                {t("compliance.dod")}
+                              </option>
+                              <option value="gdpr">
+                                {t("compliance.gdpr")}
+                              </option>
+                              <option value="hipaa">
+                                {t("compliance.hipaa")}
+                              </option>
+                              <option value="sox">{t("compliance.sox")}</option>
+                              <option value="iso-27001">
+                                {t("compliance.iso")}
+                              </option>
                               <option value="multiple">
-                                Multiple Standards
+                                {t("compliance.multiple")}
                               </option>
                             </select>
                           </div>
@@ -1102,7 +1173,8 @@ function ContactPageContent() {
                               htmlFor="name"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Full Name<span className="text-red-500">*</span>
+                              {t("form.fullName")}
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="text"
@@ -1112,7 +1184,7 @@ function ContactPageContent() {
                               value={formData.name}
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
-                              placeholder="Full Name"
+                              placeholder={t("form.fullName")}
                             />
                           </div>
                           <div>
@@ -1120,7 +1192,8 @@ function ContactPageContent() {
                               htmlFor="email"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Email<span className="text-red-500">*</span>
+                              {t("form.email")}
+                              <span className="text-red-500">*</span>
                             </label>
                             <input
                               type="email"
@@ -1130,7 +1203,7 @@ function ContactPageContent() {
                               value={formData.email}
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
-                              placeholder="Email"
+                              placeholder={t("form.email")}
                             />
                           </div>
                         </div>
@@ -1141,7 +1214,7 @@ function ContactPageContent() {
                               htmlFor="phone"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Phone Number
+                              {t("form.phoneNumber")}
                             </label>
                             <div className="flex">
                               <select
@@ -1183,7 +1256,7 @@ function ContactPageContent() {
                                 value={formData.phone}
                                 onChange={handleChange}
                                 className="flex-1 px-4 py-3 border border-l-0 border-slate-300 rounded-r-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors"
-                                placeholder="Phone Number"
+                                placeholder={t("form.phoneNumber")}
                               />
                             </div>
                           </div>
@@ -1192,7 +1265,7 @@ function ContactPageContent() {
                               htmlFor="country"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Country
+                              {t("form.country")}
                             </label>
                             <select
                               id="country"
@@ -1202,36 +1275,84 @@ function ContactPageContent() {
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
                               <option value="United States">
-                                United States
+                                {t("countries.unitedStates")}
                               </option>
-                              <option value="Canada">Canada</option>
+                              <option value="Canada">
+                                {t("countries.canada")}
+                              </option>
                               <option value="United Kingdom">
-                                United Kingdom
+                                {t("countries.unitedKingdom")}
                               </option>
-                              <option value="Germany">Germany</option>
-                              <option value="France">France</option>
-                              <option value="Italy">Italy</option>
-                              <option value="Spain">Spain</option>
-                              <option value="Netherlands">Netherlands</option>
-                              <option value="Switzerland">Switzerland</option>
-                              <option value="Sweden">Sweden</option>
-                              <option value="Norway">Norway</option>
-                              <option value="Denmark">Denmark</option>
-                              <option value="India">India</option>
-                              <option value="China">China</option>
-                              <option value="Japan">Japan</option>
-                              <option value="South Korea">South Korea</option>
-                              <option value="Singapore">Singapore</option>
-                              <option value="Hong Kong">Hong Kong</option>
-                              <option value="Australia">Australia</option>
-                              <option value="UAE">United Arab Emirates</option>
-                              <option value="Saudi Arabia">Saudi Arabia</option>
-                              <option value="Brazil">Brazil</option>
-                              <option value="Mexico">Mexico</option>
-                              <option value="Russia">Russia</option>
-                              <option value="Turkey">Turkey</option>
-                              <option value="South Africa">South Africa</option>
-                              <option value="Other">Other</option>
+                              <option value="Germany">
+                                {t("countries.germany")}
+                              </option>
+                              <option value="France">
+                                {t("countries.france")}
+                              </option>
+                              <option value="Italy">
+                                {t("countries.italy")}
+                              </option>
+                              <option value="Spain">
+                                {t("countries.spain")}
+                              </option>
+                              <option value="Netherlands">
+                                {t("countries.netherlands")}
+                              </option>
+                              <option value="Switzerland">
+                                {t("countries.switzerland")}
+                              </option>
+                              <option value="Sweden">
+                                {t("countries.sweden")}
+                              </option>
+                              <option value="Norway">
+                                {t("countries.norway")}
+                              </option>
+                              <option value="Denmark">
+                                {t("countries.denmark")}
+                              </option>
+                              <option value="India">
+                                {t("countries.india")}
+                              </option>
+                              <option value="China">
+                                {t("countries.china")}
+                              </option>
+                              <option value="Japan">
+                                {t("countries.japan")}
+                              </option>
+                              <option value="South Korea">
+                                {t("countries.southKorea")}
+                              </option>
+                              <option value="Singapore">
+                                {t("countries.singapore")}
+                              </option>
+                              <option value="Hong Kong">
+                                {t("countries.hongKong")}
+                              </option>
+                              <option value="Australia">
+                                {t("countries.australia")}
+                              </option>
+                              <option value="UAE">{t("countries.uae")}</option>
+                              <option value="Saudi Arabia">
+                                {t("countries.saudiArabia")}
+                              </option>
+                              <option value="Brazil">
+                                {t("countries.brazil")}
+                              </option>
+                              <option value="Mexico">
+                                {t("countries.mexico")}
+                              </option>
+                              <option value="Russia">
+                                {t("countries.russia")}
+                              </option>
+                              <option value="Turkey">
+                                {t("countries.turkey")}
+                              </option>
+                              <option value="South Africa">
+                                {t("countries.southAfrica")}
+                              </option>
+                              <option value="Other">
+                                {t("countries.other")}
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -1242,7 +1363,7 @@ function ContactPageContent() {
                               htmlFor="solutionType"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Select Solution Type
+                              {t("form.selectSolutionType")}
                             </label>
                             <select
                               id="solutionType"
@@ -1251,23 +1372,33 @@ function ContactPageContent() {
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
-                              <option value="">Select Solution Type</option>
-                              <option value="drive-erasure">
-                                Drive Erasure
+                              <option value="">
+                                {t("form.selectSolutionType")}
                               </option>
-                              <option value="file-erasure">File Erasure</option>
+                              <option value="drive-erasure">
+                                {t("solutionTypes.personal.driveErasure")}
+                              </option>
+                              <option value="file-erasure">
+                                {t("solutionTypes.personal.fileErasure")}
+                              </option>
                               {/* <option value="cloud-erasure">
                                 Cloud Erasure
                               </option>
                               <option value="enterprise-suite">
                                 Enterprise Suite
                               </option> */}
-                              <option value="personal-use">Personal Use</option>
+                              <option value="personal-use">
+                                {t("solutionTypes.personal.personalUse")}
+                              </option>
                               {/* <option value="data-recovery">
                                 Data Recovery
                               </option> */}
-                              <option value="consultation">Consultation</option>
-                              <option value="other">Other</option>
+                              <option value="consultation">
+                                {t("solutionTypes.personal.consultation")}
+                              </option>
+                              <option value="other">
+                                {t("solutionTypes.personal.other")}
+                              </option>
                             </select>
                           </div>
                           <div>
@@ -1275,7 +1406,7 @@ function ContactPageContent() {
                               htmlFor="complianceRequirements"
                               className="block text-sm font-medium text-slate-700 mb-2"
                             >
-                              Compliance Requirements
+                              {t("form.complianceRequirements")}
                             </label>
                             <select
                               id="complianceRequirements"
@@ -1284,20 +1415,34 @@ function ContactPageContent() {
                               onChange={handleChange}
                               className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors bg-white"
                             >
-                              <option value="">Compliance Requirements</option>
-                              <option value="nist-800-88">NIST 800-88</option>
-                              <option value="dod-5220">DoD 5220.22-M</option>
-                              <option value="gdpr">GDPR</option>
-                              <option value="hipaa">HIPAA</option>
-                              <option value="sox">SOX</option>
-                              <option value="iso-27001">ISO 27001</option>
+                              <option value="">
+                                {t("compliance.placeholder")}
+                              </option>
+                              <option value="nist-800-88">
+                                {t("compliance.nist")}
+                              </option>
+                              <option value="dod-5220">
+                                {t("compliance.dod")}
+                              </option>
+                              <option value="gdpr">
+                                {t("compliance.gdpr")}
+                              </option>
+                              <option value="hipaa">
+                                {t("compliance.hipaa")}
+                              </option>
+                              <option value="sox">{t("compliance.sox")}</option>
+                              <option value="iso-27001">
+                                {t("compliance.iso")}
+                              </option>
                               <option value="personal-privacy">
-                                Personal Privacy
+                                {t("compliance.personalPrivacy")}
                               </option>
                               <option value="no-specific">
-                                No Specific Requirements
+                                {t("compliance.noSpecific")}
                               </option>
-                              <option value="other">Other</option>
+                              <option value="other">
+                                {t("compliance.other")}
+                              </option>
                             </select>
                           </div>
                         </div>
@@ -1309,7 +1454,7 @@ function ContactPageContent() {
                         htmlFor="message"
                         className="block text-sm font-medium text-slate-700 mb-2"
                       >
-                        Please let us know your requirements in detail.
+                        {t("form.messageLabel")}
                       </label>
                       <textarea
                         id="message"
@@ -1319,17 +1464,17 @@ function ContactPageContent() {
                         value={formData.message}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors resize-none"
-                        placeholder="Please let us know your requirements in detail."
+                        placeholder={t("form.messageLabel")}
                       />
                     </div>
                     {usageType === "personal" && (
                       <div className="text-sm text-slate-600">
-                        I understand that the above information is protected by{" "}
+                        {t("form.privacyText")}{" "}
                         <a
                           href="/privacy-policy"
                           className="text-green-600 hover:underline"
                         >
-                          D-secure Privacy Policy
+                          {t("form.privacyLink")}
                         </a>
                         .
                       </div>
@@ -1346,7 +1491,9 @@ function ContactPageContent() {
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg text-lg font-medium transition-colors duration-200"
                       disabled={isLoading}
                     >
-                      {isLoading ? "Submitting..." : "Submit Enquiry"}
+                      {isLoading
+                        ? t("form.submitting")
+                        : t("form.submitEnquiry")}
                     </button>
                   </form>
                 </div>
@@ -1358,7 +1505,7 @@ function ContactPageContent() {
               <Reveal delayMs={10}>
                 <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
                   <h3 className="font-bold text-slate-900 mb-4">
-                    Quick Response
+                    {t("quickResponse.title")}
                   </h3>
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center gap-3">
@@ -1378,7 +1525,7 @@ function ContactPageContent() {
                         </svg>
                       </div>
                       <span className="text-slate-700">
-                        Response within 12 Business Hours
+                        {t("quickResponse.responseTime")}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1399,7 +1546,7 @@ function ContactPageContent() {
                         </svg>
                       </div>
                       <span className="text-slate-700">
-                        (9 AM - 6 PM ) [03:30 - 12:30 UTC]
+                        {t("quickResponse.workingHours")}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1419,7 +1566,7 @@ function ContactPageContent() {
                         </svg>
                       </div>
                       <span className="text-slate-700">
-                        Live chat available
+                        {t("quickResponse.liveChat")}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1439,7 +1586,7 @@ function ContactPageContent() {
                         </svg>
                       </div>
                       <span className="text-slate-700">
-                        Expert technical support
+                        {t("quickResponse.expertSupport")}
                       </span>
                     </div>
                   </div>
@@ -1477,10 +1624,10 @@ function ContactPageContent() {
         <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              How Can We Help?
+              {t("support.title")}
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Choose the right contact method for your specific needs.
+              {t("support.subtitle")}
             </p>
           </div>
 
@@ -1503,7 +1650,7 @@ function ContactPageContent() {
                   </div>
                   <button className="w-full btn-secondary text-sm">
                     <Link to="/contact" className="w-full">
-                      Contact Now
+                      {t("support.contactNow")}
                     </Link>
                   </button>
                 </div>
@@ -1518,11 +1665,10 @@ function ContactPageContent() {
         <div className="container-app">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Global Offices
+              {t("offices.title")}
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              With offices around the world, we're here to support you in your
-              timezone.
+              {t("offices.subtitle")}
             </p>
           </div>
 
@@ -1590,7 +1736,7 @@ function ContactPageContent() {
                           </h3>
                           {office.isHeadquarter && (
                             <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-full font-medium">
-                              HQ
+                              {t("offices.hq")}
                             </span>
                           )}
                         </div>
@@ -1601,7 +1747,7 @@ function ContactPageContent() {
                           {office.location.city}, {office.location.country}
                         </p>
                         <p className="text-slate-500 text-xs">
-                          Est. {office.company.established}
+                          {t("offices.est")} {office.company.established}
                         </p>
                       </div>
                     </div>
@@ -1729,7 +1875,7 @@ function ContactPageContent() {
                     {/* Services */}
                     <div className="mb-4">
                       <p className="text-xs font-medium text-slate-700 mb-2">
-                        Key Services:
+                        {t("offices.keyServices")}
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {office.services.slice(0, 3).map((service, idx) => (
@@ -1752,7 +1898,7 @@ function ContactPageContent() {
                             href={`mailto:${(office.contacts.primary as any).email}?subject=Meeting Request - ${office.location.city} Office`}
                             className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
                           >
-                            Contact Office
+                            {t("offices.contactOffice")}
                           </a>
                         )}
                         {(office.contacts.primary as any).phone && (
@@ -1760,7 +1906,7 @@ function ContactPageContent() {
                             href={`tel:${(office.contacts.primary as any).phone}`}
                             className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
                           >
-                            Call Now
+                            {t("offices.callNow")}
                           </a>
                         )}
                       </div>
@@ -1771,7 +1917,7 @@ function ContactPageContent() {
                       (office.contacts as any).support?.email) && (
                       <div className="mt-3 pt-3 border-t border-slate-100">
                         <p className="text-xs text-slate-500 mb-2">
-                          Quick Contact:
+                          {t("offices.quickContact")}
                         </p>
                         <div className="flex gap-4 text-xs">
                           {(office.contacts as any).sales?.email && (

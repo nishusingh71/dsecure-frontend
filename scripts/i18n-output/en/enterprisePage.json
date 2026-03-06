@@ -1,0 +1,19 @@
+{
+  "securityShield": "Security Shield",
+  "centralizedManagement": "Centralized Management",
+  "manageAllErasureOperationsFromASingleIntuitive": "Manage all erasure operations from a single, intuitive dashboard",
+  "comprehensiveReporting": "Comprehensive Reporting",
+  "generateDetailedAuditReportsForComplianceAndVerifi": "Generate detailed audit reports for compliance and verification",
+  "multideviceSupport": "Multi-Device Support",
+  "eraseDataAcrossDesktopsServersMobileDevicesAnd": "Erase data across desktops, servers, mobile devices, and more",
+  "meetsInternationalDataErasureStandardsAndRegulatio": "Meets international data erasure standards and regulations",
+  "gdprCompliance": "GDPR Compliance",
+  "hipaaRequirements": "HIPAA Requirements",
+  "pciDssStandards": "PCI DSS Standards",
+  "windowsDesktopsLaptops": "Windows Desktops & Laptops",
+  "macComputersServers": "Mac Computers & Servers",
+  "linuxSystems": "Linux Systems",
+  "mobileDevicesIosAndroid": "Mobile Devices (iOS & Android)",
+  "storageDevicesHddSsdUsb": "Storage Devices (HDD, SSD, USB)",
+  "networkAttachedStorageNas": "Network Attached Storage (NAS)"
+}

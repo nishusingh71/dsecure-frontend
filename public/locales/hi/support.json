@@ -1,0 +1,138 @@
+{
+  "support": {
+    "heroTitle": "ग्राहक सहायता",
+    "heroSubtitle": "आज हम आपकी कैसे मदद कर सकते हैं?",
+    "searchPlaceholder": "दस्तावेज़ और सहायता संसाधन खोजें...",
+    "searchGo": "जाएं",
+    "resultsFound": "\"{{query}}\" के लिए {{count}} परिणाम मिला",
+    "resultsFound_plural": "\"{{query}}\" के लिए {{count}} परिणाम मिले",
+    "noResultsFor": "\"{{query}}\" के लिए कोई परिणाम नहीं मिला",
+    "noResultsTip": "अलग-अलग कीवर्ड से खोजने का प्रयास करें या नीचे हमारे सहायता अनुभाग ब्राउज़ करें।",
+    "clearSearch": "खोज साफ़ करें",
+    "popularQuestion": "लोकप्रिय सहायता प्रश्न",
+
+    "trendingSearches": "ट्रेंडिंग खोजें",
+    "trending1": "हार्ड ड्राइव पर मुझे कितने ओवरराइट करने चाहिए?",
+    "trending2": "मैं हार्ड ड्राइव और SSD कैसे वाइप कर सकता हूं?",
+    "trending3": "SAS ड्राइव को स्थायी रूप से कैसे वाइप करें?",
+    "trending4": "मैं 12 बोर्ड Mac मशीनें कैसे वाइप कर सकता हूं?",
+    "trending5": "मैं सब कुछ वाइप करके अपना OS कैसे बनाए रखूं?",
+    "trending6": "M1 चिप वाले MacOS को कैसे वाइप करें?",
+    "trending7": "D-Secure क्लाउड कंसोल का उपयोग कैसे करें?",
+    "trending8": "SSD पर क्रिप्टोग्राफ़िक इरेज़र कैसे करें?",
+
+    "selfHelpTitle": "स्वयं सहायता और समर्थन",
+    "selfHelpSubtitle": "अपने D-Secure उत्पादों के लिए सहायता जानकारी एक्सेस करें",
+
+    "faqTitle": "अक्सर पूछे जाने वाले प्रश्न",
+    "faqDesc": "हमारे ग्राहकों द्वारा अक्सर पूछे जाने वाले प्रश्न जो आपकी मदद कर सकते हैं।",
+    "learnMore": "और जानें →",
+
+    "knowledgeBaseTitle": "नॉलेज बेस",
+    "knowledgeBaseDesc": "विभिन्न उपकरणों पर डेटा को सुरक्षित रूप से वाइप करने के लिए चरण-दर-चरण गाइड।",
+
+    "getStartedTitle": "शुरू करें",
+    "getStartedDesc": "PC, Mac, सर्वर और मोबाइल डिवाइस वाइप करना सीखें।",
+
+    "helpManualTitle": "सहायता मैनुअल",
+    "helpManualDesc": "D-Secure उत्पादों, इंस्टॉलेशन, FAQs, रिपोर्ट प्रबंधन और उन्नत सेटिंग्स कॉन्फ़िगरेशन के बारे में अधिक जानने के लिए पूर्ण विज़ुअल गाइड।",
+    "viewHelpManual": "सहायता मैनुअल देखें →",
+
+    "productVideosTitle": "उत्पाद वीडियो",
+    "productVideosDesc": "उत्पाद वॉकथ्रू और कैसे करें वीडियो।",
+
+    "technicalBlogTitle": "तकनीकी ब्लॉग",
+    "technicalBlogDesc": "डेटा इरेज़र, साइबर सुरक्षा और IT एसेट जीवनचक्र प्रबंधन पर अंतर्दृष्टि और व्यावहारिक गाइड।",
+
+    "assistedSupportTitle": "सहायक समर्थन",
+    "assistedSupportSubtitle": "सहायता प्रश्नों के लिए टिकट दर्ज करें या हमें कॉल करें",
+
+    "writeToUsTitle": "हमें लिखें",
+    "writeToUsDesc": "ईमेल पर हमें लिखकर अपनी क्वेरी का त्वरित समाधान प्राप्त करें।",
+    "sendEmail": "ईमेल भेजें",
+
+    "raiseTicketTitle": "टिकट दर्ज करें",
+    "raiseTicketDesc": "यदि आपके प्रश्न हैं और सहायता चाहिए? कृपया एक टिकट सबमिट करें।",
+    "submitTicket": "टिकट सबमिट करें",
+
+    "callUsTitle": "हमें कॉल करें",
+    "callUsDesc": "हम आपकी सहायता करके प्रसन्न होंगे। तकनीकी सहायता केवल अंग्रेज़ी में।",
+
+    "letsGetStarted": "चलिए शुरू करें",
+    "letsGetStartedDesc": "हमारे समाधानों के बारे में अधिक जानने में रुचि है?",
+    "requestFreeLicense": "मुफ़्त लाइसेंस का अनुरोध करें →",
+    "needHelp": "सहायता चाहिए: +91-844-775-0101",
+
+    "submitTicketModalTitle": "सपोर्ट टिकट सबमिट करें",
+    "submitTicketModalSubtitle": "हम जल्द से जल्द आपसे संपर्क करेंगे!",
+    "fullNameLabel": "पूरा नाम",
+    "fullNamePlaceholder": "अपना पूरा नाम दर्ज करें",
+    "emailLabel": "ईमेल पता",
+    "emailPlaceholder": "अपना ईमेल पता दर्ज करें",
+    "subjectLabel": "विषय",
+    "subjectPlaceholder": "अपनी समस्या का संक्षिप्त विवरण",
+    "priorityLabel": "प्राथमिकता",
+    "categoryLabel": "श्रेणी",
+    "descriptionLabel": "विवरण",
+    "descriptionPlaceholder": "कृपया अपनी समस्या या प्रश्न के बारे में विस्तृत जानकारी प्रदान करें...",
+    "submitting": "सबमिट हो रहा है...",
+
+    "priorityLow": "कम",
+    "priorityMedium": "मध्यम",
+    "priorityHigh": "उच्च",
+    "priorityUrgent": "तत्काल",
+
+    "categoryGeneral": "सामान्य सहायता",
+    "categoryTechnical": "तकनीकी समस्या",
+    "categoryBilling": "बिलिंग और लाइसेंसिंग",
+    "categoryFeature": "फ़ीचर अनुरोध",
+    "categoryBug": "बग रिपोर्ट",
+
+    "ticketSuccess": "सपोर्ट टिकट सफलतापूर्वक सबमिट हो गया! हम जल्द ही आपसे संपर्क करेंगे।",
+    "ticketError": "सपोर्ट टिकट सबमिट करने में विफल। कृपया पुनः प्रयास करें।",
+
+    "licenseSuccess": "मुफ़्त लाइसेंस अनुरोध सफलतापूर्वक सबमिट हो गया! हम 12 घंटे के भीतर लाइसेंस विवरण भेजेंगे।",
+    "requestFreeLicenseTitle": "मुफ़्त लाइसेंस का अनुरोध - सहायता",
+
+    "partnershipSuccess": "साझेदारी अनुरोध सफलतापूर्वक सबमिट हो गया! हम आपके आवेदन की समीक्षा करके जल्द संपर्क करेंगे।",
+    "partnershipRequestTitle": "साझेदारी अनुरोध - सहायता",
+
+    "searchFaqs": "अक्सर पूछे जाने वाले प्रश्न",
+    "searchFaqsDesc": "D-Secure डेटा इरेज़र समाधानों के बारे में सामान्य प्रश्न और उत्तर",
+    "searchKnowledgeBase": "नॉलेज बेस",
+    "searchKnowledgeBaseDesc": "विभिन्न उपकरणों पर सुरक्षित डेटा वाइपिंग के लिए चरण-दर-चरण गाइड",
+    "searchGetStarted": "शुरू करें गाइड",
+    "searchGetStartedDesc": "PC, Mac, सर्वर और मोबाइल डिवाइस वाइप करना सीखें",
+    "searchHelpManual": "सहायता मैनुअल",
+    "searchHelpManualDesc": "D-Secure उत्पादों के लिए व्यापक उपयोगकर्ता मैनुअल",
+    "searchProductVideos": "उत्पाद वीडियो",
+    "searchProductVideosDesc": "वीडियो ट्यूटोरियल और उत्पाद प्रदर्शन",
+    "searchOverwrite": "हार्ड ड्राइव ओवरराइट गाइड",
+    "searchOverwriteDesc": "हार्ड ड्राइव पर मुझे कितने ओवरराइट करने चाहिए?",
+    "searchWipe": "HDD और SSD वाइप गाइड",
+    "searchWipeDesc": "हार्ड ड्राइव और SSD को सुरक्षित रूप से कैसे वाइप करें",
+    "searchSas": "SAS ड्राइव वाइप गाइड",
+    "searchSasDesc": "SAS ड्राइव को स्थायी रूप से कैसे वाइप करें",
+    "searchMac": "Mac मशीन वाइप गाइड",
+    "searchMacDesc": "12 बोर्ड Mac मशीनें कैसे वाइप करें",
+    "searchM1Mac": "M1 Mac वाइप गाइड",
+    "searchM1MacDesc": "M1 चिप वाले MacOS को कैसे वाइप करें",
+    "searchCloud": "क्लाउड कंसोल गाइड",
+    "searchCloudDesc": "D-Secure क्लाउड कंसोल का उपयोग कैसे करें",
+    "searchSsdCrypto": "SSD क्रिप्टोग्राफ़िक इरेज़र",
+    "searchSsdCryptoDesc": "SSD पर क्रिप्टोग्राफ़िक इरेज़र कैसे करें",
+    "searchRetainOs": "OS बनाए रखें वाइप गाइड",
+    "searchRetainOsDesc": "सब कुछ वाइप करके ऑपरेटिंग सिस्टम कैसे बनाए रखें",
+
+    "goToGuide": "सीधे गाइड पर जाएं",
+
+    "categorySupport": "सहायता",
+    "categoryDocumentation": "दस्तावेज़ीकरण",
+    "categoryGettingStarted": "शुरुआत करना",
+    "categoryVideos": "वीडियो",
+    "categoryGuides": "गाइड",
+    "categoryCloud": "क्लाउड",
+    "categoryAdvanced": "उन्नत",
+    "categoryTrending": "ट्रेंडिंग"
+  }
+}

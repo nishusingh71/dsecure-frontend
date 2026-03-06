@@ -3,8 +3,10 @@ import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import { downloadResource } from "../utils/downloadUtils";
 import { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useSearchParams } from "react-router-dom";
 import { useToast } from "@/components/Toast";
+import { useTranslation } from "react-i18next";
 
 export default function ResourcesPage() {
   return (
@@ -18,6 +20,7 @@ export default function ResourcesPage() {
 
 function ResourcesPageContent() {
   const toast = useToast();
+  const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchParams] = useSearchParams();
@@ -222,14 +225,26 @@ function ResourcesPageContent() {
     }
   };
 
+  const getTypeLabel = (type: string) => {
+    const typeMap: Record<string, string> = {
+      blog: t("typeBlog"),
+      whitepaper: t("typeWhitepaper"),
+      "case-study": t("typeCaseStudy"),
+      guide: t("typeGuide"),
+      report: t("typeReport"),
+      tool: t("typeTool"),
+      documentation: t("typeDocumentation"),
+    };
+    return typeMap[type] || type;
+  };
+
   const resources = [
     {
       id: 1,
-      title: "NIST 800-88 Compliance Guide",
+      title: t("resources.1.title"),
       type: "whitepaper",
       category: "compliance",
-      description:
-        "Comprehensive guide to implementing NIST 800-88 Rev. 1 standards with D-Secure solutions.",
+      description: t("resources.1.description"),
       downloadSize: "2.4 MB",
       pages: 28,
       featured: true,
@@ -238,11 +253,10 @@ function ResourcesPageContent() {
     },
     {
       id: 2,
-      title: "Enterprise Data Sanitization Case Study",
+      title: t("resources.2.title"),
       type: "case-study",
       category: "enterprise",
-      description:
-        "How a Fortune 500 company reduced IT refresh cycle time by 60% while maintaining 100% compliance.",
+      description: t("resources.2.description"),
       downloadSize: "1.8 MB",
       pages: 12,
       featured: true,
@@ -250,11 +264,10 @@ function ResourcesPageContent() {
     },
     {
       id: 4,
-      title: "HIPAA Compliance in Healthcare",
+      title: t("resources.4.title"),
       type: "whitepaper",
       category: "compliance",
-      description:
-        "Best practices for healthcare organizations to maintain HIPAA compliance during device disposal.",
+      description: t("resources.4.description"),
       downloadSize: "2.1 MB",
       pages: 22,
       featured: false,
@@ -263,11 +276,10 @@ function ResourcesPageContent() {
     },
     {
       id: 5,
-      title: "ITAD Workflow Optimization",
+      title: t("resources.5.title"),
       type: "guide",
       category: "itad",
-      description:
-        "Step-by-step guide to optimizing IT Asset Disposition workflows for maximum efficiency.",
+      description: t("resources.5.description"),
       downloadSize: "1.9 MB",
       pages: 18,
       featured: false,
@@ -275,11 +287,10 @@ function ResourcesPageContent() {
     },
     {
       id: 6,
-      title: "Cloud Data Erasure Best Practices",
+      title: t("resources.6.title"),
       type: "whitepaper",
       category: "technical",
-      description:
-        "Advanced techniques for secure data sanitization in multi-cloud environments.",
+      description: t("resources.6.description"),
       downloadSize: "2.7 MB",
       pages: 31,
       featured: true,
@@ -288,11 +299,10 @@ function ResourcesPageContent() {
     },
     {
       id: 7,
-      title: "Financial Services Compliance Report",
+      title: t("resources.7.title"),
       type: "report",
       category: "compliance",
-      description:
-        "Industry analysis of data protection requirements for financial institutions.",
+      description: t("resources.7.description"),
       downloadSize: "1.5 MB",
       pages: 15,
       featured: false,
@@ -301,11 +311,10 @@ function ResourcesPageContent() {
     },
     {
       id: 8,
-      title: "ROI Calculator & Business Case",
+      title: t("resources.8.title"),
       type: "tool",
       category: "business",
-      description:
-        "Interactive tool to calculate ROI and build business case for data sanitization projects.",
+      description: t("resources.8.description"),
       downloadSize: "0.8 MB",
       pages: 8,
       featured: false,
@@ -314,11 +323,10 @@ function ResourcesPageContent() {
     },
     {
       id: 9,
-      title: "Security Architecture Whitepaper",
+      title: t("resources.9.title"),
       type: "whitepaper",
       category: "technical",
-      description:
-        "Deep dive into D-Secure's security architecture and cryptographic implementations.",
+      description: t("resources.9.description"),
       downloadSize: "3.5 MB",
       pages: 38,
       featured: false,
@@ -328,95 +336,93 @@ function ResourcesPageContent() {
     // Blog Posts
     {
       id: 10,
-      title: "D-Secure File Eraser Manual",
+      title: t("resources.10.title"),
       type: "blog",
       category: "blog",
-      description:
-        "Complete user manual for D-Secure File Eraser. Installation, configuration, and operational instructions for secure file deletion.",
+      description: t("resources.10.description"),
       downloadSize: "N/A",
-      pages: "1 min read",
+      pages: t("minRead"),
       featured: true,
       referenceUrl: "/support/help-manual/complete-manual",
       author: "Nitesh Kushwaha",
-      date: "October 15, 2024"
+      date: "October 15, 2024",
     },
     {
       id: 11,
-      title: "Securely Erasing SSDs & NVMe Drives",
+      title: t("resources.11.title"),
       type: "blog",
       category: "blog",
-      description:
-        "Why traditional wiping methods fail on SSDs. Exploring command-based erasure, cryptographic sanitization, and handling wear leveling.",
+      description: t("resources.11.description"),
       downloadSize: "N/A",
-      pages: "1 min read",
+      pages: t("minRead"),
       featured: true,
       referenceUrl: "/blog/ssd-wipe-guide",
       author: "Nitish",
-      date: "October 22, 2024"
+      date: "October 22, 2024",
     },
     {
       id: 12,
-      title: "Erasure vs. Physical Destruction: ROI Analysis",
+      title: t("resources.12.title"),
       type: "blog",
       category: "blog",
-      description:
-        "A comparative analysis of value retention. How secure erasure allows for asset remarketing and ESG compliance, compared to the total loss of value with physical destruction.",
+      description: t("resources.12.description"),
       downloadSize: "N/A",
-      pages: "1 min read",
+      pages: t("minRead"),
       featured: true,
       referenceUrl: "/blog/erasure-vs-destruction",
       author: "Nitesh Kushwaha",
-      date: "November 5, 2024"
+      date: "November 5, 2024",
     },
     {
       id: 13,
-      title: "Debunking 5 Critical Data Deletion Myths",
+      title: t("resources.13.title"),
       type: "blog",
       category: "blog",
-      description:
-        "Formatting is not erasure. We expose common misconceptions that leave organizations vulnerable to data breaches and regulatory fines.",
+      description: t("resources.13.description"),
       downloadSize: "N/A",
-      pages: "1 min read",
+      pages: t("minRead"),
       featured: false,
       referenceUrl: "/blog/data-deletion-myths",
       author: "Nitish",
-      date: "November 12, 2024"
+      date: "November 12, 2024",
     },
     {
       id: 14,
-      title: "Navigating Global Data Compliance Standards",
+      title: t("resources.14.title"),
       type: "blog",
       category: "blog",
-      description:
-        "Essential guide to matching your sanitization protocols with GDPR, HIPAA, SOX, and ISO/IEC 27001 requirements for audit-proof security.",
+      description: t("resources.14.description"),
       downloadSize: "N/A",
-      pages: "1 min read",
+      pages: t("minRead"),
       featured: false,
       referenceUrl: "/blog/data-sanitization-compliance",
       author: "Nitish",
-      date: "November 19, 2024"
+      date: "November 19, 2024",
     },
     {
       id: 15,
-      title: "Best Data Erasure Method for Any Storage Media Type",
+      title: t("resources.15.title"),
       type: "blog",
       category: "blog",
-      description:
-        "One size does not fit all. Learn the correct erasure standard for HDDs, SSDs, and Mobile devices to ensure compliance.",
+      description: t("resources.15.description"),
       downloadSize: "N/A",
-      pages: "1 min read",
+      pages: t("minRead"),
       featured: false,
       referenceUrl: "/blog/best-data-erasure-methods",
       author: "Prashant Saini",
-      date: "December 03, 2024"
+      date: "December 03, 2024",
     },
   ];
 
   const categories = [
-    { id: "all", name: "All Blog Articles", count: resources.filter((r) => r.type === "blog").length },
+    {
+      id: "all",
+      name: t("allBlogArticles"),
+      count: resources.filter((r) => r.type === "blog").length,
+    },
     {
       id: "blog",
-      name: "Blog Articles",
+      name: t("blogArticles"),
       count: resources.filter((r) => r.category === "blog").length,
     },
   ];
@@ -481,7 +487,9 @@ function ResourcesPageContent() {
   });
 
   // Filter featured resources based on search - only show blogs
-  const featuredResources = resources.filter((r) => r.featured && r.type === "blog");
+  const featuredResources = resources.filter(
+    (r) => r.featured && r.type === "blog",
+  );
   const filteredFeaturedResources = featuredResources.filter((resource) => {
     if (searchTerm === "") return true;
     const term = searchTerm.toLowerCase();
@@ -610,14 +618,12 @@ function ResourcesPageContent() {
           <div className="text-center max-w-4xl mx-auto">
             <Reveal>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">
-                Blog & Insights Hub
+                {t("heroTitle")}
               </h1>
             </Reveal>
             <Reveal delayMs={10}>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Explore our latest insights, expert perspectives, and industry
-                trends through our comprehensive blog articles. Stay updated with
-                data security best practices and emerging technologies.
+                {t("heroSubtitle")}
               </p>
             </Reveal>
             <Reveal delayMs={20}>
@@ -625,7 +631,7 @@ function ResourcesPageContent() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search resources, webinars, categories..."
+                    placeholder={t("searchPlaceholder")}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full px-4 py-3 pl-12 rounded-lg border border-slate-300 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none"
@@ -673,20 +679,18 @@ function ResourcesPageContent() {
                       d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 9a2 2 0 00-2 2v2a2 2 0 002 2m0 0h14m-14 0a2 2 0 002 2v2a2 2 0 01-2 2"
                     />
                   </svg>
-                  Resource Categories
+                  {t("resourceCategories")}
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
-                  Comprehensive Knowledge
+                  {t("comprehensiveKnowledge")}
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
-                    Resource Library
+                    {t("resourceLibrary")}
                   </span>
                 </h2>
               </Reveal>
               <Reveal delayMs={10}>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                  Access our expertly curated collection of resources, designed
-                  to help you navigate data security challenges with confidence
-                  and expertise.
+                  {t("resourceLibraryDesc")}
                 </p>
               </Reveal>
             </div>
@@ -715,15 +719,14 @@ function ResourcesPageContent() {
                   </div>
                   <div className="relative">
                     <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                      Technical Documentation
+                      {t("technicalDocumentation")}
                     </h3>
                     <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-                      Comprehensive user guides, implementation documentation,
-                      and quick-start resources for administrators.
+                      {t("technicalDocumentationDesc")}
                     </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-blue-600 text-sm font-semibold group-hover:text-blue-700 transition-colors">
-                        Explore Documentation
+                        {t("exploreDocumentation")}
                         <svg
                           className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"
                           fill="none"
@@ -739,7 +742,7 @@ function ResourcesPageContent() {
                         </svg>
                       </div>
                       <div className="text-xs text-slate-400 font-medium">
-                        15+ Guides
+                        {t("guidesCount")}
                       </div>
                     </div>
                   </div>
@@ -769,15 +772,14 @@ function ResourcesPageContent() {
                   </div>
                   <div className="relative">
                     <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-rose-600 transition-colors duration-300">
-                      Industry Insights & Blog
+                      {t("industryInsightsBlog")}
                     </h3>
                     <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-                      Stay updated with the latest trends, expert insights, and
-                      best practices in data sanitization and security.
+                      {t("industryInsightsBlogDesc")}
                     </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-rose-600 text-sm font-semibold group-hover:text-rose-700 transition-colors">
-                        Read Latest Articles
+                        {t("readLatestArticles")}
                         <svg
                           className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300"
                           fill="none"
@@ -793,7 +795,7 @@ function ResourcesPageContent() {
                         </svg>
                       </div>
                       <div className="text-xs text-slate-400 font-medium">
-                        Weekly Updates
+                        {t("weeklyUpdates")}
                       </div>
                     </div>
                   </div>
@@ -846,10 +848,10 @@ function ResourcesPageContent() {
           <div className="container-responsive">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                Featured Blog Articles
+                {t("featuredBlogArticles")}
               </h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Our most popular and insightful blog articles to keep you informed.
+                {t("featuredBlogArticlesDesc")}
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -860,7 +862,7 @@ function ResourcesPageContent() {
                       <div className="flex items-center justify-between mb-4">
                         <div>{getIcon(resource.category)}</div>
                         <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded-full text-xs font-medium">
-                          Featured
+                          {t("featured")}
                         </span>
                       </div>
                       <h3 className="font-bold text-slate-900 mb-3">
@@ -871,7 +873,9 @@ function ResourcesPageContent() {
                       </p>
                       <div className="flex items-center justify-between text-xs text-slate-500 mb-4">
                         <span>{resource.pages}</span>
-                        <span className="capitalize">{resource.type}</span>
+                        <span className="capitalize">
+                          {getTypeLabel(resource.type)}
+                        </span>
                       </div>
                       <div className="mt-auto">
                         <Link
@@ -891,7 +895,7 @@ function ResourcesPageContent() {
                               d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                             />
                           </svg>
-                          Read Article
+                          {t("readArticle")}
                         </Link>
                       </div>
                     </div>
@@ -909,10 +913,10 @@ function ResourcesPageContent() {
           <div className="container-responsive">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                All Blog Articles
+                {t("allBlogArticles")}
               </h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Browse our complete library of blog articles and insights.
+                {t("allBlogArticlesDesc")}
               </p>
             </div>
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-3 mb-12 max-w-4xl mx-auto">
@@ -950,19 +954,19 @@ function ResourcesPageContent() {
                           resource.type === "whitepaper"
                             ? "bg-blue-100 text-blue-700"
                             : resource.type === "case-study"
-                            ? "bg-green-100 text-green-700"
-                            : resource.type === "documentation"
-                            ? "bg-purple-100 text-purple-700"
-                            : resource.type === "guide"
-                            ? "bg-orange-100 text-orange-700"
-                            : resource.type === "report"
-                            ? "bg-red-100 text-red-700"
-                            : resource.type === "blog"
-                            ? "bg-rose-100 text-rose-700"
-                            : "bg-yellow-100 text-yellow-700"
+                              ? "bg-green-100 text-green-700"
+                              : resource.type === "documentation"
+                                ? "bg-purple-100 text-purple-700"
+                                : resource.type === "guide"
+                                  ? "bg-orange-100 text-orange-700"
+                                  : resource.type === "report"
+                                    ? "bg-red-100 text-red-700"
+                                    : resource.type === "blog"
+                                      ? "bg-rose-100 text-rose-700"
+                                      : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {resource.type}
+                        {getTypeLabel(resource.type)}
                       </span>
                     </div>
                     <h3 className="font-bold text-slate-900 mb-2 text-sm">
@@ -992,9 +996,8 @@ function ResourcesPageContent() {
                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
                           />
                         </svg>
-                        Read Article
+                        {t("readArticle")}
                       </Link>
-
                     </div>
                   </div>
                 </Reveal>
@@ -1018,17 +1021,14 @@ function ResourcesPageContent() {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                  No resources found
+                  {t("noResourcesFound")}
                 </h3>
-                <p className="text-slate-600">
-                  Try adjusting your search terms or category filter.
-                </p>
+                <p className="text-slate-600">{t("noResourcesFoundDesc")}</p>
               </div>
             )}
           </div>
         </section>
       )}
-      
     </>
   );
 }

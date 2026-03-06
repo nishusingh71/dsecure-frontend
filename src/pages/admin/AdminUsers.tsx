@@ -3,7 +3,9 @@ import { getSEOForPage } from "../../utils/seo";
 import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from "@/components/LocaleLink";
+import { useNavigate } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface User {
   id: string
@@ -18,7 +20,7 @@ interface User {
 
 export default function AdminUsers() {
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedRole, setSelectedRole] = useState('all')
   const [selectedStatus, setSelectedStatus] = useState('all')

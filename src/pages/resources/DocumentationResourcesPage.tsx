@@ -1,5 +1,5 @@
 import Reveal from "@/components/Reveal";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { downloadResource } from "../../utils/downloadUtils";
@@ -18,7 +18,7 @@ import {
 export default function DocumentationResourcesPage() {
   return (
     <>
-      <SEOHead seo={getSEOForPage('documentation')} />
+      <SEOHead seo={getSEOForPage("documentation")} />
 
       <DocumentationResourcesContent />
     </>
@@ -99,20 +99,20 @@ function DocumentationResourcesContent() {
         "Generate report",
       ],
       time: "5 min",
-      link: "/support/help-manual/complete-manual"
+      link: "/support/help-manual/complete-manual",
     },
     {
       title: "D-Secure Drive Eraser Setup",
       description: "Quick setup guide for D-Secure Drive Eraser",
       steps: [
-       "Download software",
+        "Download software",
         "Install and configure",
         "Run first erasure",
         "Generate report",
       ],
       time: "5 min",
-      link: "",
-      comingSoon: true
+      link: "/support/help-manual/complete-drive-manual",
+      // comingSoon: true
     },
     // {
     //   title: "Enterprise Setup",
@@ -237,18 +237,14 @@ function DocumentationResourcesContent() {
                       </div>
                     ))}
                   </div>
-                  {guide.comingSoon ? (
-                    <div className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-300 text-slate-500 font-medium rounded-lg cursor-not-allowed">
-                      Coming Soon
-                    </div>
-                  ) : (
+                  {
                     <Link
                       to={guide.link}
                       className="mt-6 inline-flex items-center justify-center w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition-colors"
                     >
                       Start Guide
                     </Link>
-                  )}
+                  }
                 </div>
               </Reveal>
             ))}

@@ -1,0 +1,7 @@
+{
+  "servicenow": "ServiceNow",
+  "integrateWithServicenowForAutomatedItAssetManageme": "Integrate with ServiceNow for automated IT asset management",
+  "azureAd": "Azure AD",
+  "azureActiveDirectoryIntegrationForAuthentication": "Azure Active Directory integration for authentication",
+  "microsoftSccmIntegrationForEnterpriseDeployment": "Microsoft SCCM integration for enterprise deployment"
+}

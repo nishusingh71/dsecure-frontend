@@ -26,7 +26,8 @@ type Standard = {
   description: string;
   icon: string;
   details: string;
-  clauseRequirements: ClauseRequirement[];
+  clauseRequirements?: ClauseRequirement[];
+  requirements?: string[];
   implementation: string;
 };
 

@@ -4,6 +4,7 @@ import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 import {
   apiClient,
   type Group as APIGroup,
@@ -24,7 +25,7 @@ interface Group {
 
 export default function AdminGroups() {
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
   // ✅ RBAC: Role detection functions

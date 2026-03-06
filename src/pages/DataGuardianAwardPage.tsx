@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import Reveal from "@/components/Reveal";
 import {
   ShieldIcon,
@@ -74,6 +75,7 @@ const certifiedCompanies: CertifiedCompany[] = [
 const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/support@dsecuretech.com";
 
 const DataGuardianAwardPage: React.FC = () => {
+  const { t } = useTranslation(["dataGuardianAward", "common", "seo"]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<typeof certifiedCompanies>(
     [],
@@ -137,13 +139,15 @@ const DataGuardianAwardPage: React.FC = () => {
 
     // Validation
     const errors: string[] = [];
-    if (!formData.name?.trim()) errors.push("Name is required");
+    if (!formData.name?.trim())
+      errors.push(t("formSection.form.validation.nameRequired"));
     if (!formData.email?.trim()) {
-      errors.push("Email is required");
+      errors.push(t("formSection.form.validation.emailRequired"));
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errors.push("Please enter a valid email address");
+      errors.push(t("formSection.form.validation.emailInvalid"));
     }
-    if (!formData.message?.trim()) errors.push("Message is required");
+    if (!formData.message?.trim())
+      errors.push(t("formSection.form.validation.messageRequired"));
 
     if (errors.length > 0) {
       showToast(errors.join(", "), "error");
@@ -223,10 +227,7 @@ const DataGuardianAwardPage: React.FC = () => {
         message: "",
       });
       setIsLoading(false);
-      showToast(
-        "Thank you! Your enquiry has been submitted successfully.",
-        "success",
-      );
+      showToast(t("formSection.form.success"), "success");
 
       // Submit to backend API
       const timestampISO = now.toISOString();
@@ -275,7 +276,7 @@ const DataGuardianAwardPage: React.FC = () => {
       }
     } catch (error) {
       console.error("Form error:", error);
-      showToast("Failed to send message. Please try again later.", "error");
+      showToast(t("formSection.form.error"), "error");
       setIsLoading(false);
     }
   };
@@ -289,13 +290,10 @@ const DataGuardianAwardPage: React.FC = () => {
       {/* SEO Meta Tags */}
       <SEOHead
         seo={{
-          title:
-            "D-Secure Data Hygiene Assurance | Certified Data Protection Excellence",
-          description:
-            "D-Secure Assurance Badge recognizes organizations with complete data hygiene setup and processes. Verify certified companies and get your assurance badge today.",
+          title: t("seo.title"),
+          description: t("seo.description"),
           canonicalUrl: "https://dsecuretech.com/data-guardian-award",
-          keywords:
-            "D-Secure assurance badge, data hygiene certification, secure data protection, data erasure assurance, IT data security certification, trusted data partner",
+          keywords: t("seo.keywords"),
         }}
       />
       <SEOHead seo={getSEOForPage("data-guardian-award")} />
@@ -380,20 +378,18 @@ const DataGuardianAwardPage: React.FC = () => {
                 <Reveal>
                   <div>
                     <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 text-slate-900 leading-tight sm:leading-snug">
-                      D-Secure <br className="hidden md:block" />
+                      {t("titlePrefix")} <br className="hidden md:block" />
                       <span className="text-emerald-600">
-                        Data Hygiene
+                        {t("titleHighlight")}
                       </span>{" "}
                       <br className="hidden md:block" />
-                      <span className="text-emerald-600">Assurance</span>
+                      <span className="text-emerald-600">
+                        {t("titleSuffix")}
+                      </span>
                     </h1>
 
                     <p className="text-base sm:text-lg text-slate-600 mb-6 sm:mb-10 leading-relaxed max-w-xl">
-                      We don't just give you a certificate - we give you our
-                      assurance that your organization has the complete setup,
-                      processes, and discipline to keep data safe. This badge
-                      represents that you are a trusted, safe, and reliable
-                      partner for data security.
+                      {t("subtitle")}
                     </p>
 
                     {/* CTA Buttons */}
@@ -421,7 +417,7 @@ const DataGuardianAwardPage: React.FC = () => {
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <span>Get Certified</span>
+                        <span>{t("buttons.getCertified")}</span>
                       </a>
                       <a
                         href="#faq-section"
@@ -446,7 +442,7 @@ const DataGuardianAwardPage: React.FC = () => {
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
-                        <span>Learn More</span>
+                        <span>{t("buttons.learnMore")}</span>
                       </a>
                     </div>
                   </div>
@@ -516,10 +512,10 @@ const DataGuardianAwardPage: React.FC = () => {
 
                           {/* Title */}
                           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-wide mb-1 sm:mb-2">
-                            Data Hygiene
+                            {t("certificate.title")}
                           </h2>
                           <p className="text-white/60 text-xs sm:text-sm tracking-[0.15em] uppercase">
-                            Assurance Certificate
+                            {t("certificate.subtitle")}
                           </p>
                         </div>
 
@@ -543,7 +539,7 @@ const DataGuardianAwardPage: React.FC = () => {
                               <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
                             </svg>
                             <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
-                              Verified Securely
+                              {t("certificate.badge")}
                             </span>
                           </div>
                         </div>
@@ -577,19 +573,16 @@ const DataGuardianAwardPage: React.FC = () => {
                   >
                     <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
                   </svg>
-                  <span>Assurance Badge</span>
+                  <span>{t("whatIsBadge.badge")}</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                  What is the D-Secure{" "}
+                  {t("whatIsBadge.titlePrefix")}{" "}
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    Assurance Badge?
+                    {t("whatIsBadge.titleHighlight")}
                   </span>
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
-                  Your gateway to a safe way to trade digital data. The D-Secure
-                  Assurance Badge signifies that your organization operates
-                  within a trusted ecosystem, enabling secure and reliable data
-                  transactions with partners worldwide.
+                  {t("whatIsBadge.desc")}
                 </p>
               </div>
             </Reveal>
@@ -610,11 +603,10 @@ const DataGuardianAwardPage: React.FC = () => {
                       </HoverIcon>
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                      Verifiable Erasure
+                      {t("whatIsBadge.features.verifiableErasure")}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm">
-                      Tamper-proof certificates with digital signatures and
-                      cryptographic verification
+                      {t("whatIsBadge.features.verifiableErasureDesc")}
                     </p>
                   </div>
                   <div className="text-center">
@@ -629,11 +621,10 @@ const DataGuardianAwardPage: React.FC = () => {
                       </HoverIcon>
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                      Audit-Ready Reports
+                      {t("whatIsBadge.features.auditReady")}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm">
-                      Comprehensive documentation for compliance audits and
-                      regulatory requirements
+                      {t("whatIsBadge.features.auditReadyDesc")}
                     </p>
                   </div>
                   <div className="text-center sm:col-span-2 lg:col-span-1">
@@ -648,11 +639,10 @@ const DataGuardianAwardPage: React.FC = () => {
                       </HoverIcon>
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                      Trusted Brand
+                      {t("whatIsBadge.features.trustedBrand")}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm">
-                      Build customer confidence with D-Secure certified data
-                      handling practices
+                      {t("whatIsBadge.features.trustedBrandDesc")}
                     </p>
                   </div>
                 </div>
@@ -724,18 +714,16 @@ const DataGuardianAwardPage: React.FC = () => {
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                     />
                   </svg>
-                  <span>Complete Setup</span>
+                  <span>{t("setup.badge")}</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                  The D-Secure{" "}
+                  {t("setup.titlePrefix")}{" "}
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    Data Hygiene Setup
+                    {t("setup.titleHighlight")}
                   </span>
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
-                  The Assurance Badge is not just about buying a product. It's
-                  about implementing a complete data hygiene process that we can
-                  audit and verify anytime.
+                  {t("setup.desc")}
                 </p>
               </div>
             </Reveal>
@@ -764,12 +752,10 @@ const DataGuardianAwardPage: React.FC = () => {
                       </HoverIcon>
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                      D-Secure Eraser
+                      {t("setup.features.eraser")}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm">
-                      Automated secure deletion that goes beyond standard
-                      recycle bin. Every deleted file is securely wiped on
-                      schedule.
+                      {t("setup.features.eraserDesc")}
                     </p>
                   </div>
                   <div className="text-center">
@@ -793,11 +779,10 @@ const DataGuardianAwardPage: React.FC = () => {
                       </HoverIcon>
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                      Free Space Wipe
+                      {t("setup.features.freeSpaceWipe")}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm">
-                      Monthly scheduled sanitization of all free space,
-                      eliminating any recoverable data fragments.
+                      {t("setup.features.freeSpaceWipeDesc")}
                     </p>
                   </div>
                   <div className="text-center sm:col-span-2 lg:col-span-1">
@@ -821,11 +806,10 @@ const DataGuardianAwardPage: React.FC = () => {
                       </HoverIcon>
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-                      Audit-Ready Logs
+                      {t("setup.features.auditLogs")}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm">
-                      Complete cloud & desktop reporting with timestamps and
-                      verification data for compliance.
+                      {t("setup.features.auditLogsDesc")}
                     </p>
                   </div>
                 </div>
@@ -853,17 +837,16 @@ const DataGuardianAwardPage: React.FC = () => {
                       d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                     />
                   </svg>
-                  <span>Trusted Partners</span>
+                  <span>{t("industries.badge")}</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 sm:mb-6">
-                  We{" "}
+                  {t("industries.titlePrefix")}{" "}
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    Recognized
+                    {t("industries.titleHighlight")}
                   </span>
                 </h2>
                 <p className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
-                  The D-Secure Assurance Badge is trusted by businesses of all
-                  sizes.
+                  {t("industries.desc")}
                 </p>
               </div>
             </Reveal>
@@ -871,36 +854,64 @@ const DataGuardianAwardPage: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full mx-auto">
               {[
                 {
-                  name: "Schools",
+                  name: t("industries.list.schools"),
                   icon: "🏫",
-                  desc: "Educational Institutions",
+                  desc: t("industries.list.schoolsDesc"),
                 },
-                { name: "Studios", icon: "🎬", desc: "Creative Agencies" },
-                { name: "Startups", icon: "🚀", desc: "New Ventures" },
-                { name: "SMBs", icon: "🏢", desc: "Small Business" },
                 {
-                  name: "Freelancers",
+                  name: t("industries.list.studios"),
+                  icon: "🎬",
+                  desc: t("industries.list.studiosDesc"),
+                },
+                {
+                  name: t("industries.list.startups"),
+                  icon: "🚀",
+                  desc: t("industries.list.startupsDesc"),
+                },
+                {
+                  name: t("industries.list.smbs"),
+                  icon: "🏢",
+                  desc: t("industries.list.smbsDesc"),
+                },
+                {
+                  name: t("industries.list.freelancers"),
                   icon: "💼",
-                  desc: "Independent Professionals",
+                  desc: t("industries.list.freelancersDesc"),
                 },
-                { name: "Co-working", icon: "🏠", desc: "Shared Spaces" },
                 {
-                  name: "Hospitals",
+                  name: t("industries.list.coworking"),
+                  icon: "🏠",
+                  desc: t("industries.list.coworkingDesc"),
+                },
+                {
+                  name: t("industries.list.hospitals"),
                   icon: "🏥",
-                  desc: "Healthcare Providers",
+                  desc: t("industries.list.hospitalsDesc"),
                 },
-                { name: "Law Firms", icon: "⚖️", desc: "Legal Services" },
-                { name: "IT Companies", icon: "💻", desc: "Tech Solutions" },
                 {
-                  name: "Retailers",
+                  name: t("industries.list.lawFirms"),
+                  icon: "⚖️",
+                  desc: t("industries.list.lawFirmsDesc"),
+                },
+                {
+                  name: t("industries.list.itCompanies"),
+                  icon: "💻",
+                  desc: t("industries.list.itCompaniesDesc"),
+                },
+                {
+                  name: t("industries.list.retailers"),
                   icon: "🛒",
-                  desc: "E-commerce & Stores",
+                  desc: t("industries.list.retailersDesc"),
                 },
-                { name: "Finance", icon: "🏦", desc: "Banking & Insurance" },
                 {
-                  name: "Consultants",
+                  name: t("industries.list.finance"),
+                  icon: "🏦",
+                  desc: t("industries.list.financeDesc"),
+                },
+                {
+                  name: t("industries.list.consultants"),
                   icon: "📊",
-                  desc: "Advisory Services",
+                  desc: t("industries.list.consultantsDesc"),
                 },
               ].map((industry, index) => (
                 <Reveal key={industry.name} delayMs={index * 50}>
@@ -940,14 +951,13 @@ const DataGuardianAwardPage: React.FC = () => {
                   >
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
-                  <span>Verify Certified Organizations</span>
+                  <span>{t("map.badge")}</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-                  Search for Certified Company
+                  {t("map.title")}
                 </h2>
                 <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8">
-                  Check if an organization has achieved D-Secure Data Hygiene
-                  Assurance
+                  {t("map.desc")}
                 </p>
 
                 {/* Search Bar */}
@@ -955,7 +965,7 @@ const DataGuardianAwardPage: React.FC = () => {
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 bg-white rounded-2xl sm:rounded-full p-3 sm:p-2 shadow-xl">
                     <input
                       type="text"
-                      placeholder="Enter company name or location..."
+                      placeholder={t("map.searchPlaceholder")}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -978,7 +988,7 @@ const DataGuardianAwardPage: React.FC = () => {
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         />
                       </svg>
-                      Search
+                      {t("map.searchButton")}
                     </button>
                   </div>
 
@@ -988,8 +998,9 @@ const DataGuardianAwardPage: React.FC = () => {
                       {searchResults.length > 0 ? (
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                           <p className="text-emerald-400 font-medium mb-3">
-                            Found {searchResults.length} certified
-                            organization(s):
+                            {t("map.found", {
+                              count: searchResults.length,
+                            })}
                           </p>
                           {searchResults.map((company) => (
                             <div
@@ -1023,8 +1034,9 @@ const DataGuardianAwardPage: React.FC = () => {
                       ) : (
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
                           <p className="text-slate-300">
-                            No certified organizations found matching "
-                            {searchQuery}"
+                            {t("map.notFound", {
+                              query: searchQuery,
+                            })}
                           </p>
                         </div>
                       )}
@@ -1051,7 +1063,7 @@ const DataGuardianAwardPage: React.FC = () => {
                       style={{ height: "100%", width: "100%" }}
                     >
                       <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">${t("map.openstreetmap")}</a>`}
                         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                       />
 
@@ -1078,7 +1090,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 color: "#1e293b",
                               }}
                             >
-                              InfoTree Computers
+                              {t("map.infotree_computers")}
                             </h3>
                             <p
                               style={{
@@ -1087,7 +1099,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 marginBottom: "4px",
                               }}
                             >
-                              CERTIFIED TO:
+                              {t("map.certifiedTo")}
                             </p>
                             <p
                               style={{
@@ -1096,7 +1108,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 marginBottom: "12px",
                               }}
                             >
-                              Data Hygiene Assurance
+                              {t("map.certifiedType")}
                             </p>
                           </div>
                         </Popup>
@@ -1125,7 +1137,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 color: "#1e293b",
                               }}
                             >
-                              Revent Store
+                              {t("map.revent_store")}
                             </h3>
                             <p
                               style={{
@@ -1134,7 +1146,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 marginBottom: "4px",
                               }}
                             >
-                              CERTIFIED TO:
+                              {t("map.certifiedTo")}
                             </p>
                             <p
                               style={{
@@ -1143,7 +1155,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 marginBottom: "12px",
                               }}
                             >
-                              Data Hygiene Assurance
+                              {t("map.certifiedType")}
                             </p>
                           </div>
                         </Popup>
@@ -1178,12 +1190,12 @@ const DataGuardianAwardPage: React.FC = () => {
                       d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <span>FAQ</span>
+                  <span>{t("faq.badge")}</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
-                  Frequently Asked{" "}
+                  {t("faq.titlePrefix")}{" "}
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    Questions
+                    {t("faq.titleHighlight")}
                   </span>
                 </h2>
               </div>
@@ -1192,30 +1204,24 @@ const DataGuardianAwardPage: React.FC = () => {
             <div className="w-full mx-auto space-y-2">
               {[
                 {
-                  question: "What is the D-Secure Assurance Badge?",
-                  answer:
-                    "The D-Secure Assurance Badge is our certification that confirms your organization has implemented proper data hygiene processes. It's not just a certificate - it's our guarantee that you have the complete setup, processes, and discipline to keep data safe and secure.",
+                  question: t("faq.questions.q1"),
+                  answer: t("faq.questions.a1"),
                 },
                 {
-                  question: "How long does the certification process take?",
-                  answer:
-                    "The typical certification process takes 2-4 weeks, depending on your organization's size and readiness. This includes assessment, implementation support, and final verification.",
+                  question: t("faq.questions.q2"),
+                  answer: t("faq.questions.a2"),
                 },
                 {
-                  question: "What are the prerequisites for certification?",
-                  answer:
-                    "Organizations must implement D-Secure data hygiene tools including our automated eraser system, Free Space Wipe. We provide complete guidance on setup and implementation.",
+                  question: t("faq.questions.q3"),
+                  answer: t("faq.questions.a3"),
                 },
                 {
-                  question: "How do audits work?",
-                  answer:
-                    "We conduct both scheduled and random audits to verify compliance. This includes checking erasure logs, process documentation, and system configurations. Our automated tools make this process seamless and non-intrusive.",
+                  question: t("faq.questions.q4"),
+                  answer: t("faq.questions.a4"),
                 },
-
                 {
-                  question: "What ongoing support is provided?",
-                  answer:
-                    "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
+                  question: t("faq.questions.q5"),
+                  answer: t("faq.questions.a5"),
                 },
               ].map((faq, index) => (
                 <Reveal key={index} delayMs={index * 50}>
@@ -1273,18 +1279,17 @@ const DataGuardianAwardPage: React.FC = () => {
                 <Reveal>
                   <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/60 p-5 sm:p-8 md:p-12">
                     <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
-                      Apply for Assurance Badge
+                      {t("formSection.title")}
                     </h2>
                     <p className="text-slate-600 text-center mb-6">
-                      Get your organization certified with D-Secure Data Hygiene
-                      Assurance
+                      {t("formSection.desc")}
                     </p>
 
                     {/* Usage Type Toggle */}
                     <div className="mb-6 sm:mb-8">
                       <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
                         <span className="text-base sm:text-lg font-medium text-slate-700 w-full sm:w-auto text-center sm:text-left">
-                          Usage:
+                          {t("formSection.usage")}
                         </span>
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input
@@ -1300,7 +1305,7 @@ const DataGuardianAwardPage: React.FC = () => {
                             className="w-5 h-5 text-emerald-600"
                           />
                           <span className="text-base sm:text-lg font-medium">
-                            Business
+                            {t("common:form.appliedForBusiness")}
                           </span>
                         </label>
                         <label className="flex items-center gap-2 cursor-pointer">
@@ -1317,7 +1322,7 @@ const DataGuardianAwardPage: React.FC = () => {
                             className="w-5 h-5 text-emerald-600"
                           />
                           <span className="text-base sm:text-lg font-medium">
-                            Personal
+                            {t("common:form.appliedForPersonal")}
                           </span>
                         </label>
                       </div>
@@ -1326,8 +1331,10 @@ const DataGuardianAwardPage: React.FC = () => {
                     {/* Conditional Message for Personal */}
                     {usageType === "personal" && (
                       <div className="mb-6 text-center text-blue-600">
-                        Free License is only available for business usage. In
-                        case you have any query, fill the form below.
+                        {t(
+                          "common:form.personalNotice",
+                          "Please note: Personal applications will be reviewed on a case-by-case basis.",
+                        )}
                       </div>
                     )}
 
@@ -1341,7 +1348,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="name"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Full Name
+                                {t("common:form.fullName")}
                                 <span className="text-red-500">*</span>
                               </label>
                               <input
@@ -1351,8 +1358,20 @@ const DataGuardianAwardPage: React.FC = () => {
                                 required
                                 value={formData.name}
                                 onChange={handleChange}
+                                onInvalid={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity(
+                                    t("common:form.validation.nameRequired"),
+                                  )
+                                }
+                                onInput={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity("")
+                                }
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors"
-                                placeholder="Full Name"
+                                placeholder={t("common:form.fullName")}
                               />
                             </div>
                             <div>
@@ -1360,7 +1379,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="email"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Business Email
+                                {t("common:form.businessEmail")}
                                 <span className="text-red-500">*</span>
                               </label>
                               <input
@@ -1370,8 +1389,20 @@ const DataGuardianAwardPage: React.FC = () => {
                                 required
                                 value={formData.email}
                                 onChange={handleChange}
+                                onInvalid={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity(
+                                    t("common:form.validation.emailRequired"),
+                                  )
+                                }
+                                onInput={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity("")
+                                }
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors"
-                                placeholder="Business Email"
+                                placeholder={t("common:form.email")}
                               />
                             </div>
                           </div>
@@ -1382,7 +1413,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="phone"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Phone No
+                                {t("common:form.phoneNumber")}
                               </label>
                               <input
                                 type="tel"
@@ -1391,7 +1422,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 value={formData.phone}
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors"
-                                placeholder="Phone Number"
+                                placeholder={t("common:form.phoneNumber")}
                               />
                             </div>
                             <div>
@@ -1399,7 +1430,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="businessType"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Business Type
+                                {t("common:form.businessType")}
                               </label>
                               <select
                                 id="businessType"
@@ -1408,20 +1439,36 @@ const DataGuardianAwardPage: React.FC = () => {
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors bg-white"
                               >
-                                <option value="">Business Type</option>
-                                <option value="enterprise">Enterprise</option>
-                                <option value="government">Government</option>
-                                <option value="healthcare">Healthcare</option>
-                                <option value="education">Education</option>
+                                <option value="">
+                                  {t("common:form.businessType")}
+                                </option>
+                                <option value="enterprise">
+                                  {t("common:form.businessTypes.enterprise")}
+                                </option>
+                                <option value="government">
+                                  {t("common:form.businessTypes.government")}
+                                </option>
+                                <option value="healthcare">
+                                  {t("common:form.businessTypes.healthcare")}
+                                </option>
+                                <option value="education">
+                                  {t("common:form.businessTypes.education")}
+                                </option>
                                 <option value="financial">
-                                  Financial Services
+                                  {t("common:form.businessTypes.financial")}
                                 </option>
-                                <option value="legal">Legal</option>
-                                <option value="technology">Technology</option>
+                                <option value="legal">
+                                  {t("common:form.businessTypes.legal")}
+                                </option>
+                                <option value="technology">
+                                  {t("common:form.businessTypes.technology")}
+                                </option>
                                 <option value="manufacturing">
-                                  Manufacturing
+                                  {t("common:form.businessTypes.manufacturing")}
                                 </option>
-                                <option value="other">Other</option>
+                                <option value="other">
+                                  {t("common:form.businessTypes.other")}
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -1432,7 +1479,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="company"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Company Name
+                                {t("common:form.companyName")}
                                 <span className="text-red-500">*</span>
                               </label>
                               <input
@@ -1442,8 +1489,20 @@ const DataGuardianAwardPage: React.FC = () => {
                                 required
                                 value={formData.company}
                                 onChange={handleChange}
+                                onInvalid={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity(
+                                    t("common:form.validation.nameRequired"),
+                                  )
+                                }
+                                onInput={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity("")
+                                }
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors"
-                                placeholder="Company Name"
+                                placeholder={t("common:form.companyName")}
                               />
                             </div>
                             <div>
@@ -1451,7 +1510,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="country"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Country
+                                {t("common:form.country")}
                               </label>
                               <select
                                 id="country"
@@ -1461,14 +1520,20 @@ const DataGuardianAwardPage: React.FC = () => {
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors bg-white"
                               >
                                 <option value="United States">
-                                  United States
+                                  {t("common:form.countries.us")}
                                 </option>
-                                <option value="India">India</option>
+                                <option value="India">
+                                  {t("common:form.countries.in")}
+                                </option>
                                 <option value="United Kingdom">
-                                  United Kingdom
+                                  {t("common:form.countries.uk")}
                                 </option>
-                                <option value="Canada">Canada</option>
-                                <option value="Other">Other</option>
+                                <option value="Canada">
+                                  {t("common:form.countries.ca")}
+                                </option>
+                                <option value="Other">
+                                  {t("common:form.countries.other")}
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -1482,7 +1547,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="name"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Full Name
+                                {t("common:form.fullName")}
                                 <span className="text-red-500">*</span>
                               </label>
                               <input
@@ -1493,7 +1558,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 value={formData.name}
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors"
-                                placeholder="Full Name"
+                                placeholder={t("common:form.fullName")}
                               />
                             </div>
                             <div>
@@ -1501,7 +1566,8 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="email"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Email<span className="text-red-500">*</span>
+                                {t("common:form.email")}
+                                <span className="text-red-500">*</span>
                               </label>
                               <input
                                 type="email"
@@ -1510,8 +1576,20 @@ const DataGuardianAwardPage: React.FC = () => {
                                 required
                                 value={formData.email}
                                 onChange={handleChange}
+                                onInvalid={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity(
+                                    t("common:form.validation.emailRequired"),
+                                  )
+                                }
+                                onInput={(e) =>
+                                  (
+                                    e.target as HTMLInputElement
+                                  ).setCustomValidity("")
+                                }
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors"
-                                placeholder="Email"
+                                placeholder={t("common:form.email")}
                               />
                             </div>
                           </div>
@@ -1522,7 +1600,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="phone"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Phone Number
+                                {t("common:form.phoneNumber")}
                               </label>
 
                               <input
@@ -1532,7 +1610,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 value={formData.phone}
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors"
-                                placeholder="Phone Number"
+                                placeholder={t("common:form.phoneNumber")}
                               />
                               {/* <div className="flex w-full">
                                                                 <select
@@ -1555,7 +1633,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 htmlFor="country"
                                 className="block text-sm font-medium text-slate-700 mb-2"
                               >
-                                Country
+                                {t("common:form.country")}
                               </label>
                               <select
                                 id="country"
@@ -1565,14 +1643,20 @@ const DataGuardianAwardPage: React.FC = () => {
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors bg-white"
                               >
                                 <option value="United States">
-                                  United States
+                                  {t("common:form.countries.us")}
                                 </option>
-                                <option value="India">India</option>
+                                <option value="India">
+                                  {t("common:form.countries.in")}
+                                </option>
                                 <option value="United Kingdom">
-                                  United Kingdom
+                                  {t("common:form.countries.uk")}
                                 </option>
-                                <option value="Canada">Canada</option>
-                                <option value="Other">Other</option>
+                                <option value="Canada">
+                                  {t("common:form.countries.ca")}
+                                </option>
+                                <option value="Other">
+                                  {t("common:form.countries.other")}
+                                </option>
                               </select>
                             </div>
                           </div>
@@ -1584,7 +1668,7 @@ const DataGuardianAwardPage: React.FC = () => {
                           htmlFor="message"
                           className="block text-sm font-medium text-slate-700 mb-2"
                         >
-                          Please let us know your requirements in detail.
+                          {t("common:form.message")}
                         </label>
                         <textarea
                           id="message"
@@ -1593,21 +1677,33 @@ const DataGuardianAwardPage: React.FC = () => {
                           rows={6}
                           value={formData.message}
                           onChange={handleChange}
+                          onInvalid={(e) =>
+                            (e.target as HTMLTextAreaElement).setCustomValidity(
+                              t("common:form.validation.messageRequired"),
+                            )
+                          }
+                          onInput={(e) =>
+                            (e.target as HTMLTextAreaElement).setCustomValidity(
+                              "",
+                            )
+                          }
                           className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none transition-colors resize-none"
-                          placeholder="Please let us know your requirements in detail."
+                          placeholder={t(
+                            "common:form.messageDetail",
+                            "Please let us know your requirements in detail.",
+                          )}
                         />
                       </div>
 
                       {usageType === "personal" && (
                         <div className="text-sm text-slate-600">
-                          I understand that the above information is protected
-                          by{" "}
-                          <a
-                            href="/privacy-policy"
+                          {t("common:form.privacyNotice")}{" "}
+                          <Link
+                            to="/privacy-policy"
                             className="text-emerald-600 hover:underline"
                           >
-                            D-Secure Privacy Policy
-                          </a>
+                            {t("common:nav.privacyPolicy", "Privacy Policy")}
+                          </Link>
                           .
                         </div>
                       )}
@@ -1639,10 +1735,10 @@ const DataGuardianAwardPage: React.FC = () => {
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                               ></path>
                             </svg>
-                            Submitting...
+                            {t("common:form.submitting")}
                           </>
                         ) : (
-                          "Apply for Certification"
+                          t("common:form.submit")
                         )}
                       </button>
                     </form>
@@ -1655,10 +1751,10 @@ const DataGuardianAwardPage: React.FC = () => {
                 <Reveal delayMs={10}>
                   <div className="bg-white rounded-2xl shadow-lg border border-slate-200/60 p-6">
                     <h3 className="font-bold text-slate-900 mb-4">
-                      Response within 12 Hours
+                      {t("contactInfo.response")}
                     </h3>
                     <p className="text-sm text-slate-600 mb-4">
-                      Contact the right team for your needs:
+                      {t("contactInfo.desc")}
                     </p>
                     <div className="space-y-3 text-sm">
                       <a
@@ -1682,7 +1778,7 @@ const DataGuardianAwardPage: React.FC = () => {
                         </div>
                         <div>
                           <span className="font-semibold text-slate-800">
-                            Sales Team
+                            {t("contactInfo.teams.sales")}
                           </span>
                           <p className="text-xs text-slate-800">
                             sales@dsecuretech.com
@@ -1710,7 +1806,7 @@ const DataGuardianAwardPage: React.FC = () => {
                         </div>
                         <div>
                           <span className="font-semibold text-slate-800">
-                            Technical Support
+                            {t("contactInfo.teams.support")}
                           </span>
                           <p className="text-xs text-slate-800">
                             support@dsecuretech.com
@@ -1738,7 +1834,7 @@ const DataGuardianAwardPage: React.FC = () => {
                         </div>
                         <div>
                           <span className="font-semibold text-slate-800">
-                            Legal Team
+                            {t("contactInfo.teams.legal")}
                           </span>
                           <p className="text-xs text-slate-800">
                             legal@dsecuretech.com
@@ -1769,25 +1865,23 @@ const DataGuardianAwardPage: React.FC = () => {
                   >
                     <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
                   </svg>
-                  <span>Get Certified Today</span>
+                  <span>{t("cta.badge")}</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-                  Ready to Get Your{" "}
+                  {t("cta.titlePrefix")}{" "}
                   <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-                    Assurance Badge?
+                    {t("cta.titleHighlight")}
                   </span>
                 </h2>
                 <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto">
-                  Join organizations worldwide that trust D-Secure for their
-                  data hygiene needs. Get your Assurance Badge and demonstrate
-                  your commitment to data security.
+                  {t("cta.desc")}
                 </p>
                 <div className="flex justify-center">
                   <Link
                     to="/contact"
                     className="group bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-10 py-5 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transform hover:scale-105 flex items-center justify-center gap-3"
                   >
-                    <span>Contact Sales</span>
+                    <span>{t("cta.button")}</span>
                     <svg
                       className="w-5 h-5"
                       fill="none"

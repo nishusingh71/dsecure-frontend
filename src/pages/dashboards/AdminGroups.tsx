@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from "react-helmet-async";
@@ -17,6 +18,7 @@ import { indexedDBService } from "@/services/indexedDBService";
 
 // ✅ Helper to suppress logs in demo mode
 const devLog = (...args: any[]) => {
+  const { t } = useTranslation();
   if (!isDemoMode()) {
     console.log(...args);
   }
@@ -61,6 +63,7 @@ interface LicenseSummary {
 }
 
 export default function AdminGroups() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const isDemo = isDemoMode();
 
@@ -1309,16 +1312,20 @@ export default function AdminGroups() {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-groups")} />
       <Helmet>
-        <title>Groups - Admin Dashboard | D-Secure</title>
+        <title>
+          {t("dashboard.adminGroups.groups_admin_dashboard_dsecure")}
+        </title>
       </Helmet>
 
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Groups</h1>
+            <h1 className="text-2xl font-bold text-slate-900">
+              {t("dashboard.adminGroups.groups")}
+            </h1>
             <p className="text-slate-600 mt-1">
-              Manage user groups and permissions
+              {t("dashboard.adminGroups.manage_user_groups_and_permissions")}
             </p>
           </div>
           <button
@@ -1338,7 +1345,7 @@ export default function AdminGroups() {
                 d="M12 4v16m8-8H4"
               />
             </svg>
-            Add Group
+            {t("dashboard.adminGroups.add_group")}
           </button>
         </div>
 
@@ -1347,7 +1354,9 @@ export default function AdminGroups() {
           <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600">Total Groups</p>
+                <p className="text-sm text-slate-600">
+                  {t("dashboard.adminGroups.total_groups")}
+                </p>
                 <p className="text-3xl font-bold text-slate-900 mt-1">
                   {groups.length}
                 </p>
@@ -1373,7 +1382,9 @@ export default function AdminGroups() {
           <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600">Total Users</p>
+                <p className="text-sm text-slate-600">
+                  {t("dashboard.adminGroups.total_users")}
+                </p>
                 <p className="text-3xl font-bold text-slate-900 mt-1">
                   {totalUsers}
                 </p>
@@ -1399,7 +1410,9 @@ export default function AdminGroups() {
           <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600">Total Machines</p>
+                <p className="text-sm text-slate-600">
+                  {t("dashboard.adminGroups.total_machines")}
+                </p>
                 <p className="text-3xl font-bold text-slate-900 mt-1">
                   {totalMachines}
                 </p>
@@ -1425,7 +1438,9 @@ export default function AdminGroups() {
           <div className="card !p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600">Total Reports</p>
+                <p className="text-sm text-slate-600">
+                  {t("dashboard.adminGroups.total_reports")}
+                </p>
                 <p className="text-3xl font-bold text-slate-900 mt-1">
                   {totalReports}
                 </p>
@@ -1532,14 +1547,16 @@ export default function AdminGroups() {
                   d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p className="font-medium">Failed to load groups</p>
+              <p className="font-medium">
+                {t("dashboard.adminGroups.failed_to_load_groups")}
+              </p>
             </div>
             <p className="text-sm opacity-90 mb-3">{isError}</p>
             <button
               onClick={() => fetchGroups()}
               className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors shadow-sm"
             >
-              Try again
+              {t("dashboard.adminGroups.try_again")}
             </button>
           </div>
         )}
@@ -1602,10 +1619,12 @@ export default function AdminGroups() {
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
-                        {group.users.length} users
+                        {group.users.length}{" "}
+                        {t("dashboard.adminGroups.users_count")}
                       </span>
                       <span className="text-sm text-slate-500">
-                        Created: {new Date(group.created).toLocaleDateString()}
+                        {t("dashboard.adminGroups.created_label")}{" "}
+                        {new Date(group.created).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
@@ -1614,13 +1633,13 @@ export default function AdminGroups() {
                       onClick={() => handleEditGroup(group)}
                       className="px-3 py-1.5 text-sm text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
                     >
-                      Edit
+                      {t("dashboard.adminGroups.edit")}
                     </button>
                     <button
                       onClick={() => handleDeleteGroup(group)}
                       className="px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     >
-                      Delete
+                      {t("dashboard.adminGroups.delete")}
                     </button>
                     <button
                       onClick={() => toggleGroup(group.id)}
@@ -1665,7 +1684,7 @@ export default function AdminGroups() {
                             d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                           />
                         </svg>
-                        Transfer
+                        {t("dashboard.adminGroups.transfer")}
                       </button>
                       <button
                         onClick={() => handleOpenRevokeModal(group)}
@@ -1684,7 +1703,7 @@ export default function AdminGroups() {
                             d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
                           />
                         </svg>
-                        Revoke
+                        {t("dashboard.adminGroups.revoke")}
                       </button>
                       <button
                         onClick={() => handleOpenAddUserModal(group)}
@@ -1703,7 +1722,7 @@ export default function AdminGroups() {
                             d="M12 4v16m8-8H4"
                           />
                         </svg>
-                        Add User
+                        {t("dashboard.adminGroups.add_user")}
                       </button>
                     </div>
 
@@ -1712,25 +1731,25 @@ export default function AdminGroups() {
                         <thead className="bg-slate-100 border-b border-slate-200">
                           <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                              User Name
+                              {t("dashboard.adminGroups.user_name")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                              Email
+                              {t("dashboard.adminGroups.email_header")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                              Role
+                              {t("dashboard.adminGroups.role_header")}
                             </th>
                             {/* <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                                                     Department
                                                 </th> */}
                             <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                              License
+                              {t("dashboard.adminGroups.license_header")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                              Profile
+                              {t("dashboard.adminGroups.profile_header")}
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                              Actions
+                              {t("dashboard.adminGroups.actions_header")}
                             </th>
                           </tr>
                         </thead>
@@ -1845,7 +1864,7 @@ export default function AdminGroups() {
                                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                           ></path>
                                         </svg>
-                                        Removing...
+                                        {t("dashboard.adminGroups.removing")}
                                       </>
                                     ) : (
                                       <>
@@ -1862,7 +1881,7 @@ export default function AdminGroups() {
                                             d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                           />
                                         </svg>
-                                        Remove
+                                        {t("dashboard.adminGroups.remove")}
                                       </>
                                     )}
                                   </button>
@@ -1891,7 +1910,7 @@ export default function AdminGroups() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                Add User to {selectedGroup.name}
+                {t("dashboard.adminGroups.add_user_to")} {selectedGroup.name}
               </h3>
 
               {/* Error Message */}
@@ -1913,7 +1932,7 @@ export default function AdminGroups() {
                     </svg>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-red-800 mb-1">
-                        Unable to Add User
+                        {t("dashboard.adminGroups.unable_to_add_user")}
                       </p>
                       <p className="text-sm text-red-700">{errorMessage}</p>
                     </div>
@@ -1942,7 +1961,8 @@ export default function AdminGroups() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Select User <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.select_user")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   {isLoadingSubusers ? (
                     <div className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 flex items-center gap-2">
@@ -1967,19 +1987,19 @@ export default function AdminGroups() {
                         ></path>
                       </svg>
                       <span className="text-sm text-slate-600">
-                        Loading users...
+                        {t("dashboard.adminGroups.loading_users")}
                       </span>
                     </div>
                   ) : !currentUserEmail ? (
                     <div className="w-full px-3 py-2 border border-red-300 rounded-lg bg-red-50">
                       <p className="text-sm text-red-700">
-                        ⚠️ User not authenticated. Please log in again.
+                        {t("dashboard.adminGroups.user_not_authenticated")}
                       </p>
                     </div>
                   ) : subusersError ? (
                     <div className="w-full px-3 py-2 border border-red-300 rounded-lg bg-red-50">
                       <p className="text-sm text-red-700">
-                        ❌ Error loading subusers. Please try again.
+                        {t("dashboard.adminGroups.error_loading_subusers")}
                       </p>
                     </div>
                   ) : subusersData && subusersData.length > 0 ? (
@@ -1989,8 +2009,10 @@ export default function AdminGroups() {
                       className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       required
                     >
-                      <option value="">Select a user...</option>
-                      <optgroup label="Subuser List">
+                      <option value="">
+                        {t("dashboard.adminGroups.select_a_user")}
+                      </option>
+                      <optgroup label={t("dashboard.adminGroups.subuser_list")}>
                         {subusersData.map((subuser: any) => (
                           <option
                             key={subuser.subuser_email}
@@ -2005,19 +2027,22 @@ export default function AdminGroups() {
                     <div className="space-y-2">
                       <div className="w-full px-3 py-2 border border-amber-300 rounded-lg bg-amber-50">
                         <p className="text-sm text-amber-800 font-medium">
-                          ⚠️ No subusers available
+                          {t("dashboard.adminGroups.no_subusers_available")}
                         </p>
                         <p className="text-xs text-amber-700 mt-1">
-                          Current user: <strong>{currentUserEmail}</strong>
+                          {t("dashboard.adminGroups.current_user")}{" "}
+                          <strong>{currentUserEmail}</strong>
                         </p>
                         <p className="text-xs text-amber-700">
-                          Please create subusers first in the Subusers section.
+                          {t(
+                            "dashboard.adminGroups.please_create_subusers_first_in_the_subusers",
+                          )}
                         </p>
                       </div>
                     </div>
                   )}
                   <p className="mt-1 text-xs text-slate-500">
-                    💡 Select a subuser from your account to add to this group.
+                    {t("dashboard.adminGroups.select_subuser_hint")}
                   </p>
                 </div>
 
@@ -2032,11 +2057,15 @@ export default function AdminGroups() {
                     />
                     <div className="flex-1">
                       <span className="text-sm font-medium text-slate-700 group-hover:text-emerald-600 transition-colors">
-                        Make this user a Group Admin
+                        {t(
+                          "dashboard.adminGroups.make_this_user_a_group_admin",
+                        )}
                       </span>
                       <p className="text-xs text-slate-500 mt-0.5">
-                        Group Admins can transfer and revoke machines/licenses
-                        within this group
+                        {t(
+                          "dashboard.adminGroups.group_admins_can_transfer_and_revoke_machines",
+                        )}
+                        {t("dashboard.adminGroups.within_this_group")}
                       </p>
                     </div>
                   </label>
@@ -2050,7 +2079,7 @@ export default function AdminGroups() {
                   className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t("dashboard.adminGroups.cancel")}
                 </button>
                 <button
                   onClick={handleAddUserToGroup}
@@ -2079,10 +2108,10 @@ export default function AdminGroups() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Adding...
+                      {t("dashboard.adminGroups.adding")}
                     </>
                   ) : (
-                    "Add User"
+                    t("dashboard.adminGroups.add_user")
                   )}
                 </button>
               </div>
@@ -2101,7 +2130,7 @@ export default function AdminGroups() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                Add New Group
+                {t("dashboard.adminGroups.add_new_group")}
               </h3>
 
               {/* Error Message */}
@@ -2123,7 +2152,7 @@ export default function AdminGroups() {
                     </svg>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-red-800 mb-1">
-                        Unable to Create Group
+                        {t("dashboard.adminGroups.unable_to_create_group")}
                       </p>
                       <p className="text-sm text-red-700">{errorMessage}</p>
                     </div>
@@ -2152,7 +2181,8 @@ export default function AdminGroups() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Group Name <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.group_name_label")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -2161,13 +2191,14 @@ export default function AdminGroups() {
                       setFormData({ ...formData, name: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    placeholder="Enter group name"
+                    placeholder={t("dashboard.adminGroups.enter_group_name")}
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Description <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.description_label")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     value={formData.description}
@@ -2175,7 +2206,7 @@ export default function AdminGroups() {
                       setFormData({ ...formData, description: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                    placeholder="Enter description"
+                    placeholder={t("dashboard.adminGroups.enter_description")}
                     rows={3}
                     required
                   />
@@ -2236,7 +2267,7 @@ export default function AdminGroups() {
                   className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t("dashboard.adminGroups.cancel")}
                 </button>
                 <button
                   onClick={handleSaveNewGroup}
@@ -2267,10 +2298,10 @@ export default function AdminGroups() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Creating...
+                      {t("dashboard.adminGroups.creating")}
                     </>
                   ) : (
-                    "Add Group"
+                    t("dashboard.adminGroups.add_group")
                   )}
                 </button>
               </div>
@@ -2289,7 +2320,7 @@ export default function AdminGroups() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                Edit Group
+                {t("dashboard.adminGroups.edit_group")}
               </h3>
 
               {/* Error Message */}
@@ -2311,7 +2342,7 @@ export default function AdminGroups() {
                     </svg>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-red-800 mb-1">
-                        Unable to Update Group
+                        {t("dashboard.adminGroups.unable_to_update_group")}
                       </p>
                       <p className="text-sm text-red-700">{errorMessage}</p>
                     </div>
@@ -2340,7 +2371,8 @@ export default function AdminGroups() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Group Name <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.group_name_label")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -2354,7 +2386,8 @@ export default function AdminGroups() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Description <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.description_label")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <textarea
                     value={formData.description}
@@ -2422,7 +2455,7 @@ export default function AdminGroups() {
                   className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t("dashboard.adminGroups.cancel")}
                 </button>
                 <button
                   onClick={handleSaveEditGroup}
@@ -2453,10 +2486,10 @@ export default function AdminGroups() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Saving...
+                      {t("dashboard.adminGroups.saving")}
                     </>
                   ) : (
-                    "Save Changes"
+                    t("dashboard.adminGroups.save_changes")
                   )}
                 </button>
               </div>
@@ -2475,7 +2508,7 @@ export default function AdminGroups() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                Delete Group
+                {t("dashboard.adminGroups.delete_group")}
               </h3>
 
               {/* Error Message */}
@@ -2497,7 +2530,7 @@ export default function AdminGroups() {
                     </svg>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-red-800 mb-1">
-                        Unable to Delete Group
+                        {t("dashboard.adminGroups.unable_to_delete_group")}
                       </p>
                       <p className="text-sm text-red-700">{errorMessage}</p>
                       {errorMessage
@@ -2508,9 +2541,21 @@ export default function AdminGroups() {
                             💡 How to fix:
                           </p>
                           <ol className="text-xs text-amber-700 list-decimal list-inside space-y-1">
-                            <li>Expand this group in the list</li>
-                            <li>Remove all users from the group</li>
-                            <li>Then try deleting again</li>
+                            <li>
+                              {t(
+                                "dashboard.adminGroups.expand_this_group_in_the_list",
+                              )}
+                            </li>
+                            <li>
+                              {t(
+                                "dashboard.adminGroups.remove_all_users_from_the_group",
+                              )}
+                            </li>
+                            <li>
+                              {t(
+                                "dashboard.adminGroups.then_try_deleting_again",
+                              )}
+                            </li>
                           </ol>
                         </div>
                       )}
@@ -2538,9 +2583,9 @@ export default function AdminGroups() {
               )}
 
               <p className="text-slate-600 mb-6">
-                Are you sure you want to delete the group{" "}
-                <strong>"{selectedGroup.name}"</strong>? This action cannot be
-                undone.
+                {t("dashboard.adminGroups.delete_confirm_msg")}{" "}
+                <strong>"{selectedGroup.name}"</strong>?{" "}
+                {t("dashboard.adminGroups.cannot_be_undone")}
               </p>
               <div className="flex gap-3">
                 <button
@@ -2548,7 +2593,7 @@ export default function AdminGroups() {
                   className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t("dashboard.adminGroups.cancel")}
                 </button>
                 <button
                   onClick={handleConfirmDelete}
@@ -2577,10 +2622,10 @@ export default function AdminGroups() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Deleting...
+                      {t("dashboard.adminGroups.deleting")}
                     </>
                   ) : (
-                    "Delete"
+                    t("dashboard.adminGroups.delete")
                   )}
                 </button>
               </div>
@@ -2599,7 +2644,7 @@ export default function AdminGroups() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                Transfer Machines & Licenses
+                {t("dashboard.adminGroups.transfer_machines_licenses")}
               </h3>
 
               {errorMessage && (
@@ -2612,7 +2657,8 @@ export default function AdminGroups() {
                 {/* Group Admin Email (read-only) */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Group Admin Email <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.group_admin_email")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -2628,14 +2674,17 @@ export default function AdminGroups() {
                 {/* Select Member */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Member Email <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.member_email")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={selectedTransferUser}
                     onChange={(e) => setSelectedTransferUser(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Select a member...</option>
+                    <option value="">
+                      {t("dashboard.adminGroups.select_a_member")}
+                    </option>
                     {selectedGroup.users.map((user) => (
                       <option key={user.email} value={user.email}>
                         {user.name} ({user.email})
@@ -2647,7 +2696,7 @@ export default function AdminGroups() {
                 {/* Available Machines */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Select Machines to Transfer
+                    {t("dashboard.adminGroups.select_machines_to_transfer")}
                   </label>
                   {isLoadingMachines ? (
                     <div className="flex items-center justify-center py-8">
@@ -2695,7 +2744,9 @@ export default function AdminGroups() {
                         }}
                         value=""
                       >
-                        <option value="">Select a machine...</option>
+                        <option value="">
+                          {t("dashboard.adminGroups.select_a_machine")}
+                        </option>
                         {availableMachines
                           .filter(
                             (machine) =>
@@ -2719,7 +2770,8 @@ export default function AdminGroups() {
                       {selectedMachines.length > 0 && (
                         <div className="border border-blue-200 rounded-lg bg-blue-50 p-3">
                           <p className="text-xs font-medium text-blue-800 mb-2">
-                            Selected Machines ({selectedMachines.length})
+                            {t("dashboard.adminGroups.selected_machines")} (
+                            {selectedMachines.length})
                           </p>
                           <div className="flex flex-wrap gap-2">
                             {selectedMachines.map((machineId) => {
@@ -2771,7 +2823,9 @@ export default function AdminGroups() {
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500 py-4">
-                      No available machines to transfer
+                      {t(
+                        "dashboard.adminGroups.no_available_machines_to_transfer",
+                      )}
                     </p>
                   )}
                 </div>
@@ -2779,7 +2833,7 @@ export default function AdminGroups() {
                 {/* Available Licenses */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Select Licenses to Transfer
+                    {t("dashboard.adminGroups.select_licenses_to_transfer")}
                   </label>
                   {availableLicenses.length > 0 ? (
                     <div className="space-y-3">
@@ -2801,7 +2855,9 @@ export default function AdminGroups() {
                         }}
                         value=""
                       >
-                        <option value="">Select a license...</option>
+                        <option value="">
+                          {t("dashboard.adminGroups.select_a_license")}
+                        </option>
                         {availableLicenses
                           .filter(
                             (license) => !selectedLicenses.includes(license.id),
@@ -2817,7 +2873,8 @@ export default function AdminGroups() {
                       {selectedLicenses.length > 0 && (
                         <div className="border border-blue-200 rounded-lg bg-blue-50 p-3">
                           <p className="text-xs font-medium text-blue-800 mb-2">
-                            Selected Licenses ({selectedLicenses.length})
+                            {t("dashboard.adminGroups.selected_licenses")} (
+                            {selectedLicenses.length})
                           </p>
                           <div className="flex flex-wrap gap-2">
                             {selectedLicenses.map((licenseId) => {
@@ -2865,7 +2922,9 @@ export default function AdminGroups() {
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500 py-4">
-                      No available licenses to transfer
+                      {t(
+                        "dashboard.adminGroups.no_available_licenses_to_transfer",
+                      )}
                     </p>
                   )}
                 </div>
@@ -2877,7 +2936,7 @@ export default function AdminGroups() {
                   className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t("dashboard.adminGroups.cancel")}
                 </button>
                 <button
                   onClick={handleTransferAssets}
@@ -2910,10 +2969,10 @@ export default function AdminGroups() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Transferring...
+                      {t("dashboard.adminGroups.transferring")}
                     </>
                   ) : (
-                    "Transfer"
+                    t("dashboard.adminGroups.transfer")
                   )}
                 </button>
               </div>
@@ -2932,7 +2991,7 @@ export default function AdminGroups() {
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="text-xl font-semibold text-slate-900 mb-4">
-                Revoke Machines & Licenses
+                {t("dashboard.adminGroups.revoke_machines_licenses")}
               </h3>
 
               {errorMessage && (
@@ -2945,7 +3004,8 @@ export default function AdminGroups() {
                 {/* Group Admin Email (read-only) */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Group Admin Email <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.group_admin_email")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -2961,14 +3021,17 @@ export default function AdminGroups() {
                 {/* Select Member */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Member Email <span className="text-red-500">*</span>
+                    {t("dashboard.adminGroups.member_email")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={selectedRevokeUser}
                     onChange={(e) => handleRevokeUserChange(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   >
-                    <option value="">Select a member...</option>
+                    <option value="">
+                      {t("dashboard.adminGroups.select_a_member")}
+                    </option>
                     {selectedGroup.users.map((user) => (
                       <option key={user.email} value={user.email}>
                         {user.name} ({user.email})
@@ -2982,7 +3045,9 @@ export default function AdminGroups() {
                   <>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Select Machines to Revoke (Not In Use)
+                        {t(
+                          "dashboard.adminGroups.select_machines_to_revoke_not_in_use",
+                        )}
                       </label>
                       {isLoadingUserAssets ? (
                         <div className="flex items-center justify-center py-8">
@@ -3027,7 +3092,9 @@ export default function AdminGroups() {
                             }}
                             value=""
                           >
-                            <option value="">Select a machine...</option>
+                            <option value="">
+                              {t("dashboard.adminGroups.select_a_machine")}
+                            </option>
                             {userMachines
                               .filter(
                                 (machine) =>
@@ -3055,7 +3122,7 @@ export default function AdminGroups() {
                           {selectedRevokeMachines.length > 0 && (
                             <div className="border border-orange-200 rounded-lg bg-orange-50 p-3">
                               <p className="text-xs font-medium text-orange-800 mb-2">
-                                Selected Machines (
+                                {t("dashboard.adminGroups.selected_machines")} (
                                 {selectedRevokeMachines.length})
                               </p>
                               <div className="flex flex-wrap gap-2">
@@ -3109,14 +3176,18 @@ export default function AdminGroups() {
                         </div>
                       ) : (
                         <p className="text-sm text-slate-500 py-4">
-                          No available machines to revoke
+                          {t(
+                            "dashboard.adminGroups.no_available_machines_to_revoke",
+                          )}
                         </p>
                       )}
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Select Licenses to Revoke (Not In Use)
+                        {t(
+                          "dashboard.adminGroups.select_licenses_to_revoke_not_in_use",
+                        )}
                       </label>
                       {userLicenses.length > 0 ? (
                         <div className="space-y-3">
@@ -3138,7 +3209,9 @@ export default function AdminGroups() {
                             }}
                             value=""
                           >
-                            <option value="">Select a license...</option>
+                            <option value="">
+                              {t("dashboard.adminGroups.select_a_license")}
+                            </option>
                             {userLicenses
                               .filter(
                                 (license) =>
@@ -3155,7 +3228,7 @@ export default function AdminGroups() {
                           {selectedRevokeLicenses.length > 0 && (
                             <div className="border border-orange-200 rounded-lg bg-orange-50 p-3">
                               <p className="text-xs font-medium text-orange-800 mb-2">
-                                Selected Licenses (
+                                {t("dashboard.adminGroups.selected_licenses")} (
                                 {selectedRevokeLicenses.length})
                               </p>
                               <div className="flex flex-wrap gap-2">
@@ -3204,7 +3277,9 @@ export default function AdminGroups() {
                         </div>
                       ) : (
                         <p className="text-sm text-slate-500 py-4">
-                          No available licenses to revoke
+                          {t(
+                            "dashboard.adminGroups.no_available_licenses_to_revoke",
+                          )}
                         </p>
                       )}
                     </div>
@@ -3218,7 +3293,7 @@ export default function AdminGroups() {
                   className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50"
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t("dashboard.adminGroups.cancel")}
                 </button>
                 <button
                   onClick={handleRevokeAssets}
@@ -3251,10 +3326,10 @@ export default function AdminGroups() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Revoking...
+                      {t("dashboard.adminGroups.revoking")}
                     </>
                   ) : (
-                    "Revoke"
+                    t("dashboard.adminGroups.revoke")
                   )}
                 </button>
               </div>

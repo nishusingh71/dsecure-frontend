@@ -915,8 +915,9 @@ import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import React from 'react';
 import { useNavigate } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 const ITADSolution: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   return (
     <div className="font-['Inter',_'Segoe_UI',_'Roboto',_sans-serif] antialiased" style={{ backgroundColor: '#ffffff', color: '#1f2937' }}>
       {/* SEO Meta Tags */}

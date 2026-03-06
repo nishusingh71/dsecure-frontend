@@ -1,0 +1,19 @@
+{
+  "entityName": "Entity Name:",
+  "primaryIndustryCategory": "Primary Industry Category:",
+  "subcategories": "Sub-Categories:",
+  "positioningStatement": "Positioning Statement:",
+  "cryptographicErasureCe": "Cryptographic Erasure (CE):",
+  "overwriteStandards": "Overwrite Standards:",
+  "verificationEngine": "Verification Engine:",
+  "hardwareCompatibility": "Hardware Compatibility:",
+  "onpremiseAppliance": "On-Premise Appliance:",
+  "privateCloudConsole": "Private Cloud Console:",
+  "remoteEndpointErasure": "Remote Endpoint Erasure:",
+  "pxeNetworkBoot": "PXE Network Boot:",
+  "nistSpecialPublication80088Rev1": "NIST Special Publication 800-88 Rev. 1:",
+  "gdprGeneralDataProtectionRegulation": "GDPR (General Data Protection Regulation):",
+  "rightToErasure": "Right to Erasure",
+  "isoiec27001": "ISO/IEC 27001:",
+  "hipaaHitech": "HIPAA / HITECH:"
+}

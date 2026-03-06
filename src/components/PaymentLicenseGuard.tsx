@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/auth/AuthContext'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface PaymentLicenseGuardProps {
   children: React.ReactNode
@@ -18,7 +19,7 @@ export const PaymentLicenseGuard: React.FC<PaymentLicenseGuardProps> = ({
   showWarning = true
 }) => {
   const { user, isUserSetupComplete, hasValidPaymentDetails, hasValidLicenseDetails } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
 
   useEffect(() => {
     if (user && !isUserSetupComplete()) {
@@ -54,7 +55,7 @@ export const PaymentLicenseGuard: React.FC<PaymentLicenseGuardProps> = ({
  */
 export const SetupStatusAlert: React.FC = () => {
   const { user, hasValidPaymentDetails, hasValidLicenseDetails, isUserSetupComplete } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
 
   if (!user || isUserSetupComplete()) {
     return null

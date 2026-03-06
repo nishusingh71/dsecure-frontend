@@ -1,0 +1,124 @@
+{
+  "heroTitle": "Blog & Insights Hub",
+  "minRead": "1 min read",
+  "typeBlog": "Blog",
+  "typeWhitepaper": "Whitepaper",
+  "typeCaseStudy": "Case Study",
+  "typeGuide": "Guide",
+  "typeReport": "Report",
+  "typeTool": "Tool",
+  "typeDocumentation": "Documentation",
+  "heroSubtitle": "Explore our latest insights, expert perspectives, and industry trends through our comprehensive blog articles. Stay updated with data security best practices and emerging technologies.",
+  "searchPlaceholder": "Search resources, webinars, categories...",
+  "resourceCategories": "Resource Categories",
+  "comprehensiveKnowledge": "Comprehensive Knowledge",
+  "resourceLibrary": "Resource Library",
+  "resourceLibraryDesc": "Access our expertly curated collection of resources, designed to help you navigate data security challenges with confidence and expertise.",
+  "technicalDocumentation": "Technical Documentation",
+  "technicalDocumentationDesc": "Comprehensive user guides, implementation documentation, and quick-start resources for administrators.",
+  "exploreDocumentation": "Explore Documentation",
+  "guidesCount": "15+ Guides",
+  "industryInsightsBlog": "Industry Insights & Blog",
+  "industryInsightsBlogDesc": "Stay updated with the latest trends, expert insights, and best practices in data sanitization and security.",
+  "readLatestArticles": "Read Latest Articles",
+  "weeklyUpdates": "Weekly Updates",
+  "featuredBlogArticles": "Featured Blog Articles",
+  "featuredBlogArticlesDesc": "Our most popular and insightful blog articles to keep you informed.",
+  "featured": "Featured",
+  "readArticle": "Read Article",
+  "allBlogArticles": "All Blog Articles",
+  "allBlogArticlesDesc": "Browse our complete library of blog articles and insights.",
+  "blogArticles": "Blog Articles",
+  "noResourcesFound": "No resources found",
+  "noResourcesFoundDesc": "Try adjusting your search terms or category filter.",
+  "resources": {
+    "1": {
+      "title": "NIST 800-88 Compliance Guide",
+      "description": "Comprehensive guide to implementing NIST 800-88 Rev. 1 standards with D-Secure solutions."
+    },
+    "2": {
+      "title": "Enterprise Data Sanitization Case Study",
+      "description": "How a Fortune 500 company reduced IT refresh cycle time by 60% while maintaining 100% compliance."
+    },
+    "4": {
+      "title": "HIPAA Compliance in Healthcare",
+      "description": "Best practices for healthcare organizations to maintain HIPAA compliance during device disposal."
+    },
+    "5": {
+      "title": "ITAD Workflow Optimization",
+      "description": "Step-by-step guide to optimizing IT Asset Disposition workflows for maximum efficiency."
+    },
+    "6": {
+      "title": "Cloud Data Erasure Best Practices",
+      "description": "Advanced techniques for secure data sanitization in multi-cloud environments."
+    },
+    "7": {
+      "title": "Financial Services Compliance Report",
+      "description": "Industry analysis of data protection requirements for financial institutions."
+    },
+    "8": {
+      "title": "ROI Calculator & Business Case",
+      "description": "Interactive tool to calculate ROI and build business case for data sanitization projects."
+    },
+    "9": {
+      "title": "Security Architecture Whitepaper",
+      "description": "Deep dive into D-Secure's security architecture and cryptographic implementations."
+    },
+    "10": {
+      "title": "D-Secure File Eraser Manual",
+      "description": "Complete user manual for D-Secure File Eraser. Installation, configuration, and operational instructions for secure file deletion."
+    },
+    "11": {
+      "title": "Securely Erasing SSDs & NVMe Drives",
+      "description": "Why traditional wiping methods fail on SSDs. Exploring command-based erasure, cryptographic sanitization, and handling wear leveling."
+    },
+    "12": {
+      "title": "Erasure vs. Physical Destruction: ROI Analysis",
+      "description": "A comparative analysis of value retention. How secure erasure allows for asset remarketing and ESG compliance, compared to the total loss of value with physical destruction."
+    },
+    "13": {
+      "title": "Debunking 5 Critical Data Deletion Myths",
+      "description": "Formatting is not erasure. We expose common misconceptions that leave organizations vulnerable to data breaches and regulatory fines."
+    },
+    "14": {
+      "title": "Navigating Global Data Compliance Standards",
+      "description": "Essential guide to matching your sanitization protocols with GDPR, HIPAA, SOX, and ISO/IEC 27001 requirements for audit-proof security."
+    },
+    "15": {
+      "title": "Best Data Erasure Method for Any Storage Media Type",
+      "description": "One size does not fit all. Learn the correct erasure standard for HDDs, SSDs, and Mobile devices to ensure compliance."
+    }
+  },
+  "webinars": {
+    "1": {
+      "title": "Data Sanitization in the Cloud Era",
+      "speaker": "Dr. Sarah Chen, Chief Security Officer",
+      "description": "Learn advanced techniques for secure data erasure in hybrid and multi-cloud environments."
+    },
+    "2": {
+      "title": "NIST 800-88 Implementation Guide",
+      "speaker": "Michael Rodriguez, Compliance Director",
+      "description": "Overview of the latest NIST guidelines and how to implement them in your organization."
+    },
+    "3": {
+      "title": "Enterprise Scale Data Sanitization",
+      "speaker": "James Wilson, Solutions Architect",
+      "description": "Best practices for managing large-scale data sanitization projects."
+    },
+    "4": {
+      "title": "Advanced Compliance Frameworks",
+      "speaker": "Lisa Anderson, Compliance Expert",
+      "description": "Deep dive into GDPR, HIPAA, and SOX compliance requirements for data sanitization."
+    },
+    "5": {
+      "title": "File Security & Erasure",
+      "speaker": "David Park, Security Specialist",
+      "description": "Comprehensive drive and file data protection and secure erasure strategies."
+    },
+    "6": {
+      "title": "Cloud Storage Security Best Practices",
+      "speaker": "Rachel Martinez, Cloud Architect",
+      "description": "Securing data across multiple cloud platforms with proper erasure techniques."
+    }
+  }
+}

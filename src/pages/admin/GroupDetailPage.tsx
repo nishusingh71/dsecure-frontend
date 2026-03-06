@@ -2,7 +2,8 @@ import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 // import { usePermissions } from '@/hooks/usePermissions';
 // import {
 //     useGroupUsers,
@@ -26,7 +27,7 @@ import { useParams, useNavigate } from 'react-router-dom';
  */
 export default function GroupDetailPage() {
     const { groupId } = useParams<{ groupId: string }>();
-    const navigate = useNavigate();
+    const navigate = useLocaleNavigate();
     // const { hasPermission, isSuperAdmin } = usePermissions();
 
     // State

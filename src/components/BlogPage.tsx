@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import Reveal from "./Reveal";
 import { getSEOForPage } from "@/utils/seo";
 import { SEOHead } from "@/components/SEOHead";

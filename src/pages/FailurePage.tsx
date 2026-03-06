@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link } from "@/components/LocaleLink";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ProductImage } from '@/components/ProductImage';
 import SEOHead from '../components/SEOHead';
 import { getSEOForPage } from '../utils/seo';
 import { api } from '@/utils/apiClient';
 import { ENV } from '@/config/env';
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 // API Response interfaces matching backend schema
 interface BillingAddress {
@@ -84,7 +86,7 @@ interface OrderDetailsResponse {
 }
 
 export default function FailurePage() {
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const [searchParams] = useSearchParams();
   const [orderData, setOrderData] = useState<OrderDetailsResponse | null>(null);
   const [loading, setLoading] = useState(true);

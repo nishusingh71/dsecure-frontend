@@ -1,9 +1,11 @@
 import React, { useState, memo, useEffect, useCallback, useMemo } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useSearchParams } from "react-router-dom";
 import { getProductIcon } from "@/utils/productIcons";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { ENV } from "@/config/env";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 // --- Types Definitions (Best Practice for maintainability) ---
 interface DownloadInfo {
@@ -107,7 +109,7 @@ const LinuxIcon = memo(() => (
 
 
 const DownloadPage: React.FC = memo(() => {
-    const navigate = useNavigate();
+    const navigate = useLocaleNavigate();
     const [searchParams] = useSearchParams();
     const [selectedProduct, setSelectedProduct] = useState<string>("drive-eraser");
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);

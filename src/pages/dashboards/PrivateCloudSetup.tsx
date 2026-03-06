@@ -7,9 +7,12 @@ import { useAuth } from "@/auth/AuthContext";
 import { useNotification } from "@/contexts/NotificationContext";
 import { Helmet } from "react-helmet-async";
 import { isDemoMode } from "@/data/demoData";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
+import { useTranslation } from "react-i18next";
 
 export default function PrivateCloudSetup() {
-  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const navigate = useLocaleNavigate();
   const { user } = useAuth();
   const { showSuccess, showError, showInfo } = useNotification();
 
@@ -413,7 +416,7 @@ export default function PrivateCloudSetup() {
     <>
       <SEOHead seo={getSEOForPage("private-cloud-setup")} />
       <Helmet>
-        <title>Private Cloud Setup - D-SecureTech</title>
+        <title>{t("dashboard.privateCloudSetup.private_cloud_setup_dsecuretech")}</title>
         <meta
           name="description"
           content="Configure your private cloud database connection"
@@ -441,7 +444,7 @@ export default function PrivateCloudSetup() {
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              Back to Dashboard
+              {t("dashboard.privateCloudSetup.back_to_dashboard")}
             </button>
 
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
@@ -463,10 +466,10 @@ export default function PrivateCloudSetup() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-slate-900">
-                    Private Cloud Setup
+                    {t("dashboard.privateCloudSetup.private_cloud_setup")}
                   </h1>
                   <p className="text-slate-600">
-                    Configure your private database connection
+                    {t("dashboard.privateCloudSetup.configure_your_private_database_connection")}
                   </p>
                 </div>
               </div>
@@ -492,12 +495,12 @@ export default function PrivateCloudSetup() {
                       d="M13 10V3L4 14h7v7l9-11h-7z"
                     />
                   </svg>
-                  Database Connection
+                  {t("dashboard.privateCloudSetup.database_connection")}
                 </h2>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Connection String <span className="text-red-500">*</span>
+                    {t("dashboard.privateCloudSetup.connection_string_label")} <span className="text-red-500">*</span>
                   </label>
                   <div className="overflow-x-auto">
                     <input
@@ -510,13 +513,13 @@ export default function PrivateCloudSetup() {
                         }))
                       }
                       className="w-full min-w-[600px] px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-mono text-sm whitespace-nowrap"
-                      placeholder="Server=myserver.database.windows.net;Database=mydb;User Id=myuser;Password=mypass;"
+                      placeholder={t("dashboard.privateCloudSetup.servermyserverdatabasewindowsnetdatabasemydbu")}
                       required
                     />
                   </div>
                   <p className="text-xs text-slate-500 mt-2">
-                    Enter your private database connection string. This
-                    information is encrypted and stored securely.
+                    {t("dashboard.privateCloudSetup.enter_your_private_database_connection_string")}
+                    {t("dashboard.privateCloudSetup.info_encrypted")}
                   </p>
                 </div>
               </div>
@@ -537,7 +540,7 @@ export default function PrivateCloudSetup() {
                       d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                     />
                   </svg>
-                  Setup Actions
+                  {t("dashboard.privateCloudSetup.setup_actions")}
                 </h2>
 
                 <div className="space-y-4">
@@ -564,10 +567,10 @@ export default function PrivateCloudSetup() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900">
-                        Create Tables
+                        {t("dashboard.privateCloudSetup.create_tables")}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        POST /api/PrivateCloud/complete-setup
+                        {t("dashboard.privateCloudSetup.post_apiprivatecloudcompletesetup")}
                       </p>
                     </div>
                     <button
@@ -599,10 +602,10 @@ export default function PrivateCloudSetup() {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             />
                           </svg>
-                          Creating...
+                          {t("dashboard.privateCloudSetup.creating")}
                         </>
                       ) : (
-                        "Create Tables"
+                        t("dashboard.privateCloudSetup.create_tables_btn")
                       )}
                     </button>
                   </div>
@@ -632,10 +635,10 @@ export default function PrivateCloudSetup() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900">
-                        Validate Schema
+                        {t("dashboard.privateCloudSetup.validate_schema")}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        POST /api/PrivateCloud/validate-schema
+                        {t("dashboard.privateCloudSetup.post_apiprivatecloudvalidateschema")}
                       </p>
                     </div>
                     <button
@@ -645,8 +648,8 @@ export default function PrivateCloudSetup() {
                       className={`px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors ${loading || !setupStatus.tablesCreated ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {loading && setupStep === "validating"
-                        ? "Validating..."
-                        : "Validate Schema"}
+                        ? t("dashboard.privateCloudSetup.validating")
+                        : t("dashboard.privateCloudSetup.validate_schema_btn")}
                     </button>
                   </div>
 
@@ -675,10 +678,10 @@ export default function PrivateCloudSetup() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium text-slate-900">
-                        Migrate All Tables
+                        {t("dashboard.privateCloudSetup.migrate_all_tables")}
                       </h3>
                       <p className="text-sm text-slate-500">
-                        POST /api/PrivateCloud/migrate-all-tables
+                        {t("dashboard.privateCloudSetup.post_apiprivatecloudmigratealltables")}
                       </p>
                     </div>
                     <button
@@ -688,8 +691,8 @@ export default function PrivateCloudSetup() {
                       className={`px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors ${loading || !setupStatus.schemaValidated ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       {loading && setupStep === "migrating"
-                        ? "Migrating..."
-                        : "Migrate Data"}
+                        ? t("dashboard.privateCloudSetup.migrating")
+                        : t("dashboard.privateCloudSetup.migrate_data_btn")}
                     </button>
                   </div>
                 </div>

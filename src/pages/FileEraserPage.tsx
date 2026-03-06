@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Link } from "@/components/LocaleLink";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
@@ -25,10 +26,11 @@ const getReadTime = (text: string) => {
   const wordsPerMinute = 200;
   const wordCount = text.split(/\s+/).length * 8; // Estimate based on content length
   const minutes = Math.ceil(wordCount / wordsPerMinute);
-  return `${minutes} min read`;
+  return minutes;
 };
 
 const FileEraserPage: React.FC = memo(function FileEraserPage() {
+  const { t } = useTranslation("fileEraser");
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -78,59 +80,59 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
   const galleryImages = [
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937584/wipt1jepfywjm2jimvh4.png",
-      alt: "Dashboard View",
+      alt: t("dashboard_view"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937290/hd3e1lpxec9vaxlyyyf6.png",
-      alt: "Erasure Report",
+      alt: t("erasure_report"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937289/upc7tsoe49jjvj1fnneo.png",
-      alt: "File Selection",
+      alt: t("file_selection"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937256/nch8at9nw2mhkjhwjobw.png",
-      alt: "Erasure Progress",
+      alt: t("erasure_progress"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937220/o7s5yxqf2pfxop8ectkd.png",
-      alt: "File Eraser Screenshot 5",
+      alt: t("file_eraser_screenshot_5"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/ye59qth46en2hcl9npzg.png",
-      alt: "File Eraser Screenshot 6",
+      alt: t("file_eraser_screenshot_6"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/cv3i4lngpayo23a5ncey.png",
-      alt: "File Eraser Screenshot 7",
+      alt: t("file_eraser_screenshot_7"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/bxadnr4jfgvwxah8ctl4.png",
-      alt: "File Eraser Screenshot 8",
+      alt: t("file_eraser_screenshot_8"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937212/kbyo3eyovzptuqwhur18.png",
-      alt: "File Eraser Screenshot 9",
+      alt: t("file_eraser_screenshot_9"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/ighihuqv4fh0p90xs3kc.png",
-      alt: "File Eraser Screenshot 10",
+      alt: t("file_eraser_screenshot_10"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/dcheaoasw63mpkqjqihe.png",
-      alt: "File Eraser Screenshot 11",
+      alt: t("file_eraser_screenshot_11"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/k3kfjkcozhgmerjdtiqs.png",
-      alt: "File Eraser Screenshot 12",
+      alt: t("file_eraser_screenshot_12"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/gogmpdrqvldda1iw3izk.png",
-      alt: "File Eraser Screenshot 13",
+      alt: t("file_eraser_screenshot_13"),
     },
     {
       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937210/p7hlpajp75ejxyqwfsvb.png",
-      alt: "File Eraser Screenshot 14",
+      alt: t("file_eraser_screenshot_14"),
     },
     // {
     //   url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/vytjbf7yigyyo6nc5qhv.png",
@@ -222,16 +224,17 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
   }, [selectedImageIndex]);
 
   const sectionNavItems = [
-    { id: "erase-types", label: "Erase Types" },
-    { id: "demo", label: "Demo" },
-    { id: "compliance", label: "Compliance" },
-    { id: "platforms", label: "Platforms" },
-    { id: "features", label: "Features" },
-    { id: "use-cases", label: "Use Cases" },
-    { id: "blogs", label: "Blogs" },
-    { id: "faq", label: "FAQ" },
-    { id: "contact", label: "Contact" },
+    { id: "erase-types", label: t("erase_types") },
+    { id: "demo", label: t("demo") },
+    { id: "compliance", label: t("compliance") },
+    { id: "platforms", label: t("platforms") },
+    { id: "features", label: t("features") },
+    { id: "use-cases", label: t("use_cases") },
+    { id: "blogs", label: t("blogs") },
+    { id: "faq", label: t("faq") },
+    { id: "contact", label: t("contact") },
   ];
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -293,8 +296,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   const eraseTypes = [
     {
-      name: "Files & Folders",
-      desc: "Securely remove selected files, folders, and documents from local storage with multi-pass overwrite algorithms.",
+      name: t("files_folders"),
+      desc: t("securely_remove_selected_files_folders_a"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -310,11 +313,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
+
       color: "from-blue-500 to-blue-600",
     },
     {
-      name: "Free Space & Deleted Data",
-      desc: "Permanently wipe unused disk space and previously deleted files to prevent any chance of forensic recovery.",
+      name: t("free_space_deleted_data"),
+      desc: t("permanently_wipe_unused_disk_space_and_p"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -330,11 +334,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
+
       color: "from-red-500 to-red-600",
     },
     {
-      name: "Cloud Storage Data",
-      desc: "Remove data from connected cloud platforms like Google Drive, OneDrive, Dropbox, and iCloud.",
+      name: t("cloud_storage_data"),
+      desc: t("remove_data_from_connected_cloud_platfor"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -350,11 +355,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
+
       color: "from-cyan-500 to-cyan-600",
     },
     {
-      name: "High-Speed Erasure",
-      desc: "Simultaneously erase multiple files and drives with optimized algorithms for maximum efficiency.",
+      name: t("high_speed_erasure"),
+      desc: t("simultaneously_erase_multiple_files_and_"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -370,11 +376,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
+
       color: "from-amber-500 to-orange-600",
     },
     {
-      name: "Automate Erasure Tasks",
-      desc: "Schedule automatic data destruction routines based on specific triggers or time intervals.",
+      name: t("automate_erasure_tasks"),
+      desc: t("schedule_automatic_data_destruction_rout"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -390,11 +397,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
+
       color: "from-purple-500 to-purple-600",
     },
     {
-      name: "Volume Erase",
-      desc: "Completely erase volume partitions including boot sectors, partition tables, and all data structures.",
+      name: t("volume_erase"),
+      desc: t("completely_erase_volume_partitions_inclu"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -410,14 +418,16 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
+
       color: "from-emerald-500 to-emerald-600",
     },
   ];
 
+
   const platforms = [
     {
-      name: "Windows",
-      versions: "Windows 10, 11, Server 2016+ etc.",
+      name: t("windows"),
+      versions: t("windows_10_11_server_2016_etc"),
       icon: (
         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
@@ -425,8 +435,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      name: "macOS",
-      versions: "Monterey, Ventura, Sonoma, Sequoia etc.",
+      name: t("macos"),
+      versions: t("monterey_ventura_sonoma_sequoia_etc"),
       icon: (
         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
@@ -434,8 +444,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      name: "Linux",
-      versions: "Ubuntu, CentOS, Debian, RHEL etc.",
+      name: t("linux"),
+      versions: t("ubuntu_centos_debian_rhel_etc"),
       icon: (
         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.711-.072-.2-.052-.334.033-.466.204-.263.466-.399.795-.528.396-.2.762-.269 1.139-.268h.13zm4.006 2.933c-.009.04-.009.037-.012.071-.075.443-.134.8-.166 1.2-.028.332-.043.663-.044.998l.003.467.004.073.009.135.003.2.016.267c.09.333.15.6.313.8.082.103.17.2.27.27.136.07.272.135.41.135.074 0 .15-.015.223-.04.31-.112.48-.332.618-.59.109-.202.17-.403.217-.598.04-.195.067-.39.08-.545.031-.4.049-.664.049-.664l-.003-.402-.01-.267-.014-.202c-.012-.133-.03-.266-.053-.397v-.003L13 9.4v-.003l-.048-.2h.003l.025.003c-.038-.007-.077-.01-.116-.02-.062-.01-.124-.029-.184-.04z" />
@@ -444,30 +454,31 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
     },
   ];
 
+
   const features = [
     {
-      title: "27+ Erasure Standards",
-      desc: "Support for NIST 800-88, DoD 5220.22-M, Gutmann, HMG, and other internationally recognized erasure methods.",
+      title: t("27_erasure_standards"),
+      desc: t("support_for_nist_800_88_dod_5220_22_m_gu"),
       icon: <ShieldIcon className="w-6 h-6" />,
     },
     {
-      title: "Multi-Language Support",
-      desc: "User-friendly interface available in 20+ languages for global enterprise deployment.",
+      title: t("multi_language_support"),
+      desc: t("user_friendly_interface_available_in_20_"),
       icon: <GlobeIcon className="w-6 h-6" />,
     },
     {
-      title: "Cloud Data Erasure",
-      desc: "Securely remove files from connected cloud storage services with verifiable deletion.",
+      title: t("cloud_data_erasure"),
+      desc: t("securely_remove_files_from_connected_clo"),
       icon: <CloudIcon className="w-6 h-6" />,
     },
     {
-      title: "Scheduled Erasure",
-      desc: "Automate data destruction with scheduled tasks for regular cleanup and compliance maintenance.",
+      title: t("scheduled_erasure"),
+      desc: t("automate_data_destruction_with_scheduled"),
       icon: <GearIcon className="w-6 h-6" />,
     },
     {
-      title: "Drag & Drop Selection",
-      desc: "Intuitive file selection with drag-and-drop interface for quick and easy data erasure.",
+      title: t("drag_drop_selection"),
+      desc: t("intuitive_file_selection_with_drag_and_d"),
       icon: (
         <svg
           className="w-6 h-6"
@@ -485,18 +496,18 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      title: "Detailed PDF Reports",
-      desc: "Generate comprehensive, tamper-proof erasure certificates for audit and compliance documentation.",
+      title: t("detailed_pdf_reports"),
+      desc: t("generate_comprehensive_tamper_proof_eras"),
       icon: <ClipboardIcon className="w-6 h-6" />,
     },
     {
-      title: "Enterprise Scalability",
-      desc: "Deploy across thousands of endpoints with centralized management and monitoring.",
+      title: t("enterprise_scalability"),
+      desc: t("deploy_across_thousands_of_endpoints_wit"),
       icon: <ServerIcon className="w-6 h-6" />,
     },
     {
-      title: "Custom Branding",
-      desc: "White-label solution with your organization's branding for client-facing reports.",
+      title: t("custom_branding"),
+      desc: t("white_label_solution_with_your_organizat"),
       icon: (
         <svg
           className="w-6 h-6"
@@ -514,8 +525,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      title: "Encryption",
-      desc: "Military-grade encryption secures data before erasure, preventing unauthorized access during the process.",
+      title: t("encryption"),
+      desc: t("military_grade_encryption_secures_data_b"),
       icon: (
         <svg
           className="w-6 h-6"
@@ -533,8 +544,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      title: "Centralized Logging",
-      desc: "Maintain a centralized immutable log of all erasure activities for security audits.",
+      title: t("centralized_logging"),
+      desc: t("maintain_a_centralized_immutable_log_of_"),
       icon: (
         <svg
           className="w-6 h-6"
@@ -553,10 +564,11 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
     },
   ];
 
+
   const useCases = [
     {
-      title: "Individual Privacy Protection",
-      desc: "Stop identity theft before it happens. Recovered financial records and personal photos can be used for blackmail if not permanently erased.",
+      title: t("individual_privacy_protection"),
+      desc: t("stop_identity_theft_before_it_happens_re"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -574,8 +586,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      title: "Enterprise Data Governance",
-      desc: "Don't let your secrets become public. Deleted corporate data in the wrong hands leads to massive financial loss and reputation destruction.",
+      title: t("enterprise_data_governance"),
+      desc: t("don_t_let_your_secrets_become_public_del"),
       icon: (
         <svg
           className="w-8 h-8"
@@ -593,16 +605,17 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      title: "Cloud Data Exposure",
-      desc: "Deleting files in the cloud doesn't mean they are gone. Ghost copies leave you vulnerable to breaches indefinitely without secure erasure.",
+      title: t("cloud_data_exposure"),
+      desc: t("deleting_files_in_the_cloud_doesn_t_mean"),
       icon: <CloudIcon className="w-8 h-8" />,
     },
     {
-      title: "Avoid Compliance Fines",
-      desc: "Regulatory fines can bankrupt a business. Failing to prove verifiable data destruction guarantees penalties under GDPR, HIPAA, and SOX.",
+      title: t("avoid_compliance_fines"),
+      desc: t("regulatory_fines_can_bankrupt_a_business"),
       icon: <ClipboardIcon className="w-8 h-8" />,
     },
   ];
+
 
   const relatedBlogs = blogPosts
     .filter((post) =>
@@ -617,30 +630,31 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
   const complianceStandards = [
     {
-      name: "NIST 800-88",
-      desc: "Guidelines for media sanitization ensuring data is permanently irretrievable.",
+      name: t("nist_800_88"),
+      desc: t("guidelines_for_media_sanitization_ensuri"),
     },
     {
-      name: "DoD 5220.22-M",
-      desc: "Standard for data erasure used by the U.S. Department of Defense.",
+      name: t("dod_5220_22_m"),
+      desc: t("standard_for_data_erasure_used_by_the_u_"),
     },
     {
-      name: "GDPR",
-      desc: "Ensures 'Right to Erasure' compliance for personal data protection.",
+      name: t("gdpr"),
+      desc: t("ensures_right_to_erasure_compliance_for_"),
     },
     {
-      name: "HIPAA",
-      desc: "Protects sensitive patient health information from unauthorized access.",
+      name: t("hipaa"),
+      desc: t("protects_sensitive_patient_health_inform"),
     },
     {
-      name: "SOX",
-      desc: "Mandates secure data lifecycle management for corporate financial records.",
+      name: t("sox"),
+      desc: t("mandates_secure_data_lifecycle_managemen"),
     },
     {
-      name: "PCI-DSS",
-      desc: "Requirements for secure disposal of cardholder data and sensitive info.",
+      name: t("pci_dss"),
+      desc: t("requirements_for_secure_disposal_of_card"),
     },
   ];
+
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -662,15 +676,16 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
     <>
       <SEOHead
         seo={{
-          title:
-            "D-Secure File Eraser | Secure File & Folder Deletion Software",
-          description:
-            "Permanently erase files, folders, system traces, and cloud data with D-Secure File Eraser. NIST 800-88 compliant data destruction for privacy and security.",
+          title: t("d_secure_file_eraser_secure_file_folder_"),
+
+          description: t("permanently_erase_files_folders_system_t"),
+
           keywords:
             "file eraser, secure delete, data destruction, file shredder, privacy software, NIST 800-88, GDPR compliance",
           canonicalUrl: "https://dsecuretech.com/products/file-eraser",
         }}
       />
+
       <SEOHead seo={getSEOForPage("file-eraser")} />
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -719,35 +734,35 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                 <div className="space-y-8">
                   <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
                     <ShieldIcon className="w-4 h-4" />
-                    Enterprise-Grade File Erasure
+                    {t("enterprise_grade_file_erasure")}
                   </div>
 
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
-                    D-Secure{" "}
+                    {t("d_secure")}{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      File Eraser
+                      {t("file_eraser")}
                     </span>
                   </h1>
 
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                    Permanently erase files, folders, system traces, and cloud
-                    data using internationally recognized erasure standards.
-                    Designed for privacy, security, and audit readiness.
+                    {t("permanently_erase_files_folders_system_t_1")}
                   </p>
 
                   {/* Compliance Badges */}
                   <div className="flex flex-wrap items-center gap-3">
-                    {["NIST 800-88", "GDPR", "HIPAA", "SOC 2"].map((badge) => (
-                      <div
-                        key={badge}
-                        className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-emerald-100"
-                      >
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                        <span className="text-sm font-medium text-slate-700">
-                          {badge}
-                        </span>
-                      </div>
-                    ))}
+                    {[t("nist_800_88"), t("gdpr"), t("hipaa"), t("soc_2")].map(
+                      (badge) => (
+                        <div
+                          key={badge}
+                          className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-emerald-100"
+                        >
+                          <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                          <span className="text-sm font-medium text-slate-700">
+                            {badge}
+                          </span>
+                        </div>
+                      ),
+                    )}
                   </div>
 
                   {/* CTA Buttons */}
@@ -756,7 +771,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       to="/pricing-and-plan?product=file-eraser"
                       className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                     >
-                      Buy Now
+                      {t("buy_now")}
                     </Link>
                     <button
                       onClick={downloadCatalog}
@@ -775,7 +790,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      Download Datasheet
+                      {t("download_datasheet")}
                     </button>
                   </div>
                 </div>
@@ -827,7 +842,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         {/* D-Secure Badge */}
                         <div className="absolute top-4 left-4 lg:top-6 lg:left-6">
                           <span className="text-white/80 text-[10px] lg:text-xs font-semibold tracking-widest uppercase">
-                            D-Secure
+                            {t("d_secure")}
                           </span>
                         </div>
 
@@ -850,12 +865,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
                         {/* Product Name */}
                         <h3 className="text-white text-xl lg:text-3xl font-bold tracking-tight text-center mb-1 lg:mb-2">
-                          File Eraser
+                          {t("file_eraser")}
                         </h3>
 
                         {/* Tagline */}
                         <p className="text-white/70 text-[10px] lg:text-xs text-center tracking-wide uppercase">
-                          Secure Data Destruction
+                          {t("secure_data_destruction")}
                         </p>
 
                         {/* Bottom Badge */}
@@ -869,7 +884,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                               <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1.06 13.54L7.4 12l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41-5.64 5.66z" />
                             </svg>
                             <span className="text-white/90 text-[9px] lg:text-[11px] font-semibold">
-                              Certified Erasure
+                              {t("certified_erasure")}
                             </span>
                           </div>
                         </div>
@@ -916,11 +931,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  What You Can Erase
+                  {t("what_you_can_erase")}
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Comprehensive data destruction capabilities for all types of
-                  sensitive information
+                  {t("comprehensive_data_destruction_capabilit")}
                 </p>
               </div>
             </Reveal>
@@ -956,11 +970,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-10">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  See File Eraser in Action
+                  {t("see_file_eraser_in_action")}
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Watch how D-Secure File Eraser permanently destroys sensitive
-                  data with audit-ready documentation
+                  {t("watch_how_d_secure_file_eraser_permanent")}
                 </p>
               </div>
             </Reveal>
@@ -1031,9 +1044,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* Screenshot Background */}
                       <img
                         src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937210/p7hlpajp75ejxyqwfsvb.png"
-                        alt="D-Secure File Eraser Preview"
+                        alt={t("d_secure_file_eraser_preview")}
                         className="w-full h-full object-contain bg-slate-50 group-hover:scale-[1.02] transition-transform duration-500"
                       />
+
                       {/* Subtle overlay for play button visibility */}
                       <div className="absolute inset-0 bg-black/5 group-hover:bg-black/15 transition-colors duration-300" />
                       {/* Centered Play Button */}
@@ -1051,7 +1065,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                             </div>
                           </div>
                           <span className="text-sm font-semibold text-slate-700 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-200/80">
-                            Click to start interactive demo
+                            {t("click_to_start_interactive_demo")}
                           </span>
                         </div>
                       </div>
@@ -1061,7 +1075,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                     <iframe
                       src="https://d-secure-file-erase-sand-box.vercel.app/"
                       className="w-full h-full flex-1 border-0"
-                      title="D-Secure File Eraser Demo"
+                      title={t("d_secure_file_eraser_demo")}
                       sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                       loading="lazy"
                       allow="clipboard-read; clipboard-write; fullscreen"
@@ -1072,82 +1086,82 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
               </Reveal>
 
               {/* [OLD VIDEO CARD - PRESERVED AS COMMENT]
-              <Reveal delayMs={100}>
-                <div
-                  onClick={() => setShowVideoModal(true)}
-                  className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="relative aspect-video bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 overflow-hidden">
-                    <div className="absolute inset-0 opacity-10">
-                      <div
-                        className="absolute inset-0"
-                        style={{
-                          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2310b981' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                        }}
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
-                      <div className="mb-4 flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
-                          <svg
-                            className="w-7 h-7 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="text-left">
-                          <h4 className="text-white font-bold text-lg">
-                            File Eraser
-                          </h4>
-                          <p className="text-emerald-400 text-sm font-medium">
-                            Product Demo
-                          </p>
-                        </div>
-                      </div>
-                      <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-2xl">
-                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl">
-                          <svg
-                            className="w-7 h-7 text-white ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <p className="mt-4 text-white/70 text-sm font-medium">
-                        Click to watch demo
-                      </p>
-                    </div>
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-teal-500/20 to-transparent" />
-                  </div>
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
-                        VIDEO
-                      </span>
-                      <span className="text-slate-400 text-xs">6:10</span>
-                    </div>
-                    <h3 className="font-bold text-slate-900 mb-1">
-                      Product Demo
-                    </h3>
-                    <p className="text-sm text-slate-500">
-                      Complete walkthrough of File Eraser features
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-              */}
+                  <Reveal delayMs={100}>
+                   <div
+                     onClick={() => setShowVideoModal(true)}
+                     className="group relative bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-200 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                   >
+                     <div className="relative aspect-video bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 overflow-hidden">
+                       <div className="absolute inset-0 opacity-10">
+                         <div
+                           className="absolute inset-0"
+                           style={{
+                             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2310b981' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                           }}
+                         />
+                       </div>
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                       <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+                         <div className="mb-4 flex items-center gap-3">
+                           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                             <svg
+                               className="w-7 h-7 text-white"
+                               fill="none"
+                               stroke="currentColor"
+                               strokeWidth={2}
+                               viewBox="0 0 24 24"
+                             >
+                               <path
+                                 strokeLinecap="round"
+                                 strokeLinejoin="round"
+                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                               />
+                             </svg>
+                           </div>
+                           <div className="text-left">
+                             <h4 className="text-white font-bold text-lg">
+                               File Eraser
+                             </h4>
+                             <p className="text-emerald-400 text-sm font-medium">
+                               Product Demo
+                             </p>
+                           </div>
+                         </div>
+                         <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/20 transition-all duration-300 shadow-2xl">
+                           <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-xl">
+                             <svg
+                               className="w-7 h-7 text-white ml-1"
+                               fill="currentColor"
+                               viewBox="0 0 24 24"
+                             >
+                               <path d="M8 5v14l11-7z" />
+                             </svg>
+                           </div>
+                         </div>
+                         <p className="mt-4 text-white/70 text-sm font-medium">
+                           Click to watch demo
+                         </p>
+                       </div>
+                       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-emerald-500/20 to-transparent" />
+                       <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-teal-500/20 to-transparent" />
+                     </div>
+                     <div className="p-5">
+                       <div className="flex items-center gap-2 mb-2">
+                         <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-full">
+                           VIDEO
+                         </span>
+                         <span className="text-slate-400 text-xs">6:10</span>
+                       </div>
+                       <h3 className="font-bold text-slate-900 mb-1">
+                         Product Demo
+                       </h3>
+                       <p className="text-sm text-slate-500">
+                         Complete walkthrough of File Eraser features
+                       </p>
+                     </div>
+                   </div>
+                  </Reveal>
+                  */}
 
               {/* Screenshot Cards Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -1177,13 +1191,13 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* Uncomment when image ready: */}
                       <img
                         src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937210/p7hlpajp75ejxyqwfsvb.png"
-                        alt="Dashboard View"
+                        alt={t("dashboard_view")}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                     {/* <div className="p-3">
-                      <span className="text-xs font-medium text-slate-700">Dashboard View</span>
-                    </div> */}
+                         <span className="text-xs font-medium text-slate-700">Dashboard View</span>
+                        </div> */}
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                       <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
@@ -1231,13 +1245,13 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* Uncomment when image ready: */}
                       <img
                         src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937584/wipt1jepfywjm2jimvh4.png"
-                        alt="Erasure Report"
+                        alt={t("erasure_report")}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                     {/* <div className="p-3">
-                      <span className="text-xs font-medium text-slate-700">Erasure Report</span>
-                    </div> */}
+                         <span className="text-xs font-medium text-slate-700">Erasure Report</span>
+                        </div> */}
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                       <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
@@ -1285,13 +1299,13 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* Uncomment when image ready: */}
                       <img
                         src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937211/kmytnur3cpuqon7gyfho.png"
-                        alt="File Selection"
+                        alt={t("file_selection")}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                     {/* <div className="p-3">
-                      <span className="text-xs font-medium text-slate-700">File Selection</span>
-                    </div> */}
+                         <span className="text-xs font-medium text-slate-700">File Selection</span>
+                        </div> */}
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                       <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
@@ -1339,21 +1353,23 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* Uncomment when image ready: */}
                       <img
                         src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1771937213/bxadnr4jfgvwxah8ctl4.png"
-                        alt="Erasure Progress"
+                        alt={t("erasure_progress")}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
+
                       {/* More Images Badge */}
                       {additionalImagesCount > 0 && (
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                           <span className="text-white text-xl sm:text-2xl font-bold">
-                            +{additionalImagesCount} More
+                            +{additionalImagesCount}
+                            {t("more")}
                           </span>
                         </div>
                       )}
                     </div>
                     {/* <div className="p-3">
-                      <span className="text-xs font-medium text-slate-700">Erasure Progress</span>
-                    </div> */}
+                         <span className="text-xs font-medium text-slate-700">Erasure Progress</span>
+                        </div> */}
                     {/* Hover Overlay */}
                     <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                       <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
@@ -1385,11 +1401,12 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-16">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  How To Use <span className="text-emerald-600">D-Secure</span>{" "}
-                  File Eraser?
+                  {t("how_to_use")}{" "}
+                  <span className="text-emerald-600">{t("d_secure")}</span>{" "}
+                  {t("file_eraser_1")}
                 </h2>
                 <p className="text-lg text-slate-600">
-                  Downloadable Software For Windows, Mac & Linux OS
+                  {t("downloadable_software_for_windows_mac_li")}
                 </p>
               </div>
             </Reveal>
@@ -1410,7 +1427,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           </div>
                         </div>
                         <p className="font-semibold text-slate-800 text-sm max-w-[120px]">
-                          Download D-Secure File Eraser Software
+                          {t("download_d_secure_file_eraser_software")}
                         </p>
                       </div>
 
@@ -1425,7 +1442,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           <Monitor className="w-10 h-10 text-emerald-600" />
                         </div>
                         <p className="font-semibold text-slate-800 text-sm max-w-[120px]">
-                          Install D-Secure File Eraser
+                          {t("install_d_secure_file_eraser")}
                         </p>
                       </div>
 
@@ -1440,7 +1457,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           <ClipboardIcon className="w-10 h-10 text-emerald-600" />
                         </div>
                         <p className="font-semibold text-slate-800 text-sm max-w-[140px]">
-                          Select Files/Folders/ Volumes To Erase
+                          {t("select_files_folders_volumes_to_erase")}
                         </p>
                       </div>
 
@@ -1458,7 +1475,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           </div>
                         </div>
                         <p className="font-semibold text-slate-800 text-sm max-w-[120px]">
-                          Erase & Save Report
+                          {t("erase_save_report")}
                         </p>
                       </div>
                     </div>
@@ -1472,20 +1489,20 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="space-y-6">
                     <p className="text-slate-600 leading-relaxed text-lg">
                       <strong className="text-slate-900">
-                        D-Secure File Eraser
+                        {t("d_secure_file_eraser")}
                       </strong>{" "}
-                      can be deployed across{" "}
+                      {t("can_be_deployed_across")}{" "}
                       <strong className="text-slate-900">
-                        Windows, Mac, and Linux
+                        {t("windows_mac_and_linux")}
                       </strong>{" "}
-                      systems to permanently erase files, folders, and traces
-                      beyond recovery.
+                      {t("systems_to_permanently_erase_files_folde")}
                     </p>
                     <p className="text-slate-600 leading-relaxed">
-                      Select the file/s or folders or search the name to erase.
-                      The <strong className="text-emerald-700">Cloud</strong>{" "}
-                      allows administrators to execute and monitor erasures
-                      remotely across multiple endpoints as well.
+                      {t("select_the_file_s_or_folders_or_search_t")}
+                      <strong className="text-emerald-700">
+                        {t("cloud")}
+                      </strong>{" "}
+                      {t("allows_administrators_to_execute_and_mon")}
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -1493,22 +1510,23 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         to="/support/help-manual/complete-manual"
                         className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors group"
                       >
-                        Help Manual
+                        {t("help_manual")}
+
                         <ClipboardIcon className="w-4 h-4" />
                       </Link>
                     </div>
 
                     {/* <div className="pt-2">
-                      <Link
-                        to="/support/help-manual"
-                        className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors text-sm font-medium"
-                      >
-                        <div className="p-1 border border-slate-300 rounded">
-                          <ClipboardIcon className="w-4 h-4" />
-                        </div>
-                        Help Manual
-                      </Link>
-                    </div> */}
+                         <Link
+                           to="/support/help-manual"
+                           className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-700 transition-colors text-sm font-medium"
+                         >
+                           <div className="p-1 border border-slate-300 rounded">
+                             <ClipboardIcon className="w-4 h-4" />
+                           </div>
+                           Help Manual
+                         </Link>
+                        </div> */}
                   </div>
                 </Reveal>
               </div>
@@ -1525,12 +1543,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-                  Compliance-Ready by Design
+                  {t("compliance_ready_by_design")}
                 </h2>
                 <p className="text-lg text-slate-300 max-w-3xl mx-auto">
-                  D-Secure File Eraser supports organizational compliance
-                  initiatives by aligning with widely accepted data protection
-                  principles and secure erasure best practices
+                  {t("d_secure_file_eraser_supports_organizati")}
                 </p>
               </div>
             </Reveal>
@@ -1562,10 +1578,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Multi-Platform Support
+                  {t("multi_platform_support")}
                 </h2>
                 <p className="text-lg text-slate-600">
-                  Full support across your entire technology ecosystem
+                  {t("full_support_across_your_entire_technolo")}
                 </p>
               </div>
             </Reveal>
@@ -1596,11 +1612,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Powerful Features
+                  {t("powerful_features")}
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Enterprise-grade capabilities designed for security
-                  professionals
+                  {t("enterprise_grade_capabilities_designed_f")}
                 </p>
               </div>
             </Reveal>
@@ -1632,10 +1647,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Use Cases
+                  {t("use_cases")}
                 </h2>
                 <p className="text-lg text-slate-600">
-                  Trusted by individuals and enterprises worldwide
+                  {t("trusted_by_individuals_and_enterprises_w")}
                 </p>
               </div>
             </Reveal>
@@ -1671,18 +1686,18 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
               <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
                 <div>
                   <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                    Technical Blogs
+                    {t("technical_blogs")}
                   </h2>
                   <p className="text-lg text-slate-600 max-w-2xl">
-                    Expert insights on data security, erasure standards, and
-                    best practices
+                    {t("expert_insights_on_data_security_erasure")}
                   </p>
                 </div>
                 <Link
                   to="/blog"
                   className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors group"
                 >
-                  View More
+                  {t("view_more")}
+
                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -1695,22 +1710,39 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                     <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 h-full flex flex-col">
                       <div className="mb-4">
                         <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">
-                          {blog.tag}
+                          {t(`blog_${blog.id}_tag`, { defaultValue: blog.tag })}
                         </span>
                       </div>
                       <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
-                        {blog.title}
+                        {t(`blog_${blog.id}_title`, {
+                          defaultValue: blog.title,
+                        })}
                       </h3>
                       <p className="text-slate-600 text-sm mb-4 leading-relaxed flex-grow line-clamp-3">
-                        {blog.excerpt}
+                        {t(`blog_${blog.id}_excerpt`, {
+                          defaultValue: blog.excerpt,
+                        })}
                       </p>
                       <div className="flex items-center text-emerald-600 font-semibold text-sm mb-4 group-hover:gap-2 gap-1 transition-all">
-                        Read Article <ArrowRightIcon className="w-4 h-4" />
+                        {t("read_article")}
+                        <ArrowRightIcon className="w-4 h-4" />
                       </div>
                       <div className="flex items-center justify-between text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
-                        <span>{blog.publishDate}</span>
                         <span>
-                          {blog.readTime || getReadTime(blog.excerpt)}
+                          {t(`blog_${blog.id}_date`, {
+                            defaultValue: blog.publishDate,
+                          })}
+                        </span>
+                        <span>
+                          {t("min_read_time", {
+                            minutes:
+                              parseInt(blog.readTime as string) ||
+                              getReadTime(
+                                t(`blog_${blog.id}_excerpt`, {
+                                  defaultValue: blog.excerpt,
+                                }),
+                              ),
+                          })}
                         </span>
                       </div>
                     </div>
@@ -1730,10 +1762,10 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  Frequently Asked Questions
+                  {t("frequently_asked_questions")}
                 </h2>
                 <p className="text-lg text-slate-600">
-                  Everything you need to know about D-Secure File Eraser
+                  {t("everything_you_need_to_know_about_d_secu")}
                 </p>
               </div>
             </Reveal>
@@ -1741,32 +1773,32 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
             <div className="space-y-4">
               {[
                 {
-                  q: "How is D-Secure File Eraser different from simply deleting files?",
-                  a: "When you delete a file normally, only the reference to the data is removed—the actual data remains on your drive and can be recovered with forensic tools. D-Secure File Eraser overwrites the data multiple times using internationally recognized algorithms (like NIST 800-88, DoD 5220.22-M), making recovery impossible.",
+                  q: t("how_is_d_secure_file_eraser_different_fr"),
+                  a: t("when_you_delete_a_file_normally_only_the"),
                 },
                 {
-                  q: "What erasure standards does File Eraser support?",
-                  a: "D-Secure File Eraser supports 27+ erasure standards including NIST 800-88 Clear/Purge, DoD 5220.22-M (3-pass and 7-pass), Gutmann (35-pass), HMG IS5, RCMP TSSIT OPS-II, Peter Gutmann's method, and many more. You can choose the appropriate standard based on your compliance requirements.",
+                  q: t("what_erasure_standards_does_file_eraser_"),
+                  a: t("d_secure_file_eraser_supports_27_erasure"),
                 },
                 {
-                  q: "Can I erase data from cloud storage services?",
-                  a: "Yes! D-Secure File Eraser supports secure erasure from major cloud platforms including Google Drive, Microsoft OneDrive, Dropbox, and iCloud. It uses OAuth integration to securely connect and permanently remove files from your cloud storage.",
+                  q: t("can_i_erase_data_from_cloud_storage_serv"),
+                  a: t("yes_d_secure_file_eraser_supports_secure"),
                 },
                 {
-                  q: "Will I receive proof of erasure for compliance audits?",
-                  a: "Absolutely. After every erasure operation, D-Secure generates a detailed PDF certificate that includes file details, erasure method used, timestamp, verification status, and a tamper-proof hash. These certificates are suitable for regulatory audits and compliance documentation.",
+                  q: t("will_i_receive_proof_of_erasure_for_comp"),
+                  a: t("absolutely_after_every_erasure_operation"),
                 },
                 {
-                  q: "Is the software suitable for enterprise deployment?",
-                  a: "Yes, D-Secure File Eraser is designed for enterprise scalability. It supports Active Directory integration, Group Policy deployment, centralized management, scheduled erasure tasks, and can be deployed across thousands of endpoints with remote monitoring capabilities.",
+                  q: t("is_the_software_suitable_for_enterprise_"),
+                  a: t("yes_d_secure_file_eraser_is_designed_for"),
                 },
                 {
-                  q: "Does File Eraser support SSD and NVMe drives?",
-                  a: "Yes, the software is optimized for all storage types including HDDs, SSDs, NVMe drives, and USB storage devices. It uses appropriate erasure techniques for each storage type to ensure complete and verifiable data destruction.",
+                  q: t("does_file_eraser_support_ssd_and_nvme_dr"),
+                  a: t("yes_the_software_is_optimized_for_all_st"),
                 },
                 {
-                  q: "What ongoing support is provided?",
-                  a: "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
+                  q: t("what_ongoing_support_is_provided"),
+                  a: t("we_provide_continuous_support_including_"),
                 },
               ].map((faq, i) => (
                 <Reveal key={i} delayMs={i * 50}>
@@ -1808,19 +1840,17 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
               <Reveal>
                 <div className="space-y-6">
                   <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
-                    Talk to Our Data Security Experts
+                    {t("talk_to_our_data_security_experts")}
                   </h2>
                   <p className="text-lg text-slate-600 leading-relaxed">
-                    Get personalized guidance on deployment, licensing, and
-                    audit-ready data erasure strategies tailored to your
-                    organization's needs.
+                    {t("get_personalized_guidance_on_deployment_")}
                   </p>
                   <ul className="space-y-4">
                     {[
-                      "Enterprise & SMB licensing options",
-                      "Compliance-focused implementation",
-                      "White-label branding available",
-                      "No-obligation consultation",
+                      t("enterprise_smb_licensing_options"),
+                      t("compliance_focused_implementation"),
+                      t("white_label_branding_available"),
+                      t("no_obligation_consultation"),
                     ].map((item) => (
                       <li key={item} className="flex items-center gap-3">
                         <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -1836,7 +1866,8 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       to="/contact"
                       className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
                     >
-                      Or contact us directly
+                      {t("or_contact_us_directly")}
+
                       <ArrowRightIcon className="w-5 h-5" />
                     </Link>
                   </div>
@@ -1846,7 +1877,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
               <Reveal delayMs={100}>
                 <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 lg:p-10 shadow-2xl">
                   <h3 className="text-2xl font-bold text-white mb-6">
-                    Request Information
+                    {t("request_information")}
                   </h3>
                   <form
                     className="space-y-5"
@@ -1934,10 +1965,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           message: "",
                         });
                         setIsLoading(false);
-                        showToast(
-                          "Thank you! Your enquiry has been submitted successfully.",
-                          "success",
-                        );
+                        showToast(t("enquiry_success"), "success");
 
                         try {
                           // === 1. SUBMIT TO BACKEND API (DATABASE) ===
@@ -1980,18 +2008,11 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                           }
                         } catch (error: any) {
                           console.error("Form error:", error);
-                          showToast(
-                            error.message ||
-                              "Failed to send message. Please try again later.",
-                            "error",
-                          );
+                          showToast(t("generic_error"), "error");
                         }
                       } catch (error) {
                         console.error("FormSubmit error:", error);
-                        showToast(
-                          "Failed to submit enquiry. Please try again.",
-                          "error",
-                        );
+                        showToast(t("enquiry_error"), "error");
                         setIsLoading(false);
                       }
                     }}
@@ -2002,7 +2023,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        placeholder="Full Name *"
+                        placeholder={t("full_name")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
                         required
                       />
@@ -2013,7 +2034,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        placeholder=" Email *"
+                        placeholder={t("email")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
                         required
                       />
@@ -2024,7 +2045,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         name="organization"
                         value={formData.organization}
                         onChange={handleInputChange}
-                        placeholder="Organization"
+                        placeholder={t("organization")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
                       />
                     </div>
@@ -2034,7 +2055,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                         value={formData.message}
                         onChange={handleInputChange}
                         rows={4}
-                        placeholder="How can we help you?"
+                        placeholder={t("how_can_we_help_you")}
                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors resize-none"
                       ></textarea>
                     </div>
@@ -2043,7 +2064,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
                       disabled={isLoading}
                       className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isLoading ? "Submitting..." : "Submit Enquiry"}
+                      {isLoading ? t("submitting") : t("submit_enquiry")}
                     </button>
                   </form>
                 </div>
@@ -2163,6 +2184,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
       )}
     </>
   );
+
 });
 
 export default FileEraserPage;

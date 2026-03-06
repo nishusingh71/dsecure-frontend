@@ -4,6 +4,7 @@ import { getSEOForPage } from "../../utils/seo";
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface GroupFormData {
   name: string
@@ -14,7 +15,7 @@ interface GroupFormData {
 
 export default function EditGroup() {
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const { groupId } = useParams()
   const [isLoading, setIsLoading] = useState(false)
   const [groupNotFound, setGroupNotFound] = useState(false)

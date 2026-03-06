@@ -1,0 +1,307 @@
+{
+  "hero": {
+    "title": "Partner Program",
+    "description": "Join our Partner Program today! Become part of our global network and unlock new opportunities with best-in-class data erasure solutions for your business success.",
+    "joinPartnership": "Join Partnership",
+    "downloadCatalog": "Download Catalog"
+  },
+  "partnerTypes": {
+    "itad": {
+      "label": "ITAD Partner",
+      "title": "ITAD Partner Program",
+      "description": "The D-Secure ITAD Partner Program is designed for IT asset disposition companies looking to accelerate their data erasure solutions and protocols. Join our ITAD Partner program to offer secure data erasure service using globally tested & approved erasure solutions to your customers and help them meet global data privacy compliance.",
+      "benefits": {
+        "b1": "Scalable & Automated Data Erasure & Diagnostics Software",
+        "b2": "Free Assisted Remote Deployment & Training",
+        "b3": "FREE Product Updates",
+        "b4": "Price Lock in During Contract Term",
+        "b5": "FREE Premium Technical Support - 24*5",
+        "b6": "Customized Solution For ITADs"
+      },
+      "detailedBenefits": {
+        "db1": {
+          "title": "Scalable & Automated Data Erasure & Diagnostics Software",
+          "description": "D-Secure secure data erasure & diagnostics software allows you to start wiping up to 64 drives simultaneously. The software focus can consolidate the ITAD's data wiping capabilities across all types of storage media, including hard drives, SSDs, built-in drives in computers & Mac systems, servers, and OS & Android devices."
+        },
+        "db2": {
+          "title": "Price Lock in During Contract Term",
+          "description": "By selecting D-Secure solution as a part of the benefit of purchasing bulk licenses of D-Secure at a special discounted pricing, the special price lock in for the term of the contract ensures that there is no change in price if you order a data erasure volumes over time."
+        },
+        "db3": {
+          "title": "FREE Premium Technical Support - 24*5",
+          "description": "D-Secure provides free technical support for D-Secure on offering assistance from our experts. Whether it is technical assistance or help with deployment and understanding our dedicated support team is here to help D-Secure achieve exceptional service to their clients."
+        },
+        "db4": {
+          "title": "Customized Solution For ITADs",
+          "description": "For large ITAD partners we offer customized solution to automate their data wiping process to maximize human intervention and improve their existing data erasure process. We also help with the consultations to improve the existing process and increase efficiency in operations."
+        }
+      }
+    },
+    "msp": {
+      "label": "MSP Partner",
+      "title": "MSP Partner Program",
+      "description": "The D-Secure MSP Partner Program empowers IT Managed Service Providers to efficiently incorporate data erasure services into their offerings, expanding their portfolio and adding value to their customers by ensuring the risk of data breach is significantly reduced ensuring relevant laws and regulations such as CCPA, HIPAA, SOX, and ISO 27001.",
+      "benefits": {
+        "b1": "Expand Your Portfolio",
+        "b2": "Comprehensive Training",
+        "b3": "Access Marketing Collaterals",
+        "b4": "Free Product Updates",
+        "b5": "Special MSP Pricing",
+        "b6": "Effortless Data Erasure Software",
+        "b7": "Get Listed On D-Secure Partner Section",
+        "b8": "Free Technical Support"
+      },
+      "detailedBenefits": {
+        "db1": {
+          "title": "Expand Your Portfolio",
+          "description": "Managed Service Providers (MSPs) allows MSPs to offer data erasure as a service, enriching their portfolio. This expansion attracts organizations requiring comprehensive data security solutions, positioning MSPs as versatile, end-to-end service providers. By adding data erasure services, MSPs differentiate themselves, enhance revenue, and position as trusted data security partners."
+        },
+        "db2": {
+          "title": "Special MSP Pricing",
+          "description": "Enrolling in our MSP Partner Program offers pricing as an MSP partner. With D-Secure - Purchase licenses at a special price to offer software as a service to your clients. With the special pricing only available to MSPs who are partners with us in the market. Further, partners can get cost reduced erasure solutions ensuring accessibility for MSPs."
+        },
+        "db3": {
+          "title": "Effortless Data Erasure Software",
+          "description": "D-Secure's secure data erasure software enables MSPs to initiate fast and effortless data erasure. The software brings automation, quick identification and erasure for your clients across over 65,000 drives. As part of our Partner Program, you'll receive the same experience at all voluntary programs they call how you operate. This includes services accomplished by user-friendly manual for seamless operations support across all types of drives to provide services to your clients."
+        },
+        "db4": {
+          "title": "Get Listed On D-Secure Partner Section",
+          "description": "By becoming our valuable MSP Partner, you get listed in the partner section of our website. B2B Customers can look out for partners who are experts in their compliance requirements to visit their team that can convert to revenue. Also, your customers gain trust that you are an expert from Authorized MSP Partner."
+        }
+      }
+    },
+    "distributor": {
+      "label": "Distributor Partner",
+      "title": "Distributor Partner Program",
+      "description": "D-Secure Distributor Program for D-Secure is meant for all those software distributors that have global partnerships. partner reach in order to sell data erasure products for wiping and asset service. that financial data compliance and software for wiping data permanently from HDDs, SSDs, Tablets, Desktop, service & mobile devices including OS & Android devices.",
+      "benefits": {
+        "b1": "Go-To-Market Support",
+        "b2": "Free 24*7 Technical Support",
+        "b3": "Regular Updates",
+        "b4": "Product Sales Training",
+        "b5": "Trusted Brand",
+        "b6": "Deal Registration Benefits"
+      },
+      "detailedBenefits": {
+        "db1": {
+          "title": "Go-To-Market Support",
+          "description": "Distributors are required to increase the generation and reach of D-Secure products by fixing business processes and developing solutions for data erasure software with comprehensive go-to-market strategy. Includes D-Secure brochures, technical fact sheets, product videos, demo materials to support the distributors business."
+        },
+        "db2": {
+          "title": "Product Sales Training",
+          "description": "All partners receive training and they get training on the features and functionality of DSecure product to understand the various data structures and compliance. We also advise the partners by providing sales documentation."
+        },
+        "db3": {
+          "title": "Trusted Brand",
+          "description": "D-Secure is a growing brand in the data erasure industry built on technical excellence and best practices. Our solutions follow international standards and provide reliable global service."
+        },
+        "db4": {
+          "title": "Deal Registration Benefits",
+          "description": "Deal Registration is a great advantage to our Distributors, it allows you to keep a best-foot-in-root your company that particular partner and projects that can be of high priority. We can provide better price for registered deals for our channel partner along with product, support and service deployment."
+        }
+      }
+    },
+    "reseller": {
+      "label": "Reseller Partner",
+      "title": "Reseller Partner Program",
+      "description": "Become our Reseller to deliver secure & reliable data erasure software to enterprise customers and help them meet compliance. Get great discounts when leveraging our globally tested and standards-compliant solutions, help your customers meet global data privacy compliance requirements, with ease.",
+      "benefits": {
+        "b1": "Product Sales Training",
+        "b2": "Free Assisted Technology Support",
+        "b3": "Regular Updates And Communication",
+        "b4": "Co-To-Market Enablement",
+        "b5": "Deal Registration Benefits",
+        "b6": "Quality Solutions"
+      },
+      "detailedBenefits": {
+        "db1": {
+          "title": "Product Sales Training",
+          "description": "The program provides you with simple training on the complete D-Secure product lineup and functionality understanding of all features and technical aspects that benefits in advanced knowledge transfer sessions remotely equip you with the level of readiness you need to market the best product in the market."
+        },
+        "db2": {
+          "title": "Co-To-Market Enablement",
+          "description": "You get all the necessary sales and marketing collaterals when you join the D-Secure Reseller Partner Program. We provide campaign brochures, product one-pagers, technical data sheets, prospects, and more to support and roll out your go-to-market strategy for the region that you operate."
+        },
+        "db3": {
+          "title": "Deal Registration Benefits",
+          "description": "Reseller program allows you look in benefit when you register for a deal through a deal registration, you can look the deal for a given duration such that the D-Secure sales team does not directly approach the same prospect. Deal registration also ensures that you do get a lead protection for you totally."
+        },
+        "db4": {
+          "title": "Quality Supplier",
+          "description": "D-Secure is a growing brand renowned for its data erasure solutions. We work to satisfy customers across the world in 190 countries. Our company focuses on innovative software development and providing quality in-lab services."
+        }
+      }
+    },
+    "oem": {
+      "label": "OEM Partner",
+      "title": "OEM Partner Program",
+      "description": "D-Secure OEM Partnership Program helps you to implement and channel your existing product portfolio by offering data erasure solutions to your customers in order to safeguard their from liability.",
+      "benefits": {
+        "b1": "Best-Selling Software",
+        "b2": "High Conversion Rate",
+        "b3": "Strong Technical Support",
+        "b4": "Comprehensive Solution",
+        "b5": "Standards Compliant",
+        "b6": "Trusted Brand Quality"
+      },
+      "detailedBenefits": {
+        "db1": {
+          "title": "Best-Selling Software",
+          "description": "D-Secure software is renowned for its reliability, trustworthiness, and ease of use. We enjoy a vast customer base of more users in need of high quality data erasure solutions. Being an OEM partner, you can bundle our in-house professional data erasure software, largely unparalleled in the data erasure software industry."
+        },
+        "db2": {
+          "title": "Comprehensive Solution",
+          "description": "D-Secure software OEM partnership is successfully sync across all the storage drive and devices segments, including the actively operating drive hardware and those being for end-of-lifecycle. Our OEM partnership covers innovative data sanitization solutions for individual Mac, computer and mobile devices, and hybrid cloud drives, and mobile devices."
+        },
+        "db3": {
+          "title": "Standards Compliant",
+          "description": "D-Secure software follows international standards and best practices from leading bodies such as NIST, ADISA, and Common Criteria. Our solutions provide compliance with NIST FIPS 140-2, ADISA standards, and Common Criteria compliant data erasure methods."
+        },
+        "db4": {
+          "title": "Trusted Brand Quality",
+          "description": "D-Secure is a product from D-Secure - one of the growing global data tech brands, trusted by companies worldwide. Our quality-focused R&D processes ensure compliance with the highest product standards and the success of our Partner business."
+        }
+      }
+    }
+  },
+  "partnership": {
+    "badge": "Partnership Excellence",
+    "heading": "Grow Your Business With D-Secure",
+    "subtitle": "Choose your partnership type to unlock specialized benefits and opportunities",
+    "keyBenefits": "Key Benefits",
+    "joinProgram": "Join Partnership Program",
+    "downloadBrochure": "Download Brochure"
+  },
+  "findPartner": {
+    "badge": "Partner Discovery",
+    "heading": "Find A",
+    "headingHighlight": "Partner",
+    "description": "Get to know about our global partners and easily locate them. Connect with qualified D-Secure partners in your region for seamless collaboration.",
+    "globalNetwork": "Global Network",
+    "locationBased": "Location-Based",
+    "qualifiedPartners": "Qualified Partners",
+    "directContact": "Direct Contact",
+    "findNearYou": "Find Partners Near You",
+    "modalTitle": "Find A Partner",
+    "allCountries": "All Countries",
+    "allPartnerTypes": "All Partner Types",
+    "noListAvailable": "No List Available",
+    "last": "Last",
+    "countries": {
+      "us": "United States",
+      "india": "India",
+      "vietnam": "Vietnam",
+      "peru": "Peru",
+      "mexico": "Mexico",
+      "italy": "Italy",
+      "uk": "United Kingdom",
+      "canada": "Canada",
+      "australia": "Australia",
+      "germany": "Germany",
+      "france": "France",
+      "japan": "Japan",
+      "china": "China",
+      "brazil": "Brazil"
+    }
+  },
+  "benefits": {
+    "badge": "Partnership Benefits",
+    "heading": "Why Collaborate With D-Secure",
+    "subtitle": "Unlock exclusive advantages and grow your business with our comprehensive partner benefits",
+    "card1": {
+      "title": "Standards-Compliant Data Erasure Products",
+      "description": "Access to standards-compliant data erasure solutions following international best practices and algorithms. Get quality solutions meeting 40+ international standards by integrating our data erasure technology."
+    },
+    "card2": {
+      "title": "Marketing & Sales Enablement",
+      "description": "Partners get access to our sales enablement and analytics to help them understand customer requirements. Get comprehensive marketing materials and product selling aids."
+    },
+    "card3": {
+      "title": "Free 24×7 Technical Support",
+      "description": "Get the best pre-sales & after sales support for all D-Secure solutions. Our staff provides regular training and extended deployments with dedicated expertise."
+    },
+    "card4": {
+      "title": "Trusted Supplier",
+      "description": "We give you the opportunity to achieve bigger goals providing you the power around gaining a global data client with our track record of bringing innovation & trust."
+    },
+    "ctaText": "Ready to unlock these exclusive benefits and transform your business?",
+    "startJourney": "Start Partnership Journey"
+  },
+  "contact": {
+    "heading": "Let's Get Started",
+    "subtitle": "Have a question or want to know more about our solutions?",
+    "requestLicense": "Request Free License"
+  },
+  "contactPartnerModal": {
+    "title": "Contact Partner",
+    "contactPerson": "Contact Person",
+    "partnerType": "Partner Type",
+    "location": "Location",
+    "phone": "Phone",
+    "yourName": "Your Name *",
+    "yourEmail": "Your Email *",
+    "company": "Company",
+    "phoneLabel": "Phone",
+    "subject": "Subject *",
+    "message": "Message *",
+    "namePlaceholder": "Enter your full name",
+    "emailPlaceholder": "Enter your email",
+    "companyPlaceholder": "Your company name",
+    "phonePlaceholder": "Your phone number",
+    "subjectPlaceholder": "Brief subject of your inquiry",
+    "messagePlaceholder": "Describe your requirements or questions...",
+    "sending": "Sending...",
+    "sendMessage": "Send Message",
+    "cancel": "Cancel",
+    "orContactDirectly": "Or contact directly:",
+    "sendEmail": "Send Email",
+    "callNow": "Call Now",
+    "visitWebsite": "Visit Website"
+  },
+  "detailsModal": {
+    "title": "Partner Details",
+    "established": "Established",
+    "location": "Location",
+    "employees": "Employees",
+    "certification": "Certification",
+    "companyOverview": "Company Overview",
+    "overviewText1": "is a leading",
+    "overviewText2": "specializing in secure data erasure and IT asset disposition services. With over 8 years of experience in the industry, we have successfully served over 500+ clients across various sectors including healthcare, finance, and government organizations.",
+    "overviewText3": "Our team of Compliant professionals ensures complete data destruction compliance with international standards including NIST 800-88, DOD 5220.22-M, and Common Criteria. We provide comprehensive regulatory documents of destruction for audit purposes and maintain the highest levels of security throughout the data erasure process.",
+    "servicesOffered": "Services Offered",
+    "services": {
+      "s1": "Secure Data Erasure",
+      "s2": "IT Asset Disposition",
+      "s3": "Hard Drive Destruction",
+      "s4": "Mobile Device Wiping",
+      "s5": "Server Decommissioning",
+      "s6": "Compliance Consulting",
+      "s7": "Regulatory Document Generation",
+      "s8": "On-site Services"
+    },
+    "contactInfo": "Contact Information",
+    "primaryContact": "Primary Contact",
+    "nameLabel": "Name:",
+    "emailLabel": "Email:",
+    "phoneLabel": "Phone:",
+    "websiteLabel": "Website:",
+    "businessHours": "Business Hours",
+    "monFri": "Monday - Friday:",
+    "monFriTime": "9:00 AM - 6:00 PM",
+    "saturday": "Saturday:",
+    "satTime": "9:00 AM - 2:00 PM",
+    "sunday": "Sunday:",
+    "sunTime": "Closed",
+    "emergency": "Emergency:",
+    "emergencyTime": "24/7 Available",
+    "contactThisPartner": "Contact This Partner",
+    "close": "Close"
+  },
+  "toast": {
+    "partnershipSuccess": "Partnership application submitted successfully! We'll contact you soon.",
+    "licenseSuccess": "License request submitted successfully! We'll process your request soon.",
+    "contactSuccess": "Message sent successfully! The partner will contact you soon.",
+    "contactError": "Failed to send message. Please try again.",
+    "validationError": "Please fill in all required fields."
+  }
+}

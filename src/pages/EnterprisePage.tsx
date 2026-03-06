@@ -2,9 +2,10 @@ import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 const EnterprisePage: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   return (
     <div className="min-h-screen bg-white">
       {/* SEO Meta Tags */}

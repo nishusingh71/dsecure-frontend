@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/auth/AuthContext';
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface PlanDetails {
   title: string;
@@ -10,7 +11,7 @@ interface PlanDetails {
 }
 
 export default function PaymentPage() {
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const { user } = useAuth();
   const [selectedPlan, setSelectedPlan] = useState<PlanDetails | null>(null);
   const [paymentMethod, setPaymentMethod] = useState('card');

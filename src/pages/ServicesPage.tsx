@@ -1,6 +1,7 @@
 import Reveal from '@/components/Reveal'
 import { useState, useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link } from "@/components/LocaleLink";
+import { useSearchParams } from "react-router-dom";
 
 import {
   CheckIcon,

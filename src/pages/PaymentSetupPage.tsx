@@ -7,6 +7,7 @@ import { authService } from '../utils/authService'
 import { useToast } from '@/components/Toast'
 import SEOHead from '@/components/SEOHead'
 import { getSEOForPage } from '@/utils/seo'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface PlanDetails {
   title: string
@@ -31,7 +32,7 @@ interface SetupFormData {
 }
 
 export default function PaymentSetupPage() {
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const { user, getSmartRedirectPath } = useAuth()
   const setupStatus = useSetupStatus()
   const toast = useToast()

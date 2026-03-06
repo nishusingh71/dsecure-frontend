@@ -2,13 +2,15 @@
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+
 import { useTranslation } from "react-i18next";
 import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
 import { Toast } from "@/components/ui";
 import { ENV } from "@/config/env";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 // Form components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -118,6 +120,7 @@ const SupportTicketModal: React.FC<{
   categoryOptions,
   isSubmitting = false,
 }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
@@ -126,7 +129,9 @@ const SupportTicketModal: React.FC<{
         {/* Fixed Header */}
         <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Submit Support Ticket</h2>
+            <h2 className="text-2xl font-bold">
+              {t("support.submitTicketModalTitle")}
+            </h2>
             <button
               onClick={onClose}
               className="text-white hover:text-slate-200 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
@@ -136,7 +141,7 @@ const SupportTicketModal: React.FC<{
             </button>
           </div>
           <p className="mt-2 text-emerald-100">
-            We'll get back to you as soon as possible!
+            {t("support.submitTicketModalSubtitle")}
           </p>
         </div>
 
@@ -150,8 +155,8 @@ const SupportTicketModal: React.FC<{
                 value={ticketForm.name}
                 onChange={onInputChange}
                 required
-                placeholder="Enter your full name"
-                label="Full Name"
+                placeholder={t("support.fullNamePlaceholder")}
+                label={t("support.fullNameLabel")}
               />
 
               <FormInput
@@ -160,8 +165,8 @@ const SupportTicketModal: React.FC<{
                 value={ticketForm.email}
                 onChange={onInputChange}
                 required
-                placeholder="Enter your email address"
-                label="Email Address"
+                placeholder={t("support.emailPlaceholder")}
+                label={t("support.emailLabel")}
               />
             </div>
 
@@ -171,8 +176,8 @@ const SupportTicketModal: React.FC<{
               value={ticketForm.subject}
               onChange={onInputChange}
               required
-              placeholder="Brief description of your issue"
-              label="Subject"
+              placeholder={t("support.subjectPlaceholder")}
+              label={t("support.subjectLabel")}
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -180,7 +185,7 @@ const SupportTicketModal: React.FC<{
                 name="priority"
                 value={ticketForm.priority}
                 onChange={onInputChange}
-                label="Priority"
+                label={t("support.priorityLabel")}
                 options={priorityOptions}
               />
 
@@ -188,7 +193,7 @@ const SupportTicketModal: React.FC<{
                 name="category"
                 value={ticketForm.category}
                 onChange={onInputChange}
-                label="Category"
+                label={t("support.categoryLabel")}
                 options={categoryOptions}
               />
             </div>
@@ -199,8 +204,8 @@ const SupportTicketModal: React.FC<{
               onChange={onInputChange}
               required
               rows={1}
-              placeholder="Please provide detailed information about your issue or question..."
-              label="Description"
+              placeholder={t("support.descriptionPlaceholder")}
+              label={t("support.descriptionLabel")}
             />
 
             <div className="flex gap-4 pt-4 sticky bottom-0 bg-white">
@@ -209,7 +214,9 @@ const SupportTicketModal: React.FC<{
                 disabled={isSubmitting}
                 className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-6 rounded-lg hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? "Submitting..." : "Submit Ticket"}
+                {isSubmitting
+                  ? t("support.submitting")
+                  : t("support.submitTicket")}
               </button>
               {/* <button
                 type="button"
@@ -229,7 +236,7 @@ const SupportTicketModal: React.FC<{
 const SupportPage: React.FC = () => {
   const { toast, showToast, hideToast } = useToast();
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const [activeTicketForm, setActiveTicketForm] = useState(false);
   const [showLicenseModal, setShowLicenseModal] = useState(false);
   const [showPartnershipModal, setShowPartnershipModal] = useState(false);
@@ -248,23 +255,23 @@ const SupportPage: React.FC = () => {
   // Memoize form options to prevent re-creation
   const priorityOptions = useMemo(
     () => [
-      { value: "low", label: "Low" },
-      { value: "medium", label: "Medium" },
-      { value: "high", label: "High" },
-      { value: "urgent", label: "Urgent" },
+      { value: "low", label: t("support.priorityLow") },
+      { value: "medium", label: t("support.priorityMedium") },
+      { value: "high", label: t("support.priorityHigh") },
+      { value: "urgent", label: t("support.priorityUrgent") },
     ],
-    [],
+    [t],
   );
 
   const categoryOptions = useMemo(
     () => [
-      { value: "general", label: "General Support" },
-      { value: "technical", label: "Technical Issue" },
-      { value: "billing", label: "Billing & Licensing" },
-      { value: "feature", label: "Feature Request" },
-      { value: "bug", label: "Bug Report" },
+      { value: "general", label: t("support.categoryGeneral") },
+      { value: "technical", label: t("support.categoryTechnical") },
+      { value: "billing", label: t("support.categoryBilling") },
+      { value: "feature", label: t("support.categoryFeature") },
+      { value: "bug", label: t("support.categoryBug") },
     ],
-    [],
+    [t],
   );
 
   // Searchable content database
@@ -272,11 +279,10 @@ const SupportPage: React.FC = () => {
     () => [
       {
         id: "faqs",
-        title: "Frequently Asked Questions",
-        description:
-          "Common questions and answers about D-Secure data erasure solutions",
+        title: t("support.searchFaqs"),
+        description: t("support.searchFaqsDesc"),
         url: "/support/faqs",
-        category: "Support",
+        category: t("support.categorySupport"),
         keywords: [
           "faq",
           "questions",
@@ -289,11 +295,10 @@ const SupportPage: React.FC = () => {
       },
       {
         id: "knowledge-base",
-        title: "Knowledge Base",
-        description:
-          "Step by step guides for secure data wiping on different devices",
+        title: t("support.searchKnowledgeBase"),
+        description: t("support.searchKnowledgeBaseDesc"),
         url: "/support/knowledge-base",
-        category: "Documentation",
+        category: t("support.categoryDocumentation"),
         keywords: [
           "guide",
           "tutorial",
@@ -305,10 +310,10 @@ const SupportPage: React.FC = () => {
       },
       {
         id: "get-started",
-        title: "Get Started Guide",
-        description: "Learn how to wipe PC, Mac, Server & Mobile devices",
+        title: t("support.searchGetStarted"),
+        description: t("support.searchGetStartedDesc"),
         url: "/support/get-started",
-        category: "Getting Started",
+        category: t("support.categoryGettingStarted"),
         keywords: [
           "getting started",
           "beginner",
@@ -319,18 +324,18 @@ const SupportPage: React.FC = () => {
       },
       {
         id: "help-manual",
-        title: "Help Manual",
-        description: "Comprehensive user manual for D-Secure products",
+        title: t("support.searchHelpManual"),
+        description: t("support.searchHelpManualDesc"),
         url: "/support/help-manual",
-        category: "Documentation",
+        category: t("support.categoryDocumentation"),
         keywords: ["manual", "documentation", "user guide", "reference"],
       },
       {
         id: "product-videos",
-        title: "Product Videos",
-        description: "Video tutorials and product demonstrations",
+        title: t("support.searchProductVideos"),
+        description: t("support.searchProductVideosDesc"),
         url: "/support/product-videos",
-        category: "Videos",
+        category: t("support.categoryVideos"),
         keywords: [
           "video",
           "tutorial",
@@ -342,10 +347,10 @@ const SupportPage: React.FC = () => {
       },
       {
         id: "overwrite-guide",
-        title: "Hard Drive Overwrite Guide",
-        description: "How many overwrites should I do on a Hard Drive?",
+        title: t("support.searchOverwrite"),
+        description: t("support.searchOverwriteDesc"),
         url: "/support/overwrite-guide",
-        category: "Guides",
+        category: t("support.categoryGuides"),
         keywords: [
           "overwrite",
           "hard drive",
@@ -357,10 +362,10 @@ const SupportPage: React.FC = () => {
       },
       {
         id: "wipe-guide",
-        title: "HDD & SSD Wipe Guide",
-        description: "How to securely wipe Hard Drives and SSDs",
+        title: t("support.searchWipe"),
+        description: t("support.searchWipeDesc"),
         url: "/support/secure-erase-hddssd",
-        category: "Guides",
+        category: t("support.categoryGuides"),
         keywords: [
           "wipe",
           "erase",
@@ -373,42 +378,42 @@ const SupportPage: React.FC = () => {
       },
       {
         id: "sas-wipe-guide",
-        title: "SAS Drive Wipe Guide",
-        description: "How to wipe SAS drives permanently",
+        title: t("support.searchSas"),
+        description: t("support.searchSasDesc"),
         url: "/support/sas-wipe-guide",
-        category: "Guides",
+        category: t("support.categoryGuides"),
         keywords: ["sas", "drive", "wipe", "permanent", "enterprise", "server"],
       },
       {
         id: "mac-wipe-guide",
-        title: "Mac Machine Wipe Guide",
-        description: "How to wipe 12 board Mac machines",
+        title: t("support.searchMac"),
+        description: t("support.searchMacDesc"),
         url: "/support/mac-eraser-guide",
-        category: "Guides",
+        category: t("support.categoryGuides"),
         keywords: ["mac", "apple", "macbook", "imac", "board", "wipe"],
       },
       {
         id: "m1-mac-wipe-guide",
-        title: "M1 Mac Wipe Guide",
-        description: "How to wipe MacOS with M1 chip",
+        title: t("support.searchM1Mac"),
+        description: t("support.searchM1MacDesc"),
         url: "/support/mac-wipe-guide",
-        category: "Guides",
+        category: t("support.categoryGuides"),
         keywords: ["m1", "mac", "chip", "apple silicon", "new mac", "arm"],
       },
       {
         id: "cloud-console-guide",
-        title: "Cloud Console Guide",
-        description: "How to use D-Secure Cloud Console",
+        title: t("support.searchCloud"),
+        description: t("support.searchCloudDesc"),
         url: "/support/cloud-console-guide",
-        category: "Cloud",
+        category: t("support.categoryCloud"),
         keywords: ["cloud", "console", "remote", "management", "web interface"],
       },
       {
         id: "ssd-cryptographic-erasure",
-        title: "SSD Cryptographic Erasure",
-        description: "How to perform cryptographic erasure on SSD",
+        title: t("support.searchSsdCrypto"),
+        description: t("support.searchSsdCryptoDesc"),
         url: "/support/ssd-cryptographic-erasure-guide",
-        category: "Advanced",
+        category: t("support.categoryAdvanced"),
         keywords: [
           "ssd",
           "cryptographic",
@@ -419,10 +424,10 @@ const SupportPage: React.FC = () => {
       },
       {
         id: "retain-os-guide",
-        title: "Retain OS Wipe Guide",
-        description: "How to wipe everything and retain your operating system",
+        title: t("support.searchRetainOs"),
+        description: t("support.searchRetainOsDesc"),
         url: "/support/retain-os-guide",
-        category: "Guides",
+        category: t("support.categoryGuides"),
         keywords: [
           "retain",
           "os",
@@ -433,26 +438,24 @@ const SupportPage: React.FC = () => {
         ],
       },
     ],
-    [],
+    [t],
   );
 
   // Trending searches data
   const trendingSearches = useMemo(
     () => ({
-      "How many overwrites should I do on a Hard Drive?":
-        "/support/overwrite-guide",
-      "How can I Wipe Hard Drives and SSDs?": "/support/secure-erase-hddssd",
-      "How to Wipe SAS Drives Permanently?": "/support/sas-wipe-guide",
-      "How can I wipe 12 board Mac Machines?": "/support/mac-eraser-guide",
+      [t("support.trending1")]: "/support/overwrite-guide",
+      [t("support.trending2")]: "/support/secure-erase-hddssd",
+      [t("support.trending3")]: "/support/sas-wipe-guide",
+      [t("support.trending4")]: "/support/mac-eraser-guide",
       // "How to customize ISO file using D-Secure?": "/support/iso-customization-guide",
-      "How do I wipe everything and retain my OS?": "/support/retain-os-guide",
-      "How can I Wipe a MacOS with M1 Chip?": "/support/mac-wipe-guide",
-      "How to use D-Secure Cloud Console?": "/support/cloud-console-guide",
-      "How do I Perform Cryptographic Erasure on SSD?":
-        "/support/ssd-cryptographic-erasure-guide",
+      [t("support.trending5")]: "/support/retain-os-guide",
+      [t("support.trending6")]: "/support/mac-wipe-guide",
+      [t("support.trending7")]: "/support/cloud-console-guide",
+      [t("support.trending8")]: "/support/ssd-cryptographic-erasure-guide",
       // "How can I diagnose my smartphone using D-Secure?": "/support/smartphone-diagnosis-guide",
     }),
-    [],
+    [t],
   );
 
   // Search functionality
@@ -483,8 +486,8 @@ const SupportPage: React.FC = () => {
       })
       .map(([searchText, url]) => ({
         title: searchText,
-        description: "Popular support question",
-        category: "Trending",
+        description: t("support.popularQuestion"),
+        category: t("support.categoryTrending"),
         url: url,
         keywords: searchText.toLowerCase().split(" "),
       }));
@@ -665,10 +668,7 @@ const SupportPage: React.FC = () => {
           description: "",
         });
         setIsSubmitting(false);
-        showToast(
-          "Support ticket submitted successfully! We will get back to you soon.",
-          "success",
-        );
+        showToast(t("support.ticketSuccess"), "success");
 
         try {
           // === 1. SUBMIT TO BACKEND API (DATABASE) ===
@@ -708,10 +708,7 @@ const SupportPage: React.FC = () => {
         }
       } catch (error) {
         console.error("FormSubmit error:", error);
-        showToast(
-          "Failed to submit support ticket. Please try again.",
-          "error",
-        );
+        showToast(t("support.ticketError"), "error");
         setIsSubmitting(false);
       }
     },
@@ -753,10 +750,11 @@ const SupportPage: React.FC = () => {
                 <div className="mb-8">
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
                     <span className="text-brand">D-Secure</span>
-                    <sup className="text-2xl text-brand"></sup> Customer Support
+                    <sup className="text-2xl text-brand"></sup>{" "}
+                    {t("support.heroTitle")}
                   </h1>
                   <h2 className="text-3xl md:text-4xl font-bold text-slate-700 mb-6">
-                    How can we help you today?
+                    {t("support.heroSubtitle")}
                   </h2>
 
                   {/* Search Bar */}
@@ -769,7 +767,7 @@ const SupportPage: React.FC = () => {
                             value={searchQuery}
                             onChange={handleSearchInputChange}
                             onKeyDown={handleKeyDown}
-                            placeholder="Search documents and help resources..."
+                            placeholder={t("support.searchPlaceholder")}
                             className="w-full py-4 pl-12 pr-20 rounded-lg border border-slate-300 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-base shadow-sm hover:shadow-md placeholder:text-slate-400"
                             autoComplete="off"
                           />
@@ -811,7 +809,7 @@ const SupportPage: React.FC = () => {
                             type="submit"
                             className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-md transition-colors font-medium text-sm"
                           >
-                            Go
+                            {t("support.searchGo")}
                           </button>
                         </div>
                       </form>
@@ -839,9 +837,10 @@ const SupportPage: React.FC = () => {
                   <div className="p-4 border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-teal-50">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-emerald-900">
-                        {searchResults.length} result
-                        {searchResults.length !== 1 ? "s" : ""} found for "
-                        {searchQuery}"
+                        {t("support.resultsFound", {
+                          count: searchResults.length,
+                          query: searchQuery,
+                        })}
                       </span>
                       <button
                         onClick={clearSearch}
@@ -925,17 +924,16 @@ const SupportPage: React.FC = () => {
                       </svg>
                     </div>
                     <p className="text-slate-900 font-semibold mb-2">
-                      No results found for "{searchQuery}"
+                      {t("support.noResultsFor", { query: searchQuery })}
                     </p>
                     <p className="text-sm text-slate-600 mb-4">
-                      Try searching with different keywords or browse our
-                      support sections below.
+                      {t("support.noResultsTip")}
                     </p>
                     <button
                       onClick={clearSearch}
                       className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-2 rounded-lg font-medium text-sm transition-all shadow-md"
                     >
-                      Clear search
+                      {t("support.clearSearch")}
                     </button>
                   </div>
                 )
@@ -952,7 +950,7 @@ const SupportPage: React.FC = () => {
             <Reveal>
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-4">
-                  TRENDING SEARCHES
+                  {t("support.trendingSearches")}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {Object.entries(trendingSearches).map(
@@ -967,7 +965,7 @@ const SupportPage: React.FC = () => {
                         <Link
                           to={url}
                           className="text-slate-500 hover:text-brand transition-colors p-2 rounded-md hover:bg-slate-50"
-                          title="Go directly to guide"
+                          title={t("support.goToGuide")}
                         ></Link>
                       </div>
                     ),
@@ -985,10 +983,10 @@ const SupportPage: React.FC = () => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  Self Help & Support
+                  {t("support.selfHelpTitle")}
                 </h2>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
-                  Access Support Information For Your D-Secure Products
+                  {t("support.selfHelpSubtitle")}
                 </p>
               </div>
             </Reveal>
@@ -1007,17 +1005,16 @@ const SupportPage: React.FC = () => {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Frequently Asked Questions
+                    {t("support.faqTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Frequently Asked Questions By Our Customers That Might Help
-                    You.
+                    {t("support.faqDesc")}
                   </p>
                   <Link
                     to="/support/faqs"
                     className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
                   >
-                    Learn More →
+                    {t("support.learnMore")}
                   </Link>
                 </div>
               </Reveal>
@@ -1035,17 +1032,16 @@ const SupportPage: React.FC = () => {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Knowledge Base
+                    {t("support.knowledgeBaseTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Step By Step Guide To Securely Wipe Data On Different
-                    Devices.
+                    {t("support.knowledgeBaseDesc")}
                   </p>
                   <Link
                     to="/support/knowledge-base"
                     className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
                   >
-                    Learn More →
+                    {t("support.learnMore")}
                   </Link>
                 </div>
               </Reveal>
@@ -1063,16 +1059,16 @@ const SupportPage: React.FC = () => {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Get Started
+                    {t("support.getStartedTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Learn How To Wipe PC, Mac, Server & Mobile Devices.
+                    {t("support.getStartedDesc")}
                   </p>
                   <Link
                     to="/support/get-started"
                     className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
                   >
-                    Learn More →
+                    {t("support.learnMore")}
                   </Link>
                 </div>
               </Reveal>
@@ -1094,18 +1090,16 @@ const SupportPage: React.FC = () => {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Help Manual
+                    {t("support.helpManualTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Complete Visual Guide To Learn More About D-Secure Products,
-                    Installation, FAQs, Report Management & Advanced Settings
-                    Configuration.
+                    {t("support.helpManualDesc")}
                   </p>
                   <Link
                     to="/support/help-manual"
                     className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
                   >
-                    View Help Manual →
+                    {t("support.viewHelpManual")}
                   </Link>
                 </div>
               </Reveal>
@@ -1123,16 +1117,16 @@ const SupportPage: React.FC = () => {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Product Videos
+                    {t("support.productVideosTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Product Walkthroughs & How To Videos.
+                    {t("support.productVideosDesc")}
                   </p>
                   <Link
                     to="/support/product-videos"
                     className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
                   >
-                    Learn More →
+                    {t("support.learnMore")}
                   </Link>
                 </div>
               </Reveal>
@@ -1150,17 +1144,16 @@ const SupportPage: React.FC = () => {
                     </svg>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Technical Blog
+                    {t("support.technicalBlogTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed flex-grow">
-                    Insights and practical guides on data erasure,
-                    cybersecurity, and IT asset lifecycle management.
+                    {t("support.technicalBlogDesc")}
                   </p>
                   <Link
                     to="/blog"
                     className="text-brand hover:text-brand-600 font-semibold hover:underline transition-colors"
                   >
-                    Learn More →
+                    {t("support.learnMore")}
                   </Link>
                 </div>
               </Reveal>
@@ -1174,10 +1167,10 @@ const SupportPage: React.FC = () => {
             <Reveal>
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  Assisted Support
+                  {t("support.assistedSupportTitle")}
                 </h2>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
-                  Raise a Ticket or Call us for support queries
+                  {t("support.assistedSupportSubtitle")}
                 </p>
               </div>
             </Reveal>
@@ -1187,11 +1180,10 @@ const SupportPage: React.FC = () => {
               <Reveal delayMs={100}>
                 <div className="bg-slate-50 rounded-2xl p-8 text-center">
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Write to Us
+                    {t("support.writeToUsTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed">
-                    Get quick resolution to your query by writing to us on
-                    email.
+                    {t("support.writeToUsDesc")}
                   </p>
                   <button
                     onClick={() =>
@@ -1212,7 +1204,7 @@ const SupportPage: React.FC = () => {
                         d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                       />
                     </svg>
-                    Send Email
+                    {t("support.sendEmail")}
                   </button>
                 </div>
               </Reveal>
@@ -1221,10 +1213,10 @@ const SupportPage: React.FC = () => {
               <Reveal delayMs={200}>
                 <div className="bg-slate-50 rounded-2xl p-8 text-center">
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Raise a Ticket
+                    {t("support.raiseTicketTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed">
-                    If you have queries and need help? Please submit a ticket.
+                    {t("support.raiseTicketDesc")}
                   </p>
                   <button
                     onClick={() => setActiveTicketForm(true)}
@@ -1243,7 +1235,7 @@ const SupportPage: React.FC = () => {
                         d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1V7a2 2 0 00-2-2H5zM5 14a2 2 0 00-2 2v3a1 1 0 001 1h1a1 1 0 001-1v-3a2 2 0 00-2-2H5z"
                       />
                     </svg>
-                    Submit Ticket
+                    {t("support.submitTicket")}
                   </button>
                 </div>
               </Reveal>
@@ -1252,11 +1244,10 @@ const SupportPage: React.FC = () => {
               <Reveal delayMs={300}>
                 <div className="bg-slate-50 rounded-2xl p-8 text-center">
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Call us
+                    {t("support.callUsTitle")}
                   </h3>
                   <p className="text-slate-600 mb-6 leading-relaxed">
-                    We will be happy to assist you. Technical Support in English
-                    only.
+                    {t("support.callUsDesc")}
                   </p>
                   <button
                     onClick={() => (window.location.href = "tel:+911141525085")}
@@ -1296,17 +1287,17 @@ const SupportPage: React.FC = () => {
                   /> */}
                   <div className="text-left">
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                      Let's get started
+                      {t("support.letsGetStarted")}
                     </h2>
                     <p className="text-xl text-white/90 mb-8">
-                      Interested in finding out more about our solutions?
+                      {t("support.letsGetStartedDesc")}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                       <button
                         onClick={() => setShowLicenseModal(true)}
                         className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300"
                       >
-                        Request Free License →
+                        {t("support.requestFreeLicense")}
                       </button>
                       <button
                         onClick={() =>
@@ -1314,7 +1305,7 @@ const SupportPage: React.FC = () => {
                         }
                         className="bg-white/20 hover:bg-white/30 border-2 border-white text-white font-semibold px-8 py-3 rounded-lg transition-all duration-300"
                       >
-                        Need help: +91-844-775-0101
+                        {t("support.needHelp")}
                       </button>
                     </div>
                   </div>
@@ -1387,11 +1378,10 @@ const SupportPage: React.FC = () => {
               company: "Company",
               usage: "Usage Type",
             },
-            successMessage:
-              "Free license request submitted successfully! We will send you the license details within 12 hours.",
+            successMessage: t("support.licenseSuccess"),
           }}
           onClose={() => setShowLicenseModal(false)}
-          title="Request Free License - Support"
+          title={t("support.requestFreeLicenseTitle")}
         />
       )}
 
@@ -1406,11 +1396,10 @@ const SupportPage: React.FC = () => {
               companyName: "Company Name",
               partnerType: "Partnership Type",
             },
-            successMessage:
-              "Partnership request submitted successfully! We will review your application and get back to you soon.",
+            successMessage: t("support.partnershipSuccess"),
           }}
           onClose={() => setShowPartnershipModal(false)}
-          title="Partnership Request - Support"
+          title={t("support.partnershipRequestTitle")}
         />
       )}
 

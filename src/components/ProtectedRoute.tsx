@@ -1,88 +1,90 @@
 import React, { useEffect, useState } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
-import { authService } from '../utils/authService'
+import { Navigate, useLocation, useParams } from "react-router-dom";
+import { authService } from "../utils/authService";
 
 interface ProtectedRouteProps {
-  children: React.ReactNode
-  roles?: string[]
-  permissions?: string[]
-  redirectTo?: string
-  fallbackComponent?: React.ComponentType
+  children: React.ReactNode;
+  roles?: string[];
+  permissions?: string[];
+  redirectTo?: string;
+  fallbackComponent?: React.ComponentType;
 }
 
 interface AuthState {
-  isAuthenticated: boolean
-  isLoading: boolean
-  user: any
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: any;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   roles = [],
   permissions = [],
-  redirectTo = '/login',
+  redirectTo = "/login",
   fallbackComponent: FallbackComponent,
 }) => {
-  const location = useLocation()
+  const location = useLocation();
+  const { lang } = useParams<{ lang: string }>();
+  const currentLang = lang || "en";
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
     isLoading: true,
     user: null,
-  })
+  });
 
   useEffect(() => {
     const checkAuthentication = () => {
       try {
-        const isAuthenticated = authService.isAuthenticated()
-        const user = authService.getUserFromToken()
+        const isAuthenticated = authService.isAuthenticated();
+        const user = authService.getUserFromToken();
 
         setAuthState({
           isAuthenticated,
           isLoading: false,
           user,
-        })
+        });
       } catch (error) {
-        console.error('Authentication check failed:', error)
+        console.error("Authentication check failed:", error);
         setAuthState({
           isAuthenticated: false,
           isLoading: false,
           user: null,
-        })
+        });
       }
-    }
+    };
 
     // Initial check
-    checkAuthentication()
+    checkAuthentication();
 
     // Listen for authentication changes
     const handleAuthChange = () => {
-      checkAuthentication()
-    }
+      checkAuthentication();
+    };
 
     const handleTokenRefresh = () => {
-      checkAuthentication()
-    }
+      checkAuthentication();
+    };
 
     const handleAuthFailure = () => {
       setAuthState({
         isAuthenticated: false,
         isLoading: false,
         user: null,
-      })
-    }
+      });
+    };
 
     // Add event listeners
-    window.addEventListener('authStateChanged', handleAuthChange)
-    window.addEventListener('tokenRefreshed', handleTokenRefresh)
-    window.addEventListener('authenticationFailed', handleAuthFailure)
+    window.addEventListener("authStateChanged", handleAuthChange);
+    window.addEventListener("tokenRefreshed", handleTokenRefresh);
+    window.addEventListener("authenticationFailed", handleAuthFailure);
 
     // Cleanup
     return () => {
-      window.removeEventListener('authStateChanged', handleAuthChange)
-      window.removeEventListener('tokenRefreshed', handleTokenRefresh)
-      window.removeEventListener('authenticationFailed', handleAuthFailure)
-    }
-  }, [])
+      window.removeEventListener("authStateChanged", handleAuthChange);
+      window.removeEventListener("tokenRefreshed", handleTokenRefresh);
+      window.removeEventListener("authenticationFailed", handleAuthFailure);
+    };
+  }, []);
 
   // Show loading spinner while checking authentication
   if (authState.isLoading) {
@@ -93,22 +95,31 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           <p className="mt-2 text-gray-600">Verifying authentication...</p>
         </div>
       </div>
-    )
+    );
   }
 
   // Redirect to login if not authenticated
   if (!authState.isAuthenticated) {
     // Store the attempted location for redirect after login
-    sessionStorage.setItem('redirectAfterLogin', location.pathname + location.search)
-    return <Navigate to={redirectTo} replace state={{ from: location }} />
+    sessionStorage.setItem(
+      "redirectAfterLogin",
+      location.pathname + location.search,
+    );
+    const localizedRedirect =
+      redirectTo.startsWith("/") && !redirectTo.startsWith(`/${currentLang}/`)
+        ? `/${currentLang}${redirectTo}`
+        : redirectTo;
+    return (
+      <Navigate to={localizedRedirect} replace state={{ from: location }} />
+    );
   }
 
   // Check role-based access
   if (roles.length > 0 && !authService.hasAnyRole(roles)) {
     if (FallbackComponent) {
-      return <FallbackComponent />
+      return <FallbackComponent />;
     }
-    
+
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center p-8">
@@ -132,7 +143,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
             You don't have permission to access this page.
           </p>
           <p className="mt-1 text-sm text-gray-500">
-            Required roles: {roles.join(', ')}
+            Required roles: {roles.join(", ")}
           </p>
           <button
             onClick={() => window.history.back()}
@@ -142,17 +153,22 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           </button>
         </div>
       </div>
-    )
+    );
   }
 
   // Check permission-based access
-  if (permissions.length > 0 && !permissions.every(permission => authService.hasPermission(permission))) {
-    const missingPermissions = permissions.filter(permission => !authService.hasPermission(permission))
-    
+  if (
+    permissions.length > 0 &&
+    !permissions.every((permission) => authService.hasPermission(permission))
+  ) {
+    const missingPermissions = permissions.filter(
+      (permission) => !authService.hasPermission(permission),
+    );
+
     if (FallbackComponent) {
-      return <FallbackComponent />
+      return <FallbackComponent />;
     }
-    
+
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center p-8">
@@ -171,12 +187,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Insufficient Permissions</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Insufficient Permissions
+          </h1>
           <p className="mt-2 text-gray-600">
             You don't have the required permissions to access this page.
           </p>
           <p className="mt-1 text-sm text-gray-500">
-            Missing permissions: {missingPermissions.join(', ')}
+            Missing permissions: {missingPermissions.join(", ")}
           </p>
           <button
             onClick={() => window.history.back()}
@@ -186,12 +204,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           </button>
         </div>
       </div>
-    )
+    );
   }
 
   // User is authenticated and authorized
-  return <>{children}</>
-}
+  return <>{children}</>;
+};
 
 // Higher-order component for easier usage
 export const withAuth = <P extends object>(

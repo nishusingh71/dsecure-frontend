@@ -1,0 +1,1152 @@
+﻿diff --git a/src/pages/DriveEraserPage.tsx b/src/pages/DriveEraserPage.tsx
+index d85e3bd..c6e9389 100644
+--- a/src/pages/DriveEraserPage.tsx
++++ b/src/pages/DriveEraserPage.tsx
+@@ -1,5 +1,6 @@
+ import React, { memo, useState, useEffect, useRef } from "react";
+-import { Link } from "react-router-dom";
++import { Link } from "@/components/LocaleLink";
++import { useTranslation } from "react-i18next";
+ import ThemeAwareLogo from "@/components/ThemeAwareLogo";
+ import Reveal from "@/components/Reveal";
+ import SEOHead from "@/components/SEOHead";
+@@ -25,7 +26,6 @@ import {
+   User,
+   X,
+ } from "lucide-react";
+-import { title } from "process";
+ import { useToast } from "@/components/Toast";
+ import { blogPosts } from "@/data/blogPosts";
+ import { ENV } from "@/config/env";
+@@ -38,6 +38,7 @@ const getReadTime = (text: string) => {
+ };
+ 
+ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
++  const { t } = useTranslation(["driveEraser", "common", "seo"]);
+   const { showToast } = useToast();
+   const [isLoading, setIsLoading] = useState(false);
+   const [formData, setFormData] = useState({
+@@ -86,71 +87,71 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+   const galleryImages = [
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/hhmrgqu1j8dmtlawjy5z.png",
+-      alt: "Drive Eraser Screenshot 1",
++      alt: t("gallery_screenshot_alt", { index: 1 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bapyhtkbzh3swpj64t4x.png",
+-      alt: "Drive Eraser Screenshot 2",
++      alt: t("gallery_screenshot_alt", { index: 2 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ye68dt372vdbwgoxvfux.png",
+-      alt: "Drive Eraser Screenshot 3",
++      alt: t("gallery_screenshot_alt", { index: 3 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/ekvmur4pojkla41gnmd4.png",
+-      alt: "Drive Eraser Screenshot 4",
++      alt: t("gallery_screenshot_alt", { index: 4 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/bezjifgihbakej2julde.png",
+-      alt: "Drive Eraser Screenshot 5",
++      alt: t("gallery_screenshot_alt", { index: 5 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/ucwxczg0fepj1u1ut7we.png",
+-      alt: "Drive Eraser Screenshot 6",
++      alt: t("gallery_screenshot_alt", { index: 6 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/dvwnmwzlcb3wk88cyakl.png",
+-      alt: "Drive Eraser Screenshot 7",
++      alt: t("gallery_screenshot_alt", { index: 7 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/xjqcegdsp1dsdndcziww.png",
+-      alt: "Drive Eraser Screenshot 8",
++      alt: t("gallery_screenshot_alt", { index: 8 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/evjsbmqbynavpxnfwnxa.png",
+-      alt: "Drive Eraser Screenshot 9",
++      alt: t("gallery_screenshot_alt", { index: 9 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/nt6v24wnqrwgkc5tdddu.png",
+-      alt: "Drive Eraser Screenshot 10",
++      alt: t("gallery_screenshot_alt", { index: 10 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/osp0gdj81m08qspfmqdy.png",
+-      alt: "Drive Eraser Screenshot 11",
++      alt: t("gallery_screenshot_alt", { index: 11 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/sr3c7bwx5lesgnrlsuty.png",
+-      alt: "Drive Eraser Screenshot 12",
++      alt: t("gallery_screenshot_alt", { index: 12 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039195/iwsvvppdgbqjai40tcwb.png",
+-      alt: "Drive Eraser Screenshot 13",
++      alt: t("gallery_screenshot_alt", { index: 13 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039194/sq3rvfji9f9wfghlvlqx.png",
+-      alt: "Drive Eraser Screenshot 14",
++      alt: t("gallery_screenshot_alt", { index: 14 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/w77kkhcf6lecezokiybj.png",
+-      alt: "Drive Eraser Screenshot 15",
++      alt: t("gallery_screenshot_alt", { index: 15 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039193/bh1xablttwasjfwvvfio.png",
+-      alt: "Drive Eraser Screenshot 16",
++      alt: t("gallery_screenshot_alt", { index: 16 }),
+     },
+     {
+       url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772039196/icnd512glswldxkfl4kg.png",
+-      alt: "Drive Eraser Screenshot 17",
++      alt: t("gallery_screenshot_alt", { index: 17 }),
+     },
+   ];
+ 
+@@ -190,15 +191,15 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+   }, [selectedImageIndex]);
+ 
+   const sectionNavItems = [
+-    { id: "erase-types", label: "Erase Types" },
+-    { id: "demo", label: "Demo" },
+-    { id: "compliance", label: "Compliance" },
+-    { id: "platforms", label: "Platforms" },
+-    { id: "features", label: "Features" },
+-    { id: "use-cases", label: "Use Cases" },
+-    { id: "faq", label: "FAQ" },
+-    { id: "blogs", label: "Blogs" },
+-    { id: "contact", label: "Contact" },
++    { id: "erase-types", label: t("common:nav.erase_types") },
++    { id: "demo", label: t("common:nav.demo") },
++    { id: "compliance", label: t("common:nav.compliance") },
++    { id: "platforms", label: t("common:nav.platforms") },
++    { id: "features", label: t("common:nav.features") },
++    { id: "use-cases", label: t("common:nav.use_cases") },
++    { id: "faq", label: t("common:nav.faq") },
++    { id: "blogs", label: t("common:nav.blogs") },
++    { id: "contact", label: t("common:nav.contact") },
+   ];
+ 
+   useEffect(() => {
+@@ -261,8 +262,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+ 
+   const eraseTypes = [
+     {
+-      name: "PC & Laptops",
+-      desc: "Certified data wiping for Windows, Mac, and Linux computers. Permanent erasure with tamper-proof certificates for audit compliance.",
++      name: t("pc_laptops"),
++      desc: t("pc_laptops_desc"),
+       icon: (
+         <svg
+           className="w-8 h-8"
+@@ -281,8 +282,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       color: "from-blue-500 to-blue-600",
+     },
+     {
+-      name: "Servers & RAID Arrays",
+-      desc: "Secure erasure for enterprise servers and RAID configurations. DIY solution that generates certificates meeting global standards like GDPR, HIPAA, and ISO 27001.",
++      name: t("servers_raid"),
++      desc: t("servers_raid_desc"),
+       icon: (
+         <svg
+           className="w-8 h-8"
+@@ -301,8 +302,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       color: "from-red-500 to-red-600",
+     },
+     {
+-      name: "SSDs & NVMe Drives",
+-      desc: "Specialized erasure for solid-state storage ensuring complete data destruction. Deploy via bootable USB or PXE network boot for maximum flexibility.",
++      name: t("ssds_nvme_drives"),
++      desc: t("ssds_nvme_drives_desc"),
+       icon: (
+         <svg
+           className="w-8 h-8"
+@@ -321,8 +322,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       color: "from-cyan-500 to-cyan-600",
+     },
+     {
+-      name: "HDDs & External Drives",
+-      desc: "Permanent erasure for traditional hard drives and USB storage. Software supports remote deployment via MSI and provides audit trail for compliance reporting.",
++      name: t("hdds_external_drives"),
++      desc: t("hdds_external_drives_desc"),
+       icon: (
+         <svg
+           className="w-8 h-8"
+@@ -344,13 +345,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+ 
+   const platforms = [
+     {
+-      name: "Windows",
+-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
++      name: t("windows"),
++      versions: t("windows_compat"),
+       features: [
+-        "Desktop & Laptop Support",
+-        "Server Edition Available",
+-        "Active Directory Integration",
+-        "Group Policy Support",
++        t("desktop_laptop_support"),
++        t("server_edition_available"),
++        t("active_directory_integration"),
++        t("group_policy_support"),
+       ],
+       icon: (
+         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
+@@ -359,13 +360,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       ),
+     },
+     {
+-      name: "macOS",
+-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM), Intel (x64)",
++      name: t("macos"),
++      versions: t("macos_compat"),
+       features: [
+-        "Intel & Apple Silicon",
+-        "Full Disk Access",
+-        "T2/M1/M2/M3 Chip Support",
+-        "Native Performance",
++        t("intel_apple_silicon"),
++        t("full_disk_access"),
++        t("t2_m1_m2_m3_chip_support"),
++        t("native_performance"),
+       ],
+       icon: (
+         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
+@@ -374,13 +375,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       ),
+     },
+     {
+-      name: "Linux",
+-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
++      name: t("linux"),
++      versions: t("linux_compat"),
+       features: [
+-        "CLI & GUI Options",
+-        "Kernel Level Erasure",
+-        "Enterprise Distros",
+-        "Headless Server Mode",
++        t("cli_gui_options"),
++        t("kernel_level_erasure"),
++        t("enterprise_distros"),
++        t("headless_server_mode"),
+       ],
+       icon: (
+         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
+@@ -392,51 +393,51 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+ 
+   const features = [
+     {
+-      title: "Secure Drive Erasure",
+-      desc: "NIST-tested software delivers erasure with  data destruction guarantee for all storage types.",
++      title: t("secure_drive_erasure_title"),
++      desc: t("secure_drive_erasure_desc"),
+       icon: <ShieldIcon className="w-6 h-6" />,
+     },
+     {
+-      title: "Cloud Console",
+-      desc: "Centralized management platform for monitoring, reporting, and managing erasure tasks across all locations.",
++      title: t("cloud_console_title"),
++      desc: t("cloud_console_desc"),
+       icon: <CloudIcon className="w-6 h-6" />,
+     },
+     {
+-      title: "Supports Global Wiping Standards",
+-      desc: "26+ international erasure standards including NIST 800-88, DoD, HMG.",
++      title: t("global_wiping_standards_title"),
++      desc: t("global_wiping_standards_desc"),
+       icon: <GlobeIcon className="w-6 h-6" />,
+     },
+     {
+-      title: "Multiple Deployment Solutions",
+-      desc: "Deploy via USB boot, PXE network boot, or integrate directly with IT asset management systems.",
++      title: t("multiple_deployment_title"),
++      desc: t("multiple_deployment_desc"),
+       icon: <ServerIcon className="w-6 h-6" />,
+     },
+     {
+-      title: "ERP Integration",
+-      desc: "Seamlessly integrate with all enterprise systems via REST APIs.",
++      title: t("erp_integration_title"),
++      desc: t("erp_integration_desc"),
+       icon: <FileTextIcon className="w-6 h-6" />,
+     },
+     {
+-      title: "Simultaneous Data Wiping",
+-      desc: "enables efficient large-scale data destruction, eliminating the need for manual data wiping processes.",
++      title: t("simultaneous_data_wiping_title"),
++      desc: t("simultaneous_data_wiping_desc"),
+       icon: <RefreshCwIcon className="w-6 h-6" />,
+     },
+     {
+-      title: "Automatic & MDM Detection",
+-      desc: "Automatically detect hardware specifications, MDM profiles, and activation locks before erasure.",
++      title: t("auto_mdm_detection_title"),
++      desc: t("auto_mdm_detection_desc"),
+       icon: <CpuIcon className="w-6 h-6" />,
+     },
+     {
+-      title: "License Don't Expire",
+-      desc: "Pay-per-use licensing model with no expiration - use credits whenever you need them.",
++      title: t("license_dont_expire_title"),
++      desc: t("license_dont_expire_desc"),
+       icon: <LockIcon className="w-6 h-6" />,
+     },
+   ];
+ 
+   const useCases = [
+     {
+-      title: "Disposal of RAID Servers",
+-      desc: "Securely erase enterprise RAID arrays before disposal, and private data cannot be recovered.",
++      title: t("disposal_raid_servers_title"),
++      desc: t("disposal_raid_servers_desc"),
+       icon: (
+         <svg
+           className="w-8 h-8"
+@@ -454,39 +455,39 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       ),
+     },
+     {
+-      title: "IT Asset Redeployment",
+-      desc: "Safely repurpose hardware within organization",
++      title: t("it_asset_redeployment_title"),
++      desc: t("it_asset_redeployment_desc"),
+       icon: <ServerIcon className="w-8 h-8" />,
+     },
+     {
+-      title: "Device Recycling & Resale",
+-      desc: "Prepare devices for resale programs",
++      title: t("device_recycling_resale_title"),
++      desc: t("device_recycling_resale_desc"),
+       icon: <RefreshCwIcon className="w-8 h-8" />,
+     },
+     {
+-      title: "End-of-Lease IT Hardware",
+-      desc: "Comply with lease return data requirements",
++      title: t("end_of_lease_hardware_title"),
++      desc: t("end_of_lease_hardware_desc"),
+       icon: <User className="w-8 h-8" />,
+     },
+     {
+-      title: "Regulatory Compliance",
+-      desc: "Meet GDPR, HIPAA, PCI-DSS requirements",
++      title: t("regulatory_compliance_title"),
++      desc: t("regulatory_compliance_desc"),
+       icon: <GlobeIcon className="w-8 h-8" />,
+     },
+     {
+-      title: "Cloud Migration Projects",
+-      desc: "Securely decommission on-premise storage",
++      title: t("cloud_migration_projects_title"),
++      desc: t("cloud_migration_projects_desc"),
+       icon: <GlobeIcon className="w-8 h-8" />,
+     },
+   ];
+ 
+   const complianceStandards = [
+-    { name: "NIST 800-88", desc: "US National Institute of Standards" },
+-    { name: "DoD 5220.22-M", desc: "US Department of Defense" },
+-    { name: "GDPR", desc: "EU General Data Protection" },
+-    { name: "HIPAA", desc: "Healthcare Information Privacy" },
+-    { name: "SOX", desc: "Sarbanes-Oxley Act" },
+-    { name: "PCI-DSS", desc: "Payment Card Industry" },
++    { name: "NIST 800-88", desc: t("common:compliance.nist_desc") },
++    { name: "DoD 5220.22-M", desc: t("common:compliance.dod_desc") },
++    { name: "GDPR", desc: t("common:compliance.gdpr_desc") },
++    { name: "HIPAA", desc: t("common:compliance.hipaa_desc") },
++    { name: "SOX", desc: t("common:compliance.sox_desc") },
++    { name: "PCI-DSS", desc: t("common:compliance.pci_desc") },
+   ];
+ 
+   const handleInputChange = (
+@@ -515,11 +516,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+     link.click();
+     document.body.removeChild(link);
+   };
+-  // Insights/Resources
+   const insights = [
+     {
+-      type: "Blog",
+-      title: "NIST 800-88 Explained: Complete Guide",
++      type: t("insight_blog"),
++      title: t("insight_nist_title"),
+       icon: () => (
+         <svg
+           className="w-6 h-6"
+@@ -537,8 +537,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       ),
+     },
+     {
+-      type: "Technical Article",
+-      title: "SSD vs HDD Erasure Methods",
++      type: t("insight_tech_article"),
++      title: t("insight_ssd_hdd_title"),
+       icon: () => (
+         <svg
+           className="w-6 h-6"
+@@ -553,13 +553,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+       ),
+     },
+     {
+-      type: "Knowledge Base",
+-      title: "Deployment Best Practices",
++      type: t("insight_kb"),
++      title: t("insight_deployment_title"),
+       icon: GlobeIcon,
+     },
+     {
+-      type: "Product Video",
+-      title: "Drive Eraser Demo",
++      type: t("insight_product_video"),
++      title: t("insight_demo_title"),
+       icon: () => (
+         <svg
+           className="w-6 h-6"
+@@ -578,15 +578,12 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+     <>
+       <SEOHead
+         seo={{
+-          title: "D-Secure Drive Eraser | Secure Disk & Drive Wiping Software",
+-          description:
+-            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Certified data destruction compliant with NIST 800-88, DoD, and GDPR.",
+-          keywords:
+-            "drive eraser, disk wiper, ssd secure erase, hard drive destruction, server wiping, NIST 800-88, data sanitization software",
+-          canonicalUrl: "https://dsecuretech.com/products/drive-eraser",
++          ...getSEOForPage("driveEraser"),
++          title: t("seo:driveEraser.title"),
++          description: t("seo:driveEraser.description"),
++          keywords: t("seo:driveEraser.keywords"),
+         }}
+       />
+-      <SEOHead seo={getSEOForPage("drive-eraser")} />
+ 
+       {/* ================= STICKY SECTION NAV ================= */}
+       <div
+@@ -635,20 +632,19 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                 <div className="space-y-8">
+                   <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
+                     <ShieldIcon className="w-4 h-4" />
+-                    Enterprise-Grade Drive Erasure
++                    {t("enterprisegrade_drive_erasure")}
+                   </div>
+ 
+                   <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
+                     D-Secure{" "}
+                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+-                      Drive Eraser
++                      {t("drive_eraser")}
+                     </span>
+                   </h1>
+ 
+                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
+-                    Permanently erase files, folders, system traces, and cloud
+-                    data using internationally recognized erasure standards.
+-                    Designed for privacy, security, and audit readiness.
++                    {t("permanently_erase_files_folders_system_traces")}
++                    {t("designed_for_privacy_security_and_audit_readi")}
+                   </p>
+ 
+                   {/* Compliance Badges */}
+@@ -677,7 +673,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                           <LightningIcon className="w-5 h-5" filled={filled} />
+                         )}
+                       </HoverIcon>
+-                      Upcoming
++                      {t("upcoming")}
+                     </Link>
+                     <button
+                       onClick={downloadCatalog}
+@@ -697,7 +693,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                         />
+                       </svg>
+-                      Download Datasheet
++                      {t("download_datasheet")}
+                     </button>
+                   </div>
+                 </div>
+@@ -750,7 +746,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         <div className="flex items-center gap-1.5 sm:gap-2">
+                           <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
+                           <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-slate-400 font-medium tracking-wider uppercase">
+-                            Active
++                            {t("active")}
+                           </span>
+                         </div>
+                         <div className="flex gap-1 sm:gap-1.5">
+@@ -880,7 +876,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         {/* Erasure Status Text */}
+                         <div className="text-center mt-2 sm:mt-3 lg:mt-4">
+                           <p className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-lg">
+-                            Drive Eraser
++                            {t("drive_eraser")}
+                           </p>
+                         </div>
+                       </div>
+@@ -889,15 +885,15 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       <div className="hidden sm:grid grid-cols-3 gap-2 sm:gap-3">
+                         {/* <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
+                           <p className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-base">26+</p>
+-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">Standards</p>
++                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">{t("standards")}</p>
+                         </div> */}
+                         {/* <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
+                           <p className="text-teal-400 font-bold text-xs sm:text-sm lg:text-base">100%</p>
+-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">Verified</p>
++                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">{t("verified")}</p>
+                         </div>
+                         <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
+                           <p className="text-cyan-400 font-bold text-xs sm:text-sm lg:text-base">∞</p>
+-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">License</p>
++                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">{t("license")}</p>
+                         </div> */}
+                       </div>
+ 
+@@ -907,7 +903,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                           D-Secure™
+                         </span>
+                         <span className="text-slate-600 text-[6px] sm:text-[7px] lg:text-[8px] tracking-wider">
+-                          Drive Eraser Pro
++                          {t("drive_eraser_pro")}
+                         </span>
+                       </div>
+ 
+@@ -956,11 +952,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             <Reveal>
+               <div className="text-center mb-14">
+                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+-                  What You Can Erase
++                  {t("what_you_can_erase")}
+                 </h2>
+                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+-                  Comprehensive data destruction capabilities for all types of
+-                  sensitive information
++                  {t("comprehensive_data_destruction_capabilities_for")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -996,14 +991,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             <Reveal>
+               <div className="text-center mb-6 sm:mb-10">
+                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
+-                  Try Drive Eraser{" "}
++                  {t("try_drive_eraser")}{" "}
+                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+-                    Demo
++                    {t("demo")}
+                   </span>
+                 </h2>
+                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+-                  Experience D-Secure Drive Eraser in action — explore the
+-                  interface and features right here
++                  {t("experience_dsecure_drive_eraser_in_action_exp")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -1024,7 +1018,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                     onClick={toggleFullscreen}
+                     className="absolute top-12 right-4 z-50 p-2.5 bg-slate-900/80 hover:bg-emerald-600 text-white rounded-xl shadow-lg backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 flex items-center gap-2"
+                     title={
+-                      isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
++                      isFullscreen
++                        ? t("driveEraser.exit_fullscreen")
++                        : t("driveEraser.enter_fullscreen")
+                     }
+                   >
+                     {isFullscreen ? (
+@@ -1057,7 +1053,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       </svg>
+                     )}
+                     <span className="text-sm font-medium pr-1 hidden sm:block">
+-                      {isFullscreen ? "Exit Fullscreen" : "Full Screen"}
++                      {isFullscreen
++                        ? t("driveEraser.exit_fullscreen")
++                        : t("driveEraser.full_screen")}
+                     </span>
+                   </button>
+                 )}
+@@ -1071,7 +1069,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                     {/* Screenshot Background */}
+                     <img
+                       src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035728/ddzt2ghea7hotem4bvz9.png"
+-                      alt="D-Secure Drive Eraser Preview"
++                      alt={t("dsecure_drive_eraser_preview")}
+                       className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
+                     />
+                     {/* Subtle overlay for play button visibility */}
+@@ -1091,7 +1089,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                           </div>
+                         </div>
+                         <span className="text-sm font-semibold text-slate-700 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-200/80">
+-                          Click to start interactive demo
++                          {t("click_to_start_interactive_demo")}
+                         </span>
+                       </div>
+                     </div>
+@@ -1101,7 +1099,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                   <iframe
+                     src="https://dsecure-drive-eraser.vercel.app/"
+                     className="w-full h-full flex-1 border-0"
+-                    title="D-Secure Drive Eraser Demo"
++                    title={t("dsecure_drive_eraser_demo")}
+                     sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                     loading="lazy"
+                     allow="clipboard-read; clipboard-write; fullscreen"
+@@ -1114,8 +1112,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             {/* Caption below demo */}
+             <Reveal delayMs={200}>
+               <p className="text-center text-sm text-slate-500 mt-4">
+-                Interactive product demo — explore Drive Eraser features
+-                directly in your browser
++                {t("interactive_product_demo_explore_drive_eraser")}
+               </p>
+             </Reveal>
+ 
+@@ -1297,14 +1294,15 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+               <div className="text-center mb-16">
+                 <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                   <GearIcon className="w-4 h-4" />
+-                  Simple 4-Step Process
++                  {t("howItWorksSubtitle")}
+                 </div>
+                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+-                  How To Use <span className="text-emerald-600">D-Secure</span>{" "}
+-                  Drive Eraser?
++                  {t("howItWorksTitle")}{" "}
++                  <span className="text-emerald-600">{t("dsecure")}</span>{" "}
++                  {t("drive_eraser_1")}
+                 </h2>
+                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+-                  Get started in minutes with our easy deployment options
++                  {t("get_started_in_minutes_with_our_easy_deployme")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -1342,10 +1340,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       </div>
+                       {/* Title */}
+                       <h3 className="font-bold text-slate-900 mb-2">
+-                        Download
++                        {t("download")}
+                       </h3>
+                       <p className="text-sm text-slate-500">
+-                        Get the software from our secure portal
++                        {t("get_the_software_from_our_secure_portal")}
+                       </p>
+                     </div>
+                     {/* Arrow for mobile/tablet */}
+@@ -1378,17 +1376,19 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         <CloudIcon className="w-8 h-8 text-emerald-600" />
+                       </div>
+                       {/* Title */}
+-                      <h3 className="font-bold text-slate-900 mb-2">Deploy</h3>
++                      <h3 className="font-bold text-slate-900 mb-2">
++                        {t("deploy")}
++                      </h3>
+                       <p className="text-sm text-slate-500 mb-3">
+-                        Multiple ways to deploy
++                        {t("multiple_ways_to_deploy")}
+                       </p>
+                       {/* Tags */}
+                       <div className="flex flex-wrap justify-center gap-1.5">
+                         <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
+-                          USB ISO
++                          {t("usb_iso")}
+                         </span>
+                         <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
+-                          PXE Boot
++                          {t("pxe_boot")}
+                         </span>
+                         <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
+                           MSI
+@@ -1429,10 +1429,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       </div>
+                       {/* Title */}
+                       <h3 className="font-bold text-slate-900 mb-2">
+-                        Erase Devices
++                        {t("erase_devices")}
+                       </h3>
+                       <p className="text-sm text-slate-500">
+-                        Securely wipe multiple devices simultaneously
++                        {t("securely_wipe_multiple_devices_simultaneously")}
+                       </p>
+                     </div>
+                     {/* Arrow for mobile/tablet */}
+@@ -1469,10 +1469,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       </div>
+                       {/* Title */}
+                       <h3 className="font-bold text-slate-900 mb-2">
+-                        Save Reports
++                        {t("save_reports")}
+                       </h3>
+                       <p className="text-sm text-slate-500">
+-                        Store erasure certificates on cloud
++                        {t("store_erasure_certificates_on_cloud")}
+                       </p>
+                     </div>
+                   </div>
+@@ -1485,18 +1485,21 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+               <div className="max-w-3xl mx-auto mt-12 text-center">
+                 <p className="text-slate-600 leading-relaxed">
+                   <strong className="text-slate-900">
+-                    D-Secure Drive Eraser
++                    {t("dsecure_drive_eraser")}
+                   </strong>{" "}
+                   offers the flexibility to wipe drives and devices in both
+                   internet-enabled locations and offline facilities. Deploy via{" "}
+-                  <strong className="text-emerald-600">USB drive</strong>,{" "}
+-                  <strong className="text-emerald-600">PXE boot</strong> over
+-                  network, or{" "}
+-                  <strong className="text-emerald-600">MSI package</strong> for
+-                  remote wiping on Windows endpoints.
++                  <strong className="text-emerald-600">{t("usb_drive")}</strong>
++                  ,{" "}
++                  <strong className="text-emerald-600">{t("pxe_boot")}</strong>{" "}
++                  over network, or{" "}
++                  <strong className="text-emerald-600">
++                    {t("msi_package")}
++                  </strong>{" "}
++                  for remote wiping on Windows endpoints.
+                 </p>
+                 <p className="text-sm text-slate-500 mt-4">
+-                  *Offline variant available for Non-Internet locations
++                  {t("offlineNote")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -1512,12 +1515,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             <Reveal>
+               <div className="text-center mb-14">
+                 <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+-                  Compliance-Ready by Design
++                  {t("complianceTitle")}
+                 </h2>
+                 <p className="text-lg text-slate-300 max-w-3xl mx-auto">
+-                  D-Secure Drive Eraser supports organizational compliance
+-                  initiatives by aligning with widely accepted data protection
+-                  principles and secure erasure best practices
++                  {t("complianceSubtitle")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -1564,14 +1565,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+                     />
+                   </svg>
+-                  Cross-Platform Native
++                  {t("crossPlatformNative")}
+                 </div>
+                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
+-                  Multi-Architecture Support
++                  {t("multiArchTitle")}
+                 </h2>
+                 <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto px-2 sm:px-0">
+-                  Native performance across all major CPU architectures and
+-                  operating systems
++                  {t("multiArchSubtitle")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -1593,23 +1593,22 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         AMD64 / Intel 64
+                       </h3>
+                       <p className="text-xs sm:text-sm text-emerald-600">
+-                        Most Common Architecture
++                        {t("most_common_architecture")}
+                       </p>
+                     </div>
+                   </div>
+                   <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
+-                    Standard 64-bit processors from Intel & AMD used in most
+-                    desktops, laptops, and servers.
++                    {t("most_common_arch_desc")}
+                   </p>
+                   <div className="flex flex-wrap gap-2">
+                     <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+-                      Intel Core
++                      {t("intel_core")}
+                     </span>
+                     <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+-                      AMD Ryzen
++                      {t("amd_ryzen")}
+                     </span>
+                     <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+-                      Xeon
++                      {t("xeon")}
+                     </span>
+                     <span className="px-2 py-1 bg-emerald-50 text-emerald-700 text-xs rounded-full border border-emerald-200">
+                       EPYC
+@@ -1631,26 +1630,25 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         ARM64
+                       </h3>
+                       <p className="text-xs sm:text-sm text-teal-600">
+-                        Growing Ecosystem
++                        {t("growing_ecosystem")}
+                       </p>
+                     </div>
+                   </div>
+                   <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
+-                    Modern ARM-based processors for power-efficient computing on
+-                    mobile, Mac, and servers.
++                    {t("growing_ecosystem_desc")}
+                   </p>
+                   <div className="flex flex-wrap gap-2">
+                     <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+-                      Apple Silicon
++                      {t("apple_silicon")}
+                     </span>
+                     <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+-                      Snapdragon
++                      {t("snapdragon")}
+                     </span>
+                     <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+-                      Graviton
++                      {t("graviton")}
+                     </span>
+                     <span className="px-2 py-1 bg-teal-50 text-teal-700 text-xs rounded-full border border-teal-200">
+-                      Ampere
++                      {t("ampere")}
+                     </span>
+                   </div>
+                 </div>
+@@ -1669,23 +1667,22 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         x86 (32-bit)
+                       </h3>
+                       <p className="text-xs sm:text-sm text-cyan-600">
+-                        Legacy Support
++                        {t("legacy_support")}
+                       </p>
+                     </div>
+                   </div>
+                   <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
+-                    Legacy 32-bit processors for older systems still in
+-                    enterprise use requiring secure erasure.
++                    {t("legacy_support_desc")}
+                   </p>
+                   <div className="flex flex-wrap gap-2">
+                     <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
+-                      Legacy Intel
++                      {t("legacy_intel")}
+                     </span>
+                     <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
+-                      Pentium
++                      {t("pentium")}
+                     </span>
+                     <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
+-                      Atom
++                      {t("atom")}
+                     </span>
+                   </div>
+                 </div>
+@@ -1696,7 +1693,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             <Reveal delayMs={200}>
+               <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200 shadow-lg">
+                 <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 sm:mb-6 text-center">
+-                  Operating System Compatibility
++                  {t("osCompatibility")}
+                 </h3>
+                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                   {/* Windows */}
+@@ -1711,8 +1708,12 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       </svg>
+                     </div>
+                     <div>
+-                      <h4 className="font-bold text-slate-900">Windows</h4>
+-                      <p className="text-xs text-slate-500">x64, ARM64, x86</p>
++                      <h4 className="font-bold text-slate-900">
++                        {t("driveEraser.windows")}
++                      </h4>
++                      <p className="text-xs text-slate-500">
++                        {t("driveEraser.x64_arm64_x86")}
++                      </p>
+                     </div>
+                     <div className="ml-auto flex gap-1">
+                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+@@ -1733,9 +1734,11 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       </svg>
+                     </div>
+                     <div>
+-                      <h4 className="font-bold text-slate-900">macOS</h4>
++                      <h4 className="font-bold text-slate-900">
++                        {t("driveEraser.macos")}
++                      </h4>
+                       <p className="text-xs text-slate-500">
+-                        x64, ARM64 (Apple Silicon)
++                        {t("driveEraser.macos_compat")}
+                       </p>
+                     </div>
+                     <div className="ml-auto flex gap-1">
+@@ -1756,8 +1759,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       </svg>
+                     </div>
+                     <div>
+-                      <h4 className="font-bold text-slate-900">Linux</h4>
+-                      <p className="text-xs text-slate-500">x64, ARM64, x86</p>
++                      <h4 className="font-bold text-slate-900">{t("linux")}</h4>
++                      <p className="text-xs text-slate-500">
++                        {t("x64_arm64_x86")}
++                      </p>
+                     </div>
+                     <div className="ml-auto flex gap-1">
+                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+@@ -1775,14 +1780,14 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                     </div>
+-                    <span>All Architectures</span>
++                    <span>{t("allArchitectures")}</span>
+                   </div>
+                   <div className="flex items-center gap-2 text-xs text-slate-600">
+                     <div className="flex gap-0.5">
+                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                       <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                     </div>
+-                    <span>x64 & ARM64</span>
++                    <span>{t("x64AndArm64")}</span>
+                   </div>
+                 </div>
+               </div>
+@@ -1796,11 +1801,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             <Reveal>
+               <div className="text-center mb-14">
+                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+-                  Powerful Features
++                  {t("featuresTitle")}
+                 </h2>
+                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+-                  Enterprise-grade capabilities designed for security
+-                  professionals
++                  {t("featuresSubtitle")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -1832,10 +1836,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             <Reveal>
+               <div className="text-center mb-14">
+                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+-                  Use Cases
++                  {t("useCasesTitle")}
+                 </h2>
+                 <p className="text-lg text-slate-600">
+-                  Trusted by individuals and enterprises worldwide
++                  {t("useCasesSubtitle")}
+                 </p>
+               </div>
+             </Reveal>
+@@ -1870,45 +1874,14 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+             <Reveal>
+               <div className="text-center mb-14">
+                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+-                  Frequently Asked Questions
++                  {t("faqTitle")}
+                 </h2>
+-                <p className="text-lg text-slate-600">
+-                  Everything you need to know about D-Secure Drive Eraser
+-                </p>
++                <p className="text-lg text-slate-600">{t("faqSubtitle")}</p>
+               </div>
+             </Reveal>
+ 
+             <div className="space-y-4">
+-              {[
+-                {
+-                  q: "How many drives can I erase at a time on one machine?",
+-                  a: "D-Secure Drive Eraser supports simultaneous erasure of up to 32 drives per machine, depending on your hardware configuration. For bulk operations, you can use our cloud console to manage multiple machines.",
+-                },
+-                {
+-                  q: "Does the software support Partition Deletion Wipe?",
+-                  a: "Yes, D-Secure supports partition-level erasure in addition to full drive erasure. You can selectively wipe specific partitions while keeping others intact.",
+-                },
+-                {
+-                  q: "Do I need Technical Skills?",
+-                  a: "No, D-Secure is designed with a user-friendly interface. Simply boot from USB, select your drive and erasure standard, and the software handles everything automatically.",
+-                },
+-                {
+-                  q: "Can I sign my file, like XML, jar file with my e-Signature?",
+-                  a: "Yes, D-Secure supports custom digital signatures for reports. You can integrate your organization's PKI for enhanced security.",
+-                },
+-                {
+-                  q: "Does D-Secure integrate with ServiceNow?",
+-                  a: "Yes, D-Secure offers native integration with ServiceNow via REST APIs. You can automatically update CMDB records and create incident tickets upon erasure completion.",
+-                },
+-                {
+-                  q: "Can I track separate Inventory for different types of Drives (SSD/HDD, Mobile, etc)?",
+-                  a: "Absolutely. The cloud console provides detailed categorization and filtering by device type, making it easy to track and report on different asset categories.",
+-                },
+-                {
+-                  q: "What ongoing support is provided?",
+-                  a: "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
+-                },
+-              ].map((faq, i) => (
++              {(t("faq", { returnObjects: true }) as any[]).map((faq, i) => (
+                 <Reveal key={i} delayMs={i * 50}>
+                   <details className="group bg-slate-50 rounded-lg sm:rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors">
+                     <summary className="flex items-center justify-between p-4 sm:p-6 cursor-pointer list-none">
+@@ -1948,18 +1921,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+               <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+                 <div>
+                   <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+-                    Technical Blogs
++                    {t("blogsTitle")}
+                   </h2>
+                   <p className="text-lg text-slate-600 max-w-2xl">
+-                    Expert insights on data security, erasure standards, and
+-                    best practices
++                    {t("blogsSubtitle")}
+                   </p>
+                 </div>
+                 <Link
+                   to="/blog"
+                   className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors group"
+                 >
+-                  View More
++                  {t("viewMore")}
+                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                 </Link>
+               </div>
+@@ -1982,7 +1954,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         {blog.excerpt}
+                       </p>
+                       <div className="flex items-center text-emerald-600 font-semibold text-sm mb-4 group-hover:gap-2 gap-1 transition-all">
+-                        Read Article <ArrowRightIcon className="w-4 h-4" />
++                        {t("readArticle")}{" "}
++                        <ArrowRightIcon className="w-4 h-4" />
+                       </div>
+                       <div className="flex items-center justify-between text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
+                         <span>{blog.publishDate}</span>
+@@ -2008,20 +1981,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+               <Reveal>
+                 <div className="space-y-6">
+                   <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">
+-                    Talk to Our Data Security Experts
++                    {t("ctaTitle")}
+                   </h2>
+                   <p className="text-lg text-slate-600 leading-relaxed">
+-                    Get personalized guidance on deployment, licensing, and
+-                    audit-ready data erasure strategies tailored to your
+-                    organization's needs.
++                    {t("ctaSubtitle")}
+                   </p>
+                   <ul className="space-y-4">
+-                    {[
+-                      "Enterprise & SMB licensing options",
+-                      "Compliance-focused implementation",
+-                      "White-label branding available",
+-                      "No-obligation consultation",
+-                    ].map((item) => (
++                    {(
++                      t("ctaBenefits", {
++                        returnObjects: true,
++                      }) as string[]
++                    ).map((item) => (
+                       <li key={item} className="flex items-center gap-3">
+                         <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
+                           <CheckIcon className="w-4 h-4 text-emerald-600" />
+@@ -2036,7 +2006,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       to="/contact"
+                       className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
+                     >
+-                      Or contact us directly
++                      {t("ctaContactDirectly")}
+                       <ArrowRightIcon className="w-5 h-5" />
+                     </Link>
+                   </div>
+@@ -2046,7 +2016,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+               <Reveal delayMs={100}>
+                 <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 shadow-2xl">
+                   <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
+-                    Request Information
++                    {t("ctaFormTitle")}
+                   </h3>
+                   <form
+                     className="space-y-5"
+@@ -2134,10 +2104,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                           message: "",
+                         });
+                         setIsLoading(false);
+-                        showToast(
+-                          "Thank you! Your enquiry has been submitted successfully.",
+-                          "success",
+-                        );
++                        showToast(t("ctaFormSuccess"), "success");
+ 
+                         try {
+                           // === 1. SUBMIT TO BACKEND API (DATABASE) ===
+@@ -2181,17 +2148,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         } catch (error: any) {
+                           console.error("Form error:", error);
+                           showToast(
+-                            error.message ||
+-                              "Failed to send message. Please try again later.",
++                            error.message || t("ctaFormErrorSend"),
+                             "error",
+                           );
+                         }
+                       } catch (error) {
+                         console.error("FormSubmit error:", error);
+-                        showToast(
+-                          "Failed to submit enquiry. Please try again.",
+-                          "error",
+-                        );
++                        showToast(t("ctaFormErrorSubmit"), "error");
+                         setIsLoading(false);
+                       }
+                     }}
+@@ -2202,7 +2165,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         name="name"
+                         value={formData.name}
+                         onChange={handleInputChange}
+-                        placeholder="Full Name *"
++                        placeholder={t("full_name")}
+                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
+                         required
+                       />
+@@ -2213,7 +2176,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         name="email"
+                         value={formData.email}
+                         onChange={handleInputChange}
+-                        placeholder="Email *"
++                        placeholder={t("email")}
+                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
+                         required
+                       />
+@@ -2224,7 +2187,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         name="organization"
+                         value={formData.organization}
+                         onChange={handleInputChange}
+-                        placeholder="Organization"
++                        placeholder={t("driveEraser.organization")}
+                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors"
+                       />
+                     </div>
+@@ -2234,7 +2197,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                         value={formData.message}
+                         onChange={handleInputChange}
+                         rows={4}
+-                        placeholder="How can we help you?"
++                        placeholder={t("driveEraser.how_can_we_help_you")}
+                         className="w-full p-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-400 transition-colors resize-none"
+                       ></textarea>
+                     </div>
+@@ -2243,7 +2206,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+                       disabled={isLoading}
+                       className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold py-4 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                     >
+-                      {isLoading ? "Submitting..." : "Submit Enquiry"}
++                      {isLoading
++                        ? t("driveEraser.ctaFormSubmitting")
++                        : t("driveEraser.ctaFormSubmit")}
+                     </button>
+                   </form>
+                 </div>

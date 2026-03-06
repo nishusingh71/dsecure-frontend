@@ -65,35 +65,59 @@ export const PublicRoutes = () => (
   <Route element={<MainLayout />}>
     <Route index element={<HomePage />} />
     <Route path="services" element={<ServicesPage />} />
-    <Route path="products" element={<Navigate to="/" replace />} />
+    <Route path="products" element={<Navigate to=".." replace />} />
     <Route path="services/cloud-erasure" element={<CloudErasurePage />} />
     <Route path="solutions" element={<SolutionsPage />} />
     <Route path="solutions/enterprise" element={<EnterpriseSolutionsPage />} />
     <Route path="solutions/itad" element={<ITADSolution />} />
     <Route path="solutions/education" element={<EducationPage />} />
     <Route path="solutions/financial" element={<FinancialSolutionsPage />} />
-    <Route path="solutions/financial-services" element={<FinancialServices />} />
+    <Route
+      path="solutions/financial-services"
+      element={<FinancialServices />}
+    />
     <Route path="solutions/government" element={<GovernmentPage />} />
     <Route path="solutions/healthcare" element={<HealthcareSolutionsPage />} />
-    <Route path="solutions/service-providers" element={<ServiceProvidersSolutionsPage />} />
-    <Route path="solutions/industry/:slug" element={<ProgrammaticSolutionPage />} />
+    <Route
+      path="solutions/service-providers"
+      element={<ServiceProvidersSolutionsPage />}
+    />
+    <Route
+      path="solutions/industry/:slug"
+      element={<ProgrammaticSolutionPage />}
+    />
     <Route path="search-demo" element={<SearchDemoPage />} />
     <Route path="resources" element={<ResourcesPage />} />
-    <Route path="resources/documentation" element={<DocumentationResourcesPage />} />
-    <Route path="technical-documentation" element={<TechnicalDocumentation />} />
-    <Route path="resources/case-studies" element={<CaseStudiesResourcesPage />} />
+    <Route
+      path="resources/documentation"
+      element={<DocumentationResourcesPage />}
+    />
+    <Route
+      path="technical-documentation"
+      element={<TechnicalDocumentation />}
+    />
+    <Route
+      path="resources/case-studies"
+      element={<CaseStudiesResourcesPage />}
+    />
     <Route path="resources/compliance" element={<ComplianceResourcesPage />} />
-    <Route path="resources/whitepapers" element={<WhitepapersResourcesPage />} />
+    <Route
+      path="resources/whitepapers"
+      element={<WhitepapersResourcesPage />}
+    />
     <Route path="community" element={<ForumPage />} />
     <Route path="compliance" element={<CompliancePage />} />
     <Route path="data-eraser-software" element={<DataEraserSoftwarePage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="about" element={<About />} />
-    <Route path="pricing" element={<Navigate to="/pricing-and-plan" replace />} />
+    <Route
+      path="pricing"
+      element={<Navigate to="../pricing-and-plan" replace />}
+    />
     <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
     <Route path="download" element={<DownloadPage />} />
-    <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
-    <Route path="/products/file-eraser" element={<FileEraserPage />} />
+    <Route path="products/drive-eraser" element={<DriveEraserPage />} />
+    <Route path="products/file-eraser" element={<FileEraserPage />} />
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="order-success" element={<OrderSuccessPage />} />
     <Route path="order-failure" element={<FailurePage />} />
@@ -113,7 +137,10 @@ export const PublicRoutes = () => (
     <Route path="founder" element={<FounderPage />} />
     <Route path="trust-center" element={<TrustCenterPage />} />
     <Route path="status" element={<StatusPage />} />
-    <Route path="data-hygiene-framework" element={<DataHygieneFrameworkPage />} />
+    <Route
+      path="data-hygiene-framework"
+      element={<DataHygieneFrameworkPage />}
+    />
     <Route path="glossary" element={<GlossaryPage />} />
     <Route path="partners" element={<PartnersPage />} />
     <Route path="support" element={<SupportPage />} />

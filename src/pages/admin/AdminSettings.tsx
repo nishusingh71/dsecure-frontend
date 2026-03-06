@@ -4,10 +4,11 @@ import { useAuth } from '@/auth/AuthContext'
 import { Helmet } from 'react-helmet-async'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 export default function AdminSettings() {
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const [activeTab, setActiveTab] = useState('general')
   const [settings, setSettings] = useState({
     general: {

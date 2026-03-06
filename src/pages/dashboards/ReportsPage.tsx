@@ -4,12 +4,13 @@ import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import Reveal from '@/components/Reveal'
 import { useAuth } from '@/auth/AuthContext'
-import { Link } from 'react-router-dom'
+import { Link } from "@/components/LocaleLink";
 
 import { AdminDashboardAPI, Report } from '@/services/adminDashboardAPI'
 import { useEffect } from 'react'
 import { useNotification } from '@/contexts/NotificationContext'
 import { isDemoMode, DEMO_REPORTS } from '@/data/demoData'
+import { useTranslation } from "react-i18next";
 
 // ✅ DEMO MODE: Suppress console logs in demo mode
 const devLog = (...args: any[]) => { if (!isDemoMode()) console.log(...args); };
@@ -18,6 +19,7 @@ const devError = (...args: any[]) => { if (!isDemoMode()) console.error(...args)
 
 const ReportsPage: React.FC = () => {
   const { user } = useAuth()
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [reports, setReports] = useState<Report[]>([])
@@ -146,7 +148,7 @@ const ReportsPage: React.FC = () => {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("reports")} />
         <Helmet>
-          <title>Reports | D-Secure Dashboard</title>
+          <title>{t("dashboard.reportsPage.reports_dsecure_dashboard")}</title>
           <meta name="description" content="View and manage erasure reports and regulatory documents" />
         </Helmet>
 
@@ -196,7 +198,7 @@ const ReportsPage: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Reports | D-Secure Dashboard</title>
+        <title>{t("dashboard.reportsPage.reports_dsecure_dashboard")}</title>
         <meta name="description" content="View and manage erasure reports and regulatory documents" />
       </Helmet>
 
@@ -214,8 +216,8 @@ const ReportsPage: React.FC = () => {
                 </svg>
               </Link>
               <div className="flex-1">
-                <h1 className="text-3xl font-bold text-slate-900">Erasure Reports</h1>
-                <p className="text-slate-600 mt-1">View and download your erasure regulatory documents and reports</p>
+                <h1 className="text-3xl font-bold text-slate-900">{t("dashboard.reportsPage.erasure_reports")}</h1>
+                <p className="text-slate-600 mt-1">{t("dashboard.reportsPage.view_and_download_your_erasure_regulatory_doc")}</p>
               </div>
               <button
                 onClick={exportAllReports}
@@ -224,7 +226,7 @@ const ReportsPage: React.FC = () => {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Export All
+                {t("dashboard.reportsPage.export_all")}
               </button>
             </div>
 
@@ -233,7 +235,7 @@ const ReportsPage: React.FC = () => {
               <div className="flex-1 relative">
                 <input
                   type="text"
-                  placeholder="Search reports..."
+                  placeholder={t("dashboard.reportsPage.search_reports")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
@@ -303,7 +305,7 @@ const ReportsPage: React.FC = () => {
                         <button
                           onClick={() => devLog(`Viewing details for ${report.id}`)}
                           className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
-                          title="View Details"
+                          title={t("dashboard.reportsPage.view_details")}
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -314,7 +316,7 @@ const ReportsPage: React.FC = () => {
                           <button
                             onClick={() => downloadReport(report.id)}
                             className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
-                            title="Download Report"
+                            title={t("dashboard.reportsPage.download_report")}
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -335,8 +337,8 @@ const ReportsPage: React.FC = () => {
               <svg className="w-16 h-16 text-slate-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">No reports found</h3>
-              <p className="text-slate-600">Try adjusting your search or filter criteria.</p>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">{t("dashboard.reportsPage.no_reports_found")}</h3>
+              <p className="text-slate-600">{t("dashboard.reportsPage.try_adjusting_your_search_or_filter_criteria")}</p>
             </div>
           )}
         </div>

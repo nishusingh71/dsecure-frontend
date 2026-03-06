@@ -5,6 +5,7 @@ import { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { Roles, buildReportFilter } from '@/pages/dashboards/AdminDashboard'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 type RoleType = typeof Roles[keyof typeof Roles];
 
@@ -32,7 +33,7 @@ interface ReportData {
 
 export default function AdminReports() {
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const [searchTerm, setSearchTerm] = useState('')
   const [dateFrom, setDateFrom] = useState('06-10-2025')
   const [dateTo, setDateTo] = useState('07-10-2025')

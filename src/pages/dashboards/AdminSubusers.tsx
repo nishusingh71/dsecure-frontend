@@ -7,10 +7,12 @@ import { useNotification } from "@/contexts/NotificationContext";
 import { apiClient, Subuser, Session } from "@/utils/enhancedApiClient";
 import { useAuth } from "@/auth/AuthContext";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { useSubusers } from "@/hooks/useSubusers";
 import { isDemoMode, DEMO_SUBUSERS } from "@/data/demoData";
 import { indexedDBService } from "@/services/indexedDBService";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
+import { useTranslation } from "react-i18next";
 
 // Extended interface for table display
 interface SubuserTableRow {
@@ -22,6 +24,7 @@ interface SubuserTableRow {
 }
 
 export default function AdminSubusers() {
+  const { t } = useTranslation();
   const { showSuccess, showError, showWarning, showInfo } = useNotification();
   const { user } = useAuth();
   const [query, setQuery] = useState("");
@@ -45,7 +48,7 @@ export default function AdminSubusers() {
   const [sortBy, setSortBy] = useState<keyof SubuserTableRow>("subuser_email");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [subuserOwnerFilter, setSubuserOwnerFilter] = useState(""); // Filter to view subuser's subusers
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
 
   // �️ RBAC Filter States
   const [showFilters, setShowFilters] = useState(false);
@@ -428,6 +431,12 @@ export default function AdminSubusers() {
   };
 
   const handleEditUser = async (user: SubuserTableRow) => {
+    // 🎭 DEMO MODE: Block editing — no modal
+    if (isDemo) {
+      showWarning("Demo Mode", "Editing users is not available in demo mode.");
+      return;
+    }
+
     console.log("✏️ handleEditUser called with:", user);
     console.log("📊 Current subusersData length:", subusersData.length);
 
@@ -447,27 +456,6 @@ export default function AdminSubusers() {
     // Open edit modal and fetch user data
     setEditModal({ show: true, user });
     setEditFetching(true);
-
-    // 🎭 DEMO MODE: Use demo data directly
-    if (isDemo) {
-      const demoUser = DEMO_SUBUSERS.find(
-        (u) => u.subuser_email === user.subuser_email,
-      );
-      setEditFormData({
-        subuser_email: user.subuser_email,
-        subuser_name:
-          demoUser?.subuser_name || user.subuser_email.split("@")[0],
-        role: demoUser?.role || user.roles || "user",
-        department: demoUser?.department || user.department || "IT Department",
-        phone: demoUser?.subuser_phone || "+91-9876543210",
-        status: demoUser?.status || user.status || "active",
-        password: "",
-        subuser_group: demoUser?.subuser_group || "",
-        license_allocation: Number(demoUser?.license_allocation || 0),
-      });
-      setEditFetching(false);
-      return;
-    }
 
     // Fetch full enhanced subuser details from the API
     try {
@@ -528,8 +516,10 @@ export default function AdminSubusers() {
       showInfo(`Updating user ${editFormData.subuser_email}...`);
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        showSuccess(`User ${editFormData.subuser_email} updated successfully`);
+        showWarning(
+          "Demo Mode",
+          "Editing users is not available in demo mode.",
+        );
         setEditModal({ show: false, user: null });
         return;
       }
@@ -569,6 +559,12 @@ export default function AdminSubusers() {
   };
 
   const handleDeleteUser = async (user: SubuserTableRow) => {
+    // 🎭 DEMO MODE: Block deletion — no modal
+    if (isDemo) {
+      showWarning("Demo Mode", "Deleting users is not available in demo mode.");
+      return;
+    }
+
     console.log("🗑️ handleDeleteUser called with:", user);
 
     // Find the original subuser data
@@ -593,8 +589,10 @@ export default function AdminSubusers() {
       console.log("🗑️ Calling deleteSubuser with email:", user.subuser_email);
 
       if (isDemo) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        showSuccess(`User ${user.subuser_email} deleted successfully`);
+        showWarning(
+          "Demo Mode",
+          "Deleting users is not available in demo mode.",
+        );
         setDeleteModal({ show: false, user: null });
         return;
       }
@@ -632,6 +630,10 @@ export default function AdminSubusers() {
   };
 
   const handleResetPassword = async (user: SubuserTableRow) => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Password reset is not available in demo mode.");
+      return;
+    }
     if (user.status === "inactive") {
       showWarning(
         `Cannot reset password for ${user.subuser_email} - user is inactive`,
@@ -649,6 +651,10 @@ export default function AdminSubusers() {
   };
 
   const handleToggleStatus = async (user: SubuserTableRow) => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Status toggle is not available in demo mode.");
+      return;
+    }
     try {
       showInfo(`Toggling status for ${user.subuser_email}...`);
       // Implement status toggle API call here when available
@@ -678,7 +684,7 @@ export default function AdminSubusers() {
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b">
               <h2 className="text-lg font-semibold text-slate-900">
-                Edit Subuser
+                {t("dashboard.adminSubusers.edit_subuser")}
               </h2>
               <button
                 onClick={() => setEditModal({ show: false, user: null })}
@@ -722,7 +728,9 @@ export default function AdminSubusers() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                <p className="text-slate-600">Loading user data...</p>
+                <p className="text-slate-600">
+                  {t("dashboard.adminSubusers.loading_user_data")}
+                </p>
               </div>
             ) : (
               <form onSubmit={handleEditSubmit}>
@@ -731,7 +739,7 @@ export default function AdminSubusers() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        Email Address
+                        {t("dashboard.adminSubusers.email_address")}
                       </label>
                       <input
                         type="email"
@@ -742,7 +750,7 @@ export default function AdminSubusers() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        Full Name
+                        {t("dashboard.adminSubusers.full_name")}
                       </label>
                       <input
                         type="text"
@@ -754,7 +762,7 @@ export default function AdminSubusers() {
                           })
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                        placeholder="John Doe"
+                        placeholder={t("dashboard.adminSubusers.john_doe")}
                       />
                     </div>
                   </div>
@@ -763,7 +771,7 @@ export default function AdminSubusers() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        Role
+                        {t("dashboard.adminSubusers.role_label")}
                       </label>
                       <select
                         value={editFormData.role}
@@ -775,7 +783,9 @@ export default function AdminSubusers() {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                       >
-                        <option value="">Select Role</option>
+                        <option value="">
+                          {t("dashboard.adminSubusers.select_role")}
+                        </option>
                         {uniqueRoles.length > 0 ? (
                           uniqueRoles
                             .filter((role) => role && role !== "N/A")
@@ -786,17 +796,25 @@ export default function AdminSubusers() {
                             ))
                         ) : (
                           <>
-                            <option value="user">User</option>
-                            <option value="manager">Manager</option>
-                            <option value="admin">Admin</option>
-                            <option value="subuser">Subuser</option>
+                            <option value="user">
+                              {t("dashboard.adminSubusers.user")}
+                            </option>
+                            <option value="manager">
+                              {t("dashboard.adminSubusers.manager")}
+                            </option>
+                            <option value="admin">
+                              {t("dashboard.adminSubusers.admin")}
+                            </option>
+                            <option value="subuser">
+                              {t("dashboard.adminSubusers.subuser")}
+                            </option>
                           </>
                         )}
                       </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        Department
+                        {t("dashboard.adminSubusers.department_label")}
                       </label>
                       <select
                         value={editFormData.department}
@@ -808,7 +826,9 @@ export default function AdminSubusers() {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                       >
-                        <option value="">Select Department</option>
+                        <option value="">
+                          {t("dashboard.adminSubusers.select_department")}
+                        </option>
                         {uniqueDepartments.length > 0 ? (
                           uniqueDepartments
                             .filter((dept) => dept && dept !== "N/A")
@@ -819,11 +839,21 @@ export default function AdminSubusers() {
                             ))
                         ) : (
                           <>
-                            <option value="IT">IT</option>
-                            <option value="HR">HR</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Marketing">Marketing</option>
+                            <option value="IT">
+                              {t("dashboard.adminSubusers.it")}
+                            </option>
+                            <option value="HR">
+                              {t("dashboard.adminSubusers.hr")}
+                            </option>
+                            <option value="Finance">
+                              {t("dashboard.adminSubusers.finance")}
+                            </option>
+                            <option value="Sales">
+                              {t("dashboard.adminSubusers.sales")}
+                            </option>
+                            <option value="Marketing">
+                              {t("dashboard.adminSubusers.marketing")}
+                            </option>
                           </>
                         )}
                       </select>
@@ -834,7 +864,7 @@ export default function AdminSubusers() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        Phone Number
+                        {t("dashboard.adminSubusers.phone_number")}
                       </label>
                       <input
                         type="tel"
@@ -851,7 +881,7 @@ export default function AdminSubusers() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        Status
+                        {t("dashboard.adminSubusers.status_label")}
                       </label>
                       <select
                         value={editFormData.status}
@@ -863,7 +893,9 @@ export default function AdminSubusers() {
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                       >
-                        <option value="">Select Status</option>
+                        <option value="">
+                          {t("dashboard.adminSubusers.select_status")}
+                        </option>
                         {uniqueStatuses.length > 0 ? (
                           uniqueStatuses
                             .filter((status) => status && status !== "N/A")
@@ -875,10 +907,18 @@ export default function AdminSubusers() {
                             ))
                         ) : (
                           <>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="suspended">Suspended</option>
-                            <option value="pending">Pending</option>
+                            <option value="active">
+                              {t("dashboard.adminSubusers.active")}
+                            </option>
+                            <option value="inactive">
+                              {t("dashboard.adminSubusers.inactive")}
+                            </option>
+                            <option value="suspended">
+                              {t("dashboard.adminSubusers.suspended")}
+                            </option>
+                            <option value="pending">
+                              {t("dashboard.adminSubusers.pending")}
+                            </option>
                           </>
                         )}
                       </select>
@@ -889,7 +929,7 @@ export default function AdminSubusers() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        Group
+                        {t("dashboard.adminSubusers.group_label")}
                       </label>
                       <input
                         type="text"
@@ -901,12 +941,12 @@ export default function AdminSubusers() {
                           })
                         }
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                        placeholder="Group name"
+                        placeholder={t("dashboard.adminSubusers.group_name")}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
-                        License Allocation
+                        {t("dashboard.adminSubusers.license_allocation")}
                       </label>
                       <input
                         type="number"
@@ -927,7 +967,7 @@ export default function AdminSubusers() {
                   {/* Row 5: Password */}
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">
-                      New Password (optional)
+                      {t("dashboard.adminSubusers.new_password_optional")}
                     </label>
                     <input
                       type="password"
@@ -939,7 +979,9 @@ export default function AdminSubusers() {
                         })
                       }
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                      placeholder="Leave blank to keep current password"
+                      placeholder={t(
+                        "dashboard.adminSubusers.leave_blank_to_keep_current_password",
+                      )}
                       autoComplete="new-password"
                     />
                   </div>
@@ -953,7 +995,7 @@ export default function AdminSubusers() {
                     className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors"
                     disabled={editLoading}
                   >
-                    Cancel
+                    {t("dashboard.adminSubusers.cancel")}
                   </button>
                   <button
                     type="submit"
@@ -981,10 +1023,10 @@ export default function AdminSubusers() {
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           ></path>
                         </svg>
-                        Updating...
+                        {t("dashboard.adminSubusers.updating")}
                       </>
                     ) : (
-                      "Update User"
+                      t("dashboard.adminSubusers.update_user")
                     )}
                   </button>
                 </div>
@@ -1010,7 +1052,9 @@ export default function AdminSubusers() {
       </Helmet>
       <div className="space-y-6 min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900">Manage Subusers</h1>
+          <h1 className="text-2xl font-bold text-slate-900">
+            {t("dashboard.adminSubusers.manage_subusers")}
+          </h1>
           {/* <div className="flex items-center space-x-4">
           
           <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-medium ${
@@ -1063,13 +1107,13 @@ export default function AdminSubusers() {
         <div className="card p-4 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-900">
-              Filters & Search
+              {t("dashboard.adminSubusers.filters_search")}
             </h3>
             <button
               onClick={clearAllFilters}
               className="text-sm text-red-600 hover:text-red-800 font-medium"
             >
-              Clear All
+              {t("dashboard.adminSubusers.clear_all")}
             </button>
           </div>
 
@@ -1127,11 +1171,11 @@ export default function AdminSubusers() {
             {/* Search */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Search
+                {t("dashboard.adminSubusers.search_label")}
               </label>
               <input
                 className="w-full border rounded px-3 py-2 text-sm"
-                placeholder="Search keyword"
+                placeholder={t("dashboard.adminSubusers.search_keyword")}
                 value={searchInputValue}
                 onChange={(e) => {
                   setSearchInputValue(e.target.value);
@@ -1143,7 +1187,7 @@ export default function AdminSubusers() {
             {/* Group Filter */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Group{" "}
+                {t("dashboard.adminSubusers.group_label")}{" "}
                 {uniqueGroups.length > 0 && (
                   <span className="text-xs text-slate-500">
                     ({uniqueGroups.length})
@@ -1158,7 +1202,9 @@ export default function AdminSubusers() {
                   setPage(1);
                 }}
               >
-                <option value="">All Groups</option>
+                <option value="">
+                  {t("dashboard.adminSubusers.all_groups")}
+                </option>
                 {uniqueGroups.map((group) => (
                   <option key={group} value={group}>
                     {group}
@@ -1170,7 +1216,7 @@ export default function AdminSubusers() {
             {/* Role Filter */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Role
+                {t("dashboard.adminSubusers.role_label")}
               </label>
               <select
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
@@ -1180,7 +1226,9 @@ export default function AdminSubusers() {
                   setPage(1);
                 }}
               >
-                <option value="">All Roles</option>
+                <option value="">
+                  {t("dashboard.adminSubusers.all_roles")}
+                </option>
                 {uniqueRoles.map((role) => (
                   <option key={role} value={role}>
                     {role}
@@ -1251,7 +1299,7 @@ export default function AdminSubusers() {
 
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-slate-700">
-                Sort by:
+                {t("dashboard.adminSubusers.sort_by")}
               </label>
               <select
                 className="border rounded px-2 py-1 text-sm"
@@ -1260,11 +1308,17 @@ export default function AdminSubusers() {
                   setSortBy(e.target.value as keyof SubuserTableRow)
                 }
               >
-                <option value="subuser_email">Email</option>
-                <option value="roles">Role</option>
+                <option value="subuser_email">
+                  {t("dashboard.adminSubusers.email")}
+                </option>
+                <option value="roles">
+                  {t("dashboard.adminSubusers.role")}
+                </option>
                 {/* <option value="status">Status</option>
                 <option value="department">Department</option> */}
-                <option value="last_login">Last Login</option>
+                <option value="last_login">
+                  {t("dashboard.adminSubusers.last_login")}
+                </option>
               </select>
               <button
                 onClick={() =>
@@ -1302,12 +1356,16 @@ export default function AdminSubusers() {
             <table className="w-full text-nowrap">
               <thead className="sticky top-0 bg-white shadow-sm z-10">
                 <tr className="text-left text-slate-500 border-b">
-                  <th className="py-2">Email</th>
-                  <th className="py-2">Role</th>
+                  <th className="py-2">{t("dashboard.adminSubusers.email")}</th>
+                  <th className="py-2">{t("dashboard.adminSubusers.role")}</th>
                   {/* <th className="py-2">Status</th>
                   <th className="py-2">Department</th> */}
-                  <th className="py-2">Last Login</th>
-                  <th className="py-2">Actions</th>
+                  <th className="py-2">
+                    {t("dashboard.adminSubusers.last_login")}
+                  </th>
+                  <th className="py-2">
+                    {t("dashboard.adminSubusers.actions")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -1361,12 +1419,16 @@ export default function AdminSubusers() {
                           </svg>
                         </div>
                         <h3 className="text-lg font-medium text-slate-900 mb-2">
-                          No Subusers Found
+                          {t("dashboard.adminSubusers.no_subusers_found")}
                         </h3>
                         <p className="text-slate-600">
                           {isSubuser
-                            ? "You don't have any subusers associated with your account."
-                            : "No subusers found. Try adjusting your filters or create a new subuser."}
+                            ? t(
+                                "dashboard.adminSubusers.no_subusers_msg_subuser",
+                              )
+                            : t(
+                                "dashboard.adminSubusers.no_subusers_msg_admin",
+                              )}
                         </p>
                       </div>
                     </td>
@@ -1468,11 +1530,13 @@ export default function AdminSubusers() {
                             }`}
                             title={
                               canEditOrDelete
-                                ? "Edit User"
-                                : "Only admin and superadmin can edit users"
+                                ? t("dashboard.adminSubusers.edit_user_title")
+                                : t(
+                                    "dashboard.adminSubusers.edit_disabled_title",
+                                  )
                             }
                           >
-                            Edit
+                            {t("dashboard.adminSubusers.edit")}
                           </button>
 
                           {/* <button 
@@ -1519,11 +1583,13 @@ export default function AdminSubusers() {
                             }`}
                             title={
                               canEditOrDelete
-                                ? "Delete User"
-                                : "Only admin and superadmin can delete users"
+                                ? t("dashboard.adminSubusers.delete_user_title")
+                                : t(
+                                    "dashboard.adminSubusers.delete_disabled_title",
+                                  )
                             }
                           >
-                            Delete
+                            {t("dashboard.adminSubusers.delete")}
                           </button>
                         </div>
                       </td>
@@ -1543,7 +1609,7 @@ export default function AdminSubusers() {
                 htmlFor="subusersPageSize"
                 className="text-sm text-slate-600"
               >
-                Rows per page:
+                {t("dashboard.adminSubusers.rows_per_page")}
               </label>
               <select
                 id="subusersPageSize"
@@ -1562,16 +1628,20 @@ export default function AdminSubusers() {
                 ))}
               </select>
               <span className="text-sm text-slate-500">
-                Showing {Math.min((page - 1) * pageSize + 1, filtered.length)}{" "}
-                to {Math.min(page * pageSize, filtered.length)} of{" "}
-                {filtered.length} records
+                {t("dashboard.adminSubusers.showing")}{" "}
+                {Math.min((page - 1) * pageSize + 1, filtered.length)}{" "}
+                {t("dashboard.adminSubusers.to")}{" "}
+                {Math.min(page * pageSize, filtered.length)}{" "}
+                {t("dashboard.adminSubusers.of")} {filtered.length}{" "}
+                {t("dashboard.adminSubusers.records")}
               </span>
             </div>
 
             {/* Right side - Page navigation */}
             <div className="flex items-center gap-3">
               <span className="text-sm text-slate-600">
-                Page {page} of {totalPages}
+                {t("dashboard.adminSubusers.page")} {page}{" "}
+                {t("dashboard.adminSubusers.of")} {totalPages}
               </span>
               <div className="flex gap-2">
                 <button
@@ -1579,14 +1649,14 @@ export default function AdminSubusers() {
                   onClick={() => setPage(page - 1)}
                   className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
                 >
-                  Previous
+                  {t("dashboard.adminSubusers.previous")}
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage(page + 1)}
                   className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
                 >
-                  Next
+                  {t("dashboard.adminSubusers.next")}
                 </button>
               </div>
             </div>
@@ -1616,10 +1686,10 @@ export default function AdminSubusers() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-slate-900">
-                    Delete User
+                    {t("dashboard.adminSubusers.delete_user")}
                   </h3>
                   <p className="text-sm text-slate-500">
-                    This action cannot be undone
+                    {t("dashboard.adminSubusers.this_action_cannot_be_undone")}
                   </p>
                 </div>
                 <button
@@ -1645,7 +1715,9 @@ export default function AdminSubusers() {
               {/* Modal Body */}
               <div className="p-6">
                 <p className="text-slate-700 mb-4">
-                  Are you sure you want to delete the following user?
+                  {t(
+                    "dashboard.adminSubusers.are_you_sure_you_want_to_delete_the_following",
+                  )}
                 </p>
 
                 <div className="bg-slate-50 rounded-lg p-4 space-y-2">
@@ -1717,11 +1789,13 @@ export default function AdminSubusers() {
                     </svg>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-red-900">
-                        Warning
+                        {t("dashboard.adminSubusers.warning")}
                       </p>
                       <p className="text-sm text-red-700 mt-1">
-                        This will permanently delete the user account, all
-                        associated data, and cannot be recovered.
+                        {t(
+                          "dashboard.adminSubusers.this_will_permanently_delete_the_user_account",
+                        )}
+                        {t("dashboard.adminSubusers.associated_data_warning")}
                       </p>
                     </div>
                   </div>
@@ -1734,7 +1808,7 @@ export default function AdminSubusers() {
                   onClick={cancelDelete}
                   className="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-white transition-colors font-medium"
                 >
-                  Cancel
+                  {t("dashboard.adminSubusers.cancel")}
                 </button>
                 <button
                   onClick={confirmDelete}
@@ -1753,7 +1827,7 @@ export default function AdminSubusers() {
                       d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                     />
                   </svg>
-                  Delete User
+                  {t("dashboard.adminSubusers.delete_user")}
                 </button>
               </div>
             </div>

@@ -1,0 +1,138 @@
+{
+  "support": {
+    "heroTitle": "Customer Support",
+    "heroSubtitle": "How can we help you today?",
+    "searchPlaceholder": "Search documents and help resources...",
+    "searchGo": "Go",
+    "resultsFound": "{{count}} result found for \"{{query}}\"",
+    "resultsFound_plural": "{{count}} results found for \"{{query}}\"",
+    "noResultsFor": "No results found for \"{{query}}\"",
+    "noResultsTip": "Try searching with different keywords or browse our support sections below.",
+    "clearSearch": "Clear search",
+    "popularQuestion": "Popular support question",
+
+    "trendingSearches": "TRENDING SEARCHES",
+    "trending1": "How many overwrites should I do on a Hard Drive?",
+    "trending2": "How can I Wipe Hard Drives and SSDs?",
+    "trending3": "How to Wipe SAS Drives Permanently?",
+    "trending4": "How can I wipe 12 board Mac Machines?",
+    "trending5": "How do I wipe everything and retain my OS?",
+    "trending6": "How can I Wipe a MacOS with M1 Chip?",
+    "trending7": "How to use D-Secure Cloud Console?",
+    "trending8": "How do I Perform Cryptographic Erasure on SSD?",
+
+    "selfHelpTitle": "Self Help & Support",
+    "selfHelpSubtitle": "Access Support Information For Your D-Secure Products",
+
+    "faqTitle": "Frequently Asked Questions",
+    "faqDesc": "Frequently Asked Questions By Our Customers That Might Help You.",
+    "learnMore": "Learn More →",
+
+    "knowledgeBaseTitle": "Knowledge Base",
+    "knowledgeBaseDesc": "Step By Step Guide To Securely Wipe Data On Different Devices.",
+
+    "getStartedTitle": "Get Started",
+    "getStartedDesc": "Learn How To Wipe PC, Mac, Server & Mobile Devices.",
+
+    "helpManualTitle": "Help Manual",
+    "helpManualDesc": "Complete Visual Guide To Learn More About D-Secure Products, Installation, FAQs, Report Management & Advanced Settings Configuration.",
+    "viewHelpManual": "View Help Manual →",
+
+    "productVideosTitle": "Product Videos",
+    "productVideosDesc": "Product Walkthroughs & How To Videos.",
+
+    "technicalBlogTitle": "Technical Blog",
+    "technicalBlogDesc": "Insights and practical guides on data erasure, cybersecurity, and IT asset lifecycle management.",
+
+    "assistedSupportTitle": "Assisted Support",
+    "assistedSupportSubtitle": "Raise a Ticket or Call us for support queries",
+
+    "writeToUsTitle": "Write to Us",
+    "writeToUsDesc": "Get quick resolution to your query by writing to us on email.",
+    "sendEmail": "Send Email",
+
+    "raiseTicketTitle": "Raise a Ticket",
+    "raiseTicketDesc": "If you have queries and need help? Please submit a ticket.",
+    "submitTicket": "Submit Ticket",
+
+    "callUsTitle": "Call us",
+    "callUsDesc": "We will be happy to assist you. Technical Support in English only.",
+
+    "letsGetStarted": "Let's get started",
+    "letsGetStartedDesc": "Interested in finding out more about our solutions?",
+    "requestFreeLicense": "Request Free License →",
+    "needHelp": "Need help: +91-844-775-0101",
+
+    "submitTicketModalTitle": "Submit Support Ticket",
+    "submitTicketModalSubtitle": "We'll get back to you as soon as possible!",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email address",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Brief description of your issue",
+    "priorityLabel": "Priority",
+    "categoryLabel": "Category",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Please provide detailed information about your issue or question...",
+    "submitting": "Submitting...",
+
+    "priorityLow": "Low",
+    "priorityMedium": "Medium",
+    "priorityHigh": "High",
+    "priorityUrgent": "Urgent",
+
+    "categoryGeneral": "General Support",
+    "categoryTechnical": "Technical Issue",
+    "categoryBilling": "Billing & Licensing",
+    "categoryFeature": "Feature Request",
+    "categoryBug": "Bug Report",
+
+    "ticketSuccess": "Support ticket submitted successfully! We will get back to you soon.",
+    "ticketError": "Failed to submit support ticket. Please try again.",
+
+    "licenseSuccess": "Free license request submitted successfully! We will send you the license details within 12 hours.",
+    "requestFreeLicenseTitle": "Request Free License - Support",
+
+    "partnershipSuccess": "Partnership request submitted successfully! We will review your application and get back to you soon.",
+    "partnershipRequestTitle": "Partnership Request - Support",
+
+    "searchFaqs": "Frequently Asked Questions",
+    "searchFaqsDesc": "Common questions and answers about D-Secure data erasure solutions",
+    "searchKnowledgeBase": "Knowledge Base",
+    "searchKnowledgeBaseDesc": "Step by step guides for secure data wiping on different devices",
+    "searchGetStarted": "Get Started Guide",
+    "searchGetStartedDesc": "Learn how to wipe PC, Mac, Server & Mobile devices",
+    "searchHelpManual": "Help Manual",
+    "searchHelpManualDesc": "Comprehensive user manual for D-Secure products",
+    "searchProductVideos": "Product Videos",
+    "searchProductVideosDesc": "Video tutorials and product demonstrations",
+    "searchOverwrite": "Hard Drive Overwrite Guide",
+    "searchOverwriteDesc": "How many overwrites should I do on a Hard Drive?",
+    "searchWipe": "HDD & SSD Wipe Guide",
+    "searchWipeDesc": "How to securely wipe Hard Drives and SSDs",
+    "searchSas": "SAS Drive Wipe Guide",
+    "searchSasDesc": "How to wipe SAS drives permanently",
+    "searchMac": "Mac Machine Wipe Guide",
+    "searchMacDesc": "How to wipe 12 board Mac machines",
+    "searchM1Mac": "M1 Mac Wipe Guide",
+    "searchM1MacDesc": "How to wipe MacOS with M1 chip",
+    "searchCloud": "Cloud Console Guide",
+    "searchCloudDesc": "How to use D-Secure Cloud Console",
+    "searchSsdCrypto": "SSD Cryptographic Erasure",
+    "searchSsdCryptoDesc": "How to perform cryptographic erasure on SSD",
+    "searchRetainOs": "Retain OS Wipe Guide",
+    "searchRetainOsDesc": "How to wipe everything and retain your operating system",
+
+    "goToGuide": "Go directly to guide",
+
+    "categorySupport": "Support",
+    "categoryDocumentation": "Documentation",
+    "categoryGettingStarted": "Getting Started",
+    "categoryVideos": "Videos",
+    "categoryGuides": "Guides",
+    "categoryCloud": "Cloud",
+    "categoryAdvanced": "Advanced",
+    "categoryTrending": "Trending"
+  }
+}

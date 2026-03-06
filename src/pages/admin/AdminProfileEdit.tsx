@@ -7,11 +7,12 @@ import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { AdminDashboardAPI, type ProfileData } from '@/services/adminDashboardAPI'
 import { getPrimaryRole } from '@/utils/roleHelper'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 export default function AdminProfileEdit() {
   const { user } = useAuth()
   const { showSuccess, showError, showInfo } = useNotification()
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   
   const [isLoading, setIsLoading] = useState(false)
   const [dataLoading, setDataLoading] = useState(true)

@@ -1,6 +1,7 @@
 import Reveal from "@/components/Reveal";
 import { useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useSearchParams } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { useTranslation } from "react-i18next";
@@ -32,9 +33,8 @@ export default function SolutionsPage() {
 function SolutionsPageContent() {
   const { t } = useTranslation();
   type IndustryKey = keyof typeof solutions;
-  const [activeIndustry, setActiveIndustry] = useState<IndustryKey>(
-    "enterprise"
-  );
+  const [activeIndustry, setActiveIndustry] =
+    useState<IndustryKey>("enterprise");
   const [searchParams] = useSearchParams();
 
   // Handle URL parameters to auto-select solutions
@@ -70,233 +70,233 @@ function SolutionsPageContent() {
 
   const solutions = {
     enterprise: {
-      title: t('solutions.enterprise'),
-      subtitle: t('solutions.enterpriseSubtitle'),
-      description: t('solutions.enterpriseDesc'),
+      title: t("solutions.enterprise"),
+      subtitle: t("solutions.enterpriseSubtitle"),
+      description: t("solutions.enterpriseDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <BuildingIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        t('solutions.enterpriseBenefit1'),
-        t('solutions.enterpriseBenefit2'),
-        t('solutions.enterpriseBenefit3'),
-        t('solutions.enterpriseBenefit4'),
-        t('solutions.enterpriseBenefit5'),
-        t('solutions.enterpriseBenefit6'),
+        t("solutions.enterpriseBenefit1"),
+        t("solutions.enterpriseBenefit2"),
+        t("solutions.enterpriseBenefit3"),
+        t("solutions.enterpriseBenefit4"),
+        t("solutions.enterpriseBenefit5"),
+        t("solutions.enterpriseBenefit6"),
       ],
       useCases: [
         {
-          title: t('solutions.enterpriseUseCase1Title'),
-          description: t('solutions.enterpriseUseCase1Desc'),
+          title: t("solutions.enterpriseUseCase1Title"),
+          description: t("solutions.enterpriseUseCase1Desc"),
         },
         {
-          title: t('solutions.enterpriseUseCase2Title'),
-          description: t('solutions.enterpriseUseCase2Desc'),
+          title: t("solutions.enterpriseUseCase2Title"),
+          description: t("solutions.enterpriseUseCase2Desc"),
         },
         {
-          title: t('solutions.enterpriseUseCase3Title'),
-          description: t('solutions.enterpriseUseCase3Desc'),
+          title: t("solutions.enterpriseUseCase3Title"),
+          description: t("solutions.enterpriseUseCase3Desc"),
         },
         {
-          title: t('solutions.enterpriseUseCase4Title'),
-          description: t('solutions.enterpriseUseCase4Desc'),
+          title: t("solutions.enterpriseUseCase4Title"),
+          description: t("solutions.enterpriseUseCase4Desc"),
         },
         {
-          title: t('solutions.enterpriseUseCase5Title'),
-          description: t('solutions.enterpriseUseCase5Desc'),
+          title: t("solutions.enterpriseUseCase5Title"),
+          description: t("solutions.enterpriseUseCase5Desc"),
         },
         {
-          title: t('solutions.enterpriseUseCase6Title'),
-          description: t('solutions.enterpriseUseCase6Desc'),
+          title: t("solutions.enterpriseUseCase6Title"),
+          description: t("solutions.enterpriseUseCase6Desc"),
         },
       ],
     },
     itad: {
-      title: t('solutions.itad'),
-      subtitle: t('solutions.itadSubtitle'),
-      description: t('solutions.itadDesc'),
+      title: t("solutions.itad"),
+      subtitle: t("solutions.itadSubtitle"),
+      description: t("solutions.itadDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <ShieldIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        t('solutions.itadBenefit1'),
-        t('solutions.itadBenefit2'),
-        t('solutions.itadBenefit3'),
-        t('solutions.itadBenefit4'),
-        t('solutions.itadBenefit5'),
-        t('solutions.itadBenefit6'),
+        t("solutions.itadBenefit1"),
+        t("solutions.itadBenefit2"),
+        t("solutions.itadBenefit3"),
+        t("solutions.itadBenefit4"),
+        t("solutions.itadBenefit5"),
+        t("solutions.itadBenefit6"),
       ],
       useCases: [
         {
-          title: t('solutions.itadUseCase1Title'),
-          description: t('solutions.itadUseCase1Desc'),
+          title: t("solutions.itadUseCase1Title"),
+          description: t("solutions.itadUseCase1Desc"),
         },
         {
-          title: t('solutions.itadUseCase2Title'),
-          description: t('solutions.itadUseCase2Desc'),
+          title: t("solutions.itadUseCase2Title"),
+          description: t("solutions.itadUseCase2Desc"),
         },
         {
-          title: t('solutions.itadUseCase3Title'),
-          description: t('solutions.itadUseCase3Desc'),
+          title: t("solutions.itadUseCase3Title"),
+          description: t("solutions.itadUseCase3Desc"),
         },
         {
-          title: t('solutions.itadUseCase4Title'),
-          description: t('solutions.itadUseCase4Desc'),
+          title: t("solutions.itadUseCase4Title"),
+          description: t("solutions.itadUseCase4Desc"),
         },
         {
-          title: t('solutions.itadUseCase5Title'),
-          description: t('solutions.itadUseCase5Desc'),
+          title: t("solutions.itadUseCase5Title"),
+          description: t("solutions.itadUseCase5Desc"),
         },
         {
-          title: t('solutions.itadUseCase6Title'),
-          description: t('solutions.itadUseCase6Desc'),
+          title: t("solutions.itadUseCase6Title"),
+          description: t("solutions.itadUseCase6Desc"),
         },
       ],
     },
     healthcare: {
-      title: t('solutions.healthcare'),
-      subtitle: t('solutions.healthcareSubtitle'),
-      description: t('solutions.healthcareDesc'),
+      title: t("solutions.healthcare"),
+      subtitle: t("solutions.healthcareSubtitle"),
+      description: t("solutions.healthcareDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <HeartIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        t('solutions.healthcareBenefit1'),
-        t('solutions.healthcareBenefit2'),
-        t('solutions.healthcareBenefit3'),
-        t('solutions.healthcareBenefit4'),
+        t("solutions.healthcareBenefit1"),
+        t("solutions.healthcareBenefit2"),
+        t("solutions.healthcareBenefit3"),
+        t("solutions.healthcareBenefit4"),
       ],
       useCases: [
         {
-          title: t('solutions.healthcareUseCase1Title'),
-          description: t('solutions.healthcareUseCase1Desc'),
+          title: t("solutions.healthcareUseCase1Title"),
+          description: t("solutions.healthcareUseCase1Desc"),
         },
         {
-          title: t('solutions.healthcareUseCase2Title'),
-          description: t('solutions.healthcareUseCase2Desc'),
+          title: t("solutions.healthcareUseCase2Title"),
+          description: t("solutions.healthcareUseCase2Desc"),
         },
         {
-          title: t('solutions.healthcareUseCase3Title'),
-          description: t('solutions.healthcareUseCase3Desc'),
+          title: t("solutions.healthcareUseCase3Title"),
+          description: t("solutions.healthcareUseCase3Desc"),
         },
         {
-          title: t('solutions.healthcareUseCase4Title'),
-          description: t('solutions.healthcareUseCase4Desc'),
+          title: t("solutions.healthcareUseCase4Title"),
+          description: t("solutions.healthcareUseCase4Desc"),
         },
       ],
     },
     financial: {
-      title: t('solutions.financial'),
-      subtitle: t('solutions.financialSubtitle'),
-      description: t('solutions.financialDesc'),
+      title: t("solutions.financial"),
+      subtitle: t("solutions.financialSubtitle"),
+      description: t("solutions.financialDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <DollarIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        t('solutions.financialBenefit1'),
-        t('solutions.financialBenefit2'),
-        t('solutions.financialBenefit3'),
-        t('solutions.financialBenefit4'),
+        t("solutions.financialBenefit1"),
+        t("solutions.financialBenefit2"),
+        t("solutions.financialBenefit3"),
+        t("solutions.financialBenefit4"),
       ],
       useCases: [
         {
-          title: t('solutions.financialUseCase1Title'),
-          description: t('solutions.financialUseCase1Desc'),
+          title: t("solutions.financialUseCase1Title"),
+          description: t("solutions.financialUseCase1Desc"),
         },
         {
-          title: t('solutions.financialUseCase2Title'),
-          description: t('solutions.financialUseCase2Desc'),
+          title: t("solutions.financialUseCase2Title"),
+          description: t("solutions.financialUseCase2Desc"),
         },
         {
-          title: t('solutions.financialUseCase3Title'),
-          description: t('solutions.financialUseCase3Desc'),
+          title: t("solutions.financialUseCase3Title"),
+          description: t("solutions.financialUseCase3Desc"),
         },
         {
-          title: t('solutions.financialUseCase4Title'),
-          description: t('solutions.financialUseCase4Desc'),
+          title: t("solutions.financialUseCase4Title"),
+          description: t("solutions.financialUseCase4Desc"),
         },
       ],
     },
     government: {
-      title: t('solutions.government'),
-      subtitle: t('solutions.governmentSubtitle'),
-      description: t('solutions.governmentDesc'),
+      title: t("solutions.government"),
+      subtitle: t("solutions.governmentSubtitle"),
+      description: t("solutions.governmentDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <GlobeIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        t('solutions.governmentBenefit1'),
-        t('solutions.governmentBenefit2'),
-        t('solutions.governmentBenefit3'),
-        t('solutions.governmentBenefit4'),
-        t('solutions.governmentBenefit5'),
-        t('solutions.governmentBenefit6'),
-        t('solutions.governmentBenefit7'),
+        t("solutions.governmentBenefit1"),
+        t("solutions.governmentBenefit2"),
+        t("solutions.governmentBenefit3"),
+        t("solutions.governmentBenefit4"),
+        t("solutions.governmentBenefit5"),
+        t("solutions.governmentBenefit6"),
+        t("solutions.governmentBenefit7"),
       ],
       useCases: [
         {
-          title: t('solutions.governmentUseCase1Title'),
-          description: t('solutions.governmentUseCase1Desc'),
+          title: t("solutions.governmentUseCase1Title"),
+          description: t("solutions.governmentUseCase1Desc"),
         },
         {
-          title: t('solutions.governmentUseCase2Title'),
-          description: t('solutions.governmentUseCase2Desc'),
+          title: t("solutions.governmentUseCase2Title"),
+          description: t("solutions.governmentUseCase2Desc"),
         },
         {
-          title: t('solutions.governmentUseCase3Title'),
-          description: t('solutions.governmentUseCase3Desc'),
+          title: t("solutions.governmentUseCase3Title"),
+          description: t("solutions.governmentUseCase3Desc"),
         },
         {
-          title: t('solutions.governmentUseCase4Title'),
-          description: t('solutions.governmentUseCase4Desc'),
+          title: t("solutions.governmentUseCase4Title"),
+          description: t("solutions.governmentUseCase4Desc"),
         },
         {
-          title: t('solutions.governmentUseCase5Title'),
-          description: t('solutions.governmentUseCase5Desc'),
+          title: t("solutions.governmentUseCase5Title"),
+          description: t("solutions.governmentUseCase5Desc"),
         },
         {
-          title: t('solutions.governmentUseCase6Title'),
-          description: t('solutions.governmentUseCase6Desc'),
+          title: t("solutions.governmentUseCase6Title"),
+          description: t("solutions.governmentUseCase6Desc"),
         },
       ],
     },
     serviceProviders: {
-      title: t('solutions.serviceProviders'),
-      subtitle: t('solutions.serviceProvidersSubtitle'),
-      description: t('solutions.serviceProvidersDesc'),
+      title: t("solutions.serviceProviders"),
+      subtitle: t("solutions.serviceProvidersSubtitle"),
+      description: t("solutions.serviceProvidersDesc"),
       icon: (
         <HoverIcon>
           {(filled) => <BriefcaseIcon className="w-8 h-8" filled={filled} />}
         </HoverIcon>
       ),
       benefits: [
-        t('solutions.serviceProvidersBenefit1'),
-        t('solutions.serviceProvidersBenefit2'),
-        t('solutions.serviceProvidersBenefit3'),
-        t('solutions.serviceProvidersBenefit4'),
+        t("solutions.serviceProvidersBenefit1"),
+        t("solutions.serviceProvidersBenefit2"),
+        t("solutions.serviceProvidersBenefit3"),
+        t("solutions.serviceProvidersBenefit4"),
       ],
       useCases: [
         {
-          title: t('solutions.serviceProvidersUseCase1Title'),
-          description: t('solutions.serviceProvidersUseCase1Desc'),
+          title: t("solutions.serviceProvidersUseCase1Title"),
+          description: t("solutions.serviceProvidersUseCase1Desc"),
         },
         {
-          title: t('solutions.serviceProvidersUseCase2Title'),
-          description: t('solutions.serviceProvidersUseCase2Desc'),
+          title: t("solutions.serviceProvidersUseCase2Title"),
+          description: t("solutions.serviceProvidersUseCase2Desc"),
         },
         {
-          title: t('solutions.serviceProvidersUseCase3Title'),
-          description: t('solutions.serviceProvidersUseCase3Desc'),
+          title: t("solutions.serviceProvidersUseCase3Title"),
+          description: t("solutions.serviceProvidersUseCase3Desc"),
         },
       ],
     },
@@ -304,11 +304,11 @@ function SolutionsPageContent() {
 
   const caseStudies = [
     {
-      company: t('solutions.caseStudy1Company'),
-      industry: t('solutions.caseStudy1Industry'),
-      challenge: t('solutions.caseStudy1Challenge'),
-      solution: t('solutions.caseStudy1Solution'),
-      results: t('solutions.caseStudy1Results'),
+      company: t("solutions.caseStudy1Company"),
+      industry: t("solutions.caseStudy1Industry"),
+      challenge: t("solutions.caseStudy1Challenge"),
+      solution: t("solutions.caseStudy1Solution"),
+      results: t("solutions.caseStudy1Results"),
       // 🏥 → HeartIcon
       logo: (
         <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
@@ -317,11 +317,11 @@ function SolutionsPageContent() {
       ),
     },
     {
-      company: t('solutions.caseStudy2Company'),
-      industry: t('solutions.caseStudy2Industry'),
-      challenge: t('solutions.caseStudy2Challenge'),
-      solution: t('solutions.caseStudy2Solution'),
-      results: t('solutions.caseStudy2Results'),
+      company: t("solutions.caseStudy2Company"),
+      industry: t("solutions.caseStudy2Industry"),
+      challenge: t("solutions.caseStudy2Challenge"),
+      solution: t("solutions.caseStudy2Solution"),
+      results: t("solutions.caseStudy2Results"),
       // 🏦 → DollarIcon
       logo: (
         <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
@@ -330,11 +330,11 @@ function SolutionsPageContent() {
       ),
     },
     {
-      company: t('solutions.caseStudy3Company'),
-      industry: t('solutions.caseStudy3Industry'),
-      challenge: t('solutions.caseStudy3Challenge'),
-      solution: t('solutions.caseStudy3Solution'),
-      results: t('solutions.caseStudy3Results'),
+      company: t("solutions.caseStudy3Company"),
+      industry: t("solutions.caseStudy3Industry"),
+      challenge: t("solutions.caseStudy3Challenge"),
+      solution: t("solutions.caseStudy3Solution"),
+      results: t("solutions.caseStudy3Results"),
       // ♻️ → Recycle Icon (inline SVG)
       logo: (
         <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
@@ -402,25 +402,25 @@ function SolutionsPageContent() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {t('solutions.heroTag')}
+                  {t("solutions.heroTag")}
                 </div>
               </Reveal>
               <Reveal delayMs={10}>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-6">
-                  {t('solutions.heroTitle')}{" "}
+                  {t("solutions.heroTitle")}{" "}
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600">
-                    {t('solutions.heroTitleHighlight')}
+                    {t("solutions.heroTitleHighlight")}
                   </span>
                 </h1>
               </Reveal>
               <Reveal delayMs={20}>
                 <p className="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
-                  {t('solutions.heroSubtitle')}
+                  {t("solutions.heroSubtitle")}
                 </p>
               </Reveal>
               <Reveal delayMs={30}>
                 <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
-                  <a href="/contact" className="btn-primary group">
+                  <Link to="/contact" className="btn-primary group">
                     <HoverIcon>
                       {(filled) => (
                         <ChatIcon
@@ -429,8 +429,8 @@ function SolutionsPageContent() {
                         />
                       )}
                     </HoverIcon>
-                    {t('solutions.discussNeeds')}
-                  </a>
+                    {t("solutions.discussNeeds")}
+                  </Link>
                   <a href="#solutions" className="btn-secondary group">
                     <HoverIcon>
                       {(filled) => (
@@ -440,7 +440,7 @@ function SolutionsPageContent() {
                         />
                       )}
                     </HoverIcon>
-                    {t('solutions.exploreSolutions')}
+                    {t("solutions.exploreSolutions")}
                   </a>
                 </div>
               </Reveal>
@@ -458,7 +458,7 @@ function SolutionsPageContent() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span>{t('solutions.industriesServed')}</span>
+                    <span>{t("solutions.industriesServed")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg
@@ -472,7 +472,7 @@ function SolutionsPageContent() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span>{t('solutions.complianceRate')}</span>
+                    <span>{t("solutions.complianceRate")}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg
@@ -486,7 +486,7 @@ function SolutionsPageContent() {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span>{t('solutions.expertSupport')}</span>
+                    <span>{t("solutions.expertSupport")}</span>
                   </div>
                 </div>
               </Reveal>
@@ -699,10 +699,10 @@ function SolutionsPageContent() {
                     <div className="p-6 bg-white/90 backdrop-blur-sm">
                       <div className="text-center">
                         <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                          Secure Data Ecosystem
+                          {t("solutions.secureDataEcosystem")}
                         </h3>
                         <p className="text-slate-600 text-sm">
-                          Complete erasure across all device types and platforms
+                          {t("solutions.completeErasureDesc")}
                         </p>
                       </div>
                     </div>
@@ -711,13 +711,17 @@ function SolutionsPageContent() {
                   <Reveal delayMs={70}>
                     <div className="absolute -top-4 -right-4 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-xl shadow-lg">
                       <div className="text-2xl font-bold">100k+</div>
-                      <div className="text-xs opacity-90">Devices Secured</div>
+                      <div className="text-xs opacity-90">
+                        {t("solutions.devicesSecured")}
+                      </div>
                     </div>
                   </Reveal>
                   <Reveal delayMs={80}>
                     <div className="absolute -bottom-4 -left-4 bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-xl shadow-lg">
                       <div className="text-2xl font-bold">99.9%</div>
-                      <div className="text-xs opacity-90">Success Rate</div>
+                      <div className="text-xs opacity-90">
+                        {t("solutions.successRate")}
+                      </div>
                     </div>
                   </Reveal>
                 </div>
@@ -735,11 +739,10 @@ function SolutionsPageContent() {
         <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Solutions by Industry
+              {t("solutions.solutionsByIndustry")}
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Choose your industry to see specialized workflows and compliance
-              features.
+              {t("solutions.chooseIndustryDesc")}
             </p>
           </div>
           {/* Industry Selector */}
@@ -771,7 +774,9 @@ function SolutionsPageContent() {
             <div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden">
               {/* Solution Header */}
               <div className="text-center p-4 md:p-6 border-b border-slate-200/60 bg-slate-50/50">
-                <div className="text-sm text-slate-500 mb-1">Solution</div>
+                <div className="text-sm text-slate-500 mb-1">
+                  {t("solutions.solutionLabel")}
+                </div>
                 <div className="text-lg font-semibold text-slate-900">
                   {solutions[activeIndustry].title}
                 </div>
@@ -796,7 +801,7 @@ function SolutionsPageContent() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 lg:mb-8">
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        {t('solutions.keyBenefits')}
+                        {t("solutions.keyBenefits")}
                       </h4>
                       <div className="space-y-3">
                         {solutions[activeIndustry].benefits.map(
@@ -819,13 +824,13 @@ function SolutionsPageContent() {
                                 {benefit}
                               </span>
                             </div>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
                     <div>
                       <h4 className="font-semibold text-slate-900 mb-4">
-                        {t('solutions.useCases')}
+                        {t("solutions.useCases")}
                       </h4>
                       <div className="space-y-3">
                         {solutions[activeIndustry].useCases.map(
@@ -841,7 +846,7 @@ function SolutionsPageContent() {
                                 {useCase.description}
                               </div>
                             </div>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -858,19 +863,21 @@ function SolutionsPageContent() {
                         to={getIndustryLink(activeIndustry)}
                         className="btn-primary"
                       >
-                        Learn More About {solutions[activeIndustry].title}
+                        {t("solutions.learnMoreAbout", {
+                          industry: solutions[activeIndustry].title,
+                        })}
                       </Link>
                     )}
 
                     <Link to="/contact" className="btn-secondary">
-                      Request Demo
+                      {t("solutions.requestDemo")}
                     </Link>
                   </div>
                 </div>
                 {/* Sidebar */}
                 <div className="bg-slate-50 p-8">
                   <h4 className="font-semibold text-slate-900 mb-6">
-                    Why Choose D-Secure?
+                    {t("solutions.whyChooseDSecure")}
                   </h4>
                   <div className="space-y-6">
                     <div className="flex items-start gap-3">
@@ -891,10 +898,10 @@ function SolutionsPageContent() {
                       </div>
                       <div>
                         <div className="font-medium text-slate-900 text-sm">
-                          Proven Track Record
+                          {t("solutions.provenTrackRecord")}
                         </div>
                         <div className="text-slate-600 text-xs mt-1">
-                          under decade serving enterprises worldwide
+                          {t("solutions.provenTrackRecordDesc")}
                         </div>
                       </div>
                     </div>
@@ -916,10 +923,10 @@ function SolutionsPageContent() {
                       </div>
                       <div>
                         <div className="font-medium text-slate-900 text-sm">
-                          Lightning Fast
+                          {t("solutions.lightningFast")}
                         </div>
                         <div className="text-slate-600 text-xs mt-1">
-                          Process thousands of devices daily
+                          {t("solutions.lightningFastDesc")}
                         </div>
                       </div>
                     </div>
@@ -941,10 +948,10 @@ function SolutionsPageContent() {
                       </div>
                       <div>
                         <div className="font-medium text-slate-900 text-sm">
-                          24/7 Support
+                          {t("solutions.support247")}
                         </div>
                         <div className="text-slate-600 text-xs mt-1">
-                          Expert technical support around the clock
+                          {t("solutions.support247Desc")}
                         </div>
                       </div>
                     </div>
@@ -966,10 +973,10 @@ function SolutionsPageContent() {
                       </div>
                       <div>
                         <div className="font-medium text-slate-900 text-sm">
-                          100% Compliant
+                          {t("solutions.compliant100")}
                         </div>
                         <div className="text-slate-600 text-xs mt-1">
-                          Meet all regulatory requirements
+                          {t("solutions.compliant100Desc")}
                         </div>
                       </div>
                     </div>
@@ -980,7 +987,7 @@ function SolutionsPageContent() {
                         100k+
                       </div>
                       <div className="text-sm text-slate-600">
-                        Devices Processed
+                        {t("solutions.devicesProcessed")}
                       </div>
                     </div>
                   </div>
@@ -1005,11 +1012,13 @@ function SolutionsPageContent() {
                       <ArrowLeftIcon className="w-4 h-4" filled={filled} />
                     )}
                   </HoverIcon>
-                  <span className="text-sm font-medium">Previous Solution</span>
+                  <span className="text-sm font-medium">
+                    {t("solutions.previousSolution")}
+                  </span>
                 </button>
                 <div className="text-center">
                   <div className="text-xs text-slate-400">
-                    {Object.keys(solutions).indexOf(activeIndustry) + 1} of{" "}
+                    {Object.keys(solutions).indexOf(activeIndustry) + 1} /{" "}
                     {Object.keys(solutions).length}
                   </div>
                 </div>
@@ -1025,7 +1034,9 @@ function SolutionsPageContent() {
                   }}
                   className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-brand transition-colors rounded-lg hover:bg-white/80"
                 >
-                  <span className="text-sm font-medium">Next Solution</span>
+                  <span className="text-sm font-medium">
+                    {t("solutions.nextSolution")}
+                  </span>
                   <HoverIcon>
                     {(filled) => (
                       <ArrowRightIcon className="w-4 h-4" filled={filled} />
@@ -1043,11 +1054,10 @@ function SolutionsPageContent() {
         <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Case Studies
+              {t("solutions.caseStudies")}
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              See how organizations across industries have transformed their
-              data erasure processes with D-Secure.
+              {t("solutions.caseStudiesDesc")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1064,19 +1074,19 @@ function SolutionsPageContent() {
                   <div className="space-y-4 text-sm">
                     <div>
                       <div className="font-medium text-slate-900 mb-1">
-                        {t('solutions.challenge')}:
+                        {t("solutions.challenge")}:
                       </div>
                       <div className="text-slate-600">{study.challenge}</div>
                     </div>
                     <div>
                       <div className="font-medium text-slate-900 mb-1">
-                        {t('solutions.solution')}:
+                        {t("solutions.solution")}:
                       </div>
                       <div className="text-slate-600">{study.solution}</div>
                     </div>
                     <div>
                       <div className="font-medium text-slate-900 mb-1">
-                        {t('solutions.results')}:
+                        {t("solutions.results")}:
                       </div>
                       <div className="text-emerald-600 font-medium">
                         {study.results}
@@ -1096,25 +1106,24 @@ function SolutionsPageContent() {
           <Reveal>
             <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-8 md:p-12 text-center text-white">
               <h2 className="text-3xl font-bold mb-4">
-                Ready to Transform Your Data Erasure Process?
+                {t("solutions.ctaTitle")}
               </h2>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Let's discuss your specific requirements and design a solution
-                that fits your industry and compliance needs.
+                {t("solutions.ctaSubtitle")}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="bg-white text-emerald-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
                 >
-                  Schedule Consultation
-                </a>
-                <a
-                  href="/resources"
+                  {t("solutions.scheduleConsultation")}
+                </Link>
+                <Link
+                  to="/resources"
                   className="border border-white/30 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition-colors"
                 >
-                  Download Resources
-                </a>
+                  {t("solutions.downloadResources")}
+                </Link>
               </div>
             </div>
           </Reveal>

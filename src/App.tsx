@@ -1,7 +1,9 @@
 ﻿import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import LangLayout from "./components/LangLayout";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/react-query";
 import { AuthProvider } from "./auth/AuthContext";
+import { useGeoLanguage } from "./hooks/useGeoLanguage";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import ToastContainer from "./components/ui/ToastContainer";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -1275,11 +1277,12 @@ const CaptionCallSettlementBlog = lazy(
   () => import("./components/blog/CaptionCallSettlementBlog"),
 );
 
-// Analytics Wrapper
+// Analytics Wrapper (includes geo-based language detection)
 function AnalyticsWrapper({ children }: { children: React.ReactNode }) {
   useGoogleAnalytics();
   useMicrosoftClarity();
   useSEOMonitoring();
+  useGeoLanguage();
   useEffect(() => {}, []);
   return <>{children}</>;
 }
@@ -1305,16 +1308,27 @@ export default function App() {
               <ToastContainer />
               <Suspense fallback={<PageLoadingSkeleton />}>
                 <Routes>
-                  {/* MODULARIZED ROUTES - called as functions, not components, because <Routes> requires <Route> as direct children */}
-                  {PublicRoutes()}
-                  {AuthRoutes()}
-                  {DashboardRoutes()}
-                  {SupportRoutes()}
-                  {BlogRoutes()}
+                  {/* Root redirect to /en */}
+                  <Route path="/" element={<Navigate to="/en" replace />} />
 
-                  {/* 404 Catch-all - must be LAST, wrapped in MainLayout for navbar/footer */}
+                  {/* All routes wrapped with /:lang prefix */}
+                  <Route path="/:lang" element={<LangLayout />}>
+                    {/* MODULARIZED ROUTES - called as functions, not components, because <Routes> requires <Route> as direct children */}
+                    {PublicRoutes()}
+                    {AuthRoutes()}
+                    {DashboardRoutes()}
+                    {SupportRoutes()}
+                    {BlogRoutes()}
+
+                    {/* 404 Catch-all inside lang wrapper */}
+                    <Route element={<MainLayout />}>
+                      <Route path="*" element={<NotFoundPage />} />
+                    </Route>
+                  </Route>
+
+                  {/* Fallback 404 for routes without /:lang */}
                   <Route element={<MainLayout />}>
-                    <Route path="*" element={<NotFoundPage />} />
+                    <Route path="*" element={<Navigate to="/en" replace />} />
                   </Route>
                 </Routes>
               </Suspense>

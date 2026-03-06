@@ -7,6 +7,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import React from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { useNotification } from "@/contexts/NotificationContext";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 interface ReportFormData {
   reportTitle: string;
@@ -31,7 +32,7 @@ interface ReportFormData {
 
 export default function GenerateReport() {
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const { reportId } = useParams<{ reportId?: string }>();
   const [searchParams] = useSearchParams();
   const { showSuccess, showError, showInfo } = useNotification();

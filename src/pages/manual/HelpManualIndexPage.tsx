@@ -2,7 +2,7 @@ import React from 'react';
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import { ArrowLeft, ChevronRight, Download, Play, Book, HelpCircle, FileText, Calendar, Settings, Mouse, Shield } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from "@/components/LocaleLink";
 
 const HelpManualIndexPage: React.FC = () => {
   return (

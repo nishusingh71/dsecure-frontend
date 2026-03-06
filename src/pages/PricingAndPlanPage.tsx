@@ -1,9 +1,12 @@
 ﻿import React, { useState, memo, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { ENV } from "../config/env";
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
+import { useLocation } from "react-router-dom";
 import CustomLicenseModal, {
   CustomLicenseData,
 } from "../components/CustomLicenseModal";
@@ -19,8 +22,9 @@ import {
 import { api } from "@/utils/apiClient"; // ✅ Pre-load API client for instant access
 
 const PricingAndPlanPage: React.FC = memo(() => {
+  const { t } = useTranslation();
   const { toast, showToast, hideToast } = useToast();
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("drive-eraser");
   const [selectedLicenses, setSelectedLicenses] = useState("1");
@@ -91,10 +95,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const customLicenseFormConfig = {
     endpoint: "https://formsubmit.co/support@dsecuretech.com", // FIXED: Correct endpoint
     requiredFields: ["contactName", "email", "numberOfLicenses", "companyName"],
-    successMessage:
-      "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours with a personalized quote.",
-    errorMessage:
-      "Failed to send your custom license request. Please try again or contact our sales team directly.",
+    successMessage: t("form.successCustom"),
+    errorMessage: t("form.errorCustom"),
     resetFormAfterSubmit: false,
     transformData: (data: Record<string, any>) => {
       // Transform and enrich the form data with context
@@ -108,8 +110,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
         // Customer Information
         customerName: data.contactName,
         customerEmail: data.email,
-        company: data.companyName || "Not provided",
-        phone: data.phone || "Not provided",
+        company: data.companyName || t("notProvided"),
+        phone: data.phone || t("notProvided"),
 
         // License Requirements
         productName: getCurrentProduct().title,
@@ -117,8 +119,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
         selectedPlan: getCurrentPlan().name,
         planDescription: getCurrentPlan().description,
         requestedLicenses: data.numberOfLicenses,
-        licenseDuration: data.duration || "Not specified",
-        budgetRange: data.budget || "Not specified",
+        licenseDuration: data.duration || t("notSpecified"),
+        budgetRange: data.budget || t("notSpecified"),
         additionalRequirements: data.requirements || "None",
 
         // Current Product Configuration Context
@@ -130,7 +132,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
         // Marketing/Analytics Data
         pageUrl: window.location.href,
-        referrer: document.referrer || "Direct",
+        referrer: document.referrer || t("direct"),
         userAgent: navigator.userAgent,
       };
 
@@ -188,10 +190,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
       "organizationType",
       "organizationName",
     ],
-    successMessage:
-      "Thank you! Your special pricing request has been submitted successfully. Our team will contact you within 24 hours with customized pricing for your organization.",
-    errorMessage:
-      "Failed to send your special pricing request. Please try again or contact our sales team directly.",
+    successMessage: t("form.successSpecial"),
+    errorMessage: t("form.errorSpecial"),
     resetFormAfterSubmit: false,
     transformData: (data: Record<string, any>) => {
       const enrichedData = {
@@ -203,12 +203,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
         // Contact Information
         contactName: data.contactName,
         email: data.email,
-        phone: data.phone || "Not provided",
+        phone: data.phone || t("notProvided"),
 
         // Organization Information
         organizationType: data.organizationType,
         organizationName: data.organizationName,
-        numberOfLicenses: data.numberOfLicenses || "Not specified",
+        numberOfLicenses: data.numberOfLicenses || t("notSpecified"),
         additionalInfo: data.additionalInfo || "None",
 
         // Product Context
@@ -218,7 +218,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
         // Marketing Data
         pageUrl: window.location.href,
-        referrer: document.referrer || "Direct",
+        referrer: document.referrer || t("direct"),
         userAgent: navigator.userAgent,
       };
 
@@ -248,13 +248,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const categories = [
     {
       id: "drive-eraser",
-      name: "Drive Eraser",
-      subtitle: "Erase HDDs, SSDs in PCs, Mac & Servers",
+      name: t("categories.driveEraser.name"),
+      subtitle: t("categories.driveEraser.subtitle"),
     },
     {
       id: "file-eraser",
-      name: "File Eraser",
-      subtitle: "Erase Files, Folders & Volumes",
+      name: t("categories.fileEraser.name"),
+      subtitle: t("categories.fileEraser.subtitle"),
     },
   ];
 
@@ -262,60 +262,58 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const planOptions = [
     {
       id: "basic",
-      name: "Standard",
+      name: t("plans.standard.name"),
       basePrice: 80,
-      description:
-        "Essential data erasure features for individuals and small teams",
-      category: "Platform & OS Support",
+      description: t("plans.standard.description"),
+      category: t("plans.standard.category"),
       features: [
-        "INCLUDED: Windows Support",
-        "INCLUDED: Linux Support",
-        "NOT INCLUDED: macOS Support",
-        "NOT INCLUDED: Multi-Bootable OS Support (3+)",
-        "INCLUDED: Core Erasure Capabilities",
-        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
-        "INCLUDED: File & Folder Erase",
-        "NOT INCLUDED: Erase Tracks (Browser, System, App data)",
-        "NOT INCLUDED: Free Space Cleaning / Free Space File Cleaning",
-        "NOT INCLUDED: Erase Volume",
-        "NOT INCLUDED: Erase Disk (Full Devices)",
-        "INCLUDED: Schedule Erase",
-        "NOT INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
-        "NOT INCLUDED: Local PDF Reports",
-        "NOT INCLUDED: White Label Reports",
-        "NOT INCLUDED: Compliance Email Report Format",
-        "NOT INCLUDED: XML Report Format",
-        "NOT INCLUDED: Audit Grade Regulatory Documents",
-        "NOT INCLUDED: Inspection Logs",
+        `${t("featureStatus.included")}: ${t("features.windowsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.linuxSupport")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.macosSupport")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.multiBootableOsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.coreErasureCapabilities")}`,
+        `${t("featureStatus.included")}: ${t("features.internationalAlgorithms")}`,
+        `${t("featureStatus.included")}: ${t("features.fileFolderErase")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.eraseTracks")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.freeSpaceCleaning")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.eraseVolume")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.eraseDisk")}`,
+        `${t("featureStatus.included")}: ${t("features.scheduleErase")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.cloudStorageErase")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.localPdfReports")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.whiteLabelReports")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.complianceEmailReport")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.xmlReportFormat")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.auditGradeDocuments")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.inspectionLogs")}`,
       ],
     },
     {
       id: "standard",
-      name: "Corporate",
+      name: t("plans.corporate.name"),
       basePrice: 150,
-      description:
-        "Enhanced features with broader OS support and core capabilities",
-      category: "Standard Business Solution",
+      description: t("plans.corporate.description"),
+      category: t("plans.corporate.category"),
       features: [
-        "INCLUDED: Windows Support",
-        "INCLUDED: Linux Support",
-        "INCLUDED: macOS Support",
-        "NOT INCLUDED: Multi-Bootable OS Support (3+)",
-        "INCLUDED: Core Erasure Capabilities",
-        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
-        "INCLUDED: File & Folder Erase",
-        "INCLUDED: Erase Tracks (Browser, System, App data)",
-        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
-        "NOT INCLUDED: Erase Volume",
-        "NOT INCLUDED: Erase Disk (Full Devices)",
-        "INCLUDED: Schedule Erase",
-        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
-        "INCLUDED: Local PDF Reports",
-        "NOT INCLUDED: White Label Reports",
-        "NOT INCLUDED: Compliance Email Report Format",
-        "NOT INCLUDED: XML Report Format",
-        "NOT INCLUDED: Audit Grade Regulatory Documents",
-        "NOT INCLUDED: Inspection Logs",
+        `${t("featureStatus.included")}: ${t("features.windowsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.linuxSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.macosSupport")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.multiBootableOsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.coreErasureCapabilities")}`,
+        `${t("featureStatus.included")}: ${t("features.internationalAlgorithms")}`,
+        `${t("featureStatus.included")}: ${t("features.fileFolderErase")}`,
+        `${t("featureStatus.included")}: ${t("features.eraseTracks")}`,
+        `${t("featureStatus.included")}: ${t("features.freeSpaceCleaning")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.eraseVolume")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.eraseDisk")}`,
+        `${t("featureStatus.included")}: ${t("features.scheduleErase")}`,
+        `${t("featureStatus.included")}: ${t("features.cloudStorageErase")}`,
+        `${t("featureStatus.included")}: ${t("features.localPdfReports")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.whiteLabelReports")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.complianceEmailReport")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.xmlReportFormat")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.auditGradeDocuments")}`,
+        `${t("featureStatus.notIncluded")}: ${t("features.inspectionLogs")}`,
       ],
     },
     // Hidden: Cloud and Network plans
@@ -383,103 +381,100 @@ const PricingAndPlanPage: React.FC = memo(() => {
     // },
     {
       id: "pro",
-      name: "Professional",
+      name: t("plans.professional.name"),
       basePrice: 250,
-      description:
-        "Professional solution with premium add-ons and customization",
-      category: "Professional Solution",
+      description: t("plans.professional.description"),
+      category: t("plans.professional.category"),
       features: [
-        "INCLUDED: Windows Support",
-        "INCLUDED: Linux Support",
-        "INCLUDED: macOS Support",
-        "INCLUDED: Multi-Bootable OS Support (3+)",
-        "INCLUDED: Core Erasure Capabilities",
-        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
-        "INCLUDED: File & Folder Erase",
-        "INCLUDED: Erase Tracks (Browser, System, App data)",
-        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
-        "INCLUDED: Erase Volume",
-        "INCLUDED: Erase Disk (Full Devices)",
-        "INCLUDED: Schedule Erase",
-        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
-        "INCLUDED: Local PDF Reports",
-        "INCLUDED: White Label Reports",
-        "INCLUDED: Compliance Email Report Format",
-        "INCLUDED: XML Report Format",
-        "INCLUDED: Audit Grade Regulatory Documents",
-        "INCLUDED: Inspection Logs",
-        "INCLUDED: Web Dashboard",
-        "INCLUDED: Cloud Commands (Remote Jobs)",
-        "INCLUDED: Custom Installer (Auto-register functions)",
-        "ADD-ON: Free + add-on Private Cloud Support",
-        "INCLUDED: Multi-Level User Logic",
-        "ADD-ON: Free + add-on Additional USB Erasure Licenses",
-        "ADD-ON: Free + add-on Additional Volume Erasure Licenses",
-        "ADD-ON: Free + add-on Data Connection Manager",
-        "ADD-ON: Free + add-on Extra Sub Users",
-        "ADD-ON: Free + add-on Extra Private Clouds",
-        "ADD-ON: Free + add-on Bootable Integration (MLO & Quick Tools)",
-        "ADD-ON: Free + add-on Dedicated SLA/Support Manager",
+        `${t("featureStatus.included")}: ${t("features.windowsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.linuxSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.macosSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.multiBootableOsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.coreErasureCapabilities")}`,
+        `${t("featureStatus.included")}: ${t("features.internationalAlgorithms")}`,
+        `${t("featureStatus.included")}: ${t("features.fileFolderErase")}`,
+        `${t("featureStatus.included")}: ${t("features.eraseTracks")}`,
+        `${t("featureStatus.included")}: ${t("features.freeSpaceCleaning")}`,
+        `${t("featureStatus.included")}: ${t("features.eraseVolume")}`,
+        `${t("featureStatus.included")}: ${t("features.eraseDisk")}`,
+        `${t("featureStatus.included")}: ${t("features.scheduleErase")}`,
+        `${t("featureStatus.included")}: ${t("features.cloudStorageErase")}`,
+        `${t("featureStatus.included")}: ${t("features.localPdfReports")}`,
+        `${t("featureStatus.included")}: ${t("features.whiteLabelReports")}`,
+        `${t("featureStatus.included")}: ${t("features.complianceEmailReport")}`,
+        `${t("featureStatus.included")}: ${t("features.xmlReportFormat")}`,
+        `${t("featureStatus.included")}: ${t("features.auditGradeDocuments")}`,
+        `${t("featureStatus.included")}: ${t("features.inspectionLogs")}`,
+        `${t("featureStatus.included")}: ${t("features.webDashboard")}`,
+        `${t("featureStatus.included")}: ${t("features.cloudCommands")}`,
+        `${t("featureStatus.included")}: ${t("features.customInstaller")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnPrivateCloud")}`,
+        `${t("featureStatus.included")}: ${t("features.multilevelUserLogic")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnUsbLicenses")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnVolumeLicenses")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnDataConnection")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnExtraSubUsers")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnExtraPrivateClouds")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnBootable")}`,
+        `${t("featureStatus.addOn")}: ${t("features.addOnDedicatedSla")}`,
       ],
     },
     {
       id: "enterprise",
-      name: "Enterprise",
+      name: t("plans.enterprise.name"),
       basePrice: 500,
-      description:
-        "Complete enterprise solution with all features and dedicated support",
-      category: "Complete Enterprise Solution",
+      description: t("plans.enterprise.description"),
+      category: t("plans.enterprise.category"),
       features: [
-        "INCLUDED: Windows Support",
-        "INCLUDED: Linux Support",
-        "INCLUDED: macOS Support",
-        "INCLUDED: Multi-Bootable OS Support (3+)",
-        "INCLUDED: Core Erasure Capabilities",
-        "INCLUDED: International Algorithms (DoD 5220, Crypto Erase)",
-        "INCLUDED: File & Folder Erase",
-        "INCLUDED: Erase Tracks (Browser, System, App data)",
-        "INCLUDED: Free Space Cleaning / Free Space File Cleaning",
-        "INCLUDED: Erase Volume",
-        "INCLUDED: Erase Disk (Full Devices)",
-        "INCLUDED: Schedule Erase",
-        "INCLUDED: Cloud Storage Erase (Google Drive without opening account)",
-        "INCLUDED: Local PDF Reports",
-        "INCLUDED: White Label Reports",
-        "INCLUDED: Compliance Email Report Format",
-        "INCLUDED: XML Report Format",
-        "INCLUDED: Audit Grade Regulatory Documents",
-        "INCLUDED: Inspection Logs",
-        "INCLUDED: Web Dashboard",
-        "INCLUDED: Cloud Commands (Remote Jobs)",
-        "INCLUDED: Custom Installer (Auto-register functions)",
-        "INCLUDED: Private Cloud Support (Included)",
-        "INCLUDED: Multi-Level User Logic",
-        "INCLUDED: Additional USB Erasure Licenses (Included)",
-        "INCLUDED: Additional Volume Erasure Licenses (Included)",
-        "INCLUDED: Data Connection Manager (Included)",
-        "INCLUDED: Extra Sub Users (Included)",
-        "INCLUDED: Extra Private Clouds (Included)",
-        "INCLUDED: Bootable Integration (MLO & Quick Tools) (Included)",
-        "INCLUDED: Dedicated SLA/Support Manager (Included)",
+        `${t("featureStatus.included")}: ${t("features.windowsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.linuxSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.macosSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.multiBootableOsSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.coreErasureCapabilities")}`,
+        `${t("featureStatus.included")}: ${t("features.internationalAlgorithms")}`,
+        `${t("featureStatus.included")}: ${t("features.fileFolderErase")}`,
+        `${t("featureStatus.included")}: ${t("features.eraseTracks")}`,
+        `${t("featureStatus.included")}: ${t("features.freeSpaceCleaning")}`,
+        `${t("featureStatus.included")}: ${t("features.eraseVolume")}`,
+        `${t("featureStatus.included")}: ${t("features.eraseDisk")}`,
+        `${t("featureStatus.included")}: ${t("features.scheduleErase")}`,
+        `${t("featureStatus.included")}: ${t("features.cloudStorageErase")}`,
+        `${t("featureStatus.included")}: ${t("features.localPdfReports")}`,
+        `${t("featureStatus.included")}: ${t("features.whiteLabelReports")}`,
+        `${t("featureStatus.included")}: ${t("features.complianceEmailReport")}`,
+        `${t("featureStatus.included")}: ${t("features.xmlReportFormat")}`,
+        `${t("featureStatus.included")}: ${t("features.auditGradeDocuments")}`,
+        `${t("featureStatus.included")}: ${t("features.inspectionLogs")}`,
+        `${t("featureStatus.included")}: ${t("features.webDashboard")}`,
+        `${t("featureStatus.included")}: ${t("features.cloudCommands")}`,
+        `${t("featureStatus.included")}: ${t("features.customInstaller")}`,
+        `${t("featureStatus.included")}: ${t("features.privateCloudSupport")}`,
+        `${t("featureStatus.included")}: ${t("features.multilevelUserLogic")}`,
+        `${t("featureStatus.included")}: ${t("features.additionalUsbLicenses")}`,
+        `${t("featureStatus.included")}: ${t("features.additionalVolumeLicenses")}`,
+        `${t("featureStatus.included")}: ${t("features.dataConnectionManager")}`,
+        `${t("featureStatus.included")}: ${t("features.extraSubUsers")}`,
+        `${t("featureStatus.included")}: ${t("features.extraPrivateClouds")}`,
+        `${t("featureStatus.included")}: ${t("features.bootableIntegration")}`,
+        `${t("featureStatus.included")}: ${t("features.dedicatedSlaManager")}`,
       ],
     },
     {
       id: "custom",
-      name: "Custom",
+      name: t("plans.custom.name"),
       basePrice: 0,
-      description:
-        "Tailored solution designed specifically for your organization's needs",
-      category: "Custom Enterprise Solution",
+      description: t("plans.custom.description"),
+      category: t("plans.custom.category"),
       features: [
-        "CUSTOM: Fully Customized Feature Set",
-        "CUSTOM: Bespoke Integration & Development",
-        "CUSTOM: Personalized Training & Onboarding",
-        "CUSTOM: Custom Compliance Requirements",
-        "CUSTOM: Flexible Licensing Model",
-        "CUSTOM: White-label Solutions Available",
-        "CUSTOM: Custom SLA & Support Terms",
-        "CUSTOM: Dedicated Development Team",
-        "CUSTOM: Priority Feature Requests",
+        `${t("featureStatus.custom")}: ${t("features.fullyCustomizedFeatureSet")}`,
+        `${t("featureStatus.custom")}: ${t("features.bespokeIntegration")}`,
+        `${t("featureStatus.custom")}: ${t("features.personalizedTraining")}`,
+        `${t("featureStatus.custom")}: ${t("features.customCompliance")}`,
+        `${t("featureStatus.custom")}: ${t("features.flexibleLicensing")}`,
+        `${t("featureStatus.custom")}: ${t("features.whitelabelSolutions")}`,
+        `${t("featureStatus.custom")}: ${t("features.customSla")}`,
+        `${t("featureStatus.custom")}: ${t("features.dedicatedDevTeam")}`,
+        `${t("featureStatus.custom")}: ${t("features.priorityFeatureRequests")}`,
       ],
     },
   ];
@@ -521,49 +516,25 @@ const PricingAndPlanPage: React.FC = memo(() => {
     if (!currentPlan) return [];
 
     if (category === "drive-eraser") {
-      return [
-        "Complete Hard Drive & SSD Erasure",
-        "Enterprise-Grade Security Standards",
-        "Multi-Platform Device Support",
-        "Compliance Reporting & Regulatory Documents",
-        "Real-time Progress Monitoring",
-        "Batch Processing Capabilities",
-      ];
+      return t("driveEraserFeatures", { returnObjects: true }) as string[];
     } else if (category === "file-eraser") {
-      return [
-        "Secure File & Folder Deletion",
-        "30+ International Erasure Algorithms",
-        "Real-time Progress Monitoring",
-        "Windows, Mac & Linux Support",
-        "Free Space Cleaning",
-        "Local PDF Reports",
-        "Enhanced Erasure Features",
-        "Cloud Report Upload/Sync",
-        "White-Label Reports",
-        "XML Report Format",
-        "Volume & Disk Erasure",
-        "Network Deployment",
-        "Web Dashboard Access",
-        "Cloud Commands (Remote Jobs)",
-        "Multi-Level User Logs",
-      ];
+      return t("fileEraserFeatures", { returnObjects: true }) as string[];
     }
     return [];
   };
 
   const productData = {
     "drive-eraser": {
-      title: "D-Secure Drive Eraser",
-      subtitle:
-        "Secure Data Erasure Software for HDD, SSD, PC, Laptop, Mac, Chromebook & Server",
+      title: t("products.driveEraser.title"),
+      subtitle: t("products.driveEraser.subtitle"),
       image: getProductIcon("drive-eraser", 64),
       imageCategory: "drive-eraser",
       version: "V1.0.0.0 Enterprise",
       basePrice: 20,
       originalPrice: 40,
       discountPercentage: "50% OFF",
-      selectionLabel: "Number of Licenses:",
-      selectionNote: "(Pay Per Use)",
+      selectionLabel: t("products.driveEraser.selectionLabel"),
+      selectionNote: t("products.driveEraser.selectionNote"),
       options: [
         "1",
         "10",
@@ -579,16 +550,16 @@ const PricingAndPlanPage: React.FC = memo(() => {
       showDeliveryOptions: true,
     },
     "file-eraser": {
-      title: "D-Secure File Eraser Professional",
-      subtitle: "Complete File, Folder & Application Trace Elimination",
+      title: t("products.fileEraser.title"),
+      subtitle: t("products.fileEraser.subtitle"),
       image: getProductIcon("file-eraser", 64),
       imageCategory: "file-eraser",
       version: "Professional",
       basePrice: 40,
       originalPrice: 60,
       discountPercentage: "33% OFF",
-      selectionLabel: "Number of Licenses:",
-      selectionNote: "(Pay Per License)",
+      selectionLabel: t("products.fileEraser.selectionLabel"),
+      selectionNote: t("products.fileEraser.selectionNote"),
       options: [
         "1",
         "10",
@@ -610,7 +581,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   const getDisplayPrice = () => {
     if (selectedLicenses === "custom" || selectedPlan === "custom")
-      return "Custom Quote";
+      return t("customQuote");
 
     const totalPrice = calculatePrice(
       selectedCategory,
@@ -623,14 +594,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   const getPriceSubtitle = () => {
     if (selectedLicenses === "custom" || selectedPlan === "custom")
-      return "Get Personalized Quote";
+      return t("getPersonalizedQuote");
 
     if (selectedCategory === "drive-eraser") {
-      return `Drive Eraser - ${selectedLicenses} licenses (one-time purchase)`;
+      return `${t("categories.driveEraser.name")} - ${selectedLicenses} ${t("licenses")} (${t("driveEraserOnetimePurchase")})`;
     }
 
     // File Eraser plan-based subtitle
-    let subtitle = `File Eraser Professional - ${selectedLicenses} licenses`;
+    let subtitle = `${t("categories.fileEraser.name")} ${t("plans.professional.name")} - ${selectedLicenses} ${t("licenses")}`;
     subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? "s" : ""}`;
 
     return subtitle;
@@ -638,15 +609,15 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   const getPriceNote = () => {
     if (selectedLicenses === "custom" || selectedPlan === "custom")
-      return "Tailored to your needs";
+      return t("tailoredToYourNeeds");
 
     if (selectedCategory === "drive-eraser") {
-      return "Drive Eraser @ $20.00/license (one-time purchase)";
+      return `${t("categories.driveEraser.name")} @ $20.00/${t("licenses")} (${t("driveEraserOnetimePurchase")})`;
     }
 
     // File Eraser plan-based pricing
     const currentPlan = getCurrentPlan();
-    let note = `Professional @ $40.00/license/year`;
+    let note = `${t("plans.professional.name")} @ $40.00/${t("licenses")}/year`;
 
     if (parseInt(selectedYears) > 1) {
       note += ` × ${selectedYears} years`;
@@ -656,28 +627,13 @@ const PricingAndPlanPage: React.FC = memo(() => {
   };
 
   const handleCustomLicenseSubmit = async (data: CustomLicenseData) => {
-    // console.log("handleCustomLicenseSubmit called with data:", data);
-
     try {
-      // Use the useFormSubmission hook to handle the form submission
       await submitForm(data);
-
-      // Show success toast
-      showToast(
-        "Thank you! Your custom license request has been submitted successfully. Our sales team will contact you within 24 hours.",
-        "success",
-      );
-
-      // Close modal after successful submission
+      showToast(t("form.toastSuccess"), "success");
       setShowCustomModal(false);
     } catch (error) {
-      console.error("Custom license submission error:", error);
-
-      // Show error toast
-      showToast(
-        "Failed to send your custom license request. Please try again or contact our sales team directly.",
-        "error",
-      );
+      console.error(t("form.submissionErrorLog"), error);
+      showToast(t("form.toastError"), "error");
     }
   };
 
@@ -708,7 +664,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
 
     if (!productId) {
-      showToast("Invalid product selection. Please try again.", "error");
+      showToast(t("form.invalidProduct"), "error");
       setIsBuyNowLoading(false);
       return;
     }
@@ -746,7 +702,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
       const baseLink = BASE_LINKS[selectedCategory];
       if (!baseLink) {
-        showToast("Product link not found.", "error");
+        showToast(t("form.productLinkNotFound"), "error");
         setIsBuyNowLoading(false);
         return;
       }
@@ -777,48 +733,16 @@ const PricingAndPlanPage: React.FC = memo(() => {
       // 🚀 Instant redirect
       window.location.href = finalUrl;
     } catch (error) {
-      console.error("Navigation error:", error);
-      showToast("Something went wrong. Please try again.", "error");
+      console.error(t("form.navigationError"), error);
+      showToast(t("form.somethingWentWrong"), "error");
       setIsBuyNowLoading(false);
     }
   };
-  const faqs = [
-    {
-      question: "How do I get my License?",
-      answer:
-        "Each product license is assigned based on the number of devices you choose. You will receive login credentials to access D-Secure Cloud and the necessary installation files after your order is confirmed. The total number of licenses will correspond to the number of devices selected during purchase. Once the order is confirmed, your product access details will be delivered instantly.",
-    },
-    {
-      question: "If I order 1000 licenses, how many drives can I wipe?",
-      answer:
-        "Each license allows you to wipe one drive. So with 1000 licenses, you can wipe 1000 drives.",
-    },
-    {
-      question: "Are there any shipping charges?",
-      answer:
-        "We offer FREE shipping for all physical deliveries worldwide. For digital delivery, you receive instant access via email.",
-    },
-    {
-      question: "What payment methods do you accept?",
-      answer:
-        "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, bank transfers, and purchase orders for enterprise customers.",
-    },
-    {
-      question: "Do you offer Volume discounts?",
-      answer:
-        "Yes! We offer discounts for bulk orders. Please submit a request via our Custom License form to receive a personalized quote with discounted pricing.",
-    },
-    {
-      question: "What kind of support do you provide?",
-      answer:
-        "All licenses include lifetime technical support via email, phone, and live chat. Enterprise customers receive priority support with dedicated account managers.",
-    },
-    {
-      question: "What ongoing support is provided?",
-      answer:
-        "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
-    },
-  ];
+  const faqData = t("faq", { returnObjects: true }) as Array<{
+    question: string;
+    answer: string;
+  }>;
+  const faqs = Array.isArray(faqData) ? faqData : [];
 
   return (
     <>
@@ -829,19 +753,17 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* Header */}
           <div className="text-center mb-12 xs:mb-14 sm:mb-16 md:mb-16">
             <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-4 xs:px-6 sm:px-6 py-2 rounded-full text-xs xs:text-sm sm:text-sm font-semibold mb-4 xs:mb-6 sm:mb-6 shadow-lg">
-              SECURE • COMPLIANT
+              {t("badge")}
             </div>
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 xs:mb-6 sm:mb-6 leading-tight px-2">
-              Choose Your{" "}
+              {t("chooseYour")}{" "}
               <span className="bg-gradient-to-r from-teal-500 to-teal-600 bg-clip-text text-transparent">
-                D-Secure
+                {t("dsecure")}
               </span>{" "}
-              License
+              {t("pricing.license")}
             </h1>
             <p className="text-base xs:text-lg sm:text-xl md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-              Professional data erasure solutions trusted by enterprises
-              worldwide. NIST & DoD compliant with lifetime support and instant
-              deployment.
+              {t("subtitle")}
             </p>
           </div>
 
@@ -903,8 +825,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     <div className="space-y-3 mb-6">
                       <h4 className="text-sm font-semibold text-gray-800 mb-3">
                         {selectedCategory === "drive-eraser"
-                          ? "Drive Eraser - Key Features:"
-                          : `${getCurrentProduct().title} - Key Features:`}
+                          ? t("driveEraserKeyFeatures")
+                          : `${getCurrentProduct().title} - ${t("keyFeatures")}`}
                       </h4>
                       {false && selectedCategory === "file-eraser" && (
                         <p className="text-xs text-gray-600 mb-3 italic">
@@ -939,7 +861,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     {/* Selection Criteria */}
                     <div className="mb-4 xs:mb-6 sm:mb-6">
                       <h3 className="text-base xs:text-lg sm:text-lg font-semibold text-gray-900 mb-3 xs:mb-4 sm:mb-4">
-                        Configure Your License
+                        {t("pricing.configure_your_license")}
                       </h3>
                       <div
                         className={`grid gap-3 xs:gap-4 sm:gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1"}`}
@@ -949,10 +871,12 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         {false && selectedCategory === "file-eraser" && (
                           <div className="space-y-2">
                             <label className="block text-xs xs:text-sm font-semibold text-gray-700">
-                              Select Plan:
+                              {t("pricing.select_plan")}
                             </label>
                             <p className="text-xs text-gray-500">
-                              Features will update based on your selection
+                              {t(
+                                "pricing.features_will_update_based_on_your_selection",
+                              )}
                             </p>
                             <select
                               value={selectedPlan}
@@ -990,8 +914,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             {getCurrentProduct().options.map((option) => (
                               <option key={option} value={option}>
                                 {option === "custom"
-                                  ? " Custom Quantity"
-                                  : `${option} licenses`}
+                                  ? ` ${t("customQuantity")}`
+                                  : `${option} ${t("licenses")}`}
                               </option>
                             ))}
                           </select>
@@ -1016,10 +940,10 @@ const PricingAndPlanPage: React.FC = memo(() => {
                           >
                             {selectedCategory === "file-eraser" ? (
                               <>
-                                <option value="1">1 Year</option>
+                                <option value="1">{t("pricing.1_year")}</option>
                               </>
                             ) : (
-                              <option value="1">One-time Purchase</option>
+                              <option value="1">{t("pricing.onetime_purchase")}</option>
                             )}
                           </select>
                         </div> */}
@@ -1030,14 +954,16 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
                       <div className="text-center">
                         <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                          Are You An MSP, Academic Institute or Non-Profit
-                          Organization?
+                          {t(
+                            "pricing.are_you_an_msp_academic_institute_or_nonprofi",
+                          )}
+                          {t("pricing.organization")}
                         </h4>
                         <button
                           onClick={() => setShowSpecialPricingModal(true)}
                           className="text-blue-600 hover:text-blue-700 font-medium underline transition-colors"
                         >
-                          Contact Us For Special Pricing
+                          {t("pricing.contact_us_for_special_pricing")}
                         </button>
                       </div>
                     </div>
@@ -1053,7 +979,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
                 <div className="text-center mb-6 xs:mb-8 sm:mb-8 relative">
                   {/* Early Bird Offer Label */}
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-rose-500 text-white text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-md animate-bounce whitespace-nowrap">
-                    Early Bird Offer - {getCurrentProduct().discountPercentage}
+                    {t("earlyBirdOffer")} -{" "}
+                    {getCurrentProduct().discountPercentage}
                   </div>
 
                   <div className="flex flex-col items-center justify-center mb-2">
@@ -1124,10 +1051,10 @@ const PricingAndPlanPage: React.FC = memo(() => {
                     }`}
                 >
                   {selectedCategory === "drive-eraser"
-                    ? "Coming Soon"
+                    ? t("comingSoon")
                     : selectedLicenses === "custom" || selectedPlan === "custom"
-                      ? "Request Custom Quote"
-                      : "Buy Now"}
+                      ? t("requestCustomQuote")
+                      : t("buyNow")}
                 </button>
 
                 {/* Trust Indicators */}
@@ -1144,7 +1071,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         clipRule="evenodd"
                       />
                     </svg> */}
-                    {/* <span>30-day money-back guarantee</span> */}
+                    {/* <span>{t("pricing.30day_moneyback_guarantee")}</span> */}
                   </div>
                   <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
                     <svg
@@ -1158,7 +1085,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span>Free worldwide shipping</span>
+                    <span>{t("pricingPage.freeShipping")}</span>
                   </div>
                   <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
                     <svg
@@ -1172,7 +1099,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <span>Instant activation & support</span>
+                    <span>{t("pricingPage.instantActivation")}</span>
                   </div>
                 </div>
               </div>
@@ -1183,9 +1110,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
             <div className="text-center">
               <span className="text-blue-700 font-medium">
-                OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS |
-                regulated: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
-                Instant Delivery Available
+                {t("osCompatibilityNote")} |
+                {t("pricing.instant_delivery_available")}
               </span>
             </div>
           </div>
@@ -1193,7 +1119,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* FAQ Section */}
           <div className="bg-white rounded-2xl p-4 xs:p-6 sm:p-8 shadow-lg border border-gray-200">
             <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4 xs:mb-6 sm:mb-8">
-              Frequently Asked Questions
+              {t("pricingPage.faqTitle")}
             </h2>
             <div className="space-y-4 max-w-4xl mx-auto">
               {faqs.map((faq, index) => (

@@ -3,7 +3,9 @@ import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
+import { Outlet, useLocation } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 import {
   BookOpen,
   Layers,
@@ -155,7 +157,7 @@ const sidebarSections: SidebarSection[] = [
 
 const NetworkFileManualLayout: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const listRef = useRef<HTMLDivElement | null>(null);
 

@@ -12,7 +12,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from "@/components/LocaleLink";
 
 const ReportManagementPage: React.FC = () => {
   return (

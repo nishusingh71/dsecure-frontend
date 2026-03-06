@@ -5,16 +5,15 @@ import { useState, useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { isDemoMode } from "@/data/demoData";
+import { useNotification } from "@/contexts/NotificationContext";
 import { indexedDBService } from "@/services/indexedDBService";
 import {
   SkeletonStats,
   SkeletonChart,
   SkeletonTable,
 } from "../../components/Skeleton";
-import ExcelJS from "exceljs";
-import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
+// ExcelJS, file-saver, jsPDF, jspdf-autotable are dynamically imported
+// inside handleExportExcel and handleExportPDF to reduce initial bundle size
 import {
   PieChart,
   Pie,
@@ -23,6 +22,7 @@ import {
   Tooltip as RechartsTooltip,
   Legend,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 
 // Types for API responses
 interface LicenseStats {
@@ -55,7 +55,9 @@ interface LicenseDistribution {
 }
 
 export default function AdminLicenses() {
+  const { t } = useTranslation();
   const isDemo = isDemoMode();
+  const { showWarning } = useNotification();
 
   // ✅ Get user role for RBAC
   const getUserRole = (): string => {
@@ -530,6 +532,10 @@ export default function AdminLicenses() {
 
   // Export to Excel - Try backend API first, fallback to client-side
   const handleExportExcel = async () => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Excel export is not available in demo mode.");
+      return;
+    }
     setExporting("excel");
     try {
       // Try backend API first
@@ -589,6 +595,8 @@ export default function AdminLicenses() {
 
       try {
         // Create workbook and worksheet
+        const ExcelJS = (await import("exceljs")).default;
+        const { saveAs } = await import("file-saver");
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Licenses");
 
@@ -651,6 +659,10 @@ export default function AdminLicenses() {
 
   // Export to PDF - Try backend API first, fallback to client-side
   const handleExportPDF = async () => {
+    if (isDemo) {
+      showWarning("Demo Mode", "PDF export is not available in demo mode.");
+      return;
+    }
     setExporting("pdf");
     try {
       // Try backend API first
@@ -695,6 +707,8 @@ export default function AdminLicenses() {
       }
 
       try {
+        const { jsPDF } = await import("jspdf");
+        const { default: autoTable } = await import("jspdf-autotable");
         const doc = new jsPDF();
 
         doc.setFontSize(20);
@@ -835,6 +849,13 @@ export default function AdminLicenses() {
 
   // Confirm Revoke (API Call)
   const confirmRevoke = async () => {
+    if (isDemo) {
+      showWarning(
+        "Demo Mode",
+        "License revocation is not available in demo mode.",
+      );
+      return;
+    }
     if (!revokeReason.trim()) {
       // alert('Please enter a reason for revocation.');
       return;
@@ -896,16 +917,20 @@ export default function AdminLicenses() {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("admin-licenses")} />
       <Helmet>
-        <title>Licenses - Admin Dashboard | D-Secure</title>
+        <title>
+          {t("dashboard.adminLicenses.licenses_admin_dashboard_dsecure")}
+        </title>
       </Helmet>
 
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Licenses</h1>
+            <h1 className="text-2xl font-bold text-slate-900">
+              {t("dashboard.adminLicenses.licenses")}
+            </h1>
             <p className="text-slate-600 mt-1">
-              License distribution and management
+              {t("dashboard.adminLicenses.license_distribution_and_management")}
             </p>
           </div>
           {/* Export Buttons */}
@@ -929,7 +954,8 @@ export default function AdminLicenses() {
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
-                Revoke Selected ({selectedLicenses.size})
+                {t("dashboard.adminLicenses.revoke_selected")} (
+                {selectedLicenses.size})
               </button>
             )}
             <button
@@ -972,7 +998,7 @@ export default function AdminLicenses() {
                   />
                 </svg>
               )}
-              Export to Excel
+              {t("dashboard.adminLicenses.export_to_excel")}
             </button>
             <button
               onClick={handleExportPDF}
@@ -1014,7 +1040,7 @@ export default function AdminLicenses() {
                   />
                 </svg>
               )}
-              Download PDF
+              {t("dashboard.adminLicenses.download_pdf")}
             </button>
           </div>
         </div>
@@ -1022,13 +1048,15 @@ export default function AdminLicenses() {
         {/* Error Message */}
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-            <p className="font-medium">Error loading data</p>
+            <p className="font-medium">
+              {t("dashboard.adminLicenses.error_loading_data")}
+            </p>
             <p className="text-sm mt-1">{error}</p>
             <button
               onClick={fetchLicenseData}
               className="mt-2 text-sm font-medium text-red-600 hover:text-red-800"
             >
-              Try again
+              {t("dashboard.adminLicenses.try_again")}
             </button>
           </div>
         )}
@@ -1041,7 +1069,9 @@ export default function AdminLicenses() {
             <div className="card !p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Total Licenses</p>
+                  <p className="text-sm text-slate-600">
+                    {t("dashboard.adminLicenses.total_licenses")}
+                  </p>
                   <p className="text-3xl font-bold text-slate-900 mt-1">
                     {licenses.total.toLocaleString()}
                   </p>
@@ -1067,7 +1097,9 @@ export default function AdminLicenses() {
             <div className="card !p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Active</p>
+                  <p className="text-sm text-slate-600">
+                    {t("dashboard.adminLicenses.active")}
+                  </p>
                   <p className="text-3xl font-bold text-emerald-600 mt-1">
                     {licenses.active.toLocaleString()}
                   </p>
@@ -1093,7 +1125,9 @@ export default function AdminLicenses() {
             <div className="card !p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Inactive</p>
+                  <p className="text-sm text-slate-600">
+                    {t("dashboard.adminLicenses.inactive")}
+                  </p>
                   <p className="text-3xl font-bold text-orange-600 mt-1">
                     {licenses.inactive.toLocaleString()}
                   </p>
@@ -1119,7 +1153,9 @@ export default function AdminLicenses() {
             <div className="card !p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Expired</p>
+                  <p className="text-sm text-slate-600">
+                    {t("dashboard.adminLicenses.expired")}
+                  </p>
                   <p className="text-3xl font-bold text-red-600 mt-1">
                     {licenses.expired.toLocaleString()}
                   </p>
@@ -1145,7 +1181,9 @@ export default function AdminLicenses() {
             <div className="card !p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Revoked</p>
+                  <p className="text-sm text-slate-600">
+                    {t("dashboard.adminLicenses.revoked")}
+                  </p>
                   <p className="text-3xl font-bold text-rose-600 mt-1">
                     {licenses.revoked.toLocaleString()}
                   </p>
@@ -1176,7 +1214,7 @@ export default function AdminLicenses() {
         {/* Pie Chart */}
         <div className="card !p-6">
           <h3 className="text-lg font-semibold text-slate-900 mb-6">
-            License Distribution
+            {t("dashboard.adminLicenses.license_distribution")}
           </h3>
           {loading ? (
             <SkeletonChart height="h-[300px]" />
@@ -1240,10 +1278,12 @@ export default function AdminLicenses() {
                                 {data.type}
                               </p>
                               <p className="text-sm text-slate-600">
-                                Count: {data.count}
+                                {t("dashboard.adminLicenses.count_label")}:{" "}
+                                {data.count}
                               </p>
                               <p className="text-sm text-slate-600">
-                                Percentage: {data.percentage}%
+                                {t("dashboard.adminLicenses.percentage_label")}:{" "}
+                                {data.percentage}%
                               </p>
                             </div>
                           );
@@ -1266,7 +1306,7 @@ export default function AdminLicenses() {
             </>
           ) : (
             <div className="flex items-center justify-center h-64 text-slate-500">
-              No distribution data available
+              {t("dashboard.adminLicenses.no_distribution_data_available")}
             </div>
           )}
         </div>
@@ -1275,7 +1315,7 @@ export default function AdminLicenses() {
         <div className="card !p-0 overflow-hidden">
           <div className="px-6 py-4 bg-slate-50 border-b border-slate-200">
             <h3 className="text-lg font-semibold text-slate-900">
-              License Breakdown
+              {t("dashboard.adminLicenses.license_breakdown")}
             </h3>
           </div>
           <div className="overflow-x-auto">
@@ -1286,13 +1326,13 @@ export default function AdminLicenses() {
                 <thead className="bg-slate-50 border-b border-slate-200">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                      Type
+                      {t("dashboard.adminLicenses.type_header")}
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
-                      Count
+                      {t("dashboard.adminLicenses.count_header")}
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
-                      Percentage
+                      {t("dashboard.adminLicenses.percentage_header")}
                     </th>
                   </tr>
                 </thead>
@@ -1327,7 +1367,7 @@ export default function AdminLicenses() {
                   })}
                   <tr className="bg-slate-50 font-semibold">
                     <td className="px-6 py-4 whitespace-nowrap text-slate-900">
-                      Total
+                      {t("dashboard.adminLicenses.total")}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-slate-900">
                       {licenses.total.toLocaleString()}
@@ -1348,10 +1388,10 @@ export default function AdminLicenses() {
         <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4 w-full sm:w-auto">
             <h3 className="text-lg font-semibold text-slate-900">
-              All Licenses
+              {t("dashboard.adminLicenses.all_licenses")}
             </h3>
             <span className="text-sm text-slate-500">
-              {filteredLicenses.length} found
+              {filteredLicenses.length} {t("dashboard.adminLicenses.found")}
             </span>
           </div>
 
@@ -1359,7 +1399,7 @@ export default function AdminLicenses() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search licenses..."
+                placeholder={t("dashboard.adminLicenses.search_licenses")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9 pr-4 py-2 text-sm border border-slate-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 w-full sm:w-64"
@@ -1383,18 +1423,30 @@ export default function AdminLicenses() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
             >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="expired">Expired</option>
-              <option value="revoked">Revoked</option>
+              <option value="all">
+                {t("dashboard.adminLicenses.all_status")}
+              </option>
+              <option value="active">
+                {t("dashboard.adminLicenses.active")}
+              </option>
+              <option value="inactive">
+                {t("dashboard.adminLicenses.inactive")}
+              </option>
+              <option value="expired">
+                {t("dashboard.adminLicenses.expired")}
+              </option>
+              <option value="revoked">
+                {t("dashboard.adminLicenses.revoked")}
+              </option>
             </select>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
               className="px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
             >
-              <option value="all">All Types</option>
+              <option value="all">
+                {t("dashboard.adminLicenses.all_types")}
+              </option>
               {uniqueLicenseTypes.map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -1434,22 +1486,22 @@ export default function AdminLicenses() {
                   </th>
                 )}
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  License Key
+                  {t("dashboard.adminLicenses.license_key")}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  User Email
+                  {t("dashboard.adminLicenses.user_email")}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Type
+                  {t("dashboard.adminLicenses.type_header")}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Status
+                  {t("dashboard.adminLicenses.status_header")}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Expires
+                  {t("dashboard.adminLicenses.expires_header")}
                 </th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Actions
+                  {t("dashboard.adminLicenses.actions_header")}
                 </th>
               </tr>
             </thead>
@@ -1523,12 +1575,12 @@ export default function AdminLicenses() {
                                 : "Revoke this license"
                           }
                         >
-                          Revoke
+                          {t("dashboard.adminLicenses.revoke_btn")}
                         </button>
                       )}
                       {isSubUser && (
                         <span className="text-slate-400 text-xs">
-                          View Only
+                          {t("dashboard.adminLicenses.view_only")}
                         </span>
                       )}
                     </td>
@@ -1603,28 +1655,32 @@ export default function AdminLicenses() {
                       className="text-lg leading-6 font-medium text-gray-900"
                       id="modal-title"
                     >
-                      Revoke License{revokeData.count > 1 ? "s" : ""}
+                      {t("dashboard.adminLicenses.revoke_license_title")}
                     </h3>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         {revokeData.countIsOne
-                          ? `Are you sure you want to revoke the license ending in ...${revokeData.singleKey?.slice(-4)}?`
-                          : `Are you sure you want to revoke ${revokeData.count} selected licenses?`}
+                          ? t("dashboard.adminLicenses.revoke_single_confirm", { key: revokeData.singleKey?.slice(-4) })
+                          : t("dashboard.adminLicenses.revoke_bulk_confirm", { count: revokeData.count })}
                         <br />
-                        This action cannot be undone.
+                        {t(
+                          "dashboard.adminLicenses.this_action_cannot_be_undone",
+                        )}
                       </p>
                       <div className="mt-4">
                         <label
                           htmlFor="reason"
                           className="block text-sm font-medium text-gray-700"
                         >
-                          Reason for Revocation
+                          {t("dashboard.adminLicenses.reason_for_revocation")}
                         </label>
                         <textarea
                           id="reason"
                           rows={3}
                           className="shadow-sm focus:ring-red-500 focus:border-red-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md p-2"
-                          placeholder="Enter reason..."
+                          placeholder={t(
+                            "dashboard.adminLicenses.enter_reason",
+                          )}
                           value={revokeReason}
                           onChange={(e) => setRevokeReason(e.target.value)}
                         ></textarea>
@@ -1639,14 +1695,14 @@ export default function AdminLicenses() {
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={confirmRevoke}
                 >
-                  Revoke
+                  {t("dashboard.adminLicenses.revoke_btn")}
                 </button>
                 <button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={() => setShowRevokeModal(false)}
                 >
-                  Cancel
+                  {t("dashboard.adminLicenses.cancel")}
                 </button>
               </div>
             </div>

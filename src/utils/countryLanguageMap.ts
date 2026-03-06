@@ -1,0 +1,103 @@
+/**
+ * Maps ISO 3166-1 alpha-2 country codes to i18n language codes.
+ * Used by useGeoLanguage hook for geo-based auto-detection.
+ */
+export const countryLanguageMap: Record<string, string> = {
+  // South Asia
+  IN: 'hi',
+  PK: 'ur',
+  BD: 'bn',
+  LK: 'ta',
+  NP: 'hi',
+
+  // East Asia
+  CN: 'zh',
+  TW: 'zh-TW',
+  HK: 'zh-TW',
+  JP: 'ja',
+  KR: 'ko',
+  MN: 'ru',
+
+  // Middle East
+  SA: 'ar',
+  AE: 'ar',
+  EG: 'ar',
+  IQ: 'ar',
+  JO: 'ar',
+  KW: 'ar',
+  LB: 'ar',
+  OM: 'ar',
+  QA: 'ar',
+  BH: 'ar',
+  YE: 'ar',
+  SY: 'ar',
+  LY: 'ar',
+  IL: 'he',
+  IR: 'fa',
+  AF: 'fa',
+
+  // Europe
+  TR: 'tr',
+  RU: 'ru',
+  UA: 'uk',
+  DE: 'de',
+  AT: 'de',
+  CH: 'de',
+  FR: 'fr',
+  BE: 'fr',
+  ES: 'es',
+  PT: 'pt',
+  IT: 'it',
+  NL: 'nl',
+  PL: 'pl',
+  SE: 'sv',
+  NO: 'no',
+  DK: 'da',
+  FI: 'fi',
+  CZ: 'cs',
+  SK: 'sk',
+  RO: 'ro',
+  HU: 'hu',
+  BG: 'bg',
+  HR: 'hr',
+  GR: 'el',
+  RS: 'hr',
+  SI: 'hr',
+  BA: 'hr',
+
+  // Americas
+  MX: 'es',
+  AR: 'es',
+  CO: 'es',
+  CL: 'es',
+  PE: 'es',
+  VE: 'es',
+  EC: 'es',
+  BR: 'pt',
+  US: 'en',
+  CA: 'en',
+  GB: 'en',
+  AU: 'en',
+  NZ: 'en',
+  IE: 'en',
+
+  // Southeast Asia
+  TH: 'th',
+  VN: 'vi',
+  ID: 'id',
+  MY: 'ms',
+  PH: 'tl',
+  SG: 'en',
+
+  // Africa
+  KE: 'sw',
+  TZ: 'sw',
+  UG: 'sw',
+  ZA: 'af',
+  NG: 'en',
+  GH: 'en',
+  MA: 'ar',
+  DZ: 'ar',
+  TN: 'ar',
+  ET: 'en',
+};

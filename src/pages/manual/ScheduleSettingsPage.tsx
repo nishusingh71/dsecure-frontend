@@ -14,7 +14,7 @@ import {
   AlertCircle,
   Download,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 
 const ScheduleSettingsPage: React.FC = () => {
   return (

@@ -1,4 +1,5 @@
 import React, { useState, memo, useMemo, useCallback } from 'react';
+import { useTranslation } from "react-i18next";
 
 interface CustomLicenseModalProps {
   isOpen: boolean;
@@ -34,7 +35,11 @@ const FormInput = memo<{
     name={name}
     value={value}
     onChange={onChange}
-    className={hasError ? className.replace('border-gray-300', 'border-red-500') : className}
+    className={
+      hasError
+        ? className.replace("border-gray-300", "border-red-500")
+        : className
+    }
     placeholder={placeholder}
   />
 ));
@@ -64,223 +69,252 @@ const FormSelect = memo<{
   className: string;
   children: React.ReactNode;
 }>(({ name, value, onChange, className, children }) => (
-  <select
-    name={name}
-    value={value}
-    onChange={onChange}
-    className={className}
-  >
+  <select name={name} value={value} onChange={onChange} className={className}>
     {children}
   </select>
 ));
 
-const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
-  isOpen,
-  onClose,
-  onSubmit,
-  productName,
-  isLoading = false
-}) => {
-  const [formData, setFormData] = useState<CustomLicenseData>({
-    companyName: '',
-    contactName: '',
-    email: '',
-    phone: '',
-    numberOfLicenses: '',
-    duration: '1',
-    requirements: '',
-    budget: ''
-  });
+const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(
+  ({ isOpen, onClose, onSubmit, productName, isLoading = false }) => {
+    const { t } = useTranslation("pricingAndPlan");
 
-  const [errors, setErrors] = useState<Partial<CustomLicenseData>>({});
-
-  // Memoized handle input change with change detection
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    
-    // Only update if value actually changed
-    setFormData(prev => {
-      if (prev[name as keyof CustomLicenseData] === value) {
-        return prev;
-      }
-      return { ...prev, [name]: value };
+    const [formData, setFormData] = useState<CustomLicenseData>({
+      companyName: "",
+      contactName: "",
+      email: "",
+      phone: "",
+      numberOfLicenses: "",
+      duration: "1",
+      requirements: "",
+      budget: "",
     });
-    
-    if (errors[name as keyof CustomLicenseData]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  }, [errors]);
 
-  // Memoized duration options
-  const durationOptions = useMemo(() => [
-    { value: "1", label: "1 Year" },
-    { value: "2", label: "2 Years" },
-    { value: "3", label: "3 Years" },
-    { value: "5", label: "5 Years" },
-    { value: "lifetime", label: "Lifetime" }
-  ], []);
+    const [errors, setErrors] = useState<Partial<CustomLicenseData>>({});
 
-  // Memoized budget options
-  const budgetOptions = useMemo(() => [
-    { value: "", label: "Select budget range" },
-    { value: "under-10k", label: "Under $10,000" },
-    { value: "10k-25k", label: "$10,000 - $25,000" },
-    { value: "25k-50k", label: "$25,000 - $50,000" },
-    { value: "50k-100k", label: "$50,000 - $100,000" },
-    { value: "over-100k", label: "Over $100,000" }
-  ], []);
+    // Memoized handle input change with change detection
+    const handleInputChange = useCallback(
+      (
+        e: React.ChangeEvent<
+          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >,
+      ) => {
+        const { name, value } = e.target;
 
-  const validateForm = (): boolean => {
-    const newErrors: Partial<CustomLicenseData> = {};
-    
-    // Company name validation
-    if (!formData.companyName || formData.companyName.trim() === '') {
-      newErrors.companyName = 'Company name is required';
-    }
-    
-    // Contact name validation
-    if (!formData.contactName || formData.contactName.trim() === '') {
-      newErrors.contactName = 'Contact name is required';
-    }
-    
-    // Email validation
-    if (!formData.email || formData.email.trim() === '') {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-    
-    // Number of licenses validation
-    if (!formData.numberOfLicenses || formData.numberOfLicenses.trim() === '') {
-      newErrors.numberOfLicenses = 'Number of licenses is required';
-    } else {
-      const licenseCount = parseInt(formData.numberOfLicenses);
-      if (isNaN(licenseCount) || licenseCount < 1) {
-        newErrors.numberOfLicenses = 'Please enter a valid number of licenses (minimum 1)';
+        // Only update if value actually changed
+        setFormData((prev) => {
+          if (prev[name as keyof CustomLicenseData] === value) {
+            return prev;
+          }
+          return { ...prev, [name]: value };
+        });
+
+        if (errors[name as keyof CustomLicenseData]) {
+          setErrors((prev) => ({ ...prev, [name]: "" }));
+        }
+      },
+      [errors],
+    );
+
+    // Memoized duration options
+    const durationOptions = useMemo(
+      () => [
+        { value: "1", label: t("customModal.duration1Year") },
+        { value: "2", label: t("customModal.duration2Years") },
+        { value: "3", label: t("customModal.duration3Years") },
+        { value: "5", label: t("customModal.duration5Years") },
+        { value: "lifetime", label: t("customModal.durationLifetime") },
+      ],
+      [t],
+    );
+
+    // Memoized budget options
+    const budgetOptions = useMemo(
+      () => [
+        { value: "", label: t("customModal.budgetSelect") },
+        { value: "under-10k", label: t("customModal.budgetUnder10k") },
+        { value: "10k-25k", label: t("customModal.budget10k25k") },
+        { value: "25k-50k", label: t("customModal.budget25k50k") },
+        { value: "50k-100k", label: t("customModal.budget50k100k") },
+        { value: "over-100k", label: t("customModal.budgetOver100k") },
+      ],
+      [t],
+    );
+
+    const validateForm = (): boolean => {
+      const newErrors: Partial<CustomLicenseData> = {};
+
+      // Company name validation
+      if (!formData.companyName || formData.companyName.trim() === "") {
+        newErrors.companyName = t("customModal.errorCompanyRequired");
       }
-    }
-    
-    // console.log('Validation results:', { formData, newErrors });
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // console.log('Form submitted with data:', formData);
-    
-    if (validateForm()) {
-      // console.log('Form validation passed, calling onSubmit');
-      try {
-        await onSubmit(formData);
-        // Don't close modal here - let the parent handle success/error
-      } catch (error) {
-        console.error('Form submission failed:', error);
-        // Error handling is done by the parent component
+      // Contact name validation
+      if (!formData.contactName || formData.contactName.trim() === "") {
+        newErrors.contactName = t("customModal.errorContactRequired");
       }
-    } else {
-      // console.log('Form validation failed with errors:', errors);
-      // Scroll to first error field
-      const firstErrorField = document.querySelector('.border-red-500');
-      if (firstErrorField) {
-        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Email validation
+      if (!formData.email || formData.email.trim() === "") {
+        newErrors.email = t("customModal.errorEmailRequired");
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+        newErrors.email = t("customModal.errorEmailInvalid");
       }
-    }
-  };
 
-  if (!isOpen) return null;
+      // Number of licenses validation
+      if (
+        !formData.numberOfLicenses ||
+        formData.numberOfLicenses.trim() === ""
+      ) {
+        newErrors.numberOfLicenses = t("customModal.errorLicensesRequired");
+      } else {
+        const licenseCount = parseInt(formData.numberOfLicenses);
+        if (isNaN(licenseCount) || licenseCount < 1) {
+          newErrors.numberOfLicenses = t("customModal.errorLicensesInvalid");
+        }
+      }
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900">Custom License Request</h2>
-              <p className="text-gray-600 mt-1">Get a personalized quote for {productName}</p>
+      // console.log('Validation results:', { formData, newErrors });
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      // console.log('Form submitted with data:', formData);
+
+      if (validateForm()) {
+        // console.log('Form validation passed, calling onSubmit');
+        try {
+          await onSubmit(formData);
+          // Don't close modal here - let the parent handle success/error
+        } catch (error) {
+          console.error("Form submission failed:", error);
+          // Error handling is done by the parent component
+        }
+      } else {
+        // console.log('Form validation failed with errors:', errors);
+        // Scroll to first error field
+        const firstErrorField = document.querySelector(".border-red-500");
+        if (firstErrorField) {
+          firstErrorField.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }
+    };
+
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b border-gray-200">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">
+                  {t("customModal.title")}
+                </h2>
+                <p className="text-gray-600 mt-1">
+                  {t("customModal.subtitle", { productName })}
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
           </div>
-        </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Company Name *
-              </label>
-              <FormInput
-                type="text"
-                name="companyName"
-                value={formData.companyName}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
-                placeholder="Enter your company name"
-                hasError={!!errors.companyName}
-              />
-              {errors.companyName && (
-                <p className="text-red-500 text-sm mt-1">{errors.companyName}</p>
-              )}
-            </div>
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t("customModal.companyName")} *
+                </label>
+                <FormInput
+                  type="text"
+                  name="companyName"
+                  value={formData.companyName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
+                  placeholder={t("customModal.placeholderCompany")}
+                  hasError={!!errors.companyName}
+                />
+                {errors.companyName && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.companyName}
+                  </p>
+                )}
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Contact Person *
-              </label>
-              <FormInput
-                type="text"
-                name="contactName"
-                value={formData.contactName}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
-                placeholder="Your full name"
-                hasError={!!errors.contactName}
-              />
-              {errors.contactName && (
-                <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>
-              )}
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t("customModal.contactPerson")} *
+                </label>
+                <FormInput
+                  type="text"
+                  name="contactName"
+                  value={formData.contactName}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
+                  placeholder={t("customModal.placeholderContact")}
+                  hasError={!!errors.contactName}
+                />
+                {errors.contactName && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.contactName}
+                  </p>
+                )}
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address *
-              </label>
-              <FormInput
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
-                placeholder="your.email@company.com"
-                hasError={!!errors.email}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t("customModal.emailAddress")} *
+                </label>
+                <FormInput
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
+                  placeholder={t("customModal.placeholderEmail")}
+                  hasError={!!errors.email}
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number
-              </label>
-              <FormInput
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
-                placeholder="+1 (555) 123-4567"
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t("customModal.phoneNumber")}
+                </label>
+                <FormInput
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
+                  placeholder={t("customModal.placeholderPhone")}
+                />
+              </div>
 
-            {/* <div>
+              {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Number of Licenses *
               </label>
@@ -297,7 +331,7 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
                 <p className="text-red-500 text-sm mt-1">{errors.numberOfLicenses}</p>
               )}
             </div> */}
-{/* 
+              {/* 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 License Duration
@@ -315,22 +349,22 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
                 ))}
               </FormSelect>
             </div> */}
-          </div>
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Special Requirements
-            </label>
-            <FormTextarea
-              name="requirements"
-              value={formData.requirements}
-              onChange={handleInputChange}
-              rows={2}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
-              placeholder="Describe any specific requirements, integrations, or features you need..."
-            />
-          </div>
-{/* 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t("customModal.specialRequirements")}
+              </label>
+              <FormTextarea
+                name="requirements"
+                value={formData.requirements}
+                onChange={handleInputChange}
+                rows={2}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand transition-colors"
+                placeholder={t("customModal.placeholderRequirements")}
+              />
+            </div>
+            {/* 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Budget Range (Optional)
@@ -349,38 +383,55 @@ const CustomLicenseModal: React.FC<CustomLicenseModalProps> = memo(({
             </FormSelect>
           </div> */}
 
-          <div className="flex gap-4 pt-4">
-            {/* <button
+            <div className="flex gap-4 pt-4">
+              {/* <button
               type="button"
               onClick={onClose}
               className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
             >
               Cancel
             </button> */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`flex-1 px-4 py-3 bg-gradient-to-r from-brand to-brand-600 text-white rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all transform hover:scale-105 font-medium shadow-lg ${
-                isLoading ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  <span>Submitting...</span>
-                </div>
-              ) : (
-                'Submit Request'
-              )}
-            </button>
-          </div>
-        </form>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`flex-1 px-4 py-3 bg-gradient-to-r from-brand to-brand-600 text-white rounded-lg hover:from-brand-600 hover:to-brand-700 transition-all transform hover:scale-105 font-medium shadow-lg ${
+                  isLoading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center space-x-2">
+                    <svg
+                      className="animate-spin h-4 w-4 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span>{t("customModal.submitting")}</span>
+                  </div>
+                ) : (
+                  t("customModal.submitRequest")
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
 
 export default CustomLicenseModal;

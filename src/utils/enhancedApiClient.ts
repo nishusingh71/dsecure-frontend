@@ -18,6 +18,7 @@ import { encodeEmail } from './encodeEmail'
 import { ENV } from '../config/env'
 import { ApiResponse, User, Subuser, EnhancedSubuser, license } from '../types/models'
 import { log } from 'console'
+import { getLocalePath } from "@/utils/localePath";
 
 // API Configuration
 const API_BASE_URL = ENV.API_BASE_URL
@@ -257,7 +258,7 @@ class EnhancedApiClient {
     // Only redirect if not already on auth pages
     if (!window.location.pathname.includes('/login') &&
       !window.location.pathname.includes('/register')) {
-      window.location.href = '/login'
+      window.location.href = getLocalePath("/login")
     }
   }
 

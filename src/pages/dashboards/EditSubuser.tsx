@@ -6,75 +6,85 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useAuth } from '@/auth/AuthContext'
 import { apiClient } from '@/utils/enhancedApiClient'
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
+import { useTranslation } from "react-i18next";
 
 // Helper function to get user_email from localStorage (RoleBasedAuth)
 function getUserEmailFromStorage(): string | null {
   try {
-    const userData = localStorage.getItem('user_data')
-    if (!userData) return null
-    
-    const parsedData = JSON.parse(userData)
-    return parsedData.user_email || parsedData.email || null
+    const userData = localStorage.getItem("user_data");
+    if (!userData) return null;
+
+    const parsedData = JSON.parse(userData);
+    return parsedData.user_email || parsedData.email || null;
   } catch (error) {
-    console.error('Failed to parse user_data from localStorage:', error)
-    return null
+    console.error("Failed to parse user_data from localStorage:", error);
+    return null;
   }
 }
 
 interface SubuserData {
-  subuser_email: string
-  name?: string
-  role?: string
-  department?: string
-  status?: string
-  phone?: string
-  licenseUsage?: number
-  created_at?: string
+  subuser_email: string;
+  name?: string;
+  role?: string;
+  department?: string;
+  status?: string;
+  phone?: string;
+  licenseUsage?: number;
+  created_at?: string;
 }
 
 export default function EditSubuser() {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { showSuccess, showError, showInfo } = useNotification()
-  const { user } = useAuth()
-  
-  const userData = location.state?.user as SubuserData
-  
+  const { t } = useTranslation();
+  const navigate = useLocaleNavigate();
+  const location = useLocation();
+  const { showSuccess, showError, showInfo } = useNotification();
+  const { user } = useAuth();
+
+  const userData = location.state?.user as SubuserData;
+
   const [formData, setFormData] = useState({
-    subuser_email: userData?.subuser_email || '',
-    subuser_name: userData?.name || '',
-    role: userData?.role || 'user',
-    department: userData?.department || '',
-    phone: userData?.phone || '',
-    status: userData?.status || 'active'
-  })
-  
-  const [loading, setLoading] = useState(false)
-  const [fetchingData, setFetchingData] = useState(true)
+    subuser_email: userData?.subuser_email || "",
+    subuser_name: userData?.name || "",
+    role: userData?.role || "user",
+    department: userData?.department || "",
+    phone: userData?.phone || "",
+    status: userData?.status || "active",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [fetchingData, setFetchingData] = useState(true);
 
   // Fetch fresh data from API on component mount
   useEffect(() => {
     const fetchSubuserData = async () => {
       if (!userData?.subuser_email) {
-        showError('No User Data', 'No user email provided. Redirecting...')
-        setTimeout(() => navigate('/admin/subusers'), 1000)
-        return
+        showError(
+          t("dashboard.editSubuser.no_user_data_title"),
+          t("dashboard.editSubuser.no_user_email_msg"),
+        );
+        setTimeout(() => navigate("/admin/subusers"), 1000);
+        return;
       }
 
       try {
         // console.log('🔄 Fetching fresh data for:', userData.subuser_email)
-        const res = await apiClient.getEnhancedSubuser(userData.subuser_email)
+        const res = await apiClient.getEnhancedSubuser(userData.subuser_email);
 
         if (res?.success && res.data) {
-          const enhanced = res.data
+          const enhanced = res.data;
           // console.log('✅ Fresh subuser data received:', enhanced)
 
           // Extract values with proper fallbacks
-          const userName = enhanced.subuser_name || enhanced.name || ''
-          const userPhone = enhanced.subuser_phone || enhanced.phone || ''
-          const userRole = enhanced.role || enhanced.subuser_role || enhanced.defaultRole || 'user'
-          const userDept = enhanced.department || ''
-          const userStatus = enhanced.status || 'active'
+          const userName = enhanced.subuser_name || enhanced.name || "";
+          const userPhone = enhanced.subuser_phone || enhanced.phone || "";
+          const userRole =
+            enhanced.role ||
+            enhanced.subuser_role ||
+            enhanced.defaultRole ||
+            "user";
+          const userDept = enhanced.department || "";
+          const userStatus = enhanced.status || "active";
 
           // console.log('📋 Setting form data:')
           // console.log('  - Email:', enhanced.subuser_email)
@@ -90,58 +100,72 @@ export default function EditSubuser() {
             role: userRole,
             department: userDept,
             phone: userPhone,
-            status: userStatus
-          })
+            status: userStatus,
+          });
         } else {
-          console.warn('⚠️ Failed to fetch fresh data, using location state')
+          console.warn("⚠️ Failed to fetch fresh data, using location state");
         }
       } catch (error) {
-        console.error('❌ Error fetching subuser data:', error)
-        showError('Fetch Error', 'Could not load latest user data. Using cached data.')
+        console.error("❌ Error fetching subuser data:", error);
+        showError(
+          t("dashboard.editSubuser.fetch_error_title"),
+          t("dashboard.editSubuser.fetch_error_msg"),
+        );
       } finally {
-        setFetchingData(false)
+        setFetchingData(false);
       }
-    }
+    };
 
-    fetchSubuserData()
-  }, [userData?.subuser_email])
+    fetchSubuserData();
+  }, [userData?.subuser_email]);
 
   useEffect(() => {
     if (!userData) {
-      showError('No User Data', 'No user data provided. Redirecting...')
-      setTimeout(() => navigate('/admin/subusers'), 1000)
+      showError(
+        t("dashboard.editSubuser.no_user_data_title"),
+        t("dashboard.editSubuser.no_user_data_msg"),
+      );
+      setTimeout(() => navigate("/admin/subusers"), 1000);
     }
-  }, [userData, navigate, showError])
+  }, [userData, navigate, showError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
-      showInfo(`Updating user ${formData.subuser_email}...`)
-      
+      showInfo(
+        `${t("dashboard.editSubuser.updating_user")} ${formData.subuser_email}...`,
+      );
+
       // Get parent email from RoleBasedAuth user_data in localStorage
-      let parentEmail: string | undefined | null = getUserEmailFromStorage()
-      
+      let parentEmail: string | undefined | null = getUserEmailFromStorage();
+
       // Fallback to AuthContext if localStorage doesn't have it
       if (!parentEmail) {
-        parentEmail = user?.email
+        parentEmail = user?.email;
       }
-      
+
       // Debug logging
       // console.log('🔍 Debug - User email from localStorage (user_data):', getUserEmailFromStorage())
       // console.log('🔍 Debug - User email from AuthContext:', user?.email)
       // console.log('🔍 Debug - Final parent email:', parentEmail)
-      
+
       // Final validation
-      if (!parentEmail || parentEmail === 'unknown@example.com' || parentEmail.includes('unknown')) {
-        console.error('❌ Invalid parent email detected:', parentEmail)
-        throw new Error('Valid parent email not found. Please log out and log in again.')
+      if (
+        !parentEmail ||
+        parentEmail === "unknown@example.com" ||
+        parentEmail.includes("unknown")
+      ) {
+        console.error("❌ Invalid parent email detected:", parentEmail);
+        throw new Error(
+          "Valid parent email not found. Please log out and log in again.",
+        );
       }
-      
+
       // console.log('✅ Using parent email:', parentEmail)
       // console.log('📤 Update request - Parent:', parentEmail, 'Subuser:', formData.subuser_email)
-      
+
       // Update user via EnhancedSubusers/by-parent endpoint
       const response = await apiClient.updateEnhancedSubuserByParent(
         parentEmail,
@@ -151,42 +175,68 @@ export default function EditSubuser() {
           role: formData.role,
           department: formData.department,
           phone: formData.phone,
-          status: formData.status
-        }
-      )
+          status: formData.status,
+        },
+      );
 
       if (response.success) {
-        showSuccess(`User ${formData.subuser_email} updated successfully`)
-        setTimeout(() => navigate('/admin/subusers'), 1500)
+        showSuccess(
+          `${formData.subuser_email} ${t("dashboard.editSubuser.user_updated")}`,
+        );
+        setTimeout(() => navigate("/admin/subusers"), 1500);
       } else {
-        throw new Error(response.error || 'Failed to update user')
+        throw new Error(response.error || "Failed to update user");
       }
     } catch (error) {
-      console.error('❌ Error updating user:', error)
-      showError('Update Failed', error instanceof Error ? error.message : 'Failed to update user')
+      console.error("❌ Error updating user:", error);
+      showError(
+        t("dashboard.editSubuser.update_failed_title"),
+        error instanceof Error
+          ? error.message
+          : t("dashboard.editSubuser.update_failed_msg"),
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleCancel = () => {
-    navigate('/admin/subusers')
-  }
+    navigate("/admin/subusers");
+  };
 
   if (!userData || fetchingData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 rounded-full mb-4">
-            <svg className="animate-spin h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <svg
+              className="animate-spin h-8 w-8 text-slate-400"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
           </div>
-          <p className="text-slate-600">{fetchingData ? 'Loading user data...' : 'Redirecting...'}</p>
+          <p className="text-slate-600">
+            {fetchingData
+              ? t("dashboard.editSubuser.loading_user_data")
+              : t("dashboard.editSubuser.redirecting")}
+          </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -194,9 +244,11 @@ export default function EditSubuser() {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("edit-subuser")} />
       <Helmet>
-        <title>Edit Subuser - D-SecureTech Admin</title>
+        <title>
+          {t("dashboard.editSubuser.edit_subuser_dsecuretech_admin")}
+        </title>
       </Helmet>
-      
+
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 p-4 sm:p-6">
         <div className="max-w-3xl mx-auto">
           {/* Header */}
@@ -205,17 +257,29 @@ export default function EditSubuser() {
               onClick={handleCancel}
               className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
               </svg>
-              Back to Subusers
+              {t("dashboard.editSubuser.back_to_subusers")}
             </button>
-            
+
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Edit Subuser
+              {t("dashboard.editSubuser.edit_subuser")}
             </h1>
             <p className="text-slate-600 mt-2">
-              Update user information and permissions
+              {t(
+                "dashboard.editSubuser.update_user_information_and_permissions",
+              )}
             </p>
           </div>
 
@@ -225,7 +289,7 @@ export default function EditSubuser() {
               {/* Email (Read-only) */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Email Address
+                  {t("dashboard.editSubuser.email_address")}
                 </label>
                 <input
                   type="email"
@@ -233,60 +297,72 @@ export default function EditSubuser() {
                   disabled
                   className="w-full px-4 py-2 border border-slate-300 rounded-md bg-slate-50 text-slate-500 cursor-not-allowed"
                 />
-                <p className="text-xs text-slate-500 mt-1">Email cannot be changed</p>
+                <p className="text-xs text-slate-500 mt-1">
+                  {t("dashboard.editSubuser.email_cannot_be_changed")}
+                </p>
               </div>
 
               {/* Name */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Full Name
+                  {t("dashboard.editSubuser.full_name")}
                 </label>
                 <input
                   type="text"
                   value={formData.subuser_name}
-                  onChange={(e) => setFormData({ ...formData, subuser_name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subuser_name: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="John Doe"
+                  placeholder={t("dashboard.editSubuser.john_doe")}
                 />
               </div>
 
               {/* Role */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Role
+                  {t("dashboard.editSubuser.role")}
                 </label>
                 <input
                   type="text"
                   value={formData.role}
-                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, role: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="user, manager, admin, superadmin"
+                  placeholder={t(
+                    "dashboard.editSubuser.user_manager_admin_superadmin",
+                  )}
                 />
               </div>
 
               {/* Department */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Department
+                  {t("dashboard.editSubuser.department")}
                 </label>
                 <input
                   type="text"
                   value={formData.department}
-                  onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, department: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="IT Operations"
+                  placeholder={t("dashboard.editSubuser.it_operations")}
                 />
               </div>
 
               {/* Phone */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Phone Number
+                  {t("dashboard.editSubuser.phone_number")}
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="+1 234 567 8900"
                 />
@@ -295,14 +371,18 @@ export default function EditSubuser() {
               {/* Status */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Account Status
+                  {t("dashboard.editSubuser.account_status")}
                 </label>
                 <input
                   type="text"
                   value={formData.status}
-                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, status: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="active, inactive, suspended, pending"
+                  placeholder={t(
+                    "dashboard.editSubuser.active_inactive_suspended_pending",
+                  )}
                 />
               </div>
 
@@ -335,7 +415,7 @@ export default function EditSubuser() {
                   className="px-6 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-50 transition-colors"
                   disabled={loading}
                 >
-                  Cancel
+                  {t("dashboard.editSubuser.cancel")}
                 </button>
                 <button
                   type="submit"
@@ -344,14 +424,29 @@ export default function EditSubuser() {
                 >
                   {loading ? (
                     <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
-                      Updating...
+                      {t("dashboard.editSubuser.updating")}
                     </span>
                   ) : (
-                    'Update User'
+                    t("dashboard.editSubuser.update_user")
                   )}
                 </button>
               </div>
@@ -360,5 +455,5 @@ export default function EditSubuser() {
         </div>
       </div>
     </>
-  )
+  );
 }

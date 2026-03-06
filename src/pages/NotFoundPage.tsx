@@ -1,7 +1,7 @@
 import React from "react";
 import SEOHead from '../components/SEOHead';
 import { getSEOForPage } from '../utils/seo';
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import Reveal from "@/components/Reveal";
 
 const NotFoundPage: React.FC = () => {

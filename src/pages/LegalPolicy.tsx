@@ -2,13 +2,15 @@ import React from "react";
 import SEOHead from '../components/SEOHead';
 import { getSEOForPage } from '../utils/seo';
 import { useNavigate } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
+import { getLocalePath } from "@/utils/localePath";
 
 const LegalPolicy: React.FC = () => {
   const navigate = useNavigate?.();
 
   const handleBack = () => {
     if (navigate) navigate("/");
-    else window.location.href = "/";
+    else window.location.href = getLocalePath("/");
   };
 
   return (

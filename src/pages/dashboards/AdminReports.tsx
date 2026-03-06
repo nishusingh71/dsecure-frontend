@@ -1,8 +1,13 @@
 import { ENV } from "@/config/env";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import { useMemo, useState, useRef, useCallback } from "react";
+import { useMemo, useState, useRef, useCallback, Suspense } from "react";
 import React from "react";
+
+// Lazy-loaded PDF preview — keeps react-pdf/pdfjs-dist out of main chunk
+const PdfPagePreview = React.lazy(
+  () => import("../../components/PdfPagePreview"),
+);
 import { exportToCsv, openPrintView } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
@@ -18,7 +23,9 @@ import { useNavigate } from "react-router-dom";
 import { isDemoMode, DEMO_AUDIT_REPORTS, DEMO_SUBUSERS } from "@/data/demoData";
 import { useSubusers } from "@/hooks/useSubusers";
 import { indexedDBService } from "@/services/indexedDBService";
-import { Document, Page, pdfjs } from "react-pdf";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
+import { useTranslation } from "react-i18next";
+// react-pdf (Document, Page, pdfjs) removed — was unused dead import pulling in heavy pdfjs-dist
 
 // Extended AdminReport interface to include raw data
 interface ExtendedAdminReport extends AdminReport {
@@ -37,6 +44,7 @@ interface ExtendedAdminReport extends AdminReport {
 }
 
 export default function AdminReports() {
+  const { t } = useTranslation();
   const { showSuccess, showError, showWarning, showInfo } = useNotification();
   const { user } = useAuth();
   const [query, setQuery] = useState("");
@@ -64,7 +72,7 @@ export default function AdminReports() {
   const [groupFilter, setGroupFilter] = useState("");
   const [subuserFilter, setSubuserFilter] = useState<string>(""); // "" = my reports, email = subuser's reports, "all" = all reports
 
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
 
   // ✅ Cache Helper Functions
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -182,7 +190,10 @@ export default function AdminReports() {
     return (
       <div>
         <label className="block text-sm font-medium text-slate-700 mb-1">
-          {label} <span className="text-slate-500 text-xs">(YYYY-MM-DD)</span>
+          {label}{" "}
+          <span className="text-slate-500 text-xs">
+            {t("dashboard.adminReports.yyyymmdd")}
+          </span>
         </label>
         <div className="relative">
           <input
@@ -783,6 +794,10 @@ export default function AdminReports() {
 
   // Save PDF settings to API using FormData (server expects multipart/form-data)
   const savePdfSettingsToServer = useCallback(async (): Promise<boolean> => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Settings cannot be saved in demo mode.");
+      return false;
+    }
     try {
       const API_BASE = ENV.API_BASE_URL;
 
@@ -969,6 +984,10 @@ export default function AdminReports() {
     e: React.ChangeEvent<HTMLInputElement>,
     fieldName: string,
   ) => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Image upload is not available in demo mode.");
+      return;
+    }
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -1888,6 +1907,10 @@ export default function AdminReports() {
   // };
 
   const handleDownloadReport = async (report: ExtendedAdminReport) => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Download is not available in demo mode.");
+      return;
+    }
     try {
       showInfo(`Preparing PDF download for report ${report.id}...`);
 
@@ -2025,7 +2048,7 @@ export default function AdminReports() {
         );
         // Create a minimal valid PDF blob for demo download
         const dummyPdfContent =
-          "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 53 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n392\n%%EOF";
+          "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 53 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Report)\nTj\nET\nendstream\nendobj\n5 0 obj\n<< /Size 5 /Root 1 0 R >>\nstartxref\n392\n%%EOF";
         response = {
           ok: true,
           status: 200,
@@ -2096,6 +2119,10 @@ export default function AdminReports() {
 
   // ✅ Bulk Download Multiple Reports as ZIP
   const handleBulkDownload = async () => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Bulk download is not available in demo mode.");
+      return;
+    }
     if (selectedReportIds.size === 0) {
       showWarning(
         "No Reports Selected",
@@ -2204,7 +2231,7 @@ export default function AdminReports() {
             );
             // Create a minimal valid PDF blob for demo
             const dummyPdfContent =
-              "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 53 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n392\n%%EOF";
+              "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 53 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Report)\nTj\nET\nendstream\nendobj\n5 0 obj\n<< /Size 5 /Root 1 0 R >>\nstartxref\n392\n%%EOF";
             response = {
               ok: true,
               blob: async () =>
@@ -2354,14 +2381,17 @@ export default function AdminReports() {
   //     showError("Error", "Selected report data not found");
   //   }
   // };
-  // ✅ Initialize PDF Worker
-  pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+  // PDF preview uses native iframe viewer — no react-pdf dependency needed
 
   const [previewBlobs, setPreviewBlobs] = useState<Blob[]>([]);
   const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
 
   // ✅ Handle preview of selected reports - Fetches PDF blobs for preview
   const handlePreviewSelectedReports = async () => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Preview is not available in demo mode.");
+      return;
+    }
     if (selectedReportIds.size === 0) {
       showWarning(
         "No Reports Selected",
@@ -2489,7 +2519,7 @@ export default function AdminReports() {
             );
             // Create a minimal valid PDF blob for demo preview
             const dummyPdfContent =
-              "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 61 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Preview Report) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000009 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000288 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n400\n%%EOF";
+              "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> >>\nendobj\n4 0 obj\n<< /Length 61 >>\nstream\nBT\n/F1 24 Tf\n100 700 Td\n(Demo PDF Preview)\nTj\nET\nendstream\nendobj\n5 0 obj\n<< /Size 5 /Root 1 0 R >>\nstartxref\n400\n%%EOF";
             response = {
               ok: true,
               blob: async () =>
@@ -2775,7 +2805,7 @@ export default function AdminReports() {
         <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">
-              Audit Reports
+              {t("dashboard.adminReports.audit_reports")}
             </h1>
             {selectedReportIds.size > 0 && (
               <p className="text-sm text-slate-600 mt-1">
@@ -2797,7 +2827,7 @@ export default function AdminReports() {
               setShowBulkSettingsModal(true);
             }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700"
-            title="Configure PDF Report Settings"
+            title={t("dashboard.adminReports.configure_pdf_report_settings")}
           >
             <svg
               className="w-5 h-5"
@@ -2818,7 +2848,7 @@ export default function AdminReports() {
                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            Settings
+            {t("dashboard.adminReports.settings")}
           </button>
 
           {/* Bulk Actions moved to between filter and table */}
@@ -2874,13 +2904,13 @@ export default function AdminReports() {
         <div className="card p-4 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-900">
-              Filters & Search
+              {t("dashboard.adminReports.filters_search")}
             </h3>
             <button
               onClick={clearAllFilters}
               className="text-sm text-red-600 hover:text-red-800 font-medium"
             >
-              Clear All
+              {t("dashboard.adminReports.clear_all")}
             </button>
           </div>
 
@@ -2889,7 +2919,7 @@ export default function AdminReports() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Report Owner
+                {t("dashboard.adminReports.report_owner")}
               </label>
               <select
                 className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
@@ -2899,9 +2929,13 @@ export default function AdminReports() {
                   setPage(1);
                 }}
               >
-                <option value="">My Reports</option>
-                <option value="all">All Reports (Me + Subusers)</option>
-                <optgroup label="Subuser Reports">
+                <option value="">
+                  {t("dashboard.adminReports.my_reports")}
+                </option>
+                <option value="all">
+                  {t("dashboard.adminReports.all_reports_me_subusers")}
+                </option>
+                <optgroup label={t("dashboard.adminReports.subuser_reports")}>
                   {subusersData.map((subuser: any) => (
                     <option
                       key={subuser.subuser_email}
@@ -2917,11 +2951,11 @@ export default function AdminReports() {
             {/* Search */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Search
+                {t("dashboard.adminReports.search_label")}
               </label>
               <input
                 className="w-full border rounded-lg px-3 py-2 text-sm xs:text-base sm:text-sm focus:ring-2 focus:ring-brand focus:border-transparent"
-                placeholder="Search ID, department"
+                placeholder={t("dashboard.adminReports.search_id_department")}
                 value={searchInputValue}
                 onChange={(e) => {
                   setSearchInputValue(e.target.value);
@@ -2954,7 +2988,7 @@ export default function AdminReports() {
 
             {/* Date Range Filter */}
             <CustomDateInput
-              label="From Date"
+              label={t("dashboard.adminReports.from_date")}
               value={fromDate}
               onChange={(value) => {
                 setFromDate(value);
@@ -2981,7 +3015,7 @@ export default function AdminReports() {
 
             {/* To Date Filter */}
             <CustomDateInput
-              label="To Date"
+              label={t("dashboard.adminReports.to_date")}
               value={toDate}
               onChange={(value) => {
                 setToDate(value);
@@ -3038,7 +3072,7 @@ export default function AdminReports() {
             {/* Report Type Filter */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Report Type
+                {t("dashboard.adminReports.report_type")}
               </label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -3048,7 +3082,9 @@ export default function AdminReports() {
                   setPage(1);
                 }}
               >
-                <option value="">All Types</option>
+                <option value="">
+                  {t("dashboard.adminReports.all_types")}
+                </option>
                 {uniqueReportTypes.map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -3060,7 +3096,7 @@ export default function AdminReports() {
             {/* Group Filter */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Group{" "}
+                {t("dashboard.adminReports.group_label")}{" "}
                 {uniqueGroups.length > 0 && (
                   <span className="text-xs text-slate-500">
                     ({uniqueGroups.length})
@@ -3075,7 +3111,9 @@ export default function AdminReports() {
                   setPage(1);
                 }}
               >
-                <option value="">All Groups</option>
+                <option value="">
+                  {t("dashboard.adminReports.all_groups")}
+                </option>
                 {/* <option value="Dotnet">Dotnet</option> */}
                 {uniqueGroups.map((group) => (
                   <option key={group} value={group}>
@@ -3109,18 +3147,24 @@ export default function AdminReports() {
 
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-slate-700">
-                Sort by:
+                {t("dashboard.adminReports.sort_by")}
               </label>
               <select
                 className="border rounded px-2 py-1 text-sm"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as keyof AdminReport)}
               >
-                <option value="id">Report ID</option>
-                <option value="date">Date</option>
+                <option value="id">
+                  {t("dashboard.adminReports.report_id")}
+                </option>
+                <option value="date">{t("dashboard.adminReports.date")}</option>
                 {/* <option value="devices">Devices</option> */}
-                <option value="status">Status</option>
-                <option value="department">Method</option>
+                <option value="status">
+                  {t("dashboard.adminReports.status")}
+                </option>
+                <option value="department">
+                  {t("dashboard.adminReports.method")}
+                </option>
               </select>
               <button
                 onClick={() =>
@@ -3278,10 +3322,12 @@ export default function AdminReports() {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">
-                No Reports Found
+                {t("dashboard.adminReports.no_reports_found")}
               </h3>
               <p className="text-slate-600 mb-6">
-                There are no audit reports available at the moment.
+                {t(
+                  "dashboard.adminReports.there_are_no_audit_reports_available_at_the_m",
+                )}
               </p>
             </div>
           ) : filtered.length === 0 ? (
@@ -3302,13 +3348,15 @@ export default function AdminReports() {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">
-                No Results Found
+                {t("dashboard.adminReports.no_results_found")}
               </h3>
               <p className="text-slate-600 mb-6">
-                No reports match your current filters.
+                {t(
+                  "dashboard.adminReports.no_reports_match_your_current_filters",
+                )}
               </p>
               <button onClick={clearAllFilters} className="btn-primary">
-                Clear All Filters
+                {t("dashboard.adminReports.clear_all_filters")}
               </button>
             </div>
           ) : (
@@ -3318,21 +3366,30 @@ export default function AdminReports() {
                 <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-blue-800">
-                      {selectedReportIds.size} report
-                      {selectedReportIds.size > 1 ? "s" : ""} selected
+                      {selectedReportIds.size}{" "}
+                      {t("dashboard.adminReports.reports_selected")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setSelectedReportIds(new Set())}
                       className="text-sm px-3 py-1.5 rounded border font-medium transition-colors text-slate-600 hover:text-slate-800 hover:bg-slate-100 border-slate-300"
-                      title="Clear selection"
+                      title={t("dashboard.adminReports.clear_selection")}
                       disabled={isPreviewLoading}
                     >
-                      Clear
+                      {t("dashboard.adminReports.clear")}
                     </button>
                     <button
-                      onClick={handlePreviewSelectedReports}
+                      onClick={() => {
+                        if (isDemo) {
+                          showWarning(
+                            "Demo Mode",
+                            "Preview is not available in demo mode.",
+                          );
+                          return;
+                        }
+                        handlePreviewSelectedReports();
+                      }}
                       disabled={isPreviewLoading}
                       className={`text-sm px-4 py-1.5 rounded border font-medium transition-colors flex items-center gap-2 ${
                         isPreviewLoading
@@ -3360,10 +3417,19 @@ export default function AdminReports() {
                           d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                         />
                       </svg>
-                      Preview
+                      {t("dashboard.adminReports.preview")}
                     </button>
                     <button
-                      onClick={handleBulkDownload}
+                      onClick={() => {
+                        if (isDemo) {
+                          showWarning(
+                            "Demo Mode",
+                            "Download is not available in demo mode.",
+                          );
+                          return;
+                        }
+                        handleBulkDownload();
+                      }}
                       className="text-sm px-4 py-1.5 rounded border font-medium transition-colors bg-green-600 text-white hover:bg-green-700 border-green-600 flex items-center gap-2"
                       title={`Download ${selectedReportIds.size} reports as ZIP`}
                     >
@@ -3380,7 +3446,7 @@ export default function AdminReports() {
                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      Save
+                      {t("dashboard.adminReports.save")}
                     </button>
                   </div>
                 </div>
@@ -3403,39 +3469,41 @@ export default function AdminReports() {
                             }
                             onChange={() => toggleSelectAll(rows)}
                             className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-                            title="Select all on this page"
+                            title={t(
+                              "dashboard.adminReports.select_all_on_this_page",
+                            )}
                           />
                         </th>
                       )}
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                        Report ID
+                        {t("dashboard.adminReports.report_id")}
                       </th>
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                        Date
+                        {t("dashboard.adminReports.date")}
                       </th>
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                        Report Type
+                        {t("dashboard.adminReports.report_type")}
                       </th>
                       {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                       Devices
                     </th> */}
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                        Status
+                        {t("dashboard.adminReports.status")}
                       </th>
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
-                        Method
+                        {t("dashboard.adminReports.method")}
                       </th>
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
-                        Total Files
+                        {t("dashboard.adminReports.total_files")}
                       </th>
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
-                        Erased
+                        {t("dashboard.adminReports.erased")}
                       </th>
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
-                        Failed
+                        {t("dashboard.adminReports.failed")}
                       </th>
                       <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium text-center">
-                        Success
+                        {t("dashboard.adminReports.success")}
                       </th>
                       {/* <th className="py-3 px-2 text-xs xs:text-sm sm:text-sm font-medium">
                         Actions
@@ -3550,7 +3618,7 @@ export default function AdminReports() {
                 {/* Left side - Rows per page selector */}
                 <div className="flex items-center gap-3">
                   <label htmlFor="pageSize" className="text-sm text-slate-600">
-                    Rows per page:
+                    {t("dashboard.adminReports.rows_per_page")}
                   </label>
                   <select
                     id="pageSize"
@@ -3569,17 +3637,20 @@ export default function AdminReports() {
                     ))}
                   </select>
                   <span className="text-sm text-slate-500">
-                    Showing{" "}
-                    {Math.min((page - 1) * pageSize + 1, filtered.length)} to{" "}
-                    {Math.min(page * pageSize, filtered.length)} of{" "}
-                    {filtered.length} records
+                    {t("dashboard.adminReports.showing")}{" "}
+                    {Math.min((page - 1) * pageSize + 1, filtered.length)}{" "}
+                    {t("dashboard.adminReports.to")}{" "}
+                    {Math.min(page * pageSize, filtered.length)}{" "}
+                    {t("dashboard.adminReports.of")} {filtered.length}{" "}
+                    {t("dashboard.adminReports.records")}
                   </span>
                 </div>
 
                 {/* Right side - Page navigation */}
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-slate-600">
-                    Page {page} of {totalPages}
+                    {t("dashboard.adminReports.page")} {page}{" "}
+                    {t("dashboard.adminReports.of")} {totalPages}
                   </span>
                   <div className="flex gap-2">
                     <button
@@ -3587,14 +3658,14 @@ export default function AdminReports() {
                       onClick={() => setPage(page - 1)}
                       className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
                     >
-                      Previous
+                      {t("dashboard.adminReports.previous")}
                     </button>
                     <button
                       disabled={page >= totalPages}
                       onClick={() => setPage(page + 1)}
                       className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
                     >
-                      Next
+                      {t("dashboard.adminReports.next")}
                     </button>
                   </div>
                 </div>
@@ -3610,7 +3681,9 @@ export default function AdminReports() {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10">
               <div className="flex items-center gap-3">
-                <h2 className="text-xl font-bold text-slate-900">Settings</h2>
+                <h2 className="text-xl font-bold text-slate-900">
+                  {t("dashboard.adminReports.settings")}
+                </h2>
                 {pdfSettingsLoading && (
                   <span className="text-sm text-blue-600 flex items-center gap-2">
                     <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
@@ -3629,7 +3702,7 @@ export default function AdminReports() {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       />
                     </svg>
-                    Loading saved settings...
+                    {t("dashboard.adminReports.loading_saved_settings")}
                   </span>
                 )}
                 {!pdfSettingsLoading && pdfSettingsLoaded && (
@@ -3656,18 +3729,21 @@ export default function AdminReports() {
                   type="button"
                   disabled={pdfSettingsLoading}
                   onClick={async () => {
-                    // if (!pdfFormData.reportTitle.trim() || !pdfFormData.headerText.trim()) {
-                    //   showError("Validation Error", "Please fill in Report Title and Header Text");
-                    //   return;
-                    // }
-                    // Save settings to API
+                    if (isDemo) {
+                      showWarning(
+                        "Demo Mode",
+                        "Settings cannot be saved in demo mode.",
+                      );
+                      setShowBulkSettingsModal(false);
+                      return;
+                    }
                     await savePdfSettingsToServer();
                     showSuccess("Settings saved successfully!");
                     setShowBulkSettingsModal(false);
                   }}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Save
+                  {t("dashboard.adminReports.save")}
                 </button>
                 <button
                   onClick={() => setShowBulkSettingsModal(false)}
@@ -3695,7 +3771,8 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Report Title <span className="text-red-500">*</span>
+                    {t("dashboard.adminReports.report_title")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -3707,14 +3784,17 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Data Erasure Audit Report"
+                    placeholder={t(
+                      "dashboard.adminReports.data_erasure_audit_report",
+                    )}
                   />
                 </div>
 
                 {/* Header Text */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Header Text <span className="text-red-500">*</span>
+                    {t("dashboard.adminReports.header_text")}{" "}
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -3726,7 +3806,7 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="D-SecureTech"
+                    placeholder={t("dashboard.adminReports.dsecuretech")}
                   />
                 </div>
               </div>
@@ -3734,7 +3814,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Technician Name
+                    {t("dashboard.adminReports.technician_name")}
                   </label>
                   <input
                     type="text"
@@ -3746,12 +3826,12 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="John Doe"
+                    placeholder={t("dashboard.adminReports.john_doe")}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Technician Department
+                    {t("dashboard.adminReports.technician_department")}
                   </label>
                   <input
                     type="text"
@@ -3763,7 +3843,7 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="IT Department"
+                    placeholder={t("dashboard.adminReports.it_department")}
                   />
                 </div>
               </div>
@@ -3771,7 +3851,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Validator Name
+                    {t("dashboard.adminReports.validator_name")}
                   </label>
                   <input
                     type="text"
@@ -3783,12 +3863,12 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Jane Smith"
+                    placeholder={t("dashboard.adminReports.jane_smith")}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Validator Department
+                    {t("dashboard.adminReports.validator_department")}
                   </label>
                   <input
                     type="text"
@@ -3800,7 +3880,7 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="QA Department"
+                    placeholder={t("dashboard.adminReports.qa_department")}
                   />
                 </div>
               </div>
@@ -3809,7 +3889,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Header Left Logo
+                    {t("dashboard.adminReports.header_left_logo")}
                   </label>
                   <input
                     type="file"
@@ -3829,7 +3909,7 @@ export default function AdminReports() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Header Right Logo
+                    {t("dashboard.adminReports.header_right_logo")}
                   </label>
                   <input
                     type="file"
@@ -3852,7 +3932,7 @@ export default function AdminReports() {
               {/* Watermark */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Watermark Image
+                  {t("dashboard.adminReports.watermark_image")}
                 </label>
                 <input
                   type="file"
@@ -3874,7 +3954,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Technician Signature
+                    {t("dashboard.adminReports.technician_signature")}
                   </label>
                   <input
                     type="file"
@@ -3896,7 +3976,7 @@ export default function AdminReports() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Validator Signature
+                    {t("dashboard.adminReports.validator_signature")}
                   </label>
                   <input
                     type="file"
@@ -4004,7 +4084,7 @@ export default function AdminReports() {
               {/* Report Title */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Report Title
+                  {t("dashboard.adminReports.report_title")}
                 </label>
                 <input
                   type="text"
@@ -4016,14 +4096,16 @@ export default function AdminReports() {
                     })
                   }
                   className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Data Erasure Audit Report"
+                  placeholder={t(
+                    "dashboard.adminReports.data_erasure_audit_report",
+                  )}
                 />
               </div>
 
               {/* Header Text */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Header Text
+                  {t("dashboard.adminReports.header_text")}
                 </label>
                 <input
                   type="text"
@@ -4035,7 +4117,7 @@ export default function AdminReports() {
                     })
                   }
                   className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="D-SecureTech"
+                  placeholder={t("dashboard.adminReports.dsecuretech")}
                 />
               </div>
 
@@ -4043,7 +4125,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Technician Name
+                    {t("dashboard.adminReports.technician_name")}
                   </label>
                   <input
                     type="text"
@@ -4055,12 +4137,12 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="John Doe"
+                    placeholder={t("dashboard.adminReports.john_doe")}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Technician Department
+                    {t("dashboard.adminReports.technician_department")}
                   </label>
                   <input
                     type="text"
@@ -4072,7 +4154,7 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="IT Operations"
+                    placeholder={t("dashboard.adminReports.it_operations")}
                   />
                 </div>
               </div>
@@ -4081,7 +4163,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Validator Name
+                    {t("dashboard.adminReports.validator_name")}
                   </label>
                   <input
                     type="text"
@@ -4093,12 +4175,12 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Jane Smith"
+                    placeholder={t("dashboard.adminReports.jane_smith")}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Validator Department
+                    {t("dashboard.adminReports.validator_department")}
                   </label>
                   <input
                     type="text"
@@ -4110,7 +4192,7 @@ export default function AdminReports() {
                       })
                     }
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Quality Assurance"
+                    placeholder={t("dashboard.adminReports.quality_assurance")}
                   />
                 </div>
               </div>
@@ -4119,7 +4201,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Header Left Logo
+                    {t("dashboard.adminReports.header_left_logo")}
                   </label>
                   <div className="space-y-2">
                     <input
@@ -4127,7 +4209,7 @@ export default function AdminReports() {
                       value={pdfFormData.headerLeftLogo?.name || ""}
                       readOnly
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                      placeholder="Upload file"
+                      placeholder={t("dashboard.adminReports.upload_file")}
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -4146,7 +4228,7 @@ export default function AdminReports() {
                             />
                           </svg>
                           <span className="text-sm text-slate-600">
-                            Upload Image
+                            {t("dashboard.adminReports.upload_image")}
                           </span>
                         </div>
                         <input
@@ -4167,7 +4249,7 @@ export default function AdminReports() {
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                          title="Clear image"
+                          title={t("dashboard.adminReports.clear_image")}
                         >
                           <svg
                             className="w-4 h-4"
@@ -4189,7 +4271,7 @@ export default function AdminReports() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Header Right Logo
+                    {t("dashboard.adminReports.header_right_logo")}
                   </label>
                   <div className="space-y-2">
                     <input
@@ -4197,7 +4279,7 @@ export default function AdminReports() {
                       value={pdfFormData.headerRightLogo?.name || ""}
                       readOnly
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                      placeholder="Upload file"
+                      placeholder={t("dashboard.adminReports.upload_file")}
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -4216,7 +4298,7 @@ export default function AdminReports() {
                             />
                           </svg>
                           <span className="text-sm text-slate-600">
-                            Upload Image
+                            {t("dashboard.adminReports.upload_image")}
                           </span>
                         </div>
                         <input
@@ -4237,7 +4319,7 @@ export default function AdminReports() {
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                          title="Clear image"
+                          title={t("dashboard.adminReports.clear_image")}
                         >
                           <svg
                             className="w-4 h-4"
@@ -4262,7 +4344,7 @@ export default function AdminReports() {
               {/* Watermark */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Watermark Image
+                  {t("dashboard.adminReports.watermark_image")}
                 </label>
                 <div className="space-y-2">
                   <input
@@ -4270,7 +4352,7 @@ export default function AdminReports() {
                     value={pdfFormData.watermarkImage?.name || ""}
                     readOnly
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                    placeholder="Upload file"
+                    placeholder={t("dashboard.adminReports.upload_file")}
                   />
                   <div className="flex items-center gap-2">
                     <label className="flex-1 cursor-pointer">
@@ -4289,7 +4371,7 @@ export default function AdminReports() {
                           />
                         </svg>
                         <span className="text-sm text-slate-600">
-                          Upload Image
+                          {t("dashboard.adminReports.upload_image")}
                         </span>
                       </div>
                       <input
@@ -4308,7 +4390,7 @@ export default function AdminReports() {
                           })
                         }
                         className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                        title="Clear image"
+                        title={t("dashboard.adminReports.clear_image")}
                       >
                         <svg
                           className="w-4 h-4"
@@ -4333,7 +4415,7 @@ export default function AdminReports() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Technician Signature
+                    {t("dashboard.adminReports.technician_signature")}
                   </label>
                   <div className="space-y-2">
                     <input
@@ -4341,7 +4423,7 @@ export default function AdminReports() {
                       value={pdfFormData.technicianSignature?.name || ""}
                       readOnly
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                      placeholder="Upload file"
+                      placeholder={t("dashboard.adminReports.upload_file")}
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -4360,7 +4442,7 @@ export default function AdminReports() {
                             />
                           </svg>
                           <span className="text-sm text-slate-600">
-                            Upload Image
+                            {t("dashboard.adminReports.upload_image")}
                           </span>
                         </div>
                         <input
@@ -4381,7 +4463,7 @@ export default function AdminReports() {
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                          title="Clear image"
+                          title={t("dashboard.adminReports.clear_image")}
                         >
                           <svg
                             className="w-4 h-4"
@@ -4403,7 +4485,7 @@ export default function AdminReports() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">
-                    Validator Signature
+                    {t("dashboard.adminReports.validator_signature")}
                   </label>
                   <div className="space-y-2">
                     <input
@@ -4411,7 +4493,7 @@ export default function AdminReports() {
                       value={pdfFormData.validatorSignature?.name || ""}
                       readOnly
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                      placeholder="Upload file"
+                      placeholder={t("dashboard.adminReports.upload_file")}
                     />
                     <div className="flex items-center gap-2">
                       <label className="flex-1 cursor-pointer">
@@ -4430,7 +4512,7 @@ export default function AdminReports() {
                             />
                           </svg>
                           <span className="text-sm text-slate-600">
-                            Upload Image
+                            {t("dashboard.adminReports.upload_image")}
                           </span>
                         </div>
                         <input
@@ -4451,7 +4533,7 @@ export default function AdminReports() {
                             })
                           }
                           className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                          title="Clear image"
+                          title={t("dashboard.adminReports.clear_image")}
                         >
                           <svg
                             className="w-4 h-4"
@@ -4501,7 +4583,7 @@ export default function AdminReports() {
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-slate-900">
-                Schedule Report Generation
+                {t("dashboard.adminReports.schedule_report_generation")}
               </h2>
               <button
                 onClick={() => setShowSchedulerModal(false)}
@@ -4878,15 +4960,15 @@ export default function AdminReports() {
       )} */}
       {/* PDF Preview Modal using react-pdf */}
       {showPreviewModal && previewBlobs.length > 0 && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[90vh] flex flex-col">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden">
             {/* Header / Controls */}
-            <div className="bg-slate-100 border-b px-4 py-3 flex items-center justify-between z-10 shrink-0">
+            <div className="bg-white border-b border-slate-200 px-5 py-3.5 flex items-center justify-between z-10 shrink-0 rounded-t-xl">
               <div className="flex items-center gap-4">
                 <h2 className="text-lg font-bold text-slate-900">
-                  Report Preview{" "}
+                  {t("dashboard.adminReports.report_preview")}{" "}
                   {previewBlobs.length > 1
-                    ? `(${currentPreviewIndex + 1} of ${previewBlobs.length})`
+                    ? `(${currentPreviewIndex + 1} ${t("dashboard.adminReports.of_label")} ${previewBlobs.length})`
                     : ""}
                 </h2>
 
@@ -4896,7 +4978,7 @@ export default function AdminReports() {
                       disabled={currentPreviewIndex === 0}
                       onClick={() => setCurrentPreviewIndex((i) => i - 1)}
                       className="p-1 hover:bg-slate-100 rounded disabled:opacity-30 disabled:cursor-not-allowed"
-                      title="Previous Report"
+                      title={t("dashboard.adminReports.previous_report")}
                     >
                       <svg
                         className="w-5 h-5"
@@ -4919,7 +5001,7 @@ export default function AdminReports() {
                       disabled={currentPreviewIndex === previewBlobs.length - 1}
                       onClick={() => setCurrentPreviewIndex((i) => i + 1)}
                       className="p-1 hover:bg-slate-100 rounded disabled:opacity-30 disabled:cursor-not-allowed"
-                      title="Next Report"
+                      title={t("dashboard.adminReports.next_report")}
                     >
                       <svg
                         className="w-5 h-5"
@@ -4968,7 +5050,7 @@ export default function AdminReports() {
                       d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                     />
                   </svg>
-                  Download
+                  {t("dashboard.adminReports.download_btn")}
                 </button>
 
                 <button
@@ -4992,18 +5074,14 @@ export default function AdminReports() {
               </div>
             </div>
 
-            {/* Content Area - PDF Viewer */}
-            <div className="flex-1 bg-slate-500 overflow-auto flex justify-center p-4">
+            {/* Content Area - PDF Viewer (first page only) */}
+            <div className="flex-1 bg-slate-100 overflow-auto flex justify-center items-start p-6">
               {previewBlobs[currentPreviewIndex] ? (
-                <Document
-                  file={previewBlobs[currentPreviewIndex]}
-                  onLoadError={(error) =>
-                    console.error("Error loading PDF:", error)
-                  }
-                  loading={
-                    <div className="flex items-center justify-center p-10 text-white">
+                <Suspense
+                  fallback={
+                    <div className="flex items-center justify-center p-10 text-slate-500">
                       <svg
-                        className="animate-spin h-8 w-8 text-white mr-3"
+                        className="animate-spin h-8 w-8 text-emerald-500 mr-3"
                         viewBox="0 0 24 24"
                       >
                         <circle
@@ -5013,28 +5091,23 @@ export default function AdminReports() {
                           r="10"
                           stroke="currentColor"
                           strokeWidth="4"
-                        ></circle>
+                        />
                         <path
                           className="opacity-75"
                           fill="currentColor"
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
+                        />
                       </svg>
-                      Loading PDF...
+                      {t("dashboard.adminReports.loading_pdf_viewer")}
                     </div>
                   }
-                  className="shadow-lg"
                 >
-                  <Page
-                    pageNumber={1}
-                    className="shadow-xl"
-                    renderAnnotationLayer={false}
-                    renderTextLayer={false}
-                    scale={1.2} // 120% zoom
-                  />
-                </Document>
+                  <PdfPagePreview blob={previewBlobs[currentPreviewIndex]} />
+                </Suspense>
               ) : (
-                <div className="text-white text-lg">No PDF loaded</div>
+                <div className="text-slate-400 text-lg">
+                  {t("dashboard.adminReports.no_pdf_loaded")}
+                </div>
               )}
             </div>
           </div>

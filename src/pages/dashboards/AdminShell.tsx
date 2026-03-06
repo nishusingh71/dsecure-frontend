@@ -1,7 +1,8 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from 'react-helmet-async'
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink } from "@/components/LocaleLink";
+import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 import { useAuth } from "../../auth/AuthContext";
@@ -9,9 +10,12 @@ import { isDemoMode } from "../../data/demoData";
 // ********** NAYA CODE — Phase 4: Global auto-logout imports **********
 import { authService } from "../../utils/authService";
 import { indexedDBService } from "../../services/indexedDBService";
+import { getLocalePath } from "@/utils/localePath";
+import { useTranslation } from "react-i18next";
 // *******************************************
 
 export default function AdminShell() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   // ✅ NAYA CODE: useLocation for forcing Outlet re-mount on sidebar navigation
   const location = useLocation();
@@ -68,7 +72,7 @@ export default function AdminShell() {
       );
       authService.clearTokens();
       indexedDBService.clearAll().catch(() => {});
-      window.location.href = "/login";
+      window.location.href = getLocalePath("/login");
     };
 
     const resetTimer = () => {
@@ -167,7 +171,7 @@ export default function AdminShell() {
                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
               />
             </svg>
-            Admin Dashboard
+            {t("dashboard.adminShell.admin_dashboard")}
           </h1>
         </div>
 
@@ -204,7 +208,7 @@ export default function AdminShell() {
                     d="M8 5v14l7-7z"
                   />
                 </svg>
-                <span className="truncate">Overview</span>
+                <span className="truncate">{t("dashboard.adminShell.overview")}</span>
               </NavLink>
               <NavLink
                 to="/admin/performance"
@@ -229,7 +233,7 @@ export default function AdminShell() {
                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                   />
                 </svg>
-                <span className="truncate">Performance</span>
+                <span className="truncate">{t("dashboard.adminShell.performance")}</span>
               </NavLink>
               <NavLink
                 to="/admin/reports"
@@ -254,7 +258,7 @@ export default function AdminShell() {
                     d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-                <span className="truncate">Audit Reports</span>
+                <span className="truncate">{t("dashboard.adminShell.audit_reports")}</span>
               </NavLink>
               <NavLink
                 to="/admin/machines"
@@ -279,7 +283,7 @@ export default function AdminShell() {
                     d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <span className="truncate">Machines</span>
+                <span className="truncate">{t("dashboard.adminShell.machines")}</span>
               </NavLink>
               <NavLink
                 to="/admin/sessions"
@@ -304,7 +308,7 @@ export default function AdminShell() {
                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-                <span className="truncate">Sessions</span>
+                <span className="truncate">{t("dashboard.adminShell.sessions")}</span>
               </NavLink>
               {}
               {isSubusersEnabled && (
@@ -331,7 +335,7 @@ export default function AdminShell() {
                       d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
                     />
                   </svg>
-                  <span className="truncate">Subusers</span>
+                  <span className="truncate">{t("dashboard.adminShell.subusers")}</span>
                 </NavLink>
               )}
               {isGroupsEnabled && (
@@ -358,7 +362,7 @@ export default function AdminShell() {
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  <span className="truncate">Groups</span>
+                  <span className="truncate">{t("dashboard.adminShell.groups")}</span>
                 </NavLink>
               )}
               <NavLink
@@ -384,7 +388,7 @@ export default function AdminShell() {
                     d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
                   />
                 </svg>
-                <span className="truncate">Licenses</span>
+                <span className="truncate">{t("dashboard.adminShell.licenses")}</span>
               </NavLink>
               <NavLink
                 to="/admin/downloads"
@@ -409,7 +413,7 @@ export default function AdminShell() {
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                   />
                 </svg>
-                <span className="truncate">Downloads</span>
+                <span className="truncate">{t("dashboard.adminShell.downloads")}</span>
               </NavLink>
             </nav>
           </aside>

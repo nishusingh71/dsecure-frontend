@@ -3,9 +3,10 @@ import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import Reveal from "@/components/Reveal";
 import { useNavigate } from "react-router-dom";
+import { useLocaleNavigate } from "@/hooks/useLocaleNavigate";
 
 const HealthcareServices: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useLocaleNavigate();
   return (
     <>
       {/* SEO Meta Tags */}

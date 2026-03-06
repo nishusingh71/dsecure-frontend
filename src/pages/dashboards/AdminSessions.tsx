@@ -7,6 +7,8 @@ import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { isDemoMode, DEMO_SESSIONS } from "@/data/demoData";
 import { indexedDBService } from "@/services/indexedDBService";
+import { getLocalePath } from "@/utils/localePath";
+import { useTranslation } from "react-i18next";
 
 // ✅ 1. Standardized Interface
 interface ActivityLogItem {
@@ -226,6 +228,7 @@ const normalizeSession = (raw: any): MappedSession => {
 };
 
 export default function AdminSessions() {
+  const { t } = useTranslation();
   const { showError, showInfo } = useNotification();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -275,7 +278,7 @@ export default function AdminSessions() {
       console.warn("🔴 Session already expired, logging out...");
       authService.clearTokens();
       indexedDBService.clearAll().catch(() => {});
-      window.location.href = "/login";
+      window.location.href = getLocalePath("/login");
       return;
     }
 
@@ -289,19 +292,19 @@ export default function AdminSessions() {
     const logoutTimer = setTimeout(() => {
       console.warn("🔴 Session expired, auto-logout triggered");
       showError(
-        "Session Expired",
-        "Your session has expired. Please login again.",
+        t("dashboard.adminSessions.session_expired_title"),
+        t("dashboard.adminSessions.session_expired_msg"),
       );
       authService.clearTokens();
       indexedDBService.clearAll().catch(() => {});
-      window.location.href = "/login";
+      window.location.href = getLocalePath("/login");
     }, effectiveTimeout);
 
     return () => clearTimeout(logoutTimer);
   }, [sessions]);
 
   const handleRefresh = () => {
-    showInfo("Refreshing...");
+    showInfo(t("dashboard.adminSessions.refreshing"));
     loadData();
   };
 
@@ -394,7 +397,10 @@ export default function AdminSessions() {
       }
     } catch (e: any) {
       console.error(e);
-      showError("Error", "Failed to load data");
+      showError(
+        t("dashboard.adminSessions.error_title"),
+        t("dashboard.adminSessions.failed_to_load_data"),
+      );
     } finally {
       const elapsedTime = performance.now() - startTime;
       const minDelay = elapsedTime < 300 ? 300 - elapsedTime : 0;
@@ -538,7 +544,11 @@ export default function AdminSessions() {
   // ✅ IMPROVED: Render JSON Activity Details cleanly
   const renderActivityDetails = (details: any) => {
     if (!details || details === "No details")
-      return <span className="text-slate-400 italic">No details</span>;
+      return (
+        <span className="text-slate-400 italic">
+          {t("dashboard.adminSessions.no_details")}
+        </span>
+      );
 
     // If Array
     if (Array.isArray(details)) return <span>{details.join(", ")}</span>;
@@ -570,7 +580,9 @@ export default function AdminSessions() {
   const renderActivityLog = (activityLog: ActivityLogItem[]) => {
     if (!activityLog || activityLog.length === 0) {
       return (
-        <span className="text-slate-400 italic text-xs">No activity log</span>
+        <span className="text-slate-400 italic text-xs">
+          {t("dashboard.adminSessions.no_activity_log")}
+        </span>
       );
     }
 
@@ -651,7 +663,7 @@ export default function AdminSessions() {
         {/* Header */}
         <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Sessions
+            {t("dashboard.adminSessions.sessions")}
           </h1>
           <div className="flex gap-3">
             <button
@@ -671,7 +683,7 @@ export default function AdminSessions() {
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                 />
               </svg>
-              Refresh
+              {t("dashboard.adminSessions.refresh")}
             </button>
           </div>
         </div>
@@ -680,7 +692,7 @@ export default function AdminSessions() {
         <div className="card p-4 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-900">
-              Filters & Search
+              {t("dashboard.adminSessions.filters_search")}
             </h3>
             <button
               onClick={() => {
@@ -690,7 +702,7 @@ export default function AdminSessions() {
               }}
               className="text-sm text-red-600 hover:text-red-800 font-medium"
             >
-              Clear All
+              {t("dashboard.adminSessions.clear_all")}
             </button>
           </div>
 
@@ -698,7 +710,7 @@ export default function AdminSessions() {
             {/* From Date */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                From Date
+                {t("dashboard.adminSessions.from_date")}
               </label>
               <input
                 type="date"
@@ -711,7 +723,7 @@ export default function AdminSessions() {
             {/* To Date */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                To Date
+                {t("dashboard.adminSessions.to_date")}
               </label>
               <input
                 type="date"
@@ -728,11 +740,21 @@ export default function AdminSessions() {
           {/* Table Header */}
           <div className="overflow-x-auto max-h-[600px] overflow-y-auto scrollbar-hide">
             <div className="hidden md:grid grid-cols-12 gap-4 p-4 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              <div className="col-span-2">User & Status</div>
-              <div className="col-span-2">Session Time</div>
-              <div className="col-span-2">Duration & Activity</div>
-              <div className="col-span-3">Device & Network</div>
-              <div className="col-span-3">Activity Log</div>
+              <div className="col-span-2">
+                {t("dashboard.adminSessions.user_status")}
+              </div>
+              <div className="col-span-2">
+                {t("dashboard.adminSessions.session_time")}
+              </div>
+              <div className="col-span-2">
+                {t("dashboard.adminSessions.duration_activity")}
+              </div>
+              <div className="col-span-3">
+                {t("dashboard.adminSessions.device_network")}
+              </div>
+              <div className="col-span-3">
+                {t("dashboard.adminSessions.activity_log")}
+              </div>
             </div>
 
             <div className="divide-y divide-slate-100">
@@ -796,7 +818,9 @@ export default function AdminSessions() {
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  No sessions found for this period
+                  {t(
+                    "dashboard.adminSessions.no_sessions_found_for_this_period",
+                  )}
                 </div>
               ) : (
                 paginatedData.map((session, idx) => (
@@ -816,7 +840,9 @@ export default function AdminSessions() {
                           {session.isActive && (
                             <span
                               className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
-                              title="Active Session"
+                              title={t(
+                                "dashboard.adminSessions.active_session",
+                              )}
                             ></span>
                           )}
                         </div>
@@ -833,7 +859,7 @@ export default function AdminSessions() {
                     <div className="col-span-6 md:col-span-2 flex flex-col justify-center text-sm">
                       <div className="flex flex-col mb-1">
                         <span className="text-[10px] text-slate-400 uppercase font-bold">
-                          Login
+                          {t("dashboard.adminSessions.login_label")}
                         </span>
                         <span className="font-medium text-slate-700">
                           {formatDate(session.login_time)}
@@ -841,7 +867,7 @@ export default function AdminSessions() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-[10px] text-slate-400 uppercase font-bold">
-                          Logout
+                          {t("dashboard.adminSessions.logout_label")}
                         </span>
                         {/* ********** PURANA CODE — always showed "Active Now" when logout_time was null **********
                         <span className="font-medium text-slate-700">
@@ -860,17 +886,17 @@ export default function AdminSessions() {
                             formatDate(session.logout_time)
                           ) : session.isActive ? (
                             <span className="text-emerald-600 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
-                              Active Now
+                              {t("dashboard.adminSessions.active_now")}
                             </span>
                           ) : session.estimatedExpiryTime &&
                             new Date(session.estimatedExpiryTime).getTime() <
                               Date.now() ? (
                             <span className="text-red-600 font-medium bg-red-50 px-1.5 py-0.5 rounded text-[10px]">
-                              Expired
+                              {t("dashboard.adminSessions.expired")}
                             </span>
                           ) : (
                             <span className="text-slate-500 font-medium bg-slate-50 px-1.5 py-0.5 rounded text-[10px]">
-                              Session Ended
+                              {t("dashboard.adminSessions.session_ended")}
                             </span>
                           )}
                         </span>
@@ -881,7 +907,7 @@ export default function AdminSessions() {
                     <div className="col-span-6 md:col-span-2 flex flex-col justify-center text-sm">
                       <div className="flex flex-col mb-1">
                         <span className="text-[10px] text-slate-400 uppercase font-bold">
-                          Duration
+                          {t("dashboard.adminSessions.duration")}
                         </span>
                         <span className="font-medium text-slate-700">
                           {formatDuration(session.sessionDurationMinutes)}
@@ -889,7 +915,7 @@ export default function AdminSessions() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-[10px] text-slate-400 uppercase font-bold">
-                          Last Active
+                          {t("dashboard.adminSessions.last_active")}
                         </span>
                         <span className="font-medium text-slate-600 text-xs">
                           {session.lastActiveTime
@@ -900,7 +926,7 @@ export default function AdminSessions() {
                       {session.estimatedExpiryTime && !session.logout_time && (
                         <div className="flex flex-col mt-1">
                           <span className="text-[10px] text-amber-500 uppercase font-bold">
-                            Expires
+                            {t("dashboard.adminSessions.expires")}
                           </span>
                           <span className="font-medium text-amber-600 text-xs">
                             {formatDate(session.estimatedExpiryTime)}
@@ -914,7 +940,7 @@ export default function AdminSessions() {
                       <div className="flex flex-col gap-2 text-xs">
                         <div>
                           <span className="text-slate-400 block uppercase text-[10px] font-bold">
-                            IP Address
+                            {t("dashboard.adminSessions.ip_address")}
                           </span>
                           <span className="font-mono text-slate-600">
                             {session.ip_address}
@@ -922,7 +948,7 @@ export default function AdminSessions() {
                         </div>
                         <div className="border-t border-slate-200 pt-2">
                           <span className="text-slate-400 block uppercase text-[10px] font-bold">
-                            Device Info
+                            {t("dashboard.adminSessions.device_info")}
                           </span>
                           <span
                             className="text-slate-700 font-medium break-all line-clamp-2"
@@ -941,7 +967,7 @@ export default function AdminSessions() {
                       <div className="flex flex-col gap-1">
                         <span className="font-semibold text-slate-700 flex items-center gap-2 text-xs uppercase tracking-wide">
                           <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                          Activity Log
+                          {t("dashboard.adminSessions.activity_log")}
                         </span>
                         <div className="bg-white border border-slate-100 rounded p-2 text-xs shadow-sm">
                           {session.activityLog && session.activityLog.length > 0
@@ -950,7 +976,9 @@ export default function AdminSessions() {
                         </div>
                         {session.resource_id && session.resource_id !== "-" && (
                           <div className="mt-1 text-[10px] text-slate-500">
-                            <span className="font-semibold">Resource:</span>{" "}
+                            <span className="font-semibold">
+                              {t("dashboard.adminSessions.resource")}
+                            </span>{" "}
                             {session.resource_type !== "-" && (
                               <span className="text-blue-600">
                                 {session.resource_type}/
@@ -972,7 +1000,7 @@ export default function AdminSessions() {
             {/* Left side - Rows per page selector */}
             <div className="flex items-center gap-3">
               <label htmlFor="pageSize" className="text-sm text-slate-600">
-                Rows per page:
+                {t("dashboard.adminSessions.rows_per_page")}
               </label>
               <select
                 id="pageSize"

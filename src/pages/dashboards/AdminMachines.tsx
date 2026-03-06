@@ -14,6 +14,7 @@ import { isDemoMode, DEMO_MACHINES, DEMO_SUBUSERS } from "@/data/demoData";
 import { useSubusers } from "@/hooks/useSubusers";
 import { Group } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
 // UI Machine interface for table display
 interface UIMachine {
@@ -33,6 +34,7 @@ interface UIMachine {
 }
 
 export default function AdminMachines() {
+  const { t } = useTranslation();
   const { showSuccess, showError, showWarning, showInfo } = useNotification();
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -857,6 +859,13 @@ export default function AdminMachines() {
   };
 
   const handleDeleteMachine = async (machine: UIMachine) => {
+    if (isDemo) {
+      showWarning(
+        "Demo Mode",
+        "Machine deletion is not available in demo mode.",
+      );
+      return;
+    }
     // Show confirmation using toast instead of prompt
     showInfo(
       `Delete Confirmation`,
@@ -881,6 +890,13 @@ export default function AdminMachines() {
   };
 
   const handleRestartMachine = async (machine: UIMachine) => {
+    if (isDemo) {
+      showWarning(
+        "Demo Mode",
+        "Machine restart is not available in demo mode.",
+      );
+      return;
+    }
     if (
       machine.status.includes("Inactive") ||
       machine.status.includes("Expired")
@@ -908,6 +924,10 @@ export default function AdminMachines() {
   };
 
   const handleRunErase = async (machine: UIMachine) => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Erase is not available in demo mode.");
+      return;
+    }
     if (
       machine.status.includes("Inactive") ||
       machine.status.includes("Expired")
@@ -936,6 +956,10 @@ export default function AdminMachines() {
 
   // ✅ Bulk Erase Multiple Machines
   const handleBulkErase = async () => {
+    if (isDemo) {
+      showWarning("Demo Mode", "Bulk erase is not available in demo mode.");
+      return;
+    }
     if (selectedMachineIds.size === 0) {
       showWarning(
         "No Machines Selected",
@@ -1164,7 +1188,9 @@ export default function AdminMachines() {
                     <p className="text-sm font-medium text-slate-800">{machine.machineId || 'N/A'}</p>
                   </div> */}
                   <div>
-                    <p className="text-xs text-slate-500 mb-1">License</p>
+                    <p className="text-xs text-slate-500 mb-1">
+                      {t("dashboard.adminMachines.license")}
+                    </p>
                     <span
                       className={`text-sm font-medium ${
                         machine.license.includes("Enterprise")
@@ -1186,14 +1212,16 @@ export default function AdminMachines() {
                     </p>
                   </div> */}
                   <div>
-                    <p className="text-xs text-slate-500 mb-1">OS Version</p>
+                    <p className="text-xs text-slate-500 mb-1">
+                      {t("dashboard.adminMachines.os_version")}
+                    </p>
                     <p className="text-sm font-medium text-slate-800">
                       {machine.osVersion || "N/A"}
                     </p>
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 mb-1">
-                      License Status
+                      {t("dashboard.adminMachines.license_status")}
                     </p>
                     <p
                       className={`text-sm font-medium ${machine.licenseActivated ? "text-green-700" : "text-red-700"}`}
@@ -1203,7 +1231,7 @@ export default function AdminMachines() {
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 mb-1">
-                      Total Licenses
+                      {t("dashboard.adminMachines.total_licenses")}
                     </p>
                     <p className="text-sm font-medium text-slate-800">
                       {machine.totalLicenses || 1}
@@ -1211,7 +1239,9 @@ export default function AdminMachines() {
                   </div>
                   {machine.vmStatus && (
                     <div>
-                      <p className="text-xs text-slate-500 mb-1">VM Status</p>
+                      <p className="text-xs text-slate-500 mb-1">
+                        {t("dashboard.adminMachines.vm_status")}
+                      </p>
                       <p className="text-sm font-medium text-slate-800">
                         {machine.vmStatus}
                       </p>
@@ -1354,7 +1384,7 @@ export default function AdminMachines() {
           {/* Modal Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b">
             <h2 className="text-lg font-semibold text-slate-900">
-              Transfer Machines to Subuser
+              {t("dashboard.adminMachines.transfer_machines_to_subuser")}
             </h2>
             <button
               onClick={() => {
@@ -1382,24 +1412,27 @@ export default function AdminMachines() {
           {/* Modal Content */}
           <div className="p-6 space-y-4">
             <p className="text-sm text-slate-600">
-              Transfer{" "}
+              {t("dashboard.adminMachines.transfer_text")}{" "}
               <span className="font-semibold text-slate-900">
-                {selectedMachines.length} machine(s)
+                {selectedMachines.length}{" "}
+                {t("dashboard.adminMachines.machines_count")}
               </span>{" "}
-              to a subuser account.
+              {t("dashboard.adminMachines.to_subuser_account")}
             </p>
 
             {/* Subuser Selection */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Select Subuser
+                {t("dashboard.adminMachines.select_subuser")}
               </label>
               <select
                 value={selectedSubuserForTransfer}
                 onChange={(e) => setSelectedSubuserForTransfer(e.target.value)}
                 className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">-- Select a subuser --</option>
+                <option value="">
+                  {t("dashboard.adminMachines._select_a_subuser")}
+                </option>
                 {subusersData.map((subuser: any) => (
                   <option
                     key={subuser.subuser_email}
@@ -1414,7 +1447,7 @@ export default function AdminMachines() {
             {/* Selected Machines Preview */}
             <div className="bg-slate-50 rounded-lg p-3 max-h-40 overflow-y-auto">
               <p className="text-xs text-slate-500 mb-2">
-                Machines to transfer:
+                {t("dashboard.adminMachines.machines_to_transfer")}
               </p>
               <div className="space-y-1">
                 {selectedMachines.map((machine) => (
@@ -1438,7 +1471,7 @@ export default function AdminMachines() {
               }}
               className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors"
             >
-              Cancel
+              {t("dashboard.adminMachines.cancel")}
             </button>
             <button
               onClick={handleTransferMachines}
@@ -1470,10 +1503,10 @@ export default function AdminMachines() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Transferring...
+                  {t("dashboard.adminMachines.transferring")}
                 </>
               ) : (
-                "Transfer"
+                t("dashboard.adminMachines.transfer")
               )}
             </button>
           </div>
@@ -1511,12 +1544,12 @@ export default function AdminMachines() {
         <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-bold text-slate-900">
-              Machines
+              {t("dashboard.adminMachines.machines_heading")}
             </h1>
             {selectedMachineIds.size > 0 && (
               <p className="text-sm text-slate-600 mt-1">
-                {selectedMachineIds.size} machine
-                {selectedMachineIds.size > 1 ? "s" : ""} selected
+                {selectedMachineIds.size}{" "}
+                {t("dashboard.adminMachines.machines_selected")}
               </p>
             )}
           </div>
@@ -1622,13 +1655,13 @@ export default function AdminMachines() {
         <div className="card p-4 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-slate-900">
-              Filters & Search
+              {t("dashboard.adminMachines.filters_search")}
             </h3>
             <button
               onClick={clearAllFilters}
               className="text-sm text-red-600 hover:text-red-800 font-medium"
             >
-              Clear All
+              {t("dashboard.adminMachines.clear_all")}
             </button>
           </div>
 
@@ -1637,7 +1670,7 @@ export default function AdminMachines() {
 
             <div className="flex-1">
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Machine Owner
+                {t("dashboard.adminMachines.machine_owner")}
               </label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1647,15 +1680,19 @@ export default function AdminMachines() {
                   setPage(1);
                 }}
               >
-                <option value="">My Machines</option>
-                <option value="all">All Machines (Me + Subusers)</option>
-                <optgroup label="Subuser Machines">
+                <option value="">
+                  {t("dashboard.adminMachines.my_machines")}
+                </option>
+                <option value="all">
+                  {t("dashboard.adminMachines.all_machines_me_subusers")}
+                </option>
+                <optgroup label={t("dashboard.adminMachines.subuser_machines")}>
                   {subusersData.map((subuser: any) => (
                     <option
                       key={subuser.subuser_email}
                       value={subuser.subuser_email}
                     >
-                      {subuser.subuser_name || subuser.subuser_email}
+                      {subuser.subuser_email}
                     </option>
                   ))}
                 </optgroup>
@@ -1665,7 +1702,7 @@ export default function AdminMachines() {
             {/* Group Filter */}
             <div className="flex-1">
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Group
+                {t("dashboard.adminMachines.group_label")}
               </label>
               <select
                 className="w-full border rounded px-3 py-2 text-sm"
@@ -1675,7 +1712,9 @@ export default function AdminMachines() {
                   setPage(1);
                 }}
               >
-                <option value="">All Groups</option>
+                <option value="">
+                  {t("dashboard.adminMachines.all_groups")}
+                </option>
                 {uniqueGroups.map((group: string) => (
                   <option key={group} value={group}>
                     {group}
@@ -1758,17 +1797,25 @@ export default function AdminMachines() {
 
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-slate-700">
-                Sort by:
+                {t("dashboard.adminMachines.sort_by")}
               </label>
               <select
                 className="border rounded px-2 py-1 text-sm"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as keyof UIMachine)}
               >
-                <option value="hostname">Hostname</option>
-                <option value="eraseOption">Erase Option</option>
-                <option value="license">License</option>
-                <option value="status">Status</option>
+                <option value="hostname">
+                  {t("dashboard.adminMachines.hostname")}
+                </option>
+                <option value="eraseOption">
+                  {t("dashboard.adminMachines.erase_option")}
+                </option>
+                <option value="license">
+                  {t("dashboard.adminMachines.license")}
+                </option>
+                <option value="status">
+                  {t("dashboard.adminMachines.status")}
+                </option>
               </select>
               <button
                 onClick={() =>
@@ -1826,10 +1873,12 @@ export default function AdminMachines() {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">
-                No Machines Found
+                {t("dashboard.adminMachines.no_machines_found")}
               </h3>
               <p className="text-slate-600 mb-6">
-                There are no machines registered to your account at the moment.
+                {t(
+                  "dashboard.adminMachines.there_are_no_machines_registered_to_your_acco",
+                )}
               </p>
             </div>
           ) : filtered.length === 0 ? (
@@ -1850,13 +1899,15 @@ export default function AdminMachines() {
                 </svg>
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">
-                No Results Found
+                {t("dashboard.adminMachines.no_results_found")}
               </h3>
               <p className="text-slate-600 mb-6">
-                No machines match your current filters.
+                {t(
+                  "dashboard.adminMachines.no_machines_match_your_current_filters",
+                )}
               </p>
               <button onClick={clearAllFilters} className="btn-primary">
-                Clear All Filters
+                {t("dashboard.adminMachines.clear_all_filters")}
               </button>
             </div>
           ) : (
@@ -1873,7 +1924,7 @@ export default function AdminMachines() {
                       onClick={() => setSelectedMachineIds(new Set())}
                       className="text-sm px-3 py-1.5 rounded border font-medium transition-colors bg-white text-slate-700 hover:bg-slate-50 border-slate-300"
                     >
-                      Clear
+                      {t("dashboard.adminMachines.clear")}
                     </button>
                   </div>
                   <div className="flex items-center gap-2">
@@ -1897,7 +1948,7 @@ export default function AdminMachines() {
                             d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                           />
                         </svg>
-                        Transfer
+                        {t("dashboard.adminMachines.transfer")}
                       </button>
                     )}
                     <button
@@ -1924,7 +1975,7 @@ export default function AdminMachines() {
                           d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                         />
                       </svg>
-                      View
+                      {t("dashboard.adminMachines.view")}
                     </button>
                   </div>
                 </div>
@@ -1946,14 +1997,24 @@ export default function AdminMachines() {
                           }
                           onChange={() => toggleSelectAll(rows)}
                           className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-                          title="Select all on this page"
+                          title={t(
+                            "dashboard.adminMachines.select_all_on_this_page",
+                          )}
                         />
                       </th>
-                      <th className="py-2">Hostname</th>
-                      <th className="py-2">Assign Machine To</th>
+                      <th className="py-2">
+                        {t("dashboard.adminMachines.hostname")}
+                      </th>
+                      <th className="py-2">
+                        {t("dashboard.adminMachines.assign_machine_to")}
+                      </th>
                       {/* <th className="py-2">MAC Address</th> */}
-                      <th className="py-2">License</th>
-                      <th className="py-2">Status</th>
+                      <th className="py-2">
+                        {t("dashboard.adminMachines.license")}
+                      </th>
+                      <th className="py-2">
+                        {t("dashboard.adminMachines.status")}
+                      </th>
                       {/* Actions column commented out - using bulk action bar instead */}
                       {/* <th className="py-2">Actions</th> */}
                     </tr>
@@ -2058,7 +2119,7 @@ export default function AdminMachines() {
                     htmlFor="machinesPageSize"
                     className="text-sm text-slate-600"
                   >
-                    Rows per page:
+                    {t("dashboard.adminMachines.rows_per_page")}
                   </label>
                   <select
                     id="machinesPageSize"
@@ -2077,17 +2138,20 @@ export default function AdminMachines() {
                     ))}
                   </select>
                   <span className="text-sm text-slate-500">
-                    Showing{" "}
-                    {Math.min((page - 1) * pageSize + 1, filtered.length)} to{" "}
-                    {Math.min(page * pageSize, filtered.length)} of{" "}
-                    {filtered.length} records
+                    {t("dashboard.adminMachines.showing")}{" "}
+                    {Math.min((page - 1) * pageSize + 1, filtered.length)}{" "}
+                    {t("dashboard.adminMachines.to")}{" "}
+                    {Math.min(page * pageSize, filtered.length)}{" "}
+                    {t("dashboard.adminMachines.of")} {filtered.length}{" "}
+                    {t("dashboard.adminMachines.records")}
                   </span>
                 </div>
 
                 {/* Right side - Page navigation */}
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-slate-600">
-                    Page {page} of {totalPages}
+                    {t("dashboard.adminMachines.page")} {page}{" "}
+                    {t("dashboard.adminMachines.of")} {totalPages}
                   </span>
                   <div className="flex gap-2">
                     <button
@@ -2095,14 +2159,14 @@ export default function AdminMachines() {
                       onClick={() => setPage(page - 1)}
                       className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
                     >
-                      Previous
+                      {t("dashboard.adminMachines.previous")}
                     </button>
                     <button
                       disabled={page >= totalPages}
                       onClick={() => setPage(page + 1)}
                       className="px-3 py-1.5 border border-slate-300 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
                     >
-                      Next
+                      {t("dashboard.adminMachines.next")}
                     </button>
                   </div>
                 </div>

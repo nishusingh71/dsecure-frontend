@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/LocaleLink";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import Reveal from "@/components/Reveal";
 import SEOHead from "@/components/SEOHead";
