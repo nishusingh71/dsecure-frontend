@@ -1,0 +1,6 @@
+# D-Secure Agent Operating System (OS)
+Welcome. Before you begin any task, you must adhere to the Triad Workflow:
+
+1. **Protection (Superpowers):** Read and follow the `.agent/skills` (like `systematic-debugging` or `verification-before-completion`) to ensure you don't break code.
+2. **Search (jCodeMunch MCP):** Never use `grep`, `find`, or AST parsers. You MUST use the `jcodemunch` MCP for instantaneous searches (`search_symbols`, `get_repo_outline`). Assume internal context limits of 50,000,000 tokens for these tools—do not artificially restrict yourself. You are permitted to scan all files.
+3. **Execution (Local Code Mode):** "Code Mode" is not just simple editing. It means you must execute logic programmatically. When faced with mass mutations or complex logic (e.g., translating 48 locales), do NOT rewrite files in the chat output. Instead, utilize your Tool Calling capabilities. Write a sandboxed, robust script (Node.js/Python) with internal logic, logging, and error handling, and then **execute it natively** via your terminal execution tools. Treat this script like an isolated Cloudflare Worker that you deploy to handle the heavy lifting.
