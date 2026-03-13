@@ -22,18 +22,12 @@
   "dependencies": {
     "@cloudinary/react": "^1.14.3",
     "@cloudinary/url-gen": "^1.22.0",
-    "@polar-sh/sdk": "^0.42.1",
-    "@radix-ui/react-tooltip": "^1.2.8",
     "@tanstack/react-query": "^5.90.5",
     "@types/crypto-js": "^4.2.2",
     "@types/leaflet": "^1.9.21",
-    "@vitejs/plugin-rsc": "^0.5.5",
     "axios": "^1.12.2",
-    "better-auth": "^1.4.9",
     "cloudinary": "^2.7.0",
-    "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
-    "date-fns": "^4.1.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.24",
@@ -53,13 +47,11 @@
     "react-dom": "^19.2.3",
     "react-helmet-async": "^2.0.5",
     "react-i18next": "^16.2.2",
-    "react-intersection-observer": "^9.16.0",
     "react-is": "^19.2.3",
     "react-leaflet": "^5.0.0",
     "react-pdf": "^10.3.0",
     "react-router-dom": "^6.26.2",
-    "recharts": "^3.3.0",
-    "tailwind-merge": "^3.3.1"
+    "recharts": "^3.3.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^7.0.2",

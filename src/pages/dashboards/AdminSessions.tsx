@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from "react-helmet-async";
@@ -7,6 +7,9 @@ import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { isDemoMode, DEMO_SESSIONS } from "@/data/demoData";
 import { indexedDBService } from "@/services/indexedDBService";
+
+// ✅ AbortController ref — stale API requests cancel karne ke liye
+let abortControllerRefSessions: AbortController | null = null;
 
 // ✅ 1. Standardized Interface
 interface ActivityLogItem {
@@ -238,7 +241,12 @@ export default function AdminSessions() {
 
   // Load Data
   useEffect(() => {
-    loadData();
+    // ✅ Debounce rapid date changes
+    const timer = setTimeout(() => {
+      loadData();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [fromDate, toDate]);
 
   // ✅ Auto-logout check: Monitor current user's session expiry (max 15-min cap)
@@ -306,6 +314,13 @@ export default function AdminSessions() {
   };
 
   const loadData = async () => {
+    // ✅ Cancel previous request if still pending
+    if (abortControllerRefSessions) {
+      abortControllerRefSessions.abort();
+    }
+    abortControllerRefSessions = new AbortController();
+    const currentAbort = abortControllerRefSessions;
+
     setLoading(true);
     const startTime = performance.now();
 
@@ -388,15 +403,22 @@ export default function AdminSessions() {
             new Date(b.login_time).getTime() - new Date(a.login_time).getTime(),
         );
 
-        setSessions(mappedData);
+        if (!currentAbort.signal.aborted) {
+          setSessions(mappedData);
+        }
       }
     } catch (e: any) {
-      // console.error(e);
-      showError("Error", "Failed to load data");
+      if (!currentAbort.signal.aborted) {
+        showError("Error", "Failed to load data");
+      }
     } finally {
       const elapsedTime = performance.now() - startTime;
       const minDelay = elapsedTime < 300 ? 300 - elapsedTime : 0;
-      setTimeout(() => setLoading(false), minDelay);
+      setTimeout(() => {
+        if (!currentAbort.signal.aborted) {
+          setLoading(false);
+        }
+      }, minDelay);
     }
   };
 

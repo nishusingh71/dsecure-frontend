@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiClient, type AuditReport } from '@/utils/enhancedApiClient'
+import { ExtendedAdminReport } from '@/types/models'
 
 import { indexedDBService } from '@/services/indexedDBService'
 import { isDemoMode, DEMO_AUDIT_REPORTS } from '@/data/demoData'
@@ -73,11 +74,12 @@ export function useAuditReports(userEmail?: string, enabled: boolean = true) {
       return response.data;
     },
     enabled: enabled && !!userEmail,
-    staleTime: 5 * 60 * 1000, // 5 minutes - audit reports don't change frequently
-    gcTime: 15 * 60 * 1000, // 15 minutes in cache
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData: any) => previousData, // ✅ Keep previous data while refetching
     refetchOnMount: false, // ✅ Don't refetch on tab switch
     refetchOnWindowFocus: false, // ✅ Don't refetch on window focus
+    refetchOnReconnect: false,
     retry: 1,
   });
 }
@@ -101,8 +103,8 @@ export function useAllAuditReports(enabled: boolean = true) {
       return response.data
     },
     enabled,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 15 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     retry: 1,
   })
 }
@@ -213,11 +215,123 @@ export function useEnhancedAuditReports(userEmail?: string, enabled: boolean = t
       return reportsWithDeviceCount;
     },
     enabled: enabled && !!userEmail,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 15 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData: any) => previousData, // ✅ Keep previous data while refetching
     refetchOnMount: false, // ✅ Don't refetch on tab switch
     refetchOnWindowFocus: false, // ✅ Don't refetch on window focus
+    refetchOnReconnect: false,
     retry: 1,
   });
 }
+
+/**
+ * Enhanced hook for filtered audit reports with parallel fetching for subusers
+ * replacement for loadReportsData in AdminReports.tsx
+ */
+export function useFilteredAuditReports(
+  filters: {
+    userEmail: string;
+    subuserFilter?: string;
+    query?: string;
+    statusFilter?: string;
+    fromDate?: string;
+    toDate?: string;
+    reportTypeFilter?: string;
+    groupFilter?: string;
+  },
+  subusersData: any[] = [],
+  enabled: boolean = true
+) {
+  return useQuery({
+    queryKey: auditReportKeys.list(filters.userEmail + JSON.stringify(filters)),
+    queryFn: async () => {
+      // 0. Demo Mode
+      if (isDemoMode()) {
+        return []; // AdminReports handles demo data itself or we can move it here
+      }
+
+      const {
+        userEmail,
+        subuserFilter,
+        query,
+        statusFilter,
+        fromDate,
+        toDate,
+        reportTypeFilter,
+        groupFilter,
+      } = filters;
+
+      // Determine target email
+      let targetEmail = userEmail;
+      if (subuserFilter && subuserFilter !== "all" && subuserFilter !== "") {
+        targetEmail = subuserFilter;
+      }
+
+      // Build filters for API
+      const apiFilters: any = {
+        userEmail: targetEmail,
+      };
+      if (query) apiFilters.search = query;
+      if (statusFilter) apiFilters.status = statusFilter;
+      if (fromDate) apiFilters.dateFrom = fromDate;
+      if (toDate) apiFilters.dateTo = toDate;
+      if (reportTypeFilter) apiFilters.reportType = reportTypeFilter;
+      if (groupFilter) apiFilters.groupName = groupFilter;
+
+      let uniqueReports: any[] = [];
+      const response = await apiClient.getFilteredAuditReports(apiFilters);
+
+      if (response.success && response.data) {
+        const responseData = response.data as any;
+        uniqueReports = Array.isArray(responseData.reports) 
+          ? responseData.reports 
+          : Array.isArray(response.data) 
+            ? response.data 
+            : [response.data];
+      }
+
+      // Handle "all" subusers
+      if (subuserFilter === "all" && subusersData.length > 0) {
+        const subuserPromises = subusersData.map((s: any) =>
+          apiClient.getFilteredAuditReports({
+            ...apiFilters,
+            userEmail: s.subuser_email || s.email,
+          }),
+        );
+        const subuserResults = await Promise.all(subuserPromises);
+        
+        subuserResults.forEach((res) => {
+          if (res.success && res.data) {
+            const resData = res.data as any;
+            const reportsArray = Array.isArray(resData.reports)
+              ? resData.reports
+              : Array.isArray(res.data)
+                ? res.data
+                : [res.data];
+            uniqueReports = [...uniqueReports, ...reportsArray];
+          }
+        });
+
+        // Remove duplicates
+        uniqueReports = Array.from(
+          new Map(
+            uniqueReports.map((report) => [
+              report.report_id || report.id,
+              report,
+            ]),
+          ).values(),
+        );
+      }
+
+      return uniqueReports;
+    },
+    enabled: enabled && !!filters.userEmail,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+}
+

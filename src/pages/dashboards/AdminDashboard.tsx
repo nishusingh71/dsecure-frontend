@@ -58,7 +58,7 @@ import {
   useUpdateSubuser,
   useDeleteSubuser,
 } from "@/hooks/useSubusers";
-import { useDashboardData, useDashboardLicenseList, useDashboardSessions } from "@/hooks/useDashboardData";
+import { useDashboardData, useDashboardLicenseList, useDashboardSessions, useGroupsWithUsers } from "@/hooks/useDashboardData";
 import {
   useUserMachines,
   useActiveLicensesCount,
@@ -500,7 +500,7 @@ export default function AdminDashboard() {
   );
   // ✅ License list from /api/License/admin/all (same as AdminLicenses page)
   const [dashboardLicenseList, setDashboardLicenseList] = useState<any[]>([]);
-  const [licenseListLoading, setLicenseListLoading] = useState(false);
+  // ✅ OPTIMIZED: licenseListLoading ab line ~830 pe directly derive hota hai (licenseListQuery ke baad)
   const [recentSystemLogs, setRecentSystemLogs] = useState<any[]>(
     isDemoMode() ? DEMO_SYSTEM_LOGS : [],
   );
@@ -534,10 +534,8 @@ export default function AdminDashboard() {
     null,
   );
 
-  // Initialize profileData with localStorage data - use state to ensure reactivity
-  const [storedUserData, setStoredUserData] = useState(() =>
-    getUserDataFromStorage(),
-  );
+  // ✅ OPTIMIZED: Initialize profileData with localStorage data using useMemo to avoid re-renders
+  const storedUserData = useMemo(() => getUserDataFromStorage(), [user]);
   // Priority: userRole > user_role > role > user_type
   const primaryRole =
     storedUserData?.userRole ||
@@ -583,11 +581,7 @@ export default function AdminDashboard() {
       storedUserData?.is_subusers_enabled || user?.is_subusers_enabled,
   });
 
-  // Update stored user data when user context changes
-  useEffect(() => {
-    const userData = getUserDataFromStorage();
-    setStoredUserData(userData);
-  }, [user]);
+  // ✅ OPTIMIZED: Update stored user data useEffect removed (now using useMemo above)
   const isDemo = isDemoMode();
 
   // Check if user has private cloud access
@@ -655,34 +649,9 @@ export default function AdminDashboard() {
 
   // PURANA CODE: devLog("🔐 RBAC Info (AdminDashboard):", { role: currentUserRole, groupId: currentUserGroupId, email: currentUserEmail, centralizedUser: currentUser });
 
-  // ✅ 1. Eagerly load stats from IDB to prevent shimmer on tab switch
-  useEffect(() => {
-    if (isDemo || !userEmail) return;
-
-    const loadCachedStats = async () => {
-      try {
-        const cacheKey = `stats_${userEmail}`;
-        const cached = await indexedDBService.get("dashboard_stats", cacheKey);
-
-        // Only set if we don't have stats yet (to avoid overwriting fresher data if race condition)
-        // Actually, setting it is fine because useDashboardData sync will overwrite it with fresh data later
-        if (cached && !dashboardStats) {
-          // console.log('✅ [Dashboard] Eagerly loaded stats from IDB');
-          setDashboardStats(cached);
-        }
-      } catch (e) {
-        // console.warn('warning', e);
-      }
-    };
-
-    loadCachedStats();
-  }, [isDemo, userEmail]); // Run only on mount/email change
-
   // ✅ React Query: Fetch dashboard data with automatic caching
-  // ✅ NAYA CODE: Enabled dashboardData for 'groups' tab so React Query cached data is available immediately
-  // PURANA CODE: activeTab === "overview" || activeTab === "licenses";
-  const dashboardDataEnabled =
-    activeTab === "overview" || activeTab === "licenses" || activeTab === "groups";
+  // Overview metrics are now cached until logout via staleTime: Infinity in useDashboardData
+  const dashboardDataEnabled = true; // Always enabled to maintain background cache
   const dashboardQuery = useDashboardData(userEmail, dashboardDataEnabled);
 
   // PURANA CODE: console.log("dashboardQuery>>>>>>>>>>>>>>>>", dashboardQuery);
@@ -701,13 +670,13 @@ export default function AdminDashboard() {
 
   // ✅ In Demo Mode, disable all React Query API calls
 
-  const {
-    data: subusersData = isDemo ? DEMO_SUBUSERS : EMPTY_SUBUSERS,
-    isLoading: _usersDataLoading,
-    error: subusersError,
-    refetch: refetchSubusers,
-    isRefetching,
-  } = useSubusers(userEmail, !!userEmail && !isDemo);
+  const subusersQuery = useSubusers(userEmail, !!userEmail && !isDemo);
+
+  const subusersData = isDemo ? DEMO_SUBUSERS : (subusersQuery.data || EMPTY_SUBUSERS);
+  const _usersDataLoading = subusersQuery.isLoading;
+  const subusersError = subusersQuery.error;
+  const refetchSubusers = subusersQuery.refetch;
+  const isRefetching = subusersQuery.isRefetching;
 
   // 🎭 In Demo Mode, never show loading state
   const usersDataLoading = isDemo ? false : _usersDataLoading;
@@ -762,6 +731,19 @@ export default function AdminDashboard() {
   // ✅ RBAC: Use filtered data for rendering (replaces original subusersData in UI)
   const displaySubusersData = filteredSubusersData;
 
+  // TEMPORARY DEBUG LOG FOR DEMO MODE
+  useEffect(() => {
+    if (isDemo && activeTab === "users") {
+      console.log("USERS TAB DATA DEBUG", {
+        rawLength: subusersData?.length || 0,
+        displayLength: displaySubusersData?.length || 0,
+        currentUserRole,
+        isSuperAdmin,
+        currentUser
+      });
+    }
+  }, [isDemo, activeTab, subusersData, displaySubusersData, currentUserRole, isSuperAdmin, currentUser]);
+
   // ✅ React Query: Fetch machines and audit reports for user (disabled in demo mode)
   const machinesQuery = useUserMachines(userEmail, !!userEmail && !isDemo);
 
@@ -784,38 +766,37 @@ export default function AdminDashboard() {
   );
 
   // ✅ React Query: Fetch performance data automatically from cached audit reports and machines (disabled in demo mode)
+  // ALWAYS enable in background for instant tab switching
   const performanceQuery = usePerformanceData(
     isDemo ? "" : userEmail,
-    !!userEmail && activeTab === "overview" && !isDemo,
+    !!userEmail && !isDemo,
   );
 
   // ✅ React Query: Fetch Erasure Metrics for Performance Tab
-  const [erasureMetricsFilters, setErasureMetricsFilters] = useState<{
-    year: number;
-    month?: number;
-    userEmails: string[];
-  }>({
-    year: new Date().getFullYear(),
-    userEmails: [],
-  });
+  // ✅ OPTIMIZED: Initialize directly using useMemo to prevent unnecessary re-renders
+  const erasureMetricsFilters = useMemo(
+    () => ({
+      year: new Date().getFullYear(),
+      userEmails: userEmail ? [userEmail] : [],
+    }),
+    [userEmail],
+  );
 
-  // Update filters when userEmail changes or tab becomes performance
-  useEffect(() => {
-    if (userEmail) {
-      setErasureMetricsFilters((prev) => ({
-        ...prev,
-        userEmails: [userEmail],
-      }));
-    }
-  }, [userEmail]);
+  const erasureMetricsQuery = useErasureMetrics(
+    erasureMetricsFilters,
+    !!userEmail && !isDemo,
+  );
 
   const {
     data: erasureMetrics,
     isLoading: erasureMetricsLoading,
     error: erasureMetricsError,
-  } = useErasureMetrics(
-    erasureMetricsFilters,
-    !!userEmail && activeTab === "performance" && !isDemo,
+  } = erasureMetricsQuery;
+
+  // ✅ React Query: Fetch Groups with Users for Groups Tab
+  const groupsWithUsersQuery = useGroupsWithUsers(
+    userEmail,
+    !!userEmail && !isDemo
   );
 
   // ✅ Fetch license list from /api/License/admin/all
@@ -824,6 +805,8 @@ export default function AdminDashboard() {
     userEmail,
     !!userEmail && !isDemo,
   );
+  // ✅ OPTIMIZED: Direct derivation — purana useState + useEffect hataya, ab seedha query se derive
+  const licenseListLoading = licenseListQuery.isLoading && !isDemo;
 
   // ✅ NAYA CODE: Prefetch Billing Details in background for SuperAdmins
   useEffect(() => {
@@ -993,10 +976,7 @@ export default function AdminDashboard() {
     });
   }, [activeTab, isDemo, licenseListQuery.data]);
 
-  // Loading state reflects the query loading state
-  useEffect(() => {
-    setLicenseListLoading(licenseListQuery.isLoading && !isDemo);
-  }, [licenseListQuery.isLoading, isDemo]);
+  // ✅ OPTIMIZED: licenseListLoading ab line 503 pe directly derive hota hai — useEffect hata diya
 
   /* 
   // PURANA CODE: Manual fetch without caching
@@ -1166,20 +1146,20 @@ export default function AdminDashboard() {
     if (isDemo) return; // Skip in demo mode
 
     startTransition(() => {
-      // Sync stats
+      // Sync stats (✅ OPTIMIZED: Object.is equality check prevents re-renders)
       if (dashboardQuery.stats) {
-        setDashboardStats(dashboardQuery.stats);
+        setDashboardStats((prev) => prev === dashboardQuery.stats ? prev : dashboardQuery.stats);
       }
 
       // Sync groups
       if (dashboardQuery.groups && dashboardQuery.groups.length > 0) {
-        setGroups(dashboardQuery.groups);
+        setGroups((prev) => prev === dashboardQuery.groups ? prev : dashboardQuery.groups);
       }
 
       // Sync license data (from React Query cache)
       if (dashboardQuery.licenses && dashboardQuery.licenses.length > 0) {
-        setLicenseData(dashboardQuery.licenses);
-        setUserLicenseDetails(dashboardQuery.licenses);
+        setLicenseData((prev) => prev === dashboardQuery.licenses ? prev : dashboardQuery.licenses);
+        setUserLicenseDetails((prev) => prev === dashboardQuery.licenses ? prev : dashboardQuery.licenses);
       } else if (
         dashboardQuery.stats &&
         Number(dashboardQuery.stats.totalLicenses) > 0
@@ -1190,18 +1170,19 @@ export default function AdminDashboard() {
           consumed: Number(dashboardQuery.stats.licensesInUse) || 0,
           available: Number(dashboardQuery.stats.availableLicenses) || 0,
         };
-        setLicenseData([fallbackLicense]);
-        setUserLicenseDetails([fallbackLicense]);
+        // Use functional state update to prevent overriding if already fallback
+        setLicenseData((prev) => (prev && prev.length === 1 && prev[0].product === "D-Secure License" && prev[0].total === fallbackLicense.total) ? prev : [fallbackLicense]);
+        setUserLicenseDetails((prev) => (prev && prev.length === 1 && prev[0].product === "D-Secure License" && prev[0].total === fallbackLicense.total) ? prev : [fallbackLicense]);
       }
 
       // Sync reports
       if (dashboardQuery.reports && dashboardQuery.reports.length > 0) {
-        setRecentReports(dashboardQuery.reports);
+        setRecentReports((prev) => prev === dashboardQuery.reports ? prev : dashboardQuery.reports);
       }
 
       // Sync profile data and flags
       if (dashboardQuery.profile) {
-        setProfileData(dashboardQuery.profile);
+        setProfileData((prev) => prev === dashboardQuery.profile ? prev : dashboardQuery.profile);
 
         if (!isDemo) {
           const currentData = getUserDataFromStorage() || {};
@@ -1225,56 +1206,59 @@ export default function AdminDashboard() {
     isDemo,
   ]);
 
-  // ✅ React Query: Update machines data (keep for backward compatibility)
-  // ✅ NAYA CODE: All data-sync effects wrapped in startTransition for non-blocking navigation
-  // PURANA CODE: 5 separate useEffects without startTransition — each triggered a re-render cascade
+  // ✅ OPTIMIZED: 5 alag useEffect ko 1 consolidated useEffect mein merge kiya
+  // PURANA CODE: Har query change pe alag useEffect → alag setState → alag re-render (5 re-renders!)
+  // NAYA CODE: Ek hi useEffect mein sab batch hota hai → sirf 1 re-render
   useEffect(() => {
     startTransition(() => {
+      // Machines se active licenses count derive karo
       if (machinesQuery.data) {
         const activeLicenses = machinesQuery.data.filter(
           (machine: Machine) => machine.license_activated === true,
         ).length;
         setActiveLicensesCount(activeLicenses);
       }
-    });
-  }, [machinesQuery.data]);
 
-  useEffect(() => {
-    startTransition(() => {
+      // Audit reports count set karo
       if (auditReportsQuery.data) {
         setAuditReportsCount(auditReportsQuery.data.length);
       }
-    });
-  }, [auditReportsQuery.data]);
 
-  useEffect(() => {
-    startTransition(() => {
+      // Enhanced audit reports sync karo
       if (enhancedAuditReportsQuery.data) {
         setAuditReports(enhancedAuditReportsQuery.data);
       }
-    });
-  }, [enhancedAuditReportsQuery.data]);
 
-  useEffect(() => {
-    startTransition(() => {
+      // Performance data sync karo
       if (performanceQuery.data) {
         setPerformanceData(performanceQuery.data);
       }
+
+      // Sessions data sync karo
+      if (sessionsQuery.data) {
+        setRecentSessions(sessionsQuery.data);
+      }
+
+      // Groups with Users sync karo
+      if (groupsWithUsersQuery.data) {
+        setGroupsWithUsers(groupsWithUsersQuery.data);
+        setGroupsCached(true);
+      }
     });
-  }, [performanceQuery.data]);
+  }, [
+    machinesQuery.data,
+    auditReportsQuery.data,
+    enhancedAuditReportsQuery.data,
+    performanceQuery.data,
+    sessionsQuery.data,
+    groupsWithUsersQuery.data, // ✅ NAYA CODE: Missing dependency added
+  ]);
 
   // ✅ RBAC FILTERING: Filter license data using centralized buildLicenseFilter
   const displayLicenseData = licenseData || [];
 
-  const displayPerformanceData = performanceData;
-
-  useEffect(() => {
-    startTransition(() => {
-      if (sessionsQuery.data) {
-        setRecentSessions(sessionsQuery.data);
-      }
-    });
-  }, [sessionsQuery.data]);
+  // ✅ OPTIMIZED: displayPerformanceData ab seedha query data use karta hai jab available ho
+  const displayPerformanceData = performanceQuery.data || performanceData;
 
   // ✅ DEMO MODE: Set static/dummy data when user logs in via "Try Demo Account"
   useEffect(() => {
@@ -1332,26 +1316,7 @@ export default function AdminDashboard() {
       // Set demo billing details (for Settings modal)
       setBillingDetails(DEMO_BILLING_DETAILS);
 
-      // Mark loading as done
-      // setDataLoading(false);
-    }
-  }, []);
-
-  // ✅ React Query now handles data fetching automatically when activeTab === 'users'
-  // No need for manual useEffect - React Query hook useSubusers is enabled only when activeTab === 'users'
-  // Old code commented out:
-  /*
-  useEffect(() => {
-    if (activeTab === 'users') {
-      devLog('🔄 Users tab opened, fetching users data...')
-      fetchAndMergeUsersData()
-    }
-  }, [activeTab])
-  */
-
-  useEffect(() => {
-    if (isDemo) {
-      // ✅ Initialize dummy groups data immediately for demo mode
+      // ✅ OPTIMIZED: Merged 2 demo initialization useEffects into 1
       setGroupsWithUsers([
         {
           id: 1,
@@ -1365,22 +1330,8 @@ export default function AdminDashboard() {
             usagePercent: 45,
           },
           users: [
-            {
-              id: 1,
-              name: "John Doe",
-              email: "john.doe@demo.com",
-              role: "User",
-              license: 5,
-              profile: "Developer",
-            },
-            {
-              id: 2,
-              name: "Jane Smith",
-              email: "jane.smith@demo.com",
-              role: "User",
-              license: 3,
-              profile: "Senior Developer",
-            },
+            { id: 1, name: "John Doe", email: "john.doe@demo.com", role: "User", license: 5, profile: "Developer" },
+            { id: 2, name: "Jane Smith", email: "jane.smith@demo.com", role: "User", license: 3, profile: "Senior Developer" },
           ],
         },
         {
@@ -1395,14 +1346,7 @@ export default function AdminDashboard() {
             usagePercent: 56,
           },
           users: [
-            {
-              id: 3,
-              name: "Mike Johnson",
-              email: "mike.johnson@demo.com",
-              role: "User",
-              license: 2,
-              profile: "Marketing Manager",
-            },
+            { id: 3, name: "Mike Johnson", email: "mike.johnson@demo.com", role: "User", license: 2, profile: "Marketing Manager" },
           ],
         },
         {
@@ -1417,236 +1361,24 @@ export default function AdminDashboard() {
             usagePercent: 82.7,
           },
           users: [
-            {
-              id: 4,
-              name: "Sarah Williams",
-              email: "sarah.williams@demo.com",
-              role: "User",
-              license: 4,
-              profile: "Sales Executive",
-            },
-            {
-              id: 5,
-              name: "Tom Brown",
-              email: "tom.brown@demo.com",
-              role: "User",
-              license: 3,
-              profile: "Account Manager",
-            },
+            { id: 4, name: "Sarah Williams", email: "sarah.williams@demo.com", role: "User", license: 4, profile: "Sales Executive" },
+            { id: 5, name: "Tom Brown", email: "tom.brown@demo.com", role: "User", license: 3, profile: "Account Manager" },
           ],
         },
       ]);
       setGroupsCached(true);
-      return;
     }
-  }, [isDemo]);
+  }, []);
 
-  // Fetch groups with users when Groups tab is active
-  useEffect(() => {
-    if (activeTab === "groups" && !isDemo) {
-      // ✅ Always try fetchGroupsWithUsers - internal logic handles caching
-      fetchGroupsWithUsers();
-    }
-  }, [activeTab, isDemo]);
-
+  // ✅ React Query now handles data fetching automatically when activeTab === 'users'
+  // No need for manual useEffect - React Query hook useUserMetrics is enabled globally
+  
+  // ✅ React Query now handles Groups with Users fetching automatically
+  // No need for manual useEffect or fetchGroupsWithUsers function.
+  // The useGroupsWithUsers hook is always enabled in the background for instant tab switching.
   const fetchGroupsWithUsers = async (silent = false) => {
-    // ✅ Phase 3: Check IndexedDB first for instant load
-    const userEmail = authService.getUserEmail?.() || "";
-    const groupsCacheKey = userEmail
-      ? `groups_with_users_${userEmail}`
-      : "groups_with_users";
-
-    // ✅ If already cached in state and not a force refresh, don't show loader
-    if (groupsCached && !silent) {
-      return;
-    }
-
-    try {
-      // 1. Try to load from IndexedDB first for instant UI response
-      if (!silent && !groupsCached) {
-        try {
-          const cached = await indexedDBService.get("groups", groupsCacheKey);
-          if (cached) {
-            // Handle both legacy array format and new object format
-            const cachedArray = Array.isArray(cached)
-              ? cached
-              : cached.groups?.data || [];
-
-            if (cachedArray.length > 0) {
-              devLog("✅ Dashboard: Loaded groups from IndexedDB");
-              setGroupsWithUsers(cachedArray);
-              setGroupsCached(true);
-            }
-          }
-        } catch (e) {
-          console.warn("IDB Read Failed: groups", e);
-        }
-      }
-
-      // If we don't have cached data and current data is empty, show loading
-      if (!groupsCached && groupsWithUsers.length === 0) {
-        setGroupsLoading(true);
-      }
-
-      // Skip API calls for demo mode - use dummy data handled by useEffect elsewhere or if needed here
-      if (isDemo) {
-        setGroupsLoading(false);
-        setGroupsCached(true);
-        // Demo data is handled in the next block if isDemo is true
-      }
-
-      // Skip API calls for demo mode - use dummy data
-      if (isDemo) {
-        setGroupsLoading(false);
-        setGroupsCached(true); // Mark as cached
-        setGroupsWithUsers([
-          {
-            id: 1,
-            name: "Engineering Team",
-            description: "Software development and engineering",
-            created: "2024-01-15",
-            licenseStats: {
-              totalAllocated: 100,
-              distributedToUsers: 45,
-              available: 55,
-              usagePercent: 45,
-            },
-            users: [
-              {
-                id: 1,
-                name: "John Doe",
-                email: "john.doe@demo.com",
-                role: "User",
-                license: 5,
-                profile: "Developer",
-              },
-              {
-                id: 2,
-                name: "Jane Smith",
-                email: "jane.smith@demo.com",
-                role: "User",
-                license: 3,
-                profile: "Senior Developer",
-              },
-            ],
-          },
-          {
-            id: 2,
-            name: "Marketing Team",
-            description: "Marketing and communications",
-            created: "2024-02-20",
-            licenseStats: {
-              totalAllocated: 50,
-              distributedToUsers: 28,
-              available: 22,
-              usagePercent: 56,
-            },
-            users: [
-              {
-                id: 3,
-                name: "Mike Johnson",
-                email: "mike.johnson@demo.com",
-                role: "User",
-                license: 2,
-                profile: "Marketing Manager",
-              },
-            ],
-          },
-          {
-            id: 3,
-            name: "Sales Team",
-            description: "Sales and business development",
-            created: "2024-03-10",
-            licenseStats: {
-              totalAllocated: 75,
-              distributedToUsers: 62,
-              available: 13,
-              usagePercent: 82.7,
-            },
-            users: [
-              {
-                id: 4,
-                name: "Sarah Williams",
-                email: "sarah.williams@demo.com",
-                role: "User",
-                license: 4,
-                profile: "Sales Executive",
-              },
-              {
-                id: 5,
-                name: "Tom Brown",
-                email: "tom.brown@demo.com",
-                role: "User",
-                license: 3,
-                profile: "Account Manager",
-              },
-            ],
-          },
-        ]);
-        return;
-      }
-
-      const response = await apiClient.getGroupsWithUsers();
-
-      if (response.success && response.data?.groups?.data) {
-        const apiGroups = response.data.groups.data;
-        const transformedGroups = apiGroups.map((group: any, index: number) => {
-          const cleanId =
-            group.groupId?.toString().replace(/^group-/, "") || `${index + 1}`;
-          return {
-            id: parseInt(cleanId) || index + 1,
-            name: group.groupName || "Unnamed Group",
-            description: group.groupDescription || "",
-            created: new Date().toISOString().split("T")[0],
-            licenseStats: group.licenseStats || null,
-            users:
-              group.users?.map((user: any, userIndex: number) => {
-                const cleanUserId =
-                  user.userId?.toString().replace(/^user-/, "") ||
-                  `${userIndex + 1}`;
-                return {
-                  id: parseInt(cleanUserId) || userIndex + 1,
-                  name: user.name || "Unknown",
-                  email: user.email || "",
-                  /* 
-                  // OLD CODE (STALE MAPPING) - COMMENTED FOR REFERENCE
-                  role: (user.role === "user" ? "User" : "Subuser") as
-                    | "User"
-                    | "Subuser",
-                  license: user.licenseCount || user.license || 0,
-                  */
-                  /* MIGRATED FROM AdminGroups.tsx Logic — UPTODATE MAPPING */
-                  role: (user.role === "GroupAdmin"
-                    ? "Group Admin"
-                    : user.role === "user"
-                      ? "User"
-                      : "Subuser") as "User" | "Subuser" | "Group Admin",
-                  license:
-                    user.licenseCount || user.license || 0 || user.licenseKey,
-                  licenseKey: user.licenseKey || "",
-                  profile: user.role || "User",
-                };
-              }) || [],
-          };
-        });
-
-        // ✅ Update State
-        setGroupsWithUsers(transformedGroups);
-        setGroupsCached(true);
-
-        // ✅ Update IndexedDB for persistence
-        try {
-          // Store raw API response instead of transformed array for consistency
-          await indexedDBService.put("groups", groupsCacheKey, response.data);
-          devLog("✅ Dashboard: Updated groups in IndexedDB");
-        } catch (e) {
-          console.error("IDB Write Failed: groups", e);
-        }
-      }
-    } catch (error) {
-      devError("Error fetching groups with users:", error);
-    } finally {
-      setGroupsLoading(false);
+    if (silent) {
+      groupsWithUsersQuery.refetch();
     }
   };
 
@@ -1659,165 +1391,15 @@ export default function AdminDashboard() {
   };
 
   /**
-   * 🔄 Fetch Subusers data with machine-based license counting
-   *
-   * This function:
-   * 1. Fetches subusers from /api/Subuser/by-superuser/{email}
-   * 2. For each subuser, fetches their machines from /api/Machines/by-email/{subuser_email}
-   * 3. Calculates license usage from demo_usage_count field in machines
-   * 4. Stores enhanced subuser data with license counts
-   *
-   * ✅ NOW HANDLED BY REACT QUERY - See useSubusers hook
-   * This function is commented out because React Query automatically handles:
-   * - Data fetching when activeTab === 'users'
-   * - Caching (5 minutes fresh, 10 minutes total)
-   * - Automatic refetching
-   * - Loading states
-   * - Error handling
+   * 🔄 fetchAndMergeUsersData has been removed
+   * React Query hooks (useSubusers, useUserMachines, etc.) handle this now.
+   * Caching is persisted via IndexedDB and React Query staleTime: Infinity
    */
-  /* COMMENTED OUT - React Query handles this now
-  const fetchAndMergeUsersData = async () => {
-    setUsersDataLoading(true)
-    devLog('🚀 Starting fetchAndMergeUsersData...')
-    
-    try {
-      const userEmail = profileData?.email || user?.email || ''
-      
-      devLog('👥 Current user email:', userEmail)
-      devLog('📊 ProfileData:', profileData)
-      devLog('📊 User from context:', user)
-      
-      // ✅ Check cache first for instant display
-      const cachedSubusers = getCachedData('subusers');
-      const cachedSuperuser = getCachedData('superuser');
-      
-      if (cachedSubusers && cachedSubusers.length > 0) {
-        devLog('⚡ Displaying cached subusers data:', cachedSubusers.length, 'users');
-        setSubusersData(cachedSubusers);
-        setUsersDataLoading(false); // Hide loader since we have cached data
-      }
-      
-      if (cachedSuperuser) {
-        devLog('⚡ Displaying cached superuser data');
-        setSuperuserData(cachedSuperuser);
-      }
-      
-      // 1️⃣ Fetch All Subusers using fallback strategy across all available endpoints
-      devLog('🔍 Calling getAllSubusersWithFallback API with fallback across multiple endpoints...')
-      const subusersRes = await apiClient.getAllSubusersWithFallback(userEmail)
-      devLog('📥 Final Subusers API Response:', subusersRes)
-      devLog('📥 Response success:', subusersRes.success)
-      devLog('📥 Response data:', subusersRes.data)
-      devLog('📥 Data type:', typeof subusersRes.data)
-      devLog('📥 Is Array:', Array.isArray(subusersRes.data))
-      if (subusersRes.data) {
-        devLog('📥 Data length:', subusersRes.data.length)
-      }
-      
-      // 2️⃣ Process Subusers data with machine-based license counting and complete user details
-      if (subusersRes.success && subusersRes.data && subusersRes.data.length > 0) {
-        devLog(`📋 Found ${subusersRes.data.length} subusers, fetching their complete user details...`)
-        
-        // Fetch complete user data from /api/Users/{email} for each subuser
-        const subusersWithCompleteData = await Promise.all(
-          subusersRes.data.map(async (subuser) => {
-            try {
-              // 1. Fetch complete user data from /api/Users/{email}
-              devLog(`🔍 Fetching complete user data for: ${subuser.subuser_email}`)
-              const userDataRes = await apiClient.getUserByEmail(subuser.subuser_email)
-              
-              let userData = {
-                user_role: 'user',
-                department: 'N/A',
-                last_login: 'Never',
-                status: 'active',
-                user_group: 'N/A',
-                license_allocation: '0'
-              }
-              
-              if (userDataRes.success && userDataRes.data) {
-                // Prioritize user_role from DB, fallback to role, then defaultRole
-                const roleValue = userDataRes.data.user_role || userDataRes.data.role  || 'user';
-                
-                userData = {
-                  user_role: roleValue,
-                  department: userDataRes.data.department || 'N/A',
-                  last_login: userDataRes.data.last_login || userDataRes.data.lastLogin || 'Never',
-                  status: userDataRes.data.status || 'active',
-                  user_group: userDataRes.data.user_group || 'N/A',
-                  license_allocation: userDataRes.data.licesne_allocation || '0'
-                }
-                devLog(`✅ User data for ${subuser.subuser_email}:`, userData)
-              } else {
-                devWarn(`⚠️ Failed to fetch user data for ${subuser.subuser_email}, using defaults`)
-              }
-
-              // 2. Fetch machines for license usage
-              devLog(`🔍 Fetching machines for subuser: ${subuser.subuser_email}`)
-              const machinesRes = await apiClient.getMachinesByEmail(subuser.subuser_email)
-              
-              let licenseUsage = 0
-              if (machinesRes.success && machinesRes.data) {
-                // Count machines with demo_usage_count > 0
-                licenseUsage = machinesRes.data.filter(
-                  (machine) => (machine.demo_usage_count || 0) > 0
-                ).length
-                
-                devLog(`📊 Subuser ${subuser.subuser_email}: ${licenseUsage} licenses used (${machinesRes.data.length} total machines)`)
-              }
-              
-              return {
-                ...subuser,
-                licenseUsage,
-                // Add all fields from /api/Users/{email}
-                defaultRole: userData.user_role,
-                role: userData.user_role,
-                department: userData.department,
-                last_login: userData.last_login,
-                status: userData.status,
-                user_group: userData.user_group,
-                license_allocation: userData.license_allocation
-              }
-            } catch (error) {
-              devError(`❌ Error fetching data for ${subuser.subuser_email}:`, error)
-              return {
-                ...subuser,
-                licenseUsage: 0,
-                defaultRole: 'user',
-                role: 'user',
-                department: 'N/A',
-                last_login: 'Never',
-                status: 'active',
-                user_group: 'N/A',
-                license_allocation: '0'
-              }
-            }
-          })
-        )
-        
-        setSubusersData(subusersWithCompleteData)
-        setCachedData('subusers', subusersWithCompleteData)
-        devLog('✅ Subusers data with complete user details set')
-      } else {
-        devLog('ℹ️ No subusers found or failed to fetch')
-        setSubusersData([])
-        setCachedData('subusers', [])
-      }
-      
-    } catch (error) {
-      devError('❌ Error fetching and merging users data:', error)
-      showError('Users Data Error', 'Failed to load users data')
-    } finally {
-      setUsersDataLoading(false)
-    }
-  }
-  */ // End of commented out fetchAndMergeUsersData function
 
   // Generate stats array from API data or use defaults
   const stats = useMemo(() => {
     // ✅ DEMO MODE: Always use demo stats in demo mode (no API dependency)
     const statsData = isDemo ? DEMO_DASHBOARD_STATS : dashboardStats;
-    // PURANA CODE: console.log("statsData>>>>>>>>>>>>>>>>", statsData);
     if (!statsData) return [];
 
     return [
@@ -1856,6 +1438,7 @@ export default function AdminDashboard() {
 
   // Calculate active users count (status === 'active' or 'Active')
   const activeUsersCount = useMemo(() => {
+    if (!subusersData) return 0;
     return subusersData.filter(
       (subuser: any) =>
         subuser.status === "active" || subuser.status === "Active",
@@ -3712,7 +3295,7 @@ export default function AdminDashboard() {
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100">
-                                {subusersData
+                                {displaySubusersData
                                   .slice(
                                     (usersPage - 1) * usersPageSize,
                                     usersPage * usersPageSize,
@@ -3975,7 +3558,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="p-6">
                       {/* Loading State */}
-                      {groupsLoading && (
+                      {(groupsWithUsersQuery.isLoading && groupsWithUsers.length === 0) && (
                         <div className="flex items-center justify-center py-12">
                           <div className="text-center">
                             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
@@ -3987,7 +3570,7 @@ export default function AdminDashboard() {
                       )}
 
                       {/* Empty State */}
-                      {!groupsLoading && groupsWithUsers.length === 0 && (
+                      {!groupsWithUsersQuery.isLoading && (groupsWithUsersQuery.data?.length === 0 || groupsWithUsers.length === 0) && (
                         <div className="text-center py-12">
                           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
                             <svg
@@ -4028,7 +3611,7 @@ export default function AdminDashboard() {
                                     onClick={() => toggleGroup(group.id)}
                                     className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center text-white font-semibold hover:shadow-lg transition-shadow"
                                   >
-                                    {group.name.charAt(0)}
+                                    {(group.name || "G").charAt(0)}
                                   </button>
                                   <div className="flex-1">
                                     <h3 className="text-lg font-semibold text-slate-900">
@@ -4104,7 +3687,7 @@ export default function AdminDashboard() {
                                           <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center gap-3">
                                               <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                                                {user.name.charAt(0)}
+                                                {(user.name || "U").charAt(0)}
                                               </div>
                                               <span className="font-medium text-slate-900">
                                                 {user.name}

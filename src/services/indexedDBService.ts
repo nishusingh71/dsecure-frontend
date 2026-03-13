@@ -178,45 +178,8 @@ class IndexedDBService {
     await tx.done;
   }
 
-  // Alias for get (with implicit store selection logic if needed, but for now strict)
-  // To avoid breaking changes, let's keep it simple or remove if unused.
-  // Actually, AdminMachines was using getItem/setItem directly on the instance.
-  // Let's add them as strict typed wrappers.
-
-  async getItem<T = any>(key: string): Promise<T | undefined> {
-    // Try to find the key in known stores or default to a specific one?
-    // AdminMachines used it like a KV store.
-    // Let's map it to 'machines' store if key starts with machines_, else 'dashboard_stats' etc.
-    // This is a bit hacky.
-    // BETTER: Fix AdminMachines to use .get('machines', key)
-    // But to be safe, let's add a general KV store or map it.
-
-    if (key.startsWith("machines_"))
-      return this.get("machines", key) as Promise<T | undefined>;
-    if (key.startsWith("users_"))
-      return this.get("subusers", key) as Promise<T | undefined>; // Store mapping? No, subusers store key is userEmail.
-
-    // Fallback: Check dashboard_stats
-    return this.get("dashboard_stats", key) as Promise<T | undefined>;
-  }
-
-  async setItem(key: string, value: any): Promise<void> {
-    if (key.startsWith("machines_")) {
-      await this.put("machines", key, value);
-      return;
-    }
-
-    // Fallback
-    await this.put("dashboard_stats", key, value);
-  }
-
-  async removeItem(key: string): Promise<void> {
-    if (key.startsWith("machines_")) {
-      await this.delete("machines", key);
-      return;
-    }
-    await this.delete("dashboard_stats", key);
-  }
+  // Cleaned up legacy getItem/setItem/setItem wrappers.
+  // Components should now use .get(store, key), .put(store, key, value), and .delete(store, key) directly with idbKeys utility.
 }
 
 export const indexedDBService = new IndexedDBService();

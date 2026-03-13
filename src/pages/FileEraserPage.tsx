@@ -715,7 +715,7 @@ const FileEraserPage: React.FC = memo(function FileEraserPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* ================= HERO SECTION ================= */}
-        <section className="py-16 lg:py-24 xl:py-28">
+        <section className="py-8 lg:py-12 xl:py-16">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
               {/* Left: Content */}

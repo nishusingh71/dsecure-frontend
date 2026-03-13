@@ -2,7 +2,7 @@ import { useAuth } from "@/auth/AuthContext";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   apiClient,
@@ -321,11 +321,13 @@ export default function AdminGroups() {
     }
   };
 
-  const filteredGroups = groups.filter(
-    (group) =>
-      group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      group.description.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredGroups = useMemo(() => {
+    return groups.filter(
+      (group) =>
+        group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.description.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }, [groups, searchTerm]);
 
   const permissionLabels: Record<string, string> = {
     basic_access: "Basic Access",

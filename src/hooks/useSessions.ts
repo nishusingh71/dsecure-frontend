@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiClient, type Session } from '@/utils/enhancedApiClient'
 import { indexedDBService } from '@/services/indexedDBService'
+import { idbKeys } from '@/services/idbKeys'
 import { isDemoMode, DEMO_SESSIONS } from '@/data/demoData'
 
 /**
@@ -37,7 +38,7 @@ export function useSessions(userEmail?: string, enabled: boolean = true) {
 
             // 1. Try IDB first
             try {
-                const cached = await indexedDBService.get('sessions', userEmail);
+                const cached = await indexedDBService.get('sessions', idbKeys.sessions(userEmail));
                 if (cached && Array.isArray(cached) && cached.length > 0) {
                     console.log(`✅ Loaded sessions for ${userEmail} from IndexedDB`);
                     return cached;
@@ -58,7 +59,7 @@ export function useSessions(userEmail?: string, enabled: boolean = true) {
             )
 
             // 3. Update IDB
-            indexedDBService.put('sessions', userEmail, sortedSessions).catch(e => console.error('IDB Write Failed: sessions', e));
+            indexedDBService.put('sessions', idbKeys.sessions(userEmail), sortedSessions).catch(e => console.error('IDB Write Failed: sessions', e));
 
             return sortedSessions
         },

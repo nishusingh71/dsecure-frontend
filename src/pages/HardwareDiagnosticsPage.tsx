@@ -17,13 +17,21 @@ import {
   HoverIcon,
 } from "@/components/FlatIcons";
 import {
-  CpuIcon,
+  Cpu,
+  Cpu as CpuIcon,
   FileTextIcon,
   LockIcon,
   RefreshCwIcon,
   SettingsIcon,
   User,
   X,
+  Battery,
+  Wifi,
+  AlertTriangle,
+  Database,
+  Volume2,
+  Bluetooth,
+  Heart,
   Activity,
 } from "lucide-react";
 import { title } from "process";
@@ -38,7 +46,7 @@ const getReadTime = (text: string) => {
   return `${minutes} min read`;
 };
 
-const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+const HardwareDiagnosticsPage: React.FC = memo(function FileEraserPage() {
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -83,91 +91,97 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
   }, []);
 
-  // गैलरी इमेजेज - नए Cloudinary URLs के साथ optimized (f_auto, q_auto)
+  // Gallery images array for lightbox navigation
   const galleryImages = [
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305257/a4sgxgi17mpdrzdfb7ut.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1715856402/diagnostics-hero.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305257/a4sgxgi17mpdrzdfb7ut.png",
-      alt: "Welcome Screen - Start Sanitization",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417893/yhvioc1r2sgrjkpt4xnx.png",
+      alt: "Hardware Diagnostics Screenshot 1",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305313/gaa6fv88jzmpgyyq96wg.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417890/awgnvxwdwcli7oyhxuwa.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305313/gaa6fv88jzmpgyyq96wg.png",
-      alt: "Detecting Hardware",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417890/awgnvxwdwcli7oyhxuwa.png",
+      alt: "Hardware Diagnostics Screenshot 2",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305166/ycdyjanbhcaxulah3unl.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417890/g7qsgoaib5aff4fz4lwp.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305166/ycdyjanbhcaxulah3unl.png",
-      alt: "WiFi Connection",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417890/g7qsgoaib5aff4fz4lwp.png",
+      alt: "Hardware Diagnostics Screenshot 3",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773305219/zrkffe7ylntxde56budn.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417889/mbz29lvbnlqcgpftgtp2.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773305219/zrkffe7ylntxde56budn.png",
-      alt: "LAN Connection",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417889/mbz29lvbnlqcgpftgtp2.png",
+      alt: "Hardware Diagnostics Screenshot 4",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300694/whegkqyd3tp2cg7neowp.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417889/o4zgi0cowaixr9spcqkf.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773300694/whegkqyd3tp2cg7neowp.png",
-      alt: "Dashboard Overview",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417889/o4zgi0cowaixr9spcqkf.png",
+      alt: "Hardware Diagnostics Screenshot 5",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300653/vkuknf56igiivxb98byw.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417889/oijdo5wfz4n7zesrrudt.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773300653/vkuknf56igiivxb98byw.png",
-      alt: "Reports & Certificates",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417889/oijdo5wfz4n7zesrrudt.png",
+      alt: "Hardware Diagnostics Screenshot 6",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773300598/lye0zxxqut8o870mh98l.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/z30pqhpscxlo6dsbmmn3.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773300598/lye0zxxqut8o870mh98l.png",
-      alt: "About Page",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/z30pqhpscxlo6dsbmmn3.png",
+      alt: "Hardware Diagnostics Screenshot 7",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303765/usmphwsihzdg4s5y2637.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/hpjvvebp5ya3beufhslh.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303765/usmphwsihzdg4s5y2637.png",
-      alt: "Step 1 - Drive Detection",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/hpjvvebp5ya3beufhslh.png",
+      alt: "Hardware Diagnostics Screenshot 8",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303839/svli2uykco9hme2sk0oh.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/qoi3ucpunnzcaeu1ljw6.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303839/svli2uykco9hme2sk0oh.png",
-      alt: "Step 2 - Wipe Configuration",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/qoi3ucpunnzcaeu1ljw6.png",
+      alt: "Hardware Diagnostics Screenshot 9",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303719/vlshsgzlgnsfu1drxhvh.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/nbwo10x5ljj8lvnlve3z.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303719/vlshsgzlgnsfu1drxhvh.png",
-      alt: "Step 3 - Destructive Confirmation",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417780/nbwo10x5ljj8lvnlve3z.png",
+      alt: "Hardware Diagnostics Screenshot 10",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304110/zzakl8rvddzadkkpevga.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/sxw62hblrclb96aqnfyj.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773304110/zzakl8rvddzadkkpevga.png",
-      alt: "General Settings",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/sxw62hblrclb96aqnfyj.png",
+      alt: "Hardware Diagnostics Screenshot 11",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773304035/ctjtcp2leqj5c2rarmei.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/hk7tniwoqceef728iwep.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773304035/ctjtcp2leqj5c2rarmei.png",
-      alt: "Account Settings",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/hk7tniwoqceef728iwep.png",
+      alt: "Hardware Diagnostics Screenshot 12",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303943/cvfupwsy8iejwrxi5jzj.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/e7sdh1mazppjy3ikjrrz.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303943/cvfupwsy8iejwrxi5jzj.png",
-      alt: "Help Page - Top",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/e7sdh1mazppjy3ikjrrz.png",
+      alt: "Hardware Diagnostics Screenshot 13",
     },
     {
-      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1773303980/gemjfmgk3cw7wnvgh2z6.png",
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/qn7dcrwd4iojztir1rxp.png",
       thumbnail:
-        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1773303980/gemjfmgk3cw7wnvgh2z6.png",
-      alt: "Help Page - Bottom",
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/qn7dcrwd4iojztir1rxp.png",
+      alt: "Hardware Diagnostics Screenshot 14",
+    },
+    {
+      url: "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/cfolkopf9z9ogx8wnulz.png",
+      thumbnail:
+        "https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto,w_400/v1772417779/cfolkopf9z9ogx8wnulz.png",
+      alt: "Hardware Diagnostics Screenshot 15",
     },
   ];
 
@@ -276,10 +290,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     }
   };
 
-  const eraseTypes = [
+  const diagnosticsFeatures = [
     {
-      name: "PC & Laptops",
-      desc: "Certified data wiping for Windows, Mac, and Linux computers. Permanent erasure with tamper-proof certificates for audit compliance.",
+      name: "PC, Laptops & Mac",
+      desc: "Simultaneously assess the health of multiple PCs, laptops, and MacBooks (Intel & Apple Silicon M1/M2/M3/M4). Identifies issues across all critical hardware layers.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -295,11 +309,11 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
-      color: "from-blue-500 to-blue-600",
+      color: "from-emerald-500 to-emerald-600",
     },
     {
-      name: "Servers & RAID Arrays",
-      desc: "Secure erasure for enterprise servers and RAID configurations. DIY solution that generates certificates meeting global standards like GDPR, HIPAA, and ISO 27001.",
+      name: "PXE Boot for Mass Diagnostics",
+      desc: "Deploy diagnostics via PXE network boot to test up to 255 machines simultaneously. Ideal for high-volume ITAD facilities and large-scale asset audits.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -315,11 +329,11 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           />
         </svg>
       ),
-      color: "from-red-500 to-red-600",
+      color: "from-teal-500 to-teal-600",
     },
     {
-      name: "SSDs & NVMe Drives",
-      desc: "Specialized erasure for solid-state storage ensuring complete data destruction. Deploy via bootable USB or PXE network boot for maximum flexibility.",
+      name: "Automated Component Tests",
+      desc: "Run 10+ automated tests including CPU, Memory (RAM), Storage (SMART), Motherboard, Battery Health, CMOS, and Network interfaces without manual intervention.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -338,8 +352,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
       color: "from-cyan-500 to-cyan-600",
     },
     {
-      name: "HDDs & External Drives",
-      desc: "Permanent erasure for traditional hard drives and USB storage. Software supports remote deployment via MSI and provides audit trail for compliance reporting.",
+      name: "Manual Assessment & Grading",
+      desc: "Perform 12+ guided manual tests for Keyboard, Touchpad, Webcam, Microphone, Audio, Display (Dead Pixels), and USB ports for comprehensive grading.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -351,23 +365,38 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
           />
         </svg>
       ),
-      color: "from-teal-500 to-teal-600",
+      color: "from-blue-500 to-blue-600",
     },
   ];
 
   const platforms = [
     {
-      name: "Windows",
-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
+      name: "Apple Mac (Intel & Silicon)",
+      versions: "Intel, T1, T2, M1, M2, M3, & M4 models",
       features: [
-        "Desktop & Laptop Support",
-        "Server Edition Available",
-        "Active Directory Integration",
-        "Group Policy Support",
+        "Terminal-based Deployment",
+        "MDM Enrollment Detection",
+        "Apple Silicon Native Support",
+        "Battery Health & Cycle Count",
+      ],
+      icon: (
+        <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.06.75.79-.03 2.02-.8 3.41-.69 1.69.13 2.95.81 3.65 2.09-3.41 1.94-2.87 6.45.69 8.24-.65 1.63-1.6 3.19-2.81 4.58zM15 1.03c.02 0 .04 0 .06.01.04 4.09-4.23 4.29-4.27.05.01-2.12 1.13-4.08 2.76-4.99.7-.35 1.45-.53 2.22-.53-.13 1.83-.87 3.54-2.11 4.79C12.42 1.6 13.68 1.05 15 1.03z" />
+        </svg>
+      ),
+    },
+    {
+      name: "Laptop & Desktops",
+      versions: "All major OEM brands supported",
+      features: [
+        "Network Boot (PXE)",
+        "USB Boot (UEFI/Legacy)",
+        "Offline Diagnostics Mode",
+        "Customizable ISO Support",
       ],
       icon: (
         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
@@ -376,32 +405,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      name: "macOS",
-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM), Intel (x64)",
+      name: "Servers & Enterprise",
+      versions: "Server-grade hardware & workstations",
       features: [
-        "Intel & Apple Silicon",
-        "Full Disk Access",
-        "T2/M1/M2/M3 Chip Support",
-        "Native Performance",
+        "Simultaneous Multi-Machine",
+        "Tamper-proof Report Logs",
+        "Centralized Cloud Console",
+        "ERP / API Integration",
       ],
       icon: (
         <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-        </svg>
-      ),
-    },
-    {
-      name: "Linux",
-      versions: "Arch64 (x64) and x86 (64-bit) and ARM64 (ARM)",
-      features: [
-        "CLI & GUI Options",
-        "Kernel Level Erasure",
-        "Enterprise Distros",
-        "Headless Server Mode",
-      ],
-      icon: (
-        <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.711-.072-.2-.052-.334.033-.466.204-.263.466-.399.795-.528.396-.2.762-.269 1.139-.268h.13zm4.006 2.933c-.009.04-.009.037-.012.071-.075.443-.134.8-.166 1.2-.028.332-.043.663-.044.998l.003.467.004.073.009.135.003.2.016.267c.09.333.15.6.313.8.082.103.17.2.27.27.136.07.272.135.41.135.074 0 .15-.015.223-.04.31-.112.48-.332.618-.59.109-.202.17-.403.217-.598.04-.195.067-.39.08-.545.031-.4.049-.664.049-.664l-.003-.402-.01-.267-.014-.202c-.012-.133-.03-.266-.053-.397v-.003L13 9.4v-.003l-.048-.2h.003l.025.003c-.038-.007-.077-.01-.116-.02-.062-.01-.124-.029-.184-.04z" />
+          <path d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
         </svg>
       ),
     },
@@ -409,51 +423,56 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
   const features = [
     {
-      title: "Secure Drive Erasure",
-      desc: "NIST-tested software delivers erasure with  data destruction guarantee for all storage types.",
+      title: "Diagnose & Grade Devices",
+      desc: "Accurately diagnose all internal components and assign grades to IT assets based on health status and performance results.",
       icon: <ShieldIcon className="w-6 h-6" />,
     },
     {
-      title: "Cloud Console",
-      desc: "Centralized management platform for monitoring, reporting, and managing erasure tasks across all locations.",
-      icon: <CloudIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Supports Global Wiping Standards",
-      desc: "26+ international erasure standards including NIST 800-88, DoD, HMG.",
-      icon: <GlobeIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Multiple Deployment Solutions",
-      desc: "Deploy via USB boot, PXE network boot, or integrate directly with IT asset management systems.",
-      icon: <ServerIcon className="w-6 h-6" />,
-    },
-    {
-      title: "ERP Integration",
-      desc: "Seamlessly integrate with all enterprise systems via REST APIs.",
-      icon: <FileTextIcon className="w-6 h-6" />,
-    },
-    {
-      title: "Simultaneous Data Wiping",
-      desc: "enables efficient large-scale data destruction, eliminating the need for manual data wiping processes.",
+      title: "Mac-Native Diagnostics",
+      desc: "Native diagnostic support for all Apple Mac devices including Intel, T1, T2, and Silicon (M1/M2/M3/M4) architectures.",
       icon: <RefreshCwIcon className="w-6 h-6" />,
     },
     {
-      title: "Automatic & MDM Detection",
-      desc: "Automatically detect hardware specifications, MDM profiles, and activation locks before erasure.",
-      icon: <CpuIcon className="w-6 h-6" />,
+      title: "MDM Enrollment Detection",
+      desc: "Identify MDM-enrolled Mac devices to ensure accurate hardware diagnostics and compliant asset processing.",
+      icon: <LockIcon className="w-6 h-6" />,
     },
     {
-      title: "License Don't Expire",
-      desc: "Pay-per-use licensing model with no expiration - use credits whenever you need them.",
+      title: "Cloud Console Support",
+      desc: "Centralized management of users, licenses, and diagnostics reports. Access and export reports anytime from the cloud.",
+      icon: <CloudIcon className="w-6 h-6" />,
+    },
+    {
+      title: "Tamper-proof Signed Reports",
+      desc: "Generates secure, digitally signed hardware diagnostics reports in PDF, CSV, and XML formats to prevent data tampering.",
+      icon: <GlobeIcon className="w-6 h-6" />,
+    },
+    {
+      title: "PXE & Network Deployment",
+      desc: "Deploy via PXE to diagnose up to 255 machines simultaneously. Supports UEFI and Legacy BIOS boot modes.",
+      icon: <ServerIcon className="w-6 h-6" />,
+    },
+    {
+      title: "Enterprise API Integration",
+      desc: "Seamlessly integrate diagnostics data with ERP systems and organizational asset management tools via Cloud APIs.",
+      icon: <FileTextIcon className="w-6 h-6" />,
+    },
+    {
+      title: "ISO Standardized Tests",
+      desc: "Create and customize ISOs to standardize test workflows across all devices, ensuring consistent quality control.",
+      icon: <SettingsIcon className="w-6 h-6" />,
+    },
+    {
+      title: "No-Expiry Licensing",
+      desc: "Flexible pay-per-use licensing model. Diagnostic licenses do not expire and remain active until consumed.",
       icon: <LockIcon className="w-6 h-6" />,
     },
   ];
 
   const useCases = [
     {
-      title: "Disposal of RAID Servers",
-      desc: "Securely erase enterprise RAID arrays before disposal, and private data cannot be recovered.",
+      title: "Evaluate Used IT Assets",
+      desc: "Get accurate insights into component functioning before repurposing used IT assets.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -471,39 +490,39 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
       ),
     },
     {
-      title: "IT Asset Redeployment",
-      desc: "Safely repurpose hardware within organization",
+      title: "Right to Repair",
+      desc: "Identify faulty parts by testing device components that can then be repaired or replaced.",
       icon: <ServerIcon className="w-8 h-8" />,
     },
     {
       title: "Device Recycling & Resale",
-      desc: "Prepare devices for resale programs",
+      desc: "Obtain maximum residual value from old IT assets by ensuring peak performance.",
       icon: <RefreshCwIcon className="w-8 h-8" />,
     },
     {
-      title: "End-of-Lease IT Hardware",
-      desc: "Comply with lease return data requirements",
+      title: "ITAD & Refurbishers",
+      desc: "Mass-diagnose incoming inventory efficiently through PXE network boot.",
       icon: <User className="w-8 h-8" />,
     },
     {
-      title: "Regulatory Compliance",
-      desc: "Meet GDPR, HIPAA, PCI-DSS requirements",
+      title: "Meet Industry Standards",
+      desc: "Maintain compliance with R2v3, e-Stewards, and other certification standards.",
       icon: <GlobeIcon className="w-8 h-8" />,
     },
     {
-      title: "Cloud Migration Projects",
-      desc: "Securely decommission on-premise storage",
+      title: "Standardize Quality Control",
+      desc: "Use customizable ISOs to run consistent diagnostic tests across all processed devices.",
       icon: <GlobeIcon className="w-8 h-8" />,
     },
   ];
 
   const complianceStandards = [
-    { name: "NIST 800-88", desc: "US National Institute of Standards" },
-    { name: "DoD 5220.22-M", desc: "US Department of Defense" },
-    { name: "GDPR", desc: "EU General Data Protection" },
+    { name: "R2v3", desc: "Responsible Recycling standard" },
+    { name: "e-Stewards", desc: "Ethical electronics recycling" },
+    { name: "ISO 27001", desc: "Information Security Management" },
+    { name: "ISO 9001", desc: "Quality Management System" },
+    { name: "ADISA", desc: "Assured Data Sanitization (Optional Grading)" },
     { name: "HIPAA", desc: "Healthcare Information Privacy" },
-    { name: "SOX", desc: "Sarbanes-Oxley Act" },
-    { name: "PCI-DSS", desc: "Payment Card Industry" },
   ];
 
   const handleInputChange = (
@@ -525,8 +544,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
   const downloadCatalog = () => {
     const link = document.createElement("a");
-    link.href = "https://assets.dsecuretech.com/pdf/DataSheetDriveEraser.pdf";
-    link.download = "DataSheetDriveEraser.pdf";
+    link.href = "https://assets.dsecuretech.com/pdf/DataSheetDiagnostics.pdf";
+    link.download = "DataSheetDiagnostics.pdf";
     link.target = "_blank";
     document.body.appendChild(link);
     link.click();
@@ -536,7 +555,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   const insights = [
     {
       type: "Blog",
-      title: "NIST 800-88 Explained: Complete Guide",
+      title: "R2v3 Certification Complete Guide",
       icon: () => (
         <svg
           className="w-6 h-6"
@@ -555,7 +574,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     },
     {
       type: "Technical Article",
-      title: "SSD vs HDD Erasure Methods",
+      title: "Importance of Pre-Processing Diagnostics",
       icon: () => (
         <svg
           className="w-6 h-6"
@@ -576,7 +595,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     },
     {
       type: "Product Video",
-      title: "Drive Eraser Demo",
+      title: "Hardware Diagnostics Demo",
       icon: () => (
         <svg
           className="w-6 h-6"
@@ -595,15 +614,14 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
     <>
       <SEOHead
         seo={{
-          title: "D-Secure Drive Eraser | Secure Disk & Drive Wiping Software",
+          title: "D-Secure Hardware Diagnostics | PC & Mac (M1-M4) Diagnostic Tool",
           description:
-            "Permanently erase HDDs, SSDs, servers, and RAID arrays with D-Secure Drive Eraser. Certified data destruction compliant with NIST 800-88, DoD, and GDPR.",
+            "Professional hardware diagnostics for PC, Laptop & Apple Mac (Intel & Silicon M1-M4). Mass diagnose 255+ machines via PXE boot with tamper-proof reports.",
           keywords:
-            "drive eraser, disk wiper, ssd secure erase, hard drive destruction, server wiping, NIST 800-88, data sanitization software",
-          canonicalUrl: "https://dsecuretech.com/products/drive-eraser",
+            "hardware diagnostics, mac diagnostics, apple silicon m4 test, pxe boot diagnostics, pc diagnostic software, laptop health check, MDM detection",
+          canonicalUrl: "https://dsecuretech.com/products/device-analytics",
         }}
       />
-      <SEOHead seo={getSEOForPage("drive-eraser")} />
 
       {/* ================= STICKY SECTION NAV ================= */}
       <div
@@ -648,7 +666,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* ================= HERO SECTION ================= */}
-        <section className="py-6 xs:py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 xxl:py-18">
+        <section className="py-8 lg:py-12 xl:py-16">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
               {/* Left: Content */}
@@ -657,35 +675,32 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="flex flex-col sm:flex-row items-center gap-3">
                     <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
                       <ShieldIcon className="w-4 h-4" />
-                      Enterprise-Grade Drive Erasure
+                      Accurate Diagnostics Tool
                     </div>
-                    {/* Reference to the new Diagnostic variant */}
-                    <Link 
+                    <Link
                       to="/products/drive-eraser-diagnostic"
                       className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-full text-sm font-semibold border border-blue-100 transition-colors group"
                     >
                       <Activity className="w-4 h-4 animate-pulse" />
-                      <span>New: Diagnostic & Health Variant</span>
+                      <span>New: Integrated Solution</span>
                       <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
 
-                  <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
+                  <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
                     D-Secure{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      Drive Eraser
+                      Hardware Diagnostics
                     </span>
                   </h1>
 
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                    Permanently erase files, folders, system traces, and cloud
-                    data using internationally recognized erasure standards.
-                    Designed for privacy, security, and audit readiness.
+                    Comprehensive hardware health assessment for PC, Laptop, Desktop & Apple Mac (Intel & Silicon M1-M4). Simultaneously diagnose up to 255 machines via PXE boot and generate tamper-proof reports for asset grading and compliance.
                   </p>
 
                   {/* Compliance Badges */}
                   <div className="flex flex-wrap items-center gap-3">
-                    {["NIST 800-88", "GDPR", "HIPAA", "SOC 2"].map((badge) => (
+                    {["R2v3 Compliant", "e-Stewards", "ISO 27001", "SOC 2"].map((badge) => (
                       <div
                         key={badge}
                         className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-emerald-100"
@@ -699,22 +714,25 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   </div>
 
                   {/* CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex flex-col sm:flex-row gap-4 relative z-20">
                     <Link
-                      to="/pricing-and-plan?product=drive-eraser"
-                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                      to="/pricing-and-plan?product=hardware-diagnostics"
+                      className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-emerald-500/25 hover:scale-[1.02] transition-all duration-200 group"
                     >
-                      <HoverIcon>
-                        {(filled) => (
-                          <LightningIcon className="w-5 h-5" filled={filled} />
-                        )}
-                      </HoverIcon>
+                      <svg
+                        className="w-5 h-5 group-hover:rotate-12 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                       Buy Now
                     </Link>
                     <button
-                      onClick={downloadCatalog}
-                      disabled={false}
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      disabled
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-100 text-emerald-400 px-8 py-4 rounded-xl font-bold opacity-60 cursor-not-allowed transition-all duration-200"
                     >
                       <svg
                         className="w-5 h-5"
@@ -729,251 +747,142 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      Download Datasheet
+                      Coming Soon
                     </button>
                   </div>
                 </div>
               </Reveal>
 
-              {/* Right: Hero Illustration - 3D Product Box */}
+              {/* Right: Hero Illustration - Minimalist Laptop & Floating Icons */}
               <Reveal delayMs={100}>
                 <div
-                  className="relative flex items-center justify-center min-h-[320px] sm:min-h-[400px] lg:min-h-[520px] px-6 sm:px-10"
-                  style={{ perspective: "1200px" }}
+                  className="relative flex items-center justify-center min-h-[300px] xs:min-h-[340px] sm:min-h-[400px] lg:min-h-[520px] overflow-visible px-4"
+                  style={{ perspective: "1500px" }}
                 >
                   {/* Ambient Background Glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-300/20 via-transparent to-teal-300/20 blur-3xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/15 via-transparent to-teal-400/15 blur-3xl rounded-full"></div>
 
-                  {/* Floating Particles - hidden on very small screens */}
-                  <div className="absolute inset-0 overflow-hidden pointer-events-none hidden sm:block">
-                    <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-emerald-400/60 rounded-full animate-ping"></div>
-                    <div
-                      className="absolute top-3/4 right-1/3 w-1.5 h-1.5 bg-teal-400/50 rounded-full animate-ping"
-                      style={{ animationDelay: "0.5s" }}
-                    ></div>
-                    <div
-                      className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-emerald-300/40 rounded-full animate-ping"
-                      style={{ animationDelay: "1s" }}
-                    ></div>
+                  {/* Floating Icons Arc - Adjusted positions to prevent overflow */}
+                  <div className="absolute inset-x-0 inset-y-0 pointer-events-none">
+                    {[
+                      { icon: <Battery className="w-5 h-5 sm:w-6 sm:h-6" />, pos: "top-[15%] left-[20%]", delay: "0s", color: "text-emerald-400" },
+                      { icon: <Wifi className="w-5 h-5 sm:w-6 sm:h-6" />, pos: "top-[8%] left-[50%] -translate-x-1/2", delay: "0.2s", color: "text-teal-400" },
+                      { icon: <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6" />, pos: "top-[15%] right-[20%]", delay: "0.4s", color: "text-yellow-400" },
+                      { icon: <Database className="w-5 h-5 sm:w-6 sm:h-6" />, pos: "top-[45%] left-[10%]", delay: "0.6s", color: "text-cyan-400" },
+                      { icon: <Cpu className="w-5 h-5 sm:w-6 sm:h-6" />, pos: "top-[45%] right-[10%]", delay: "0.8s", color: "text-emerald-500" },
+                      { icon: <Volume2 className="w-5 h-5 sm:w-6 sm:h-6" />, pos: "top-[30%] left-[25%]", delay: "1s", color: "text-teal-500" },
+                      { icon: <Bluetooth className="w-5 h-5 sm:w-6 sm:h-6" />, pos: "top-[30%] right-[25%]", delay: "1.2s", color: "text-blue-400" },
+                    ].map((item, idx) => (
+                      <div
+                        key={idx}
+                        className={`absolute ${item.pos} p-2 sm:p-3 bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-700/50 shadow-xl ${item.color} animate-float hidden xs:flex`}
+                        style={{ animationDelay: item.delay }}
+                      >
+                        {item.icon}
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Main 3D Container */}
+                  {/* Main Laptop 3D Container */}
                   <div
-                    className="relative w-full max-w-[200px] xs:max-w-[240px] sm:max-w-[300px] lg:max-w-[380px] mx-auto transform-gpu"
+                    className="relative w-full max-w-[160px] xs:max-w-[220px] sm:max-w-[320px] lg:max-w-[420px] mx-auto transform-gpu"
                     style={{
                       transformStyle: "preserve-3d",
-                      animation: "heroFloat 5s ease-in-out infinite",
+                      animation: "heroFloat 6s ease-in-out infinite",
                     }}
                   >
-                    {/* Glow Effect Behind - smaller on mobile */}
-                    <div className="absolute -inset-4 sm:-inset-6 lg:-inset-8 bg-gradient-to-br from-emerald-500/30 to-teal-500/30 blur-2xl sm:blur-3xl rounded-full"></div>
-
-                    {/* Main Hard Drive / Server Unit */}
+                    {/* Monitor Screen Container */}
                     <div
-                      className="relative bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 rounded-xl sm:rounded-2xl lg:rounded-3xl p-3 sm:p-5 lg:p-8 shadow-2xl border border-slate-700/50"
+                      className="relative z-10 bg-gradient-to-br from-slate-800 to-slate-950 rounded-lg p-1 sm:p-2 border-2 border-slate-700/50 shadow-2xl overflow-hidden"
                       style={{
-                        transform: "rotateY(-8deg) rotateX(5deg)",
-                        boxShadow:
-                          "0 25px 80px -20px rgba(16, 185, 129, 0.35), 0 10px 40px -10px rgba(0, 0, 0, 0.5)",
+                        transform: "rotateX(-5deg) rotateY(-10deg)",
+                        boxShadow: "20px 20px 50px rgba(0,0,0,0.5), inset 0 0 15px rgba(16, 185, 129, 0.05)",
                       }}
                     >
-                      {/* Top Status Bar */}
-                      <div className="flex items-center justify-between mb-3 sm:mb-4 lg:mb-6">
-                        <div className="flex items-center gap-1.5 sm:gap-2">
-                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
-                          <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-slate-400 font-medium tracking-wider uppercase">
-                            Active
-                          </span>
-                        </div>
-                        <div className="flex gap-1 sm:gap-1.5">
-                          <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 lg:w-2 lg:h-2 bg-emerald-500 rounded-full"></div>
-                          <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 lg:w-2 lg:h-2 bg-teal-500 rounded-full"></div>
-                          <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 lg:w-2 lg:h-2 bg-cyan-500 rounded-full"></div>
-                        </div>
-                      </div>
-
-                      {/* Drive Visualization */}
-                      <div className="relative bg-gradient-to-br from-slate-700/50 to-slate-800/50 rounded-lg sm:rounded-xl lg:rounded-2xl p-2 sm:p-3 lg:p-5 border border-slate-600/30 mb-3 sm:mb-4 lg:mb-6">
-                        {/* Server Stack Visualization */}
-                        <div className="relative w-full max-w-[180px] sm:max-w-[220px] lg:max-w-[280px] mx-auto space-y-1.5 sm:space-y-2 lg:space-y-3">
-                          {/* Server Unit 1 */}
-                          <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 rounded-md sm:rounded-lg p-1.5 sm:p-2 lg:p-3 border border-slate-500/40 shadow-lg">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"></div>
-                                <div
-                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
-                                  style={{ animationDelay: "0.2s" }}
-                                ></div>
-                                <div
-                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50"
-                                  style={{ animationDelay: "0.4s" }}
-                                ></div>
-                              </div>
-                              <div className="flex gap-0.5 sm:gap-1">
-                                {[...Array(4)].map((_, i) => (
-                                  <div
-                                    key={i}
-                                    className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"
-                                  ></div>
-                                ))}
-                              </div>
-                            </div>
+                      {/* Bezel */}
+                      <div className="relative bg-slate-900 rounded-md overflow-hidden aspect-[16/9] flex flex-col border border-slate-800">
+                        {/* Screen Content - Heartbeat Animation */}
+                        <div className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 bg-[#0a0f1c] relative">
+                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.05)_0%,transparent_100%)]"></div>
+                          
+                          {/* Heart Icon (Small) */}
+                          <div className="mb-2 sm:mb-4">
+                            <Heart className="w-6 h-6 sm:w-10 sm:h-10 text-emerald-500 fill-emerald-500/20 animate-pulse" />
                           </div>
 
-                          {/* Server Unit 2 - Main with Shield */}
-                          <div className="relative bg-gradient-to-r from-slate-700 via-slate-800 to-slate-700 rounded-md sm:rounded-lg p-2 sm:p-3 lg:p-4 border border-emerald-500/30 shadow-xl shadow-emerald-500/10">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2 sm:gap-3">
-                                <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-md sm:rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                                  <ShieldIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
-                                </div>
-                                <div className="flex flex-col">
-                                  <span className="text-[8px] sm:text-[9px] lg:text-xs text-emerald-400 font-semibold">
-                                    ERASING
-                                  </span>
-                                  <div className="w-12 sm:w-16 lg:w-24 h-1 sm:h-1.5 lg:h-2 bg-slate-600 rounded-full overflow-hidden">
-                                    <div
-                                      className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
-                                      style={{
-                                        width: "75%",
-                                        animation:
-                                          "progressPulse 2s ease-in-out infinite",
-                                      }}
-                                    ></div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex gap-0.5 sm:gap-1">
-                                {[...Array(4)].map((_, i) => (
-                                  <div
-                                    key={i}
-                                    className="w-0.5 sm:w-1 lg:w-1.5 h-4 sm:h-5 lg:h-6 bg-slate-500/60 rounded-sm"
-                                  ></div>
-                                ))}
-                              </div>
-                            </div>
+                          {/* Heartbeat Wave */}
+                          <div className="w-full h-12 sm:h-18 md:h-20 relative overflow-hidden">
+                            <svg
+                              viewBox="0 0 400 100"
+                              className="w-full h-full text-emerald-400 stroke-2 fill-none"
+                              preserveAspectRatio="none"
+                            >
+                              <path
+                                d="M0 50 L100 50 L115 20 L130 80 L145 50 L160 50 L170 10 L180 90 L195 50 L250 50 L265 30 L280 70 L295 50 L310 50 L320 0 L330 100 L345 50 L400 50"
+                                className="heartbeat-path"
+                              />
+                            </svg>
                           </div>
 
-                          {/* Server Unit 3 */}
-                          <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 rounded-md sm:rounded-lg p-1.5 sm:p-2 lg:p-3 border border-slate-500/40 shadow-lg">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
-                                <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-cyan-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50"></div>
-                                <div
-                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50"
-                                  style={{ animationDelay: "0.3s" }}
-                                ></div>
-                                <div
-                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
-                                  style={{ animationDelay: "0.6s" }}
-                                ></div>
-                              </div>
-                              <div className="flex gap-0.5 sm:gap-1">
-                                {[...Array(4)].map((_, i) => (
-                                  <div
-                                    key={i}
-                                    className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"
-                                  ></div>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Server Unit 4 */}
-                          <div className="relative bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600 rounded-md sm:rounded-lg p-1.5 sm:p-2 lg:p-3 border border-slate-500/40 shadow-lg">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2">
-                                <div
-                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
-                                  style={{ animationDelay: "0.5s" }}
-                                ></div>
-                                <div
-                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50"
-                                  style={{ animationDelay: "0.7s" }}
-                                ></div>
-                                <div
-                                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-2.5 lg:h-2.5 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50"
-                                  style={{ animationDelay: "0.9s" }}
-                                ></div>
-                              </div>
-                              <div className="flex gap-0.5 sm:gap-1">
-                                {[...Array(4)].map((_, i) => (
-                                  <div
-                                    key={i}
-                                    className="w-0.5 sm:w-1 lg:w-1.5 h-3 sm:h-4 lg:h-5 bg-slate-500/60 rounded-sm"
-                                  ></div>
-                                ))}
-                              </div>
-                            </div>
+                          {/* Status Indicator */}
+                          <div className="mt-2 sm:mt-4 flex items-center gap-1.5 sm:gap-2">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,1)]"></div>
+                            <span className="text-[8px] sm:text-xs font-mono text-emerald-500 tracking-wider uppercase">Health Check Active</span>
                           </div>
                         </div>
 
-                        {/* Erasure Status Text */}
-                        <div className="text-center mt-2 sm:mt-3 lg:mt-4">
-                          <p className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-lg">
-                            Drive Eraser
-                          </p>
+                        {/* Screen Footer / Brand */}
+                        <div className="h-5 sm:h-8 bg-slate-800/80 flex items-center justify-center border-t border-slate-700/50">
+                          <span className="text-[7px] sm:text-[9px] font-semibold text-slate-400 tracking-[0.2em] uppercase">D-Secure Diagnostics</span>
                         </div>
-                      </div>
-
-                      {/* Bottom Info Panel - Hidden on very small screens */}
-                      <div className="hidden sm:grid grid-cols-3 gap-2 sm:gap-3">
-                        {/* <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
-                          <p className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-base">26+</p>
-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">Standards</p>
-                        </div> */}
-                        {/* <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
-                          <p className="text-teal-400 font-bold text-xs sm:text-sm lg:text-base">100%</p>
-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">Verified</p>
-                        </div>
-                        <div className="bg-slate-800/60 rounded-lg p-2 sm:p-3 text-center border border-slate-700/30">
-                          <p className="text-cyan-400 font-bold text-xs sm:text-sm lg:text-base">∞</p>
-                          <p className="text-slate-500 text-[8px] sm:text-[9px] lg:text-[10px] uppercase">License</p>
-                        </div> */}
-                      </div>
-
-                      {/* Branding Footer */}
-                      <div className="mt-2 sm:mt-4 lg:mt-5 pt-2 sm:pt-3 lg:pt-4 border-t border-slate-700/30 flex items-center justify-between">
-                        <span className="text-slate-500 text-[7px] sm:text-[8px] lg:text-[9px] tracking-widest uppercase">
-                          D-Secure™
-                        </span>
-                        <span className="text-slate-600 text-[6px] sm:text-[7px] lg:text-[8px] tracking-wider">
-                          Drive Eraser Pro
-                        </span>
-                      </div>
-
-                      {/* Corner Accent */}
-                      <div className="absolute -top-1 -right-1 w-10 h-10 sm:w-16 sm:h-16 lg:w-20 lg:h-20 overflow-hidden rounded-tr-xl sm:rounded-tr-2xl lg:rounded-tr-3xl">
-                        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-emerald-500/20 to-transparent"></div>
                       </div>
                     </div>
 
-                    {/* 3D Side Panel - smaller on mobile */}
-                    <div
-                      className="absolute top-1 -right-1 sm:top-2 sm:-right-2 lg:top-4 lg:-right-4 w-2 sm:w-3 lg:w-5 h-[calc(100%-8px)] sm:h-[calc(100%-16px)] lg:h-[calc(100%-32px)] bg-gradient-to-b from-slate-700 to-slate-800 rounded-r-md sm:rounded-r-lg"
+                    {/* Monitor Stand - Neck */}
+                    <div 
+                      className="absolute -bottom-4 sm:-bottom-6 left-1/2 -translate-x-1/2 w-8 sm:w-12 h-10 sm:h-14 bg-gradient-to-b from-slate-700 to-slate-900 border-x border-slate-600/30"
                       style={{
-                        transform: "rotateY(75deg)",
-                        transformOrigin: "left center",
+                        transform: "translateZ(-20px) rotateX(20deg)",
                       }}
                     ></div>
 
-                    {/* Reflection - smaller on mobile */}
-                    <div className="absolute -bottom-4 sm:-bottom-6 lg:-bottom-8 left-1/2 -translate-x-1/2 w-3/4 sm:w-4/5 h-4 sm:h-6 lg:h-8 bg-gradient-to-t from-emerald-500/10 to-transparent blur-lg sm:blur-xl rounded-full"></div>
+                    {/* Monitor Stand - Base */}
+                    <div 
+                      className="absolute -bottom-6 sm:-bottom-8 left-1/2 -translate-x-1/2 w-32 sm:w-48 h-3 sm:h-4 bg-gradient-to-br from-slate-700 to-slate-900 rounded-t-xl border border-slate-600/40 shadow-xl"
+                      style={{
+                        transform: "rotateX(75deg)",
+                        transformOrigin: "top center",
+                      }}
+                    >
+                      <div className="absolute inset-0 bg-emerald-500/5 blur-sm"></div>
+                    </div>
                   </div>
 
                   <style>{`
                     @keyframes heroFloat {
-                      0%, 100% { transform: translateY(0px) rotateY(-8deg) rotateX(5deg); }
-                      50% { transform: translateY(-12px) rotateY(-5deg) rotateX(3deg); }
+                      0%, 100% { transform: translateY(0px) rotateY(-5deg) rotateX(2deg); }
+                      50% { transform: translateY(-15px) rotateY(-2deg) rotateX(1deg); }
                     }
-                    @keyframes spinDisk {
-                      from { transform: rotate(0deg); }
-                      to { transform: rotate(360deg); }
+                    @keyframes float {
+                      0%, 100% { transform: translateY(0px); }
+                      50% { transform: translateY(-10px); }
+                    }
+                    .animate-float {
+                      animation: float 4s ease-in-out infinite;
+                    }
+                    .heartbeat-path {
+                      stroke-dasharray: 1000;
+                      stroke-dashoffset: 1000;
+                      animation: heartbeat-animation 3s linear infinite;
+                    }
+                    @keyframes heartbeat-animation {
+                      to {
+                        stroke-dashoffset: 0;
+                      }
                     }
                     @keyframes progressPulse {
-                      0%, 100% { stroke-dashoffset: 70; opacity: 1; }
-                      50% { stroke-dashoffset: 50; opacity: 0.8; }
+                      0%, 100% { opacity: 1; }
+                      50% { opacity: 0.6; }
                     }
                   `}</style>
                 </div>
@@ -982,23 +891,22 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           </div>
         </section>
 
-        {/* ================= WHAT YOU CAN ERASE ================= */}
+        {/* ================= WHAT YOU CAN DIAGNOSE ================= */}
         <section id="erase-types" className="py-16 lg:py-24 bg-white">
           <div className="container mx-auto px-4 max-w-7xl">
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  What You Can Erase
+                  Diagnostic Capabilities
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Comprehensive data destruction capabilities for all types of
-                  sensitive information
+                  Comprehensive hardware testing tailored for various form factors and devices.
                 </p>
               </div>
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              {eraseTypes.map((item, i) => (
+              {diagnosticsFeatures.map((item, i) => (
                 <Reveal key={item.name} delayMs={i * 50}>
                   <div className="group bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 min-h-[200px] sm:min-h-[250px] md:min-h-[280px] flex flex-col">
                     <div
@@ -1019,7 +927,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
           </div>
         </section>
 
-        {/* ================= PRODUCT DEMO SECTION ================= */}
+        {/* ================= PRODUCT DEMO SECTION — COMING SOON ================= */}
         <section
           id="demo"
           className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-emerald-50"
@@ -1028,275 +936,92 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-6 sm:mb-10">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
-                  Try Drive Eraser{" "}
+                  Try Hardware Diagnostics{" "}
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                     Demo
                   </span>
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Experience D-Secure Drive Eraser in action — explore the
+                  Experience D-Secure Hardware Diagnostics in action — explore the
                   interface and features right here
                 </p>
               </div>
             </Reveal>
 
-            {/* Embedded Product Demo - Sandbox Style */}
+            {/* Coming Soon Placeholder */}
             <Reveal delayMs={100}>
               <div
-                ref={demoContainerRef}
-                className={`relative bg-white overflow-hidden shadow-2xl border border-slate-200/80 hover:shadow-emerald-200/30 transition-all duration-500 flex flex-col group ${
-                  isFullscreen
-                    ? "w-full h-full rounded-none"
-                    : "rounded-2xl h-[450px] sm:h-[500px] lg:h-[600px]"
-                }`}
+                className="relative bg-white overflow-hidden shadow-2xl border border-slate-200/80 rounded-2xl h-[350px] sm:h-[400px] lg:h-[500px] flex flex-col items-center justify-center"
               >
-                {/* Fullscreen Toggle Button (visible only when demo is active) */}
-                {isDemoActive && (
-                  <button
-                    onClick={toggleFullscreen}
-                    className="absolute top-12 right-4 z-50 p-2.5 bg-slate-900/80 hover:bg-emerald-600 text-white rounded-xl shadow-lg backdrop-blur-md transition-all duration-300 opacity-0 group-hover:opacity-100 flex items-center gap-2"
-                    title={
-                      isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"
-                    }
-                  >
-                    {isFullscreen ? (
-                      <svg
-                        className="w-5 h-5 block"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"
-                        />
-                      </svg>
-                    ) : (
-                      <svg
-                        className="w-5 h-5 block"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                        />
-                      </svg>
-                    )}
-                    <span className="text-sm font-medium pr-1 hidden sm:block">
-                      {isFullscreen ? "Exit Fullscreen" : "Full Screen"}
-                    </span>
-                  </button>
-                )}
+                {/* Decorative background pattern */}
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/80"></div>
+                <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #10b981 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
 
-                {!isDemoActive ? (
-                  /* Demo Placeholder - Screenshot Thumbnail */
-                  <div
-                    onClick={() => setIsDemoActive(true)}
-                    className="group relative w-full h-full flex-1 cursor-pointer overflow-hidden"
-                  >
-                    {/* Screenshot Background */}
-                    <img
-                      src="https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772035728/ddzt2ghea7hotem4bvz9.png"
-                      alt="D-Secure Drive Eraser Preview"
-                      className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
-                    />
-                    {/* Subtle overlay for play button visibility */}
-                    <div className="absolute inset-0 bg-black/5 group-hover:bg-black/15 transition-colors duration-300" />
-                    {/* Centered Play Button */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="w-20 h-20 rounded-full bg-white/90 backdrop-blur-md border-2 border-emerald-200 shadow-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
-                            <svg
-                              className="w-7 h-7 text-white ml-0.5"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M8 5v14l11-7z" />
-                            </svg>
-                          </div>
-                        </div>
-                        <span className="text-sm font-semibold text-slate-700 bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full shadow-lg border border-slate-200/80">
-                          Click to start interactive demo
-                        </span>
-                      </div>
+                {/* Coming Soon Content */}
+                <div className="relative z-10 flex flex-col items-center gap-6 px-6">
+                  {/* Animated Icon */}
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-emerald-100 to-teal-100 border-2 border-emerald-200 flex items-center justify-center shadow-lg">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-inner animate-pulse">
+                      <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                     </div>
                   </div>
-                ) : (
-                  /* Iframe Container */
-                  <iframe
-                    src="https://dsecure-drive-eraser.vercel.app/"
-                    className="w-full h-full flex-1 border-0"
-                    title="D-Secure Drive Eraser Demo"
-                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                    loading="lazy"
-                    allow="clipboard-read; clipboard-write; fullscreen"
-                    allowFullScreen
-                  />
-                )}
+
+                  {/* Title */}
+                  <div className="text-center">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
+                      Coming Soon
+                    </h3>
+                    <p className="text-slate-500 text-sm sm:text-base max-w-md">
+                      We're building an interactive demo for Hardware Diagnostics. Stay tuned for a hands-on experience!
+                    </p>
+                  </div>
+
+                  {/* Badge */}
+                  <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-5 py-2.5 rounded-full text-sm font-semibold border border-emerald-200 shadow-sm">
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    Under Development
+                  </div>
+                </div>
               </div>
             </Reveal>
 
             {/* Caption below demo */}
             <Reveal delayMs={200}>
               <p className="text-center text-sm text-slate-500 mt-4">
-                Interactive product demo — explore Drive Eraser features
-                directly in your browser
+                Interactive demo coming soon — Hardware Diagnostics will be available to try directly in your browser
               </p>
             </Reveal>
 
-            {/* Screenshot Cards Grid */}
+            {/* Screenshot Cards Grid — COMMENTED OUT FOR NOW
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-              {/* Screenshot 1 */}
-              <Reveal delayMs={150}>
-                <div
-                  onClick={() => setSelectedImageIndex(0)}
-                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
-                    <img
-                      src={galleryImages[0].thumbnail}
-                      alt={galleryImages[0].alt}
-                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                      <svg
-                        className="w-5 h-5 text-emerald-600"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-
-              {/* Screenshot 2 */}
-              <Reveal delayMs={200}>
-                <div
-                  onClick={() => setSelectedImageIndex(1)}
-                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
-                    <img
-                      src={galleryImages[1].thumbnail}
-                      alt={galleryImages[1].alt}
-                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                      <svg
-                        className="w-5 h-5 text-emerald-600"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-
-              {/* Screenshot 3 */}
-              <Reveal delayMs={250}>
-                <div
-                  onClick={() => setSelectedImageIndex(2)}
-                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
-                    <img
-                      src={galleryImages[2].thumbnail}
-                      alt={galleryImages[2].alt}
-                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                      <svg
-                        className="w-5 h-5 text-emerald-600"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-
-              {/* Screenshot 4 - Shows "More" badge if additional images exist */}
-              <Reveal delayMs={300}>
-                <div
-                  onClick={() => setSelectedImageIndex(3)}
-                  className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
-                    <img
-                      src={galleryImages[3].thumbnail}
-                      alt={galleryImages[3].alt}
-                      className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
-                    />
-                    {/* More Images Badge */}
-                    {additionalImagesCount > 0 && (
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <span className="text-white text-xl sm:text-2xl font-bold">
-                          +{additionalImagesCount} More
+              {galleryImages.slice(0, 4).map((img, i) => (
+                <Reveal key={img.alt} delayMs={150 + i * 50}>
+                  <div
+                    onClick={() => setSelectedImageIndex(i)}
+                    className="group relative bg-white rounded-xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg hover:border-emerald-200 transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 relative">
+                      <img
+                        src={img.thumbnail}
+                        alt={img.alt}
+                        className="w-full h-full object-contain bg-slate-50 group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-slate-900/50 flex items-center justify-center">
+                        <span className="text-white text-xs sm:text-sm font-bold bg-emerald-600/80 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                          {i === 3 && additionalImagesCount > 0 ? `+${additionalImagesCount} More` : 'Coming Soon'}
                         </span>
                       </div>
-                    )}
-                  </div>
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                      <svg
-                        className="w-5 h-5 text-emerald-600"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"
-                        />
-                      </svg>
                     </div>
                   </div>
-                </div>
-              </Reveal>
+                </Reveal>
+              ))}
             </div>
+            */}
           </div>
         </section>
 
@@ -1309,10 +1034,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-6 sm:mb-10">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
-                  See Drive Eraser in Action
+                  See Hardware Diagnostics in Action
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Watch how D-Secure Drive Eraser permanently destroys sensitive
+                  Watch how D-Secure Hardware Diagnostics permanently destroys sensitive
                   data with audit-ready documentation
                 </p>
               </div>
@@ -1333,7 +1058,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
                   How To Use <span className="text-emerald-600">D-Secure</span>{" "}
-                  Drive Eraser?
+                  Hardware Diagnostics?
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                   Get started in minutes with our easy deployment options
@@ -1423,6 +1148,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           PXE Boot
                         </span>
                         <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
+                          EXE
+                        </span>
+                        <span className="text-[10px] px-2 py-1 bg-white border border-emerald-200 rounded-full text-emerald-700 font-medium">
                           MSI
                         </span>
                       </div>
@@ -1445,26 +1173,23 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     </div>
                   </div>
 
-                  {/* Step 3: Erase */}
+                  {/* Step 3: Diagnose */}
                   <div className="group">
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center text-center relative overflow-hidden">
                       {/* Step Number Badge */}
                       <div className="absolute top-3 left-3 w-7 h-7 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-lg">
                         3
                       </div>
-                      {/* Icon with overlapping shields */}
+                      {/* Icon */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100 relative">
-                        <div className="flex -space-x-2">
-                          <ShieldIcon className="w-6 h-6 text-emerald-600 relative z-10" />
-                          <ShieldIcon className="w-6 h-6 text-emerald-400 relative z-0" />
-                        </div>
+                        <CpuIcon className="w-8 h-8 text-emerald-600" />
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">
-                        Erase Devices
+                        Diagnose Devices
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Securely wipe multiple devices simultaneously
+                        Automatically test hardware components
                       </p>
                     </div>
                     {/* Arrow for mobile/tablet */}
@@ -1504,7 +1229,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         Save Reports
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Store erasure certificates on cloud
+                        Store diagnostic certificates on cloud
                       </p>
                     </div>
                   </div>
@@ -1517,15 +1242,15 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <div className="max-w-3xl mx-auto mt-12 text-center">
                 <p className="text-slate-600 leading-relaxed">
                   <strong className="text-slate-900">
-                    D-Secure Drive Eraser
+                    D-Secure Hardware Diagnostics
                   </strong>{" "}
-                  offers the flexibility to wipe drives and devices in both
-                  internet-enabled locations and offline facilities. Deploy via{" "}
+                  offers the flexibility to test devices efficiently in both
+                  internet-enabled facilities and offline environments. Deploy via{" "}
                   <strong className="text-emerald-600">USB drive</strong>,{" "}
                   <strong className="text-emerald-600">PXE boot</strong> over
                   network, or{" "}
                   <strong className="text-emerald-600">MSI package</strong> for
-                  remote wiping on Windows endpoints.
+                  remote diagnostics.
                 </p>
                 <p className="text-sm text-slate-500 mt-4">
                   *Offline variant available for Non-Internet locations
@@ -1547,9 +1272,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   Compliance-Ready by Design
                 </h2>
                 <p className="text-lg text-slate-300 max-w-3xl mx-auto">
-                  D-Secure Drive Eraser supports organizational compliance
-                  initiatives by aligning with widely accepted data protection
-                  principles and secure erasure best practices
+                  D-Secure Hardware Diagnostics supports IT asset auditing procedures
+                  and ethical recycling practices by providing tamper-proof
+                  hardware grading records.
                 </p>
               </div>
             </Reveal>
@@ -1707,7 +1432,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   </div>
                   <p className="text-slate-600 text-xs sm:text-sm mb-3 sm:mb-4">
                     Legacy 32-bit processors for older systems still in
-                    enterprise use requiring secure erasure.
+                    enterprise use requiring hardware health checks.
                   </p>
                   <div className="flex flex-wrap gap-2">
                     <span className="px-2 py-1 bg-cyan-50 text-cyan-700 text-xs rounded-full border border-cyan-200">
@@ -1905,7 +1630,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   Frequently Asked Questions
                 </h2>
                 <p className="text-lg text-slate-600">
-                  Everything you need to know about D-Secure Drive Eraser
+                  Everything you need to know about D-Secure Hardware Diagnostics
                 </p>
               </div>
             </Reveal>
@@ -1913,32 +1638,28 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <div className="space-y-4">
               {[
                 {
-                  q: "How many drives can I erase at a time on one machine?",
-                  a: "D-Secure Drive Eraser supports simultaneous erasure of up to 32 drives per machine, depending on your hardware configuration. For bulk operations, you can use our cloud console to manage multiple machines.",
+                  q: "What architectures and chips are supported on Mac?",
+                  a: "D-Secure supports all Apple architectures including legacy Intel, T1, T2 security chips, and the entire Apple Silicon range (M1, M2, M3, and M4 series). Deployment is handled natively via a single Terminal command in Recovery Mode.",
                 },
                 {
-                  q: "Does the software support Partition Deletion Wipe?",
-                  a: "Yes, D-Secure supports partition-level erasure in addition to full drive erasure. You can selectively wipe specific partitions while keeping others intact.",
+                  q: "How does MDM Enrollment Detection work?",
+                  a: "The software automatically checks the MDM (Mobile Device Management) status of Mac devices during diagnostics. It identifies if a device is locked or enrolled in a corporate management system, ensuring compliant processing.",
                 },
                 {
-                  q: "Do I need Technical Skills?",
-                  a: "No, D-Secure is designed with a user-friendly interface. Simply boot from USB, select your drive and erasure standard, and the software handles everything automatically.",
+                  q: "What is the limit for simultaneous diagnostics?",
+                  a: "Via PXE network boot, you can diagnose up to 255 machines simultaneously on a single network segment, making it highly efficient for high-volume ITAD and refurbishing operations.",
                 },
                 {
-                  q: "Can I sign my file, like XML, jar file with my e-Signature?",
-                  a: "Yes, D-Secure supports custom digital signatures for reports. You can integrate your organization's PKI for enhanced security.",
+                  q: "Can I run diagnostics without an internet connection?",
+                  a: "Yes, D-Secure Hardware Diagnostics offers a standalone offline mode. You can perform full hardware assessments using a bootable USB drive in environments with restricted or no internet access.",
                 },
                 {
-                  q: "Does D-Secure integrate with ServiceNow?",
-                  a: "Yes, D-Secure offers native integration with ServiceNow via REST APIs. You can automatically update CMDB records and create incident tickets upon erasure completion.",
+                  q: "What types of hardware components are tested?",
+                  a: "The tool performs 10+ automated tests (CPU, RAM, SMART, Battery, CMOS, Motherboard) and provides guided manual tests for Keyboard, Display, Audio, Webcam, and USB ports for 100% component verification.",
                 },
                 {
-                  q: "Can I track separate Inventory for different types of Drives (SSD/HDD, Mobile, etc)?",
-                  a: "Absolutely. The cloud console provides detailed categorization and filtering by device type, making it easy to track and report on different asset categories.",
-                },
-                {
-                  q: "What ongoing support is provided?",
-                  a: "We provide continuous support including regular software updates, technical assistance, compliance monitoring, and renewal coordination. Think of us as your ongoing partner in data hygiene.",
+                  q: "Are the diagnostics reports tamper-proof?",
+                  a: "Yes, every report is digitally signed and generated in non-editable PDF, XML, and CSV formats. This ensures the integrity of the hardware health data for audits and resale grading.",
                 },
               ].map((faq, i) => (
                 <Reveal key={i} delayMs={i * 50}>
@@ -2044,13 +1765,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   </h2>
                   <p className="text-lg text-slate-600 leading-relaxed">
                     Get personalized guidance on deployment, licensing, and
-                    audit-ready data erasure strategies tailored to your
+                    hardware diagnostics strategies tailored to your
                     organization's needs.
                   </p>
                   <ul className="space-y-4">
                     {[
                       "Enterprise & SMB licensing options",
-                      "Compliance-focused implementation",
+                      "Standardized testing implementation",
                       "White-label branding available",
                       "No-obligation consultation",
                     ].map((item) => (
@@ -2129,13 +1850,13 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                         formSubmitData.append("timestamp", timestampLocal);
                         formSubmitData.append(
                           "source",
-                          "Drive Eraser Page Contact",
+                          "Hardware Diagnostics Page Contact",
                         );
 
                         // Subject and CC
                         formSubmitData.append(
                           "_subject",
-                          "New Inquiry - Drive Eraser Page - D-Secure Tech",
+                          "New Inquiry - Hardware Diagnostics Page - D-Secure Tech",
                         );
                         formSubmitData.append(
                           "_cc",
@@ -2150,11 +1871,11 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           phone: "",
                           country: "",
                           businessType: "",
-                          solutionType: "drive-erasure",
+                          solutionType: "device-analytics",
                           complianceRequirements: "",
                           message: formData.message.trim(),
                           usageType: "",
-                          source: "Drive Eraser Page Contact",
+                          source: "Hardware Diagnostics Page Contact",
                           timestamp: timestampISO,
                         };
 
@@ -2367,4 +2088,4 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   );
 });
 
-export default DriveEraserPage;
+export default HardwareDiagnosticsPage;

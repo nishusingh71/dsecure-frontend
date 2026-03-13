@@ -366,7 +366,7 @@ const DataGuardianAwardPage: React.FC = () => {
 
       <div className="min-h-screen bg-white">
         {/* Hero Section - Light with Centered Layout */}
-        <section className="relative py-12 md:py-20 lg:py-24 overflow-hidden bg-gradient-to-br from-emerald-50/50 via-white to-teal-50/30">
+        <section className="relative py-6 xs:py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 xxl:py-18 overflow-hidden bg-gradient-to-br from-emerald-50/50 via-white to-teal-50/30">
           {/* Background Elements */}
           <div className="absolute inset-0">
             <div className="absolute top-20 left-1/4 w-72 h-72 bg-emerald-100/40 rounded-full blur-3xl"></div>
@@ -462,7 +462,7 @@ const DataGuardianAwardPage: React.FC = () => {
 
                     {/* Main Certificate Card - Glassmorphism Style */}
                     <div
-                      className="relative z-10 w-full aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl transform hover:rotate-y-2 transition-transform duration-500"
+                      className="relative z-10 w-full min-h-[300px] sm:min-h-[400px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl transform hover:rotate-y-2 transition-transform duration-500"
                       style={{
                         background:
                           "linear-gradient(145deg, #059669 0%, #0d9488 40%, #10b981 70%, #0f766e 100%)",
@@ -477,7 +477,7 @@ const DataGuardianAwardPage: React.FC = () => {
                       <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/5 rounded-full blur-2xl"></div>
 
                       {/* Certificate Content */}
-                      <div className="relative z-10 h-full flex flex-col p-5 sm:p-8 lg:p-10">
+                      <div className="relative z-10 flex flex-col p-5 sm:p-8 lg:p-10 pb-8 sm:pb-12">
                         {/* Header - D-SECURE Brand */}
                         <div className="flex items-center gap-1.5 mb-4 sm:mb-6">
                           <span className="text-white/80 text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase">
@@ -524,7 +524,7 @@ const DataGuardianAwardPage: React.FC = () => {
                         </div>
 
                         {/* Footer - Verified Badge */}
-                        <div className="mt-auto flex justify-center">
+                        <div className="flex justify-center mt-4 sm:mt-6 mb-2 sm:mb-4">
                           <div
                             className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full"
                             style={{

@@ -606,7 +606,7 @@ function ResourcesPageContent() {
     <>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
-        <div className="container-responsive py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
+        <div className="container-responsive py-6 xs:py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 xxl:py-18">
           <div className="text-center max-w-4xl mx-auto">
             <Reveal>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-6">

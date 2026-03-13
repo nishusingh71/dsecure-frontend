@@ -10,6 +10,7 @@ import {
   type ProfileData,
 } from "@/services/adminDashboardAPI";
 import { indexedDBService } from "@/services/indexedDBService";
+import { idbKeys } from "@/services/idbKeys";
 import { apiClient } from "@/utils/enhancedApiClient";
 import {
   isDemoMode,
@@ -19,6 +20,9 @@ import {
   DEMO_LICENSE_DETAILS,
   DEMO_REPORTS,
   DEMO_PROFILE,
+  DEMO_AUDIT_REPORTS,
+  DEMO_SUBUSERS,
+  DEMO_BILLING_DETAILS,
 } from "@/data/demoData";
 import { authService } from "@/utils/authService";
 
@@ -38,7 +42,119 @@ export const dashboardKeys = {
   // ✅ NAYA CODE: Added licenseList key for caching the full license list across remounts
   licenseList: (email: string) =>
     [...dashboardKeys.all, "licenseList", email] as const,
+  // ✅ NAYA CODE: Added billingDetails key for caching billing info
+  billingDetails: (email: string) =>
+    [...dashboardKeys.all, "billingDetails", email] as const,
+  // ✅ NAYA CODE: Added groupsWithUsers key for the specialized multi-user group view
+  groupsWithUsers: (email: string) =>
+    [...dashboardKeys.all, "groupsWithUsers", email] as const,
 };
+
+/**
+ * Helper to transform raw API groups data into the format expected by the UI.
+ */
+const transformGroupsWithUsers = (apiGroups: any[]) => {
+  return apiGroups.map((group: any, index: number) => {
+    const cleanId =
+      group.groupId?.toString().replace(/^group-/, "") || `${index + 1}`;
+    return {
+      id: parseInt(cleanId) || index + 1,
+      name: group.groupName || "Unnamed Group",
+      description: group.groupDescription || "",
+      created: new Date().toISOString().split("T")[0],
+      licenseStats: group.licenseStats || null,
+      users:
+        group.users?.map((user: any, userIndex: number) => {
+          const cleanUserId =
+            user.userId?.toString().replace(/^user-/, "") ||
+            `${userIndex + 1}`;
+          return {
+            id: parseInt(cleanUserId) || userIndex + 1,
+            name: user.name || "Unknown",
+            email: user.email || "",
+            role: (user.role === "GroupAdmin"
+              ? "Group Admin"
+              : user.role === "user"
+                ? "User"
+                : "Subuser") as "User" | "Subuser" | "Group Admin",
+            license:
+              user.licenseCount || user.license || 0 || user.licenseKey,
+            licenseKey: user.licenseKey || "",
+            profile: user.role || "User",
+          };
+        }) || [],
+    };
+  });
+};
+
+/**
+ * Specialized hook to fetch groups with their users.
+ * Ported from AdminDashboard.tsx fetchGroupsWithUsers.
+ */
+export function useGroupsWithUsers(userEmail: string, enabled: boolean = true) {
+  return useQuery({
+    queryKey: dashboardKeys.groupsWithUsers(userEmail),
+    queryFn: async () => {
+      // 0. Demo Mode
+      if (isDemoMode()) {
+        return DEMO_GROUPS;
+      }
+
+      const email = userEmail || getCurrentUserEmail();
+      const groupsCacheKey = idbKeys.groupsWithUsers(email);
+
+      // 1. Try IDB
+      try {
+        const cached = await indexedDBService.get("groups", groupsCacheKey);
+        if (cached) {
+          // Handle both legacy array format and new object format
+          const cachedArray = Array.isArray(cached)
+            ? cached
+            : cached.groups?.data || [];
+          
+          if (cachedArray.length > 0) {
+            // ✅ NAYA CODE: Check if data is already transformed (e.g., has 'name' AND 'users' property)
+            // If it only has 'users' but not 'name', it's partially transformed and will crash UI
+            if (cachedArray[0].users !== undefined && cachedArray[0].name !== undefined) {
+              console.log(`✅ Loaded fully transformed groupsWithUsers from IndexedDB`);
+              return cachedArray;
+            } else {
+              // PURANA CODE: Cached data was raw or partially transformed, need to transform it
+              console.log(`🔄 Transforming raw/partial groupsWithUsers from IndexedDB`);
+              return transformGroupsWithUsers(cachedArray);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("IDB Read Failed: groupsWithUsers", e);
+      }
+
+      // 2. Fallback to API
+      console.log("📞 Calling getGroupsWithUsers API...");
+      const response = await apiClient.getGroupsWithUsers();
+
+      if (response.success && response.data?.groups?.data) {
+        const apiGroups = response.data.groups.data;
+        const transformedGroups = transformGroupsWithUsers(apiGroups);
+
+        // 3. Update IDB with TRANSFORMED data to prevent crash next time
+        indexedDBService
+          .put("groups", groupsCacheKey, transformedGroups)
+          .catch((e) => console.error("IDB Write Failed: groups", e));
+
+        return transformedGroups;
+      }
+
+      throw new Error("Failed to fetch groups with users");
+    },
+    enabled: enabled && !!userEmail,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+}
 
 // Helper to get current user email
 const getCurrentUserEmail = () => {
@@ -89,7 +205,7 @@ export function useDashboardStats(userEmail: string, enabled: boolean = true) {
 
       // 1. Try IDB (user-scoped)
       const email = userEmail || getCurrentUserEmail();
-      const cacheKey = email ? `stats_${email}` : "stats";
+      const cacheKey = idbKeys.stats(email);
       try {
         const cached = await indexedDBService.get("dashboard_stats", cacheKey);
         if (cached) return cached;
@@ -111,11 +227,12 @@ export function useDashboardStats(userEmail: string, enabled: boolean = true) {
       return response.data;
     },
     enabled,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -134,16 +251,19 @@ export function useUserActivity(userEmail: string, enabled: boolean = true) {
         return DEMO_USER_ACTIVITY;
       }
 
+      const email = userEmail || getCurrentUserEmail();
+      const cacheKey = idbKeys.activity(email);
+
       // 1. Try IDB
       try {
-        const cached = await indexedDBService.get("user_activity", userEmail);
+        const cached = await indexedDBService.get("user_activity", cacheKey);
         if (cached && Array.isArray(cached) && cached.length > 0) return cached;
       } catch (e) {
         console.warn("IDB Read Failed: activity", e);
       }
 
       console.log("📞 Calling getUserActivity API...");
-      const response = await AdminDashboardAPI.getUserActivity(userEmail);
+      const response = await AdminDashboardAPI.getUserActivity(email);
 
       if (!response.success || !response.data) {
         throw new Error(response.message || "Failed to fetch user activity");
@@ -151,17 +271,18 @@ export function useUserActivity(userEmail: string, enabled: boolean = true) {
 
       // 3. Update IDB
       indexedDBService
-        .put("user_activity", userEmail, response.data)
+        .put("user_activity", cacheKey, response.data)
         .catch((e) => console.error("IDB Write Failed: activity", e));
 
       return response.data;
     },
     enabled: enabled && !!userEmail,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -181,7 +302,7 @@ export function useGroups(userEmail: string, enabled: boolean = true) {
 
       // 1. Try IDB (user-scoped)
       const email = userEmail || getCurrentUserEmail();
-      const groupsCacheKey = email ? `all_groups_${email}` : "all_groups";
+      const groupsCacheKey = idbKeys.groups(email);
       try {
         const cached = await indexedDBService.get("groups", groupsCacheKey);
         if (cached) return cached;
@@ -202,11 +323,12 @@ export function useGroups(userEmail: string, enabled: boolean = true) {
       return response.data;
     },
     enabled,
-    staleTime: 30 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -226,7 +348,7 @@ export function useLicenseData(userEmail: string, enabled: boolean = true) {
 
       // 1. Try IDB (user-scoped)
       const email = userEmail || getCurrentUserEmail();
-      const licCacheKey = email ? `all_licenses_${email}` : "all_licenses";
+      const licCacheKey = idbKeys.licenses(email);
       try {
         const cached = await indexedDBService.get("licenses", licCacheKey);
         if (cached) return cached;
@@ -247,11 +369,12 @@ export function useLicenseData(userEmail: string, enabled: boolean = true) {
       return response.data;
     },
     enabled,
-    staleTime: 30 * 60 * 1000,
-    gcTime: 60 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     retry: 1,
   });
 }
@@ -271,8 +394,8 @@ export function useRecentReports(userEmail: string, enabled: boolean = true) {
       }
 
       // 1. Try IDB (user-scoped)
-      const email = getCurrentUserEmail();
-      const rptCacheKey = email ? `reports_${email}` : "reports";
+      const email = userEmail || getCurrentUserEmail();
+      const rptCacheKey = idbKeys.recentReports(email);
       try {
         const cached = await indexedDBService.get(
           "recent_reports",
@@ -296,11 +419,12 @@ export function useRecentReports(userEmail: string, enabled: boolean = true) {
       return response.data;
     },
     enabled,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -319,10 +443,12 @@ export function useAdminProfile(userEmail: string, enabled: boolean = true) {
       }
 
       const email = userEmail || getCurrentUserEmail();
+      const profileKey = idbKeys.profile(email);
+
       // 1. Try IDB
       if (email) {
         try {
-          const cached = await indexedDBService.get("profile", email);
+          const cached = await indexedDBService.get("profile", profileKey);
           if (cached) return cached;
         } catch (e) {
           console.warn("IDB Read Failed: profile", e);
@@ -337,18 +463,19 @@ export function useAdminProfile(userEmail: string, enabled: boolean = true) {
       // 3. Update IDB
       if (email) {
         indexedDBService
-          .put("profile", email, response.data)
+          .put("profile", profileKey, response.data)
           .catch((e) => console.error("IDB Write Failed: profile", e));
       }
 
       return response.data;
     },
     enabled,
-    staleTime: 10 * 60 * 1000,
-    gcTime: 30 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -478,12 +605,13 @@ export function useDashboardLicenseList(
     queryKey: dashboardKeys.licenseList(userEmail),
     queryFn: async () => {
       // 1. Try IDB first for instant load
-      const licCacheKey = `license_list_${userEmail || "admin"}`;
+      const email = userEmail || getCurrentUserEmail();
+      const licCacheKey = idbKeys.licenses(email || "admin");
       try {
         const cached = await indexedDBService.get("licenses", licCacheKey);
         if (cached && Array.isArray(cached) && cached.length > 0) {
           console.log(
-            `✅ Loaded full license list for ${userEmail} from IndexedDB`,
+            `✅ Loaded full license list for ${email} from IndexedDB`,
           );
           return cached;
         }
@@ -516,10 +644,10 @@ export function useDashboardLicenseList(
       }));
 
       // Filter for current user and their subusers
-      let allowedEmails = [userEmail];
+      let allowedEmails = [email];
       try {
         const subusersRes =
-          await apiClient.getAllSubusersWithFallback(userEmail);
+          await apiClient.getAllSubusersWithFallback(email);
         if (subusersRes.success && subusersRes.data) {
           const subuserEmails = subusersRes.data
             .map((s: any) => s.subuser_email || s.email)
@@ -532,8 +660,8 @@ export function useDashboardLicenseList(
 
       const filteredList = mappedList.filter((license: any) =>
         allowedEmails.some(
-          (email) =>
-            email.toLowerCase() === (license.user_email || "").toLowerCase(),
+          (e) =>
+            e.toLowerCase() === (license.user_email || "").toLowerCase(),
         ),
       );
 
@@ -547,10 +675,11 @@ export function useDashboardLicenseList(
       return filteredList;
     },
     enabled,
-    staleTime: 60 * 60 * 1000, // 60 minutes — stays fresh for entire session
-    gcTime: 60 * 60 * 1000, // 60 minutes — kept in cache even when component unmounts
-    refetchOnMount: false, // Don't refetch when AdminDashboard remounts
-    refetchOnWindowFocus: false, // Don't refetch on tab switch
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     placeholderData: (previousData) => previousData,
   });
 }
@@ -599,7 +728,11 @@ const findValue = (obj: any, candidates: string[]): any => {
 };
 
 const parseActivityLog = (raw: any): any[] => {
-  const logValue = findValue(raw, ["activityLog", "ActivityLog", "activity_log"]);
+  const logValue = findValue(raw, [
+    "activityLog",
+    "ActivityLog",
+    "activity_log",
+  ]);
   if (!logValue) return [];
   try {
     if (typeof logValue === "string") return JSON.parse(logValue);
@@ -634,36 +767,90 @@ const flattenTimelineData = (response: any): any[] => {
 
 const normalizeDashboardSession = (raw: any): any => {
   const activityLog = parseActivityLog(raw);
-  const isActive = findValue(raw, ["is_active", "isActive", "IsActive"]) ?? false;
+  const isActive =
+    findValue(raw, ["is_active", "isActive", "IsActive"]) ?? false;
 
   return {
     session_id: String(
-      findValue(raw, ["session_id", "sessionId", "SessionId", "id", "ID"]) || "N/A",
+      findValue(raw, ["session_id", "sessionId", "SessionId", "id", "ID"]) ||
+        "N/A",
     ),
     user_email:
-      findValue(raw, ["user_email", "userEmail", "UserEmail", "email", "Email"]) ||
-      "Unknown",
+      findValue(raw, [
+        "user_email",
+        "userEmail",
+        "UserEmail",
+        "email",
+        "Email",
+      ]) || "Unknown",
     login_time:
-      findValue(raw, ["login_time", "loginTime", "LoginTime", "CreatedAt", "created_at", "startTime"]) ||
-      new Date().toISOString(),
+      findValue(raw, [
+        "login_time",
+        "loginTime",
+        "LoginTime",
+        "CreatedAt",
+        "created_at",
+        "startTime",
+      ]) || new Date().toISOString(),
     logout_time:
-      findValue(raw, ["logout_time", "logoutTime", "LogoutTime", "endTime", "EndTime", "completed_at", "EndDate"]) ||
-      null,
-    ip_address: findValue(raw, ["ip_address", "ipAddress", "IP", "ClientIp"]) || "N/A",
+      findValue(raw, [
+        "logout_time",
+        "logoutTime",
+        "LogoutTime",
+        "endTime",
+        "EndTime",
+        "completed_at",
+        "EndDate",
+      ]) || null,
+    ip_address:
+      findValue(raw, ["ip_address", "ipAddress", "IP", "ClientIp"]) || "N/A",
     device_info: safeJsonParse(
-      findValue(raw, ["device_info", "deviceInfo", "userAgent", "Device"]) || "N/A",
+      findValue(raw, ["device_info", "deviceInfo", "userAgent", "Device"]) ||
+        "N/A",
     ),
-    session_status: findValue(raw, ["session_status", "sessionStatus", "status"]) || "unknown",
-    activity_type: findValue(raw, ["activity_type", "activityType"]) || "System",
+    session_status:
+      findValue(raw, ["session_status", "sessionStatus", "status"]) ||
+      "unknown",
+    activity_type:
+      findValue(raw, ["activity_type", "activityType"]) || "System",
     activity_details: safeJsonParse(
-      findValue(raw, ["activity_details", "activityDetails", "details", "meta_data"]) || "No details",
+      findValue(raw, [
+        "activity_details",
+        "activityDetails",
+        "details",
+        "meta_data",
+      ]) || "No details",
     ),
-    resource_id: findValue(raw, ["resource_id", "resourceId", "ResourceId", "Resource_Id", "key", "Key"]) || "-",
-    resource_type: findValue(raw, ["resource_type", "resourceType", "ResourceType"]) || "-",
+    resource_id:
+      findValue(raw, [
+        "resource_id",
+        "resourceId",
+        "ResourceId",
+        "Resource_Id",
+        "key",
+        "Key",
+      ]) || "-",
+    resource_type:
+      findValue(raw, ["resource_type", "resourceType", "ResourceType"]) || "-",
     activityLog: activityLog,
-    lastActiveTime: findValue(raw, ["lastActiveTime", "LastActiveTime", "last_active_time"]) || null,
-    estimatedExpiryTime: findValue(raw, ["estimatedExpiryTime", "EstimatedExpiryTime", "estimated_expiry_time"]) || null,
-    sessionDurationMinutes: findValue(raw, ["session_duration_minutes", "sessionDurationMinutes", "SessionDurationMinutes"]) || null,
+    lastActiveTime:
+      findValue(raw, [
+        "lastActiveTime",
+        "LastActiveTime",
+        "last_active_time",
+      ]) || null,
+    estimatedExpiryTime:
+      findValue(raw, [
+        "estimatedExpiryTime",
+        "EstimatedExpiryTime",
+        "estimated_expiry_time",
+      ]) || null,
+    sessionDurationMinutes:
+      findValue(raw, [
+        "session_duration_minutes",
+        "sessionDurationMinutes",
+        "SessionDurationMinutes",
+      ]) || null,
     isActive: Boolean(isActive),
   };
 };
@@ -676,12 +863,14 @@ export function useDashboardSessions(
   enabled: boolean = true,
 ) {
   return useQuery({
-    queryKey: dashboardKeys.profile("dashboard-sessions-" + (userEmail || "all")),
+    queryKey: dashboardKeys.profile(
+      "dashboard-sessions-" + (userEmail || "all"),
+    ),
     queryFn: async () => {
       // Return empty array if no email
       if (!userEmail) return [];
 
-      const cacheKey = `timeline_${userEmail}`;
+      const cacheKey = idbKeys.sessions(userEmail);
 
       // 1. Try IDB first for instant load
       try {
@@ -693,7 +882,9 @@ export function useDashboardSessions(
             const flatData = flattenTimelineData(cached);
             const mappedData = flatData.map(normalizeDashboardSession);
             mappedData.sort(
-              (a, b) => new Date(b.login_time).getTime() - new Date(a.login_time).getTime(),
+              (a, b) =>
+                new Date(b.login_time).getTime() -
+                new Date(a.login_time).getTime(),
             );
             return mappedData;
           }
@@ -723,13 +914,182 @@ export function useDashboardSessions(
       const flatData = flattenTimelineData(response);
       const mappedData = flatData.map(normalizeDashboardSession);
       mappedData.sort(
-        (a, b) => new Date(b.login_time).getTime() - new Date(a.login_time).getTime(),
+        (a, b) =>
+          new Date(b.login_time).getTime() - new Date(a.login_time).getTime(),
       );
 
       return mappedData;
     },
     enabled,
-    staleTime: 60 * 1000, 
-    gcTime: 5 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
-} 
+}
+/**
+ * Hook to fetch billing details for AdminDashboard
+ * Ported from manual useEffect in AdminDashboard.tsx
+ */
+export function useBillingDetails(
+  userEmail: string,
+  isSuperAdmin: boolean,
+  enabled: boolean = true,
+) {
+  return useQuery({
+    queryKey: dashboardKeys.billingDetails(userEmail),
+    queryFn: async () => {
+      // 0. Demo Mode
+      if (isDemoMode()) {
+        return DEMO_BILLING_DETAILS;
+      }
+
+      const formatDateLocal = (dateStr: string | undefined) => {
+        if (!dateStr) return "N/A";
+        try {
+          return new Date(dateStr).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+        } catch {
+          return dateStr;
+        }
+      };
+
+      const apiUserRes = await apiClient.getUserByEmail(userEmail);
+      if (!apiUserRes.success || !apiUserRes.data) {
+        throw new Error("Failed to fetch user billing data");
+      }
+
+      const apiUser = apiUserRes.data;
+      let combinedBillingInfo: any = {};
+
+      const licenseDetailsJson = apiUser.license_details_json;
+      if (licenseDetailsJson && licenseDetailsJson !== "{}") {
+        try {
+          const parsed = JSON.parse(licenseDetailsJson);
+          if (parsed.plans && parsed.summary) {
+            combinedBillingInfo = {
+              activePlanTypes:
+                parsed.summary.activePlanTypes?.join(", ") || "N/A",
+              activePlanIds: parsed.summary.activePlanIds?.join(", ") || "N/A",
+              totalPurchases: parsed.summary.totalPurchases || 0,
+              totalLicenses: parsed.summary.totalLicensesAcrossAllPlans || 0,
+              availableLicenses: parsed.summary.totalAvailableLicenses || 0,
+              consumedLicenses: parsed.summary.totalConsumedLicenses || 0,
+              usedLicenses: parsed.summary.totalConsumedLicenses || 0,
+              userEmail: parsed.useremail || userEmail,
+              status: "Active",
+            };
+
+            if (parsed.plans.length > 0) {
+              const firstPlan = parsed.plans[0];
+              combinedBillingInfo.planType =
+                firstPlan.planType ||
+                firstPlan.plan_type ||
+                combinedBillingInfo.activePlanTypes;
+              combinedBillingInfo.totalLicenses =
+                firstPlan.totalLicenses ||
+                firstPlan.total_licenses ||
+                combinedBillingInfo.totalLicenses ||
+                0;
+              combinedBillingInfo.purchaseDate = formatDateLocal(
+                firstPlan.purchaseDate,
+              );
+              combinedBillingInfo.startDate = formatDateLocal(
+                firstPlan.startDate || firstPlan.purchaseDate,
+              );
+              combinedBillingInfo.validityYears =
+                firstPlan.validityYears || firstPlan.validity_years || "N/A";
+              combinedBillingInfo.expiryDate = formatDateLocal(
+                firstPlan.expiryDate,
+              );
+              combinedBillingInfo.billingCycle =
+                firstPlan.billingCycle || firstPlan.billing_cycle || "Annual";
+              combinedBillingInfo.amount =
+                firstPlan.amount || firstPlan.price || "N/A";
+              combinedBillingInfo.features = Array.isArray(firstPlan.features)
+                ? firstPlan.features.join(", ")
+                : firstPlan.features || "Standard Features";
+            }
+          } else {
+            combinedBillingInfo = {
+              activePlanTypes:
+                parsed.plan_type ||
+                parsed.planType ||
+                parsed.activePlanTypes ||
+                "Standard",
+              activePlanIds:
+                parsed.plan_id ||
+                parsed.planId ||
+                parsed.activePlanIds ||
+                "N/A",
+              totalPurchases:
+                parsed.total_purchases || parsed.totalPurchases || 1,
+              totalLicenses:
+                parsed.total_licenses ||
+                parsed.totalLicenses ||
+                parsed.licenses ||
+                parsed.totalLicenses ||
+                0,
+              availableLicenses:
+                parsed.available_licenses || parsed.availableLicenses || 0,
+              consumedLicenses:
+                parsed.consumed_licenses ||
+                parsed.consumedLicenses ||
+                parsed.usedLicenses ||
+                0,
+              usedLicenses:
+                parsed.used_licenses ||
+                parsed.usedLicenses ||
+                parsed.consumedLicenses ||
+                0,
+              validityYears:
+                parsed.validity_years || parsed.validityYears || "1",
+              purchaseDate: formatDateLocal(
+                parsed.purchase_date || parsed.purchaseDate,
+              ),
+              startDate: formatDateLocal(parsed.start_date || parsed.startDate),
+              expiryDate: formatDateLocal(
+                parsed.expiry_date || parsed.expiryDate,
+              ),
+              billingCycle:
+                parsed.billing_cycle || parsed.billingCycle || "Annual",
+              amount: parsed.amount || parsed.price || "N/A",
+              status: parsed.status || "Active",
+              userEmail: parsed.user_email || parsed.userEmail || userEmail,
+              features: Array.isArray(parsed.features)
+                ? parsed.features.join(", ")
+                : parsed.features || "Standard Features",
+            };
+          }
+        } catch (e) {
+          console.error("❌ Failed to parse license details:", e);
+        }
+      }
+
+      const paymentDetailsJson = apiUser.payment_details_json;
+      if (paymentDetailsJson && paymentDetailsJson !== "{}") {
+        try {
+          const paymentParsed = JSON.parse(paymentDetailsJson);
+          combinedBillingInfo = {
+            ...combinedBillingInfo,
+            ...paymentParsed,
+          };
+        } catch (e) {
+          console.error("❌ Failed to parse payment details:", e);
+        }
+      }
+
+      return combinedBillingInfo;
+    },
+    enabled: enabled && isSuperAdmin && !!userEmail,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+}

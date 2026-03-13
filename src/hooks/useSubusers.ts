@@ -217,8 +217,12 @@ export function useSubusers(
     enabled,
     // Retry only once on failure
     retry: 1,
-    // Consider data stale after 5 minutes
-    staleTime: 5 * 60 * 1000,
+    // Session-long cache
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 }
 
@@ -243,7 +247,11 @@ export function useSubuser(email: string, enabled: boolean = true) {
       return response.data
     },
     enabled: enabled && !!email,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 }
 

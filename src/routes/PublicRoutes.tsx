@@ -31,7 +31,10 @@ const About = lazy(() => import("../pages/About"));
 const PricingAndPlanPage = lazy(() => import("../pages/PricingAndPlanPage"));
 const DownloadPage = lazy(() => import("../pages/DownloadPage"));
 const DriveEraserPage = lazy(() => import("../pages/DriveEraserPage"));
+const DriveEraserDiagnosticPage = lazy(() => import("../pages/DriveEraserDiagnosticPage"));
 const FileEraserPage = lazy(() => import("../pages/FileEraserPage"));
+const HardwareDiagnosticsPage = lazy(() => import("../pages/HardwareDiagnosticsPage"));
+const HardDriveMonitorPage = lazy(() => import("../pages/HardDriveMonitorPage"));
 const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
 const OrderSuccessPage = lazy(() => import("../pages/OrderSuccessPage"));
 const FailurePage = lazy(() => import("../pages/FailurePage"));
@@ -60,6 +63,8 @@ const HealthcareServices = lazy(() => import("../pages/HealthcareServices"));
 const ITADSolution = lazy(() => import("../pages/ITADSolution"));
 const ApiTestPage = lazy(() => import("../pages/ApiTestPage"));
 const BlogPage = lazy(() => import("../components/blog/BlogPage"));
+const CloneGuidePage = lazy(() => import("../pages/CloneGuidePage"));
+
 
 export const PublicRoutes = () => (
   <Route element={<MainLayout />}>
@@ -93,7 +98,10 @@ export const PublicRoutes = () => (
     <Route path="pricing-and-plan" element={<PricingAndPlanPage />} />
     <Route path="download" element={<DownloadPage />} />
     <Route path="/products/drive-eraser" element={<DriveEraserPage />} />
+    <Route path="/products/drive-eraser-diagnostic" element={<DriveEraserDiagnosticPage />} />
     <Route path="/products/file-eraser" element={<FileEraserPage />} />
+    <Route path="/products/hardware-diagnostics" element={<HardwareDiagnosticsPage />} />
+    <Route path="/products/hard-drive-monitor" element={<HardDriveMonitorPage />} />
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="order-success" element={<OrderSuccessPage />} />
     <Route path="order-failure" element={<FailurePage />} />
@@ -122,5 +130,7 @@ export const PublicRoutes = () => (
     <Route path="itad-solution" element={<ITADSolution />} />
     <Route path="api-test" element={<ApiTestPage />} />
     <Route path="blog" element={<BlogPage />} />
+    <Route path="resources/clone-guide" element={<CloneGuidePage />} />
+
   </Route>
 );

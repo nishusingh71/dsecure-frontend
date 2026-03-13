@@ -12,10 +12,10 @@ export default function SecurityPage() {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage('security')} />
 
-      <div className="min-h-screen bg-white light:bg-slate-900 py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 xl:py-24 xxl:py-28">
+      <div className="min-h-screen bg-white light:bg-slate-900 py-6 xs:py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 xxl:py-18">
         <div className="max-w-6xl mx-auto px-4 xs:px-5 sm:px-6 md:px-8 lg:px-10 xl:px-12 xxl:px-16">
           {/* Header Section */}
-          <div className="text-center mb-8 xs:mb-10 sm:mb-12 md:mb-16 lg:mb-20 xl:mb-24 xxl:mb-28">
+          <div className="text-center mb-6 xs:mb-8 sm:mb-10 md:mb-12 lg:mb-14 xl:mb-16 xxl:mb-18">
             <h1 className="text-3xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl xxl:text-7xl font-bold text-slate-900 light:text-white mb-4 xs:mb-5 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12 xxl:mb-14">
               Security Practices
             </h1>

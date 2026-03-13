@@ -1,4 +1,4 @@
-﻿import React, { useState, memo, useEffect } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { ENV } from "../config/env";
 import { Helmet } from "react-helmet-async";
 import SEOHead from "@/components/SEOHead";
@@ -23,7 +23,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedCategory, setSelectedCategory] = useState("drive-eraser");
-  const [selectedLicenses, setSelectedLicenses] = useState("1");
+  const [selectedLicenses, setSelectedLicenses] = useState("100");
   const [selectedYears, setSelectedYears] = useState("1");
   const [selectedOS, setSelectedOS] = useState("Select");
   const [deliveryMethod, setDeliveryMethod] = useState("electronic");
@@ -32,6 +32,8 @@ const PricingAndPlanPage: React.FC = memo(() => {
   const [showSpecialPricingModal, setShowSpecialPricingModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("basic");
   const [isBuyNowLoading, setIsBuyNowLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("eraser"); // "eraser" or "diagnostics"
+  const [driveEraserVariant, setDriveEraserVariant] = useState("standard"); // "standard" or "diagnostics"
 
   // Reset loading state when component mounts (handles back navigation)
   useEffect(() => {
@@ -74,16 +76,34 @@ const PricingAndPlanPage: React.FC = memo(() => {
       }
     }
 
-    // Read product parameter from URL
     const productFromUrl = searchParams.get("product");
     if (productFromUrl) {
       setSelectedCategory(productFromUrl);
+      if (productFromUrl === "hardware-diagnostics") {
+        setSelectedLicenses("100");
+      }
     }
 
     // Read section parameter to expand File Eraser section if needed
     const sectionFromUrl = searchParams.get("section");
     if (sectionFromUrl === "file-eraser") {
       setSelectedCategory("file-eraser");
+      setActiveTab("eraser");
+    }
+
+    // Read variant parameter for Drive Eraser
+    const variantFromUrl = searchParams.get("variant");
+    if (variantFromUrl === "diagnostics") {
+      setDriveEraserVariant("diagnostics");
+    } else {
+      setDriveEraserVariant("standard");
+    }
+
+    // Set active tab based on selected category
+    if (productFromUrl === "hardware-diagnostics" || productFromUrl === "smart-diagnostic") {
+      setActiveTab("diagnostics");
+    } else {
+      setActiveTab("eraser");
     }
   }, [location.search]);
 
@@ -252,11 +272,29 @@ const PricingAndPlanPage: React.FC = memo(() => {
       subtitle: "Erase HDDs, SSDs in PCs, Mac & Servers",
     },
     {
+      id: "hardware-diagnostics",
+      name: "Hardware Diagnostics",
+      subtitle: "Test Device Hardware Health & Performance",
+    },
+    {
+      id: "smart-diagnostic",
+      name: "Smart Diagnostic",
+      subtitle: "Professional Hard Drive Health Monitoring",
+    },
+    {
       id: "file-eraser",
       name: "File Eraser",
       subtitle: "Erase Files, Folders & Volumes",
     },
   ];
+
+  // Tab categorization
+  const filteredCategories = categories.filter((cat) => {
+    if (activeTab === "eraser") {
+      return cat.id === "drive-eraser" || cat.id === "file-eraser";
+    }
+    return cat.id === "hardware-diagnostics" || cat.id === "smart-diagnostic";
+  });
 
   // Plans configuration with their features and pricing based on D-Secure feature matrix
   const planOptions = [
@@ -501,15 +539,25 @@ const PricingAndPlanPage: React.FC = memo(() => {
     const licenseCount = licenses === "custom" ? 0 : parseInt(licenses);
 
     if (category === "drive-eraser") {
-      // Drive Eraser is fixed $20 per license (one-time purchase)
-      return Math.round(20 * licenseCount * 100) / 100;
+      // Drive Eraser: $25 for standard, $30 for diagnostics
+      const pricePerLicense = driveEraserVariant === "diagnostics" ? 30 : 25;
+      return Math.round(pricePerLicense * licenseCount * 100) / 100;
     }
 
-    // File Eraser is fixed $40 per license per year
+    if (category === "hardware-diagnostics") {
+      // Hardware Diagnostics: $10 per license (one-time) - Start at 100 ($1000)
+      return Math.round(10 * licenseCount * 100) / 100;
+    }
+
+    if (category === "smart-diagnostic") {
+      // Smart Diagnostic: $20 per license per year
+      const yearCount = parseInt(years);
+      return Math.round(20 * licenseCount * yearCount * 100) / 100;
+    }
+
+    // File Eraser: $40 per license per year
     const basePrice = 40;
     const yearCount = parseInt(years);
-
-    // File Eraser is sold annually, so multiply by years
     const baseTotal =
       Math.round(basePrice * licenseCount * yearCount * 100) / 100;
     return baseTotal;
@@ -521,13 +569,43 @@ const PricingAndPlanPage: React.FC = memo(() => {
     if (!currentPlan) return [];
 
     if (category === "drive-eraser") {
-      return [
+      const baseFeatures = [
         "Complete Hard Drive & SSD Erasure",
         "Enterprise-Grade Security Standards",
         "Multi-Platform Device Support",
         "Compliance Reporting & Regulatory Documents",
         "Real-time Progress Monitoring",
         "Batch Processing Capabilities",
+      ];
+
+      if (driveEraserVariant === "diagnostics") {
+        return [
+          ...baseFeatures,
+          "Advanced Hardware Diagnostics",
+          "SMART Health Analysis",
+          "Automated Device Grading",
+        ];
+      }
+      return baseFeatures;
+    } else if (category === "hardware-diagnostics") {
+      return [
+        "PC, Laptops & Mac (Intel & Silicon M1-M4)",
+        "PXE Mass Diagnostics (up to 255 Machines)",
+        "10+ Automated Component Health Tests",
+        "12+ Manual Assessment & Interaction Tests",
+        "MDM Enrollment Detection (Mac)",
+        "Tamper-Proof Signed Reports (PDF)",
+        "Centralized Cloud Management Console",
+        "Customizable ISO Standardization",
+      ];
+    } else if (category === "smart-diagnostic") {
+      return [
+        "Real-time Hard Drive Health Watch",
+        "Monitor S.M.A.R.T. Status & Temperature",
+        "Scan Disk for Damaged/Bad Sectors",
+        "Create Sector-by-Sector Drive Clones",
+        "Predictive Drive Failure Alerts",
+        "Comprehensive SMART Attribute Reporting",
       ];
     } else if (category === "file-eraser") {
       return [
@@ -553,14 +631,19 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
   const productData = {
     "drive-eraser": {
-      title: "D-Secure Drive Eraser",
+      title:
+        driveEraserVariant === "diagnostics"
+          ? "Drive Eraser + Diagnostics"
+          : "D-Secure Drive Eraser",
       subtitle:
-        "Secure Data Erasure Software for HDD, SSD, PC, Laptop, Mac, Chromebook & Server",
+        driveEraserVariant === "diagnostics"
+          ? "Professional Data Erasure with Integrated Hardware Diagnostics & SMART Health Analysis."
+          : "Secure Data Erasure Software for HDD, SSD, PC, Laptop, Mac, Chromebook & Server. (Available for Intel x64 and x86)",
       image: getProductIcon("drive-eraser", 64),
       imageCategory: "drive-eraser",
       version: "V1.0.0.0 Enterprise",
-      basePrice: 20,
-      originalPrice: 40,
+      basePrice: driveEraserVariant === "diagnostics" ? 30 : 25,
+      originalPrice: driveEraserVariant === "diagnostics" ? 60 : 50,
       discountPercentage: "50% OFF",
       selectionLabel: "Number of Licenses:",
       selectionNote: "(Pay Per Use)",
@@ -580,13 +663,65 @@ const PricingAndPlanPage: React.FC = memo(() => {
     },
     "file-eraser": {
       title: "D-Secure File Eraser Professional",
-      subtitle: "Complete File, Folder & Application Trace Elimination",
+      subtitle: "Complete File, Folder & Application Trace Elimination. (Available for Windows)",
       image: getProductIcon("file-eraser", 64),
       imageCategory: "file-eraser",
       version: "Professional",
       basePrice: 40,
       originalPrice: 60,
       discountPercentage: "33% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: "(Pay Per License)",
+      options: [
+        "1",
+        "10",
+        "25",
+        "50",
+        "100",
+        "250",
+        "300",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "hardware-diagnostics": {
+      title: "D-Secure Hardware Diagnostics",
+      subtitle:
+        "Hardware Health Testing for Laptops, PCs, Desktops & Servers.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "hardware-diagnostics",
+      version: "V1.0.0.0",
+      basePrice: 10,
+      originalPrice: 20,
+      discountPercentage: "50% OFF",
+      selectionLabel: "Number of Licenses:",
+      selectionNote: "(Pay Per Use)",
+      options: [
+        "1",
+        "10",
+        "25",
+        "50",
+        "100",
+        "250",
+        "300",
+        "500",
+        "1000",
+        "custom",
+      ],
+      showDeliveryOptions: false,
+    },
+    "smart-diagnostic": {
+      title: "D-Secure Smart Diagnostic",
+      subtitle:
+        "Real-time Disk Health & Performance Monitoring.",
+      image: getProductIcon("drive-eraser", 64),
+      imageCategory: "smart-diagnostic",
+      version: "V1.0.0.0",
+      basePrice: 20,
+      originalPrice: 40,
+      discountPercentage: "50% OFF",
       selectionLabel: "Number of Licenses:",
       selectionNote: "(Pay Per License)",
       options: [
@@ -629,6 +764,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
       return `Drive Eraser - ${selectedLicenses} licenses (one-time purchase)`;
     }
 
+    if (selectedCategory === "hardware-diagnostics") {
+      return `Hardware Diagnostics - ${selectedLicenses} licenses (one-time purchase)`;
+    }
+
+    if (selectedCategory === "smart-diagnostic") {
+      return `Smart Diagnostic - ${selectedLicenses} licenses × ${selectedYears} year${parseInt(selectedYears) > 1 ? "s" : ""}`;
+    }
+
     // File Eraser plan-based subtitle
     let subtitle = `File Eraser Professional - ${selectedLicenses} licenses`;
     subtitle += ` × ${selectedYears} year${parseInt(selectedYears) > 1 ? "s" : ""}`;
@@ -642,6 +785,14 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
     if (selectedCategory === "drive-eraser") {
       return "Drive Eraser @ $20.00/license (one-time purchase)";
+    }
+
+    if (selectedCategory === "hardware-diagnostics") {
+      return "Hardware Diagnostic @ $10.00/license (one-time purchase)";
+    }
+
+    if (selectedCategory === "smart-diagnostic") {
+      return `Smart Diagnostic @ $20.00/license/year ${parseInt(selectedYears) > 1 ? `× ${selectedYears} years` : ""}`;
     }
 
     // File Eraser plan-based pricing
@@ -687,9 +838,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
     // 1. Prevent double clicks
     if (isBuyNowLoading) return;
 
-    // Prevent purchase for Drive Eraser
-    if (selectedCategory === "drive-eraser") return;
-
     setIsBuyNowLoading(true);
 
     // 2. Custom Quote logic (Same as before)
@@ -703,6 +851,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     const PRODUCT_IDS = {
       "drive-eraser": "pdt_0NVH5wJYMX70syW3ioj9R",
       "file-eraser": "pdt_0NVHHRwPSypqgPTs3kuSu",
+      "smart-diagnostic": "pdt_placeholder_smart_diagnostic",
     };
 
     const productId = PRODUCT_IDS[selectedCategory as keyof typeof PRODUCT_IDS];
@@ -718,6 +867,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
     const BASE_LINKS: Record<string, string> = {
       "drive-eraser": `${ENV.DRIVE_ERASER}`, // Yahan apna Drive Eraser ka link dalein
       "file-eraser": `${ENV.FILE_ERASER}`, // Yahan apna File Eraser ka link dalein
+      "smart-diagnostic": "https://checkout.dodopayments.com/buy/pdt_placeholder_smart_diagnostic?quantity=",
     };
 
     try {
@@ -748,6 +898,16 @@ const PricingAndPlanPage: React.FC = memo(() => {
       if (!baseLink) {
         showToast("Product link not found.", "error");
         setIsBuyNowLoading(false);
+        return;
+      }
+
+      // Handle Drive Eraser Diagnostics variant with a hardcoded session URL
+      if (
+        selectedCategory === "drive-eraser" &&
+        driveEraserVariant === "diagnostics"
+      ) {
+        window.location.href =
+          "https://checkout.dodopayments.com/buy/pdt_0NaKDbbTvncIVcoWRoVvZ?session=sess_sda39m73yW";
         return;
       }
 
@@ -828,6 +988,51 @@ const PricingAndPlanPage: React.FC = memo(() => {
         <div className="container mx-auto px-4 xs:px-6 sm:px-6 md:px-8 py-8 xs:py-10 sm:py-12 md:py-12 max-w-7xl">
           {/* Header */}
           <div className="text-center mb-12 xs:mb-14 sm:mb-16 md:mb-16">
+            {/* Tab Switcher (Sub-header position) */}
+            <div className="flex justify-center mb-8">
+              <div className="bg-white/80 backdrop-blur-sm p-1.5 rounded-2xl shadow-sm border border-emerald-100/50 flex gap-2 w-full max-w-lg">
+                <button
+                  onClick={() => {
+                    setActiveTab("eraser");
+                    setSelectedCategory("drive-eraser");
+                    navigate(`/pricing-and-plan?product=drive-eraser`, {
+                      replace: true,
+                    });
+                  }}
+                  className={`flex-1 py-2.5 px-6 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+                    activeTab === "eraser"
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-teal-200"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                  }`}
+                >
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full ${activeTab === "eraser" ? "bg-white animate-pulse" : "bg-gray-300"}`}
+                  ></div>
+                  Eraser
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveTab("diagnostics");
+                    setSelectedCategory("hardware-diagnostics");
+                    setSelectedLicenses("100"); // Reset to 100 for diagnostics
+                    navigate(`/pricing-and-plan?product=hardware-diagnostics`, {
+                      replace: true,
+                    });
+                  }}
+                  className={`flex-1 py-2.5 px-6 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+                    activeTab === "diagnostics"
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-lg shadow-teal-200"
+                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                  }`}
+                >
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full ${activeTab === "diagnostics" ? "bg-white animate-pulse" : "bg-gray-300"}`}
+                  ></div>
+                  D-Secure Diagnostic
+                </button>
+              </div>
+            </div>
+
             <div className="inline-flex items-center bg-gradient-to-r from-teal-500 to-teal-600 text-white px-4 xs:px-6 sm:px-6 py-2 rounded-full text-xs xs:text-sm sm:text-sm font-semibold mb-4 xs:mb-6 sm:mb-6 shadow-lg">
               SECURE • COMPLIANT
             </div>
@@ -848,11 +1053,17 @@ const PricingAndPlanPage: React.FC = memo(() => {
           {/* Category Selection */}
           <div className="flex justify-center mb-8 xs:mb-10 sm:mb-12 md:mb-12">
             <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-3 xs:gap-4 sm:gap-4 max-w-2xl w-full px-4 xs:px-0 sm:px-0">
-              {categories.map((category) => (
+              {filteredCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => {
                     setSelectedCategory(category.id);
+                    if (category.id === "hardware-diagnostics") {
+                      setSelectedLicenses("100");
+                      setActiveTab("diagnostics");
+                    } else if (category.id === "smart-diagnostic") {
+                      setActiveTab("diagnostics");
+                    }
                     // Update URL with product parameter
                     navigate(`/pricing-and-plan?product=${category.id}`, {
                       replace: true,
@@ -906,11 +1117,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
                           ? "Drive Eraser - Key Features:"
                           : `${getCurrentProduct().title} - Key Features:`}
                       </h4>
-                      {false && selectedCategory === "file-eraser" && (
-                        <p className="text-xs text-gray-600 mb-3 italic">
-                          {getCurrentPlan().description}
-                        </p>
-                      )}
                       {getProductFeatures(selectedCategory, selectedPlan).map(
                         (feature, index) => (
                           <div
@@ -936,40 +1142,98 @@ const PricingAndPlanPage: React.FC = memo(() => {
                       )}
                     </div>
 
+                    {/* Drive Eraser Variant Selection */}
+                    {selectedCategory === "drive-eraser" && (
+                      <div className="mb-6 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100">
+                        <label className="block text-xs xs:text-sm font-bold text-emerald-900 mb-3">
+                          Product Variant:
+                        </label>
+                        <div className="grid grid-cols-1 gap-2">
+                          <button
+                            onClick={() => setDriveEraserVariant("standard")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              driveEraserVariant === "standard"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${driveEraserVariant === "standard" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Standard Erasure
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                Pure data destruction only
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-emerald-600">
+                              $25.00
+                            </span>
+                            {driveEraserVariant === "standard" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+
+                          <button
+                            onClick={() => setDriveEraserVariant("diagnostics")}
+                            className={`flex items-center justify-between p-3 rounded-xl border-2 transition-all ${
+                              driveEraserVariant === "diagnostics"
+                                ? "bg-white border-emerald-500 shadow-md scale-[1.02]"
+                                : "bg-white/50 border-gray-200 hover:border-emerald-200"
+                            }`}
+                          >
+                            <div className="flex flex-col items-start gap-0.5">
+                              <span
+                                className={`text-sm font-bold ${driveEraserVariant === "diagnostics" ? "text-emerald-700" : "text-gray-700"}`}
+                              >
+                                Erasure + Diagnostics
+                              </span>
+                              <span className="text-[10px] text-gray-500">
+                                + Smart Health Analysis
+                              </span>
+                            </div>
+                            <span className="text-sm font-bold text-emerald-600">
+                              $30.00
+                            </span>
+                            {driveEraserVariant === "diagnostics" && (
+                              <div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <svg
+                                  className="w-2.5 h-2.5 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Selection Criteria */}
                     <div className="mb-4 xs:mb-6 sm:mb-6">
                       <h3 className="text-base xs:text-lg sm:text-lg font-semibold text-gray-900 mb-3 xs:mb-4 sm:mb-4">
                         Configure Your License
                       </h3>
-                      <div
-                        className={`grid gap-3 xs:gap-4 sm:gap-4 ${selectedCategory === "drive-eraser" ? "grid-cols-1" : "grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1"}`}
-                      >
-                        {/* Plan Selection - Only show for File Eraser */}
-                        {/* Plans hidden as per request */}
-                        {false && selectedCategory === "file-eraser" && (
-                          <div className="space-y-2">
-                            <label className="block text-xs xs:text-sm font-semibold text-gray-700">
-                              Select Plan:
-                            </label>
-                            <p className="text-xs text-gray-500">
-                              Features will update based on your selection
-                            </p>
-                            <select
-                              value={selectedPlan}
-                              onChange={(e) => setSelectedPlan(e.target.value)}
-                              className="w-full px-3 xs:px-4 py-2 xs:py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 text-sm xs:text-base font-medium shadow-sm hover:border-gray-400"
-                            >
-                              {planOptions.map((plan) => (
-                                <option key={plan.id} value={plan.id}>
-                                  {plan.basePrice > 0
-                                    ? `${plan.name} - $${plan.basePrice}/license`
-                                    : plan.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        )}
-
+                      <div className="grid grid-cols-1 gap-4">
                         {/* License Quantity */}
                         <div className="space-y-2">
                           <label className="block text-xs xs:text-sm font-semibold text-gray-700">
@@ -980,67 +1244,86 @@ const PricingAndPlanPage: React.FC = memo(() => {
                               {getCurrentProduct().selectionNote}
                             </p>
                           )}
-                          <select
-                            value={selectedLicenses}
-                            onChange={(e) =>
-                              setSelectedLicenses(e.target.value)
-                            }
-                            className="w-full px-3 xs:px-4 py-2 xs:py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 text-sm xs:text-base font-medium shadow-sm hover:border-gray-400"
-                          >
-                            {getCurrentProduct().options.map((option) => (
-                              <option key={option} value={option}>
-                                {option === "custom"
-                                  ? " Custom Quantity"
-                                  : `${option} licenses`}
-                              </option>
-                            ))}
-                          </select>
+                          {selectedCategory === "hardware-diagnostics" ? (
+                            /* Numeric Counter for Diagnostics */
+                            <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-2xl border-2 border-gray-200">
+                              <button
+                                onClick={() => {
+                                  const current =
+                                    parseInt(selectedLicenses) || 100;
+                                  if (current > 100) {
+                                    setSelectedLicenses(
+                                      (current - 100).toString(),
+                                    );
+                                  } else if (current === 100) {
+                                    setSelectedLicenses("1");
+                                  }
+                                }}
+                                className="w-12 h-12 rounded-xl bg-white border-2 border-gray-200 flex items-center justify-center text-2xl font-bold text-gray-600 hover:border-teal-500 hover:text-teal-600 transition-all shadow-sm active:scale-95"
+                              >
+                                −
+                              </button>
+                              <div className="flex-1 text-center">
+                                <div className="text-xl font-bold text-gray-900">
+                                  {selectedLicenses}
+                                </div>
+                                <div className="text-[10px] uppercase tracking-wider font-bold text-gray-400">
+                                  Licenses
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  const current =
+                                    parseInt(selectedLicenses) || 100;
+                                  if (current === 1) {
+                                    setSelectedLicenses("100");
+                                  } else {
+                                    setSelectedLicenses(
+                                      (current + 100).toString(),
+                                    );
+                                  }
+                                }}
+                                className="w-12 h-12 rounded-xl bg-white border-2 border-gray-200 flex items-center justify-center text-2xl font-bold text-gray-600 hover:border-teal-500 hover:text-teal-600 transition-all shadow-sm active:scale-95"
+                              >
+                                +
+                              </button>
+                            </div>
+                          ) : (
+                            /* Standard Dropdown for other products */
+                            <select
+                              value={selectedLicenses}
+                              onChange={(e) =>
+                                setSelectedLicenses(e.target.value)
+                              }
+                              className="w-full px-3 xs:px-4 py-2 xs:py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 text-sm xs:text-base font-medium shadow-sm hover:border-gray-400"
+                            >
+                              {getCurrentProduct().options.map((option) => (
+                                <option key={option} value={option}>
+                                  {option === "custom"
+                                    ? " Custom Quantity"
+                                    : `${option} licenses`}
+                                </option>
+                              ))}
+                            </select>
+                          )}
                         </div>
-
-                        {/* License Duration */}
-                        {/* <div className="space-y-2">
-                          <label className="block text-sm font-semibold text-gray-700">
-                            {selectedCategory === "file-eraser" ? "License Duration:" : "License Type:"}
-                          </label>
-                          <p className="text-xs text-gray-500">
-                            {selectedCategory === "file-eraser"
-                              ? "File Eraser licenses are sold annually ($40/year)"
-                              : "Drive Eraser is a one-time purchase"}
-                          </p>
-                          <select
-                            value={selectedCategory === "file-eraser" ? selectedYears : "1"}
-                            onChange={(e) => selectedCategory === "file-eraser" && setSelectedYears(e.target.value)}
-                            disabled={selectedCategory !== "file-eraser"}
-                            className={`w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white text-gray-900 font-medium shadow-sm hover:border-gray-400 ${selectedCategory !== "file-eraser" ? "bg-gray-100 cursor-not-allowed" : ""
-                              }`}
-                          >
-                            {selectedCategory === "file-eraser" ? (
-                              <>
-                                <option value="1">1 Year</option>
-                              </>
-                            ) : (
-                              <option value="1">One-time Purchase</option>
-                            )}
-                          </select>
-                        </div> */}
                       </div>
                     </div>
-
-                    {/* Special Pricing Section */}
-                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                      <div className="text-center">
-                        <h4 className="text-sm font-semibold text-blue-900 mb-2">
-                          Are You An MSP, Academic Institute or Non-Profit
-                          Organization?
-                        </h4>
-                        <button
-                          onClick={() => setShowSpecialPricingModal(true)}
-                          className="text-blue-600 hover:text-blue-700 font-medium underline transition-colors"
-                        >
-                          Contact Us For Special Pricing
-                        </button>
-                      </div>
-                    </div>
+                  </div>
+                </div>
+                {/* Special Pricing Section */}
+                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                  <div className="text-center">
+                    <h4 className="text-sm font-semibold text-blue-900 mb-2">
+                      Are You An MSP, Academic Institute or Non-Profit
+                      Organization?
+                    </h4>
+                    <button
+                      onClick={() => setShowSpecialPricingModal(true)}
+                      className="text-blue-600 hover:text-blue-700 font-medium underline transition-colors"
+                    >
+                      Contact Us For Special Pricing
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1082,48 +1365,28 @@ const PricingAndPlanPage: React.FC = memo(() => {
                   <div className="text-xs text-gray-500">{getPriceNote()}</div>
                 </div>
 
-                {/* Plan Summary - Only show for File Eraser */}
-                {/* Hidden for single-tier pricing */}
-                {false && selectedCategory === "file-eraser" && (
-                  <div className="mb-6 p-4 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl border border-teal-100">
-                    <h4 className="font-semibold text-gray-900 mb-2">
-                      {getCurrentPlan().name}
-                    </h4>
-                    <p className="text-xs text-gray-600 mb-2">
-                      {getCurrentPlan().description}
-                    </p>
-                    <div className="text-xs text-teal-600 font-medium">
-                      Category: {getCurrentPlan().category}
-                    </div>
-                  </div>
-                )}
-
                 {/* Action Button */}
                 <button
                   onClick={handleBuyNow}
-                  disabled={
-                    isBuyNowLoading || selectedCategory === "drive-eraser"
-                  }
+                  disabled={selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || selectedCategory === "drive-eraser" || isBuyNowLoading}
                   onMouseEnter={() => {
                     // ✅ Prefetch on hover for even faster response
                     if (
                       selectedLicenses !== "custom" &&
-                      selectedPlan !== "custom" &&
-                      selectedCategory !== "drive-eraser"
+                      selectedPlan !== "custom"
                     ) {
                       // Prefetch checkout domain connection
                       const img = new Image();
                       img.src = "https://checkout.dodopayments.com/favicon.ico";
                     }
                   }}
-                  className={`w-full font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2 
-                    ${
-                      selectedCategory === "drive-eraser"
-                        ? "bg-slate-400 cursor-not-allowed opacity-80 text-white shadow-none"
-                        : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
-                    }`}
+                  className={`w-full font-bold py-3 xs:py-4 px-4 xs:px-5 sm:px-6 rounded-xl mb-4 xs:mb-5 sm:mb-6 text-base xs:text-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2 ${
+                    selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || selectedCategory === "drive-eraser"
+                      ? "bg-gradient-to-r from-slate-300 to-slate-400 text-white cursor-not-allowed opacity-70"
+                      : "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:opacity-70 disabled:cursor-wait disabled:hover:scale-100"
+                  }`}
                 >
-                  {selectedCategory === "drive-eraser"
+                  {selectedCategory === "hardware-diagnostics" || selectedCategory === "smart-diagnostic" || selectedCategory === "drive-eraser"
                     ? "Coming Soon"
                     : selectedLicenses === "custom" || selectedPlan === "custom"
                       ? "Request Custom Quote"
@@ -1132,20 +1395,6 @@ const PricingAndPlanPage: React.FC = memo(() => {
 
                 {/* Trust Indicators */}
                 <div className="space-y-3 text-center">
-                  <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
-                    {/* <svg
-                      className="w-5 h-5 text-green-500"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg> */}
-                    {/* <span>30-day money-back guarantee</span> */}
-                  </div>
                   <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
                     <svg
                       className="w-5 h-5 text-green-500"
@@ -1179,85 +1428,85 @@ const PricingAndPlanPage: React.FC = memo(() => {
             </div>
           </div>
 
-          {/* OS Compatibility */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-            <div className="text-center">
-              <span className="text-blue-700 font-medium">
-                OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS |
-                regulated: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
-                Instant Delivery Available
-              </span>
-            </div>
-          </div>
-
-          {/* FAQ Section */}
-          <div className="bg-white rounded-2xl p-4 xs:p-6 sm:p-8 shadow-lg border border-gray-200">
-            <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4 xs:mb-6 sm:mb-8">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-4 max-w-4xl mx-auto">
-              {faqs.map((faq, index) => (
-                <div
-                  key={index}
-                  className="border border-gray-200 rounded-lg overflow-hidden"
-                >
-                  <button
-                    onClick={() =>
-                      setExpandedFaq(expandedFaq === index ? null : index)
-                    }
-                    className="w-full px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-left text-sm xs:text-base font-semibold text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center"
-                  >
-                    <span>{faq.question}</span>
-                    <svg
-                      className={`w-5 h-5 transform transition-transform ${
-                        expandedFaq === index ? "rotate-180" : ""
-                      }`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  {expandedFaq === index && (
-                    <div className="px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-sm xs:text-base text-gray-700 bg-white">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+        {/* OS Compatibility */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+          <div className="text-center">
+            <span className="text-blue-700 font-medium">
+              OS Compatibility: Windows, Mac, Linux, DOS & Chrome OS |
+              regulated: NIST SP 800-88, DoD 5220.22-M, Common Criteria |
+              Instant Delivery Available
+            </span>
           </div>
         </div>
 
-        {/* Toast Component */}
-        {toast && <Toast toast={toast} onClose={hideToast} />}
-
-        {/* Custom License Modal */}
-        {showCustomModal && (
-          <CustomLicenseModal
-            onSubmit={handleCustomLicenseSubmit}
-            onClose={() => setShowCustomModal(false)}
-            isOpen={showCustomModal}
-            productName={getCurrentProduct().title}
-            isLoading={isSubmitting}
-          />
-        )}
-
-        {/* Special Pricing Modal */}
-        {showSpecialPricingModal && (
-          <SpecialPricingModal
-            onSubmit={submitSpecialPricingForm}
-            onClose={() => setShowSpecialPricingModal(false)}
-            isOpen={showSpecialPricingModal}
-            productName={getCurrentProduct().title}
-            isLoading={isSpecialPricingSubmitting}
-          />
-        )}
+        {/* FAQ Section */}
+        <div className="bg-white rounded-2xl p-4 xs:p-6 sm:p-8 shadow-lg border border-gray-200">
+          <h2 className="text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4 xs:mb-6 sm:mb-8">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4 max-w-4xl mx-auto">
+            {faqs.map((faq, index) => (
+              <div
+                key={index}
+                className="border border-gray-200 rounded-lg overflow-hidden"
+              >
+                <button
+                  onClick={() =>
+                    setExpandedFaq(expandedFaq === index ? null : index)
+                  }
+                  className="w-full px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-left text-sm xs:text-base font-semibold text-gray-900 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center"
+                >
+                  <span>{faq.question}</span>
+                  <svg
+                    className={`w-5 h-5 transform transition-transform ${
+                      expandedFaq === index ? "rotate-180" : ""
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                {expandedFaq === index && (
+                  <div className="px-4 xs:px-5 sm:px-6 py-3 xs:py-4 text-sm xs:text-base text-gray-700 bg-white">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        </div>
       </div>
+
+      {/* Toast Component */}
+      {toast && <Toast toast={toast} onClose={hideToast} />}
+
+      {/* Custom License Modal */}
+      {showCustomModal && (
+        <CustomLicenseModal
+          onSubmit={handleCustomLicenseSubmit}
+          onClose={() => setShowCustomModal(false)}
+          isOpen={showCustomModal}
+          productName={getCurrentProduct().title}
+          isLoading={isSubmitting}
+        />
+      )}
+
+      {/* Special Pricing Modal */}
+      {showSpecialPricingModal && (
+        <SpecialPricingModal
+          onSubmit={submitSpecialPricingForm}
+          onClose={() => setShowSpecialPricingModal(false)}
+          isOpen={showSpecialPricingModal}
+          productName={getCurrentProduct().title}
+          isLoading={isSpecialPricingSubmitting}
+        />
+      )}
     </>
   );
 });

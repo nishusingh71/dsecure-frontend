@@ -3,7 +3,7 @@
 // ? Updated to use apiClient with automatic decryption interceptor
 // ?? PII-Safe Refactor: Email is never sent in URL parameters, only in Base64-encoded headers
 
-import { Subuser } from "@/types/models"
+import { Subuser, AdminReport } from "@/types/models"
 import { api } from "@/utils/apiClient"
 import { encodeEmail } from "@/utils/encodeEmail"
 import { ENV } from "@/config/env"
@@ -118,13 +118,7 @@ interface PerformanceMetrics {
   };
 }
 
-export interface AdminReport {
-  id: string;
-  date: string;
-  devices: number;
-  status: string;
-  department: string;
-}
+
 
 interface User {
   id: string;

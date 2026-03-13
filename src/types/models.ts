@@ -102,3 +102,26 @@ export interface license {
     expiry_days: number
     expiry_date: string
 }
+export interface AdminReport {
+    id: string
+    date: string
+    devices: number
+    status: string
+    department: string
+}
+
+export interface ExtendedAdminReport extends AdminReport {
+    hostname?: string
+    method?: string
+    reportType?: string
+    totalFiles?: number
+    erasedFiles?: number
+    failedFiles?: number
+    successFiles?: number
+    email?: string
+    user?: string
+    group?: string
+    groupName?: string
+    _raw?: any
+    _details?: any
+}

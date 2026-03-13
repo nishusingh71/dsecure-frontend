@@ -115,7 +115,8 @@ sitemap_urls.txt
 missing_urls.txt
 app-prashant.txt
 test_out.txt
-
+*.txt
+*.md
 # Configuration notes
 CONFIGURATION.txt
 
@@ -139,6 +140,52 @@ test-pages.html
 verify-jwt-token.html
 stats.html
 
+# Reports & Analysis
+API_Analysis_Report.*
+Bundle_Analysis_Report.*
+Logic_Bottlenecks_Report.*
+bundle_report.txt
+bundle_sizes.txt
+new_bundle_sizes.txt
+depcheck-results.txt
+AdminReportsLog.diff
+alldiff.txt
+diff.txt
+diff_reports.txt
+output.txt
+AdminReportsLog.diff
+
+# Execution & Tmp
+execution_test/
+tmp/
+.augment/
+.factory/
+.mcpjam/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+.adal/
+.junie/
+.kode/
+.neovate/
+.openhands/
+.continue/
+.kilocode/
+.kiro/
+.codebuddy/
+.commandcode/
+.cortex/
+.crush/
+.iflow/
+.mux/
+.pi/
+.goose/
+
 # Crawler results
 crawler_results.json
 
@@ -148,3 +195,23 @@ vite.config.backup.ts
 # Implementation/report docs
 GROUP_ADMIN_IMPLEMENTATION.md
 SEO_VERIFICATION_REPORT.md
+
+# AI Agent & Editor Tooling
+.agent/skills
+.roo/skills
+.trae/skills
+.vibe/skills
+.windsurf/skills
+.zencoder/skills
+.adal/skills
+.junie/skills
+.kode/skills
+.mcpjam/skills
+.neovate/skills
+.openhands/skills
+.qwen/skills
+.continue/skills
+.kilocode/skills
+.kiro/skills
+skills/
+skills-lock.json

@@ -114,11 +114,18 @@ export default defineConfig({
         // [MINIMALIST SAFER CHUNKING]
         manualChunks: (id) => {
           if (id.includes("node_modules")) {
-            // ONLY isolate the truly massive standalone libraries.
-            // DO NOT split React, Lucide, Framer, or anything else framework-related.
+            // React core — rarely changes, alag cache hona chahiye
+            if (
+              id.includes("react/") ||
+              id.includes("react-dom") ||
+              id.includes("react-router") ||
+              id.includes("react-helmet")
+            )
+              return "vendor-react";
 
-            // 1. Heavy Utilities & Data
-            if (id.includes("exceljs")) return "vendor-exceljs";
+            // Heavy Utilities & Data
+            if (id.includes("exceljs") || id.includes("file-saver"))
+              return "vendor-exceljs";
             if (id.includes("jspdf") || id.includes("jspdf-autotable"))
               return "vendor-jspdf";
             if (id.includes("react-pdf") || id.includes("pdfjs-dist"))
@@ -126,29 +133,14 @@ export default defineConfig({
             if (id.includes("jszip") || id.includes("pako"))
               return "vendor-zip";
 
-            // 2. Visualization & Icons
+            // Visualization
             if (id.includes("recharts") || id.includes("d3"))
               return "vendor-viz";
-            if (id.includes("lucide-react")) return "vendor-icons";
             if (id.includes("leaflet")) return "vendor-maps";
 
-            // 3. UI Frameworks
-            if (id.includes("framer-motion")) return "vendor-animation";
-            if (id.includes("@radix-ui")) return "vendor-ui-radix";
-
-            // 4. Core Infrastructure
-            if (id.includes("@tanstack/react-query")) return "vendor-query";
-            if (id.includes("cloudinary")) return "vendor-cloudinary";
-            if (
-              id.includes("axios") ||
-              id.includes("i18next") ||
-              id.includes("react-router-dom") ||
-              id.includes("react-helmet-async")
-            ) {
-              return "vendor-core";
-            }
-
-            return "vendor";
+            // We do NOT return "vendor" or "vendor-core" here as a catch-all.
+            // This lets Vite/Rollup intelligently split the remaining dependencies
+            // alongside the route components that actually use them, reducing upfront load.
           }
         },
 

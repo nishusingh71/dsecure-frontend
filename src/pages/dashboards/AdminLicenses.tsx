@@ -1,21 +1,22 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { useNotification } from "@/contexts/NotificationContext";
 import { isDemoMode } from "@/data/demoData";
 import { indexedDBService } from "@/services/indexedDBService";
+import { idbKeys } from "@/services/idbKeys";
 import {
   SkeletonStats,
   SkeletonChart,
   SkeletonTable,
 } from "../../components/Skeleton";
-import ExcelJS from "exceljs";
-import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
+// ExcelJS, jsPDF, autoTable — dynamic import karte hain (bundle optimization)
+// import ExcelJS from "exceljs";
+// import { jsPDF } from "jspdf";
+// import autoTable from "jspdf-autotable";
 import {
   PieChart,
   Pie,
@@ -195,12 +196,8 @@ export default function AdminLicenses() {
     countIsOne: false,
   });
 
-  // Fetch data on component mount
-  useEffect(() => {
-    fetchLicenseData();
-  }, []);
 
-  const fetchLicenseData = async () => {
+  const fetchLicenseData = useCallback(async (forceRefresh = false) => {
     // Skip API calls for demo mode - use dummy data
     if (isDemo) {
       setLoading(false);
@@ -298,115 +295,57 @@ export default function AdminLicenses() {
     setLoading(true);
     setError(null);
 
-    // ✅ Cache Versioning (v2): Force refresh to apply new visibility filters
-    const cacheKey = `licenses_v2_${currentUserEmail}`;
+    const cacheKey = idbKeys.licenses(currentUserEmail);
 
     try {
       // 1. Try to load from cache first for instant UI response
-      try {
-        const cached = await indexedDBService.get("licenses", cacheKey);
-        if (cached && cached.list && cached.stats && cached.details) {
-          // console.log("✅ Loaded licenses from IndexedDB");
-          setLicenses(cached.stats);
-          setLicenseList(cached.list);
-          setLicenseDetails(cached.details);
-          setLoading(false);
-          // ⚠️ RETURN EARLY: Stop background refresh if we have valid cache
-          // This ensures no loading flashes and reduces server load
-          // Only fetch fresh if cache is missing
-          return;
+      if (!forceRefresh) {
+        try {
+          const cached = await indexedDBService.get("licenses", cacheKey);
+          if (cached && cached.list && cached.stats && cached.details) {
+            setLicenses(cached.stats);
+            setLicenseList(cached.list);
+            setLicenseDetails(cached.details);
+            setLoading(false);
+            
+            // Background refresh logic
+            const cacheAge = Date.now() - (cached.timestamp || 0);
+            if (cacheAge < 1000 * 60 * 5) { // 5 minutes fresh
+               return; 
+            }
+          }
+        } catch (err) {
+          console.warn("⚠️ IDB Read Failed", err);
         }
-      } catch (err) {
-        console.warn("⚠️ IDB Read Failed", err);
       }
 
-      // Fetch all data in parallel using enhancedApiClient
-      // enhanceApiClient.get returns Promise<ApiResponse<T>> where data is in response.data
-      const [statsRes, listRes, distributionRes] = await Promise.all([
-        apiClient.get<LicenseStats>("/api/License/stats"),
+      // 2. Fetch fresh data
+      const [listRes] = await Promise.all([
         apiClient.get<any>("/api/License/admin/all"),
-        apiClient.get<any>("/api/License/distribution"),
       ]);
 
-      // console.log("API Responses:", { statsRes, listRes, distributionRes }); // Debugging data fields
-
-      // Update license stats
-      if (statsRes.success && statsRes.data) {
-        // ❌ Prevent global stats from showing up initially (User Request)
-        // Global stats are ignored in favor of filtered list stats below
-        /*
-        setLicenses({
-          total: statsRes.data.total || 0,
-          active: statsRes.data.active || 0,
-          inactive: statsRes.data.inactive || 0,
-          expired: statsRes.data.expired || 0,
-          revoked: statsRes.data.revoked || 0,
-        });
-        */
-      }
-
-      // Update license list
       if (listRes.success && listRes.data) {
         const rawList = Array.isArray(listRes.data)
           ? listRes.data
           : listRes.data.licenses || [];
-        // console.log("Sample Raw License:", rawList[0]); // Debugging
 
         // Robust mapping to ensure all fields are present
         const mappedList = rawList.map((item: any) => ({
           ...item,
-          license_id: item.license_id || item.id || item._id, // Fallback for ID
+          license_id: item.license_id || item.id || item._id, 
           license_key: item.license_key || item.key,
           user_email: item.user_email || item.email,
-          license_type:
-            item.edition || item.license_type || item.type || "Standard", // Use edition as requested
-          status:
-            item.status?.charAt(0).toUpperCase() +
-              item.status?.slice(1).toLowerCase() || "Active",
+          license_type: item.edition || item.license_type || item.type || "Standard", 
+          status: item.status?.charAt(0).toUpperCase() + item.status?.slice(1).toLowerCase() || "Active",
           created_at: item.created_at || item.createdAt,
-          expires_at: item.expires_at || item.expiresAt || item.expiry_date, // Fallback for Expires
+          expires_at: item.expires_at || item.expiresAt || item.expiry_date, 
           machine_count: item.machine_count || item.machineCount || 0,
         }));
 
-        // ✅ RBAC FILTERING: Apply role-based filtering BEFORE setting state
-        // let filteredList = mappedList;
-
-        // SubUser: Only see own licenses
-        // if (isSubUser) {
-        //   filteredList = mappedList.filter(
-        //     (license: License) => license.user_email === currentUserEmail,
-        //   );
-        //   // console.log(`🔒 SubUser Filter: ${mappedList.length} → ${filteredList.length} licenses`);
-        // }
-        // GroupAdmin: Filter by groupId if available (check user_email belongs to same group)
-        // else if (isGroupAdmin && currentUserGroupId) {
-        //   // Note: Backend should handle this via WHERE clause
-        //   // Frontend filtering as additional safety layer
-        //   filteredList = mappedList.filter((license: License) => {
-        //     // Check if license user belongs to same group
-        //     const licenseGroupId =
-        //       (license as any).group_id || (license as any).groupId;
-        //     return (
-        //       licenseGroupId === currentUserGroupId ||
-        //       license.user_email === currentUserEmail
-        //     );
-        //   });
-        //   // console.log(`🔒 GroupAdmin Filter: ${mappedList.length} → ${filteredList.length} licenses`);
-        // }
-        // SuperAdmin: No filtering - sees everything
-
-        // ✅ User Request: Show licenses for current user AND their subusers
-        let filteredList: License[] = [];
+        // Allowed Emails logic
         let allowedEmails = [currentUserEmail];
-
         try {
-          // Fetch subusers for the current user
-          // We can't await inside this map function easily without refactoring the whole loadData to be more robust
-          // But loadData IS async.
-
-          // NOTE: We need to fetch subusers. enhancedApiClient has `getAllSubusersWithFallback`
-          const subusersRes =
-            await apiClient.getAllSubusersWithFallback(currentUserEmail);
+          const subusersRes = await apiClient.getAllSubusersWithFallback(currentUserEmail);
           if (subusersRes.success && subusersRes.data) {
             const subuserEmails = subusersRes.data
               .map((s: any) => s.subuser_email || s.email)
@@ -417,44 +356,28 @@ export default function AdminLicenses() {
           console.error("Failed to fetch subusers for filter", e);
         }
 
-        // Filter licenses where user_email is either current user or one of their subusers
-        // Check both exact match and case-insensitive match just in case
-        filteredList = mappedList.filter((license: License) =>
+        const filteredList = mappedList.filter((license: License) =>
           allowedEmails.some(
-            (email) =>
-              email.toLowerCase() === (license.user_email || "").toLowerCase(),
+            (email) => email.toLowerCase() === (license.user_email || "").toLowerCase(),
           ),
         );
 
         setLicenseList(filteredList);
 
-        // ✅ RE-CALCULATE Stats based on filtered list (Ignore global statsRes)
-        // Status matching ko case-insensitive banaya taaki "EXPIRED" ya "expired" dono count ho sakein
+        // RE-CALCULATE Stats
         const newStats = {
           total: filteredList.length,
-          active: filteredList.filter(
-            (l: License) => (l.status || "").trim().toLowerCase() === "active",
-          ).length,
+          active: filteredList.filter((l: License) => (l.status || "").toLowerCase() === "active").length,
           inactive: filteredList.filter((l: License) => {
-            const s = (l.status || "").trim().toLowerCase();
+            const s = (l.status || "").toLowerCase();
             return s === "inactive" || s === "in_use";
           }).length,
-          expired: filteredList.filter(
-            (l: License) => (l.status || "").trim().toLowerCase() === "expired",
-          ).length,
-          revoked: filteredList.filter(
-            (l: License) => (l.status || "").trim().toLowerCase() === "revoked",
-          ).length,
+          expired: filteredList.filter((l: License) => (l.status || "").toLowerCase() === "expired").length,
+          revoked: filteredList.filter((l: License) => (l.status || "").toLowerCase() === "revoked").length,
         };
         setLicenses(newStats);
 
-        // ✅ Count IN_USE licenses and add to inactive count (if not already counted above)
-        // Note: The logic above already includes IN_USE in inactive, so we might not need extra logic
-        // But let's keep the exact logic consistent if there was special handling before.
-        // The previous logic was: inactive = prev.inactive + inUseCount.
-        // But since we are rebuilding stats from scratch, we can just classify properly.
-
-        // ✅ Calculate distribution from license list as fallback
+        // Distribution Calculation
         const typeCountMap: Record<string, number> = {};
         filteredList.forEach((license: License) => {
           const type = license.license_type || "Unknown";
@@ -462,77 +385,47 @@ export default function AdminLicenses() {
         });
 
         const totalCount = filteredList.length;
+        const colorPalette = ["emerald", "blue", "purple", "orange", "indigo", "slate"];
         const colorMap: Record<string, string> = {
-          Enterprise: "emerald",
-          ENTERPRISE: "emerald",
-          Professional: "blue",
-          PRO: "blue",
-          Standard: "purple",
-          Trial: "orange",
-          Basic: "slate",
-          Premium: "indigo",
+          Enterprise: "emerald", ENTERPRISE: "emerald",
+          Professional: "blue", PRO: "blue",
+          Standard: "purple", Trial: "orange",
         };
-        const colorPalette = [
-          "emerald",
-          "blue",
-          "purple",
-          "orange",
-          "indigo",
-          "slate",
-        ];
 
-        const calculatedDistribution = Object.entries(typeCountMap).map(
-          ([type, count], index) => ({
-            id: index + 1,
-            type,
-            count,
-            percentage:
-              totalCount > 0 ? Math.round((count / totalCount) * 100) : 0,
-            color:
-              colorMap[type] ||
-              colorMap[type?.toUpperCase()] ||
-              colorPalette[index % colorPalette.length],
-          }),
-        );
+        const calculatedDistribution = Object.entries(typeCountMap).map(([type, count], index) => ({
+          id: index + 1,
+          type,
+          count,
+          percentage: totalCount > 0 ? Math.round((count / totalCount) * 100) : 0,
+          color: colorMap[type] || colorMap[type?.toUpperCase()] || colorPalette[index % colorPalette.length],
+        }));
 
-        // Use calculated distribution as primary source
-        if (calculatedDistribution.length > 0) {
-          setLicenseDetails(calculatedDistribution);
-        } else {
-          setLicenseDetails([]); // fallback to empty if no licenses
-        }
+        setLicenseDetails(calculatedDistribution);
 
-        // ✅ Update Cache
+        // Update Cache
         try {
           await indexedDBService.put("licenses", cacheKey, {
             stats: newStats,
             list: filteredList,
-            details:
-              calculatedDistribution.length > 0 ? calculatedDistribution : [],
+            details: calculatedDistribution,
             timestamp: Date.now(),
           });
         } catch (err) {
           console.warn("⚠️ IDB Write Failed", err);
         }
       }
-
-      // ❌ User Request: IGNORE global DB distribution. Only use filtered list distribution.
-      // (Global distribution logic removed to ensure only filtered data is used)
     } catch (err: any) {
       console.error("Error fetching license data:", err);
       setError(err.message || "Failed to fetch license data");
-
-      // Fallback to default data if API fails
-      setLicenseDetails([
-        { type: "Enterprise", count: 0, percentage: 0, color: "emerald" },
-        { type: "Professional", count: 0, percentage: 0, color: "blue" },
-        { type: "Standard", count: 0, percentage: 0, color: "purple" },
-        { type: "Trial", count: 0, percentage: 0, color: "orange" },
-      ]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [isDemo, currentUserEmail]);
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchLicenseData();
+  }, [fetchLicenseData]);
 
   // Export to Excel - Try backend API first, fallback to client-side
   const handleExportExcel = async () => {
@@ -598,7 +491,9 @@ export default function AdminLicenses() {
       }
 
       try {
-        // Create workbook and worksheet
+        // Dynamic import — sirf jab actually zaroorat ho tabhi load hoga (914kb saved)
+        const ExcelJS = (await import("exceljs")).default;
+        const { saveAs } = await import("file-saver");
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet("Licenses");
 
@@ -709,6 +604,9 @@ export default function AdminLicenses() {
       }
 
       try {
+        // Dynamic import — sirf jab actually zaroorat ho tabhi load hoga (385kb saved)
+        const { jsPDF } = await import("jspdf");
+        const { default: autoTable } = await import("jspdf-autotable");
         const doc = new jsPDF();
 
         doc.setFontSize(20);
@@ -777,26 +675,45 @@ export default function AdminLicenses() {
     }
   };
 
-  const filteredLicenses = licenseList.filter((license) => {
-    const matchesSearch =
-      (license.license_key?.toLowerCase() || "").includes(
-        searchQuery.toLowerCase(),
-      ) ||
-      (license.user_email?.toLowerCase() || "").includes(
-        searchQuery.toLowerCase(),
-      );
-    // ✅ Treat IN_USE as Inactive for filtering
-    const licenseStatus = license.status?.toLowerCase();
-    const matchesStatus =
-      statusFilter === "all" ||
-      licenseStatus === statusFilter.toLowerCase() ||
-      (statusFilter === "inactive" && licenseStatus === "in_use");
-    const matchesType =
-      typeFilter === "all" ||
-      license.license_type?.toLowerCase() === typeFilter.toLowerCase();
+  // ✅ LOCAL FILTERING: Use useMemo to filter locally without API calls
+  const filteredLicenses = useMemo(() => {
+    return licenseList.filter((license) => {
+      const matchesSearch =
+        (license.license_key?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+        (license.user_email?.toLowerCase() || "").includes(searchQuery.toLowerCase());
+        
+      const licenseStatus = (license.status || "").toLowerCase();
+      const matchesStatus =
+        statusFilter === "all" ||
+        licenseStatus === statusFilter.toLowerCase() ||
+        (statusFilter === "inactive" && licenseStatus === "in_use");
+        
+      const matchesType =
+        typeFilter === "all" ||
+        license.license_type?.toLowerCase() === typeFilter.toLowerCase();
 
-    return matchesSearch && matchesStatus && matchesType;
-  });
+      return matchesSearch && matchesStatus && matchesType;
+    });
+  }, [licenseList, searchQuery, statusFilter, typeFilter]);
+
+  // ✅ Fallback: Filtered list empty hone pe API refresh (Live Mode Only)
+  const lastFallbackRef = useRef<number>(0);
+  useEffect(() => {
+    if (isDemo || loading || licenseList.length === 0) return;
+
+    // Check if any significant filter is active
+    const hasActiveFilters = searchQuery.trim() !== "" || statusFilter !== "all" || typeFilter !== "all";
+
+    if (hasActiveFilters && filteredLicenses.length === 0) {
+      const now = Date.now();
+      // Throttle: Max 1 fallback refresh per 30 seconds to avoid API spamming
+      if (now - lastFallbackRef.current > 30000) {
+        lastFallbackRef.current = now;
+        console.log("🕵️ Filtering yielded 0 licenses with active filters. Triggering live fallback API refresh...");
+        fetchLicenseData(true);
+      }
+    }
+  }, [filteredLicenses.length, searchQuery, statusFilter, typeFilter, loading, licenseList.length, isDemo, fetchLicenseData]);
 
   // Get unique license types for filter
   const uniqueLicenseTypes = Array.from(
@@ -883,13 +800,13 @@ export default function AdminLicenses() {
         try {
           await indexedDBService.delete(
             "licenses",
-            `licenses_v2_${currentUserEmail}`,
+            idbKeys.licenses(currentUserEmail),
           );
         } catch (e) {
           // console.warn("Failed to clear cache", e);
         }
 
-        await fetchLicenseData();
+        await fetchLicenseData(true); // Force refresh after success
         setSelectedLicenses(new Set());
         // alert('Licenses revoked successfully');
       } else {
@@ -900,7 +817,7 @@ export default function AdminLicenses() {
       }
     } catch (err: any) {
       // console.error("Revoke failed:", err);
-      await fetchLicenseData();
+      await fetchLicenseData(true); // Force refresh after error
       // alert(err.message || 'Failed to revoke licenses');
     } finally {
       setLoading(false);
@@ -1043,7 +960,7 @@ export default function AdminLicenses() {
             <p className="font-medium">Error loading data</p>
             <p className="text-sm mt-1">{error}</p>
             <button
-              onClick={fetchLicenseData}
+              onClick={() => fetchLicenseData(true)}
               className="mt-2 text-sm font-medium text-red-600 hover:text-red-800"
             >
               Try again

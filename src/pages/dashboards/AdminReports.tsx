@@ -1,27 +1,31 @@
 import { ENV } from "@/config/env";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
-import { useMemo, useState, useRef, useCallback } from "react";
+import { useMemo, useState, useRef, useCallback, useEffect } from "react";
+// ✅ AbortController ref — stale API requests cancel karne ke liye
+let abortControllerRef: AbortController | null = null;
 import React from "react";
 import { exportToCsv, openPrintView } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
 import { useAuth } from "@/auth/AuthContext";
 
-import { AdminDashboardAPI, AdminReport } from "@/services/adminDashboardAPI";
+import { AdminDashboardAPI } from "@/services/adminDashboardAPI";
+import { AdminReport } from "@/types/models";
 import { useUserMachines } from "@/hooks/useUserMachines";
 import { useGroups } from "@/hooks/useDashboardData";
-import { useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { useNavigate } from "react-router-dom";
 import { isDemoMode, DEMO_AUDIT_REPORTS, DEMO_SUBUSERS } from "@/data/demoData";
 import { useSubusers } from "@/hooks/useSubusers";
 import { indexedDBService } from "@/services/indexedDBService";
+import { idbKeys } from "@/services/idbKeys";
 import { Document, Page, pdfjs } from "react-pdf";
 
 // Extended AdminReport interface to include raw data
 interface ExtendedAdminReport extends AdminReport {
+  hostname: string;
   method?: string;
   reportType?: string;
   totalFiles?: number;
@@ -30,8 +34,9 @@ interface ExtendedAdminReport extends AdminReport {
   successFiles?: number;
   email?: string;
   user?: string;
-  group?: string;
-  groupName?: string;
+  user_email?: string; // Add this for easier filtering
+  groupId?: string | number;
+  groupName?: string; // Added for group filtering
   _raw?: any;
   _details?: any;
 }
@@ -39,6 +44,7 @@ interface ExtendedAdminReport extends AdminReport {
 export default function AdminReports() {
   const { showSuccess, showError, showWarning, showInfo } = useNotification();
   const { user } = useAuth();
+
   const [query, setQuery] = useState("");
   const [searchInputValue, setSearchInputValue] = useState("");
 
@@ -255,9 +261,8 @@ export default function AdminReports() {
     }
 
     const jwtUser = authService.getUserFromToken();
-    return (
-      storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || ""
-    );
+    const email = storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || "";
+    return email.toLowerCase();
   };
 
   const currentUserEmail = getUserEmail();
@@ -1289,26 +1294,38 @@ export default function AdminReports() {
   //   }
   // };
 
-  // Load reports data on component mount and when filters change
-  useEffect(() => {
-    loadReportsData();
-  }, [
-    subuserFilter,
-    query,
-    statusFilter,
-    fromDate,
-    toDate,
-    reportTypeFilter,
-    groupFilter,
-  ]);
+  // ✅ OPTIMIZED: Debounced useEffect — 300ms wait taaki rapid filter changes pe barbaar API call na ho
+  // Pehle har filter change pe turant API call hoti thi, ab 300ms ka buffer hai
+  const filtersRef = useRef({ subuserFilter, query, statusFilter, fromDate, toDate, reportTypeFilter, groupFilter });
+  filtersRef.current = { subuserFilter, query, statusFilter, fromDate, toDate, reportTypeFilter, groupFilter };
 
-  const loadReportsData = async () => {
+  // ✅ Load initial data once on mount and whenever subusers load
+  useEffect(() => {
+    // If subusers are now available but were not when we first loaded, trigger a refetch
+    loadReportsData(false);
+  }, [subusersData.length]);
+  const loadReportsData = async (forceRefetch = false) => {
+    // ✅ If data already exists and not forcing refetch, and we have subuser reports if applicable, skip
+    // We only skip if allRows.length > 0 AND (we have no subusers OR we already fetched some reports that look like subuser reports)
+    const hasSubuserReports = allRows.some(r => r.user_email?.toLowerCase() !== currentUserEmail.toLowerCase());
+    
+    if (!forceRefetch && allRows.length > 0) {
+      if (subusersData.length === 0 || hasSubuserReports) {
+        return;
+      }
+    }
+
+    // ✅ Purani pending request cancel karo
+    if (abortControllerRef) {
+      abortControllerRef.abort();
+    }
+    abortControllerRef = new AbortController();
+    const currentAbort = abortControllerRef;
+
     setLoading(true);
 
-    // 🎮 Demo Mode Check - Show static data only
+    // 🎮 Demo Mode Check - Static Data Only
     if (isDemoMode()) {
-      // console.log('🎮 Demo Mode Active - Using static audit reports data')
-      // Map DEMO_AUDIT_REPORTS to AdminReport format
       let demoReports = DEMO_AUDIT_REPORTS.map((report) => ({
         id: report.report_id,
         report_id: report.report_id,
@@ -1321,371 +1338,267 @@ export default function AdminReports() {
         verification_status: report.verification_status,
         certificate_url: "",
         user_email: report.user_email,
-        status:
-          report.verification_status === "Verified" ? "completed" : "pending",
+        status: report.verification_status === "Verified" ? "completed" : "pending",
         method: report.erasure_method,
         _raw: report,
         _details: report,
       }));
-
-      // Apply subuser filter in demo mode
-      if (subuserFilter && subuserFilter !== "all") {
-        demoReports = demoReports.filter(
-          (r: any) => r.user_email === subuserFilter,
-        );
-      }
 
       setAllRows(demoReports as any);
       setLoading(false);
       return;
     }
 
-    // ✅ Generate cache key based on user email and filters
-    // PRIORITY: Get user email early for reliable scoping
     const userEmail = getUserEmail();
-
     if (!userEmail) {
-      console.error("❌ No user email found");
-      showError(
-        "Authentication Error",
-        "No user email found. Please login again.",
-      );
-      setAllRows([]);
       setLoading(false);
       return;
     }
 
-    // Determine target email for cache scoping
-    let targetEmail = userEmail;
-    if (subuserFilter && subuserFilter !== "all") {
-      targetEmail = subuserFilter;
-    }
-
-    const cacheKey = `reports_${JSON.stringify({
-      email: targetEmail, // ✅ Critical: Email is now part of the initial check key
-      subuser: subuserFilter,
-      query,
-      status: statusFilter,
-      from: fromDate,
-      to: toDate,
-      type: reportTypeFilter,
-      group: groupFilter,
-    })}`;
-
-    // ✅ Check IndexedDB cache first for instant display
-    try {
-      const cached = await indexedDBService.get("audit_reports", cacheKey);
-      if (cached && Array.isArray(cached) && cached.length > 0) {
-        console.log("⚡ Displaying cached reports from IndexedDB:", cacheKey);
-        setAllRows(cached);
-        setLoading(false);
-        // ⚠️ RETURN EARLY to prevent API call if cache hits
-        return;
-      }
-    } catch (error) {
-      console.warn("⚠️ Error reading from IndexedDB:", error);
-    }
+    const cacheKey = idbKeys.auditReports(currentUserEmail);
+    let uniqueReports: any[] = [];
+    let isDataLoadedFromCache = false;
 
     try {
-      // ✅ Build filters object for new API endpoint
-      const filters: any = {
-        userEmail: targetEmail,
-      };
-
-      // Apply all active filters
-      if (query) filters.search = query;
-      if (statusFilter) filters.status = statusFilter;
-      if (fromDate) filters.dateFrom = fromDate;
-      if (toDate) filters.dateTo = toDate;
-      if (reportTypeFilter) filters.reportType = reportTypeFilter;
-      if (groupFilter) filters.groupName = groupFilter;
-
-      console.log("📋 Fetching filtered reports with:", filters);
-
-      // ✅ Use new filtered endpoint (single API call instead of multiple)
-      const response = await apiClient.getFilteredAuditReports(filters);
-      console.log("📋 Respone of api filtered reports:", response.data);
-      let uniqueReports: any[] = [];
-      if (response.success && response.data) {
-        // ✅ Handle new response format: { filters, totalReports, reports: [...] }
-        const responseData = response.data as any;
-        if (responseData.reports && Array.isArray(responseData.reports)) {
-          uniqueReports = responseData.reports;
-          console.log(
-            `📊 Total Reports: ${responseData.totalReports}, Pages: ${responseData.totalPages}`,
-          );
-        } else {
-          // Fallback for old format (direct array)
-          uniqueReports = Array.isArray(response.data)
-            ? response.data
-            : [response.data];
+      // 1. Try cache first if not forcing refetch (Live Mode Only)
+      if (!forceRefetch) {
+        try {
+          const cached = await indexedDBService.get("audit_reports", cacheKey);
+          if (cached && Array.isArray(cached) && cached.length > 0) {
+            console.log("⚡ Found cached reports in IndexedDB:", cacheKey);
+            
+            // Check if cached data includes subuser reports if we have subusers
+            const hasSubuserReports = cached.some((r: any) => (r.user_email || r.email || "").toLowerCase() !== currentUserEmail.toLowerCase());
+            
+            if (subusersData.length === 0 || hasSubuserReports) {
+              uniqueReports = cached;
+              isDataLoadedFromCache = true;
+            } else {
+              console.log("🔄 Cache only has main user reports, but we have subusers. Fetching fresh...");
+            }
+          }
+        } catch (error) {
+          console.warn("⚠️ Error reading from IndexedDB:", error);
         }
       }
 
-      // Handle "all" subusers - fetch for all subusers and combine
-      if (subuserFilter === "all" && subusersData.length > 0) {
-        const subuserPromises = subusersData.map((s: any) =>
-          apiClient.getFilteredAuditReports({
-            ...filters,
-            userEmail: s.subuser_email,
-          }),
-        );
-        const subuserResults = await Promise.all(subuserPromises);
-        console.log("📥 Fetched reports for all subusers:", subuserResults);
-        subuserResults.forEach((res) => {
-          if (res.success && res.data) {
-            // Handle new response format
-            const resData = res.data as any;
-            const reportsArray =
-              resData.reports && Array.isArray(resData.reports)
-                ? resData.reports
-                : Array.isArray(res.data)
-                  ? res.data
-                  : [res.data];
-            uniqueReports = [...uniqueReports, ...reportsArray];
+      // 2. Fetch fresh data if needed or if cache is incomplete
+      if (!isDataLoadedFromCache || forceRefetch) {
+        console.log("📥 Fetching fresh reports for all users...");
+        
+        // Prepare fetching parameters
+        const fetchFilters: any = { userEmail };
+        
+        // ✅ Add groupName if groupFilter is active
+        if (groupFilter) {
+          const selectedGroup = groupsData.find(g => String(g.groupId || g.id) === String(groupFilter));
+          if (selectedGroup) {
+            const resolvedGroupName = selectedGroup.groupName || selectedGroup.name;
+            console.log(`🔍 Adding groupName filter to API call: ${resolvedGroupName}`);
+            fetchFilters.groupName = resolvedGroupName;
           }
-        });
+        }
+        
+        // Fetch reports (includes current user and potentially group reports)
+        const mainResponse = await apiClient.getFilteredAuditReports(fetchFilters);
+        if (mainResponse.success && mainResponse.data) {
+          const resData = mainResponse.data as any;
+          uniqueReports = resData.reports && Array.isArray(resData.reports) 
+            ? resData.reports 
+            : (Array.isArray(mainResponse.data) ? mainResponse.data : [mainResponse.data]);
+        }
 
-        // Remove duplicates based on report_id
+        // Fetch all subusers' reports if admin and NOT already covered by group search
+        // (If we searched by groupName, we likely already have most subuser reports for that group)
+        if (subusersData && Array.isArray(subusersData) && subusersData.length > 0) {
+          console.log(`📥 Fetching reports for ${subusersData.length} subusers...`);
+          
+          // Filter out subusers that are likely already in the uniqueReports if groupFilter was used
+          // But to be safe, we can still fetch them or just fetch those NOT already fetched.
+          const subuserPromises = subusersData
+            .filter((s: any) => {
+               if (!s) return false;
+               const email = (s.subuser_email || s.email || "").toLowerCase();
+               if (!email) return false;
+               return !uniqueReports.some((r: any) => r && (r.user_email || r.email || r.client_email || "").toLowerCase() === email);
+            })
+            .map((s: any) =>
+              apiClient.getFilteredAuditReports({ userEmail: s.subuser_email || s.email })
+            );
+          
+          if (subuserPromises.length > 0) {
+            const subuserResults = await Promise.all(subuserPromises);
+            subuserResults.forEach((res) => {
+              if (res.success && res.data) {
+                const resData = res.data as any;
+                const reportsArray = resData.reports && Array.isArray(resData.reports)
+                  ? resData.reports
+                  : (Array.isArray(res.data) ? res.data : [res.data]);
+                uniqueReports = [...uniqueReports, ...reportsArray];
+              }
+            });
+          }
+        }
+
+        // Remove equivalents and nulls
         uniqueReports = Array.from(
           new Map(
-            uniqueReports.map((report) => [
-              report.report_id || report.id,
-              report,
-            ]),
+            uniqueReports
+              .filter(r => r && (r.report_id || r.id)) // Filter out nulls or invalid reports
+              .map((report) => [
+                report.report_id || report.id,
+                report,
+              ]),
           ).values(),
         );
+
+        // Save to IndexedDB (Live Mode Only)
+        if (uniqueReports.length > 0) {
+          await indexedDBService.put("audit_reports", cacheKey, uniqueReports);
+        }
       }
 
-      console.log("📥 Filtered Reports:", uniqueReports.length);
-
+      // 3. Process the reports (Map to ExtendedAdminReport)
       if (uniqueReports.length > 0) {
-        // console.log("✅ Audit reports fetched:", uniqueReports.length);
-
-        // If no reports found
-        if (uniqueReports.length === 0) {
-          // console.log("ℹ️ No audit reports found");
-          showInfo("No Reports", "No audit reports found.");
-          setAllRows([]);
-          setLoading(false);
-          return;
-        }
-
-        // console.log("🔄 Processing reports with report_details_json...");
-
-        // Process each report
         const processedReports = uniqueReports.map((report: any) => {
           let reportDetails: any = {};
           let deviceCount = 1;
 
-          // Parse report_details_json (JSON string from backend)
-          if (report.report_details_json) {
+          if (report._details) {
+            reportDetails = report._details;
+          } else if (report.report_details_json) {
             try {
               reportDetails = JSON.parse(report.report_details_json);
-              // Debug: Log group information from report
-              if (groupFilter) {
-                console.log("🔍 Report Group Info:", {
-                  reportId: report.report_id,
-                  rawGroup: report.group,
-                  rawGroupName: report.groupName,
-                  rawGroupId: report.group_id,
-                  detailsGroup: reportDetails.group,
-                  detailsGroupName: reportDetails.groupName,
-                  detailsGroupId: reportDetails.group_id,
-                  selectedFilter: groupFilter,
-                });
-              }
-              console.log("📄 Parsed report_details_json:", reportDetails);
-
-              // Get device count from erasure_log array
-              if (
-                reportDetails.erasure_log &&
-                Array.isArray(reportDetails.erasure_log)
-              ) {
-                deviceCount = reportDetails.erasure_log.length;
-              }
             } catch (e) {
               console.warn(`⚠️ Failed to parse report_details_json:`, e);
-              // console.log("❌ Raw data:", report.report_details_json);
+              reportDetails = report;
             }
+          } else {
+            reportDetails = report;
           }
 
-          // Map to table format using fields from report_details_json
+          if (reportDetails.erasure_log && Array.isArray(reportDetails.erasure_log)) {
+            deviceCount = reportDetails.erasure_log.length;
+          } else if (reportDetails.file_count) {
+            deviceCount = reportDetails.file_count;
+          }
+
           const mappedReport: ExtendedAdminReport = {
-            id:
-              reportDetails?.report_id?.toString() || report.report_id || "N/A",
+            id: reportDetails?.report_id?.toString() || report.report_id || report.id?.toString() || "N/A",
+            hostname: reportDetails?.hostname || report.hostname || "N/A",
+            date: (() => {
+              try {
+                if (reportDetails?.datetime) return new Date(reportDetails.datetime).toISOString().split("T")[0];
+                if (report.report_datetime) return new Date(report.report_datetime).toISOString().split("T")[0];
+                return report.date || new Date().toISOString().split("T")[0];
+              } catch (e) {
+                return new Date().toISOString().split("T")[0];
+              }
+            })(),
+            devices: deviceCount || report.devices || 1,
+            status: reportDetails?.status?.toLowerCase() || report.status?.toLowerCase() || "completed",
+            department: reportDetails?.department || reportDetails?.technician_dept || report.department || "IT",
+            method: reportDetails?.eraser_method || reportDetails?.erasure_method || report.erasure_method || report.method || "N/A",
+            email: report.client_email || report.user_email || reportDetails?.user_email || report.email || report.user || "",
+            user: report.client_email || report.user_email || reportDetails?.user_email || report.email || report.user || "",
+            user_email: (report.client_email || report.user_email || reportDetails?.user_email || report.email || report.user || "").toLowerCase(),
+            groupId: (() => {
+              const explicitId = report.group_id || report.groupId || reportDetails?.group_id || reportDetails?.groupId;
+              if (explicitId) return explicitId;
+              
+              const reportEmail = (report.client_email || report.user_email || reportDetails?.user_email || report.email || report.user || "").toLowerCase();
+              
+              // Resolve from current user if it matches
+              if (reportEmail === currentUserEmail.toLowerCase()) {
+                return currentUserGroupId || "";
+              }
 
-            date: reportDetails?.datetime
-              ? new Date(reportDetails.datetime).toISOString().split("T")[0]
-              : report.report_datetime
-                ? new Date(report.report_datetime).toISOString().split("T")[0]
-                : new Date().toISOString().split("T")[0],
+              // ✅ Resolve from groupsData users if available
+              if (groupsData && Array.isArray(groupsData) && groupsData.length > 0) {
+                for (const group of groupsData) {
+                  if (!group) continue;
+                  const groupUsers = group.users || [];
+                  const userInGroup = groupUsers.find((u: any) => u && (u.email || "").toLowerCase() === reportEmail);
+                  if (userInGroup) {
+                    return group.groupId || group.id || "";
+                  }
+                }
+              }
 
-            devices: deviceCount,
+              // Resolve from subuser metadata as fallback
+              const subuser = Array.isArray(subusersData) ? subusersData.find((s: any) => s && (s.subuser_email || s.email || "").toLowerCase() === reportEmail) : null;
+              return subuser?.group_id || subuser?.groupId || "";
+            })(),
+            groupName: (() => {
+              const explicitName = report.groupName || report.group || reportDetails?.groupName || reportDetails?.group;
+              if (explicitName) return explicitName;
+              
+              const reportEmail = (report.client_email || report.user_email || reportDetails?.user_email || report.email || "").toLowerCase();
 
-            status:
-              reportDetails?.status?.toLowerCase() ||
-              report.status?.toLowerCase() ||
-              "completed",
+              // ✅ Resolve from groupsData if available
+              if (groupsData && Array.isArray(groupsData) && groupsData.length > 0) {
+                for (const group of groupsData) {
+                  if (!group) continue;
+                  const groupUsers = group.users || [];
+                  const userInGroup = groupUsers.find((u: any) => u && (u.email || "").toLowerCase() === reportEmail);
+                  if (userInGroup) {
+                    return group.groupName || group.name || "";
+                  }
+                }
+              }
 
-            department:
-              reportDetails?.department ||
-              reportDetails?.technician_dept ||
-              report.department ||
-              "IT",
-
-            method:
-              reportDetails?.eraser_method ||
-              reportDetails?.erasure_method ||
-              report.erasure_method ||
-              "N/A",
-
-            // ✅ Add email field for filtering (API uses client_email)
-            email:
-              report.client_email ||
-              report.user_email ||
-              reportDetails?.user_email,
-            user:
-              report.client_email ||
-              report.user_email ||
-              reportDetails?.user_email,
-
-            // ✅ Store group information from report for filtering
-            group:
-              report.groupName ||
-              report.group ||
-              reportDetails?.groupName ||
-              reportDetails?.group,
-            groupName:
-              report.groupName ||
-              report.group ||
-              reportDetails?.groupName ||
-              reportDetails?.group,
-
-            // New fields from report_details_json
-            reportType:
-              reportDetails?.erasure_type ||
-              reportDetails?.Erasure_Type ||
-              report.erasure_type ||
-              reportDetails?.erasure_type ||
-              "File and Folder",
-
-            totalFiles:
-              reportDetails?.total_files ??
-              reportDetails?.totalFiles ??
-              reportDetails?.file_count ??
-              0,
-
-            erasedFiles:
-              reportDetails?.erased_files ??
-              reportDetails?.erasedFiles ??
-              reportDetails?.files_erased ??
-              0,
-
-            failedFiles:
-              reportDetails?.failed_files ??
-              reportDetails?.failedFiles ??
-              reportDetails?.files_failed ??
-              0,
-
-            successFiles:
-              reportDetails?.success_files ??
-              reportDetails?.successFiles ??
-              reportDetails?.files_success ??
-              0,
-
-            _raw: report,
+              // Resolve from subuser metadata
+              const subuser = Array.isArray(subusersData) ? subusersData.find((s: any) => s && (s.subuser_email || s.email || "").toLowerCase() === reportEmail) : null;
+              return subuser?.group_name || subuser?.groupName || "";
+            })(),
+            reportType: reportDetails?.erasure_type || reportDetails?.Erasure_Type || report.erasure_type || report.reportType || "Erasure",
+            totalFiles: reportDetails?.total_files ?? reportDetails?.totalFiles ?? report.totalFiles ?? 0,
+            erasedFiles: reportDetails?.erased_files ?? reportDetails?.erasedFiles ?? report.erasedFiles ?? 0,
+            failedFiles: reportDetails?.failed_files ?? reportDetails?.failedFiles ?? report.failedFiles ?? 0,
+            successFiles: reportDetails?.success_files ?? reportDetails?.successFiles ?? report.successFiles ?? 0,
+            _raw: report._raw || report,
             _details: reportDetails,
           };
-
-          console.log("✅ Mapped:", mappedReport);
           return mappedReport;
         });
 
-        // ✅ RBAC FILTERING: Apply role-based filtering BEFORE setting state
-        // MACHINE TRANSFER LOGIC:
-        // - When a machine is transferred via AdminMachines, it's reassigned to new user/subuser
-        // - All reports with matching MAC address (from report_details_json or mac_address column)
-        //   automatically become visible to the new machine owner
-        // - This ensures report ownership follows machine ownership
-        let filteredReports = processedReports;
-
-        // SubUser: Show reports if email matches OR machine MAC address matches
+        // 4. RBAC Filtering
+        let finalReports = processedReports;
         if (isSubUser) {
-          filteredReports = processedReports.filter(
-            (report: ExtendedAdminReport) => {
-              // Check email match (original report creator)
-              const emailMatch =
-                (report as any).email === currentUserEmail ||
-                (report as any).user === currentUserEmail;
-
-              // Check MAC address match from report_details_json or mac_address column
-              // This allows transferred machines' reports to appear
-              const reportMacAddress =
-                report._details?.mac_address?.toLowerCase().trim() ||
-                report._raw?.mac_address?.toLowerCase().trim();
-              const macMatch =
-                reportMacAddress &&
-                userMacAddresses.some(
-                  (userMac) => userMac === reportMacAddress,
-                );
-
-              return emailMatch || macMatch;
-            },
-          );
-          // console.log(`🔒 SubUser Filter: ${processedReports.length} → ${filteredReports.length} reports (Email or MAC match)`)
-        }
-        // GroupAdmin: Show reports if group matches OR email matches OR machine MAC address matches
-        else if (isGroupAdmin && currentUserGroupId) {
-          filteredReports = processedReports.filter(
-            (report: ExtendedAdminReport) => {
-              const reportGroupId =
-                report._details?.group_id ||
-                report._details?.groupId ||
-                report._raw?.group_id;
-              const groupMatch = reportGroupId === currentUserGroupId;
-              const emailMatch = (report as any).email === currentUserEmail;
-
-              // Check MAC address match from report_details_json or mac_address column
-              // This allows transferred machines' reports to appear
-              const reportMacAddress =
-                report._details?.mac_address?.toLowerCase().trim() ||
-                report._raw?.mac_address?.toLowerCase().trim();
-              const macMatch =
-                reportMacAddress &&
-                userMacAddresses.some(
-                  (userMac) => userMac === reportMacAddress,
-                );
-
-              return groupMatch || emailMatch || macMatch;
-            },
-          );
-          // console.log(`🔒 GroupAdmin Filter: ${processedReports.length} → ${filteredReports.length} reports (Group, Email, or MAC match)`)
-        }
-        // SuperAdmin: No filtering - sees all reports
-        console.log("final reports to show in table :", filteredReports);
-        setAllRows(filteredReports);
-        // ✅ Cache all filtered data with filter-specific key
-        console.log(
-          "💾 Caching filtered reports to IndexedDB with key:",
-          cacheKey,
-        );
-        // setCachedData(cacheKey, filteredReports); // Old localStorage cache
-        await indexedDBService
-          .put("audit_reports", cacheKey, filteredReports)
-          .catch((err) => {
-            console.warn("⚠️ Failed to write to IndexedDB:", err);
+          finalReports = processedReports.filter((report: ExtendedAdminReport) => {
+            const emailMatch = report.user_email === currentUserEmail.toLowerCase();
+            const reportMacAddress = report._details?.mac_address?.toLowerCase().trim() || report._raw?.mac_address?.toLowerCase().trim();
+            const macMatch = reportMacAddress && userMacAddresses.some((userMac) => userMac === reportMacAddress);
+            return emailMatch || macMatch;
           });
+        } else if (isGroupAdmin && currentUserGroupId) {
+          finalReports = processedReports.filter((report: ExtendedAdminReport) => {
+            const groupMatch = String(report.groupId) === String(currentUserGroupId);
+            const emailMatch = report.user_email === currentUserEmail.toLowerCase();
+            const reportMacAddress = report._details?.mac_address?.toLowerCase().trim() || report._raw?.mac_address?.toLowerCase().trim();
+            const macMatch = reportMacAddress && userMacAddresses.some((userMac) => userMac === reportMacAddress);
+            return groupMatch || emailMatch || macMatch;
+          });
+        }
+
+        if (!currentAbort.signal.aborted) {
+          setAllRows(finalReports);
+        }
       } else {
-        showInfo("No Reports", "No audit reports found.");
+        if (!currentAbort.signal.aborted) {
+          setAllRows([]);
+        }
+      }
+    } catch (error: any) {
+      if (!currentAbort.signal.aborted) {
+        console.error("❌ Error loading reports:", error);
+        showError("Error", "Failed to load reports.");
         setAllRows([]);
       }
-    } catch (error) {
-      console.error("❌ Error:", error);
-      showError("Error", "Failed to load reports.");
-      setAllRows([]);
     } finally {
-      setLoading(false);
+      if (!currentAbort.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
@@ -1707,93 +1620,112 @@ export default function AdminReports() {
   const uniqueGroups = useMemo(() => {
     if (!groupsData || groupsData.length === 0) return [];
 
-    // Extract groupName from API response (same structure as AdminGroups)
-    const groups = groupsData
-      .map((g: any) => g.groupName || g.name)
-      .filter(Boolean);
-
-    // Sort alphabetically
-    return groups.sort((a: string, b: string) => a.localeCompare(b));
+    return groupsData
+      .map((g: any) => ({
+        id: g.groupId || g.id,
+        name: g.groupName || g.name
+      }))
+      .filter(g => g.id && g.name)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [groupsData]);
 
   const filtered = useMemo(() => {
-    // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
-    // All filtering (query, status, date range, eraser method, device range, report type, group)
-    // is handled by the API endpoint with proper database relationships
-
-    /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
+    // ✅ Filter client-side from the full cached list (Cache-First Strategy)
     let result = allRows.filter((r) => {
-      const matchesQuery =
-        String(r.id || "")
-          .toLowerCase()
-          .includes(query.toLowerCase()) ||
-        String(r.department || "")
-          .toLowerCase()
-          .includes(query.toLowerCase());
-      const matchesStatus = !statusFilter || r.status === statusFilter;
+      // 1. Search Query (ID or Department)
+      const q = query.toLowerCase();
+      const matchesQuery = !query ||
+        String(r.id || "").toLowerCase().includes(q) ||
+        String(r.department || "").toLowerCase().includes(q) ||
+        String(r.hostname || "").toLowerCase().includes(q);
 
-      // Date range filtering with format validation
+      // 2. Status Filter
+      const matchesStatus = !statusFilter || (r.status || "").toLowerCase() === statusFilter.toLowerCase();
+
+      // 3. Date Range Filter
       let matchesDateRange = true;
       if (fromDate || toDate) {
         const reportDate = new Date(r.date);
-
-        if (fromDate && toDate) {
-          // Validate both dates
-          if (isValidDateFormat(fromDate) && isValidDateFormat(toDate)) {
-            const fromDateTime = new Date(fromDate);
-            const toDateTime = new Date(toDate);
-            toDateTime.setHours(23, 59, 59, 999); // Include the entire end date
-            matchesDateRange = reportDate >= fromDateTime && reportDate <= toDateTime;
-          }
-        } else if (fromDate) {
-          // Validate from date
-          if (isValidDateFormat(fromDate)) {
-            const fromDateTime = new Date(fromDate);
-            matchesDateRange = reportDate >= fromDateTime;
-          }
-        } else if (toDate) {
-          // Validate to date
-          if (isValidDateFormat(toDate)) {
-            const toDateTime = new Date(toDate);
-            toDateTime.setHours(23, 59, 59, 999); // Include the entire end date
-            matchesDateRange = reportDate <= toDateTime;
-          }
+        if (fromDate && isValidDateFormat(fromDate)) {
+          const fromDateTime = new Date(fromDate);
+          if (reportDate < fromDateTime) matchesDateRange = false;
+        }
+        if (toDate && isValidDateFormat(toDate)) {
+          const toDateTime = new Date(toDate);
+          toDateTime.setHours(23, 59, 59, 999);
+          if (reportDate > toDateTime) matchesDateRange = false;
         }
       }
 
-      const matchesEraserMethod =
-        !eraserMethodFilter || r.method === eraserMethodFilter;
+      // 4. Eraser Method Filter
+      const matchesEraserMethod = !eraserMethodFilter || r.method === eraserMethodFilter;
 
+      // 5. Device Range Filter
       let matchesDeviceRange = true;
       if (deviceRangeFilter) {
-        if (deviceRangeFilter === "1-50") {
-          matchesDeviceRange = r.devices >= 1 && r.devices <= 50;
-        } else if (deviceRangeFilter === "51-100") {
-          matchesDeviceRange = r.devices >= 51 && r.devices <= 100;
-        } else if (deviceRangeFilter === "101-200") {
-          matchesDeviceRange = r.devices >= 101 && r.devices <= 200;
-        } else if (deviceRangeFilter === "201-999") {
-          matchesDeviceRange = r.devices >= 201;
+        const count = r.devices || 0;
+        if (deviceRangeFilter === "1-50") matchesDeviceRange = count >= 1 && count <= 50;
+        else if (deviceRangeFilter === "51-100") matchesDeviceRange = count >= 51 && count <= 100;
+        else if (deviceRangeFilter === "101-200") matchesDeviceRange = count >= 101 && count <= 200;
+        else if (deviceRangeFilter === "201-999") matchesDeviceRange = count >= 201;
+      }
+
+      // 6. Report Type Filter
+      const matchesReportType = !reportTypeFilter || r.reportType === reportTypeFilter;
+      
+      // 7. Group Filter
+      let itemGroupId = String(r.groupId || (r as any).group_id || "");
+      
+      // ✅ On-the-fly Group Resolution: If groupId is missing, try to resolve it now
+      if (!itemGroupId && (groupsData.length > 0 || subusersData.length > 0)) {
+        const reportEmail = (r.user_email || r.email || "").toLowerCase();
+        
+        // Check current user
+        if (reportEmail === currentUserEmail.toLowerCase()) {
+          itemGroupId = String(currentUserGroupId || "");
+        } else {
+          // Check groupsData
+          for (const group of groupsData) {
+            const groupUsers = group.users || [];
+            if (groupUsers.some((u: any) => (u.email || "").toLowerCase() === reportEmail)) {
+              itemGroupId = String(group.groupId || group.id || "");
+              break;
+            }
+          }
+          
+          // Check subusersData
+          if (!itemGroupId) {
+            const subuser = subusersData.find((s: any) => (s.subuser_email || s.email || "").toLowerCase() === reportEmail);
+            if (subuser) itemGroupId = String(subuser.group_id || subuser.groupId || "");
+          }
+        }
+      }
+      
+      const matchesGroup = !groupFilter || itemGroupId === String(groupFilter);
+
+      // 8. Report Owner Filter (subuserFilter)
+      const reportEmail = (r.user_email || r.email || "").toLowerCase();
+      let matchesOwner = true;
+      if (subuserFilter === "all") {
+        matchesOwner = true; // Show everything
+      } else if (subuserFilter) {
+        matchesOwner = reportEmail === subuserFilter.toLowerCase();
+      } else {
+        // Default: "My Reports"
+        // ✅ Demo Mode: Show all reports since demo user doesn't own any specific ones in static data
+        if (isDemo) {
+          matchesOwner = true;
+        } else {
+          matchesOwner = reportEmail === currentUserEmail.toLowerCase();
+          // Debugging log for "My Reports" matching (only if needed, but helpful for this bug)
+          // if (!matchesOwner && reportEmail) console.log(`Ownership mismatch: Report(${reportEmail}) vs User(${currentUserEmail.toLowerCase()})`);
         }
       }
 
-      // New filters for Report Type and Group
-      const matchesReportType =
-        !reportTypeFilter || r.reportType === reportTypeFilter;
-
-      return (
-        matchesQuery &&
-        matchesStatus &&
-        matchesDateRange &&
-        matchesEraserMethod &&
-        matchesDeviceRange &&
-        matchesReportType
-      );
+      return matchesQuery && matchesStatus && matchesDateRange && 
+             matchesEraserMethod && matchesDeviceRange && matchesReportType && 
+             matchesGroup && matchesOwner;
     });
-    */
-
-    // Start with all API-filtered results
-    let result = [...allRows];
 
     // Remove duplicates if requested (UI-only feature)
     if (showUniqueOnly) {
@@ -1851,13 +1783,47 @@ export default function AdminReports() {
     return result;
   }, [
     allRows,
-    // Removed filter dependencies - API handles all filtering
-    // query, statusFilter, fromDate, toDate, eraserMethodFilter,
-    // deviceRangeFilter, reportTypeFilter, groupFilter,
+    query,
+    statusFilter,
+    fromDate,
+    toDate,
+    eraserMethodFilter,
+    deviceRangeFilter,
+    reportTypeFilter,
+    groupFilter,
     showUniqueOnly,
     sortBy,
     sortOrder,
+    subuserFilter,
+    currentUserEmail,
+    groupsData, // Added to dependencies for on-the-fly resolution
+    subusersData, // Added to dependencies for on-the-fly resolution
   ]);
+
+  // ✅ Fallback: Filtered list empty hone pe API refresh (Live Mode Only)
+  const lastFallbackRef = useRef<number>(0);
+  useEffect(() => {
+    // FIX: Removed allRows.length === 0 guard so fallback can trigger for users with no reports of their own
+    if (isDemo || loading) return;
+
+    // Check if any filter is active OR if we are looking at "My Reports" but it's empty
+    const hasActiveFilters = query || statusFilter || fromDate || toDate || eraserMethodFilter || deviceRangeFilter || reportTypeFilter || groupFilter;
+    const isOwnerFilterActive = subuserFilter && subuserFilter !== "all" && subuserFilter !== currentUserEmail;
+    
+    // Trigger if search/filter applied AND 0 results, 
+    // OR if "My Reports" is active and we have 0 local results (even if allRows has data, it might not have 'My' data)
+    const shouldTriggerFallback = (hasActiveFilters || isOwnerFilterActive || subuserFilter === "") && filtered.length === 0;
+
+    if (shouldTriggerFallback) {
+      const now = Date.now();
+      // Throttle: Max 1 fallback refresh per 30 seconds to avoid API spamming
+      if (now - lastFallbackRef.current > 30000) {
+        lastFallbackRef.current = now;
+        console.log("🕵️ Filtering/My Reports yielded 0 results. Triggering live fallback API refresh...");
+        loadReportsData(true);
+      }
+    }
+  }, [filtered.length, query, statusFilter, fromDate, toDate, eraserMethodFilter, deviceRangeFilter, reportTypeFilter, groupFilter, subuserFilter, loading, isDemo, currentUserEmail, allRows.length]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const rows = filtered.slice((page - 1) * pageSize, page * pageSize);
@@ -3089,8 +3055,8 @@ export default function AdminReports() {
                 <option value="">All Groups</option>
                 {/* <option value="Dotnet">Dotnet</option> */}
                 {uniqueGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
+                  <option key={group.id} value={group.id}>
+                    {group.name}
                   </option>
                 ))}
               </select>

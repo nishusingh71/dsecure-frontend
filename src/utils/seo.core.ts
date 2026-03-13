@@ -29,11 +29,27 @@ export const SEO_CONFIG = {
 };
 
 export const BASE_KEYWORDS = [
-  "data erasure software", "data erasure tool", "data erasure solution",
-  "data wiping software", "data destruction software", "data sanitization tool",
-  "secure data erasure", "permanent data erasure", "NIST 800-88 compliance",
-  "GDPR data erasure", "HIPAA data erasure", "enterprise data erasure",
-  "hard drive wiping software", "SSD data erasure", "D-Secure Tech"
+  "data erasure software",
+  "data erasure tool",
+  "data erasure solution",
+  "data wiping software",
+  "data destruction software",
+  "data sanitization tool",
+  "secure data erasure",
+  "permanent data erasure",
+  "NIST 800-88 compliance",
+  "GDPR data erasure",
+  "HIPAA data erasure",
+  "enterprise data erasure",
+  "hard drive wiping software",
+  "SSD data erasure",
+  "D-Secure Tech",
+  "certified data wiping",
+  "secure drive disposal",
+  "NIST 800-88 rev 1",
+  "Blancco alternative",
+  "secure file shredder",
+  "permanent data destruction",
 ];
 
 export const getCanonicalUrl = (path: string): string => {

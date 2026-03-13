@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect, useCallback, memo } from "react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
@@ -12,13 +12,18 @@ import { useTranslation } from "react-i18next";
 import { useIdleTimer } from "@/hooks/useIdleTimer";
 
 export default function MainLayout() {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [authKey, setAuthKey] = useState(0); // Force re-render on auth state change
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
+  const [productsDropdownTab, setProductsDropdownTab] = useState<
+    "eraser" | "diagnostics"
+  >("eraser");
   const [hideHeader, setHideHeader] = useState(false); // Hide header when sticky section nav is visible
+  const [driveEraserHovered, setDriveEraserHovered] = useState(false);
 
   const toggleMobileMenu = useCallback(() => {
     setOpen((v) => !v);
@@ -147,83 +152,232 @@ export default function MainLayout() {
                 {/* Dropdown Panel */}
                 {productsDropdownOpen && (
                   <div className="absolute top-full left-0 mt-1 w-[800px] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
-                    {/* Dropdown Header */}
-                    <div className="border-b border-slate-200 px-6 py-5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-emerald-700 border-b-2 border-emerald-500 pb-1">
-                          Eraser
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-500 mt-1">
-                        Wiping Of Sensitive Data Across Storage Devices.
-                      </p>
+                    {/* Dropdown Header / Tabs */}
+                    <div className="border-b border-slate-200 pt-5 flex w-full">
+                      <button
+                        className={`flex-1 text-center text-sm font-semibold pb-3 border-b-2 transition-colors ${!productsDropdownTab || productsDropdownTab === "eraser" ? "text-emerald-700 border-emerald-500 bg-emerald-50/30" : "text-slate-500 border-slate-200 hover:text-slate-700 hover:bg-slate-50"}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setProductsDropdownTab("eraser");
+                        }}
+                      >
+                        Eraser
+                        <p
+                          className={`text-xs mt-1 font-normal ${!productsDropdownTab || productsDropdownTab === "eraser" ? "text-slate-500" : "text-slate-400"}`}
+                        >
+                          Wiping Of Sensitive Data Across Storage Devices.
+                        </p>
+                      </button>
+                      <button
+                        className={`flex-1 text-center text-sm font-semibold pb-3 border-b-2 transition-colors ${productsDropdownTab === "diagnostics" ? "text-emerald-700 border-emerald-500 bg-emerald-50/30" : "text-slate-500 border-slate-200 hover:text-slate-700 hover:bg-slate-50"}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setProductsDropdownTab("diagnostics");
+                        }}
+                      >
+                        Diagnostics
+                        <p
+                          className={`text-xs mt-1 font-normal ${productsDropdownTab === "diagnostics" ? "text-slate-500" : "text-slate-400"}`}
+                        >
+                          Hardware Health & Performance Analysis.
+                        </p>
+                      </button>
                     </div>
 
                     {/* Products Grid - 2 Columns (Row Layout) */}
-                    <div className="p-6 grid grid-cols-2 gap-5">
-                      {/* Drive Eraser */}
-                      <Link
-                        to="/products/drive-eraser"
-                        className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
-                        onClick={() => setProductsDropdownOpen(false)}
-                      >
-                        <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg
-                            className="w-5 h-5 text-rose-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                    <div className="p-6 grid grid-cols-2 gap-5 min-h-[140px]">
+                      {(!productsDropdownTab ||
+                        productsDropdownTab === "eraser") && (
+                        <>
+                          {/* Drive Eraser with Refined Hover Styling */}
+                          <div
+                            className="relative group/main"
+                            onMouseEnter={() => setDriveEraserHovered(true)}
+                            onMouseLeave={() => setDriveEraserHovered(false)}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
-                            />
-                          </svg>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
-                            Drive Eraser
-                          </h4>
-                          <p className="text-sm text-slate-500 leading-relaxed">
-                            Software to Erase Data From HDD, SSD, PC, Mac,
-                            Chromebook & Server
-                          </p>
-                        </div>
-                      </Link>
+                            <div
+                              className={`flex items-start gap-3 p-4 rounded-2xl transition-all duration-300 cursor-pointer ${driveEraserHovered ? "bg-gradient-to-r from-emerald-500 to-teal-600 shadow-xl scale-[1.02]" : "hover:bg-slate-50"}`}
+                              onClick={() => {
+                                navigate("/products/drive-eraser");
+                                setProductsDropdownOpen(false);
+                              }}
+                            >
+                              <div
+                                className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${driveEraserHovered ? "bg-white shadow-lg" : "bg-emerald-100"}`}
+                              >
+                                <svg
+                                  className={`w-6 h-6 transition-colors duration-300 ${driveEraserHovered ? "text-emerald-600" : "text-emerald-600"}`}
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                                  />
+                                </svg>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <h4
+                                    className={`font-bold transition-colors duration-300 text-base ${driveEraserHovered ? "text-white" : "text-slate-900 group-hover:text-emerald-600"}`}
+                                  >
+                                    Drive Eraser
+                                  </h4>
+                                  <svg
+                                    className={`w-4 h-4 transition-all duration-300 ${driveEraserHovered ? "rotate-90 text-white translate-x-1" : "text-slate-400"}`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M9 5l7 7-7 7"
+                                    />
+                                  </svg>
+                                </div>
+                                <p
+                                  className={`text-sm leading-relaxed transition-colors duration-300 ${driveEraserHovered ? "text-white/90 font-medium" : "text-slate-500"}`}
+                                >
+                                  Software to Erase Data From HDD, SSD, PC, Mac
+                                  & Server
+                                </p>
 
-                      {/* File Erasure Software */}
-                      <Link
-                        to="/products/file-eraser"
-                        className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
-                        onClick={() => setProductsDropdownOpen(false)}
-                      >
-                        <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <svg
-                            className="w-5 h-5 text-rose-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                                {/* Integrated Variants as Horizontal Tags */}
+                                <div
+                                  className={`mt-4 flex flex-wrap gap-2 transition-all duration-300 ${driveEraserHovered ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}`}
+                                >
+                                  <Link
+                                    to="/products/drive-eraser"
+                                    className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-[10px] font-bold text-white transition-all"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProductsDropdownOpen(false);
+                                    }}
+                                  >
+                                    Drive Eraser
+                                  </Link>
+                                  <Link
+                                    to="/products/drive-eraser-diagnostic"
+                                    className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-[10px] font-bold text-white transition-all flex items-center gap-1.5"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setProductsDropdownOpen(false);
+                                    }}
+                                  >
+                                    <span>Diagnostic & Health</span>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                                  </Link>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* File Erasure Software */}
+                          <Link
+                            to="/products/file-eraser"
+                            className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
+                            onClick={() => setProductsDropdownOpen(false)}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
-                            File Eraser
-                          </h4>
-                          <p className="text-sm text-slate-500 leading-relaxed">
-                            Software to Wipe Files, Folders, Traces, Browser
-                            History Etc.
-                          </p>
-                        </div>
-                      </Link>
+                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <svg
+                                className="w-5 h-5 text-blue-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
+                                File Eraser
+                              </h4>
+                              <p className="text-sm text-slate-500 leading-relaxed">
+                                Software to Wipe Files, Folders, Traces, Browser
+                                History Etc.
+                              </p>
+                            </div>
+                          </Link>
+                        </>
+                      )}
+
+                      {productsDropdownTab === "diagnostics" && (
+                        <>
+                          {/* Hardware Diagnostics */}
+                          <Link
+                            to="/products/hardware-diagnostics"
+                            className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
+                            onClick={() => setProductsDropdownOpen(false)}
+                          >
+                            <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <svg
+                                className="w-5 h-5 text-emerald-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
+                                Hardware Diagnostics
+                              </h4>
+                              <p className="text-sm text-slate-500 leading-relaxed">
+                                Comprehensive diagnostic tools for hardware
+                                health and integrity checking.
+                              </p>
+                            </div>
+                          </Link>
+
+                          {/* Hard Drive Monitor */}
+                          <Link
+                            to="/products/hard-drive-monitor"
+                            className="flex items-start gap-4 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
+                            onClick={() => setProductsDropdownOpen(false)}
+                          >
+                            <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <svg
+                                className="w-5 h-5 text-rose-500"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-slate-900 group-hover:text-rose-600 transition-colors text-base">
+                                SMART Diagnostics
+                              </h4>
+                              <p className="text-sm text-slate-500 leading-relaxed">
+                                Real-time health monitoring, S.M.A.R.T tracking
+                                & disk cloning for home users.
+                              </p>
+                            </div>
+                          </Link>
+                        </>
+                      )}
                     </div>
                   </div>
                 )}
@@ -465,12 +619,37 @@ export default function MainLayout() {
                         </svg>
                       </div>
                       <div>
-                        <span className="font-medium">Drive Eraser</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Drive Eraser</span>
+                          <span className="text-[8px] font-bold bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full">
+                            VARIANTS
+                          </span>
+                        </div>
                         <p className="text-xs text-slate-400">
-                          HDD, SSD, Mac, Server
+                          Secure Wiping & Health Diagnostics
                         </p>
                       </div>
                     </Link>
+                    {/* Mobile Sub-variants */}
+                    <div className="ml-4 pl-4 border-l border-slate-200 mt-1 mb-2 space-y-1">
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/drive-eraser"
+                        className="block py-1 text-xs text-slate-500 hover:text-emerald-600"
+                      >
+                        • Drive Eraser (Standard)
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/drive-eraser-diagnostic"
+                        className="flex items-center gap-2 py-1 text-xs text-slate-500 hover:text-emerald-600"
+                      >
+                        • with Diagnostic & Health
+                        <span className="text-[8px] font-bold text-blue-600">
+                          NEW
+                        </span>
+                      </Link>
+                    </div>
                     <Link
                       onClick={() => setOpen(false)}
                       to="/products/file-eraser"
@@ -495,6 +674,62 @@ export default function MainLayout() {
                         <span className="font-medium">File Eraser</span>
                         <p className="text-xs text-slate-400">
                           Files, Folders, Traces
+                        </p>
+                      </div>
+                    </Link>
+                    <Link
+                      onClick={() => setOpen(false)}
+                      to="/products/hardware-diagnostics"
+                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-600 rounded-md flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="font-medium">
+                          HardWare Diagnostics
+                        </span>
+                        <p className="text-xs text-slate-400">
+                          Tools for Hard Drive Health Monitoring
+                        </p>
+                      </div>
+                    </Link>
+                    <Link
+                      onClick={() => setOpen(false)}
+                      to="/products/hard-drive-monitor"
+                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-600 rounded-md flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="font-medium">SMART Diagnostics</span>
+                        <p className="text-xs text-slate-400">
+                          Health, Temp, S.M.A.R.T
                         </p>
                       </div>
                     </Link>

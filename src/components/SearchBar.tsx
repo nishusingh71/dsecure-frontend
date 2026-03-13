@@ -110,62 +110,71 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    const filteredSuggestions = getFilteredSuggestions();
-    
-    if (e.key === 'ArrowDown') {
+    if (e.key === "ArrowDown") {
       e.preventDefault();
-      setHighlightedIndex(prev => 
-        prev < filteredSuggestions.length - 1 ? prev + 1 : prev
+      setHighlightedIndex((prev) =>
+        prev < filteredSuggestions.length - 1 ? prev + 1 : prev,
       );
-    } else if (e.key === 'ArrowUp') {
+    } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setHighlightedIndex(prev => prev > 0 ? prev - 1 : -1);
-    } else if (e.key === 'Enter') {
+      setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+    } else if (e.key === "Enter") {
       e.preventDefault();
       if (highlightedIndex >= 0 && filteredSuggestions[highlightedIndex]) {
         handleSuggestionClick(filteredSuggestions[highlightedIndex].text);
       } else {
         handleSearch(searchValue);
       }
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setShowDropdown(false);
       inputRef.current?.blur();
     }
   };
 
-  const getFilteredSuggestions = (): SearchSuggestion[] => {
+  const filteredSuggestions = React.useMemo((): SearchSuggestion[] => {
     const query = searchValue.toLowerCase().trim();
     const results: SearchSuggestion[] = [];
 
     // Add matching suggestions
     if (query) {
-      const matching = suggestions.filter(s => 
-        s.text.toLowerCase().includes(query) &&
-        (!selectedCategory || s.category === selectedCategory)
-      ).slice(0, maxSuggestions);
+      const matching = suggestions
+        .filter(
+          (s) =>
+            s.text.toLowerCase().includes(query) &&
+            (!selectedCategory || s.category === selectedCategory),
+        )
+        .slice(0, maxSuggestions);
       results.push(...matching);
     }
 
     // Add recent searches if no query
     if (!query && showRecentSearches && recentSearches.length > 0) {
-      results.push(...recentSearches.slice(0, 5).map(text => ({
-        text,
-        type: 'recent' as const
-      })));
+      results.push(
+        ...recentSearches.slice(0, 5).map((text) => ({
+          text,
+          type: "recent" as const,
+        })),
+      );
     }
 
     // Add trending if enabled and space available
     if (showTrending && results.length < maxSuggestions) {
       const trending = suggestions
-        .filter(s => s.type === 'trending')
+        .filter((s) => s.type === "trending")
         .slice(0, maxSuggestions - results.length);
       results.push(...trending);
     }
 
     return results.slice(0, maxSuggestions);
-  };
-
-  const filteredSuggestions = getFilteredSuggestions();
+  }, [
+    searchValue,
+    suggestions,
+    selectedCategory,
+    maxSuggestions,
+    showRecentSearches,
+    recentSearches,
+    showTrending,
+  ]);
   const shouldShowDropdown = showDropdown && isFocused && 
     (filteredSuggestions.length > 0 || recentSearches.length > 0);
 

@@ -156,12 +156,13 @@ export function usePerformanceData(userEmail?: string, enabled = true) {
         }
       }
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes cache
-    gcTime: 10 * 60 * 1000, // 10 minutes garbage collection
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     enabled: enabled && !!userEmail && auditReports.length > 0, // Only run when we have data
     // Refetch when audit reports or machines data changes
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   })
 }
 

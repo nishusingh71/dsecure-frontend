@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { exportToCsv, openPrintView } from "@/utils/csv";
@@ -6,11 +6,11 @@ import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
 import { apiClient, Subuser, Session } from "@/utils/enhancedApiClient";
 import { useAuth } from "@/auth/AuthContext";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSubusers } from "@/hooks/useSubusers";
 import { isDemoMode, DEMO_SUBUSERS } from "@/data/demoData";
 import { indexedDBService } from "@/services/indexedDBService";
+import { Roles, buildWhereClause } from "@/utils/dashboardFilters";
 
 // Extended interface for table display
 interface SubuserTableRow {
@@ -34,6 +34,8 @@ export default function AdminSubusers() {
   const [groupFilter, setGroupFilter] = useState(""); // 🔍 Group filter
   const [searchFilter, setSearchFilter] = useState(""); // 🔍 Search filter
   const [searchInputValue, setSearchInputValue] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isUsingApi, setIsUsingApi] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -73,15 +75,15 @@ export default function AdminSubusers() {
       }
       // Less than 1 hour ago
       else if (diffMins < 60) {
-        return `${diffMins} min${diffMins > 1 ? "s" : ""} ago`;
+        return diffMins + " min" + (diffMins > 1 ? "s" : "") + " ago";
       }
       // Less than 24 hours ago
       else if (diffHours < 24) {
-        return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+        return diffHours + " hour" + (diffHours > 1 ? "s" : "") + " ago";
       }
       // Less than 7 days ago
       else if (diffDays < 7) {
-        return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+        return diffDays + " day" + (diffDays > 1 ? "s" : "") + " ago";
       }
       // More than 7 days - show formatted date
       else {
@@ -120,7 +122,8 @@ export default function AdminSubusers() {
       }
     }
 
-    return storedUserData?.user_email || user?.email || "";
+    const email = storedUserData?.user_email || user?.email || "";
+    return email.toLowerCase();
   };
 
   // ✅ Check if current user has admin/superadmin role
@@ -173,6 +176,26 @@ export default function AdminSubusers() {
 
   const currentUserType = getUserType();
   const isSubuser = currentUserType === "subuser";
+
+  // ✅ Get current user group ID
+  const getUserGroupId = (): string => {
+    const storedUser = localStorage.getItem("user_data");
+    const authUser = localStorage.getItem("authUser");
+    let storedUserData = null;
+    if (storedUser) {
+      try {
+        storedUserData = JSON.parse(storedUser);
+      } catch (e) {}
+    }
+    if (!storedUserData && authUser) {
+      try {
+        storedUserData = JSON.parse(authUser);
+      } catch (e) {}
+    }
+    return String(storedUserData?.user_group || storedUserData?.group_id || "");
+  };
+
+  const currentUserGroupId = getUserGroupId();
 
   // console.log('👤 User Type:', currentUserType, '| Is Subuser:', isSubuser)
   // console.log('📧 Current User Email:', userEmail)
@@ -227,19 +250,14 @@ export default function AdminSubusers() {
 
   // Fetch subusers for selected owner with filters
   // ✅ Map UI filter states to API parameters
+  // Fetch subusers for selected owner
+  // ✅ Fetch-Once Strategy: We fetch THE ENTIRE LIST once and filter locally
+  // This enables instant UI updates and population of IndexedDB for offline/cache usage
   const {
     data: apiSubusersData = [],
     isLoading: apiLoading,
     refetch,
-  } = useSubusers(emailToFetch, !isDemo, {
-    parentUserEmail: parentUserEmailFilter || undefined,
-    subuserEmail: subuserEmailFilter || undefined,
-    department: departmentFilter || undefined,
-    role: roleFilter || undefined,
-    // status: statusFilter || undefined, // ✅ Added status filter
-    group: groupFilter || undefined,
-    search: query || searchFilter || undefined, // ✅ Use query as primary search
-  });
+  } = useSubusers(emailToFetch, !isDemo); 
 
   // ✅ Manual Cache Invalidation Helper
   const invalidateCache = async () => {
@@ -257,8 +275,8 @@ export default function AdminSubusers() {
   const subusersData = isDemo ? DEMO_SUBUSERS : apiSubusersData;
   const loading = isDemo ? false : apiLoading;
 
-  const [pageSize, setPageSize] = useState(5); // Default 10 rows per page
-  const pageSizeOptions = [5, 10, 25, 50, 100, 250];
+  const [editLoading, setEditLoading] = useState(false);
+  const [editFetching, setEditFetching] = useState(false);
 
   // Delete modal state
   const [deleteModal, setDeleteModal] = useState<{
@@ -288,8 +306,6 @@ export default function AdminSubusers() {
     subuser_group: "",
     license_allocation: 0,
   });
-  const [editLoading, setEditLoading] = useState(false);
-  const [editFetching, setEditFetching] = useState(false);
 
   // ✅ Transform hook data to table rows format with proper field mapping
   const allRows = useMemo<SubuserTableRow[]>(() => {
@@ -344,35 +360,140 @@ export default function AdminSubusers() {
   const uniqueGroups = useMemo(() => {
     if (!groupsData || groupsData.length === 0) return [];
 
-    // Extract groupName from API response (same structure as AdminGroups)
-    const groups = groupsData
-      .map((g: any) => g.groupName || g.name)
-      .filter(Boolean);
-
-    // Sort alphabetically
-    return groups.sort((a: string, b: string) => a.localeCompare(b));
+    return groupsData
+      .map((g: any) => ({
+        id: g.groupId || g.id,
+        name: g.groupName || g.name
+      }))
+      .filter(g => g.id && g.name)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [groupsData]);
 
   const filtered = useMemo(() => {
-    // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
-    // All filtering (query, role, status, department) is handled by the API endpoint
-
-    /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
-    let result = allRows.filter((r) => {
-      const matchesQuery =
-        r.subuser_email.toLowerCase().includes(query.toLowerCase()) ||
-        r.department?.toLowerCase().includes(query.toLowerCase()) ||
-        false;
-      const matchesRole = !roleFilter || r.roles === roleFilter;
-      const matchesStatus = !statusFilter || r.status === statusFilter;
-      const matchesDepartment =
-        !departmentFilter || r.department === departmentFilter;
-      return matchesQuery && matchesRole && matchesStatus && matchesDepartment;
-    });
-    */
-
-    // Start with all API-filtered results
+    // ✅ RBAC Safeguard: Client-side filtering if not SuperAdmin
     let result = [...allRows];
+
+    if (!isDemo && currentUserRole.toLowerCase() !== "superadmin") {
+      // 🔒 Secondary check: Filter fetched users based on RBAC rules
+      result = result.filter((row) => {
+        const raw = subusersData.find(
+          (s: any) =>
+            (
+              s.subuser_email ||
+              s.SubuserEmail ||
+              s.email ||
+              s.Email ||
+              ""
+            ).toLowerCase() === row.subuser_email.toLowerCase(),
+        );
+
+        if (!raw) return false;
+
+        const creatorEmail = (
+          raw.superuser_email ||
+          raw.user_email ||
+          ""
+        ).toLowerCase();
+
+        // 1. If it's your own created subuser
+        if (creatorEmail === userEmail.toLowerCase()) return true;
+
+        // 2. If it's you (self-view)
+        if (row.subuser_email.toLowerCase() === userEmail.toLowerCase())
+          return true;
+
+        return creatorEmail === userEmail.toLowerCase();
+      });
+    }
+
+    // 🔍 3. Local Filtering (Instant UI)
+    // Role Filter
+    if (roleFilter) {
+      result = result.filter(r => r.roles.toLowerCase() === roleFilter.toLowerCase());
+    }
+
+    // Status Filter
+    if (statusFilter) {
+      result = result.filter(r => r.status.toLowerCase() === statusFilter.toLowerCase());
+    }
+
+    // Department Filter
+    if (departmentFilter) {
+      result = result.filter(r => r.department.toLowerCase() === departmentFilter.toLowerCase());
+    }
+
+    // Group Filter
+    if (groupFilter) {
+      const gFilterStr = String(groupFilter);
+      const cleanGFilter = gFilterStr.replace(/^group-/, "");
+      
+      const selectedGroupObj = uniqueGroups.find(g => {
+        const gid = String(g.id).replace(/^group-/, "");
+        return gid === cleanGFilter;
+      });
+      
+      const groupFilterName = selectedGroupObj?.name?.toLowerCase();
+
+      result = result.filter(r => {
+        const raw = subusersData.find((s: any) => (s.subuser_email || s.email || "").toLowerCase().trim() === r.subuser_email.toLowerCase().trim());
+        
+        // 1. Try explicit identification from subuser record
+        const recordGroupId = String(raw?.group_id || raw?.groupId || "").replace(/^group-/, "");
+        const recordGroupName = String(raw?.subuser_group || raw?.user_group || "").toLowerCase().trim();
+
+        // Match by ID or Name
+        let isMatch = (recordGroupId && recordGroupId === cleanGFilter) || 
+                       (recordGroupName && groupFilterName && recordGroupName === groupFilterName);
+        
+        // 2. On-the-fly Group Resolution: Search in groupsData if explicit record match failed
+        if (!isMatch && groupsData.length > 0) {
+          const subEmail = r.subuser_email.toLowerCase().trim();
+          
+          // Check current user override
+          const cleanUserGid = String(currentUserGroupId || "").replace(/^group-/, "");
+          if (subEmail === userEmail.toLowerCase().trim() && cleanUserGid === cleanGFilter) {
+            isMatch = true;
+          }
+
+          if (!isMatch) {
+            for (const group of groupsData) {
+              const gid = String(group.groupId || group.id || "").replace(/^group-/, "");
+              if (gid === cleanGFilter) {
+                const groupUsers = group.users || [];
+                if (groupUsers.some((u: any) => (u.email || u.user_email || u.subuser_email || "").toLowerCase().trim() === subEmail)) {
+                  isMatch = true;
+                  break;
+                }
+              }
+            }
+          }
+        }
+        
+        return isMatch;
+      });
+    }
+
+    // Parent/Subuser specific email filters
+    if (parentUserEmailFilter) {
+        result = result.filter(r => {
+            const raw = subusersData.find((s: any) => (s.subuser_email || s.email || "").toLowerCase() === r.subuser_email.toLowerCase());
+            return (raw?.superuser_email || raw?.user_email || "").toLowerCase().includes(parentUserEmailFilter.toLowerCase());
+        });
+    }
+
+    if (subuserEmailFilter) {
+        result = result.filter(r => r.subuser_email.toLowerCase().includes(subuserEmailFilter.toLowerCase()));
+    }
+
+    // Search Filter
+    const sTerm = (query || searchFilter).toLowerCase();
+    if (sTerm) {
+      result = result.filter(r => 
+        r.subuser_email.toLowerCase().includes(sTerm) || 
+        r.department.toLowerCase().includes(sTerm) ||
+        r.roles.toLowerCase().includes(sTerm)
+      );
+    }
 
     // Remove duplicates if requested (UI-only feature)
     if (showUniqueOnly) {
@@ -396,12 +517,55 @@ export default function AdminSubusers() {
     return result;
   }, [
     allRows,
-    // Removed filter dependencies - API handles all filtering
-    // query, roleFilter, statusFilter, departmentFilter,
+    query,
+    roleFilter,
+    statusFilter,
+    departmentFilter,
+    parentUserEmailFilter,
+    subuserEmailFilter,
+    groupFilter,
+    searchFilter,
     showUniqueOnly,
     sortBy,
     sortOrder,
+    subusersData,
+    groupsData,
+    currentUserRole,
+    currentUserGroupId,
+    userEmail
   ]);
+
+  const [pageSize, setPageSize] = useState(5); // Default 10 rows per page
+  const pageSizeOptions = [5, 10, 25, 50, 100, 250];
+
+  // ✅ Fallback: Filtered list empty hone pe API refresh (Live Mode Only)
+  const lastFallbackRef = useRef<number>(0);
+  useEffect(() => {
+    if (isDemo || loading) return;
+
+    // Check if any significant filter is active
+    const hasActiveFilters = query || roleFilter || statusFilter || departmentFilter || groupFilter || parentUserEmailFilter || subuserEmailFilter || searchFilter;
+
+    if (hasActiveFilters && filtered.length === 0) {
+      const now = Date.now();
+      // Throttle: Max 1 fallback refresh per 30 seconds to avoid API spamming
+      if (now - lastFallbackRef.current > 30000) {
+        lastFallbackRef.current = now;
+        console.log("🕵️ Filtering yielded 0 subusers with active filters. Triggering live fallback API refresh...");
+        
+        // Manual cache invalidation before refetch
+        const invalidateAndRefetch = async () => {
+          try {
+            await invalidateCache();
+            refetch();
+          } catch (e) {
+            console.warn("Fallback refresh failed:", e);
+          }
+        };
+        invalidateAndRefetch();
+      }
+    }
+  }, [filtered.length, query, roleFilter, statusFilter, departmentFilter, groupFilter, parentUserEmailFilter, subuserEmailFilter, searchFilter, loading, allRows.length, isDemo, refetch]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const rows = filtered.slice((page - 1) * pageSize, page * pageSize);
@@ -1165,9 +1329,9 @@ export default function AdminSubusers() {
                 }}
               >
                 <option value="">All Groups</option>
-                {uniqueGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
+                {uniqueGroups.map((group: any) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
                   </option>
                 ))}
               </select>

@@ -1,7 +1,9 @@
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+// ✅ AbortController ref — stale API requests cancel karne ke liye
+let abortControllerRefGroups: AbortController | null = null;
 import {
   apiClient,
   type Group as APIGroup,
@@ -120,19 +122,227 @@ export default function AdminGroups() {
   }, [user, currentUserEmail, subusersData, isLoadingSubusers, subusersError]);
 
   const [groups, setGroups] = useState<Group[]>([]);
-  const [licenseSummary, setLicenseSummary] = useState<LicenseSummary | null>(
-    null,
-  );
+  const [licenseSummary, setLicenseSummary] = useState<LicenseSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState<string | null>(null);
-  const [groupsCached, setGroupsCached] = useState(false); // ✅ Cache flag
+  const [groupsCached, setGroupsCached] = useState(false);
+
+  // ✅ processGroupsData — Extracted for reuse
+  const processGroupsData = useCallback((groupsData: any) => {
+    if (!groupsData?.groups?.data || !Array.isArray(groupsData.groups.data)) {
+      devError("❌ Unexpected response structure:", groupsData);
+      return;
+    }
+
+    const apiGroups = groupsData.groups.data;
+    const apiLicenseSummary = groupsData.groups.licenseSummary;
+
+    if (apiLicenseSummary) {
+      setLicenseSummary(apiLicenseSummary);
+    }
+
+    const transformedGroups: Group[] = apiGroups.map((group: any, index: number) => {
+      const cleanId = group.groupId?.toString().replace(/^group-/, "") || `${index + 1}`;
+      return {
+        id: parseInt(cleanId) || index + 1,
+        name: group.groupName || "Unnamed Group",
+        description: group.groupDescription || "",
+        created: group.createdAt || new Date().toISOString().split("T")[0],
+        licenseStats: group.licenseStats || null,
+        users: group.users?.map((user: any, userIndex: number) => {
+          const cleanUserId = user.userId?.toString().replace(/^user-/, "") || `${userIndex + 1}`;
+          return {
+            id: parseInt(cleanUserId) || userIndex + 1,
+            name: user.name || "Unknown",
+            email: user.email || "",
+            role: (user.role === "GroupAdmin" ? "Group Admin" : user.role === "user" ? "User" : "Subuser") as any,
+            license: user.licenseCount || user.license || 0,
+            profile: user.role || "User",
+          };
+        }) || [],
+      };
+    });
+
+    setGroups(transformedGroups);
+    setGroupsCached(true);
+  }, []);
+
+  // ✅ fetchGroups — optimized with cache-first logic
+  const fetchGroups = useCallback(async (silent: boolean = false) => {
+    if (groupsCached && !silent) return;
+
+    if (!silent) {
+      setIsLoading(true);
+      setIsError(null);
+    }
+
+    if (isDemo) {
+      setIsLoading(false);
+      setGroupsCached(true);
+      return; // static data handled in init
+    }
+
+    try {
+      const groupsCacheKey = currentUserEmail ? `groups_with_users_${currentUserEmail}` : "groups_with_users";
+
+      if (!silent) {
+        const cached = await indexedDBService.get("groups", groupsCacheKey);
+        if (cached) {
+          devLog("✅ Loaded groups from IndexedDB");
+          processGroupsData(cached);
+          if (!silent) setIsLoading(false);
+          // Refresh background
+          fetchGroups(true);
+          return;
+        }
+      }
+
+      const response = await apiClient.getGroupsWithUsers();
+      if (response.success && response.data) {
+        indexedDBService.put("groups", groupsCacheKey, response.data).catch(e => devError("IDB Write Failed", e));
+        processGroupsData(response.data);
+      } else {
+        if (!silent) setIsError(response.message || "Failed to fetch groups");
+      }
+    } catch (error: any) {
+      devError("Error fetching groups:", error);
+      if (!silent) setIsError(error.message || "An unexpected error occurred");
+    } finally {
+      if (!silent) setIsLoading(false);
+    }
+  }, [groupsCached, isDemo, currentUserEmail, processGroupsData]);
+
+  // ✅ fetchMachinesAndReportsCount — optimized metrics
+  const fetchMachinesAndReportsCount = useCallback(async (silent = false) => {
+    if (abortControllerRefGroups) abortControllerRefGroups.abort();
+    abortControllerRefGroups = new AbortController();
+    const currentAbort = abortControllerRefGroups;
+
+    if (isDemo) return;
+
+    const email = getUserEmail();
+    const cacheKey = email ? `group_metrics_${email}` : "group_metrics";
+
+    try {
+      if (!silent) {
+        const cached = await indexedDBService.get("groups", cacheKey);
+        if (cached) {
+          setTotalMachines(cached.totalMachines || 0);
+          setTotalReports(cached.totalReports || 0);
+          const lastUpdated = cached.updatedAt ? new Date(cached.updatedAt).getTime() : 0;
+          if (Date.now() - lastUpdated < 5 * 60 * 1000) return;
+        }
+      }
+
+      const allGroupUsers = groups.flatMap((group) => group.users);
+      const uniqueUserEmails = [...new Set(allGroupUsers.map((user) => user.email))].filter(Boolean);
+      if (uniqueUserEmails.length === 0) return;
+
+      const results = await Promise.all(uniqueUserEmails.map(async (uEmail) => {
+        try {
+          const [mRes, rRes] = await Promise.all([apiClient.getMachinesByEmail(uEmail), apiClient.getAuditReportsByEmail(uEmail)]);
+          return {
+            machines: mRes.success && mRes.data ? mRes.data.length : 0,
+            reports: rRes.success && rRes.data ? (Array.isArray(rRes.data) ? rRes.data.length : 0) : 0
+          };
+        } catch { return { machines: 0, reports: 0 }; }
+      }));
+
+      if (currentAbort.signal.aborted) return;
+
+      let allMachines = 0; let allReports = 0;
+      results.forEach(res => { allMachines += res.machines; allReports += res.reports; });
+
+      setTotalMachines(allMachines);
+      setTotalReports(allReports);
+      indexedDBService.put("groups", cacheKey, { totalMachines: allMachines, totalReports: allReports, updatedAt: new Date().toISOString() });
+    } catch (error) {
+      if (!currentAbort.signal.aborted) devError("Error fetching metrics:", error);
+    }
+  }, [groups, isDemo, getUserEmail]);
 
   useEffect(() => {
-    // ✅ Only fetch if not cached
-    if (!groupsCached) {
-      fetchGroups();
-    }
-  }, [groupsCached]);
+    // ✅ NAYA CODE — Initialization logic
+    const init = async () => {
+      if (isDemo) {
+        // Demo mode bypass
+        setGroups([
+          {
+            id: 1,
+            name: "Engineering Team",
+            description: "Software development and engineering",
+            created: "2024-01-15",
+            licenseStats: {
+              totalAllocated: 100,
+              distributedToUsers: 45,
+              available: 55,
+              usagePercent: 45,
+            },
+            users: [
+              {
+                id: 1,
+                name: "John Doe",
+                email: "john.doe@demo.com",
+                role: "User",
+                department: "Engineering",
+                license: 5,
+                licenseKey: "",
+                profile: "Developer",
+              },
+              {
+                id: 2,
+                name: "Jane Smith",
+                email: "jane.smith@demo.com",
+                role: "User",
+                department: "Engineering",
+                license: 3,
+                licenseKey: "",
+                profile: "Senior Developer",
+              },
+            ],
+          },
+          {
+            id: 2,
+            name: "Marketing Team",
+            description: "Marketing and communications",
+            created: "2024-02-20",
+            licenseStats: {
+              totalAllocated: 50,
+              distributedToUsers: 28,
+              available: 22,
+              usagePercent: 56,
+            },
+            users: [
+              {
+                id: 3,
+                name: "Mike Johnson",
+                email: "mike.johnson@demo.com",
+                role: "User",
+                department: "Marketing",
+                license: 2,
+                licenseKey: "",
+                profile: "Marketing Manager",
+              },
+            ],
+          },
+        ]);
+        setLicenseSummary({
+          totalAllocated: 150,
+          totalDistributed: 73,
+          totalAvailable: 77,
+          overallUsagePercent: 48.7,
+        });
+        setTotalMachines(47);
+        setTotalReports(128);
+        setIsLoading(false);
+        setGroupsCached(true);
+      } else {
+        // Live Mode: Strictly Cache-First
+        await fetchGroups(false);
+      }
+    };
+    init();
+  }, []);
 
   /* import { indexedDBService } from "@/services/indexedDBService"; */
   /* Note: Assuming imports are at top, I will add import in a separate block or assuming user handles it. 
@@ -140,251 +350,6 @@ export default function AdminGroups() {
      I will add import in a separate replace_file_content call first. 
   */
 
-  const fetchGroups = async (silent: boolean = false) => {
-    // ✅ If already cached, skip fetching
-    if (groupsCached && !silent) {
-      return;
-    }
-
-    if (!silent) {
-      setIsLoading(true);
-      setIsError(null);
-    }
-
-    // Skip API calls for demo mode - use dummy data
-    if (isDemo) {
-      setIsLoading(false);
-      setGroupsCached(true); // ✅ Mark as cached
-      setIsError(null);
-      setGroups([
-        {
-          id: 1,
-          name: "Engineering Team",
-          description: "Software development and engineering",
-          created: "2024-01-15",
-          licenseStats: {
-            totalAllocated: 100,
-            distributedToUsers: 45,
-            available: 55,
-            usagePercent: 45,
-          },
-          users: [
-            {
-              id: 1,
-              name: "John Doe",
-              email: "john.doe@demo.com",
-              role: "User",
-              department: "Engineering",
-              license: 5,
-              licenseKey: "",
-              profile: "Developer",
-            },
-            {
-              id: 2,
-              name: "Jane Smith",
-              email: "jane.smith@demo.com",
-              role: "User",
-              department: "Engineering",
-              license: 3,
-              licenseKey: "",
-              profile: "Senior Developer",
-            },
-          ],
-        },
-        {
-          id: 2,
-          name: "Marketing Team",
-          description: "Marketing and communications",
-          created: "2024-02-20",
-          licenseStats: {
-            totalAllocated: 50,
-            distributedToUsers: 28,
-            available: 22,
-            usagePercent: 56,
-          },
-          users: [
-            {
-              id: 3,
-              name: "Mike Johnson",
-              email: "mike.johnson@demo.com",
-              role: "User",
-              department: "Marketing",
-              license: 2,
-              licenseKey: "",
-              profile: "Marketing Manager",
-            },
-          ],
-        },
-        {
-          id: 3,
-          name: "Sales Team",
-          description: "Sales and business development",
-          created: "2024-03-10",
-          licenseStats: {
-            totalAllocated: 75,
-            distributedToUsers: 62,
-            available: 13,
-            usagePercent: 82.7,
-          },
-          users: [
-            {
-              id: 4,
-              name: "Sarah Williams",
-              email: "sarah.williams@demo.com",
-              role: "User",
-              department: "Sales",
-              license: 4,
-              licenseKey: "",
-              profile: "Sales Executive",
-            },
-            {
-              id: 5,
-              name: "Tom Brown",
-              email: "tom.brown@demo.com",
-              role: "User",
-              department: "Sales",
-              license: 3,
-              licenseKey: "",
-              profile: "Account Manager",
-            },
-          ],
-        },
-      ]);
-      setLicenseSummary({
-        totalAllocated: 225,
-        totalDistributed: 135,
-        totalAvailable: 90,
-        overallUsagePercent: 60,
-      });
-      return;
-    }
-
-    try {
-      if (!silent) {
-        setIsLoading(true);
-        setIsError(null);
-      }
-
-      let groupsData = null;
-
-      // 1. Try IDB first (user-scoped, only if not forcing refresh via silent)
-      const groupsCacheKey = currentUserEmail
-        ? `groups_with_users_${currentUserEmail}`
-        : "groups_with_users";
-
-      // Only try cache if NOT silent (refresh)
-      if (!silent) {
-        try {
-          const cached = await indexedDBService.get("groups", groupsCacheKey);
-          if (cached) {
-            /* console.log(
-              "✅ Loaded groups from IndexedDB for",
-              currentUserEmail,
-            ); */
-            // Defensive: If cache is an array (legacy), wrap it in the expected structure
-            groupsData = Array.isArray(cached)
-              ? { groups: { data: cached } }
-              : cached;
-          }
-        } catch (e) {
-          // console.warn("IDB Read Failed: groups", e);
-        }
-      } else {
-        // console.log("🔄 Force refreshing groups (skipping cache)...");
-      }
-
-      // 2. Fetch from API if no cache
-      if (!groupsData) {
-        // console.log(silent ? '🔄 Silently refreshing groups...' : '🔍 Dashboard: Fetching groups from /api/Group/with-users...');
-        const response = await apiClient.getGroupsWithUsers();
-
-        // console.log('📥 Dashboard: API Response:', response);
-
-        if (!response.success) {
-          const err = response.message || "Failed to fetch groups from server";
-          setIsError(err);
-          // console.error("❌ API Error:", err);
-          return;
-        }
-
-        groupsData = response.data;
-
-        // 3. Update IDB (user-scoped)
-        if (groupsData) {
-          indexedDBService
-            .put("groups", groupsCacheKey, groupsData)
-            .catch((e: any) => {}); // console.error("IDB Write Failed: groups", e));
-        }
-      }
-
-      if (!groupsData?.groups?.data || !Array.isArray(groupsData.groups.data)) {
-        // console.error("❌ Unexpected response structure:", groupsData);
-        setIsError("Unexpected data format from server");
-        return;
-      }
-
-      const apiGroups = groupsData.groups.data;
-      const apiLicenseSummary = groupsData.groups.licenseSummary;
-      // console.log('✅ Dashboard: Extracted API Groups:', apiGroups.length, 'groups');
-      // console.log('📊 Dashboard: License Summary:', apiLicenseSummary);
-
-      // Store license summary
-      if (apiLicenseSummary) {
-        setLicenseSummary(apiLicenseSummary);
-      }
-
-      // Transform API response to component format
-      const transformedGroups: Group[] = apiGroups.map(
-        (group: any, index: number) => {
-          const cleanId =
-            group.groupId?.toString().replace(/^group-/, "") || `${index + 1}`;
-
-          return {
-            id: parseInt(cleanId) || index + 1,
-            name: group.groupName || "Unnamed Group",
-            description: group.groupDescription || "",
-            created: new Date().toISOString().split("T")[0],
-            licenseStats: group.licenseStats || null,
-            users:
-              group.users?.map((user: any, userIndex: number) => {
-                const cleanUserId =
-                  user.userId?.toString().replace(/^user-/, "") ||
-                  `${userIndex + 1}`;
-                return {
-                  id: parseInt(cleanUserId) || userIndex + 1,
-                  name: user.name || "Unknown",
-                  email: user.email || "",
-                  role: (user.role === "GroupAdmin"
-                    ? "Group Admin"
-                    : user.role === "user"
-                      ? "User"
-                      : "Subuser") as "User" | "Subuser" | "Group Admin",
-                  // department: user.department || 'N/A',
-                  license:
-                    user.licenseCount || user.license || 0 || user.licenseKey,
-                  profile: user.role || "User",
-                };
-              }) || [],
-          };
-        },
-      );
-
-      setGroups(transformedGroups);
-      setGroupsCached(true); // ✅ Mark as cached after successful load
-      // console.log('✅ Dashboard: Groups loaded:', transformedGroups.length);
-    } catch (error: any) {
-      // console.error('❌ Dashboard: Error fetching groups:', error);
-      if (!silent) {
-        setIsError(
-          error.message || "An unexpected error occurred while loading groups",
-        );
-      }
-    } finally {
-      if (!silent) {
-        setIsLoading(false);
-      }
-    }
-  };
 
   const fetchAvailableUsers = async () => {
     try {
@@ -526,96 +491,16 @@ export default function AdminGroups() {
 
   // Fetch total machines and reports for all group members
   useEffect(() => {
-    if (groups.length > 0) {
+    if (groups.length === 0) return;
+
+    // ✅ Debounce 300ms 
+    const timer = setTimeout(() => {
       fetchMachinesAndReportsCount();
-    }
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [groups]);
 
-  const fetchMachinesAndReportsCount = async (silent = false) => {
-    // Skip API calls in demo mode - use static values
-    if (isDemo) {
-      setTotalMachines(47);
-      setTotalReports(128);
-      return;
-    }
-
-    const email = getUserEmail();
-    const cacheKey = email ? `group_metrics_${email}` : "group_metrics";
-
-    try {
-      // 1. Try to load from IndexedDB first for instant UI response
-      if (!silent) {
-        try {
-          const cached = await indexedDBService.get("groups", cacheKey);
-          if (cached) {
-            devLog("✅ Dashboard: Loaded group metrics from IndexedDB");
-            setTotalMachines(cached.totalMachines || 0);
-            setTotalReports(cached.totalReports || 0);
-          }
-        } catch (e) {
-          console.warn("IDB Read Failed: group_metrics", e);
-        }
-      }
-
-      let allMachines = 0;
-      let allReports = 0;
-
-      // Get all unique user emails from all groups
-      const allGroupUsers = groups.flatMap((group) => group.users);
-      const uniqueUserEmails = [
-        ...new Set(allGroupUsers.map((user) => user.email)),
-      ];
-
-      // Fetch machines and reports for each group member
-      for (const userEmail of uniqueUserEmails) {
-        if (!userEmail) continue;
-
-        // Fetch machines count for this user
-        try {
-          const machinesResponse =
-            await apiClient.getMachinesByEmail(userEmail);
-          if (machinesResponse.success && machinesResponse.data) {
-            allMachines += machinesResponse.data.length;
-          }
-        } catch (error) {
-          // console.error(`Error fetching machines for ${userEmail}:`, error);
-        }
-
-        // Fetch reports count for this user
-        try {
-          const reportsResponse =
-            await apiClient.getAuditReportsByEmail(userEmail);
-          if (reportsResponse.success && reportsResponse.data) {
-            allReports += Array.isArray(reportsResponse.data)
-              ? reportsResponse.data.length
-              : 0;
-          }
-        } catch (error) {
-          // console.error(`Error fetching reports for ${userEmail}:`, error);
-        }
-      }
-
-      setTotalMachines(allMachines);
-      setTotalReports(allReports);
-
-      // ✅ Update IndexedDB for persistence
-      try {
-        await indexedDBService.put("groups", cacheKey, {
-          totalMachines: allMachines,
-          totalReports: allReports,
-          updatedAt: new Date().toISOString(),
-        });
-        devLog("✅ Dashboard: Updated group metrics in IndexedDB");
-      } catch (e) {
-        console.error("IDB Write Failed: group_metrics", e);
-      }
-    } catch (error) {
-      console.error(
-        "Error fetching group members machines/reports count:",
-        error,
-      );
-    }
-  };
 
   const toggleGroup = (groupId: number) => {
     setExpandedGroups((prev) =>
@@ -1948,39 +1833,49 @@ export default function AdminGroups() {
                         ❌ Error loading subusers. Please try again.
                       </p>
                     </div>
-                  ) : subusersData && subusersData.length > 0 ? (
-                    <select
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                      required
-                    >
-                      <option value="">Select a user...</option>
-                      <optgroup label="Subuser List">
-                        {subusersData.map((subuser: any) => (
-                          <option
-                            key={subuser.subuser_email}
-                            value={subuser.subuser_email}
-                          >
-                            {subuser.subuser_email}
-                          </option>
-                        ))}
-                      </optgroup>
-                    </select>
                   ) : (
-                    <div className="space-y-2">
-                      <div className="w-full px-3 py-2 border border-amber-300 rounded-lg bg-amber-50">
-                        <p className="text-sm text-amber-800 font-medium">
-                          ⚠️ No subusers available
-                        </p>
-                        <p className="text-xs text-amber-700 mt-1">
-                          Current user: <strong>{currentUserEmail}</strong>
-                        </p>
-                        <p className="text-xs text-amber-700">
-                          Please create subusers first in the Subusers section.
-                        </p>
-                      </div>
-                    </div>
+                    (() => {
+                      const validSubusers =
+                        subusersData?.filter(
+                          (subuser: any) =>
+                            subuser.subuser_email !== currentUserEmail,
+                        ) || [];
+                      return validSubusers.length > 0 ? (
+                        <select
+                          value={userEmail}
+                          onChange={(e) => setUserEmail(e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          required
+                        >
+                          <option value="">Select a user...</option>
+                          <optgroup label="Subuser List">
+                            {validSubusers.map((subuser: any) => (
+                              <option
+                                key={subuser.subuser_email}
+                                value={subuser.subuser_email}
+                              >
+                                {subuser.subuser_email}
+                              </option>
+                            ))}
+                          </optgroup>
+                        </select>
+                      ) : (
+                        <div className="space-y-2">
+                          <div className="w-full px-3 py-2 border border-amber-300 rounded-lg bg-amber-50">
+                            <p className="text-sm text-amber-800 font-medium">
+                              ⚠️ No subusers available
+                            </p>
+                            <p className="text-xs text-amber-700 mt-1">
+                              Current user: <strong>{currentUserEmail}</strong>
+                            </p>
+                            <p className="text-xs text-amber-700">
+                              Please create subusers first in the Subusers
+                              section.
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })()
                   )}
                   <p className="mt-1 text-xs text-slate-500">
                     💡 Select a subuser from your account to add to this group.
@@ -2670,9 +2565,9 @@ export default function AdminGroups() {
                                 String(machine.machine_id),
                               ),
                           )
-                          .map((machine: any) => (
+                          .map((machine: any, idx: number) => (
                             <option
-                              key={machine.id || machine.machine_id}
+                              key={`machine-${machine.id || machine.machine_id || idx}`}
                               value={String(machine.id || machine.machine_id)}
                             >
                               {machine.machine_name || "Unnamed Machine"} -{" "}
@@ -2772,8 +2667,11 @@ export default function AdminGroups() {
                           .filter(
                             (license) => !selectedLicenses.includes(license.id),
                           )
-                          .map((license: any) => (
-                            <option key={license.id} value={license.id}>
+                          .map((license: any, idx: number) => (
+                            <option
+                              key={`license-${license.id || idx}`}
+                              value={license.id}
+                            >
                               License #{license.id}
                             </option>
                           ))}
@@ -3004,9 +2902,9 @@ export default function AdminGroups() {
                                     String(machine.machine_id),
                                   ),
                               )
-                              .map((machine: any) => (
+                              .map((machine: any, idx: number) => (
                                 <option
-                                  key={machine.id || machine.machine_id}
+                                  key={`revoke-machine-${machine.id || machine.machine_id || idx}`}
                                   value={String(
                                     machine.id || machine.machine_id,
                                   )}

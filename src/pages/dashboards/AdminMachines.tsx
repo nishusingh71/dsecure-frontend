@@ -1,13 +1,12 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import SEOHead from "../../components/SEOHead";
 import { getSEOForPage } from "../../utils/seo";
 import { exportToCsv } from "@/utils/csv";
 import { Helmet } from "react-helmet-async";
 import { useNotification } from "@/contexts/NotificationContext";
 import { indexedDBService } from "@/services/indexedDBService";
-
+import { idbKeys } from "@/services/idbKeys";
 import { Machine } from "@/utils/enhancedApiClient";
-import { useEffect } from "react";
 import { apiClient } from "@/utils/enhancedApiClient";
 import { authService } from "@/utils/authService";
 import { isDemoMode, DEMO_MACHINES, DEMO_SUBUSERS } from "@/data/demoData";
@@ -30,6 +29,7 @@ interface UIMachine {
   fingerprintHash?: string; // Machine fingerprint hash
   group?: string; // ✅ Group name for filtering
   groupName?: string; // ✅ Alternative group name field
+  groupId?: string | number; // ✅ Group ID for filtering
 }
 
 export default function AdminMachines() {
@@ -70,9 +70,8 @@ export default function AdminMachines() {
     }
 
     const jwtUser = authService.getUserFromToken();
-    return (
-      storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || ""
-    );
+    const email = storedUserData?.user_email || jwtUser?.user_email || jwtUser?.email || "";
+    return email.toLowerCase();
   };
 
   const currentUserEmail = getUserEmail();
@@ -233,40 +232,8 @@ export default function AdminMachines() {
     fetchGroupsForFilter();
   }, [isDemo]);
 
-  // ✅ Cache Helper Functions
-  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  // localStorage cache removed in favor of IndexedDB + React Query
 
-  const getCachedData = (key: string) => {
-    try {
-      const cached = localStorage.getItem(`admin_cache_${key}`);
-      if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
-        if (Date.now() - timestamp < CACHE_DURATION) {
-          // console.log(`✅ Using cached data for ${key}`);
-          return data;
-        }
-        localStorage.removeItem(`admin_cache_${key}`);
-      }
-    } catch (e) {
-      console.warn(`⚠️ Cache read error for ${key}:`, e);
-    }
-    return null;
-  };
-
-  const setCachedData = (key: string, data: any) => {
-    try {
-      localStorage.setItem(
-        `admin_cache_${key}`,
-        JSON.stringify({
-          data,
-          timestamp: Date.now(),
-        }),
-      );
-      // console.log(`💾 Cached data for ${key}`);
-    } catch (e) {
-      console.warn(`⚠️ Cache write error for ${key}:`, e);
-    }
-  };
 
   // ✅ Use React Query for machines data with automatic caching + IndexedDB persistence
   const {
@@ -276,22 +243,15 @@ export default function AdminMachines() {
   } = useQuery({
     queryKey: [
       "machines",
-      subuserFilter,
-      groupFilter,
-      query,
-      licenseFilter,
+      currentUserEmail,
       isDemo,
+      subusersData.length, // ✅ Force refetch when subusers load
+      groupFilter, // ✅ Refetch when group filter changes
     ],
     queryFn: async () => {
-      // 🎮 Demo Mode Check
+      // 🎮 Demo Mode Check - Static data directly
       if (isDemoMode()) {
-        let demoMachines = DEMO_MACHINES;
-        if (subuserFilter && subuserFilter !== "all") {
-          demoMachines = DEMO_MACHINES.filter(
-            (m: any) => m.userEmail === subuserFilter,
-          );
-        }
-        return demoMachines;
+        return DEMO_MACHINES;
       }
 
       const userEmail = currentUserEmail;
@@ -299,83 +259,76 @@ export default function AdminMachines() {
         throw new Error("No user email found");
       }
 
-      // Generate a unique cache key based on filters
-      const cacheKey = `machines_${userEmail}_${subuserFilter}_${groupFilter}_${query}_${licenseFilter}`;
+      // Consistent single cache key for ALL machines of this user
+      const cacheKey = idbKeys.machines(userEmail);
 
-      // 1?? Check IndexedDB Cache first
+      // 1. Check IndexedDB Cache first (Live Mode Only)
       try {
-        const cachedData = await indexedDBService.getItem(cacheKey);
-        if (cachedData) {
-          // console.log(`? Serving Machines from IndexedDB cache: ${cacheKey}`);
-          // Return cached data immediately, React Query will serve this
-          // We can optionally trigger a background refresh if slightly stale,
-          // but for now we rely on explicit invalidation (write actions)
+        const cachedData = await indexedDBService.get("machines", cacheKey);
+        if (cachedData && Array.isArray(cachedData) && cachedData.length > 0) {
+          console.log("⚡ Found cached machines in IndexedDB:", cacheKey);
           return cachedData;
         }
       } catch (err) {
         console.warn("Error reading from IndexedDB:", err);
       }
 
-      let targetEmail = userEmail;
-      if (subuserFilter && subuserFilter !== "all") {
-        targetEmail = subuserFilter;
-      }
-
-      const filters: any = { userEmail: targetEmail };
-      if (query) filters.search = query;
-      if (groupFilter) filters.groupName = groupFilter;
-      if (licenseFilter) filters.licenseStatus = licenseFilter;
-
-      // console.log("🖥️ Fetching filtered machines with:", filters);
-
-      const response = await apiClient.getFilteredMachines(filters);
-
-      let uniqueMachines: any[] = [];
-      if (response.success && response.data) {
-        const responseData = response.data as any;
-        if (responseData.machines && Array.isArray(responseData.machines)) {
-          uniqueMachines = responseData.machines;
-          /* console.log(
-            `📊 Total Machines: ${responseData.totalMachines}, Pages: ${responseData.totalPages}`,
-          ); */
-        } else {
-          uniqueMachines = Array.isArray(response.data)
-            ? response.data
-            : [response.data];
+      // Prepare fetching parameters
+      const fetchFilters: any = { userEmail };
+      
+      // ✅ Add groupName if groupFilter is active
+      if (groupFilter) {
+        const selectedGroup = groupsData.find(g => String(g.groupId || g.id) === String(groupFilter));
+        if (selectedGroup) {
+          const resolvedGroupName = selectedGroup.groupName || selectedGroup.name;
+          console.log(`🔍 Adding groupName filter to machine API call: ${resolvedGroupName}`);
+          fetchFilters.groupName = resolvedGroupName;
         }
       }
 
-      if (subuserFilter === "all" && subusersData.length > 0) {
+      const response = await apiClient.getFilteredMachines(fetchFilters);
+      
+      let fetchedMachines: any[] = [];
+      if (response.success && response.data) {
+        const responseData = response.data as any;
+        fetchedMachines = responseData.machines && Array.isArray(responseData.machines)
+          ? responseData.machines
+          : Array.isArray(response.data)
+            ? response.data
+            : [response.data];
+      }
+
+      // Combine with subuser machines if needed
+      if (isSuperAdmin || isGroupAdmin) {
+        // For performance, we only fetch machines for actual subusers
         const subuserPromises = subusersData.map((s: any) =>
           apiClient.getFilteredMachines({
-            ...filters,
             userEmail: s.subuser_email,
           }),
         );
         const subuserResults = await Promise.all(subuserPromises);
-
         subuserResults.forEach((res) => {
           if (res.success && res.data) {
             const resData = res.data as any;
-            const machinesArray =
-              resData.machines && Array.isArray(resData.machines)
-                ? resData.machines
-                : Array.isArray(res.data)
-                  ? res.data
-                  : [res.data];
-            uniqueMachines = [...uniqueMachines, ...machinesArray];
+            const subMachines = resData.machines && Array.isArray(resData.machines)
+              ? resData.machines
+              : Array.isArray(res.data)
+                ? res.data
+                : [res.data];
+            fetchedMachines = [...fetchedMachines, ...subMachines];
           }
         });
-
-        uniqueMachines = Array.from(
-          new Map(
-            uniqueMachines.map((machine) => [
-              machine.fingerprintHash || machine.fingerprint_hash,
-              machine,
-            ]),
-          ).values(),
-        );
       }
+
+      // Deduplicate
+      const uniqueMachines = Array.from(
+        new Map(
+          fetchedMachines.filter(m => m !== null).map((machine) => [
+            machine.machineId || machine.machine_id || machine.fingerprintHash || machine.fingerprint_hash || Math.random(),
+            machine,
+          ]),
+        ).values(),
+      );
 
       const machinesRes = {
         success: uniqueMachines.length > 0,
@@ -653,14 +606,30 @@ export default function AdminMachines() {
             totalLicenses,
             fingerprintHash:
               machine.fingerprintHash || machine.fingerprint_hash,
-            group: machine.groupName || machine.group || machine.group_name,
-            groupName: machine.groupName || machine.group || machine.group_name,
+            group: machine.groupName || machine.group || machine.group_name || "",
+            groupName: machine.groupName || machine.group || machine.group_name || "",
+            groupId: (() => {
+              const explicitId = machine.groupId || machine.group_id || machine.user_group;
+              if (explicitId) return explicitId;
+
+              const machineEmail = (machine.userEmail || machine.user_email || machine.subuserEmail || machine.subuser_email || "").toLowerCase();
+              
+              // Resolve from current user if it matches
+              if (machineEmail === currentUserEmail.toLowerCase()) {
+                return currentUserGroupId || "";
+              }
+
+              // Resolve from subuser metadata if missing in machine
+              const subuser = Array.isArray(subusersData) ? subusersData.find((s: any) => (s.subuser_email || s.email || "").toLowerCase() === machineEmail) : null;
+              return subuser?.group_id || subuser?.groupId || "";
+            })(),
           };
         });
 
-        // 2?? Save to IndexedDB Cache
+        // 2. Save to IndexedDB Cache
         try {
-          await indexedDBService.setItem(cacheKey, uiMachines);
+          // Use centralized key
+          await indexedDBService.put("machines", idbKeys.machines(userEmail), uiMachines);
         } catch (err) {
           console.warn("Error saving to IndexedDB:", err);
         }
@@ -683,6 +652,7 @@ export default function AdminMachines() {
       setAllRows(machinesData);
     }
   }, [machinesData]);
+
   const [selectedMachineIds, setSelectedMachineIds] = useState<Set<string>>(
     new Set(),
   );
@@ -700,12 +670,7 @@ export default function AdminMachines() {
   const [pageSize, setPageSize] = useState(5); // Default 10 rows per page
   const pageSizeOptions = [5, 10, 25, 50, 100, 250];
 
-  // Update allRows when machinesData changes
-  useEffect(() => {
-    if (machinesData) {
-      setAllRows(machinesData);
-    }
-  }, [machinesData]);
+
 
   // OLD: Manual data fetching replaced with React Query
   // Load machines data on component mount and when filters change
@@ -733,39 +698,104 @@ export default function AdminMachines() {
   const uniqueGroups = useMemo(() => {
     if (!groupsData || groupsData.length === 0) return [];
 
-    // Extract groupName from API response (same structure as AdminGroups)
-    const groups = groupsData
-      .map((g: any) => g.groupName || g.name)
-      .filter(Boolean);
-
-    // Sort alphabetically
-    return groups.sort((a: string, b: string) => a.localeCompare(b));
+    return groupsData
+      .map((g: any) => ({
+        id: g.groupId || g.id,
+        name: g.groupName || g.name
+      }))
+      .filter(g => g.id && g.name)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [groupsData]);
 
   const filtered = useMemo(() => {
-    // ✅ NO CLIENT-SIDE FILTERING - API already filters everything correctly
-    // All filtering (query, erase option, license, status, group) is handled by the API endpoint
-
-    /* COMMENTED OUT - Client-side filtering removed (API handles all filtering):
+    // ✅ Filter client-side from the full cached list (Cache-First Strategy)
     let result = allRows.filter(r => {
-      const matchesQuery = r.hostname.toLowerCase().includes(query.toLowerCase()) ||
-        r.eraseOption.toLowerCase().includes(query.toLowerCase()) ||
-        r.license.toLowerCase().includes(query.toLowerCase()) ||
-        (r.userEmail && r.userEmail.toLowerCase().includes(query.toLowerCase())) ||
-        (r.osVersion && r.osVersion.toLowerCase().includes(query.toLowerCase()))
-      const matchesErase = !eraseFilter || r.eraseOption === eraseFilter
-      const matchesLicense = !licenseFilter || r.license === licenseFilter
-      const matchesStatus = !statusFilter || r.status === statusFilter
-      
-      const machineGroup = r.group || r.groupName || (r as any).group_name;
-      const matchesGroup = !groupFilter || machineGroup === groupFilter;
-      
-      return matchesQuery && matchesErase && matchesLicense && matchesStatus && matchesGroup
-    })
-    */
+      // 1. Subuser Email Filter
+      const reportEmail = (r.userEmail || "").toLowerCase();
+      let matchesSubuser = true;
+      if (subuserFilter === "all") {
+        matchesSubuser = true;
+      } else if (subuserFilter) {
+        matchesSubuser = reportEmail === subuserFilter.toLowerCase();
+      } else {
+        // Default: "My Machines"
+        // ✅ Demo Mode: Show all machines since demo user doesn't own any specific ones in static data
+        if (isDemo) {
+          matchesSubuser = true;
+        } else {
+          matchesSubuser = reportEmail === currentUserEmail.toLowerCase();
+        }
+      }
 
-    // Start with all API-filtered results
-    let result = [...allRows];
+      // Match by ID or Name
+      const gFilterStr = String(groupFilter || "");
+      const cleanGFilter = gFilterStr.replace(/^group-/, "");
+      
+      const selectedGroupObj = uniqueGroups.find(g => {
+        const gid = String(g.id).replace(/^group-/, "");
+        return gid === cleanGFilter;
+      });
+      const groupFilterName = selectedGroupObj?.name?.toLowerCase();
+
+      const recordGroupId = String(r.groupId || (r as any).group_id || "").replace(/^group-/, "");
+      const recordGroupName = String(r.groupName || r.group || (r as any).group_name || "").toLowerCase().trim();
+
+      let matchesGroup = !groupFilter;
+      if (groupFilter) {
+        matchesGroup = (recordGroupId && recordGroupId === cleanGFilter) || 
+                       (recordGroupName && groupFilterName && recordGroupName === groupFilterName);
+      }
+      
+      // ✅ On-the-fly Group Resolution: If explicit identification failed, try deep search
+      if (groupFilter && !matchesGroup && (groupsData.length > 0 || subusersData.length > 0)) {
+        const machineEmail = (r.userEmail || "").toLowerCase().trim();
+        
+        // Check current user match
+        const cleanUserGid = String(currentUserGroupId || "").replace(/^group-/, "");
+        if (machineEmail === currentUserEmail.toLowerCase().trim() && cleanUserGid === cleanGFilter) {
+          matchesGroup = true;
+        } else {
+          // Check groupsData for this user
+          for (const group of groupsData) {
+            const gid = String(group.groupId || group.id || "").replace(/^group-/, "");
+            if (gid === cleanGFilter) {
+              const groupUsers = group.users || [];
+              if (groupUsers.some((u: any) => (u.email || u.user_email || "").toLowerCase().trim() === machineEmail)) {
+                matchesGroup = true;
+                break;
+              }
+            }
+          }
+          
+          // Check subusersData
+          if (!matchesGroup) {
+            const subuser = Array.isArray(subusersData) ? subusersData.find((s: any) => (s.subuser_email || s.email || "").toLowerCase().trim() === machineEmail) : null;
+            if (subuser) {
+                const sGroupId = String(subuser.group_id || subuser.groupId || "").replace(/^group-/, "");
+                const sGroupName = String(subuser.subuser_group || subuser.user_group || "").toLowerCase().trim();
+                matchesGroup = (sGroupId === cleanGFilter) || (sGroupName && groupFilterName && sGroupName === groupFilterName);
+            }
+          }
+        }
+      }
+
+      // 3. License Filter
+      const matchesLicense = !licenseFilter || r.license === licenseFilter;
+
+      // 4. Status Filter
+      const matchesStatus = !statusFilter || r.status.toLowerCase().includes(statusFilter.toLowerCase());
+
+      // 5. Search Query (Hostname, Email, etc.)
+      const q = query.toLowerCase();
+      const matchesQuery = !query || 
+        r.hostname.toLowerCase().includes(q) ||
+        r.eraseOption.toLowerCase().includes(q) ||
+        r.license.toLowerCase().includes(q) ||
+        (r.userEmail && r.userEmail.toLowerCase().includes(q)) ||
+        (r.osVersion && r.osVersion.toLowerCase().includes(q));
+
+      return matchesSubuser && matchesGroup && matchesLicense && matchesStatus && matchesQuery;
+    });
 
     // Remove duplicates if requested (UI-only feature)
     if (showUniqueOnly) {
@@ -788,13 +818,49 @@ export default function AdminMachines() {
 
     return result;
   }, [
-    allRows,
-    // Removed filter dependencies - API handles all filtering
-    // query, eraseFilter, licenseFilter, statusFilter, groupFilter,
+    allRows, query, subuserFilter, licenseFilter, statusFilter, groupFilter,
     showUniqueOnly,
     sortBy,
     sortOrder,
+    groupsData,
+    subusersData,
+    currentUserGroupId,
+    currentUserEmail,
   ]);
+
+  // ✅ Fallback: Filtered list empty hone pe API refresh (Live Mode Only)
+  const lastFallbackRef = useRef<number>(0);
+  useEffect(() => {
+    if (isDemo || loading) return;
+
+    // Check if any filter is active OR if we are looking at "My Machines" but it's empty
+    const hasActiveFilters = query || statusFilter || licenseFilter || groupFilter;
+    const isOwnerFilterActive = subuserFilter && subuserFilter !== "all" && subuserFilter !== currentUserEmail;
+    
+    // Trigger if search/filter applied AND 0 results, 
+    // OR if "My Machines" is active and we have 0 local results
+    const shouldTriggerFallback = (hasActiveFilters || isOwnerFilterActive || subuserFilter === "") && filtered.length === 0;
+
+    if (shouldTriggerFallback) {
+      const now = Date.now();
+      // Throttle: Max 1 fallback refresh per 30 seconds to avoid API spamming
+      if (now - lastFallbackRef.current > 30000) {
+        lastFallbackRef.current = now;
+        console.log("🕵️ Filtering/My Machines yielded 0 results. Triggering live fallback API refresh...");
+        
+        // Manual cache invalidation before refetch
+        const invalidateAndRefetch = async () => {
+          try {
+            await indexedDBService.delete("machines", idbKeys.machines(currentUserEmail));
+            refetchMachines();
+          } catch (e) {
+            console.warn("Fallback refresh failed:", e);
+          }
+        };
+        invalidateAndRefetch();
+      }
+    }
+  }, [filtered.length, query, statusFilter, licenseFilter, groupFilter, subuserFilter, loading, allRows.length, isDemo, currentUserEmail, refetchMachines]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const rows = filtered.slice((page - 1) * pageSize, page * pageSize);
@@ -1416,14 +1482,19 @@ export default function AdminMachines() {
                 className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">-- Select a subuser --</option>
-                {subusersData.map((subuser: any) => (
-                  <option
-                    key={subuser.subuser_email}
-                    value={subuser.subuser_email}
-                  >
-                    {subuser.subuser_email}
-                  </option>
-                ))}
+                {subusersData
+                  .filter(
+                    (subuser: any) =>
+                      subuser.subuser_email !== currentUserEmail,
+                  )
+                  .map((subuser: any) => (
+                    <option
+                      key={subuser.subuser_email}
+                      value={subuser.subuser_email}
+                    >
+                      {subuser.subuser_email}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -1649,34 +1720,42 @@ export default function AdminMachines() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Machine Owner Filter - Show only if there are subusers */}
+            {/* Machine Owner Filter - Show only if there are valid subusers */}
+            {(() => {
+              const validSubusers = subusersData.filter(
+                (subuser: any) => subuser.subuser_email !== currentUserEmail,
+              );
+              if (validSubusers.length === 0) return null;
 
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Machine Owner
-              </label>
-              <select
-                className="w-full border rounded px-3 py-2 text-sm"
-                value={subuserFilter}
-                onChange={(e) => {
-                  setSubuserFilter(e.target.value);
-                  setPage(1);
-                }}
-              >
-                <option value="">My Machines</option>
-                <option value="all">All Machines (Me + Subusers)</option>
-                <optgroup label="Subuser Machines">
-                  {subusersData.map((subuser: any) => (
-                    <option
-                      key={subuser.subuser_email}
-                      value={subuser.subuser_email}
-                    >
-                      {subuser.subuser_name || subuser.subuser_email}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-            </div>
+              return (
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Machine Owner
+                  </label>
+                  <select
+                    className="w-full border rounded px-3 py-2 text-sm"
+                    value={subuserFilter}
+                    onChange={(e) => {
+                      setSubuserFilter(e.target.value);
+                      setPage(1);
+                    }}
+                  >
+                    <option value="">My Machines</option>
+                    <option value="all">All Machines (Me + Subusers)</option>
+                    <optgroup label="Subuser Machines">
+                      {validSubusers.map((subuser: any) => (
+                        <option
+                          key={subuser.subuser_email}
+                          value={subuser.subuser_email}
+                        >
+                          {subuser.subuser_name || subuser.subuser_email}
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+                </div>
+              );
+            })()}
 
             {/* Group Filter */}
             <div className="flex-1">
@@ -1692,9 +1771,9 @@ export default function AdminMachines() {
                 }}
               >
                 <option value="">All Groups</option>
-                {uniqueGroups.map((group: string) => (
-                  <option key={group} value={group}>
-                    {group}
+                {uniqueGroups.map((group: any) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
                   </option>
                 ))}
               </select>

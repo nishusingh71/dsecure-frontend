@@ -1,4 +1,4 @@
-﻿import {
+import {
   SEOMetadata,
   SEO_CONFIG,
   BASE_KEYWORDS,
@@ -39,6 +39,11 @@ export const PAGE_SEO: Record<string, Partial<SEOMetadata>> = {
     description:
       "Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times",
     canonicalUrl: getCanonicalUrl("/"),
+  },
+  hardDriveMonitor: {
+    title: "Hard Drive Monitor - S.M.A.R.T Health Tracking | D-Secure Tech",
+    description: "Monitor hard drive health, temperature, and performance in real-time with D-Secure Hard Drive Monitor. S.M.A.R.T. tracking and disk cloning support.",
+    canonicalUrl: getCanonicalUrl("/products/hard-drive-monitor"),
   },
 };
 
@@ -774,9 +779,9 @@ export const BASE_KEYWORDS = [
   "Trust & Safety Tool",
   "Online Safety Service",
 
-  // Stellar & D-Secure
-  "Stellar Data Eraser Software",
-  "Stellar D-Secure",
+  // D-Secure Eraser
+  "D-Secure Data Eraser Software",
+  "D-Secure Drive Eraser",
   "D-Secure Data Eraser",
   "D-Secure Data Erasure Software",
   "Secure Data Eraser",

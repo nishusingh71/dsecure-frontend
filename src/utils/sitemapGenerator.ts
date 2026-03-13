@@ -70,6 +70,12 @@ export const siteRoutes: SitemapUrl[] = [
     lastmod: new Date().toISOString().split('T')[0]
   },
   {
+    loc: '/products/hard-drive-monitor',
+    changefreq: 'weekly',
+    priority: 0.8,
+    lastmod: new Date().toISOString().split('T')[0]
+  },
+  {
     loc: '/login',
     changefreq: 'yearly',
     priority: 0.3,

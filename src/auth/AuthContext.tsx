@@ -10,7 +10,8 @@ export type Role =
   | "admin"
   | "manager"
   | "administrator"
-  | "superadmin";
+  | "superadmin"
+  | "groupadmin";
 
 export interface AuthUser {
   id: string;

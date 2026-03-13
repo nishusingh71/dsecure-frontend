@@ -114,12 +114,13 @@ export function hasAllRoles(userData: any, rolesToCheck: string[]): boolean {
  */
 export function getRoleDisplayName(role: string): string {
   const roleMap: Record<string, string> = {
-    'admin': 'Administrator',
-    'user': 'User',
-    'manager': 'Manager',
-    'operator': 'Operator',
-    'superadmin': 'Super Administrator',
-    'viewer': 'Viewer'
+    admin: "Administrator",
+    user: "User",
+    manager: "Manager",
+    operator: "Operator",
+    superadmin: "Super Administrator",
+    viewer: "Viewer",
+    groupadmin: "Group Admin",
   };
   
   return roleMap[role.toLowerCase()] || role;

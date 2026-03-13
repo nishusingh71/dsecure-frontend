@@ -1,6 +1,7 @@
 import { indexedDBService } from './indexedDBService';
 import { AdminDashboardAPI } from './adminDashboardAPI';
 import { apiClient } from '@/utils/enhancedApiClient';
+import { idbKeys } from './idbKeys';
 
 class SyncService {
   /**
@@ -16,7 +17,7 @@ class SyncService {
       try {
         const statsRes = await AdminDashboardAPI.getDashboardStats();
         if (statsRes.success && statsRes.data) {
-          await indexedDBService.put('dashboard_stats', `stats_${userEmail}`, statsRes.data);
+          await indexedDBService.put('dashboard_stats', idbKeys.stats(userEmail), statsRes.data);
           results.stats = true;
         }
       } catch (e) {
@@ -28,7 +29,7 @@ class SyncService {
       try {
         const activityRes = await AdminDashboardAPI.getUserActivity(userEmail);
         if (activityRes.success && activityRes.data) {
-          await indexedDBService.put('user_activity', userEmail, activityRes.data);
+          await indexedDBService.put('user_activity', idbKeys.activity(userEmail), activityRes.data);
           results.activity = true;
         }
       } catch (e) {
@@ -41,14 +42,14 @@ class SyncService {
         // Fetch groups
         const groupsRes = await AdminDashboardAPI.getGroups();
         if (groupsRes.success && groupsRes.data) {
-           await indexedDBService.put('groups', `all_groups_${userEmail}`, groupsRes.data);
+           await indexedDBService.put('groups', idbKeys.groups(userEmail), groupsRes.data);
            results.groups = true;
         }
         
         // Fetch detailed groups with users (for AdminGroups page)
         const detailedGroupsRes = await apiClient.getGroupsWithUsers();
         if (detailedGroupsRes.success && detailedGroupsRes.data) {
-            await indexedDBService.put('groups', `groups_with_users_${userEmail}`, detailedGroupsRes.data);
+            await indexedDBService.put('groups', idbKeys.groupsWithUsers(userEmail), detailedGroupsRes.data);
             results.groups_detailed = true;
         }
       } catch (e) {
@@ -60,7 +61,7 @@ class SyncService {
       try {
         const licensesRes = await AdminDashboardAPI.getLicenseData();
         if (licensesRes.success && licensesRes.data) {
-          await indexedDBService.put('licenses', `all_licenses_${userEmail}`, licensesRes.data);
+          await indexedDBService.put('licenses', idbKeys.licenses(userEmail), licensesRes.data);
           results.licenses = true;
         }
       } catch (e) {
@@ -72,7 +73,7 @@ class SyncService {
       try {
         const reportsRes = await AdminDashboardAPI.getRecentReports();
          if (reportsRes.success && reportsRes.data) {
-          await indexedDBService.put('recent_reports', `reports_${userEmail}`, reportsRes.data);
+          await indexedDBService.put('recent_reports', idbKeys.recentReports(userEmail), reportsRes.data);
           results.reports = true;
         }
       } catch (e) {
@@ -84,8 +85,7 @@ class SyncService {
       try {
         const profileRes = await AdminDashboardAPI.getAdminProfile();
         if (profileRes.success && profileRes.data) {
-          // Profile is keyed by email to handle multi-user logins on same device
-          await indexedDBService.put('profile', userEmail, profileRes.data);
+          await indexedDBService.put('profile', idbKeys.profile(userEmail), profileRes.data);
           results.profile = true;
         }
       } catch (e) {
@@ -96,10 +96,9 @@ class SyncService {
       // 7. Subusers (for the current user/owner)
       try {
          const subusersRes = await apiClient.getSubusersBySuperuser(userEmail);
-         // Ensure data is array before storing
          if (subusersRes.success && Array.isArray(subusersRes.data)) {
-             await indexedDBService.put('subusers', userEmail, subusersRes.data);
-             results.subusers = true;
+              await indexedDBService.put('subusers', idbKeys.subusers(userEmail), subusersRes.data);
+              results.subusers = true;
          } else {
             console.warn('SyncService: Subusers data is not an array', subusersRes.data);
             results.subusers = false;
@@ -112,16 +111,10 @@ class SyncService {
       // 8. Sessions (Timeline)
       try {
          const sessionsRes = await apiClient.getSessionsTimeline({});
-         // ********** PURANA CODE (array wrap se flattenTimelineData break hota tha) **********
-         // await indexedDBService.put('sessions', 'timeline', Array.isArray(sessionsRes) ? sessionsRes : [sessionsRes]);
-         // *******************************************
-         
-         // ********** NAYA CODE — Store raw API response directly **********
          if (sessionsRes) {
-             await indexedDBService.put('sessions', `timeline_${userEmail}`, sessionsRes);
+             await indexedDBService.put('sessions', idbKeys.sessions(userEmail), sessionsRes);
              results.sessions = true;
          }
-         // *******************************************
       } catch (e) {
           console.error('Failed to sync sessions', e);
           results.sessions = false;
@@ -129,12 +122,11 @@ class SyncService {
 
       // 9. Erasure Metrics
       try {
-          // Fetching default metrics for current user
           const metricsRes = await AdminDashboardAPI.getErasureMetrics({ 
             userEmails: [userEmail] 
           });
           if (metricsRes.success && metricsRes.data) {
-              await indexedDBService.put('erasure_metrics', `metrics_${userEmail}`, metricsRes.data);
+              await indexedDBService.put('erasure_metrics', idbKeys.erasureMetrics(userEmail), metricsRes.data);
               results.metrics = true;
           }
       } catch (e) {
@@ -142,12 +134,11 @@ class SyncService {
           results.metrics = false;
       }
 
-      // ********** NAYA CODE — Phase 1: Sync machines, audit_reports, system_logs **********
       // 10. Machines (by email)
       try {
           const machinesRes = await apiClient.getMachinesByEmail(userEmail);
           if (machinesRes.success && machinesRes.data) {
-              await indexedDBService.put('machines', userEmail, machinesRes.data);
+              await indexedDBService.put('machines', idbKeys.machines(userEmail), machinesRes.data);
               results.machines = true;
           }
       } catch (e) {
@@ -159,7 +150,7 @@ class SyncService {
       try {
           const reportsRes = await apiClient.getAuditReportsByEmail(userEmail);
           if (reportsRes.success && reportsRes.data) {
-              await indexedDBService.put('audit_reports', userEmail, reportsRes.data);
+              await indexedDBService.put('audit_reports', idbKeys.auditReports(userEmail), reportsRes.data);
               results.audit_reports = true;
           }
       } catch (e) {
@@ -171,14 +162,13 @@ class SyncService {
       try {
           const logsRes = await apiClient.getSystemLogsByEmail(userEmail);
           if (logsRes.success && logsRes.data) {
-              await indexedDBService.put('system_logs', userEmail, logsRes.data);
+              await indexedDBService.put('system_logs', idbKeys.systemLogs(userEmail), logsRes.data);
               results.system_logs = true;
           }
       } catch (e) {
           console.error('Failed to sync system logs', e);
           results.system_logs = false;
       }
-      // *******************************************
 
       console.log('✅ SyncService: Dashboard sync complete.', results);
 

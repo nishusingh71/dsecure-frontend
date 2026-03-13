@@ -69,11 +69,12 @@ export function useUserMachines(userEmail?: string, enabled: boolean = true) {
       return response.data
     },
     enabled: enabled && !!userEmail,
-    staleTime: 30 * 60 * 1000,  // 30 minutes - keep licenses data fresh for longer
-    gcTime: 60 * 60 * 1000,     // 1 hour in cache - persist even when component unmounts
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData, // Show previous data while refetching
     refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
     refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnReconnect: false,
     retry: 1,
   })
 }
@@ -97,11 +98,12 @@ export function useAllMachines(enabled: boolean = true) {
       return response.data
     },
     enabled,
-    staleTime: 30 * 60 * 1000, // 30 minutes - keep licenses data fresh for longer
-    gcTime: 60 * 60 * 1000,    // 1 hour in cache
+    staleTime: Infinity,
+    gcTime: 24 * 60 * 60 * 1000,
     placeholderData: (previousData) => previousData, // Show previous data while refetching
     refetchOnMount: false,      // Don't refetch when component mounts if data is fresh
     refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnReconnect: false,
     retry: 1,
   })
 }

@@ -25,6 +25,9 @@ import {
   User,
   X,
   Activity,
+  Heart,
+  BarChart,
+  ClipboardCheck,
 } from "lucide-react";
 import { title } from "process";
 import { useToast } from "@/components/Toast";
@@ -38,7 +41,7 @@ const getReadTime = (text: string) => {
   return `${minutes} min read`;
 };
 
-const DriveEraserPage: React.FC = memo(function FileEraserPage() {
+const DriveEraserDiagnosticPage: React.FC = memo(function FileEraserPage() {
   const { showToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -275,6 +278,33 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
       });
     }
   };
+
+  const diagnosticsFeatures = [
+    {
+      title: "Hard Drive Health Monitor",
+      desc: "Real-time tracking of disk health, temperature, and performance. Detect potential failures before they happen.",
+      icon: <Activity className="w-6 h-6" />,
+      color: "from-rose-500 to-pink-600",
+    },
+    {
+      title: "S.M.A.R.T. Analysis",
+      desc: "In-depth S.M.A.R.T. attribute monitoring to assess the remaining life and risk-level of your storage drives.",
+      icon: <Heart className="w-6 h-6" />,
+      color: "from-emerald-500 to-teal-600",
+    },
+    {
+      title: "Performance Benchmarking",
+      desc: "Test read/write speeds and IOPS to identify performance bottlenecks in HDDs and SSDs.",
+      icon: <BarChart className="w-6 h-6" />,
+      color: "from-blue-500 to-indigo-600",
+    },
+    {
+      title: "Audit-Ready Health Score",
+      desc: "Generate comprehensive health certificates before erasure to document the physical state of the media.",
+      icon: <ClipboardCheck className="w-6 h-6" />,
+      color: "from-amber-500 to-orange-600",
+    },
+  ];
 
   const eraseTypes = [
     {
@@ -655,32 +685,31 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               <Reveal>
                 <div className="space-y-8">
                   <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">
-                      <ShieldIcon className="w-4 h-4" />
-                      Enterprise-Grade Drive Erasure
+                    <div className="px-4 py-1.5 rounded-full bg-emerald-100/80 backdrop-blur-sm border border-emerald-200 text-emerald-700 text-sm font-bold flex items-center gap-2 animate-bounce-subtle">
+                      <Activity className="w-4 h-4" />
+                      NEW: Diagnostic & Health Variant
                     </div>
-                    {/* Reference to the new Diagnostic variant */}
                     <Link 
-                      to="/products/drive-eraser-diagnostic"
-                      className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 hover:bg-blue-100 px-4 py-2 rounded-full text-sm font-semibold border border-blue-100 transition-colors group"
+                      to="/products/drive-eraser"
+                      className="inline-flex items-center gap-2 bg-slate-100/80 backdrop-blur-sm text-slate-600 hover:bg-slate-200 px-4 py-1.5 rounded-full text-sm font-semibold border border-slate-200 transition-all group"
                     >
-                      <Activity className="w-4 h-4 animate-pulse" />
-                      <span>New: Diagnostic & Health Variant</span>
+                      <ShieldIcon className="w-4 h-4" />
+                      <span>Back to Standard Drive Eraser</span>
                       <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </div>
 
                   <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-slate-900 leading-tight">
-                    D-Secure{" "}
+                    Drive Eraser{" "}
                     <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                      Drive Eraser
+                      Diagnostic & Health
                     </span>
                   </h1>
 
                   <p className="text-lg lg:text-xl text-slate-600 leading-relaxed max-w-xl">
-                    Permanently erase files, folders, system traces, and cloud
-                    data using internationally recognized erasure standards.
-                    Designed for privacy, security, and audit readiness.
+                    The industry's first "Monitor + Erase" suite. Track drive
+                    health, predict failures, and securely erase data with
+                    integrated hardware diagnostics.
                   </p>
 
                   {/* Compliance Badges */}
@@ -701,7 +730,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link
-                      to="/pricing-and-plan?product=drive-eraser"
+                      to="/pricing-and-plan?product=drive-eraser&variant=diagnostics"
                       className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                     >
                       <HoverIcon>
@@ -712,9 +741,8 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       Buy Now
                     </Link>
                     <button
-                      onClick={downloadCatalog}
-                      disabled={false}
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      disabled={true}
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-100 text-emerald-400 px-8 py-4 rounded-xl font-bold opacity-60 cursor-not-allowed transition-all duration-300"
                     >
                       <svg
                         className="w-5 h-5"
@@ -729,7 +757,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      Download Datasheet
+                      Coming Soon
                     </button>
                   </div>
                 </div>
@@ -826,31 +854,36 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2 sm:gap-3">
                                 <div className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 rounded-md sm:rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                                  <ShieldIcon className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white" />
+                                  <Activity className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white animate-pulse" />
                                 </div>
                                 <div className="flex flex-col">
-                                  <span className="text-[8px] sm:text-[9px] lg:text-xs text-emerald-400 font-semibold">
-                                    ERASING
+                                  <span className="text-[8px] sm:text-[9px] lg:text-xs text-emerald-400 font-semibold tracking-tighter">
+                                    DIAGNOSING
                                   </span>
-                                  <div className="w-12 sm:w-16 lg:w-24 h-1 sm:h-1.5 lg:h-2 bg-slate-600 rounded-full overflow-hidden">
-                                    <div
-                                      className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
-                                      style={{
-                                        width: "75%",
-                                        animation:
-                                          "progressPulse 2s ease-in-out infinite",
-                                      }}
-                                    ></div>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    <div className="w-12 sm:w-16 lg:w-20 h-1 sm:h-1.5 bg-slate-600 rounded-full overflow-hidden">
+                                      <div
+                                        className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full"
+                                        style={{
+                                          width: "98%",
+                                          animation: "progressPulse 2s ease-in-out infinite",
+                                        }}
+                                      ></div>
+                                    </div>
+                                    <span className="text-[6px] sm:text-[7px] text-emerald-400/80 font-mono">98%</span>
                                   </div>
                                 </div>
                               </div>
-                              <div className="flex gap-0.5 sm:gap-1">
-                                {[...Array(4)].map((_, i) => (
-                                  <div
-                                    key={i}
-                                    className="w-0.5 sm:w-1 lg:w-1.5 h-4 sm:h-5 lg:h-6 bg-slate-500/60 rounded-sm"
-                                  ></div>
-                                ))}
+                              <div className="flex flex-col items-end gap-0.5 sm:gap-1">
+                                <span className="text-[6px] sm:text-[8px] text-slate-400 font-mono">32°C</span>
+                                <div className="flex gap-0.5">
+                                  {[...Array(3)].map((_, i) => (
+                                    <div
+                                      key={i}
+                                      className="w-0.5 sm:w-1 h-3 sm:h-4 bg-emerald-500/40 rounded-full"
+                                    ></div>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -909,10 +942,9 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                           </div>
                         </div>
 
-                        {/* Erasure Status Text */}
                         <div className="text-center mt-2 sm:mt-3 lg:mt-4">
-                          <p className="text-emerald-400 font-bold text-xs sm:text-sm lg:text-lg">
-                            Drive Eraser
+                          <p className="text-emerald-400 font-bold text-[10px] sm:text-xs lg:text-base tracking-[0.2em] uppercase">
+                            Diagnostic & Health
                           </p>
                         </div>
                       </div>
@@ -978,6 +1010,43 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   `}</style>
                 </div>
               </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ================= INTEGRATED DIAGNOSTICS ================= */}
+        <section id="diagnostics" className="py-20 bg-slate-50 border-y border-slate-200">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <Reveal>
+              <div className="text-center mb-16">
+                <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+                  Integrated Health & Diagnostics
+                </h2>
+                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                  Monitor drive status and perform hardware audits before and
+                  after data erasure for complete asset lifecycle management.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {diagnosticsFeatures.map((feature, i) => (
+                <Reveal key={feature.title} delayMs={i * 100}>
+                  <div className="group bg-white rounded-xl sm:rounded-2xl p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 flex flex-col min-h-[220px]">
+                    <div
+                      className={`w-12 h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br ${feature.color} text-white flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-lg flex-shrink-0`}
+                    >
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-3 flex-shrink-0">
+                      {feature.title}
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed flex-1 text-sm md:text-base">
+                      {feature.desc}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
@@ -1328,15 +1397,14 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
             <Reveal>
               <div className="text-center mb-16">
                 <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                  <GearIcon className="w-4 h-4" />
-                  Simple 4-Step Process
+                  <Activity className="w-4 h-4" />
+                  Life Cycle Management
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  How To Use <span className="text-emerald-600">D-Secure</span>{" "}
-                  Drive Eraser?
+                  Drive Lifecycle <span className="text-emerald-600">Workflow</span>
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                  Get started in minutes with our easy deployment options
+                  From health assessment to secure decommissioning
                 </p>
               </div>
             </Reveal>
@@ -1374,10 +1442,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">
-                        Download
+                        Assess Health
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Get the software from our secure portal
+                        Scan S.M.A.R.T. status and health score
                       </p>
                     </div>
                     {/* Arrow for mobile/tablet */}
@@ -1485,7 +1553,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     </div>
                   </div>
 
-                  {/* Step 4: Save Reports */}
+                  {/* Step 4: Health Reports */}
                   <div className="group">
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 h-full flex flex-col items-center text-center relative overflow-hidden">
                       {/* Step Number Badge */}
@@ -1494,17 +1562,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Icon with checkmark */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100 relative">
-                        <FileTextIcon className="w-8 h-8 text-emerald-600" />
+                        <ClipboardCheck className="w-8 h-8 text-emerald-600" />
                         <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
                           <CheckIcon className="w-3 h-3 text-white" />
                         </div>
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">
-                        Save Reports
+                        Audit Report
                       </h3>
                       <p className="text-sm text-slate-500">
-                        Store erasure certificates on cloud
+                        Diagnostics + Erasure certificate
                       </p>
                     </div>
                   </div>
@@ -2367,4 +2435,4 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
   );
 });
 
-export default DriveEraserPage;
+export default DriveEraserDiagnosticPage;
