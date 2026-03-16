@@ -62,6 +62,10 @@ desktop.ini
 
 # Python files
 *.py
+# Only allow public docs and llms info
+!public/llms*.txt
+!docs/
+!docs/*.md
 
 .env
 .env.local
@@ -117,6 +121,12 @@ app-prashant.txt
 test_out.txt
 *.txt
 *.md
+# Keep root source code llms ignored
+llms.txt
+# Ensure public docs are exempt from global MD/TXT ignore
+!public/llms*.txt
+!docs/
+!docs/*.md
 # Configuration notes
 CONFIGURATION.txt
 

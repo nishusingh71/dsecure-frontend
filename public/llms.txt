@@ -1,0 +1,78 @@
+# D-Secure Technologies
+> [!NOTE]
+> For detailed technical specifications, pricing logic, and a full blog index, please refer to the [Full Documentation](https://dsecuretech.com/llms-full.txt).
+
+D-Secure is a leading global data tech brand providing professional data erasure, hardware diagnostics, and disk health monitoring software. Trusted by companies in 190+ countries, D-Secure helps organizations meet global data privacy compliance while promoting sustainability.
+
+## Core Expertise
+- **Data Sanitization:** Verifiable erasure following international standards.
+- **Hardware Diagnostics:** Comprehensive health testing for PCs, Laptops, Mac, and Servers.
+- **Health Monitoring:** Real-time S.M.A.R.T. status and performance tracking.
+
+## Compliance Standards
+D-Secure software adheres to leading international security standards:
+- **Erase Standards:** NIST 800-88, DoD 5220.22-M, Crypto Erase, and 30+ other international algorithms.
+- **Regulatory Compliance:** GDPR (Europe), HIPAA (US Healthcare), SOX (US Financial), PCI DSS (Payment Cards).
+- **Certifications:** ISO 27001, SOC 2, Common Criteria (EAL 2+), FIPS 140-2 (Level 1), NSA/CSS Approved, CSA STAR Gold.
+
+## Products & Pricing
+
+### 1. Drive Eraser + Diagnostics
+- **Description:** Professional Data Erasure with Integrated Hardware Diagnostics & SMART Health Analysis for HDD, SSD, PC, Laptop, Mac, & Server.
+- **Pricing:** $30.00 per license (Pay Per Use, one-time purchase)
+- **Purchase Link:** https://dsecuretech.com/pricing-and-plan?product=drive-eraser&variant=diagnostics
+- **Learn More:** https://dsecuretech.com/drive-eraser-diagnostic
+- **Features:** Complete Hard Drive & SSD Erasure, Enterprise-Grade Security Standards, Multi-Platform Support, Compliance Reporting, Advanced Hardware Diagnostics, SMART Health Analysis.
+
+### 2. D-Secure Drive Eraser (Standard)
+- **Description:** Secure Data Erasure Software for HDD, SSD, PC, Laptop, Mac, Chromebook & Server.
+- **Pricing:** $25.00 per license (Pay Per Use, one-time purchase)
+- **Purchase Link:** https://dsecuretech.com/pricing-and-plan?product=drive-eraser
+- **Learn More:** https://dsecuretech.com/drive-eraser
+- **Features:** Complete Hard Drive & SSD Erasure, Enterprise-Grade Security Standards, Multi-Platform Support, Compliance Reporting.
+
+### 3. D-Secure Hardware Diagnostics
+- **Description:** Hardware Health Testing for Laptops, PCs, Desktops & Servers.
+- **Pricing:** $10.00 per license (Pay Per Use, one-time purchase. Sold in packs starting at 100 licenses).
+- **Purchase Link:** https://dsecuretech.com/pricing-and-plan?product=hardware-diagnostics
+- **Learn More:** https://dsecuretech.com/hardware-diagnostics
+- **Features:** Supports Intel & Apple Silicon (M1-M4), PXE Mass Diagnostics (up to 255 Machines), 10+ Automated Component Tests, Tamper-Proof Signed Reports, Centralized Cloud Management.
+
+### 4. D-Secure Smart Diagnostic
+- **Description:** Real-time Disk Health & Performance Monitoring.
+- **Pricing:** $20.00 per license per year
+- **Purchase Link:** https://dsecuretech.com/pricing-and-plan?product=smart-diagnostic
+- **Learn More:** https://dsecuretech.com/hard-drive-monitor
+- **Features:** Real-time Hard Drive Health Watch, Monitor S.M.A.R.T. Status & Temperature, Scan Disk for Damaged/Bad Sectors, Predictive Drive Failure Alerts.
+
+### 5. D-Secure File Eraser Professional
+- **Description:** Complete File, Folder & Application Trace Elimination (Windows only).
+- **Pricing:** Starting at $40.00 per license per year
+- **Purchase Link:** https://dsecuretech.com/pricing-and-plan?product=file-eraser
+- **Learn More:** https://dsecuretech.com/file-eraser
+- **Features:** Secure File & Folder Deletion, 30+ International Erasure Algorithms, Free Space Cleaning, Volume & Disk Erasure, Local PDF Reports.
+
+## Partner Programs
+D-Secure offers specialized collaboration models:
+- **ITAD Partners:** For asset disposition companies requiring scalable, automated erasure.
+- **MSP Partners:** Empowering managed service providers with added security service offerings.
+- **Reseller Partners:** Delivering globally tested data erasure software to enterprise customers.
+- **Distributor Partners:** Expanding reach for data erasure products globally.
+- **OEM Partners:** Bundling professional data erasure within existing product portfolios.
+
+## Resources & Knowledge Base
+D-Secure maintains an extensive library of educational resources, guides, and compliance information.
+- **Main Blog Page:** https://dsecuretech.com/blog
+- **Content Includes:** Data sanitization guides, SSD wiping best practices, GDPR/HIPAA compliance deep-dives, and industry case studies.
+
+## Support & Contact
+- **Technical Support:** 24/5 dedicated technical assistance for partners and enterprise customers.
+- **General Inquiries:** support@dsecuretech.com
+- **Website:** https://dsecuretech.com
+- **Locations:** Global presence with a primary focus on India and international markets.
+
+## Use Cases
+- **IT Asset Disposition (ITAD):** Wiping and refurbishing old hardware for resale or recycling.
+- **Corporate Compliance:** Ensuring data in transit or at rest is securely wiped before lease returns.
+- **Financial & Healthcare Security:** Meeting rigid compliance for sensitive client data destruction.
+- **Managed IT Services:** Adding data security layers to existing client infrastructure management.

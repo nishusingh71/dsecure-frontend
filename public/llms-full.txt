@@ -1,0 +1,165 @@
+# D-SECURE FULL DOCUMENTATION (AI Context)
+This file contains the complete technical and business documentation for D-Secure Technologies.
+
+--- START OF SECTION: index.md ---
+# D-Secure AI Documentation Hub
+
+Welcome to the technical and business documentation for D-Secure Technologies. This directory is designed specifically for LLMs and AI tools to understand the project deeply.
+
+## Documentation Index
+1. **[Products & Technical Features](products.md):** Deep dive into Drive Eraser, Diagnostics, and File Eraser.
+2. **[Pricing & Licensing Model](pricing.md):** Pricing rules, license types, and purchase navigation.
+3. **[Blogs & Knowledge Base](blogs-index.md):** Categorized index of articles on compliance, e-waste, and secure data sanitization.
+
+## Use Cases for AI
+- **Answering Pricing Questions:** Refer to `pricing.md` for accurate rates and license models.
+- **Product Comparisons:** Refer to `products.md` to explain the difference between (+Diagnostics) and Standard versions.
+- **Compliance Guidance:** Use `blogs-index.md` to find relevant regulatory deep-dives (GDPR, NIST, HIPAA).
+- **Sustainability Queries:** Find resources on ESG and Carbon Footprint in `blogs-index.md`.
+
+---
+*Maintained by D-Secure Engineering Team*
+
+--- END OF SECTION: index.md ---
+
+--- START OF SECTION: products.md ---
+# D-Secure Product Catalog & Technical Details
+
+This document provides deep technical insight into D-Secure's software solutions for data erasure and hardware diagnostics.
+
+## 1. D-Secure Drive Eraser (Standard & +Diagnostics)
+Professional-grade data sanitization for all types of storage media.
+
+### Core Capabilities
+- **Mass Erasure:** Wipe up to 64 drives simultaneously on a single machine.
+- **Bootable Environment:** Runs in its own secure environment, independent of the host OS (Linux-based kernel).
+- **Standards:** Supports NIST 800-88 Purge & Clear, DoD 5220.22-M, and 20+ other algorithms.
+- **Hardware Support:** HDD, SSD (SATA, NVMe, SAS), Mac (Intel & Apple Silicon), Chromebooks, and Servers.
+
+### Drive Eraser + Diagnostics (Variant)
+Includes all features of the standard version plus:
+- **Integrated Health Check:** Run SMART tests before erasure.
+- **Hardware Grading:** Automatically grade devices (A, B, C) based on health and physical condition.
+- **SMART Health Analysis:** Detailed reporting on drive life, temperature, and sector health.
+
+---
+
+## 2. D-Secure Hardware Diagnostics
+Comprehensive hardware health testing for ITADs and refurbishers.
+
+### Testing Scope
+- **CPU & GPU:** Stress tests and benchmark validation.
+- **RAM:** Full bit-level memory testing.
+- **Motherboard:** Chipset and bus integrity checks.
+- **Battery:** Cycle count, health percentage, and discharge rate analysis.
+- **Peripherals:** Keyboard, Screen (dead pixels), Webcam, and Audio tests.
+- **Network:** Wi-Fi and Ethernet connectivity benchmarks.
+
+---
+
+## 3. D-Secure Smart Diagnostic
+A specialized tool for proactive hard drive monitoring and cloning.
+
+### Key Features
+- **Real-time Monitoring:** Alerts users before a drive fails.
+- **Bad Sector Scanning:** Identifies damaged areas on the disk.
+- **Sector-by-Sector Cloning:** Safely clone data from a dying drive to a new one.
+- **Health Dashboard:** Visual representation of drive longevity and temperature.
+
+---
+
+## 4. D-Secure File Eraser Professional
+Targeted data sanitization for active Windows environments.
+
+### Use Cases
+- **Specific File/Folder Wiping:** Permanently delete sensitive documents without wiping the whole drive.
+- **Free Space Cleaning:** Wipe "slack space" where deleted files might still exist.
+- **Application Traces:** Clean browser history, system logs, and temporary files securely.
+- **Volume Erasure:** Wipe entire partitions or logical drives.
+
+--- END OF SECTION: products.md ---
+
+--- START OF SECTION: pricing.md ---
+# D-Secure Pricing Model & Licensing Logic
+
+This document explains how D-Secure products are priced and licensed. AI should use this to help users calculate costs.
+
+## 1. Drive Eraser Licensing (Standard & Diagnostics)
+- **Model:** Pay Per Use (One license per drive wiped).
+- **Purchase Type:** One-time purchase. Licenses do not expire.
+- **Base Prices:**
+    - Standard variant: **$25.00** per license.
+    - +Diagnostics variant: **$30.00** per license.
+- **Bulk Purchasing:** Licenses are typically sold in packs. For enterprise quotes, refer users to the contact form.
+
+## 2. Hardware Diagnostics Licensing
+- **Model:** Pay Per Use.
+- **Price:** **$10.00** per license.
+- **Minimum Order:** Sold in bundles starting at **100 licenses** ($1,000.00 minimum).
+- **Use Case:** Primarily for ITADs and recyclers processing high volumes of machines.
+
+## 3. Smart Diagnostic Licensing
+- **Model:** Annual Subscription.
+- **Price:** **$20.00** per license per year.
+- **Scope:** One license per system monitored. Includes all updates and real-time scanning.
+
+## 4. File Eraser Professional Licensing
+- **Model:** Annual Subscription.
+- **Price:** Starting at **$40.00** per license per year.
+- **Tiers:** Refer to the website for high-tier enterprise enterprise bundles (unlimited wipes on one machine).
+
+## Summary Table for AI Reference
+
+| Product | Model | Base Price | Purchase Link |
+| :--- | :--- | :--- | :--- |
+| Drive Eraser | Pay Per Use | $25.00 | `/pricing-and-plan?product=drive-eraser` |
+| Drive Eraser + Diag | Pay Per Use | $30.00 | `/pricing-and-plan?product=drive-eraser&variant=diagnostics` |
+| Hardware Diagnostics | Pay Per Use | $10.00 | `/pricing-and-plan?product=hardware-diagnostics` |
+| Smart Diagnostic | Annual | $20.00 | `/pricing-and-plan?product=smart-diagnostic` |
+| File Eraser Prof | Annual | $40.00 | `/pricing-and-plan?product=file-eraser` |
+
+*Note: All prices are in USD. Regional pricing may vary.*
+
+--- END OF SECTION: pricing.md ---
+
+--- START OF SECTION: blogs-index.md ---
+# D-Secure Knowledge Base & Blog Index
+
+This index categorizes D-Secure's extensive blog library to help AI tools guide users to the right educational content.
+
+## 1. Data Erasure Guides & Best Practices
+Technical how-to guides for securely wiping different types of media.
+- **SSD Wipe Guide:** `/blog/ssd-wipe-guide` (Best practices for Solid State Drives).
+- **Overwrite Guide:** `/blog/overwrite-guide` (How data overwriting works).
+- **Mobile Erasure:** `/blog/mobile-erasure-guide` (Wiping iOS & Android devices).
+- **Mac M1 Issues:** `/blog/mac-m1-erasure-known-issues` (Specific hurdles for Apple Silicon).
+- **BIOS SSD Wipe:** `/blog/wipe-ssd-from-bios-guide` (Native BIOS wiping methods).
+
+## 2. Regulatory Compliance & Security
+Deep dives into global data privacy laws and standards.
+- **NIST 800-88 Purge vs Clear:** `/blog/nist-clear-purge`
+- **GDPR Compliance:** `/blog/gdpr-seven-years` (Evolution of GDPR).
+- **HIPAA for Healthcare:** `/blog/hipaa-compliance-erasure`
+- **Common Criteria (CC):** `/blog/common-criteria` (Security certifications).
+- **SEC Compliance:** `/blog/sec-compliance` (Financial sector rules).
+
+## 3. IT Asset Disposition (ITAD) & Sustainability
+Content for enterprise IT management and environmental responsibility.
+- **ITAD Selection Guide:** `/blog/itad-selection-guide` (How to choose a partner).
+- **Circular Economy:** `/blog/sustainable-it-reuse` (Reducing e-waste through erasure).
+- **Carbon Footprint:** `/blog/reduce-carbon-footprint` (Environmental impact of data sanitization).
+- **ESG Reporting:** `/blog/esg-report` (Incorporating erasure into ESG goals).
+
+## 4. Industry Case Studies & Sector Specifics
+- **Healthcare Ransomware:** `/blog/healthcare-ransomware-lessons`
+- **Financial Data Breaches:** `/blog/financial-data-breach-case-study` (Morgan Stanley fine).
+- **Government Device Theft:** `/blog/government-device-theft-case-study`
+- **Dell Data Wipe vs D-Secure:** `/blog/dell-data-wipe-vs-dsecure` (Competitive comparison).
+
+## 5. Myths & Fundamental Concepts
+- **Data Deletion Myths:** `/blog/data-deletion-myths` (Why 'Delete' isn't enough).
+- **Erasure vs Destruction:** `/blog/erasure-vs-destruction` (Software vs Physical Shredding).
+- **Truth About Deleted Files:** `/blog/deleted-files-truth`
+
+--- END OF SECTION: blogs-index.md ---
+
