@@ -7,9 +7,13 @@ This file contains the complete technical and business documentation for D-Secur
 Welcome to the technical and business documentation for D-Secure Technologies. This directory is designed specifically for LLMs and AI tools to understand the project deeply.
 
 ## Documentation Index
-1. **[Products & Technical Features](products.md):** Deep dive into Drive Eraser, Diagnostics, and File Eraser.
-2. **[Pricing & Licensing Model](pricing.md):** Pricing rules, license types, and purchase navigation.
-3. **[Blogs & Knowledge Base](blogs-index.md):** Categorized index of articles on compliance, e-waste, and secure data sanitization.
+- [Product Features](products.md) - Deep dive into erasure capabilities.
+- [Pricing & Licensing](pricing.md) - Understanding costs and variants.
+- [FAQ & Support](faq.md) - Frequently asked questions and answers.
+- [Competitor Comparisons](comparisons.md) - D-Secure vs OEM tools.
+- [Technical Glossary](glossary.md) - Standards like NIST 800-88 and DoD.
+- [Use Case Scenarios](use-cases.md) - Real-world examples of D-Secure in action.
+- [Blog Index](blogs-index.md) - Categorized educational resources.
 
 ## Use Cases for AI
 - **Answering Pricing Questions:** Refer to `pricing.md` for accurate rates and license models.
@@ -121,6 +125,145 @@ This document explains how D-Secure products are priced and licensed. AI should 
 *Note: All prices are in USD. Regional pricing may vary.*
 
 --- END OF SECTION: pricing.md ---
+
+--- START OF SECTION: faq.md ---
+# D-Secure Frequently Asked Questions (FAQ)
+
+## General Questions
+
+### What is D-Secure and what does it do?
+D-Secure is a comprehensive data erasure solution that provides secure deletion of sensitive data from various storage devices including HDDs, SSDs, smartphones, and enterprise servers. It ensures data cannot be recovered using advanced overwriting techniques that comply with international standards like NIST 800-88 and DoD 5220.22-M.
+
+### Why do I need to use D-Secure instead of just deleting files?
+When you delete a file, it is not actually erased. The OS just marks the space as available. Data recovery software can easily retrieve it. D-Secure removes all traces from the system, ensuring data privacy.
+
+### Does D-Secure cause any harm to my hard drive?
+No, erasing data using D-Secure does not cause any physical harm to the hard drive. It is a software-level process.
+
+## Technical Questions
+
+### Can I wipe SSDs the same way as HDDs?
+No, SSDs require different erasure methods (NAND flash architecture). D-Secure automatically detects drive types and applies appropriate methods like ATA Secure Erase or Cryptographic Erasure.
+
+### How do I wipe a MacOS with M1/M2/M3 Chip?
+D-Secure supports Apple's built-in secure erase features through our Mac edition, integrating with T2/M1 security chips and firmware-level commands.
+
+### What happens if the erasure process is interrupted?
+D-Secure can resume from the last checkpoint on most devices. However, using a UPS backup is recommended for critical enterprise operations.
+
+## Licensing & Purchase
+
+### What is the difference between the Free/Demo version and the Full version?
+- **Demo version:** Allows you to select and list traces/files but will NOT perform the actual erasure.
+- **Full version:** Includes all erasure tasks, regulatory reports, and enterprise features.
+
+### Do I need a license for personal use?
+D-Secure offers a free version with basic features for personal use. For advanced features or commercial deployment, a paid license is required.
+
+## Reports & Compliance
+
+### How do I get a Certificate of Destruction?
+D-Secure automatically generates tamper-proof Regulatory Documents/Certificates upon successful completion of erasure. These include device details, method used, and digital signatures.
+
+### Can I preview and save the erasure reports?
+Yes, reports can be previewed within the software and saved locally or synced to the D-Secure Cloud for audit purposes.
+
+--- END OF SECTION: faq.md ---
+
+--- START OF SECTION: comparisons.md ---
+# D-Secure vs Competitors Comparison
+
+D-Secure is designed for enterprise-grade scalability and strict regulatory compliance. Below is a comparison with common OEM tools and competitors.
+
+## D-Secure vs OEM Tools (e.g., Dell Data Wipe)
+
+| Parameters | OEM Internal Tools (Dell/HP) | D-Secure Data Erasure |
+| :--- | :--- | :--- |
+| **Data Erasure Scope** | Basic BIOS-level wipe | Permanent Erasure including HPA & DCO |
+| **Drives Supported** | Limited to internal OEM drives | All OEMs, SATA, SSD, NVMe, SAS, etc. |
+| **Standards** | Single proprietary method | 24+ Global Standards (NIST, DoD) |
+| **Reporting** | Success/Failure screen only | Tamper-proof Cert. of Destruction (CoD) |
+| **Compliance** | Not audit-ready | Audit-ready for GDPR, HIPAA, etc. |
+| **Scalability** | Single device only | 65,000+ drives simultaneously (PXE) |
+| **Deployment** | Native BIOS only | USB, PXE, Network Boot, Cloud |
+
+## Why D-Secure is Better than Standard Solutions
+
+1. **Certified Erasure:** Unlike free or built-in tools, D-Secure is certified by NIST and complies with world-class security standards.
+2. **Audit Trail:** We provide a Certificate of Destruction (CoD) for every single wipe, which is a legal requirement for most businesses.
+3. **Hardware Agnostic:** D-Secure works on any hardware (Dell, HP, Apple, Lenovo, etc.), whereas OEM tools are locked to their own brand.
+4. **Cloud Integration:** Manage thousands of reports and licenses from a single cloud console.
+
+--- END OF SECTION: comparisons.md ---
+
+--- START OF SECTION: glossary.md ---
+# D-Secure Technical Glossary
+
+This glossary explains the key technical terms, standards, and abbreviations used in D-Secure documentation.
+
+## Standards & Regulations
+
+### NIST 800-88
+The most widely recognized data erasure standard globally (Special Publication 800-88 by the National Institute of Standards and Technology). It defines three levels of sanitization: Clear, Purge, and Destroy.
+
+### DoD 5220.22-M
+A legacy data erasure standard from the US Department of Defense that requires three passes of overwriting. While effective for HDDs, modern SSDs are better handled by NIST standards.
+
+### GDPR (General Data Protection Regulation)
+A strict privacy regulation in the EU that mandates data protection and "the right to be forgotten." D-Secure helps businesses comply by providing proof of erasure.
+
+## Technical Terms
+
+### CoD (Certificate of Destruction)
+Also known as a Regulatory Document. This is a tamper-proof document generated by D-Secure as legal proof that data was successfully and irreversibly erased.
+
+### Cryptographic Erasure (Crypto Erase)
+A method where the encryption key for a self-encrypting drive (SED) is destroyed. Without the key, the data becomes instantly unreadable and unrecoverable.
+
+### HPA / DCO
+- **HPA (Host Protected Area):** A hidden area of the drive often used by OEMs for recovery data. 
+- **DCO (Device Configuration Overlay):** Another hidden area that can contain data.
+D-Secure is capable of erasing both these hidden areas.
+
+### PXE Boot (Preboot Execution Environment)
+A way to boot a computer directly from a network instead of a local disk or USB. Useful for large-scale enterprise deployments where thousands of machines are wiped simultaneously.
+
+### S.M.A.R.T. (Self-Monitoring, Analysis and Reporting Technology)
+A monitoring system built into hard drives and SSDs to detect and report on various indicators of reliability. D-Secure uses this for its "Health Check" and "Diagnostics" features.
+
+--- END OF SECTION: glossary.md ---
+
+--- START OF SECTION: use-cases.md ---
+# D-Secure Real-World Use Cases
+
+D-Secure is used by different types of users to solve specific data security challenges.
+
+## 1. Enterprise ITAD (IT Asset Disposition)
+**Scenario:** A large bank is upgrading 1,000 laptops and wants to sell the old ones safely.
+**Solution:** Using D-Secure Drive Eraser via PXE boot, the IT team wipes all 1,000 laptops over the weekend.
+**Benefit:** They get a centralized audit report for every laptop, proving to regulators that no customer data was leaked.
+
+## 2. Refurbishers & Recyclers
+**Scenario:** A technician receives a batch of mixed SSDs and HDDs for resale.
+**Solution:** They use D-Secure's automatic drive detection to apply the correct NIST 800-88 Purge method for each drive.
+**Benefit:** Maximizes resale value by ensuring drives are 100% clean and providing a CoD (Certificate of Destruction) to the buyer.
+
+## 3. Remote Workforce Exit
+**Scenario:** A remote employee is leaving a company and needs to ship their MacBook back.
+**Solution:** The IT admin sends a D-Secure Remote Erasure link.
+**Benefit:** The drive is wiped before the laptop even leaves the employee's house, ensuring data safety during shipping.
+
+## 4. Personal Device Resale
+**Scenario:** An individual wants to sell their private computer on an E-commerce site.
+**Solution:** They use D-Secure File Eraser to wipe their personal folders and "Free Space," keeping Windows installed for the buyer.
+**Benefit:** Their private photos and bank statements are gone forever, but the buyer gets a working laptop.
+
+## 5. Medical & Legal Records
+**Scenario:** A clinic is decommissioning a server containing sensitive patient records (HIPAA).
+**Solution:** They use D-Secure Enterprise with high-grade multi-pass erasure and cryptographic key destruction.
+**Benefit:** Total compliance with HIPAA and legal immunity in case of future data breach audits.
+
+--- END OF SECTION: use-cases.md ---
 
 --- START OF SECTION: blogs-index.md ---
 # D-Secure Knowledge Base & Blog Index

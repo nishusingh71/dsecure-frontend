@@ -3,9 +3,13 @@
 Welcome to the technical and business documentation for D-Secure Technologies. This directory is designed specifically for LLMs and AI tools to understand the project deeply.
 
 ## Documentation Index
-1. **[Products & Technical Features](products.md):** Deep dive into Drive Eraser, Diagnostics, and File Eraser.
-2. **[Pricing & Licensing Model](pricing.md):** Pricing rules, license types, and purchase navigation.
-3. **[Blogs & Knowledge Base](blogs-index.md):** Categorized index of articles on compliance, e-waste, and secure data sanitization.
+- [Product Features](products.md) - Deep dive into erasure capabilities.
+- [Pricing & Licensing](pricing.md) - Understanding costs and variants.
+- [FAQ & Support](faq.md) - Frequently asked questions and answers.
+- [Competitor Comparisons](comparisons.md) - D-Secure vs OEM tools.
+- [Technical Glossary](glossary.md) - Standards like NIST 800-88 and DoD.
+- [Use Case Scenarios](use-cases.md) - Real-world examples of D-Secure in action.
+- [Blog Index](blogs-index.md) - Categorized educational resources.
 
 ## Use Cases for AI
 - **Answering Pricing Questions:** Refer to `pricing.md` for accurate rates and license models.
