@@ -280,7 +280,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                 <div className="mb-6 md:mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
+                    className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
@@ -378,7 +378,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 text-center">
                 <div className="p-4 sm:p-6">
                   <div className="text-3xl sm:text-4xl mb-4">🔢</div>
-                  <div className="text-xl sm:text-2xl font-bold text-emerald-600 mb-2">
+                  <div className="text-xl sm:text-2xl font-bold text-emerald-800 mb-2">
                     Multi-Pass
                   </div>
                   <div className="text-slate-600 text-sm sm:text-base">
@@ -452,7 +452,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     <p className="text-slate-600 mb-4 text-sm sm:text-base flex-grow">
                       {item.description}
                     </p>
-                    <div className="bg-emerald-50 text-emerald-600 font-medium px-4 py-2 rounded-lg text-sm">
+                    <div className="bg-emerald-50 text-emerald-800 font-medium px-4 py-2 rounded-lg text-sm">
                       {item.passes} Passes
                     </div>
                   </div>
@@ -542,7 +542,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                                   className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
                                 >
                                   <div className="flex-1">
-                                    <h4 className="font-medium text-slate-900 group-hover:text-emerald-600 transition-colors mb-1 text-sm sm:text-base">
+                                    <h4 className="font-medium text-slate-900 group-hover:text-emerald-800 transition-colors mb-1 text-sm sm:text-base">
                                       {subsection.title}
                                     </h4>
                                     <p className="text-xs sm:text-sm text-slate-600">
@@ -641,7 +641,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     <div className="p-4 sm:p-6 text-slate-600 text-sm sm:text-base">
                       {row.passes}
                     </div>
-                    <div className="p-4 sm:p-6 text-green-600 font-medium text-sm sm:text-base">
+                    <div className="p-4 sm:p-6 text-green-800 font-medium text-sm sm:text-base">
                       {row.security}
                     </div>
                     <div className="p-4 sm:p-6 text-orange-600 font-medium text-sm sm:text-base">
@@ -893,7 +893,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                         {item.icon}
                       </span>
                     </div>
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm flex-grow">
@@ -983,7 +983,7 @@ const OverwritePatternsPage: React.FC = memo(() => {
                     </svg>
                     Download Overwrite Guide (PDF)
                   </button>
-                  <button className="bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
+                  <button className="bg-white border-2 border-emerald-500 text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"

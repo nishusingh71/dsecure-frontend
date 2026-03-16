@@ -46,7 +46,7 @@ const DataErasureMythsBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Data protection regulations like <strong className="text-emerald-600">GDPR, CCPA</strong>, and similar laws worldwide have established strict norms for user data protection. These regulations mandate secure and compliant handling of user data — including customer data in organizational custody — throughout its entire lifecycle.
+                                Data protection regulations like <strong className="text-emerald-800">GDPR, CCPA</strong>, and similar laws worldwide have established strict norms for user data protection. These regulations mandate secure and compliant handling of user data — including customer data in organizational custody — throughout its entire lifecycle.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Failure to comply with data protection laws can lead to substantial financial penalties, legal action, and even imprisonment. Additionally, organizations face risks of brand damage and customer loss. Technology giants have already paid massive fines for data breaches under these new data protection frameworks.
@@ -259,7 +259,7 @@ const DataErasureMythsBlog: React.FC = () => {
                                     <tr className="bg-emerald-50">
                                         <td className="border border-slate-200 p-4 font-medium">Data Erasure</td>
                                         <td className="border border-slate-200 p-4">Certified destruction</td>
-                                        <td className="border border-slate-200 p-4 text-emerald-600 font-bold">✓ Verified permanent destruction</td>
+                                        <td className="border border-slate-200 p-4 text-emerald-800 font-bold">✓ Verified permanent destruction</td>
                                     </tr>
                                 </tbody>
                             </table>

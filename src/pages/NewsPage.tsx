@@ -59,7 +59,7 @@ export default function NewsPage() {
                     <p className="text-sm text-slate-500 mb-2">{item.date}</p>
                     <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
                     <p className="text-slate-600 mb-4">{item.excerpt}</p>
-                    <Link to="#" className="text-emerald-600 font-semibold inline-flex items-center gap-2 hover:text-emerald-700">
+                    <Link to="#" className="text-emerald-800 font-semibold inline-flex items-center gap-2 hover:text-emerald-700">
                       Read More <ArrowRightIcon className="w-4 h-4" filled={true} />
                     </Link>
                   </div>

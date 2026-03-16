@@ -46,7 +46,7 @@ const DataDestructionBestPracticesBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                According to industry research, the <strong className="text-emerald-600">average cost for data breaches exceeds $4 million</strong>. A secure and robust data destruction practice prevents subsequent financial and reputational damages resulting from such incidents. Organizations that implement proper data destruction protocols significantly reduce their exposure to breach-related costs and compliance penalties.
+                                According to industry research, the <strong className="text-emerald-800">average cost for data breaches exceeds $4 million</strong>. A secure and robust data destruction practice prevents subsequent financial and reputational damages resulting from such incidents. Organizations that implement proper data destruction protocols significantly reduce their exposure to breach-related costs and compliance penalties.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 In this comprehensive guide, we explore the top 6 data destruction best practices that every business entity should implement. These practices provide a framework for achieving fail-safe compliance while protecting sensitive information throughout the IT asset lifecycle.
@@ -116,7 +116,7 @@ const DataDestructionBestPracticesBlog: React.FC = () => {
                 <Reveal>
                     <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 rounded-xl shadow-lg p-10 mt-10 text-white">
                         <div className="flex items-center gap-4 mb-6">
-                            <span className="flex-shrink-0 w-12 h-12 bg-white text-emerald-600 rounded-full flex items-center justify-center text-2xl font-bold">2</span>
+                            <span className="flex-shrink-0 w-12 h-12 bg-white text-emerald-800 rounded-full flex items-center justify-center text-2xl font-bold">2</span>
                             <h2 className="text-3xl font-bold">
                                 Validate Your Documented Strategy
                             </h2>

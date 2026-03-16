@@ -74,7 +74,7 @@ const FutureDataDestructionBlog: React.FC = () => {
                             </ul>
                             <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200">
                                 <p className="text-slate-700 text-lg">
-                                    <strong>Market Projection:</strong> By 2026, the cloud computing market is forecast to be worth <span className="text-emerald-600 font-bold">$947.3 billion</span>. With this migration, data center storage capacity is expected to rise significantly, providing immense opportunities for data destruction services during data center decommissioning and upgrades.
+                                    <strong>Market Projection:</strong> By 2026, the cloud computing market is forecast to be worth <span className="text-emerald-800 font-bold">$947.3 billion</span>. With this migration, data center storage capacity is expected to rise significantly, providing immense opportunities for data destruction services during data center decommissioning and upgrades.
                                 </p>
                             </div>
                         </div>
@@ -154,7 +154,7 @@ const FutureDataDestructionBlog: React.FC = () => {
                             </p>
                             <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-200 mb-6">
                                 <p className="text-slate-700 text-lg">
-                                    The average cost of a data breach in the United States rose from <strong className="text-emerald-600">$5.4 million in 2013</strong> to <strong className="text-emerald-600">$9.48 million in 2023</strong> — nearly doubling in a decade.
+                                    The average cost of a data breach in the United States rose from <strong className="text-emerald-800">$5.4 million in 2013</strong> to <strong className="text-emerald-800">$9.48 million in 2023</strong> — nearly doubling in a decade.
                                 </p>
                             </div>
                             <p className="text-slate-700 text-lg leading-loose mb-4">

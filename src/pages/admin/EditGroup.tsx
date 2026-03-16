@@ -251,7 +251,7 @@ export default function EditGroup() {
                           id={permission.id}
                           checked={formData.permissions.includes(permission.id)}
                           onChange={(e) => handlePermissionChange(permission.id, e.target.checked)}
-                          className="mt-1 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                          className="mt-1 rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                         />
                         <div className="flex-1">
                           <label htmlFor={permission.id} className="text-sm font-medium text-slate-700 cursor-pointer">

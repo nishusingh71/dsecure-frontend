@@ -206,7 +206,7 @@ export default function MainLayout() {
                                 className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${driveEraserHovered ? "bg-white shadow-lg" : "bg-emerald-100"}`}
                               >
                                 <svg
-                                  className={`w-6 h-6 transition-colors duration-300 ${driveEraserHovered ? "text-emerald-600" : "text-emerald-600"}`}
+                                  className={`w-6 h-6 transition-colors duration-300 ${driveEraserHovered ? "text-emerald-800" : "text-emerald-800"}`}
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
@@ -222,7 +222,7 @@ export default function MainLayout() {
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between">
                                   <h4
-                                    className={`font-bold transition-colors duration-300 text-base ${driveEraserHovered ? "text-white" : "text-slate-900 group-hover:text-emerald-600"}`}
+                                    className={`font-bold transition-colors duration-300 text-base ${driveEraserHovered ? "text-white" : "text-slate-900 group-hover:text-emerald-800"}`}
                                   >
                                     Drive Eraser
                                   </h4>
@@ -249,11 +249,11 @@ export default function MainLayout() {
 
                                 {/* Integrated Variants as Horizontal Tags */}
                                 <div
-                                  className={`mt-4 flex flex-wrap gap-2 transition-all duration-300 ${driveEraserHovered ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}`}
+                                  className={`mt-4 flex flex-wrap gap-2 transition-all duration-300`}
                                 >
                                   <Link
                                     to="/products/drive-eraser"
-                                    className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-[10px] font-bold text-white transition-all"
+                                    className={`px-3 py-1.5 rounded-full border text-[10px] font-bold transition-all ${driveEraserHovered ? "bg-white/10 hover:bg-white/20 border-white/20 text-white" : "bg-emerald-50 hover:bg-emerald-100 border-emerald-100 text-emerald-700"}`}
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setProductsDropdownOpen(false);
@@ -263,7 +263,7 @@ export default function MainLayout() {
                                   </Link>
                                   <Link
                                     to="/products/drive-eraser-diagnostic"
-                                    className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-[10px] font-bold text-white transition-all flex items-center gap-1.5"
+                                    className={`px-3 py-1.5 rounded-full border text-[10px] font-bold transition-all flex items-center gap-1.5 ${driveEraserHovered ? "bg-white/10 hover:bg-white/20 border-white/20 text-white" : "bg-emerald-50 hover:bg-emerald-100 border-emerald-100 text-emerald-700"}`}
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setProductsDropdownOpen(false);
@@ -299,7 +299,7 @@ export default function MainLayout() {
                               </svg>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
+                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-800 transition-colors text-base">
                                 File Eraser
                               </h4>
                               <p className="text-sm text-slate-500 leading-relaxed">
@@ -335,7 +335,7 @@ export default function MainLayout() {
                               </svg>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors text-base">
+                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-800 transition-colors text-base">
                                 Hardware Diagnostics
                               </h4>
                               <p className="text-sm text-slate-500 leading-relaxed">
@@ -601,7 +601,7 @@ export default function MainLayout() {
                     <Link
                       onClick={() => setOpen(false)}
                       to="/products/drive-eraser"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
                     >
                       <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0">
                         <svg
@@ -635,14 +635,14 @@ export default function MainLayout() {
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/drive-eraser"
-                        className="block py-1 text-xs text-slate-500 hover:text-emerald-600"
+                        className="block py-1 text-xs text-slate-500 hover:text-emerald-800"
                       >
                         • Drive Eraser (Standard)
                       </Link>
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/drive-eraser-diagnostic"
-                        className="flex items-center gap-2 py-1 text-xs text-slate-500 hover:text-emerald-600"
+                        className="flex items-center gap-2 py-1 text-xs text-slate-500 hover:text-emerald-800"
                       >
                         • with Diagnostic & Health
                         <span className="text-[8px] font-bold text-blue-600">
@@ -653,7 +653,7 @@ export default function MainLayout() {
                     <Link
                       onClick={() => setOpen(false)}
                       to="/products/file-eraser"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
                     >
                       <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-md flex items-center justify-center flex-shrink-0">
                         <svg

@@ -238,21 +238,21 @@ const Installation: React.FC = () => {
                 </p>
                 <ul className="space-y-3 mb-4">
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-800 mt-0.5 shrink-0" />
                     <div>
                       <span className="text-gray-900 font-medium text-sm block">Create a desktop shortcut</span>
                       <span className="text-gray-600 text-sm">Adds an icon to your desktop for quick one-click access to the application</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-800 mt-0.5 shrink-0" />
                     <div>
                       <span className="text-gray-900 font-medium text-sm block">Add to Start Menu programs</span>
                       <span className="text-gray-600 text-sm">Creates a Start Menu entry under "DSecure" for easy access from the Start button</span>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-800 mt-0.5 shrink-0" />
                     <div>
                       <span className="text-gray-900 font-medium text-sm block">Launch application after installation</span>
                       <span className="text-gray-600 text-sm">Automatically opens DSecure immediately after setup completes, allowing you to begin configuration</span>

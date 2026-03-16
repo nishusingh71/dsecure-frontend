@@ -99,7 +99,7 @@ const ScheduleSettingsPage: React.FC = () => {
                 {/* Schedule Erasure for Erase Traces */}
                 <div className="space-y-6">
                   <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <Clock className="w-5 h-5 mr-2 text-green-600" />
+                    <Clock className="w-5 h-5 mr-2 text-green-800" />
                     To set Schedule Erasure for Erase Traces:
                   </h3>
 
@@ -111,7 +111,7 @@ const ScheduleSettingsPage: React.FC = () => {
                         </span>
                         <p className="text-gray-700">
                           Run{" "}
-                          <span className="font-semibold text-green-600">
+                          <span className="font-semibold text-green-800">
                             D-Secure File Eraser
                           </span>
                           .
@@ -124,7 +124,7 @@ const ScheduleSettingsPage: React.FC = () => {
                         </span>
                         <p className="text-gray-700">
                           Select{" "}
-                          <span className="font-semibold text-green-600">
+                          <span className="font-semibold text-green-800">
                             Schedule Erasure
                           </span>{" "}
                           from{" "}
@@ -139,7 +139,7 @@ const ScheduleSettingsPage: React.FC = () => {
                         </span>
                         <p className="text-gray-700">
                           Select{" "}
-                          <span className="font-semibold text-green-600">
+                          <span className="font-semibold text-green-800">
                             Erase Traces
                           </span>{" "}
                           tab from the right pane of the screen as displayed
@@ -614,7 +614,7 @@ const ScheduleSettingsPage: React.FC = () => {
                     className="bg-white rounded-lg p-6 hover:shadow-lg transition-shadow"
                   >
                     <div className="flex items-center space-x-3 mb-3">
-                      <Clock className="w-5 h-5 text-green-600" />
+                      <Clock className="w-5 h-5 text-green-800" />
                       <h3 className="font-semibold text-gray-900">
                         Scheduling FAQs
                       </h3>

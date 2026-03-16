@@ -37,7 +37,7 @@ const WorkingWithDSecurePage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/support/manual/system-setup"
-                  className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
+                  className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
                 >
                   ← Previous: System Setup
                 </Link>
@@ -111,7 +111,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                       {/* Content Area */}
                       <div className="flex-1 bg-slate-50 rounded-lg p-6 min-h-[300px] flex flex-col items-center justify-center">
                         <div className="w-20 h-20 bg-emerald-100 rounded-xl flex items-center justify-center mb-4">
-                          <svg className="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-10 h-10 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                         </div>
@@ -172,7 +172,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                         name: "Erase Free Space",
                         description: "Click this tab to erase the free space from selected volume.",
                         icon: "💾",
-                        color: "bg-green-100 text-green-600"
+                        color: "bg-green-100 text-green-800"
                       },
                       {
                         name: "Erase Traces",
@@ -274,7 +274,7 @@ const WorkingWithDSecurePage: React.FC = () => {
             <div className="bg-white rounded-2xl p-8 shadow-lg mb-12">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                  <span className="font-bold text-emerald-600">1</span>
+                  <span className="font-bold text-emerald-800">1</span>
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900">Erase Files and Folders</h2>
               </div>
@@ -354,7 +354,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                   <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 border-2 border-dashed border-slate-300">
                     <div className="text-center">
                       <div className="w-20 h-20 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                        <svg className="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-10 h-10 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                       </div>
@@ -435,7 +435,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <span className="text-emerald-600 font-bold text-sm">1</span>
+                          <span className="text-emerald-800 font-bold text-sm">1</span>
                         </div>
                         <div>
                           <p className="text-slate-700">Run <strong>DSecure File Eraser</strong></p>
@@ -443,7 +443,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                       </div>
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <span className="text-emerald-600 font-bold text-sm">2</span>
+                          <span className="text-emerald-800 font-bold text-sm">2</span>
                         </div>
                         <div>
                           <p className="text-slate-700">Click on the <strong>Activation</strong> icon displayed on the screen. An <strong>Activation</strong> window appears.</p>
@@ -451,7 +451,7 @@ const WorkingWithDSecurePage: React.FC = () => {
                       </div>
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <span className="text-emerald-600 font-bold text-sm">3</span>
+                          <span className="text-emerald-800 font-bold text-sm">3</span>
                         </div>
                         <div>
                           <p className="text-slate-700">Enter the <strong>Activation Key</strong> and click <strong>Activate</strong> button.</p>
@@ -507,12 +507,12 @@ const WorkingWithDSecurePage: React.FC = () => {
                   <div className="bg-emerald-50 rounded-xl p-6 border border-emerald-200">
                     <div className="bg-white rounded-lg shadow-md p-6 text-center">
                       <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-6 h-6 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
                       <h4 className="font-bold text-slate-900 mb-2">Activation</h4>
-                      <p className="text-emerald-600 text-sm font-medium mb-4">DSecure File Eraser Activated Successfully!</p>
+                      <p className="text-emerald-800 text-sm font-medium mb-4">DSecure File Eraser Activated Successfully!</p>
                       <button className="bg-emerald-500 text-white px-6 py-2 rounded font-medium">OK</button>
                     </div>
                   </div>

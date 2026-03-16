@@ -14,7 +14,7 @@ const CertificateGenerationPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center">
                 <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-                  Regulatory Document <span className="text-emerald-600">Generation</span>
+                  Regulatory Document <span className="text-emerald-800">Generation</span>
                 </h1>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                   Generate tamper-proof regulatory documents of data destruction with D-Secure's comprehensive documentation system. Create legally admissible, compliance-ready regulatory documents with advanced security features.
@@ -101,7 +101,7 @@ const CertificateGenerationPage: React.FC = memo(() => {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-semibold text-emerald-600 mb-4">Essential Information</h3>
+                        <h3 className="text-lg font-semibold text-emerald-800 mb-4">Essential Information</h3>
                         <div className="space-y-3">
                           <div className="bg-emerald-50 rounded-lg p-4">
                             <h4 className="font-medium text-emerald-900 mb-2">Device Identification</h4>
@@ -187,7 +187,7 @@ const CertificateGenerationPage: React.FC = memo(() => {
                               <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
                             </svg>
                           </div>
-                          <div className="text-xl font-bold text-emerald-600 mb-2">PDF</div>
+                          <div className="text-xl font-bold text-emerald-800 mb-2">PDF</div>
                           <p className="text-sm text-slate-700 mb-2">Printable & Archival</p>
                           <div className="text-xs text-slate-600">
                             <div>• PDF/A compliance</div>
@@ -251,7 +251,7 @@ const CertificateGenerationPage: React.FC = memo(() => {
                       Create tamper-proof regulatory documents of data destruction that meet the highest compliance and legal standards.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <button className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors">
+                      <button className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors">
                         Start Regulatory Document Generation
                       </button>
                       <button className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-8 py-3 rounded-lg transition-colors">

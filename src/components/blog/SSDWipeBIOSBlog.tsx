@@ -67,7 +67,7 @@ const SSDWipeBIOSBlog: React.FC = () => {
                         <div className="space-y-6">
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">1</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">1</span>
                                     <div>
                                         <h4 className="font-bold text-lg mb-2">Access UEFI BIOS</h4>
                                         <p className="text-white/90 leading-relaxed">
@@ -79,7 +79,7 @@ const SSDWipeBIOSBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">2</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">2</span>
                                     <div>
                                         <h4 className="font-bold text-lg mb-2">Navigate to Security Menu</h4>
                                         <p className="text-white/90 leading-relaxed">
@@ -91,7 +91,7 @@ const SSDWipeBIOSBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">3</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">3</span>
                                     <div>
                                         <h4 className="font-bold text-lg mb-2">Confirm Data Erasure</h4>
                                         <p className="text-white/90 leading-relaxed">
@@ -103,7 +103,7 @@ const SSDWipeBIOSBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">4</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">4</span>
                                     <div>
                                         <h4 className="font-bold text-lg mb-2">Enter Disk Password</h4>
                                         <p className="text-white/90 leading-relaxed">
@@ -115,7 +115,7 @@ const SSDWipeBIOSBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">5</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">5</span>
                                     <div>
                                         <h4 className="font-bold text-lg mb-2">Wait for Completion</h4>
                                         <p className="text-white/90 leading-relaxed">
@@ -197,33 +197,33 @@ const SSDWipeBIOSBlog: React.FC = () => {
                                 <tbody>
                                     <tr className="bg-white">
                                         <td className="border border-slate-300 px-6 py-4 font-semibold">Multiple Drives</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> One at a time</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> Simultaneous erasure</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> One at a time</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> Simultaneous erasure</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="border border-slate-300 px-6 py-4 font-semibold">Erasure Reports</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> None</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> Tamper-proof certificates</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> None</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> Tamper-proof certificates</td>
                                     </tr>
                                     <tr className="bg-white">
                                         <td className="border border-slate-300 px-6 py-4 font-semibold">Verification</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> Not available</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> Built-in verification</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> Not available</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> Built-in verification</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="border border-slate-300 px-6 py-4 font-semibold">Standards Support</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> Manufacturer specific</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> NIST, DoD, IEEE & more</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> Manufacturer specific</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> NIST, DoD, IEEE & more</td>
                                     </tr>
                                     <tr className="bg-white">
                                         <td className="border border-slate-300 px-6 py-4 font-semibold">Password Requirement</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> Often required</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> No password needed</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> Often required</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> No password needed</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="border border-slate-300 px-6 py-4 font-semibold">Compliance Ready</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> No compliance support</td>
-                                        <td className="border border-slate-300 px-6 py-4 text-emerald-600"> GDPR, HIPAA, PCI-DSS</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> No compliance support</td>
+                                        <td className="border border-slate-300 px-6 py-4 text-emerald-800"> GDPR, HIPAA, PCI-DSS</td>
                                     </tr>
                                 </tbody>
                             </table>

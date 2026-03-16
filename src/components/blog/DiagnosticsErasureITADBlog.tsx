@@ -46,7 +46,7 @@ const DiagnosticsErasureITADBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                IT Asset Disposition companies provide businesses with comprehensive services ranging from secure data sanitization to charitable equipment donations. Today's enterprises demand <strong className="text-emerald-600">quality over quantity</strong> — expecting efficient, automated processes that minimize errors while maintaining complete documentation for compliance audits.
+                                IT Asset Disposition companies provide businesses with comprehensive services ranging from secure data sanitization to charitable equipment donations. Today's enterprises demand <strong className="text-emerald-800">quality over quantity</strong> — expecting efficient, automated processes that minimize errors while maintaining complete documentation for compliance audits.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 To meet these evolving demands, forward-thinking ITADs are embracing integrated technology solutions that bring precision and automation to their operations. Let's explore how a unified software platform combining data erasure and hardware diagnostics can revolutionize ITAD workflows.
@@ -158,7 +158,7 @@ const DiagnosticsErasureITADBlog: React.FC = () => {
                         </p>
                         <Link
                             to="/contact"
-                            className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                            className="inline-flex items-center bg-white text-emerald-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                         >
                             Request a Demo Today
                             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

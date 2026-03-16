@@ -634,7 +634,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                       activeSection === item.id
                         ? "bg-emerald-500 text-white shadow-md"
-                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-600"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
                     }`}
                   >
                     {item.label}
@@ -714,7 +714,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     <button
                       onClick={downloadCatalog}
                       disabled={false}
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
                     >
                       <svg
                         className="w-5 h-5"
@@ -1170,7 +1170,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                       <svg
-                        className="w-5 h-5 text-emerald-600"
+                        className="w-5 h-5 text-emerald-800"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
@@ -1204,7 +1204,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                       <svg
-                        className="w-5 h-5 text-emerald-600"
+                        className="w-5 h-5 text-emerald-800"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
@@ -1238,7 +1238,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                       <svg
-                        className="w-5 h-5 text-emerald-600"
+                        className="w-5 h-5 text-emerald-800"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
@@ -1280,7 +1280,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="absolute inset-0 bg-emerald-600/0 group-hover:bg-emerald-600/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
                       <svg
-                        className="w-5 h-5 text-emerald-600"
+                        className="w-5 h-5 text-emerald-800"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
@@ -1332,7 +1332,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   Simple 4-Step Process
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                  How To Use <span className="text-emerald-600">D-Secure</span>{" "}
+                  How To Use <span className="text-emerald-800">D-Secure</span>{" "}
                   Drive Eraser?
                 </h2>
                 <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -1359,7 +1359,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* Icon */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100">
                         <svg
-                          className="w-8 h-8 text-emerald-600"
+                          className="w-8 h-8 text-emerald-800"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
@@ -1407,7 +1407,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Icon */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100">
-                        <CloudIcon className="w-8 h-8 text-emerald-600" />
+                        <CloudIcon className="w-8 h-8 text-emerald-800" />
                       </div>
                       {/* Title */}
                       <h3 className="font-bold text-slate-900 mb-2">Deploy</h3>
@@ -1455,7 +1455,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       {/* Icon with overlapping shields */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100 relative">
                         <div className="flex -space-x-2">
-                          <ShieldIcon className="w-6 h-6 text-emerald-600 relative z-10" />
+                          <ShieldIcon className="w-6 h-6 text-emerald-800 relative z-10" />
                           <ShieldIcon className="w-6 h-6 text-emerald-400 relative z-0" />
                         </div>
                       </div>
@@ -1494,7 +1494,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       </div>
                       {/* Icon with checkmark */}
                       <div className="w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-emerald-100 relative">
-                        <FileTextIcon className="w-8 h-8 text-emerald-600" />
+                        <FileTextIcon className="w-8 h-8 text-emerald-800" />
                         <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
                           <CheckIcon className="w-3 h-3 text-white" />
                         </div>
@@ -1521,10 +1521,10 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   </strong>{" "}
                   offers the flexibility to wipe drives and devices in both
                   internet-enabled locations and offline facilities. Deploy via{" "}
-                  <strong className="text-emerald-600">USB drive</strong>,{" "}
-                  <strong className="text-emerald-600">PXE boot</strong> over
+                  <strong className="text-emerald-800">USB drive</strong>,{" "}
+                  <strong className="text-emerald-800">PXE boot</strong> over
                   network, or{" "}
-                  <strong className="text-emerald-600">MSI package</strong> for
+                  <strong className="text-emerald-800">MSI package</strong> for
                   remote wiping on Windows endpoints.
                 </p>
                 <p className="text-sm text-slate-500 mt-4">
@@ -1624,7 +1624,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       <h3 className="text-lg sm:text-xl font-bold text-slate-900 truncate">
                         AMD64 / Intel 64
                       </h3>
-                      <p className="text-xs sm:text-sm text-emerald-600">
+                      <p className="text-xs sm:text-sm text-emerald-800">
                         Most Common Architecture
                       </p>
                     </div>
@@ -1778,7 +1778,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
 
                   {/* Linux */}
                   <div className="flex items-center gap-3 sm:gap-4 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-slate-200">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-yellow-600 flex items-center justify-center bg-yellow-50 rounded-lg sm:rounded-xl border border-yellow-200">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 text-yellow-800 flex items-center justify-center bg-yellow-50 rounded-lg sm:rounded-xl border border-yellow-200">
                       <svg
                         className="w-6 h-6 sm:w-8 sm:h-8"
                         viewBox="0 0 24 24"
@@ -1841,7 +1841,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
               {features.map((f, i) => (
                 <Reveal key={f.title} delayMs={i * 40}>
                   <div className="group bg-gradient-to-br from-slate-50 to-white rounded-lg sm:rounded-xl p-4 sm:p-6 border border-slate-200 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 min-h-[180px] sm:min-h-[220px] flex flex-col">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                       {f.icon}
                     </div>
                     <h3 className="font-bold text-slate-900 mb-2">{f.title}</h3>
@@ -1947,7 +1947,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                       <span className="font-semibold text-slate-900 pr-3 sm:pr-4 text-sm sm:text-base">
                         {faq.q}
                       </span>
-                      <span className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center group-open:rotate-180 transition-transform">
+                      <span className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center group-open:rotate-180 transition-transform">
                         <svg
                           className="w-5 h-5"
                           fill="none"
@@ -1989,7 +1989,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                 </div>
                 <Link
                   to="/blog"
-                  className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors group"
+                  className="inline-flex items-center gap-2 text-emerald-800 font-bold hover:text-emerald-700 transition-colors group"
                 >
                   View More
                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -2003,17 +2003,17 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <Link to={blog.link} className="block group h-full">
                     <div className="bg-slate-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-slate-100 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 h-full flex flex-col">
                       <div className="mb-4">
-                        <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">
+                        <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">
                           {blog.tag}
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
+                      <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-800 transition-colors line-clamp-2">
                         {blog.title}
                       </h3>
                       <p className="text-slate-600 text-sm mb-4 leading-relaxed flex-grow line-clamp-3">
                         {blog.excerpt}
                       </p>
-                      <div className="flex items-center text-emerald-600 font-semibold text-sm mb-4 group-hover:gap-2 gap-1 transition-all">
+                      <div className="flex items-center text-emerald-800 font-semibold text-sm mb-4 group-hover:gap-2 gap-1 transition-all">
                         Read Article <ArrowRightIcon className="w-4 h-4" />
                       </div>
                       <div className="flex items-center justify-between text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
@@ -2056,7 +2056,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                     ].map((item) => (
                       <li key={item} className="flex items-center gap-3">
                         <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                         </div>
                         <span className="text-slate-700">{item}</span>
                       </li>
@@ -2066,7 +2066,7 @@ const DriveEraserPage: React.FC = memo(function FileEraserPage() {
                   <div className="pt-4">
                     <Link
                       to="/contact"
-                      className="inline-flex items-center gap-2 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
+                      className="inline-flex items-center gap-2 text-emerald-800 font-semibold hover:text-emerald-700 transition-colors"
                     >
                       Or contact us directly
                       <ArrowRightIcon className="w-5 h-5" />

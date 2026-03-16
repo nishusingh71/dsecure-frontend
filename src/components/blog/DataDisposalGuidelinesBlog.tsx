@@ -46,7 +46,7 @@ const DataDisposalGuidelinesBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Are you following the right approach to data disposal? Organizations often overlook the fact that <strong className="text-emerald-600">information no longer valuable to them</strong> still resides on discarded devices. This information can become accessible to malicious actors keeping a close watch on improper disposal practices.
+                                Are you following the right approach to data disposal? Organizations often overlook the fact that <strong className="text-emerald-800">information no longer valuable to them</strong> still resides on discarded devices. This information can become accessible to malicious actors keeping a close watch on improper disposal practices.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 With most enterprises not practicing a failsafe data destruction policy, the possibility of data leakage or theft becomes significantly high. Data disposal done correctly is the answer to all possible data security concerns. A proper approach to data destruction can bridge all potential vulnerabilities that may invite serious troubles resulting from a data breach event.

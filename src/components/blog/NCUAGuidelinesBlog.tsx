@@ -117,7 +117,7 @@ const NCUAGuidelinesBlog: React.FC = () => {
                             <div className="border-l-4 border-emerald-500 pl-6 py-4">
                                 <h4 className="font-bold text-slate-900 text-xl mb-3">Data Disposal Standard</h4>
                                 <p className="text-slate-700 text-lg leading-loose">
-                                    Although the security guidelines do not mention any specific method of data disposal, <strong className="text-emerald-600">NCUA expects credit unions to make sure that third-party service providers follow data disposal procedures that render data unrecoverable by any means.</strong>
+                                    Although the security guidelines do not mention any specific method of data disposal, <strong className="text-emerald-800">NCUA expects credit unions to make sure that third-party service providers follow data disposal procedures that render data unrecoverable by any means.</strong>
                                 </p>
                             </div>
 

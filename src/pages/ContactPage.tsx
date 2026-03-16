@@ -1327,7 +1327,7 @@ function ContactPageContent() {
                         I understand that the above information is protected by{" "}
                         <a
                           href="/privacy-policy"
-                          className="text-green-600 hover:underline"
+                          className="text-green-800 hover:underline"
                         >
                           D-secure Privacy Policy
                         </a>
@@ -1364,7 +1364,7 @@ function ContactPageContent() {
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                         <svg
-                          className="w-4 h-4 text-green-600"
+                          className="w-4 h-4 text-green-800"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -1384,7 +1384,7 @@ function ContactPageContent() {
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                         <svg
-                          className="w-4 h-4 text-green-600"
+                          className="w-4 h-4 text-green-800"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -1672,7 +1672,7 @@ function ContactPageContent() {
                           </svg>
                           <a
                             href={`tel:${(office.contacts.primary as any).phone}`}
-                            className="hover:text-emerald-600 transition-colors"
+                            className="hover:text-emerald-800 transition-colors"
                           >
                             {(office.contacts.primary as any).phone}
                           </a>
@@ -1697,7 +1697,7 @@ function ContactPageContent() {
                           </svg>
                           <a
                             href={`mailto:${(office.contacts.primary as any).email}`}
-                            className="hover:text-emerald-600 transition-colors"
+                            className="hover:text-emerald-800 transition-colors"
                           >
                             {(office.contacts.primary as any).email}
                           </a>
@@ -1758,7 +1758,7 @@ function ContactPageContent() {
                         {(office.contacts.primary as any).phone && (
                           <a
                             href={`tel:${(office.contacts.primary as any).phone}`}
-                            className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-600 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+                            className="flex-1 border border-slate-300 hover:border-emerald-500 text-slate-700 hover:text-emerald-800 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
                           >
                             Call Now
                           </a>
@@ -1777,7 +1777,7 @@ function ContactPageContent() {
                           {(office.contacts as any).sales?.email && (
                             <a
                               href={`mailto:${(office.contacts as any).sales.email}`}
-                              className="text-emerald-600 hover:underline"
+                              className="text-emerald-800 hover:underline"
                             >
                               Sales: {(office.contacts as any).sales.email}
                             </a>
@@ -1785,7 +1785,7 @@ function ContactPageContent() {
                           {(office.contacts as any).support?.email && (
                             <a
                               href={`mailto:${(office.contacts as any).support.email}`}
-                              className="text-emerald-600 hover:underline"
+                              className="text-emerald-800 hover:underline"
                             >
                               Support: {(office.contacts as any).support.email}
                             </a>

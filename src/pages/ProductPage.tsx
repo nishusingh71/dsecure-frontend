@@ -403,12 +403,12 @@ const ProductPage: React.FC = () => {
     const gapClass = variant === "compact" ? "space-x-1" : "space-x-1";
     switch (value) {
       case "check":
-        return <CheckIcon className={`${iconClass} text-emerald-600`} />;
+        return <CheckIcon className={`${iconClass} text-emerald-800`} />;
       case "check-1":
         return (
           <div className={`flex items-center ${gapClass}`}>
-            <CheckIcon className={`${iconClass} text-emerald-600`} />
-            <span className={`${textClass} font-medium text-emerald-600`}>
+            <CheckIcon className={`${iconClass} text-emerald-800`} />
+            <span className={`${textClass} font-medium text-emerald-800`}>
               1
             </span>
           </div>
@@ -416,8 +416,8 @@ const ProductPage: React.FC = () => {
       case "check-5":
         return (
           <div className={`flex items-center ${gapClass}`}>
-            <CheckIcon className={`${iconClass} text-emerald-600`} />
-            <span className={`${textClass} font-medium text-emerald-600`}>
+            <CheckIcon className={`${iconClass} text-emerald-800`} />
+            <span className={`${textClass} font-medium text-emerald-800`}>
               5
             </span>
           </div>
@@ -425,8 +425,8 @@ const ProductPage: React.FC = () => {
       case "check-file":
         return (
           <div className={`flex items-center ${gapClass}`}>
-            <ClipboardIcon className={`${iconClass} text-emerald-600`} />
-            <span className={`${textClass} font-medium text-emerald-600`}>
+            <ClipboardIcon className={`${iconClass} text-emerald-800`} />
+            <span className={`${textClass} font-medium text-emerald-800`}>
               {t("products.files")}
             </span>
           </div>
@@ -434,8 +434,8 @@ const ProductPage: React.FC = () => {
       case "check-expanded":
         return (
           <div className={`flex items-center ${gapClass}`}>
-            <ClipboardIcon className={`${iconClass} text-emerald-600`} />
-            <span className={`${textClass} font-medium text-emerald-600`}>
+            <ClipboardIcon className={`${iconClass} text-emerald-800`} />
+            <span className={`${textClass} font-medium text-emerald-800`}>
               {t("products.all")}
             </span>
           </div>
@@ -461,8 +461,8 @@ const ProductPage: React.FC = () => {
       case "check-fast":
         return (
           <div className={`flex items-center ${gapClass}`}>
-            <LightningIcon className={`${iconClass} text-emerald-600`} />
-            <span className={`${textClass} font-medium text-emerald-600`}>
+            <LightningIcon className={`${iconClass} text-emerald-800`} />
+            <span className={`${textClass} font-medium text-emerald-800`}>
               {t("products.faster")}
             </span>
           </div>
@@ -583,7 +583,7 @@ const ProductPage: React.FC = () => {
                     {t("products.mostPopular")}
                   </div>
                   <div className="flex-none">
-                    <DatabaseIcon className="w-12 xs:w-14 sm:w-16 h-12 xs:h-14 sm:h-16 text-emerald-600 mb-4 xs:mb-6 transition-transform group-hover:scale-110" />
+                    <DatabaseIcon className="w-12 xs:w-14 sm:w-16 h-12 xs:h-14 sm:h-16 text-emerald-800 mb-4 xs:mb-6 transition-transform group-hover:scale-110" />
                     <h3 className="text-xl xs:text-2xl sm:text-3xl font-bold mb-2 text-slate-900">
                       {t("products.driveEraserTitle")}
                     </h3>
@@ -602,19 +602,19 @@ const ProductPage: React.FC = () => {
                       </h4>
                       <ul className="text-slate-700 space-y-3 text-sm">
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.erasureStandards")}
                         </li>
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.cloudConsoleIntegration")}
                         </li>
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.usbPxeBoot")}
                         </li>
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.digitallySigned")}
                         </li>
                       </ul>
@@ -667,19 +667,19 @@ const ProductPage: React.FC = () => {
                     </h4>
                     <ul className="text-slate-700 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.safeguardPrivacy")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.preventDataThefts")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.maxResaleValue")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.globalStandardsCompliance")}
                       </li>
                     </ul>
@@ -726,7 +726,7 @@ const ProductPage: React.FC = () => {
                     {t("products.bestRated")}
                   </div>
                   <div className="flex-none">
-                    <ServerIcon className="w-16 h-16 text-emerald-600 mb-6 transition-transform group-hover:scale-110" />
+                    <ServerIcon className="w-16 h-16 text-emerald-800 mb-6 transition-transform group-hover:scale-110" />
                     <h3 className="text-3xl font-bold mb-2 text-slate-900">
                       {t("products.fileEraserTitle")}
                     </h3>
@@ -745,19 +745,19 @@ const ProductPage: React.FC = () => {
                       </h4>
                       <ul className="text-slate-700 space-y-3 text-sm">
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.erasureStandards")}
                         </li>
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.multiLanguageUI")}
                         </li>
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.googleDriveErasure")}
                         </li>
                         <li className="flex items-center gap-3">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                           {t("products.comprehensiveReporting")}
                         </li>
                       </ul>
@@ -810,19 +810,19 @@ const ProductPage: React.FC = () => {
                     </h4>
                     <ul className="text-slate-700 space-y-2 text-sm">
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.individualUsers")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.corporateDataProtection")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.cloudErasure")}
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckIcon className="w-4 h-4 text-emerald-600" />
+                        <CheckIcon className="w-4 h-4 text-emerald-800" />
                         {t("products.complianceAudit")}
                       </li>
                     </ul>

@@ -154,7 +154,7 @@ const UserActivityTab: React.FC<UserActivityTabProps> = ({
                     <span
                       className={`inline-flex items-center gap-1 ${
                         activity.status === "active"
-                          ? "text-green-600"
+                          ? "text-green-800"
                           : "text-slate-500"
                       }`}
                     >

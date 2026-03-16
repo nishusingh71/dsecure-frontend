@@ -71,7 +71,7 @@ const ITAMDataBreachBlog: React.FC = () => {
                         <div className="space-y-6">
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">1</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">1</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Keep Software Always Up to Date</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -83,7 +83,7 @@ const ITAMDataBreachBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">2</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">2</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Encrypt All Sensitive Data</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -95,7 +95,7 @@ const ITAMDataBreachBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">3</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">3</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Perform Regular Data Sanitization</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -107,7 +107,7 @@ const ITAMDataBreachBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">4</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">4</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Enforce Strong Password Policies</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -119,7 +119,7 @@ const ITAMDataBreachBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">5</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">5</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Create a Breach Response Plan</h3>
                                         <p className="text-white/90 leading-relaxed">

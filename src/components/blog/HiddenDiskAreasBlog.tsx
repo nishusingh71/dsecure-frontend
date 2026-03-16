@@ -46,7 +46,7 @@ const HiddenDiskAreasBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Privileged access controls, encrypted storage media, and multi-factor authentication provide a sense of relief about the security of onsite data storage systems. However, when these systems need upgrading or have reached end of life, they must be <strong className="text-emerald-600">erased securely — including wiping hidden disk areas</strong>.
+                                Privileged access controls, encrypted storage media, and multi-factor authentication provide a sense of relief about the security of onsite data storage systems. However, when these systems need upgrading or have reached end of life, they must be <strong className="text-emerald-800">erased securely — including wiping hidden disk areas</strong>.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Most often, risks posed by remnant and hidden data are overlooked. NIST SP 800-88 Rev 1 Guidelines for Media Sanitization highlight that residual data fragments can pose significant security risks, especially on IT assets leaving organizational premises.
@@ -147,7 +147,7 @@ const HiddenDiskAreasBlog: React.FC = () => {
                                 <p className="text-slate-600 text-lg leading-relaxed">
                                     Recommended for erasing data from entire storage media, including HPA, DCO, and remapped sectors.
                                 </p>
-                                <p className="text-emerald-600 text-sm mt-2 font-medium"> Complete sanitization</p>
+                                <p className="text-emerald-800 text-sm mt-2 font-medium"> Complete sanitization</p>
                             </div>
                         </div>
                     </div>

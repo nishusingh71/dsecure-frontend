@@ -123,19 +123,19 @@ const RemoteWipingSoftwareBlog: React.FC = () => {
                                 </p>
                                 <ul className="space-y-3 text-slate-700 text-lg">
                                     <li className="flex items-start">
-                                        <span className="text-emerald-600 mr-3"></span>
+                                        <span className="text-emerald-800 mr-3"></span>
                                         D-Secure Remote Wiping software is distributed in an MSI package that can be installed on any Windows-based device
                                     </li>
                                     <li className="flex items-start">
-                                        <span className="text-emerald-600 mr-3"></span>
+                                        <span className="text-emerald-800 mr-3"></span>
                                         The MSI package can be shared over email or pushed through SCCM
                                     </li>
                                     <li className="flex items-start">
-                                        <span className="text-emerald-600 mr-3"></span>
+                                        <span className="text-emerald-800 mr-3"></span>
                                         System admins can bundle the MSI package with Windows OS installer as a default application
                                     </li>
                                     <li className="flex items-start">
-                                        <span className="text-emerald-600 mr-3"></span>
+                                        <span className="text-emerald-800 mr-3"></span>
                                         Software gets installed and can be initiated when needed
                                     </li>
                                 </ul>

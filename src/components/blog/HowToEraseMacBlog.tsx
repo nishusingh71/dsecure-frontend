@@ -46,7 +46,7 @@ const HowToEraseMacBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                When the time comes to retire, repurpose, or redeploy Mac® devices — whether MacBook, Mac mini, iMac, or Mac Studio — simply restoring factory settings isn't sufficient, particularly for devices used in <strong className="text-emerald-600">business, education, or government</strong> environments. These systems often contain sensitive data that requires permanent erasure before disposal or redeployment.
+                                When the time comes to retire, repurpose, or redeploy Mac® devices — whether MacBook, Mac mini, iMac, or Mac Studio — simply restoring factory settings isn't sufficient, particularly for devices used in <strong className="text-emerald-800">business, education, or government</strong> environments. These systems often contain sensitive data that requires permanent erasure before disposal or redeployment.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 While Apple provides built-in tools for data removal, these methods fall short for organizations governed by data protection regulations and compliance frameworks like ISO 27001, which demand detailed audit trails to demonstrate accountability and traceability.
@@ -208,7 +208,7 @@ const HowToEraseMacBlog: React.FC = () => {
 
                         <div className="bg-slate-100 rounded-xl p-6 mt-6">
                             <p className="text-slate-700 text-lg leading-loose">
-                                <strong className="text-emerald-600">For businesses, educational institutions, healthcare organizations, and government entities</strong>, these gaps translate to significant risk — both in terms of data security and compliance.
+                                <strong className="text-emerald-800">For businesses, educational institutions, healthcare organizations, and government entities</strong>, these gaps translate to significant risk — both in terms of data security and compliance.
                             </p>
                         </div>
                     </div>
@@ -226,23 +226,23 @@ const HowToEraseMacBlog: React.FC = () => {
                             <h4 className="font-bold text-lg mb-4">Quick Deployment Steps:</h4>
                             <ul className="space-y-3">
                                 <li className="flex items-start">
-                                    <span className="w-6 h-6 bg-white text-emerald-600 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">1</span>
+                                    <span className="w-6 h-6 bg-white text-emerald-800 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">1</span>
                                     Long-press the Power Button
                                 </li>
                                 <li className="flex items-start">
-                                    <span className="w-6 h-6 bg-white text-emerald-600 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">2</span>
+                                    <span className="w-6 h-6 bg-white text-emerald-800 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">2</span>
                                     Select Options and click Continue
                                 </li>
                                 <li className="flex items-start">
-                                    <span className="w-6 h-6 bg-white text-emerald-600 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">3</span>
+                                    <span className="w-6 h-6 bg-white text-emerald-800 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">3</span>
                                     Go to Utilities and click on Terminal
                                 </li>
                                 <li className="flex items-start">
-                                    <span className="w-6 h-6 bg-white text-emerald-600 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">4</span>
+                                    <span className="w-6 h-6 bg-white text-emerald-800 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">4</span>
                                     Enter the command to initialize D-Secure Drive Eraser
                                 </li>
                                 <li className="flex items-start">
-                                    <span className="w-6 h-6 bg-white text-emerald-600 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">5</span>
+                                    <span className="w-6 h-6 bg-white text-emerald-800 rounded-full flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0 font-bold">5</span>
                                     Erase Mac and receive digitally signed Certificate of Erasure
                                 </li>
                             </ul>
@@ -254,7 +254,7 @@ const HowToEraseMacBlog: React.FC = () => {
 
                         <Link
                             to="/#products"
-                            className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
+                            className="inline-flex items-center bg-white text-emerald-800 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
                         >
                             Explore D-Secure for Mac
                             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -313,7 +313,7 @@ const HowToEraseMacBlog: React.FC = () => {
                     <div className="bg-slate-100 rounded-xl shadow-md p-10 mt-10">
                         <h2 className="text-3xl font-bold text-slate-900 mb-6">Erase Mac with Confidence</h2>
                         <p className="text-slate-700 text-lg leading-loose mb-6">
-                            When data security matters, it's important to ask not just "how to erase Mac" but <strong className="text-emerald-600">"how to erase it correctly."</strong> Native tools work for one-off personal use, but they fall short in regulated industries, during audits, or in multi-device environments.
+                            When data security matters, it's important to ask not just "how to erase Mac" but <strong className="text-emerald-800">"how to erase it correctly."</strong> Native tools work for one-off personal use, but they fall short in regulated industries, during audits, or in multi-device environments.
                         </p>
                         <p className="text-slate-700 text-lg leading-loose">
                             D-Secure offers a compliant, efficient, and secure way to erase Mac computers — without manual headaches or compliance risks. Whether handling five devices or five thousand, D-Secure ensures your data is gone permanently.

@@ -1,6 +1,6 @@
 import Reveal from "@/components/Reveal";
 import { Link } from "react-router-dom";
-import DSecureIconOnly from "@/assets/dsecure-icon-only.svg"; // Assuming vite-plugin-svgr or similar, but wait, typical vite import provides url by default. 
+import DSecureIconOnly from "@/assets/dsecure-icon-only.svg"; // Assuming vite-plugin-svgr or similar, but wait, typical vite import provides url by default.
 import OptimizedImage from "@/components/OptimizedImage";
 import {
   LightningIcon,
@@ -71,10 +71,7 @@ const HomePage = memo(function HomePage() {
                   <Link
                     to="/data-eraser-software"
                     className="btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center"
-                    aria-label={t(
-                      "home.exploreDataEraserSoftware",
-                      "Explore D-Secure Data Eraser Software",
-                    )}
+                    aria-label="Explore D-Secure Software"
                   >
                     <HoverIcon>
                       {(filled) => (
@@ -84,7 +81,7 @@ const HomePage = memo(function HomePage() {
                         />
                       )}
                     </HoverIcon>
-                    {t("home.exploreDataEraserSoftware", "Explore Data Eraser")}
+                    {t("home.exploreDataEraserSoftware", "Explore D-Secure")}
                   </Link>
                   <Link
                     to="/pricing-and-plan"
@@ -290,7 +287,7 @@ const HomePage = memo(function HomePage() {
                         <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
                           {/* Trash/Delete Icon - Clear Data Erasure Symbol */}
                           <svg
-                            className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-600"
+                            className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-800"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -315,7 +312,7 @@ const HomePage = memo(function HomePage() {
                         <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
                           {/* Desktop/Monitor Icon */}
                           <svg
-                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-800"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -337,7 +334,7 @@ const HomePage = memo(function HomePage() {
                         <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
                           {/* Cloud Icon */}
                           <svg
-                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-800"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -358,7 +355,7 @@ const HomePage = memo(function HomePage() {
                         <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
                           {/* Folder Icon */}
                           <svg
-                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-800"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -379,7 +376,7 @@ const HomePage = memo(function HomePage() {
                         <div className="w-12 h-12 lg:w-14 lg:h-14 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
                           {/* HDD/Drive Icon - Disk with center */}
                           <svg
-                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-600"
+                            className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-800"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -407,7 +404,7 @@ const HomePage = memo(function HomePage() {
                         <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-2xl shadow-lg border-2 border-emerald-200 flex items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-110 hover:border-emerald-500">
                           {/* Shield with Checkmark - Compliance */}
                           <svg
-                            className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-600"
+                            className="w-7 h-7 lg:w-8 lg:h-8 text-emerald-800"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -458,7 +455,7 @@ const HomePage = memo(function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Link
                   to="/contact"
-                  className="bg-white text-green-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 inline-flex items-center justify-center"
+                  className="bg-white text-green-800 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 inline-flex items-center justify-center"
                 >
                   {/* 🚀 → LightningIcon */}
                   <LightningIcon className="w-5 h-5 mr-2" filled={true} />
@@ -578,10 +575,10 @@ const HomePage = memo(function HomePage() {
               <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
                 <div className="relative z-10">
                   {/* 🇪🇺 → GlobeIcon */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-600">
+                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-800">
                     <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                     {t("home.gdpr")}
                   </h3>
                   <p className="text-xs text-slate-500">{t("home.gdprDesc")}</p>
@@ -634,10 +631,10 @@ const HomePage = memo(function HomePage() {
               <div className="group bg-white rounded-xl p-4 lg:p-6 shadow-lg border border-slate-200/60 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden">
                 <div className="relative z-10">
                   {/* 🌍 → GlobeIcon */}
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-600">
+                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300 text-emerald-800">
                     <GlobeIcon className="w-10 h-10 mx-auto" filled={true} />
                   </div>
-                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                  <h3 className="font-bold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                     {t("home.iso27001")}
                   </h3>
                   <p className="text-xs text-slate-500">
@@ -688,7 +685,7 @@ const HomePage = memo(function HomePage() {
                   <h3 className="font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
                     {t("home.commonCriteria")}
                   </h3>
-                  <p className="text-sm text-emerald-600 font-medium mb-2">
+                  <p className="text-sm text-emerald-800 font-medium mb-2">
                     {t("home.commonCriteriaLevel")}
                   </p>
                   <p className="text-xs text-slate-500">
@@ -747,13 +744,13 @@ const HomePage = memo(function HomePage() {
               <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 text-center group hover:shadow-xl transition-all duration-300 hover:border-yellow-300 hover:-translate-y-1 relative overflow-hidden">
                 <div className="relative z-10">
                   {/* ⭐ → StarIcon */}
-                  <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-yellow-600">
+                  <div className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300 text-yellow-800">
                     <StarIcon className="w-8 h-8 mx-auto" filled={true} />
                   </div>
-                  <h3 className="font-bold text-slate-900 mb-1 group-hover:text-yellow-600 transition-colors">
+                  <h3 className="font-bold text-slate-900 mb-1 group-hover:text-yellow-800 transition-colors">
                     CSA STAR
                   </h3>
-                  <p className="text-sm text-yellow-600 font-medium mb-2">
+                  <p className="text-sm text-yellow-800 font-medium mb-2">
                     Gold
                   </p>
                   <p className="text-xs text-slate-500">
@@ -998,7 +995,7 @@ const HomePage = memo(function HomePage() {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 text-center">
                   <Reveal delayMs={20}>
                     <div className="group">
-                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform duration-300">
+                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-800 mb-2 group-hover:scale-105 transition-transform duration-300">
                         {t("home.devicesCount")}
                       </div>
                       <div className="text-slate-600 text-sm sm:text-base font-medium">
@@ -1081,7 +1078,7 @@ const HomePage = memo(function HomePage() {
                       </HoverIcon>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
                         {t("home.healthcare")}
                       </h3>
                       <p className="text-sm text-slate-500">
@@ -1124,7 +1121,7 @@ const HomePage = memo(function HomePage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
                         {t("home.financial")}
                       </h3>
                       <p className="text-sm text-slate-500">
@@ -1162,7 +1159,7 @@ const HomePage = memo(function HomePage() {
                       </HoverIcon>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
                         {t("home.government")}
                       </h3>
                       <p className="text-sm text-slate-500">
@@ -1200,7 +1197,7 @@ const HomePage = memo(function HomePage() {
                       </HoverIcon>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
                         {t("home.enterprise")}
                       </h3>
                       <p className="text-sm text-slate-500">
@@ -1238,7 +1235,7 @@ const HomePage = memo(function HomePage() {
                       </HoverIcon>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
                         {t("home.itadServices")}
                       </h3>
                       <p className="text-sm text-slate-500">
@@ -1279,7 +1276,7 @@ const HomePage = memo(function HomePage() {
                       </svg>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-800 transition-colors">
                         {t("home.serviceProviders")}
                       </h3>
                       <p className="text-sm text-slate-500">
@@ -1369,7 +1366,7 @@ const HomePage = memo(function HomePage() {
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-emerald-800"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1387,7 +1384,7 @@ const HomePage = memo(function HomePage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-emerald-800"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1405,7 +1402,7 @@ const HomePage = memo(function HomePage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-emerald-800"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1423,7 +1420,7 @@ const HomePage = memo(function HomePage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <svg
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-emerald-800"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -1450,7 +1447,7 @@ const HomePage = memo(function HomePage() {
                 </div>
                 <Link
                   to="/products/drive-eraser"
-                  className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium group"
+                  className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium group"
                 >
                   <span>{t("home.viewProductDetails")}</span>
                   <svg

@@ -46,7 +46,7 @@ const ITADProcurementBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                A major concern of SPVM leaders handling IT assets is <strong className="text-emerald-600">balancing speed and managing risks</strong> from sourcing equipment to their end-of-life management. When creating ITAD (IT Asset Disposition) strategies or selecting an ITAD partner, leaders should consider funding, risk tolerance, and sustainability objectives.
+                                A major concern of SPVM leaders handling IT assets is <strong className="text-emerald-800">balancing speed and managing risks</strong> from sourcing equipment to their end-of-life management. When creating ITAD (IT Asset Disposition) strategies or selecting an ITAD partner, leaders should consider funding, risk tolerance, and sustainability objectives.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 These factors help determine the services required from ITAD service providers. ITADs offer services in three major categories: core disposition services, secondary hardware services, and ancillary lifecycle services — including data center decommissioning, media sanitization, recycling, refurbishing, reselling, component recovery, and donation arrangement.
@@ -160,7 +160,7 @@ const ITADProcurementBlog: React.FC = () => {
                                 Due to advances in miniaturization technology, data recovery has become possible from even the smallest shredded or destroyed components. This means improper physical destruction of IT assets increases non-compliance risks. Data erasure provides an additional security layer to prevent information compromise.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg mt-4">
-                                Even when devices contain classified information requiring complete shredding, it is advisable to <strong className="text-emerald-600">erase the device first, then perform physical destruction</strong> to ensure no recovery is possible from the shredded components.
+                                Even when devices contain classified information requiring complete shredding, it is advisable to <strong className="text-emerald-800">erase the device first, then perform physical destruction</strong> to ensure no recovery is possible from the shredded components.
                             </p>
                         </div>
                     </div>

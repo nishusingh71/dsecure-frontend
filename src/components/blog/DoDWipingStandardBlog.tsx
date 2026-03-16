@@ -46,7 +46,7 @@ const DoDWipingStandardBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Media sanitization — commonly referred to as <strong className="text-emerald-600">data sanitization</strong> — is crucial for organizations to prevent leakage of confidential and sensitive data from storage media including hard drives, USB flash storage, and servers. Failure to properly wipe data when releasing storage hardware from custody can expose company sensitive information and lead to devastating data breaches with millions in penalties.
+                                Media sanitization — commonly referred to as <strong className="text-emerald-800">data sanitization</strong> — is crucial for organizations to prevent leakage of confidential and sensitive data from storage media including hard drives, USB flash storage, and servers. Failure to properly wipe data when releasing storage hardware from custody can expose company sensitive information and lead to devastating data breaches with millions in penalties.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Data destruction standards like DoD 5220.22-M by NISPOM outline specific processes for performing data wipes on hard drives, SSDs, and other storage media. These standards define the number of overwrite passes, overwriting patterns, and verification methods required to erase data beyond any possibility of recovery before devices are redeployed, recycled, resold, or discarded.

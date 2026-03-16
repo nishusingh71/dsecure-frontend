@@ -152,7 +152,7 @@ const SchedulingTasks: React.FC = () => {
 
             <div className="border-l-4 border-green-500 bg-green-50 rounded-r-lg p-4">
               <div className="flex items-start gap-3">
-                <Clock className="w-6 h-6 text-green-600 mt-0.5" />
+                <Clock className="w-6 h-6 text-green-800 mt-0.5" />
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Every Login</h3>
                   <p className="text-gray-700 text-lg">Task runs when any user logs into the computer. Perfect for clearing user-specific traces.</p>
@@ -217,7 +217,7 @@ const SchedulingTasks: React.FC = () => {
         {/* Managing Tasks */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-            <Edit className="w-7 h-7 text-green-600" />
+            <Edit className="w-7 h-7 text-green-800" />
             Managing Scheduled Tasks
           </h2>
           
@@ -231,7 +231,7 @@ const SchedulingTasks: React.FC = () => {
               
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 mt-0.5" />
+                  <CheckCircle className="w-6 h-6 text-green-800 mt-0.5" />
                   <div>
                     <strong className="text-gray-900">View All Tasks:</strong>
                     <p className="text-gray-700">Go to <strong>Schedule</strong> → <strong>Manage Tasks</strong> to see all scheduled tasks</p>
@@ -294,7 +294,7 @@ const SchedulingTasks: React.FC = () => {
 
             <div className="bg-green-50 border-l-4 border-green-400 rounded p-4">
               <div className="flex items-start gap-2">
-                <AlertCircle className="w-6 h-6 text-green-600 mt-0.5" />
+                <AlertCircle className="w-6 h-6 text-green-800 mt-0.5" />
                 <div className="text-green-900 text-lg">
                   <strong>Network Connectivity:</strong> Ensure computers stay connected to the network for scheduled tasks to execute reliably.
                 </div>

@@ -1205,7 +1205,7 @@ export default function AdminGroups() {
               </div>
               <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
                 <svg
-                  className="w-6 h-6 text-emerald-600"
+                  className="w-6 h-6 text-emerald-800"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1349,7 +1349,7 @@ export default function AdminGroups() {
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                 <svg
-                  className="w-6 h-6 text-green-600"
+                  className="w-6 h-6 text-green-800"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1463,7 +1463,7 @@ export default function AdminGroups() {
                   <div className="flex items-center gap-2 ml-4">
                     <button
                       onClick={() => handleEditGroup(group)}
-                      className="px-3 py-1.5 text-sm text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      className="px-3 py-1.5 text-sm text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
                     >
                       Edit
                     </button>
@@ -1889,10 +1889,10 @@ export default function AdminGroups() {
                       type="checkbox"
                       checked={makeGroupAdmin}
                       onChange={(e) => setMakeGroupAdmin(e.target.checked)}
-                      className="w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                      className="w-4 h-4 text-emerald-800 border-slate-300 rounded focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                     />
                     <div className="flex-1">
-                      <span className="text-sm font-medium text-slate-700 group-hover:text-emerald-600 transition-colors">
+                      <span className="text-sm font-medium text-slate-700 group-hover:text-emerald-800 transition-colors">
                         Make this user a Group Admin
                       </span>
                       <p className="text-xs text-slate-500 mt-0.5">

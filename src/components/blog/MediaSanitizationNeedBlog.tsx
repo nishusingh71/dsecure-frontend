@@ -46,7 +46,7 @@ const MediaSanitizationNeedBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                <strong className="text-emerald-600">Media sanitization</strong> is an essential yet frequently overlooked aspect of ensuring total data security and privacy. Ineffective or incomplete cleansing of data stored in IT assets — when they are sold, returned, donated, shredded, or discarded — can cause data breaches with disastrous consequences.
+                                <strong className="text-emerald-800">Media sanitization</strong> is an essential yet frequently overlooked aspect of ensuring total data security and privacy. Ineffective or incomplete cleansing of data stored in IT assets — when they are sold, returned, donated, shredded, or discarded — can cause data breaches with disastrous consequences.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Learning from major breach incidents, organizations must understand that data security doesn't end when devices leave the premises. It takes proper sanitization to ensure that residual data doesn't become a liability years after disposal.

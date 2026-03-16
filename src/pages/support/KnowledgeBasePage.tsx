@@ -206,7 +206,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
                 <div className="mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4 transition-colors"
+                    className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-4 transition-colors"
                   >
                     <svg
                       className="w-5 h-5 mr-2"
@@ -361,7 +361,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
                               {article.readTime}
                             </span>
                           </div>
-                          <h3 className="text-lg font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors mb-2">
+                          <h3 className="text-lg font-semibold text-slate-900 group-hover:text-emerald-800 transition-colors mb-2">
                             {article.title}
                           </h3>
                         </div>
@@ -369,7 +369,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
                       <p className="text-slate-600 text-sm leading-relaxed mb-4">
                         {article.description}
                       </p>
-                      <div className="flex items-center text-emerald-600 font-medium text-sm group-hover:text-emerald-700 transition-colors">
+                      <div className="flex items-center text-emerald-800 font-medium text-sm group-hover:text-emerald-700 transition-colors">
                         Read Guide
                         <svg
                           className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
@@ -422,7 +422,7 @@ const KnowledgeBasePage: React.FC = memo(() => {
                     <div className={`w-16 h-16 ${item.color} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
                       <span className="text-3xl">{item.icon}</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-lg font-semibold text-slate-900 group-hover:text-emerald-800 transition-colors">
                       {item.title}
                     </h3>
                   </Link>

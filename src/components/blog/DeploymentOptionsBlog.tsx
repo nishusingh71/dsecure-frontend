@@ -41,7 +41,7 @@ const DeploymentOptionsBlog: React.FC = () => {
                 <Reveal>
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <p className="text-slate-700 leading-loose text-xl">
-                            Businesses use a wide variety of devices for storing and processing data, such as laptops, MacBooks, Chromebooks, and servers. These devices have inherently different architectures and security protocols that require <strong className="text-emerald-600">tailored deployment strategies</strong> for data erasure software.
+                            Businesses use a wide variety of devices for storing and processing data, such as laptops, MacBooks, Chromebooks, and servers. These devices have inherently different architectures and security protocols that require <strong className="text-emerald-800">tailored deployment strategies</strong> for data erasure software.
                         </p>
                         <p className="text-slate-700 leading-loose text-lg">
                             D-Secure Drive Eraser addresses the erasure needs of organizations looking to perform data wiping both onsite and remotely. Each variant is deployed using different methods tailored to specific requirements and device types, ensuring effective data erasure across all device categories.

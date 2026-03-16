@@ -46,7 +46,7 @@ const ShadowDataBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                From creating annual review presentations to analyzing customer behavior and innovating new products — <strong className="text-emerald-600">data is processed for every organizational activity</strong> of varying significance. Data gets stored and processed at multiple points that may not fall within the organization's security perimeter, leading to unprotected information known as 'Shadow Data.'
+                                From creating annual review presentations to analyzing customer behavior and innovating new products — <strong className="text-emerald-800">data is processed for every organizational activity</strong> of varying significance. Data gets stored and processed at multiple points that may not fall within the organization's security perimeter, leading to unprotected information known as 'Shadow Data.'
                             </p>
                         </div>
 

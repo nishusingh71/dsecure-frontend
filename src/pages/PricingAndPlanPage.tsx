@@ -1124,7 +1124,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                             className="flex items-center space-x-3 p-2 rounded-lg"
                           >
                             <svg
-                              className="w-4 h-4 text-green-600 flex-shrink-0"
+                              className="w-4 h-4 text-green-800 flex-shrink-0"
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -1167,7 +1167,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                                 Pure data destruction only
                               </span>
                             </div>
-                            <span className="text-sm font-bold text-emerald-600">
+                            <span className="text-sm font-bold text-emerald-800">
                               $25.00
                             </span>
                             {driveEraserVariant === "standard" && (
@@ -1205,7 +1205,7 @@ const PricingAndPlanPage: React.FC = memo(() => {
                                 + Smart Health Analysis
                               </span>
                             </div>
-                            <span className="text-sm font-bold text-emerald-600">
+                            <span className="text-sm font-bold text-emerald-800">
                               $30.00
                             </span>
                             {driveEraserVariant === "diagnostics" && (

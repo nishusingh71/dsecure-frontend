@@ -46,7 +46,7 @@ const CybersecurityDataDestructionBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Cybersecurity has predominantly become a matter of high concern for <strong className="text-emerald-600">comprehensive data protection</strong>. With the rise of virtual working environments, organizations have become more prone to cybersecurity threats due to scattered data across devices in homes and offices. Businesses need to proactively guard sensitive information on both active devices and those that are at rest.
+                                Cybersecurity has predominantly become a matter of high concern for <strong className="text-emerald-800">comprehensive data protection</strong>. With the rise of virtual working environments, organizations have become more prone to cybersecurity threats due to scattered data across devices in homes and offices. Businesses need to proactively guard sensitive information on both active devices and those that are at rest.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Data destruction has become a critical topic, especially due to improper disposal of IT assets triggering numerous data theft episodes worldwide. Incidents of customer information and records being compromised from devices at rest or in transit have been reported globally. Healthcare centers, financial institutions, and government agencies have all faced data breaches resulting from negligence in proper data disposal, compromising millions of sensitive records.

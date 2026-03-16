@@ -953,7 +953,7 @@ export default function LoginPage() {
                         type="button"
                         onClick={handleResendOTP}
                         disabled={forgotPasswordLoading}
-                        className="text-sm text-emerald-600 hover:text-emerald-700 font-medium underline disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="text-sm text-emerald-800 hover:text-emerald-700 font-medium underline disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {t("auth.resendOtp")}
                       </button>

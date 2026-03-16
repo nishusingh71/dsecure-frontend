@@ -46,7 +46,7 @@ const SecureHDDDisposalBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Hard Disk Drives (HDDs) require secure disposal when they reach end-of-life or are no longer needed. Whether due to <strong className="text-emerald-600">device upgrades, project completion, employee transitions, or organizational restructuring</strong>, HDDs must be disposed of properly to prevent data breaches.
+                                Hard Disk Drives (HDDs) require secure disposal when they reach end-of-life or are no longer needed. Whether due to <strong className="text-emerald-800">device upgrades, project completion, employee transitions, or organizational restructuring</strong>, HDDs must be disposed of properly to prevent data breaches.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Without secure disposal, data stored on these drives — including Personally Identifiable Information (PII), financial records, Protected Health Information (PHI), and other sensitive information — remains highly vulnerable to retrieval and unauthorized access. Data breaches can lead to identity theft, extortion attempts, intellectual property loss, and severe regulatory penalties.
@@ -57,7 +57,7 @@ const SecureHDDDisposalBlog: React.FC = () => {
                         <div className="bg-emerald-50 border-l-4 border-emerald-500 p-8 rounded-r-lg mt-8">
                             <h3 className="font-bold text-slate-900 text-xl mb-4">Critical Security Consideration</h3>
                             <p className="text-slate-700 leading-loose text-lg">
-                                The aftermath of a data breach negatively impacts business reputation, operations, and relationships with stakeholders and customers. Multiple <strong className="text-emerald-600">global data protection regulations mandate proper data disposal</strong> and impose significant penalties for negligence. Only secure HDD disposal guarantees that business-critical data is permanently erased.
+                                The aftermath of a data breach negatively impacts business reputation, operations, and relationships with stakeholders and customers. Multiple <strong className="text-emerald-800">global data protection regulations mandate proper data disposal</strong> and impose significant penalties for negligence. Only secure HDD disposal guarantees that business-critical data is permanently erased.
                             </p>
                         </div>
 
@@ -209,7 +209,7 @@ const SecureHDDDisposalBlog: React.FC = () => {
 
                         <Link
                             to="/#products"
-                            className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
+                            className="inline-flex items-center bg-white text-emerald-800 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
                         >
                             Explore D-Secure Solutions
                         </Link>

@@ -75,7 +75,7 @@ const DataErasureDisasterRecoveryBlog: React.FC = () => {
                         <div className="space-y-6">
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">1</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">1</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Formulate Data Destruction Policy</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -87,7 +87,7 @@ const DataErasureDisasterRecoveryBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">2</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">2</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Specify Erasure and Verification Methods</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -99,7 +99,7 @@ const DataErasureDisasterRecoveryBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">3</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">3</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Train Disaster Recovery Teams</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -111,7 +111,7 @@ const DataErasureDisasterRecoveryBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">4</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">4</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Third-Party Vendor Due Diligence</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -123,7 +123,7 @@ const DataErasureDisasterRecoveryBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">5</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">5</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Reduce Human Intervention</h3>
                                         <p className="text-white/90 leading-relaxed">
@@ -135,7 +135,7 @@ const DataErasureDisasterRecoveryBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start gap-4">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">6</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">6</span>
                                     <div>
                                         <h3 className="text-xl font-bold mb-3">Generate Tamper-Proof Audit Trails</h3>
                                         <p className="text-white/90 leading-relaxed">

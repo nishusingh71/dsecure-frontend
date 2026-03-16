@@ -69,7 +69,7 @@ export default function WhatIsDSecurePage() {
             <div className="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-slate-100">
               <div className="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6">
                 <svg
-                  className="w-7 h-7 text-emerald-600"
+                  className="w-7 h-7 text-emerald-800"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -87,14 +87,14 @@ export default function WhatIsDSecurePage() {
               </h2>
               <ul className="space-y-4">
                 <li className="flex items-start">
-                  <span className="text-emerald-600 mr-3 mt-1">•</span>
+                  <span className="text-emerald-800 mr-3 mt-1">•</span>
                   <p className="text-slate-600 text-lg leading-relaxed">
                     D-Secure introduces a programmatic approach to data
                     destruction.
                   </p>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-emerald-600 mr-3 mt-1">•</span>
+                  <span className="text-emerald-800 mr-3 mt-1">•</span>
                   <p className="text-slate-600 text-lg leading-relaxed">
                     We deploy cryptographic erasure, 24+ global overwrite
                     standards (including NIST 800-88), and tamper-proof

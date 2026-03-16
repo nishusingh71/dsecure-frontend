@@ -138,7 +138,7 @@ const GetStartedPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center">
                 <div className="mb-8">
-                  <Link to="/support" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4 transition-colors">
+                  <Link to="/support" className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-4 transition-colors">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
@@ -174,7 +174,7 @@ const GetStartedPage: React.FC = memo(() => {
               <Reveal delayMs={100}>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-2xl font-bold text-emerald-600">1</span>
+                    <span className="text-2xl font-bold text-emerald-800">1</span>
                   </div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-4">Choose Your Device</h3>
                   <p className="text-slate-600 leading-relaxed">
@@ -186,7 +186,7 @@ const GetStartedPage: React.FC = memo(() => {
               <Reveal delayMs={200}>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-2xl font-bold text-emerald-600">2</span>
+                    <span className="text-2xl font-bold text-emerald-800">2</span>
                   </div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-4">Follow the Guide</h3>
                   <p className="text-slate-600 leading-relaxed">
@@ -198,7 +198,7 @@ const GetStartedPage: React.FC = memo(() => {
               <Reveal delayMs={300}>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-2xl font-bold text-emerald-600">3</span>
+                    <span className="text-2xl font-bold text-emerald-800">3</span>
                   </div>
                   <h3 className="text-xl font-semibold text-slate-900 mb-4">Verify Success</h3>
                   <p className="text-slate-600 leading-relaxed">
@@ -283,7 +283,7 @@ const GetStartedPage: React.FC = memo(() => {
                         {/* Steps */}
                         <div>
                           <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                            <svg className="w-5 h-5 text-emerald-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-emerald-800 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
                             Step-by-Step Instructions
@@ -303,7 +303,7 @@ const GetStartedPage: React.FC = memo(() => {
                         {/* Tips */}
                         <div>
                           <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
-                            <svg className="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-yellow-800 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                             </svg>
                             Important Tips
@@ -311,7 +311,7 @@ const GetStartedPage: React.FC = memo(() => {
                           <ul className="space-y-3">
                             {device.tips.map((tip, index) => (
                               <li key={index} className="flex items-start gap-3">
-                                <svg className="flex-shrink-0 w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="flex-shrink-0 w-5 h-5 text-yellow-800 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <span className="text-slate-700">{tip}</span>
@@ -407,7 +407,7 @@ const GetStartedPage: React.FC = memo(() => {
                     <div className={`w-12 h-12 ${resource.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                       <span className="text-2xl">{resource.icon}</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                       {resource.title}
                     </h3>
                     <p className="text-slate-600 text-sm">

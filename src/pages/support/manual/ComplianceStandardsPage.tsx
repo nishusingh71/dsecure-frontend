@@ -15,7 +15,7 @@ const ComplianceStandardsPage: React.FC = memo(() => {
                         <Reveal>
                             <div className="text-center">
                                 <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-                                    Compliance <span className="text-emerald-600">Standards</span>
+                                    Compliance <span className="text-emerald-800">Standards</span>
                                 </h1>
                                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                                     Meet regulatory requirements with D-Secure's comprehensive compliance standard support
@@ -38,7 +38,7 @@ const ComplianceStandardsPage: React.FC = memo(() => {
                                     </h2>
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div className="bg-emerald-50 rounded-lg p-6">
-                                            <h3 className="text-lg font-semibold text-emerald-600 mb-4">NIST 800-88 Rev. 1</h3>
+                                            <h3 className="text-lg font-semibold text-emerald-800 mb-4">NIST 800-88 Rev. 1</h3>
                                             <ul className="space-y-2 text-slate-700 text-sm">
                                                 <li>• Clear: Logical sanitization</li>
                                                 <li>• Purge: Cryptographic erasure</li>
@@ -82,7 +82,7 @@ const ComplianceStandardsPage: React.FC = memo(() => {
                                             </ul>
                                         </div>
                                         <div className="bg-emerald-50 rounded-lg p-6">
-                                            <h3 className="text-lg font-semibold text-emerald-600 mb-4">BSI-GS-M.2007-3</h3>
+                                            <h3 className="text-lg font-semibold text-emerald-800 mb-4">BSI-GS-M.2007-3</h3>
                                             <ul className="space-y-2 text-slate-700 text-sm">
                                                 <li>• German federal standard</li>
                                                 <li>• Multi-pass overwriting</li>
@@ -111,7 +111,7 @@ const ComplianceStandardsPage: React.FC = memo(() => {
                                     <div className="space-y-6">
                                         <div className="grid md:grid-cols-2 gap-6">
                                             <div className="space-y-4">
-                                                <h3 className="text-lg font-semibold text-emerald-600">Healthcare</h3>
+                                                <h3 className="text-lg font-semibold text-emerald-800">Healthcare</h3>
                                                 <div className="bg-emerald-50 rounded-lg p-4">
                                                     <h4 className="font-medium text-slate-900 mb-2">HIPAA Requirements</h4>
                                                     <ul className="space-y-1 text-sm text-slate-700">
@@ -225,7 +225,7 @@ const ComplianceStandardsPage: React.FC = memo(() => {
                                     <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-lg p-6">
                                         <div className="grid md:grid-cols-3 gap-6 text-center">
                                             <div>
-                                                <div className="text-3xl font-bold text-emerald-600 mb-2">15+</div>
+                                                <div className="text-3xl font-bold text-emerald-800 mb-2">15+</div>
                                                 <p className="text-sm text-slate-700">Compliance Standards</p>
                                             </div>
                                             <div>

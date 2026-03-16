@@ -46,7 +46,7 @@ const DeletedFilesTruthBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Data created by an organization hops through various storage media in different systems before reaching its final destination. This journey includes multiple intermediaries who either temporarily store information or process it before it moves on. <strong className="text-emerald-600">Every party involved</strong> — the creator, intermediaries, and final recipients — has responsibility to handle data responsibly and protect it against unauthorized disclosure.
+                                Data created by an organization hops through various storage media in different systems before reaching its final destination. This journey includes multiple intermediaries who either temporarily store information or process it before it moves on. <strong className="text-emerald-800">Every party involved</strong> — the creator, intermediaries, and final recipients — has responsibility to handle data responsibly and protect it against unauthorized disclosure.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Prying eyes, sometimes including competitors and hackers, constantly seek access to sensitive information. They often look for weak spots — and frequently, this translates to targeting residual data on media that has left an organization without sufficient sanitization.
@@ -247,9 +247,9 @@ const DeletedFilesTruthBlog: React.FC = () => {
                                     </tr>
                                     <tr className="bg-emerald-50">
                                         <td className="border border-slate-200 p-4 font-medium">D-Secure Erasure</td>
-                                        <td className="border border-slate-200 p-4 text-emerald-600 font-bold">Complete</td>
-                                        <td className="border border-slate-200 p-4 text-emerald-600 font-bold">No — impossible</td>
-                                        <td className="border border-slate-200 p-4 text-emerald-600 font-bold">Yes — certified</td>
+                                        <td className="border border-slate-200 p-4 text-emerald-800 font-bold">Complete</td>
+                                        <td className="border border-slate-200 p-4 text-emerald-800 font-bold">No — impossible</td>
+                                        <td className="border border-slate-200 p-4 text-emerald-800 font-bold">Yes — certified</td>
                                     </tr>
                                 </tbody>
                             </table>

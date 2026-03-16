@@ -233,15 +233,15 @@ const ErasingFiles: React.FC = () => {
                 <p className="font-medium text-gray-900 mb-2">Algorithm Selection Guide:</p>
                 <ul className="text-sm space-y-1 text-gray-700">
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">→</span>
+                    <span className="text-green-800">→</span>
                     <span><strong>Sensitive data:</strong> DoD 72pass or Gutmann (35 passes) for maximum security</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">→</span>
+                    <span className="text-green-800">→</span>
                     <span><strong>Standard business data:</strong> DoD 3-pass for good balance</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-600">→</span>
+                    <span className="text-green-800">→</span>
                     <span><strong>Non-confidential cleanup:</strong> Zeroes (1 pass) for speed</span>
                   </li>
                 </ul>
@@ -362,7 +362,7 @@ const ErasingFiles: React.FC = () => {
               </p>
               <div className="space-y-2 mb-4">
                 <div className="flex items-start gap-2 bg-white rounded p-3 border border-green-300">
-                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-green-800 mt-0.5 shrink-0" />
                   <div>
                     <p className="font-medium text-gray-900">Successfully Erased</p>
                     <p className="text-sm text-gray-600">Files permanently destroyed—unrecoverable by any method</p>
@@ -402,33 +402,33 @@ const ErasingFiles: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-5">
             <div className="border-2 border-green-300 rounded-xl p-5 bg-gradient-to-br from-green-50 to-emerald-50">
               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2 text-lg">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+                <CheckCircle className="w-6 h-6 text-green-800" />
                 Recommended Practices
               </h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold text-lg mt-0.5">✓</span>
+                  <span className="text-green-800 font-bold text-lg mt-0.5">✓</span>
                   <div>
                     <p className="font-medium text-gray-900">Test with non-critical data first</p>
                     <p className="text-sm text-gray-600">Practice on test files to understand process before erasing important data</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold text-lg mt-0.5">✓</span>
+                  <span className="text-green-800 font-bold text-lg mt-0.5">✓</span>
                   <div>
                     <p className="font-medium text-gray-900">Schedule during off-hours</p>
                     <p className="text-sm text-gray-600">Run large erasures overnight/weekends to avoid file locks and performance impact</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold text-lg mt-0.5">✓</span>
+                  <span className="text-green-800 font-bold text-lg mt-0.5">✓</span>
                   <div>
                     <p className="font-medium text-gray-900">Archive all erasure reports</p>
                     <p className="text-sm text-gray-600">Keep comprehensive audit trail for compliance, legal, and regulatory requirements</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold text-lg mt-0.5">✓</span>
+                  <span className="text-green-800 font-bold text-lg mt-0.5">✓</span>
                   <div>
                     <p className="font-medium text-gray-900">Match algorithm to sensitivity</p>
                     <p className="text-sm text-gray-600">Use DoD 7-pass/Gutmann for classified data; DoD 3-pass for business; 1-pass for non-sensitive</p>

@@ -96,7 +96,7 @@ const ReportManagementPage: React.FC = () => {
 
               <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
                 <div className="flex items-center justify-between mb-6">
-                  <div className="text-2xl font-bold text-green-600">
+                  <div className="text-2xl font-bold text-green-800">
                     DSecure
                   </div>
                   <div className="text-right">
@@ -227,7 +227,7 @@ const ReportManagementPage: React.FC = () => {
               {/* Save Report */}
               <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-gray-900 flex items-center">
-                  <Download className="w-6 h-6 mr-3 text-green-600" />
+                  <Download className="w-6 h-6 mr-3 text-green-800" />
                   Save Report
                 </h2>
 
@@ -279,7 +279,7 @@ const ReportManagementPage: React.FC = () => {
                   </ol>
 
                   <div className="p-4 bg-green-50 rounded-lg flex space-x-2">
-                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <CheckCircle className="w-5 h-5 text-green-800" />
                     <p className="text-sm text-green-800">
                       ✅ Indicates the report was successfully sent to Cloud.
                     </p>

@@ -455,7 +455,7 @@ function CompliancePageContent() {
                         <HoverIcon>
                           {(filled) => (
                             <CheckIcon
-                              className="w-4 h-4 text-green-600"
+                              className="w-4 h-4 text-green-800"
                               filled={filled}
                             />
                           )}

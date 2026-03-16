@@ -249,7 +249,7 @@ const LinuxSystemsPage: React.FC = memo(() => {
                             <div className="text-center">
                                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 md:mb-4 leading-tight">
                                     D-Secure Linux Systems{" "}
-                                    <span className="text-emerald-600 block sm:inline">Data Erasure</span>
+                                    <span className="text-emerald-800 block sm:inline">Data Erasure</span>
                                 </h1>
                                 <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-6 md:mb-8 px-4">
                                     Secure Data Erasure on Linux with D-Secure: Complete procedures for all major distributions, enterprise servers, and modern storage technologies.
@@ -295,7 +295,7 @@ const LinuxSystemsPage: React.FC = memo(() => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center">
                                 <div className="p-4 sm:p-6">
                                     <div className="text-3xl sm:text-4xl mb-4">🐧</div>
-                                    <div className="text-xl sm:text-2xl font-bold text-emerald-600 mb-2">Multi-Distro</div>
+                                    <div className="text-xl sm:text-2xl font-bold text-emerald-800 mb-2">Multi-Distro</div>
                                     <div className="text-slate-600 text-sm sm:text-base">Ubuntu, RHEL, SUSE, Debian, Arch</div>
                                 </div>
                                 <div className="p-4 sm:p-6">
@@ -433,7 +433,7 @@ const LinuxSystemsPage: React.FC = memo(() => {
                                         <div className={`w-12 h-12 sm:w-14 sm:h-14 ${item.color} rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
                                             <span className="text-xl sm:text-2xl text-white">{item.icon}</span>
                                         </div>
-                                        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                                        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                                             {item.title}
                                         </h3>
                                         <p className="text-slate-600 text-xs sm:text-sm flex-grow">
@@ -457,7 +457,7 @@ const LinuxSystemsPage: React.FC = memo(() => {
                                     Our regulated D-Secure specialists provide comprehensive Linux data erasure solutions across all distributions, from single servers to enterprise data centers with thousands of systems.
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <button className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center justify-center">
+                                    <button className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center justify-center">
                                         <span className="mr-2">🐧</span>
                                         D-Secure Linux Services
                                     </button>

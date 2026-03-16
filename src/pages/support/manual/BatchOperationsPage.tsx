@@ -24,7 +24,7 @@ const BatchOperationsPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center">
                 <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-                  Batch <span className="text-emerald-600">Operations</span>
+                  Batch <span className="text-emerald-800">Operations</span>
                 </h1>
                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                   Automate D-Secure erasure operations across thousands of devices simultaneously with enterprise-grade efficiency, intelligent scheduling, and comprehensive monitoring.
@@ -50,7 +50,7 @@ const BatchOperationsPage: React.FC = memo(() => {
                       <h3 className="text-lg font-semibold text-slate-900 mb-6">Device Discovery & Import Methods</h3>
                       <div className="grid md:grid-cols-3 gap-6">
                         <div className="space-y-4">
-                          <h4 className="font-medium text-emerald-600 flex items-center">
+                          <h4 className="font-medium text-emerald-800 flex items-center">
                             <span className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs mr-2">1</span>
                             Network Scanning
                           </h4>
@@ -225,7 +225,7 @@ const BatchOperationsPage: React.FC = memo(() => {
                       <h3 className="text-lg font-semibold text-slate-900 mb-4">Live Dashboard Metrics</h3>
                       <div className="grid md:grid-cols-4 gap-4">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-emerald-600 mb-1">1,247</div>
+                          <div className="text-2xl font-bold text-emerald-800 mb-1">1,247</div>
                           <p className="text-xs text-slate-600">Devices Queued</p>
                         </div>
                         <div className="text-center">
@@ -255,7 +255,7 @@ const BatchOperationsPage: React.FC = memo(() => {
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-emerald-600">Automatic Recovery</h3>
+                      <h3 className="text-lg font-semibold text-emerald-800">Automatic Recovery</h3>
                       <ul className="space-y-2 text-slate-700">
                         <li>• Intelligent retry mechanisms with exponential backoff</li>
                         <li>• Skip problematic devices and continue processing</li>
@@ -290,7 +290,7 @@ const BatchOperationsPage: React.FC = memo(() => {
                       <h3 className="text-lg font-semibold text-slate-900 mb-6">Enterprise Performance Benchmarks</h3>
                       <div className="grid md:grid-cols-4 gap-6 text-center">
                         <div>
-                          <div className="text-4xl font-bold text-emerald-600 mb-2">1000+</div>
+                          <div className="text-4xl font-bold text-emerald-800 mb-2">1000+</div>
                           <p className="text-sm text-slate-700 font-medium">Concurrent Devices</p>
                           <p className="text-xs text-slate-600 mt-1">Maximum parallel processing</p>
                         </div>
@@ -345,7 +345,7 @@ const BatchOperationsPage: React.FC = memo(() => {
                       Transform your data erasure operations with D-Secure's advanced batch processing capabilities. Process thousands of devices efficiently with enterprise-grade reliability and compliance.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <button className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors">
+                      <button className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors">
                         Start Batch Configuration
                       </button>
                       <button className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-8 py-3 rounded-lg transition-colors">

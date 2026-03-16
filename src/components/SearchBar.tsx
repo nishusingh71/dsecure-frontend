@@ -258,7 +258,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               <span className="text-xs font-semibold text-slate-500 uppercase">Recent Searches</span>
               <button
                 onClick={clearRecentSearches}
-                className="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
+                className="text-xs text-emerald-800 hover:text-emerald-700 font-medium"
               >
                 Clear
               </button>

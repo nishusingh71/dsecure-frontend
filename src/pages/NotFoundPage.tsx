@@ -191,7 +191,7 @@ const NotFoundPage: React.FC = () => {
             <div className="mt-8 text-center">
               <p className="text-slate-600">
                 Need immediate help? Our{" "}
-                <Link to="/support" className="text-emerald-600 font-semibold hover:text-emerald-700 transition-colors">
+                <Link to="/support" className="text-emerald-800 font-semibold hover:text-emerald-700 transition-colors">
                   support team
                 </Link>{" "}
                 is here to assist you 24/7.

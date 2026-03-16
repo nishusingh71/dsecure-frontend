@@ -41,7 +41,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
           <h2 className="font-semibold text-slate-900">Recent Reports</h2>
           <Link
             to="/admin/reports"
-            className="text-emerald-600 hover:text-emerald-700 text-sm font-medium"
+            className="text-emerald-800 hover:text-emerald-700 text-sm font-medium"
           >
             View All
           </Link>
@@ -227,7 +227,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
           <h2 className="font-semibold text-slate-900">Recent Sessions</h2>
           <Link
             to="/admin/sessions"
-            className="text-emerald-600 hover:text-emerald-700 text-sm font-medium"
+            className="text-emerald-800 hover:text-emerald-700 text-sm font-medium"
           >
             View All
           </Link>

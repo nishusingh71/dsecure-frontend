@@ -237,7 +237,7 @@ const ITAMDisposalGuideBlog: React.FC = () => {
                 </p>
                 <Link
                     to="/contact"
-                    className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
+                    className="inline-flex items-center bg-white text-emerald-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>
                         {(filled) => <ShieldIcon className="w-5 h-5 mr-2" filled={filled} />}

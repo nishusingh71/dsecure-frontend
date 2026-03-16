@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { useForm, validationRules } from "@/hooks";
 import { useEnhancedForm, formConfigurations, showGlobalToast, FORMSUBMIT_ENDPOINT } from "@/utils/enhancedFormSystem";
+import { X } from "lucide-react";
 
 // Form input components - removed memo to prevent focus loss during typing
 const FormInput: React.FC<{
@@ -88,8 +89,8 @@ const ModalWrapper: React.FC<{
   if (!isModal) return <>{children}</>;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-hidden">
-      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[95vh] flex flex-col overflow-hidden">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-hidden animate-in fade-in duration-300">
+      <div className="bg-white rounded-[2rem] max-w-4xl w-full max-h-[95vh] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden border border-emerald-100/50">
         {children}
       </div>
     </div>
@@ -210,15 +211,6 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
     }
   }, [licenseForm, submitForm]);
 
-  // Memoized country options
-  const countryOptions = useMemo(() => [
-    "United States", "United Kingdom", "Canada", "Australia", "Germany", "France",
-    "India", "China", "Japan", "South Korea", "Singapore", "Netherlands",
-    "Switzerland", "Sweden", "Norway", "Denmark", "Italy", "Spain", "Brazil",
-    "Mexico", "Russia", "Turkey", "South Africa", "United Arab Emirates",
-    "Saudi Arabia", "Hong Kong", "Other"
-  ], []);
-
   // Memoized business type options
   const businessTypeOptions = useMemo(() => [
     "Technology/Software", "Healthcare", "Finance/Banking", "Education",
@@ -226,40 +218,25 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
     "Legal", "Real Estate", "Other"
   ], []);
 
-  // Memoized compliance options
-  const complianceOptions = useMemo(() => [
-    "GDPR", "HIPAA", "SOX", "PCI DSS", "ISO 27001", "Other", "Not Required"
-  ], []);
-
-  // Memoized erase options
-  const eraseOptions = useMemo(() => [
-    "DoD 5220.22-M (3-pass)", "DoD 5220.22-M (7-pass)", "NIST 800-88",
-    "Gutmann (35-pass)", "Random Data (1-pass)", "Zero Fill (1-pass)",
-    "Custom Pattern"
-  ], []);
-
-  // Memoized device count options
-  const deviceCountOptions = useMemo(() => [
-    "1-10", "11-50", "51-100", "101-500", "501-1000", "1000+"
-  ], []);
-
   return (
     <ModalWrapper isModal={isModal}>
       <div className={`${className} flex flex-col h-full overflow-hidden`}>
         {/* Fixed Header */}
         {showHeader && (
-          <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-xl flex-shrink-0">
-            <div className="flex justify-between items-center">
-              <h2 className="text-3xl font-bold text-center flex-1">{title}</h2>
-              {isModal && onClose && (
-                <button
-                  onClick={onClose}
-                  className="text-white hover:text-slate-200 transition-colors text-3xl font-bold ml-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20"
-                >
-                  ×
-                </button>
-              )}
+          <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 text-white p-8 rounded-t-[2rem] relative flex-shrink-0">
+            <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 25% 50%, white 1px, transparent 1px)", backgroundSize: "20px 20px" }}></div>
+            <div className="flex flex-col items-center relative z-10">
+              <h2 className="text-3xl font-bold tracking-tight text-center">{title}</h2>
+              <p className="text-emerald-50/80 mt-2 text-sm font-medium">Get complimentary access to our enterprise solutions</p>
             </div>
+            {isModal && onClose && (
+              <button
+                onClick={onClose}
+                className="absolute top-6 right-6 z-20 cursor-pointer text-white/70 hover:text-white w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20 transition-all duration-300"
+              >
+                <X className="w-6 h-6 pointer-events-none" />
+              </button>
+            )}
           </div>
         )}
 
@@ -277,29 +254,28 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
           >
             {/* Usage Type */}
             <div className="text-center mb-8">
-              {/* <label className="block text-lg font-semibold text-gray-700 mb-4">Usage:</label> */}
               <div className="flex items-center justify-center gap-8">
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer group">
                   <FormRadio
                     name="usage"
                     value="business"
                     checked={licenseForm.formData.usage === "business"}
                     onChange={licenseForm.handleInputChange}
-                    className="w-5 h-5 text-red-500 focus:ring-red-500"
+                    className="w-5 h-5 text-emerald-500 focus:ring-emerald-500 accent-emerald-500"
                   />
-                  <span className="text-lg font-medium text-gray-700">
+                  <span className="text-lg font-bold text-slate-700 group-hover:text-emerald-600 transition-colors">
                     Business
                   </span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer group">
                   <FormRadio
                     name="usage"
                     value="personal"
                     checked={licenseForm.formData.usage === "personal"}
                     onChange={licenseForm.handleInputChange}
-                    className="w-5 h-5 text-gray-400 focus:ring-gray-400"
+                    className="w-5 h-5 text-slate-400 focus:ring-slate-400 accent-emerald-500"
                   />
-                  <span className="text-lg font-medium text-gray-700">
+                  <span className="text-lg font-bold text-slate-700 group-hover:text-emerald-600 transition-colors">
                     Personal
                   </span>
                 </label>
@@ -314,11 +290,11 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 value={licenseForm.formData.fullName}
                 onChange={licenseForm.handleInputChange}
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                 placeholder="Full Name*"
               />
               {licenseForm.errors.fullName && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                   {licenseForm.errors.fullName}
                 </p>
               )}
@@ -333,18 +309,18 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   value={licenseForm.formData.email}
                   onChange={licenseForm.handleInputChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                   placeholder="Business Email*"
                 />
                 {licenseForm.errors.email && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {licenseForm.errors.email}
                   </p>
                 )}
               </div>
               <div className="flex flex-col">
                 <div className="flex">
-                  <select className="border border-gray-300 border-r-0 rounded-l-lg px-3 py-4 bg-gray-50 text-gray-600">
+                  <select className="border-2 border-emerald-100 border-r-0 rounded-l-xl px-3 py-4 bg-emerald-50/50 text-slate-600 font-bold outline-none focus:border-emerald-500 transition-all duration-300">
                     <option value="+1">🇺🇸 +1</option>
                     <option value="+44">🇬🇧 +44</option>
                     <option value="+91">🇮🇳 +91</option>
@@ -377,12 +353,12 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                     value={licenseForm.formData.phone}
                     onChange={licenseForm.handleInputChange}
                     required
-                    className="flex-1 border border-gray-300 rounded-r-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                    className="flex-1 p-4 bg-white border-2 border-emerald-100 rounded-r-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                     placeholder="Phone No"
                   />
                 </div>
                 {licenseForm.errors.phone && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {licenseForm.errors.phone}
                   </p>
                 )}
@@ -395,9 +371,9 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 name="businessType"
                 value={licenseForm.formData.businessType}
                 onChange={licenseForm.handleInputChange}
-                className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
+                className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 appearance-none cursor-pointer"
               >
-                <option value="">Business Type</option>
+                <option value="" disabled selected hidden>Business Type*</option>
                 {businessTypeOptions.map(option => (
                   <option key={option} value={option}>
                     {option}
@@ -411,11 +387,11 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   value={licenseForm.formData.company}
                   onChange={licenseForm.handleInputChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                   placeholder="Company Name*"
                 />
                 {licenseForm.errors.company && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {licenseForm.errors.company}
                   </p>
                 )}
@@ -430,8 +406,9 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   value={licenseForm.formData.country}
                   onChange={licenseForm.handleInputChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 appearance-none cursor-pointer"
                 >
+                  <option value="" disabled selected hidden>Select Country*</option>
                   <option value="United States">United States</option>
                   <option value="Canada">Canada</option>
                   <option value="United Kingdom">United Kingdom</option>
@@ -461,7 +438,7 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   <option value="Other">Other</option>
                 </select>
                 {licenseForm.errors.country && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {licenseForm.errors.country}
                   </p>
                 )}
@@ -470,9 +447,9 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 name="compliance"
                 value={licenseForm.formData.compliance}
                 onChange={licenseForm.handleInputChange}
-                className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
+                className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 appearance-none cursor-pointer"
               >
-                <option value="">Compliance Requirements</option>
+                <option value="" disabled selected hidden>Compliance Requirements*</option>
                 <option value="GDPR">GDPR</option>
                 <option value="HIPAA">HIPAA</option>
                 <option value="SOX">SOX</option>
@@ -490,9 +467,9 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   value={licenseForm.formData.eraseOption}
                   onChange={licenseForm.handleInputChange}
                   required
-                  className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 appearance-none cursor-pointer"
                 >
-                  <option value="">I Want to Erase*</option>
+                  <option value="" disabled selected hidden>I Want to Erase*</option>
                   <option value="Hard Drives">Hard Drives</option>
                   <option value="SSDs">SSDs</option>
                   <option value="Mobile Devices">Mobile Devices</option>
@@ -500,25 +477,27 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                   <option value="All Devices">All Devices</option>
                 </select>
                 {licenseForm.errors.eraseOption && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {licenseForm.errors.eraseOption}
                   </p>
                 )}
               </div>
-              <select
-                name="deviceCount"
-                value={licenseForm.formData.deviceCount}
-                onChange={licenseForm.handleInputChange}
-                required
-                className="border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white"
-              >
-                <option value="">Number of Devices to Erase*</option>
-                <option value="1-10">1-10 Devices</option>
-                <option value="11-50">11-50 Devices</option>
-                <option value="51-100">51-100 Devices</option>
-                <option value="101-500">101-500 Devices</option>
-                <option value="500+">500+ Devices</option>
-              </select>
+              <div>
+                <select
+                  name="deviceCount"
+                  value={licenseForm.formData.deviceCount}
+                  onChange={licenseForm.handleInputChange}
+                  required
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 appearance-none cursor-pointer"
+                >
+                  <option value="" disabled selected hidden>Number of Devices to Erase*</option>
+                  <option value="1-10">1-10 Devices</option>
+                  <option value="11-50">11-50 Devices</option>
+                  <option value="51-100">51-100 Devices</option>
+                  <option value="101-500">101-500 Devices</option>
+                  <option value="500+">500+ Devices</option>
+                </select>
+              </div>
             </div>
 
             {/* Business Description */}
@@ -527,12 +506,12 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
                 name="requirements"
                 value={licenseForm.formData.requirements}
                 onChange={licenseForm.handleInputChange}
-                rows={1}
-                className="w-full border border-gray-300 rounded-lg px-4 py-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg resize-none"
+                rows={3}
+                className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 resize-none"
                 placeholder="Tell us more about your business.*"
               />
               {licenseForm.errors.requirements && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                   {licenseForm.errors.requirements}
                 </p>
               )}
@@ -542,11 +521,11 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
 
             {/* Privacy Policy */}
             {showPrivacyPolicy && (
-              <div className="text-sm text-gray-600">
+              <div className="text-xs font-bold text-slate-500 bg-slate-50 p-4 rounded-xl border border-slate-100 uppercase tracking-widest">
                 I understand that the above information is protected by{" "}
                 <a
                   href="/privacy-policy"
-                  className="text-red-500 hover:underline"
+                  className="text-emerald-600 hover:text-emerald-700 hover:underline decoration-emerald-300 underline-offset-4"
                 >
                   D-Secure's Privacy Policy.
                 </a>
@@ -558,11 +537,26 @@ export const LicenseForm: React.FC<LicenseFormProps> = ({
               <button
                 type="submit"
                 disabled={formState.isSubmitting}
-                className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 disabled:cursor-not-allowed text-white py-4 px-6 rounded-lg transition-all duration-300 font-bold text-lg"
+                className="w-full bg-slate-900 text-white font-black py-4 px-6 rounded-xl transition-all duration-300 shadow-xl shadow-slate-900/10 hover:shadow-emerald-500/30 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group mt-2"
               >
-                {formState.isSubmitting ? 'Submitting...' : submitButtonText}
+                {formState.isSubmitting ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    {submitButtonText}
+                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </>
+                )}
               </button>
-              <p className="text-sm text-gray-500 mt-2 text-center">
+              <p className="text-xs font-bold text-slate-400 mt-4 text-center uppercase tracking-widest">
                 *Required
               </p>
             </div>

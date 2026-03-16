@@ -1669,7 +1669,7 @@ export default function AdminSubusers() {
                         className={`text-xs px-2 py-1 rounded border ${
                           user.status === 'active' 
                             ? 'text-red-600 hover:text-red-800 border-red-200 hover:bg-red-50' 
-                            : 'text-green-600 hover:text-green-800 border-green-200 hover:bg-green-50'
+                            : 'text-green-800 hover:text-green-800 border-green-200 hover:bg-green-50'
                         }`}
                         title={user.status === 'active' ? 'Deactivate User' : 'Activate User'}
                       >

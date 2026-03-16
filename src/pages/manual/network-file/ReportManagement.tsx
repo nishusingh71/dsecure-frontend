@@ -155,7 +155,7 @@ const ReportManagement: React.FC = () => {
         {/* Filtering Reports */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-            <Filter className="w-7 h-7 text-green-600" />
+            <Filter className="w-7 h-7 text-green-800" />
             Filtering and Searching Reports
           </h2>
           
@@ -167,7 +167,7 @@ const ReportManagement: React.FC = () => {
             <div className="space-y-4">
               <div className="border-l-4 border-green-500 bg-green-50 rounded-r-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-green-600" />
+                  <Calendar className="w-5 h-5 text-green-800" />
                   By Date Range
                 </h3>
                 <p className="text-gray-700">Select start and end dates to view reports from a specific time period</p>

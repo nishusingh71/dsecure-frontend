@@ -15,7 +15,7 @@ const RemoteManagementPage: React.FC = memo(() => {
                         <Reveal>
                             <div className="text-center">
                                 <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-                                    Remote <span className="text-emerald-600">Management</span>
+                                    Remote <span className="text-emerald-800">Management</span>
                                 </h1>
                                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                                     Manage D-Secure operations remotely through cloud console and distributed deployment capabilities
@@ -41,7 +41,7 @@ const RemoteManagementPage: React.FC = memo(() => {
                                             <h3 className="text-lg font-semibold text-slate-900 mb-4">Centralized Management</h3>
                                             <div className="grid md:grid-cols-2 gap-6">
                                                 <div className="space-y-3">
-                                                    <h4 className="font-medium text-emerald-600">Device Management</h4>
+                                                    <h4 className="font-medium text-emerald-800">Device Management</h4>
                                                     <ul className="space-y-1 text-sm text-slate-700">
                                                         <li>• Real-time device status</li>
                                                         <li>• Remote agent deployment</li>
@@ -115,7 +115,7 @@ const RemoteManagementPage: React.FC = memo(() => {
                                             <h3 className="text-lg font-semibold text-slate-900 mb-4">Multi-Factor Authentication</h3>
                                             <div className="grid md:grid-cols-2 gap-6">
                                                 <div className="space-y-3">
-                                                    <h4 className="font-medium text-emerald-600">Authentication Methods</h4>
+                                                    <h4 className="font-medium text-emerald-800">Authentication Methods</h4>
                                                     <ul className="space-y-1 text-sm text-slate-700">
                                                         <li>• SAML 2.0 SSO integration</li>
                                                         <li>• LDAP/Active Directory</li>
@@ -150,7 +150,7 @@ const RemoteManagementPage: React.FC = memo(() => {
                                             <h3 className="text-lg font-semibold text-slate-900 mb-4">Global Operations Dashboard</h3>
                                             <div className="grid md:grid-cols-4 gap-4">
                                                 <div className="text-center">
-                                                    <div className="text-2xl font-bold text-emerald-600 mb-1">1,247</div>
+                                                    <div className="text-2xl font-bold text-emerald-800 mb-1">1,247</div>
                                                     <p className="text-xs text-slate-600">Active Agents</p>
                                                 </div>
                                                 <div className="text-center">
@@ -180,7 +180,7 @@ const RemoteManagementPage: React.FC = memo(() => {
                                     </h2>
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div className="space-y-4">
-                                            <h3 className="text-lg font-semibold text-emerald-600">REST API Features</h3>
+                                            <h3 className="text-lg font-semibold text-emerald-800">REST API Features</h3>
                                             <ul className="space-y-2 text-slate-700">
                                                 <li>• Device management endpoints</li>
                                                 <li>• Operation control APIs</li>

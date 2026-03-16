@@ -119,7 +119,7 @@ const CloneGuidePage: React.FC = memo(function CloneGuidePage() {
                     <p>$ diskutil repairvolume /Volumes/[Drive Name]</p>
                   </div>
                   <p className="text-slate-600 text-sm px-4">
-                    Replace <code className="bg-slate-100 px-1.5 py-0.5 rounded text-emerald-600">[Drive Name]</code> with the actual label of your disk.
+                    Replace <code className="bg-slate-100 px-1.5 py-0.5 rounded text-emerald-800">[Drive Name]</code> with the actual label of your disk.
                   </p>
                 </div>
               </Reveal>
@@ -142,7 +142,7 @@ const CloneGuidePage: React.FC = memo(function CloneGuidePage() {
                       </li>
                       <li className="flex gap-4">
                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0" />
-                        <p className="text-slate-700">Type <code className="bg-slate-100 px-2 py-0.5 rounded text-emerald-600">/sbin/fsck -fy</code> and hit Enter.</p>
+                        <p className="text-slate-700">Type <code className="bg-slate-100 px-2 py-0.5 rounded text-emerald-800">/sbin/fsck -fy</code> and hit Enter.</p>
                       </li>
                       <li className="flex gap-4">
                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2 flex-shrink-0" />

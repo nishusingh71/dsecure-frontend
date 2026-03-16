@@ -32,6 +32,7 @@ import {
   ChevronDown,
   Building,
   User,
+  X,
 } from "lucide-react";
 
 // Partner types definition - moved to top to avoid temporal dead zone
@@ -248,7 +249,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
     { id: "partner-types", label: "Partner Programs" },
     { id: "benefits", label: "Key Benefits" },
     { id: "process", label: "Join Process" },
-    { id: "find-partner", label: "Find Partners" },
+    // { id: "find-partner", label: "Find Partners" },
     { id: "contact", label: "Contact Us" },
   ];
 
@@ -517,7 +518,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                     className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                       activeSection === item.id
                         ? "bg-emerald-500 text-white shadow-md"
-                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-600"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
                     }`}
                   >
                     {item.label}
@@ -570,7 +571,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                           "D-Secure_Partner_Catalog.pdf",
                         )
                       }
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
                     >
                       <ChevronDown className="w-5 h-5 text-emerald-500" />
                       Download Catalog
@@ -594,7 +595,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                     {/* Top User */}
                     <div className="absolute top-[5%] left-1/2 -translate-x-1/2">
                       <div className="bg-white p-3 rounded-2xl shadow-xl border border-emerald-50 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-800">
                           <User className="w-6 h-6" />
                         </div>
                       </div>
@@ -621,7 +622,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                     {/* Right User */}
                     <div className="absolute top-1/2 right-[5%] -translate-y-1/2">
                       <div className="bg-white p-3 rounded-2xl shadow-xl border border-emerald-50 flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-800">
                           <User className="w-6 h-6" />
                         </div>
                       </div>
@@ -1107,7 +1108,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
                          <button
                            onClick={() => openLicenseModal()}
-                           className="group bg-white border-2 border-green-200 hover:border-green-400 text-green-600 hover:bg-green-50 font-semibold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                           className="group bg-white border-2 border-green-200 hover:border-green-400 text-green-800 hover:bg-green-50 font-semibold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                          >
                            <span>Request Free License</span>
                          </button>
@@ -1176,9 +1177,9 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
               </div>
               <button
                 onClick={() => setShowFindPartnerModal(false)}
-                className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl font-light w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all duration-300"
+                className="absolute top-6 right-6 z-20 cursor-pointer text-white/70 hover:text-white w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20 transition-all duration-300"
               >
-                <span className="leading-none">&times;</span>
+                <X className="w-6 h-6 pointer-events-none" />
               </button>
             </div>
 
@@ -1245,7 +1246,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                           {/* Company Identity */}
                           <div className="lg:col-span-1 border-r border-slate-50 pr-4">
                             <div className="flex items-center gap-4 mb-5">
-                              <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shadow-inner group-hover:scale-110 transition-transform duration-500 border border-emerald-100/50">
+                              <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-800 shadow-inner group-hover:scale-110 transition-transform duration-500 border border-emerald-100/50">
                                 <Building className="w-7 h-7" />
                               </div>
                               <div>
@@ -1291,7 +1292,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                                   </p>
                                   <a
                                     href={`mailto:${partner.contact.email}`}
-                                    className="font-bold text-emerald-600 hover:text-emerald-800 transition-all truncate block text-lg underline decoration-emerald-200 underline-offset-4 hover:decoration-emerald-500"
+                                    className="font-bold text-emerald-800 hover:text-emerald-800 transition-all truncate block text-lg underline decoration-emerald-200 underline-offset-4 hover:decoration-emerald-500"
                                   >
                                     {partner.contact.email}
                                   </a>
@@ -1369,14 +1370,14 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                   <button className="w-10 h-10 rounded-xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center text-sm font-black transition-all hover:scale-110">
                     1
                   </button>
-                  <button className="w-10 h-10 rounded-xl border-2 border-slate-100 bg-white text-slate-400 flex items-center justify-center text-sm font-black hover:border-emerald-300 hover:text-emerald-600 transition-all hover:scale-110">
+                  <button className="w-10 h-10 rounded-xl border-2 border-slate-100 bg-white text-slate-400 flex items-center justify-center text-sm font-black hover:border-emerald-300 hover:text-emerald-800 transition-all hover:scale-110">
                     2
                   </button>
-                  <button className="w-10 h-10 rounded-xl border-2 border-slate-100 bg-white text-slate-400 flex items-center justify-center text-sm font-black hover:border-emerald-300 hover:text-emerald-600 transition-all hover:scale-110">
+                  <button className="w-10 h-10 rounded-xl border-2 border-slate-100 bg-white text-slate-400 flex items-center justify-center text-sm font-black hover:border-emerald-300 hover:text-emerald-800 transition-all hover:scale-110">
                     3
                   </button>
                   <span className="px-2 text-slate-300 font-black tracking-widest">...</span>
-                  <button className="px-5 h-10 rounded-xl border-2 border-slate-100 bg-white text-slate-400 flex items-center justify-center text-xs font-black uppercase tracking-widest hover:border-emerald-300 hover:text-emerald-600 transition-all hover:scale-105">
+                  <button className="px-5 h-10 rounded-xl border-2 border-slate-100 bg-white text-slate-400 flex items-center justify-center text-xs font-black uppercase tracking-widest hover:border-emerald-300 hover:text-emerald-800 transition-all hover:scale-105">
                     Next Page
                   </button>
                 </div>
@@ -1419,9 +1420,9 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
               </div>
               <button
                 onClick={() => setShowContactModal(false)}
-                className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl font-light w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all duration-300"
+                className="absolute top-6 right-6 z-20 cursor-pointer text-white/70 hover:text-white w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20 transition-all duration-300"
               >
-                <span className="leading-none">&times;</span>
+                <X className="w-6 h-6 pointer-events-none" />
               </button>
             </div>
             {/* Scrollable Content */}
@@ -1461,7 +1462,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                       </div>
                       <div>
                         <p className="text-[10px] uppercase tracking-widest font-black text-emerald-800/50 mb-1">Phone</p>
-                        <p className="font-bold text-emerald-600 text-sm">{selectedPartnerForContact.contact.phone}</p>
+                        <p className="font-bold text-emerald-800 text-sm">{selectedPartnerForContact.contact.phone}</p>
                       </div>
                     </div>
                   </div>
@@ -1840,9 +1841,9 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
               </div>
               <button
                 onClick={() => setShowDetailsModal(false)}
-                className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl font-light w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all duration-300"
+                className="absolute top-6 right-6 z-20 cursor-pointer text-white/70 hover:text-white w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20 transition-all duration-300"
               >
-                <span className="leading-none">&times;</span>
+                <X className="w-6 h-6 pointer-events-none" />
               </button>
             </div>
             {/* Scrollable Content */}
@@ -1886,7 +1887,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                       </div>
                       <div className="bg-white rounded-xl p-3 border border-emerald-50 shadow-sm">
                         <p className="text-[10px] uppercase tracking-widest font-black text-emerald-800/50 mb-1">Compliance</p>
-                        <p className="font-bold text-emerald-600 text-sm">ISO 27001, NIST</p>
+                        <p className="font-bold text-emerald-800 text-sm">ISO 27001, NIST</p>
                       </div>
                     </div>
                   </div>
@@ -1942,7 +1943,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center group-hover:bg-emerald-500 transition-colors duration-300">
-                            <CheckIcon className="w-4 h-4 text-emerald-600 group-hover:text-white transition-colors duration-300" />
+                            <CheckIcon className="w-4 h-4 text-emerald-800 group-hover:text-white transition-colors duration-300" />
                           </div>
                           <span className="font-bold text-slate-800 text-sm">
                             {service}
@@ -1979,7 +1980,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest">Email</p>
-                            <a href={`mailto:${selectedPartnerForDetails.contact.email}`} className="font-bold text-emerald-600 hover:text-emerald-800 text-sm underline decoration-emerald-200 underline-offset-2 hover:decoration-emerald-500 transition-all">
+                            <a href={`mailto:${selectedPartnerForDetails.contact.email}`} className="font-bold text-emerald-800 hover:text-emerald-800 text-sm underline decoration-emerald-200 underline-offset-2 hover:decoration-emerald-500 transition-all">
                               {selectedPartnerForDetails.contact.email}
                             </a>
                           </div>
@@ -1990,7 +1991,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest">Phone</p>
-                            <a href={`tel:${selectedPartnerForDetails.contact.phone}`} className="font-bold text-emerald-600 hover:text-emerald-800 text-sm transition-all">
+                            <a href={`tel:${selectedPartnerForDetails.contact.phone}`} className="font-bold text-emerald-800 hover:text-emerald-800 text-sm transition-all">
                               {selectedPartnerForDetails.contact.phone}
                             </a>
                           </div>
@@ -2001,7 +2002,7 @@ const PartnersPage: React.FC = memo(function PartnersPage() {
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest">Website</p>
-                            <a href={selectedPartnerForDetails.contact.website} target="_blank" rel="noopener noreferrer" className="font-bold text-emerald-600 hover:text-emerald-800 text-sm underline decoration-emerald-200 underline-offset-2 hover:decoration-emerald-500 transition-all">
+                            <a href={selectedPartnerForDetails.contact.website} target="_blank" rel="noopener noreferrer" className="font-bold text-emerald-800 hover:text-emerald-800 text-sm underline decoration-emerald-200 underline-offset-2 hover:decoration-emerald-500 transition-all">
                               {selectedPartnerForDetails.contact.website}
                             </a>
                           </div>

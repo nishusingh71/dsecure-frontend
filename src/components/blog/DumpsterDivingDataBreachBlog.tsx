@@ -46,7 +46,7 @@ const DumpsterDivingDataBreachBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                In today's world of <strong className="text-emerald-600">digital transformation and rapid technological advances</strong>, hackers are constantly searching for 'treasures in the trash.' Dumpster diving is a technique cybercriminals use to retrieve sensitive information from randomly dumped devices, drives, documents, and other IT assets. Essentially, it involves rifling through trash to find exploitable information.
+                                In today's world of <strong className="text-emerald-800">digital transformation and rapid technological advances</strong>, hackers are constantly searching for 'treasures in the trash.' Dumpster diving is a technique cybercriminals use to retrieve sensitive information from randomly dumped devices, drives, documents, and other IT assets. Essentially, it involves rifling through trash to find exploitable information.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Cyber criminals use sensitive documents found in discarded drives to trick employees and gain access to company data. Something as simple as a phone directory or contact sheet dumped in trash can become a goldmine for hackers. With basic guessing of employees' names, IDs, and dates of birth, attackers can crack credentials to access computers and eventually the entire IT infrastructure. This identity exploitation, often called spear phishing, is a direct consequence of dumpster diving.

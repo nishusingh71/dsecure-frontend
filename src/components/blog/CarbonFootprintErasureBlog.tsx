@@ -71,7 +71,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                         </div>
                         <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-lg text-center">
                             <h4 className="font-bold text-emerald-900 mb-2">Carbon Saved</h4>
-                            <p className="text-3xl font-bold text-emerald-600">85%</p>
+                            <p className="text-3xl font-bold text-emerald-800">85%</p>
                             <p className="text-sm text-emerald-700">reduction per device</p>
                         </div>
                     </div>
@@ -132,7 +132,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                     <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <LeafIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <LeafIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">Sustainability Reporting</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -141,7 +141,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <ShieldIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <ShieldIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">Certified Erasure</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -150,7 +150,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <GlobeIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <GlobeIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">ITAD Integration</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -159,7 +159,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <StarIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <StarIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">Carbon Impact Calculator</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -209,7 +209,7 @@ const CarbonFootprintErasureBlog: React.FC = () => {
                 </p>
                 <Link
                     to="/#products"
-                    className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
+                    className="inline-flex items-center bg-white text-emerald-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>
                         {(filled) => <LeafIcon className="w-5 h-5 mr-2" filled={filled} />}

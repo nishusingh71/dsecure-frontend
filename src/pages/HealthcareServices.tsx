@@ -249,7 +249,7 @@ const HealthcareServices: React.FC = () => {
                         "ISO 27001 regulated"
                       ].map((cert, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <svg className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-6 h-6 text-emerald-800 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           <span className="text-slate-700 font-medium">{cert}</span>
@@ -263,7 +263,7 @@ const HealthcareServices: React.FC = () => {
                         "Audit-Ready Documentation"
                       ].map((cert, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <svg className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-6 h-6 text-emerald-800 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           <span className="text-slate-700 font-medium">{cert}</span>
@@ -313,7 +313,7 @@ const HealthcareServices: React.FC = () => {
               ].map((stat, index) => (
                 <Reveal key={index}>
                   <div>
-                    <div className="text-4xl md:text-5xl font-bold text-emerald-600 mb-2">
+                    <div className="text-4xl md:text-5xl font-bold text-emerald-800 mb-2">
                       {stat.number}
                     </div>
                     <div className="text-slate-600 font-medium">{stat.label}</div>

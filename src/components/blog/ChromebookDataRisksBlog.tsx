@@ -46,7 +46,7 @@ const ChromebookDataRisksBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                <strong className="text-emerald-600">Chromebooks</strong> represent a family of devices including laptops, tablets, convertibles, and detachable form factors running on Chrome OS — a Linux-based operating system from Google. Available from major OEMs such as Acer, ASUS, Dell, Google, HP, Lenovo, and Samsung, these devices have become increasingly popular in business and education environments.
+                                <strong className="text-emerald-800">Chromebooks</strong> represent a family of devices including laptops, tablets, convertibles, and detachable form factors running on Chrome OS — a Linux-based operating system from Google. Available from major OEMs such as Acer, ASUS, Dell, Google, HP, Lenovo, and Samsung, these devices have become increasingly popular in business and education environments.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Chromebooks primarily rely on the Google Chrome browser to perform tasks and store most data on the cloud. This cloud-focused design allows them to perform well using basic hardware, and with minimal moving components, they offer higher durability than traditional PCs. However, Chromebooks — like traditional laptops or desktops — are susceptible to data breach and leakage because they also store data on built-in SSDs alongside cloud storage.

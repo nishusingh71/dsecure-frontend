@@ -75,10 +75,10 @@ const BlogPage: React.FC = () => {
                   <span className="inline-block px-3 py-1 text-sm font-medium text-emerald-700 bg-emerald-100 rounded-full mb-3">
                     {blog.tag}
                   </span>
-                  <h2 className="text-xl font-semibold text-slate-900 mb-2 group-hover:text-emerald-600">
+                  <h2 className="text-xl font-semibold text-slate-900 mb-2 group-hover:text-emerald-800">
                     {blog.title}
                   </h2>
-                  <span className="text-emerald-600 font-semibold text-sm group-hover:underline">
+                  <span className="text-emerald-800 font-semibold text-sm group-hover:underline">
                     Read More →
                   </span>
                 </div>
@@ -100,7 +100,7 @@ const BlogPage: React.FC = () => {
           </p>
           <Link
             to="/contact"
-            className="inline-block bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+            className="inline-block bg-white text-emerald-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
           >
             Contact Us
           </Link>

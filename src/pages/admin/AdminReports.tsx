@@ -520,7 +520,7 @@ export default function AdminReports() {
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-900">
                       {report.totalFiles}
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-green-600">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-green-800">
                       {report.erasedFiles}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-red-600">

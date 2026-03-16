@@ -46,10 +46,10 @@ const Windows10EOSBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-4">
                             <p className="text-slate-700 leading-relaxed text-lg">
-                                The support for Microsoft Windows 10 comes to an end on <strong className="text-emerald-600">October 14, 2025</strong> — coinciding with International E-waste Day. This cessation means the tech giant will stop providing security patches, feature updates, design improvements, and technical assistance for Windows 10 users.
+                                The support for Microsoft Windows 10 comes to an end on <strong className="text-emerald-800">October 14, 2025</strong> — coinciding with International E-waste Day. This cessation means the tech giant will stop providing security patches, feature updates, design improvements, and technical assistance for Windows 10 users.
                             </p>
                             <p className="text-slate-700 leading-relaxed">
-                                Organizations seeking continued support can enroll in Microsoft's Extended Security Updates (ESU) program. However, this comes at a cost: <strong className="text-emerald-600">$61 annually</strong> for the first year, doubling to $122 in the second year, and reaching $244 by the third year. This pricing model makes long-term support financially challenging for many businesses.
+                                Organizations seeking continued support can enroll in Microsoft's Extended Security Updates (ESU) program. However, this comes at a cost: <strong className="text-emerald-800">$61 annually</strong> for the first year, doubling to $122 in the second year, and reaching $244 by the third year. This pricing model makes long-term support financially challenging for many businesses.
                             </p>
                         </div>
 
@@ -67,7 +67,7 @@ const Windows10EOSBlog: React.FC = () => {
                                 Upgrading Challenges: Windows 11 Hardware Requirements
                             </h2>
                             <p className="text-slate-700 leading-relaxed">
-                                For most users, Microsoft offers a decade of paid support; however, upgrading to Windows 11 demands specific hardware specifications. The most significant requirement is a <strong className="text-emerald-600">TPM 2.0 chip</strong> — a hardware-based security component that handles cryptographic operations and maintains system integrity. Devices lacking this chip cannot upgrade, leaving numerous machines stranded.
+                                For most users, Microsoft offers a decade of paid support; however, upgrading to Windows 11 demands specific hardware specifications. The most significant requirement is a <strong className="text-emerald-800">TPM 2.0 chip</strong> — a hardware-based security component that handles cryptographic operations and maintains system integrity. Devices lacking this chip cannot upgrade, leaving numerous machines stranded.
                             </p>
 
                             <div className="bg-slate-50 rounded-lg p-6 mt-4">
@@ -112,7 +112,7 @@ const Windows10EOSBlog: React.FC = () => {
 
                             <div className="grid md:grid-cols-3 gap-4 mt-6">
                                 <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg p-4">
-                                    <div className="text-emerald-600 font-bold mb-2">Heightened Security Threats</div>
+                                    <div className="text-emerald-800 font-bold mb-2">Heightened Security Threats</div>
                                     <p className="text-slate-600 text-sm">Unsupported systems become easy targets for malware, ransomware, and sophisticated cyberattacks.</p>
                                 </div>
                                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
@@ -120,7 +120,7 @@ const Windows10EOSBlog: React.FC = () => {
                                     <p className="text-slate-600 text-sm">Devices that could be refurbished and reused lose their utility and resale potential.</p>
                                 </div>
                                 <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                                    <div className="text-emerald-600 font-bold mb-2">Environmental Impact</div>
+                                    <div className="text-emerald-800 font-bold mb-2">Environmental Impact</div>
                                     <p className="text-slate-600 text-sm">Research indicates up to 240 million PCs — roughly one-fifth of all active systems — may end up in landfills.</p>
                                 </div>
                             </div>
@@ -162,7 +162,7 @@ const Windows10EOSBlog: React.FC = () => {
                                 </p>
                                 <div className="bg-slate-50 rounded-lg p-4 mt-4">
                                     <p className="text-slate-700 text-sm">
-                                        <strong className="text-emerald-600">Industry Insight:</strong> The average cost of a data breach is $4.88 million according to recent reports. Professional data erasure solutions like <strong>D-Secure</strong> overwrite storage completely with binary patterns, eliminating recovery possibilities while generating audit-ready erasure certificates for compliance.
+                                        <strong className="text-emerald-800">Industry Insight:</strong> The average cost of a data breach is $4.88 million according to recent reports. Professional data erasure solutions like <strong>D-Secure</strong> overwrite storage completely with binary patterns, eliminating recovery possibilities while generating audit-ready erasure certificates for compliance.
                                     </p>
                                 </div>
                             </div>
@@ -189,7 +189,7 @@ const Windows10EOSBlog: React.FC = () => {
                         </p>
                         <Link
                             to="/#products"
-                            className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                            className="inline-flex items-center bg-white text-emerald-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                         >
                             Explore D-Secure Data Erasure Solutions
                             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

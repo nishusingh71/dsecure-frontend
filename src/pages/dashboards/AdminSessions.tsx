@@ -868,7 +868,7 @@ export default function AdminSessions() {
                           {session.logout_time ? (
                             formatDate(session.logout_time)
                           ) : (
-                            <span className="text-emerald-600 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
+                            <span className="text-emerald-800 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
                               Active Now
                             </span>
                           )}
@@ -879,7 +879,7 @@ export default function AdminSessions() {
                           {session.logout_time ? (
                             formatDate(session.logout_time)
                           ) : session.isActive ? (
-                            <span className="text-emerald-600 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
+                            <span className="text-emerald-800 font-medium bg-emerald-50 px-1.5 py-0.5 rounded text-[10px]">
                               Active Now
                             </span>
                           ) : session.estimatedExpiryTime &&

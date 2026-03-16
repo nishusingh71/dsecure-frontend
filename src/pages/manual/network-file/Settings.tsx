@@ -79,7 +79,7 @@ const Settings: React.FC = () => {
 
             <div className="border-l-4 border-green-500 pl-5 py-3 bg-green-50/50">
               <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                <Shield className="w-5 h-5 text-green-600" />
+                <Shield className="w-5 h-5 text-green-800" />
                 Default Erasure Algorithm
               </h3>
               <p className="text-gray-700 mb-2">

@@ -128,19 +128,19 @@ const SSDWipeGuideBlog: React.FC = () => {
                                 </tr>
                                 <tr className="bg-slate-50">
                                     <td className="border border-slate-300 p-3">ATA Secure Erase</td>
-                                    <td className="border border-slate-300 p-3 text-emerald-600">✓ Effective</td>
+                                    <td className="border border-slate-300 p-3 text-emerald-800">✓ Effective</td>
                                     <td className="border border-slate-300 p-3">Minutes</td>
                                     <td className="border border-slate-300 p-3">Yes</td>
                                 </tr>
                                 <tr>
                                     <td className="border border-slate-300 p-3">Cryptographic Erase</td>
-                                    <td className="border border-slate-300 p-3 text-emerald-600">✓ Highly Effective</td>
+                                    <td className="border border-slate-300 p-3 text-emerald-800">✓ Highly Effective</td>
                                     <td className="border border-slate-300 p-3">Seconds</td>
                                     <td className="border border-slate-300 p-3">Yes</td>
                                 </tr>
                                 <tr className="bg-slate-50">
                                     <td className="border border-slate-300 p-3">Physical Destruction</td>
-                                    <td className="border border-slate-300 p-3 text-emerald-600">✓ Complete</td>
+                                    <td className="border border-slate-300 p-3 text-emerald-800">✓ Complete</td>
                                     <td className="border border-slate-300 p-3">Minutes</td>
                                     <td className="border border-slate-300 p-3">No</td>
                                 </tr>

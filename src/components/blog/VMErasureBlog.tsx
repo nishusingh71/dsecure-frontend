@@ -46,7 +46,7 @@ const VMErasureBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Virtualization has achieved widespread adoption, particularly in critical sectors like <strong className="text-emerald-600">healthcare and finance</strong>. It has fundamentally transformed how organizations manage IT infrastructure, scale business operations, and process growing workloads. Virtual Machines (VMs) are digital replicas of physical systems where multiple VMs can operate on a single physical server with different operating systems.
+                                Virtualization has achieved widespread adoption, particularly in critical sectors like <strong className="text-emerald-800">healthcare and finance</strong>. It has fundamentally transformed how organizations manage IT infrastructure, scale business operations, and process growing workloads. Virtual Machines (VMs) are digital replicas of physical systems where multiple VMs can operate on a single physical server with different operating systems.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Virtualization empowers businesses to work more efficiently through robust and flexible IT operations. In today's digital landscape, VMs are ideally suited for deploying AI and machine learning workloads, offering isolated, configurable environments perfect for experiments and training. They also provide secure sandbox environments for development and testing processes.
@@ -71,7 +71,7 @@ const VMErasureBlog: React.FC = () => {
                             The Overlooked Risk: Incomplete VM Erasure
                         </h2>
                         <p className="text-slate-700 leading-loose text-lg">
-                            VM environments store sensitive business-critical data that must be handled securely during Data Lifecycle Management (DLM). Like physical devices, VMs require the same level of diligence and compliance within a DLM strategy. <strong className="text-emerald-600">VM erasure is a critical yet often overlooked component</strong> of Enterprise Data Lifecycle Management.
+                            VM environments store sensitive business-critical data that must be handled securely during Data Lifecycle Management (DLM). Like physical devices, VMs require the same level of diligence and compliance within a DLM strategy. <strong className="text-emerald-800">VM erasure is a critical yet often overlooked component</strong> of Enterprise Data Lifecycle Management.
                         </p>
 
                         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-8 mt-8">
@@ -205,7 +205,7 @@ const VMErasureBlog: React.FC = () => {
 
                         <Link
                             to="/#products"
-                            className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg mt-6"
+                            className="inline-flex items-center bg-white text-emerald-800 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg mt-6"
                         >
                             Explore D-Secure VM Eraser
                         </Link>
@@ -217,7 +217,7 @@ const VMErasureBlog: React.FC = () => {
                     <div className="bg-slate-100 rounded-xl shadow-md p-10 mt-10">
                         <h2 className="text-3xl font-bold text-slate-900 mb-6">Key Takeaway</h2>
                         <p className="text-slate-700 text-lg leading-loose mb-6">
-                            As organizations continue to rely on virtualization, data lifecycle management must evolve accordingly. By incorporating Virtual Machine Erasure into data policies and following best practices using professional tools like <strong className="text-emerald-600">D-Secure Virtual Machine Eraser</strong>, organizations can confidently manage data security and bridge the security gap.
+                            As organizations continue to rely on virtualization, data lifecycle management must evolve accordingly. By incorporating Virtual Machine Erasure into data policies and following best practices using professional tools like <strong className="text-emerald-800">D-Secure Virtual Machine Eraser</strong>, organizations can confidently manage data security and bridge the security gap.
                         </p>
                         <p className="text-slate-700 text-lg leading-loose">
                             With comprehensive compliance assurance in virtual environments, D-Secure VM Eraser becomes a necessity in any data lifecycle management strategy — not just another tool.

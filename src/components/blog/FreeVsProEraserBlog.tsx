@@ -69,42 +69,42 @@ const FreeVsProEraserBlog: React.FC = () => {
                                     <tr>
                                         <td className="p-4 font-semibold">Erasure Verification</td>
                                         <td className="p-4 text-red-600">✗ No verification</td>
-                                        <td className="p-4 text-emerald-600">✓ Complete verification</td>
+                                        <td className="p-4 text-emerald-800">✓ Complete verification</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="p-4 font-semibold">Compliance Certificates</td>
                                         <td className="p-4 text-red-600">✗ Not available</td>
-                                        <td className="p-4 text-emerald-600">✓ Tamper-proof certificates</td>
+                                        <td className="p-4 text-emerald-800">✓ Tamper-proof certificates</td>
                                     </tr>
                                     <tr>
                                         <td className="p-4 font-semibold">Audit Trails</td>
                                         <td className="p-4 text-red-600">✗ No documentation</td>
-                                        <td className="p-4 text-emerald-600">✓ Complete chain of custody</td>
+                                        <td className="p-4 text-emerald-800">✓ Complete chain of custody</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="p-4 font-semibold">Global Standards</td>
                                         <td className="p-4 text-red-600">✗ Not certified</td>
-                                        <td className="p-4 text-emerald-600">✓ NIST 800-88, DoD compliant</td>
+                                        <td className="p-4 text-emerald-800">✓ NIST 800-88, DoD compliant</td>
                                     </tr>
                                     <tr>
                                         <td className="p-4 font-semibold">Security Risk</td>
                                         <td className="p-4 text-red-600">⚠ High (malware risk)</td>
-                                        <td className="p-4 text-emerald-600">✓ Secure, verified source</td>
+                                        <td className="p-4 text-emerald-800">✓ Secure, verified source</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="p-4 font-semibold">Technical Support</td>
                                         <td className="p-4 text-red-600">✗ None</td>
-                                        <td className="p-4 text-emerald-600">✓ Dedicated support</td>
+                                        <td className="p-4 text-emerald-800">✓ Dedicated support</td>
                                     </tr>
                                     <tr>
                                         <td className="p-4 font-semibold">Device Coverage</td>
                                         <td className="p-4 text-red-600">⚠ Limited</td>
-                                        <td className="p-4 text-emerald-600">✓ All storage media types</td>
+                                        <td className="p-4 text-emerald-800">✓ All storage media types</td>
                                     </tr>
                                     <tr className="bg-slate-50">
                                         <td className="p-4 font-semibold">Cloud Repository</td>
                                         <td className="p-4 text-red-600">✗ Not available</td>
-                                        <td className="p-4 text-emerald-600">✓ Cloud storage for records</td>
+                                        <td className="p-4 text-emerald-800">✓ Cloud storage for records</td>
                                     </tr>
                                 </tbody>
                             </table>

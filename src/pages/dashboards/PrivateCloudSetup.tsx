@@ -544,7 +544,7 @@ export default function PrivateCloudSetup() {
                   {/* Step 1: Create Tables */}
                   <div className="flex items-center gap-4 p-4 border border-slate-200 rounded-lg">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${setupStatus.tablesCreated ? "bg-green-100 text-green-600" : "bg-purple-100 text-purple-600"}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${setupStatus.tablesCreated ? "bg-green-100 text-green-800" : "bg-purple-100 text-purple-600"}`}
                     >
                       {setupStatus.tablesCreated ? (
                         <svg
@@ -612,7 +612,7 @@ export default function PrivateCloudSetup() {
                     className={`flex items-center gap-4 p-4 border border-slate-200 rounded-lg ${!setupStatus.tablesCreated ? "opacity-50 bg-slate-50" : ""}`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${setupStatus.schemaValidated ? "bg-green-100 text-green-600" : "bg-purple-100 text-purple-600"}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${setupStatus.schemaValidated ? "bg-green-100 text-green-800" : "bg-purple-100 text-purple-600"}`}
                     >
                       {setupStatus.schemaValidated ? (
                         <svg
@@ -655,7 +655,7 @@ export default function PrivateCloudSetup() {
                     className={`flex items-center gap-4 p-4 border border-slate-200 rounded-lg ${!setupStatus.schemaValidated ? "opacity-50 bg-slate-50" : ""}`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${setupStatus.dataMigrated ? "bg-green-100 text-green-600" : "bg-purple-100 text-purple-600"}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${setupStatus.dataMigrated ? "bg-green-100 text-green-800" : "bg-purple-100 text-purple-600"}`}
                     >
                       {setupStatus.dataMigrated ? (
                         <svg

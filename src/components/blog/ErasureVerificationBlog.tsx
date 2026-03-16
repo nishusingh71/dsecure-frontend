@@ -37,7 +37,7 @@ const ErasureVerificationBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                D-Secure Drive Eraser software helps organizations comply with data privacy regulations such as <strong className="text-emerald-600">EU-GDPR, CCPA, SOX, and HIPAA</strong> by permanently wiping data when it is no longer required or when storage devices are upgraded, repurposed, or decommissioned.
+                                D-Secure Drive Eraser software helps organizations comply with data privacy regulations such as <strong className="text-emerald-800">EU-GDPR, CCPA, SOX, and HIPAA</strong> by permanently wiping data when it is no longer required or when storage devices are upgraded, repurposed, or decommissioned.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 After data erasure, the software performs verification to ensure complete data sanitization, including from hidden areas such as the Host Protected Area (HPA), Device Configuration Overlay (DCO), and remapped sectors.

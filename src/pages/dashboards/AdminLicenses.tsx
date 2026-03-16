@@ -1003,13 +1003,13 @@ export default function AdminLicenses() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-slate-600">Active</p>
-                  <p className="text-3xl font-bold text-emerald-600 mt-1">
+                  <p className="text-3xl font-bold text-emerald-800 mt-1">
                     {licenses.active.toLocaleString()}
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
                   <svg
-                    className="w-6 h-6 text-emerald-600"
+                    className="w-6 h-6 text-emerald-800"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1380,7 +1380,7 @@ export default function AdminLicenses() {
                         selectedLicenses.size === filteredLicenses.length
                       }
                       onChange={toggleSelectAll}
-                      className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                      className="rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                     />
                   </th>
                 )}
@@ -1418,7 +1418,7 @@ export default function AdminLicenses() {
                           type="checkbox"
                           checked={selectedLicenses.has(license.license_id)}
                           onChange={() => toggleSelectOne(license.license_id)}
-                          className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                          className="rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                         />
                       </td>
                     )}

@@ -134,7 +134,7 @@ const MobileDevicesPage: React.FC = memo(() => {
  <div className="text-center">
  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 md:mb-4 leading-tight">
  D-Secure Mobile{" "}
- <span className="text-emerald-600 block sm:inline">Devices</span>
+ <span className="text-emerald-800 block sm:inline">Devices</span>
  </h1>
  <p className="text-base sm:text-lg md:text-xl text-slate-700 max-w-3xl mx-auto mb-6 md:mb-8 px-4">
  Secure Data Erasure for Mobile Devices: Complete procedures for iOS, Android, and enterprise mobile device management with D-Secure.
@@ -150,7 +150,7 @@ const MobileDevicesPage: React.FC = memo(() => {
  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 text-center">
  <div className="p-4 sm:p-6">
  <div className="text-3xl sm:text-4xl mb-4">📱</div>
- <div className="text-xl sm:text-2xl font-bold text-emerald-600 mb-2">iOS Ready</div>
+ <div className="text-xl sm:text-2xl font-bold text-emerald-800 mb-2">iOS Ready</div>
  <div className="text-slate-600 text-sm sm:text-base">iPhone & iPad support</div>
  </div>
  <div className="p-4 sm:p-6">
@@ -249,7 +249,7 @@ const MobileDevicesPage: React.FC = memo(() => {
  Our D-Secure experts specialize in mobile device data erasure for iOS, Android, and enterprise environments.
  </p>
  <div className="flex flex-col sm:flex-row gap-4 justify-center">
- <button className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg">
+ <button className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg">
  D-Secure Mobile Services
  </button>
  <button className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg">

@@ -46,7 +46,7 @@ const EndOfLifeDataSecurityBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                The global data sphere is growing rapidly, with total data created, captured, and replicated expected to reach <strong className="text-emerald-600">163 zettabytes</strong> by 2025. Organizations store and process this humongous volume of data, including customer personal data, business intelligence, and sensitive information that requires constant protection against threats and vulnerabilities across all lifecycle stages.
+                                The global data sphere is growing rapidly, with total data created, captured, and replicated expected to reach <strong className="text-emerald-800">163 zettabytes</strong> by 2025. Organizations store and process this humongous volume of data, including customer personal data, business intelligence, and sensitive information that requires constant protection against threats and vulnerabilities across all lifecycle stages.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Storage hardware bearing sensitive data throughout its lifecycle is the single overarching element that plays a decisive role in an organization's ability to attain failsafe end-to-end data protection. While actively used devices receive round-the-clock protection through antivirus, firewalls, and IT surveillance, data security measures often tumble dramatically when storage devices transition to their disposal stage.

@@ -44,7 +44,7 @@ const UltratestComparisonBlog: React.FC = () => {
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Founded in 1996, Ultratech is a UK-based restore technology company experienced in erasing, testing, and repairing services. Their hardware-based data sanitization tool, <strong className="text-emerald-600">Genesis</strong>, launched in 2020, is a combination of software embedded in hardware chassis providing data erasure, device repair, and testing for SAS SATA hard drives and solid state drives.
+                                Founded in 1996, Ultratech is a UK-based restore technology company experienced in erasing, testing, and repairing services. Their hardware-based data sanitization tool, <strong className="text-emerald-800">Genesis</strong>, launched in 2020, is a combination of software embedded in hardware chassis providing data erasure, device repair, and testing for SAS SATA hard drives and solid state drives.
                             </p>
                         </div>
                     </div>

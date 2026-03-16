@@ -262,7 +262,7 @@ export default function AdminSettings() {
                           e.target.checked,
                         )
                       }
-                      className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                      className="rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                     />
                     <label
                       htmlFor="maintenanceMode"
@@ -358,7 +358,7 @@ export default function AdminSettings() {
                             e.target.checked,
                           )
                         }
-                        className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                        className="rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                       />
                       <label
                         htmlFor="requireSpecialChars"
@@ -379,7 +379,7 @@ export default function AdminSettings() {
                             e.target.checked,
                           )
                         }
-                        className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                        className="rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                       />
                       <label
                         htmlFor="twoFactorAuth"
@@ -439,7 +439,7 @@ export default function AdminSettings() {
                               e.target.checked,
                             )
                           }
-                          className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                          className="rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                         />
                       </div>
                     ),
@@ -477,7 +477,7 @@ export default function AdminSettings() {
                       </div>
                     </div>
                     <div className="text-center p-4 bg-green-50 rounded-lg">
-                      <div className="text-2xl font-bold text-green-600">
+                      <div className="text-2xl font-bold text-green-800">
                         {settings.license.availableLicenses}
                       </div>
                       <div className="text-sm text-slate-600">
@@ -514,7 +514,7 @@ export default function AdminSettings() {
                           e.target.checked,
                         )
                       }
-                      className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                      className="rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                     />
                     <label
                       htmlFor="autoRenewal"

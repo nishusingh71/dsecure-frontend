@@ -340,7 +340,7 @@ export default function UserDashboard() {
               </div>
               <div className="mt-2 flex items-end gap-2">
                 <div className="text-3xl font-bold text-slate-900">{stats.monthlyErasures}</div>
-                <div className="text-sm text-green-600 mb-1 flex items-center gap-1">
+                <div className="text-sm text-green-800 mb-1 flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
@@ -359,7 +359,7 @@ export default function UserDashboard() {
               </div>
               <div className="mt-2 flex items-end gap-2">
                 <div className="text-3xl font-bold text-slate-900">{stats.totalDevices}</div>
-                <div className="text-sm text-green-600 mb-1 flex items-center gap-1">
+                <div className="text-sm text-green-800 mb-1 flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
@@ -378,7 +378,7 @@ export default function UserDashboard() {
               </div>
               <div className="mt-2 flex items-end gap-2">
                 <div className="text-3xl font-bold text-slate-900">{stats.successRate}</div>
-                <div className="text-sm text-green-600 mb-1 flex items-center gap-1">
+                <div className="text-sm text-green-800 mb-1 flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
@@ -397,7 +397,7 @@ export default function UserDashboard() {
               </div>
               <div className="mt-2 flex items-end gap-2">
                 <div className="text-3xl font-bold text-slate-900">{stats.storageReclaimed}</div>
-                <div className="text-sm text-green-600 mb-1 flex items-center gap-1">
+                <div className="text-sm text-green-800 mb-1 flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>

@@ -364,7 +364,7 @@ function DocumentationResourcesContent() {
                       <p className="text-slate-600 mb-3">
                         {resource.description}
                       </p>
-                      <span className="text-sm text-green-600 font-medium">
+                      <span className="text-sm text-green-800 font-medium">
                         Available: {resource.available}
                       </span>
                     </div>

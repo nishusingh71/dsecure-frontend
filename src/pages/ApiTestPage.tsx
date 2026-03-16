@@ -83,7 +83,7 @@ export default function ApiTestPage() {
             <div className="card p-4">
               <h3 className="font-semibold mb-3">Users Service</h3>
               <div className="space-y-2 text-sm">
-                <div className={`flex items-center space-x-2 ${usersLoading ? 'text-yellow-600' : usersUsingApi ? 'text-green-600' : 'text-blue-600'}`}>
+                <div className={`flex items-center space-x-2 ${usersLoading ? 'text-yellow-800' : usersUsingApi ? 'text-green-800' : 'text-blue-600'}`}>
                   <div className={`w-2 h-2 rounded-full ${usersLoading ? 'bg-yellow-500' : usersUsingApi ? 'bg-green-500' : 'bg-blue-500'}`}></div>
                   <span>{usersLoading ? 'Loading...' : usersUsingApi ? 'Live Backend Data' : 'AI Demo Data'}</span>
                 </div>
@@ -96,7 +96,7 @@ export default function ApiTestPage() {
             <div className="card p-4">
               <h3 className="font-semibold mb-3">Machines Service</h3>
               <div className="space-y-2 text-sm">
-                <div className={`flex items-center space-x-2 ${machinesLoading ? 'text-yellow-600' : machinesUsingApi ? 'text-green-600' : 'text-blue-600'}`}>
+                <div className={`flex items-center space-x-2 ${machinesLoading ? 'text-yellow-800' : machinesUsingApi ? 'text-green-800' : 'text-blue-600'}`}>
                   <div className={`w-2 h-2 rounded-full ${machinesLoading ? 'bg-yellow-500' : machinesUsingApi ? 'bg-green-500' : 'bg-blue-500'}`}></div>
                   <span>{machinesLoading ? 'Loading...' : machinesUsingApi ? 'Live Backend Data' : 'AI Demo Data'}</span>
                 </div>
@@ -109,7 +109,7 @@ export default function ApiTestPage() {
             <div className="card p-4">
               <h3 className="font-semibold mb-3">Reports Service</h3>
               <div className="space-y-2 text-sm">
-                <div className={`flex items-center space-x-2 ${reportsLoading ? 'text-yellow-600' : reportsUsingApi ? 'text-green-600' : 'text-blue-600'}`}>
+                <div className={`flex items-center space-x-2 ${reportsLoading ? 'text-yellow-800' : reportsUsingApi ? 'text-green-800' : 'text-blue-600'}`}>
                   <div className={`w-2 h-2 rounded-full ${reportsLoading ? 'bg-yellow-500' : reportsUsingApi ? 'bg-green-500' : 'bg-blue-500'}`}></div>
                   <span>{reportsLoading ? 'Loading...' : reportsUsingApi ? 'Live Backend Data' : 'AI Demo Data'}</span>
                 </div>

@@ -1,9 +1,10 @@
-﻿import React, { useState, useCallback, useMemo, memo } from "react";
+import React, { useState, useCallback, useMemo, memo } from "react";
 import SEOHead from '@/components/SEOHead';
 import { getSEOForPage } from '@/utils/seo';
 import Reveal from "@/components/Reveal";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import { LicenseForm, type LicenseFormData } from "@/components/forms";
 import { PartnershipForm, type PartnershipFormData } from "@/components/forms";
 import { useToast } from "@/hooks";
@@ -244,6 +245,69 @@ const SupportPage: React.FC = () => {
     category: "general",
     description: "",
   });
+
+  const [activeSection, setActiveSection] = useState("overview");
+  const [isNavVisible, setIsNavVisible] = useState(false);
+
+  const sectionNavItems = [
+    { id: "overview", label: "Overview" },
+    { id: "trending", label: "Trending" },
+    { id: "self-help", label: "Self Help" },
+    { id: "assisted-support", label: "Assisted Support" },
+    { id: "get-started", label: "Get Started" },
+  ];
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const shouldShow = scrollPosition > 400;
+      setIsNavVisible(shouldShow);
+
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", {
+            detail: { visible: shouldShow },
+          }),
+        );
+      }
+
+      const sections = sectionNavItems.map((item) =>
+        document.getElementById(item.id),
+      );
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop - 150 <= scrollPosition) {
+          setActiveSection(sectionNavItems[i].id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
+        );
+      }
+    };
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    }
+  };
 
   // Memoize form options to prevent re-creation
   const priorityOptions = useMemo(
@@ -744,9 +808,50 @@ const SupportPage: React.FC = () => {
       {/* SEO Meta Tags */}
       <SEOHead seo={getSEOForPage("support")} />
 
+      {/* ================= STICKY SECTION NAV ================= */}
+      <div
+        className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isNavVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0"
+        }`}
+      >
+        <div className="bg-white border-b border-emerald-100 shadow-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-14">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
+                <ThemeAwareLogo
+                  className="h-7 sm:h-8 w-auto"
+                  responsive={true}
+                />
+              </Link>
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
+                {sectionNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                      activeSection === item.id
+                        ? "bg-emerald-500 text-white shadow-md"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="min-h-screen bg-slate-50">
         {/* Header Section */}
-        <section className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 md:py-24">
+        <section id="overview" className="bg-gradient-to-br from-emerald-50 to-teal-50 py-16 md:py-24">
           <div className="container-responsive">
             <Reveal>
               <div className="text-center">
@@ -845,7 +950,7 @@ const SupportPage: React.FC = () => {
                       </span>
                       <button
                         onClick={clearSearch}
-                        className="text-emerald-600 hover:text-emerald-700 transition-colors p-1 hover:bg-emerald-100 rounded-full"
+                        className="text-emerald-800 hover:text-emerald-700 transition-colors p-1 hover:bg-emerald-100 rounded-full"
                       >
                         <svg
                           className="w-4 h-4"
@@ -878,7 +983,7 @@ const SupportPage: React.FC = () => {
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1">
-                            <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-emerald-600">
+                            <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-emerald-800">
                               {result.title}
                             </h3>
                             <p className="text-sm text-slate-600 mb-2">
@@ -911,7 +1016,7 @@ const SupportPage: React.FC = () => {
                   <div className="bg-white rounded-xl shadow-2xl p-8 text-center">
                     <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <svg
-                        className="w-8 h-8 text-emerald-600"
+                        className="w-8 h-8 text-emerald-800"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -946,6 +1051,7 @@ const SupportPage: React.FC = () => {
 
         {/* Trending Searches */}
         <section
+          id="trending"
           className={`py-8 bg-white border-b border-slate-200 ${showSearchResults ? "hidden" : ""}`}
         >
           <div className="container-responsive">
@@ -980,7 +1086,7 @@ const SupportPage: React.FC = () => {
         </section>
 
         {/* Self Help & Support Section */}
-        <section className="py-16 md:py-24 bg-slate-50">
+        <section id="self-help" className="py-16 md:py-24 bg-slate-50">
           <div className="container-responsive">
             <Reveal>
               <div className="text-center mb-12">
@@ -1027,7 +1133,7 @@ const SupportPage: React.FC = () => {
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
                   <div className="w-16 h-16 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-emerald-200 transition-colors">
                     <svg
-                      className="w-8 h-8 text-emerald-600"
+                      className="w-8 h-8 text-emerald-800"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -1055,7 +1161,7 @@ const SupportPage: React.FC = () => {
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center group h-full flex flex-col">
                   <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
                     <svg
-                      className="w-8 h-8 text-green-600"
+                      className="w-8 h-8 text-green-800"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -1169,7 +1275,7 @@ const SupportPage: React.FC = () => {
         </section>
 
         {/* Assisted Support Section */}
-        <section className="py-16 md:py-24 bg-white">
+        <section id="assisted-support" className="py-16 md:py-24 bg-white">
           <div className="container-responsive">
             <Reveal>
               <div className="text-center mb-12">
@@ -1284,7 +1390,7 @@ const SupportPage: React.FC = () => {
         </section>
 
         {/* Let's Get Started Section */}
-        <section className="py-16 md:py-24 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
+        <section id="get-started" className="py-16 md:py-24 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600">
           <div className="container-responsive">
             <Reveal>
               <div className="text-center text-white">
@@ -1427,7 +1533,7 @@ export default SupportPage;
 
 //           <div className="bg-white light:bg-slate-800 rounded-lg p-6 xs:p-8 sm:p-10 md:p-12 lg:p-14 xl:p-16 xxl:p-18 shadow-lg hover:shadow-xl transition-shadow text-center">
 //             <div className="w-12 xs:w-14 sm:w-16 md:w-18 lg:w-20 xl:w-22 xxl:w-24 h-12 xs:h-14 sm:h-16 md:h-18 lg:h-20 xl:h-22 xxl:h-24 bg-green-100 light:bg-green-900/30 rounded-lg flex items-center justify-center mx-auto mb-4 xs:mb-5 sm:mb-6 md:mb-7 lg:mb-8 xl:mb-9 xxl:mb-10">
-//               <svg className="w-6 xs:w-7 sm:w-8 md:w-9 lg:w-10 xl:w-11 xxl:w-12 h-6 xs:h-7 sm:h-8 md:h-9 lg:h-10 xl:h-11 xxl:h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//               <svg className="w-6 xs:w-7 sm:w-8 md:w-9 lg:w-10 xl:w-11 xxl:w-12 h-6 xs:h-7 sm:h-8 md:h-9 lg:h-10 xl:h-11 xxl:h-12 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
 //               </svg>
 //             </div>
@@ -1437,7 +1543,7 @@ export default SupportPage;
 //             <p className="text-slate-600 light:text-slate-300 text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl mb-4 xs:mb-5 sm:mb-6 md:mb-7 lg:mb-8 xl:mb-9 xxl:mb-10">
 //               Get instant help from our support team through live chat assistance.
 //             </p>
-//             <button className="text-green-600 hover:text-green-700 font-medium text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl">
+//             <button className="text-green-800 hover:text-green-700 font-medium text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl xxl:text-4xl">
 //               Start Chat →
 //             </button>
 //           </div>

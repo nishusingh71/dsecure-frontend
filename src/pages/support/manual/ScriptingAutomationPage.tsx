@@ -24,7 +24,7 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  <Reveal>
  <div className="text-center">
  <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
- Scripting & <span className="text-emerald-600">Automation</span>
+ Scripting & <span className="text-emerald-800">Automation</span>
  </h1>
  <p className="text-xl text-slate-700 max-w-3xl mx-auto">
  Automate D-Secure operations through command-line tools, scripting, and workflow integration
@@ -58,7 +58,7 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  </div>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="space-y-3">
- <h3 className="text-lg font-semibold text-emerald-600">Core Commands</h3>
+ <h3 className="text-lg font-semibold text-emerald-800">Core Commands</h3>
  <ul className="space-y-1 text-sm text-slate-700">
  <li>• <code className="bg-slate-100 px-2 py-1 rounded">dsecure-cli</code> - Main CLI tool</li>
  <li>• <code className="bg-slate-100 px-2 py-1 rounded">dsecure-scan</code> - Device discovery</li>
@@ -155,7 +155,7 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  </h2>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="space-y-4">
- <h3 className="text-lg font-semibold text-emerald-600">CI/CD Integration</h3>
+ <h3 className="text-lg font-semibold text-emerald-800">CI/CD Integration</h3>
  <ul className="space-y-2 text-slate-700">
  <li>• Jenkins pipeline support</li>
  <li>• GitHub Actions workflows</li>
@@ -188,7 +188,7 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  <h3 className="text-lg font-semibold text-slate-900 mb-4">Exit Codes & Logging</h3>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="space-y-3">
- <h4 className="font-medium text-emerald-600">Standard Exit Codes</h4>
+ <h4 className="font-medium text-emerald-800">Standard Exit Codes</h4>
  <ul className="space-y-1 text-sm text-slate-700">
  <li>• <code className="bg-slate-100 px-2 py-1 rounded">0</code> - Success</li>
  <li>• <code className="bg-slate-100 px-2 py-1 rounded">1</code> - General error</li>
@@ -221,7 +221,7 @@ const ScriptingAutomationPage: React.FC = memo(() => {
  <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-lg p-6">
  <div className="grid md:grid-cols-3 gap-6 text-center">
  <div>
- <div className="text-3xl font-bold text-emerald-600 mb-2">90%</div>
+ <div className="text-3xl font-bold text-emerald-800 mb-2">90%</div>
  <p className="text-sm text-slate-700">Time Savings</p>
  </div>
  <div>

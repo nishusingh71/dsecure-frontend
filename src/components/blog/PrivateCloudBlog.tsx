@@ -46,7 +46,7 @@ const PrivateCloudBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                D-Secure's suite of products for data erasure, diagnostics, and verification provides users the flexibility to <strong className="text-emerald-600">store reports and certificates on its cloud server</strong>. Using the D-Secure Public Cloud Console, IT admins and technicians can create, manage, and edit users, create user pools, and distribute licenses based on business requirements.
+                                D-Secure's suite of products for data erasure, diagnostics, and verification provides users the flexibility to <strong className="text-emerald-800">store reports and certificates on its cloud server</strong>. Using the D-Secure Public Cloud Console, IT admins and technicians can create, manage, and edit users, create user pools, and distribute licenses based on business requirements.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 D-Secure Public Cloud is a secure platform hosted on premium cloud infrastructure. However, some organizations have restrictive cybersecurity policies that do not permit hosting information on public cloud servers — including erasure reports and certificates.
@@ -172,7 +172,7 @@ const PrivateCloudBlog: React.FC = () => {
                                     <tr className="border-b-2 border-emerald-500">
                                         <th className="py-4 px-4 text-lg font-bold text-slate-900">Feature</th>
                                         <th className="py-4 px-4 text-lg font-bold text-slate-900">Public Cloud</th>
-                                        <th className="py-4 px-4 text-lg font-bold text-emerald-600">Private Cloud</th>
+                                        <th className="py-4 px-4 text-lg font-bold text-emerald-800">Private Cloud</th>
                                     </tr>
                                 </thead>
                                 <tbody className="text-slate-700 text-lg">

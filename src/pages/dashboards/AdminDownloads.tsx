@@ -289,7 +289,7 @@ export default function AdminDownloads() {
                                 <p className="text-3xl font-bold text-slate-900 mt-1">{totalDownloads.toLocaleString()}</p>
                             </div>
                             <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-6 h-6 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
                             </div>
@@ -446,7 +446,7 @@ export default function AdminDownloads() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-emerald-600">
+                      <p className="text-2xl font-bold text-emerald-800">
                         {product.downloads.toLocaleString()}
                       </p>
                       <p className="text-xs text-slate-500 mt-1">
@@ -519,7 +519,7 @@ export default function AdminDownloads() {
                     </span>
                     <Link
                       to={`/download?product=${product.name.toLowerCase().replace(" ", "-")}`}
-                      className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                      className="text-sm text-emerald-800 hover:text-emerald-700 font-medium"
                     >
                       View Details →
                     </Link>

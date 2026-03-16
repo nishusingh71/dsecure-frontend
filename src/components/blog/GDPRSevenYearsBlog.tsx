@@ -46,7 +46,7 @@ const GDPRSevenYearsBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                The EU General Data Protection Regulation (EU-GDPR) or Regulation (EU) 2016/679 is widely regarded as one of the most comprehensive and influential data protection laws globally. This landmark regulation came into effect on <strong className="text-emerald-600">May 25, 2018</strong>, now marking its seventh anniversary.
+                                The EU General Data Protection Regulation (EU-GDPR) or Regulation (EU) 2016/679 is widely regarded as one of the most comprehensive and influential data protection laws globally. This landmark regulation came into effect on <strong className="text-emerald-800">May 25, 2018</strong>, now marking its seventh anniversary.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Comprising 10 chapters and 99 articles, this law addresses crucial aspects of data protection including material and territorial scope, data protection principles, exceptions to data processing, cross-border data transfers, rights of data subjects, and the role of Data Protection Officers (DPOs).
@@ -85,7 +85,7 @@ const GDPRSevenYearsBlog: React.FC = () => {
                             From Uncertainty to Established Framework
                         </h2>
                         <p className="text-slate-700 leading-loose text-lg">
-                            When EU-GDPR first came into effect, organizations of all sizes — from SMEs to multinational corporations — were apprehensive. Smaller businesses worried about additional financial and operational burden, while larger organizations found the requirements restrictive. Industry surveys demonstrated that 83% of organizations felt unprepared for GDPR compliance, with 53% identifying the <strong className="text-emerald-600">Right to Erasure</strong> as a major challenge.
+                            When EU-GDPR first came into effect, organizations of all sizes — from SMEs to multinational corporations — were apprehensive. Smaller businesses worried about additional financial and operational burden, while larger organizations found the requirements restrictive. Industry surveys demonstrated that 83% of organizations felt unprepared for GDPR compliance, with 53% identifying the <strong className="text-emerald-800">Right to Erasure</strong> as a major challenge.
                         </p>
 
 
@@ -99,7 +99,7 @@ const GDPRSevenYearsBlog: React.FC = () => {
                         <div className="bg-slate-100 rounded-xl p-8 mt-8">
                             <h3 className="font-bold text-slate-900 text-xl mb-4">Seven Years of Enforcement</h3>
                             <p className="text-slate-700 leading-loose text-lg mb-4">
-                                From July 2018 through May 2025, the highest number of monthly penalties imposed has been 68, with the highest monthly sum reaching approximately <strong className="text-emerald-600">€1.20 billion</strong>. In 2023, Meta Platforms Ireland Limited faced the highest single penalty ever — €1.2 billion — for transferring personal data to the US without adhering to specific data protection measures for cross-border transfers.
+                                From July 2018 through May 2025, the highest number of monthly penalties imposed has been 68, with the highest monthly sum reaching approximately <strong className="text-emerald-800">€1.20 billion</strong>. In 2023, Meta Platforms Ireland Limited faced the highest single penalty ever — €1.2 billion — for transferring personal data to the US without adhering to specific data protection measures for cross-border transfers.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Fast forward seven years, and the landscape has transformed. Research reveals that 54% of CISOs and CSOs now express confidence in their organization's regulation compliance. According to recent global compliance studies, 82% of organizations are actively interested in investing in compliance-related technology.
@@ -158,7 +158,7 @@ const GDPRSevenYearsBlog: React.FC = () => {
                         </p>
                         <Link
                             to="/#products"
-                            className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
+                            className="inline-flex items-center bg-white text-emerald-800 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
                         >
                             Explore D-Secure Compliance Solutions
                         </Link>

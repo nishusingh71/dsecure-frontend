@@ -168,7 +168,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                     className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                       activeSection === item.id || (activeSection === "" && item.id === "hero")
                         ? "bg-emerald-500 text-white shadow-md"
-                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-600"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
                     }`}
                   >
                     {item.label}
@@ -219,7 +219,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                     </button>
                     <Link 
                       to="/pricing-and-plan?product=smart-diagnostic"
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
                     >
                       <ShoppingCart className="w-5 h-5" />
                       Purchase License
@@ -348,7 +348,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                           <circle cx="22" cy="22" r="18" fill="transparent" stroke="#f1f5f9" strokeWidth="4" />
                           <circle cx="22" cy="22" r="18" fill="transparent" stroke="#10b981" strokeWidth="4" strokeDasharray="113" strokeDashoffset="11" strokeLinecap="round" className="animate-pulse" />
                         </svg>
-                        <span className="absolute text-[10px] font-black text-emerald-600">92%</span>
+                        <span className="absolute text-[10px] font-black text-emerald-800">92%</span>
                       </div>
                       <div>
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Disk Health</p>
@@ -428,7 +428,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                       { icon: <ClipboardIcon className="w-5 h-5" />, title: "Custom Thresholds", txt: "Personalized temp alerts for disk safety." }
                     ].map((item, i) => (
                       <div key={i} className="flex gap-4">
-                        <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 text-emerald-600">
+                        <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 text-emerald-800">
                           {item.icon}
                         </div>
                         <div>
@@ -491,7 +491,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                     ].map((item, i) => (
                       <li key={i} className="flex items-center gap-3 text-slate-700 font-medium text-sm">
                         <div className="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <CheckIcon className="w-4 h-4 text-emerald-600" />
+                          <CheckIcon className="w-4 h-4 text-emerald-800" />
                         </div>
                         {item}
                       </li>
@@ -580,7 +580,7 @@ const HardDriveMonitorPage: React.FC = memo(function HardDriveMonitorPage() {
                 { q: "How does the 'Scan Disk' feature help identify Bad Sectors?", a: "The feature performs a surface test on the drive, marking bad sectors to prevent the OS from writing data to physically damaged blocks." }
               ].map((item, i) => (
                 <div key={i} className="bg-white p-8 rounded-2xl border border-emerald-100 shadow-sm transition-shadow hover:shadow-md group">
-                  <h4 className="font-bold text-slate-900 flex items-center gap-3 group-hover:text-emerald-600 transition-colors">
+                  <h4 className="font-bold text-slate-900 flex items-center gap-3 group-hover:text-emerald-800 transition-colors">
                     <CheckCircle className="w-5 h-5 text-emerald-500" />
                     {item.q}
                   </h4>

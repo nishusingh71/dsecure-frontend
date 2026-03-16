@@ -189,15 +189,15 @@ const AutomatedErasureBlog: React.FC = () => {
                         <h4 className="font-bold text-green-900 mb-4">Typical Cost Savings</h4>
                         <div className="grid md:grid-cols-3 gap-4">
                             <div className="bg-white p-4 rounded-lg border border-green-200">
-                                <p className="text-3xl font-bold text-green-600 mb-1">90%</p>
+                                <p className="text-3xl font-bold text-green-800 mb-1">90%</p>
                                 <p className="text-sm text-slate-600">Reduction in labor hours</p>
                             </div>
                             <div className="bg-white p-4 rounded-lg border border-green-200">
-                                <p className="text-3xl font-bold text-green-600 mb-1">75%</p>
+                                <p className="text-3xl font-bold text-green-800 mb-1">75%</p>
                                 <p className="text-sm text-slate-600">Faster processing time</p>
                             </div>
                             <div className="bg-white p-4 rounded-lg border border-green-200">
-                                <p className="text-3xl font-bold text-green-600 mb-1">99.9%</p>
+                                <p className="text-3xl font-bold text-green-800 mb-1">99.9%</p>
                                 <p className="text-sm text-slate-600">Error reduction rate</p>
                             </div>
                         </div>

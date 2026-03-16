@@ -41,7 +41,7 @@ const PHIErasureBlog: React.FC = () => {
                 <Reveal>
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <p className="text-slate-700 leading-loose text-xl">
-                            In the healthcare industry, the handling and disposal of <strong className="text-emerald-600">Protected Health Information (PHI)</strong> and <strong className="text-emerald-600">Electronic Protected Health Information (ePHI)</strong> are controlled by various legal statutes. Non-compliance with these laws implies certain financial and reputational losses.
+                            In the healthcare industry, the handling and disposal of <strong className="text-emerald-800">Protected Health Information (PHI)</strong> and <strong className="text-emerald-800">Electronic Protected Health Information (ePHI)</strong> are controlled by various legal statutes. Non-compliance with these laws implies certain financial and reputational losses.
                         </p>
                     </div>
                 </Reveal>

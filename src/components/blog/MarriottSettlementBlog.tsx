@@ -46,7 +46,7 @@ const MarriottSettlementBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Hospitality giant Marriott International's recent settlement in October 2024 — worth <strong className="text-emerald-600">$52 Million</strong> with the Federal Trade Commission (FTC) — is a wake-up call for the hospitality industry. Marriott and its subsidiary Starwood Hotel's poor cybersecurity setup, non-adherence to data minimization principles, and failure to implement reasonable data security led to 3 data breach episodes between 2014 and 2020.
+                                Hospitality giant Marriott International's recent settlement in October 2024 — worth <strong className="text-emerald-800">$52 Million</strong> with the Federal Trade Commission (FTC) — is a wake-up call for the hospitality industry. Marriott and its subsidiary Starwood Hotel's poor cybersecurity setup, non-adherence to data minimization principles, and failure to implement reasonable data security led to 3 data breach episodes between 2014 and 2020.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 These breaches impacted more than <strong>344 million customers worldwide</strong>. Marriott was also fined £18.4 Million by the UK's Information Commissioner's Office (ICO) in 2020 for violating GDPR. The FTC finalized the order on December 20th, 2024.

@@ -49,27 +49,27 @@ const Licensing: React.FC = () => {
               <h3 className="font-semibold text-gray-900 mb-2">What You Get With Your License:</h3>
               <ul className="space-y-2 text-sm text-gray-700">
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-800 mt-0.5 shrink-0" />
                   <span>Unlimited erasure operations on licensed computers</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-800 mt-0.5 shrink-0" />
                   <span>Access to all erasure algorithms and standards (DoD, NIST, Gutmann, etc.)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-800 mt-0.5 shrink-0" />
                   <span>Comprehensive audit reports and compliance documentation</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-800 mt-0.5 shrink-0" />
                   <span>D-Secure Cloud integration for centralized management</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-800 mt-0.5 shrink-0" />
                   <span>Free software updates and security patches during subscription period</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-800 mt-0.5 shrink-0" />
                   <span>Technical support via email, chat, and phone</span>
                 </li>
               </ul>

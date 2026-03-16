@@ -35,7 +35,7 @@ const InstallationGuideDetailed: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/support/help-manual"
-                  className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
+                  className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
                 >
                   ← Back to Help Manual
                 </Link>
@@ -102,7 +102,7 @@ const InstallationGuideDetailed: React.FC = () => {
               <div className="bg-white rounded-2xl p-8 shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                    <span className="font-bold text-emerald-600">1</span>
+                    <span className="font-bold text-emerald-800">1</span>
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">Download DSecure File Eraser</h2>
                 </div>
@@ -120,7 +120,7 @@ const InstallationGuideDetailed: React.FC = () => {
                   </div>
                   <div className="bg-slate-100 rounded-xl p-6 text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-xl mb-4">
-                      <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-8 h-8 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                     </div>
@@ -136,7 +136,7 @@ const InstallationGuideDetailed: React.FC = () => {
               <div className="bg-white rounded-2xl p-8 shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                    <span className="font-bold text-emerald-600">2</span>
+                    <span className="font-bold text-emerald-800">2</span>
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">Mount the Installation Package</h2>
                 </div>
@@ -158,7 +158,7 @@ const InstallationGuideDetailed: React.FC = () => {
                   <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl p-6 border-2 border-dashed border-slate-300">
                     <div className="text-center">
                       <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-xl shadow-md mb-4">
-                        <svg className="w-10 h-10 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-10 h-10 text-emerald-800" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
                           <polyline points="14,2 14,8 20,8"/>
                         </svg>
@@ -176,7 +176,7 @@ const InstallationGuideDetailed: React.FC = () => {
               <div className="bg-white rounded-2xl p-8 shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                    <span className="font-bold text-emerald-600">3</span>
+                    <span className="font-bold text-emerald-800">3</span>
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">Install DSecure Application</h2>
                 </div>
@@ -189,19 +189,19 @@ const InstallationGuideDetailed: React.FC = () => {
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                         <div className="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center">
-                          <span className="text-emerald-600 font-bold text-sm">1</span>
+                          <span className="text-emerald-800 font-bold text-sm">1</span>
                         </div>
                         <span className="text-slate-700">Open the mounted volume</span>
                       </div>
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                         <div className="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center">
-                          <span className="text-emerald-600 font-bold text-sm">2</span>
+                          <span className="text-emerald-800 font-bold text-sm">2</span>
                         </div>
                         <span className="text-slate-700">Drag DSecure app to Applications</span>
                       </div>
                       <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                         <div className="w-8 h-8 bg-emerald-100 rounded flex items-center justify-center">
-                          <span className="text-emerald-600 font-bold text-sm">3</span>
+                          <span className="text-emerald-800 font-bold text-sm">3</span>
                         </div>
                         <span className="text-slate-700">Wait for copy to complete</span>
                       </div>
@@ -211,7 +211,7 @@ const InstallationGuideDetailed: React.FC = () => {
                     <div className="flex items-center justify-between mb-4">
                       <div className="text-center">
                         <div className="w-16 h-16 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-2">
-                          <svg className="w-8 h-8 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-8 h-8 text-emerald-800" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                           </svg>
                         </div>
@@ -241,7 +241,7 @@ const InstallationGuideDetailed: React.FC = () => {
               <div className="bg-white rounded-2xl p-8 shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                    <span className="font-bold text-emerald-600">4</span>
+                    <span className="font-bold text-emerald-800">4</span>
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">Launch DSecure File Eraser</h2>
                 </div>
@@ -273,7 +273,7 @@ const InstallationGuideDetailed: React.FC = () => {
                         </svg>
                       </div>
                       <p className="font-bold text-slate-900">DSecure File Eraser</p>
-                      <p className="text-emerald-600 text-sm">Ready to Launch</p>
+                      <p className="text-emerald-800 text-sm">Ready to Launch</p>
                     </div>
                   </div>
                 </div>
@@ -285,7 +285,7 @@ const InstallationGuideDetailed: React.FC = () => {
               <div className="bg-white rounded-2xl p-8 shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-                    <span className="font-bold text-emerald-600">5</span>
+                    <span className="font-bold text-emerald-800">5</span>
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">Accept License Agreement</h2>
                 </div>
@@ -305,7 +305,7 @@ const InstallationGuideDetailed: React.FC = () => {
                     <div className="bg-white rounded-lg p-4 shadow-sm border border-slate-200">
                       <div className="text-center mb-4">
                         <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                          <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className="w-6 h-6 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
@@ -344,7 +344,7 @@ const InstallationGuideDetailed: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link
                     to="/support/manual/first-time-setup"
-                    className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
+                    className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-8 py-3 rounded-lg transition-colors inline-flex items-center gap-2"
                   >
                     Next: First Time Setup →
                   </Link>

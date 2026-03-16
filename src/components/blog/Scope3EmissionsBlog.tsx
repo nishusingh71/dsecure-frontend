@@ -55,7 +55,7 @@ const Scope3EmissionsBlog: React.FC = () => {
                         <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
                             <h4 className="font-bold text-green-900 mb-2">Scope 3</h4>
                             <p className="text-sm text-green-800">All other indirect emissions in value chain</p>
-                            <p className="text-2xl font-bold text-green-600 mt-2">~70%</p>
+                            <p className="text-2xl font-bold text-green-800 mt-2">~70%</p>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ const Scope3EmissionsBlog: React.FC = () => {
                                     <li>2. Use for 3 years</li>
                                     <li>3. Erase & resell → 2kg CO₂e</li>
                                     <li>4. Buy refurbished → 50kg CO₂e</li>
-                                    <li className="font-bold text-green-600 mt-2">Total: 352kg CO₂e / device</li>
+                                    <li className="font-bold text-green-800 mt-2">Total: 352kg CO₂e / device</li>
                                 </ol>
                             </div>
                         </div>
@@ -172,7 +172,7 @@ const Scope3EmissionsBlog: React.FC = () => {
                             </div>
                             <div className="bg-white p-4 rounded-lg border border-green-200">
                                 <p className="text-sm text-slate-600 mb-2">New Approach (Erase & Reuse)</p>
-                                <p className="text-2xl font-bold text-green-600">3,520 tons CO₂e</p>
+                                <p className="text-2xl font-bold text-green-800">3,520 tons CO₂e</p>
                                 <p className="text-xs text-slate-500 mt-1">Over 5 years</p>
                             </div>
                         </div>
@@ -195,17 +195,17 @@ const Scope3EmissionsBlog: React.FC = () => {
                 </p>
                 <div className="grid md:grid-cols-3 gap-4">
                     <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-100">
-                        <HeartIcon className="w-6 h-6 text-green-600 mb-2" filled={true} />
+                        <HeartIcon className="w-6 h-6 text-green-800 mb-2" filled={true} />
                         <h4 className="font-bold text-slate-900 text-sm mb-1">Carbon Calculator</h4>
                         <p className="text-xs text-slate-600">Measure emissions avoided through reuse</p>
                     </div>
                     <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-100">
-                        <ShieldIcon className="w-6 h-6 text-green-600 mb-2" filled={true} />
+                        <ShieldIcon className="w-6 h-6 text-green-800 mb-2" filled={true} />
                         <h4 className="font-bold text-slate-900 text-sm mb-1">Certified Erasure</h4>
                         <p className="text-xs text-slate-600">Secure enough for resale/donation</p>
                     </div>
                     <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-100">
-                        <GlobeIcon className="w-6 h-6 text-green-600 mb-2" filled={true} />
+                        <GlobeIcon className="w-6 h-6 text-green-800 mb-2" filled={true} />
                         <h4 className="font-bold text-slate-900 text-sm mb-1">ESG Reporting</h4>
                         <p className="text-xs text-slate-600">Automated Scope 3 metrics</p>
                     </div>
@@ -222,7 +222,7 @@ const Scope3EmissionsBlog: React.FC = () => {
                 </p>
                 <Link
                     to="/contact"
-                    className="inline-flex items-center bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
+                    className="inline-flex items-center bg-white text-green-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>
                         {(filled) => <HeartIcon className="w-5 h-5 mr-2" filled={filled} />}

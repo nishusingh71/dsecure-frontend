@@ -46,7 +46,7 @@ const ESGReportBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                According to the Deloitte 2024 CxO Sustainability Report, based on insights from over 2,100 executives across 27 countries, <strong className="text-emerald-600">climate change ranks among the top organizational priorities</strong>. While 70% of organizations anticipate environmental impact on their operations, 60% report pressure from leadership to take action on climate issues.
+                                According to the Deloitte 2024 CxO Sustainability Report, based on insights from over 2,100 executives across 27 countries, <strong className="text-emerald-800">climate change ranks among the top organizational priorities</strong>. While 70% of organizations anticipate environmental impact on their operations, 60% report pressure from leadership to take action on climate issues.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 When organizations implement policies to eliminate e-waste, they take significant steps in reducing their carbon footprint. Software-based media sanitization is an environmentally conscious measure that securely erases data while extending IT asset lifespan — promoting reuse and preventing e-waste generation.
@@ -118,7 +118,7 @@ const ESGReportBlog: React.FC = () => {
                         <div className="bg-slate-100 rounded-xl p-8 mt-8">
                             <h3 className="font-bold text-slate-900 text-xl mb-4">Example Impact Calculation</h3>
                             <p className="text-slate-700 leading-loose text-lg">
-                                An organization that wiped 351 laptops, 5 desktops, and 47 mobile devices over one year would reflect <strong className="text-emerald-600">116.38 tons of CO₂ equivalent emissions saved</strong> in their D-Secure ESG report. Each wipe gets recorded regardless of the device being wiped multiple times.
+                                An organization that wiped 351 laptops, 5 desktops, and 47 mobile devices over one year would reflect <strong className="text-emerald-800">116.38 tons of CO₂ equivalent emissions saved</strong> in their D-Secure ESG report. Each wipe gets recorded regardless of the device being wiped multiple times.
                             </p>
                         </div>
 
@@ -199,7 +199,7 @@ const ESGReportBlog: React.FC = () => {
 
                         <Link
                             to="/#products"
-                            className="inline-flex items-center bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
+                            className="inline-flex items-center bg-white text-emerald-800 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg"
                         >
                             Explore D-Secure Solutions
                         </Link>

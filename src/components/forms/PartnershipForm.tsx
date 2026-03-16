@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useForm, validationRules } from "@/hooks";
 import { useFormSubmission, formConfigs } from "@/hooks/useFormSubmission";
-import { FormField } from "@/components/ui";
 import { showGlobalToast } from "@/utils/enhancedFormSystem";
+import { X } from "lucide-react";
 
 
 // Form input components - removed memo to prevent focus loss during typing
@@ -74,8 +74,8 @@ const ModalWrapper: React.FC<{
   if (!isModal) return <>{children}</>;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-hidden">
-      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-hidden animate-in fade-in duration-300">
+      <div className="bg-white rounded-[2rem] max-w-2xl w-full max-h-[90vh] flex flex-col shadow-[0_20px_50px_rgba(0,0,0,0.2)] overflow-hidden border border-emerald-100/50">
         {children}
       </div>
     </div>
@@ -229,14 +229,18 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
       <div className={`${className} flex flex-col h-full overflow-hidden`}>
         {/* Fixed Header */}
         {showHeader && (
-          <div className="bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 text-white p-6 rounded-t-2xl relative flex-shrink-0">
-            <h2 className="text-2xl font-bold text-center">{title}</h2>
+          <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 text-white p-8 rounded-t-[2rem] relative flex-shrink-0">
+            <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 25% 50%, white 1px, transparent 1px)", backgroundSize: "20px 20px" }}></div>
+            <div className="flex flex-col items-center relative z-10">
+              <h2 className="text-3xl font-bold tracking-tight text-center">{title}</h2>
+              <p className="text-emerald-50/80 mt-2 text-sm font-medium">Join our global network of security experts</p>
+            </div>
             {isModal && onClose && (
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 text-white hover:text-slate-200 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
+                className="absolute top-6 right-6 z-20 cursor-pointer text-white/70 hover:text-white w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20 transition-all duration-300"
               >
-                ×
+                <X className="w-6 h-6 pointer-events-none" />
               </button>
             )}
           </div>
@@ -254,16 +258,22 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
             onSubmit={handleSubmit}
             className="p-6 space-y-4 partnership-form-scroll overflow-hidden"
           >
-            <FormField
-              label="Full Name"
-              name="fullName"
-              type="text"
-              value={partnerForm.formData.fullName}
-              onChange={partnerForm.handleInputChange}
-              placeholder="Enter your full name"
-              required
-              error={partnerForm.errors.fullName}
-            />
+            <div>
+              <FormInput
+                type="text"
+                name="fullName"
+                placeholder="Full Name*"
+                value={partnerForm.formData.fullName}
+                onChange={partnerForm.handleInputChange}
+                required
+                className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
+              />
+              {partnerForm.errors.fullName && (
+                <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
+                  {partnerForm.errors.fullName}
+                </p>
+              )}
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -274,10 +284,10 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   value={partnerForm.formData.businessEmail}
                   onChange={partnerForm.handleInputChange}
                   required
-                  className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                 />
                 {partnerForm.errors.businessEmail && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {partnerForm.errors.businessEmail}
                   </p>
                 )}
@@ -290,10 +300,10 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   value={partnerForm.formData.phoneNo}
                   onChange={partnerForm.handleInputChange}
                   required
-                  className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                 />
                 {partnerForm.errors.phoneNo && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {partnerForm.errors.phoneNo}
                   </p>
                 )}
@@ -309,10 +319,10 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   value={partnerForm.formData.companyName}
                   onChange={partnerForm.handleInputChange}
                   required
-                  className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                 />
                 {partnerForm.errors.companyName && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {partnerForm.errors.companyName}
                   </p>
                 )}
@@ -325,10 +335,10 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   value={partnerForm.formData.website}
                   onChange={partnerForm.handleInputChange}
                   required
-                  className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200"
                 />
                 {partnerForm.errors.website && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {partnerForm.errors.website}
                   </p>
                 )}
@@ -342,8 +352,9 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   value={partnerForm.formData.country}
                   onChange={partnerForm.handleInputChange}
                   required
-                  className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-white"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 appearance-none cursor-pointer"
                 >
+                  <option value="" disabled selected hidden>Select Country*</option>
                   {countryOptions.map(country => (
                     <option key={country} value={country}>
                       {country}
@@ -351,7 +362,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   ))}
                 </FormSelect>
                 {partnerForm.errors.country && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {partnerForm.errors.country}
                   </p>
                 )}
@@ -363,9 +374,9 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   value={partnerForm.formData.partnerType}
                   onChange={partnerForm.handleInputChange}
                   required
-                  className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors bg-white"
+                  className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 appearance-none cursor-pointer"
                 >
-                  <option value="">Partner Type*</option>
+                  <option value="" disabled selected hidden>Select Partner Type*</option>
                   {partnerTypeOptions.map(type => (
                     <option key={type} value={type}>
                       {type}
@@ -373,7 +384,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   ))}
                 </FormSelect>
                 {partnerForm.errors.partnerType && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                     {partnerForm.errors.partnerType}
                   </p>
                 )}
@@ -386,11 +397,11 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                 placeholder="Tell us more about your business."
                 value={partnerForm.formData.businessDescription}
                 onChange={partnerForm.handleInputChange}
-                rows={1}
-                className="w-full p-3 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand transition-colors resize-none"
+                rows={3}
+                className="w-full p-4 bg-white border-2 border-emerald-100 rounded-xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all duration-300 outline-none text-slate-700 font-bold shadow-sm hover:border-emerald-200 resize-none"
               />
               {partnerForm.errors.businessDescription && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-xs font-bold uppercase tracking-widest mt-1.5 ml-1">
                   {partnerForm.errors.businessDescription}
                 </p>
               )}
@@ -400,11 +411,11 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
 
             {/* Privacy Policy */}
             {showPrivacyPolicy && (
-              <div className="text-sm text-slate-600">
+              <div className="text-xs font-bold text-slate-500 bg-slate-50 p-4 rounded-xl border border-slate-100 uppercase tracking-widest">
                 I understand that the above information is protected by{" "}
                 <Link
                   to="/privacy-policy"
-                  className="text-brand hover:underline"
+                  className="text-emerald-600 hover:text-emerald-700 hover:underline decoration-emerald-300 underline-offset-4"
                 >
                   D-Secure's Privacy Policy.
                 </Link>
@@ -414,7 +425,7 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
             <button
               type="submit"
               disabled={isSubmitting || partnerForm.isSubmitting}
-              className="w-full bg-brand hover:bg-brand-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-slate-900 text-white font-black py-4 px-6 rounded-xl transition-all duration-300 shadow-xl shadow-slate-900/10 hover:shadow-emerald-500/30 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group mt-2"
             >
               {(isSubmitting || partnerForm.isSubmitting) ? (
                 <>
@@ -425,7 +436,12 @@ export const PartnershipForm: React.FC<PartnershipFormProps> = ({
                   Submitting...
                 </>
               ) : (
-                submitButtonText
+                <>
+                  {submitButtonText}
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </>
               )}
             </button>
           </form>

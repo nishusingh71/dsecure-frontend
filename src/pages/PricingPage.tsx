@@ -317,7 +317,7 @@ function PricingPageContent() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/contact"
-                className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+                className="bg-white text-green-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
               >
                 Try Enterprise Free
               </Link>
@@ -2245,7 +2245,7 @@ function PricingPageContent() {
           <h3 className="font-semibold text-slate-900 mb-4">Legend</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="flex items-center gap-2">
-              <span className="text-green-600">✅</span>
+              <span className="text-green-800">✅</span>
               <span>Included</span>
             </div>
             <div className="flex items-center gap-2">
@@ -2318,7 +2318,7 @@ function PricingPageContent() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/contact"
-                  className="bg-white text-green-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition-colors"
+                  className="bg-white text-green-800 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition-colors"
                 >
                   🚀 Try Enterprise Free (14 Days)
                 </Link>

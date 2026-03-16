@@ -137,7 +137,7 @@ export default function HealthcareSolutionsPage() {
         <div className="container-responsive text-center">
           <Reveal>
             <h2 className="text-3xl font-bold text-white mb-6">Ready to Secure Your Healthcare Data?</h2>
-            <Link to="/contact" className="btn-primary bg-white text-emerald-600 hover:bg-slate-50">
+            <Link to="/contact" className="btn-primary bg-white text-emerald-800 hover:bg-slate-50">
               Get Started Today
             </Link>
           </Reveal>

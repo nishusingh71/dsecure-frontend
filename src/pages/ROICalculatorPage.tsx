@@ -58,7 +58,7 @@ export default function ROICalculatorPage() {
                   <div className="pt-6 border-t border-slate-200">
                     <div className="text-center">
                       <p className="text-slate-600 mb-2">Estimated Annual Savings</p>
-                      <p className="text-4xl font-bold text-emerald-600">${totalSavings.toLocaleString()}</p>
+                      <p className="text-4xl font-bold text-emerald-800">${totalSavings.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>

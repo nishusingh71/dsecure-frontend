@@ -51,7 +51,7 @@ const ITAssetLifecycleBlog: React.FC = () => {
                         <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
                             <h4 className="font-bold text-slate-900 text-xl mb-3"> Market Insight</h4>
                             <p className="text-slate-700 text-lg leading-loose">
-                                Gartner has estimated that global IT spending will cross <strong className="text-emerald-600">$5 trillion USD in 2025</strong>, with data center systems seeing a growth of <strong className="text-emerald-600">23.2%</strong> — primarily driven by AI hardware requirements. This makes proper IT asset management more critical than ever.
+                                Gartner has estimated that global IT spending will cross <strong className="text-emerald-800">$5 trillion USD in 2025</strong>, with data center systems seeing a growth of <strong className="text-emerald-800">23.2%</strong> — primarily driven by AI hardware requirements. This makes proper IT asset management more critical than ever.
                             </p>
                         </div>
                     </div>
@@ -67,7 +67,7 @@ const ITAssetLifecycleBlog: React.FC = () => {
                         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-500 p-6 rounded-r-lg mb-8">
                             <h4 className="font-bold text-slate-900 text-xl mb-3">️ Alarming Statistic</h4>
                             <p className="text-slate-700 text-lg leading-loose">
-                                According to a 2025 Deloitte IT Asset Management survey: <strong className="text-emerald-600">"Only 29% of organizations formally include ITAM in their cybersecurity strategy."</strong> Integration between ITAM and security procedures can improve threat response, increase data traceability, and regulatory assurance.
+                                According to a 2025 Deloitte IT Asset Management survey: <strong className="text-emerald-800">"Only 29% of organizations formally include ITAM in their cybersecurity strategy."</strong> Integration between ITAM and security procedures can improve threat response, increase data traceability, and regulatory assurance.
                             </p>
                         </div>
 
@@ -110,7 +110,7 @@ const ITAssetLifecycleBlog: React.FC = () => {
                         <div className="space-y-6">
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">1</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">1</span>
                                     <div>
                                         <h4 className="font-bold text-xl mb-3">Planning & Procurement</h4>
                                         <p className="text-white/90 leading-relaxed mb-3">
@@ -131,7 +131,7 @@ const ITAssetLifecycleBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">2</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">2</span>
                                     <div>
                                         <h4 className="font-bold text-xl mb-3">Deployment & Usage</h4>
                                         <p className="text-white/90 leading-relaxed mb-3">
@@ -152,7 +152,7 @@ const ITAssetLifecycleBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">3</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">3</span>
                                     <div>
                                         <h4 className="font-bold text-xl mb-3">Asset Maintenance & Upgrades</h4>
                                         <p className="text-white/90 leading-relaxed mb-3">
@@ -173,7 +173,7 @@ const ITAssetLifecycleBlog: React.FC = () => {
 
                             <div className="bg-white/10 rounded-xl p-6 border-2 border-white/30">
                                 <div className="flex items-start">
-                                    <span className="bg-white text-emerald-600 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">4</span>
+                                    <span className="bg-white text-emerald-800 rounded-full w-10 h-10 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-xl">4</span>
                                     <div>
                                         <h4 className="font-bold text-xl mb-3">️ Retirement & Disposal (Most Critical Stage)</h4>
                                         <p className="text-white/90 leading-relaxed mb-3">

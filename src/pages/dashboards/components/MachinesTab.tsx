@@ -151,7 +151,7 @@ const MachinesTab: React.FC<MachinesTabProps> = ({
             <span className="text-sm font-medium text-slate-700">
               Overall Utilization
             </span>
-            <span className="text-lg font-bold text-emerald-600">
+            <span className="text-lg font-bold text-emerald-800">
               {utilizationPercent}%
             </span>
           </div>
@@ -166,7 +166,7 @@ const MachinesTab: React.FC<MachinesTabProps> = ({
           <div className="grid grid-cols-3 gap-4 text-sm">
             <div className="text-center">
               <div className="font-medium text-slate-900">Utilized</div>
-              <div className="text-emerald-600 font-semibold">
+              <div className="text-emerald-800 font-semibold">
                 {consumedLicenses.toLocaleString()} ({utilizationPercent}%)
               </div>
             </div>

@@ -26,12 +26,12 @@ const uniqueTags = Array.from(new Set(blogs.map(b => b.tag)));
 // Category configuration with icons and colors - mapping ALL actual blog tags
 const categoryConfig: Record<string, { icon: React.ElementType; color: string; bgColor: string; borderColor: string }> = {
   // Technical related
-  "Data Erasure": { icon: DatabaseIcon, color: "text-emerald-600", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" },
+  "Data Erasure": { icon: DatabaseIcon, color: "text-emerald-800", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" },
   "Storage Security": { icon: ServerIcon, color: "text-teal-600", bgColor: "bg-teal-50", borderColor: "border-teal-200" },
-  "Technical": { icon: ServerIcon, color: "text-emerald-600", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" },
+  "Technical": { icon: ServerIcon, color: "text-emerald-800", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" },
   "Core Erasure": { icon: DatabaseIcon, color: "text-cyan-600", bgColor: "bg-cyan-50", borderColor: "border-cyan-200" },
-  "Best Practices": { icon: CheckIcon, color: "text-green-600", bgColor: "bg-green-50", borderColor: "border-green-200" },
-  "Automation": { icon: LightningIcon, color: "text-yellow-600", bgColor: "bg-yellow-50", borderColor: "border-yellow-200" },
+  "Best Practices": { icon: CheckIcon, color: "text-green-800", bgColor: "bg-green-50", borderColor: "border-green-200" },
+  "Automation": { icon: LightningIcon, color: "text-yellow-800", bgColor: "bg-yellow-50", borderColor: "border-yellow-200" },
   
   // Mobile & Security
   "Mobile Security": { icon: MobileIcon, color: "text-pink-600", bgColor: "bg-pink-50", borderColor: "border-pink-200" },
@@ -54,8 +54,8 @@ const categoryConfig: Record<string, { icon: React.ElementType; color: string; b
   "GovTech": { icon: GlobeIcon, color: "text-blue-600", bgColor: "bg-blue-50", borderColor: "border-blue-200" },
   
   // Sustainability
-  "ESG": { icon: GlobeIcon, color: "text-green-600", bgColor: "bg-green-50", borderColor: "border-green-200" },
-  "Circular Economy": { icon: GlobeIcon, color: "text-emerald-600", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" },
+  "ESG": { icon: GlobeIcon, color: "text-green-800", bgColor: "bg-green-50", borderColor: "border-green-200" },
+  "Circular Economy": { icon: GlobeIcon, color: "text-emerald-800", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" },
   "Green Tech": { icon: GlobeIcon, color: "text-teal-600", bgColor: "bg-teal-50", borderColor: "border-teal-200" },
   "Scope 3": { icon: GlobeIcon, color: "text-cyan-600", bgColor: "bg-cyan-50", borderColor: "border-cyan-200" },
   
@@ -65,7 +65,7 @@ const categoryConfig: Record<string, { icon: React.ElementType; color: string; b
 };
 
 const getTagConfig = (tag: string) => {
-  return categoryConfig[tag] || { icon: ShieldIcon, color: "text-emerald-600", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" };
+  return categoryConfig[tag] || { icon: ShieldIcon, color: "text-emerald-800", bgColor: "bg-emerald-50", borderColor: "border-emerald-200" };
 };
 
 // Estimate reading time
@@ -221,25 +221,25 @@ const BlogPage: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <Reveal>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-emerald-600 mb-2">{blogs.length}+</div>
+                <div className="text-4xl md:text-5xl font-bold text-emerald-800 mb-2">{blogs.length}+</div>
                 <div className="text-sm text-slate-600 font-medium">Expert Articles</div>
               </div>
             </Reveal>
             <Reveal>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-emerald-600 mb-2">15+</div>
+                <div className="text-4xl md:text-5xl font-bold text-emerald-800 mb-2">15+</div>
                 <div className="text-sm text-slate-600 font-medium">Topics Covered</div>
               </div>
             </Reveal>
             <Reveal>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-emerald-600 mb-2">98%</div>
+                <div className="text-4xl md:text-5xl font-bold text-emerald-800 mb-2">98%</div>
                 <div className="text-sm text-slate-600 font-medium">Reader Satisfaction</div>
               </div>
             </Reveal>
             <Reveal>
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-emerald-600 mb-2">24/7</div>
+                <div className="text-4xl md:text-5xl font-bold text-emerald-800 mb-2">24/7</div>
                 <div className="text-sm text-slate-600 font-medium">Access Available</div>
               </div>
             </Reveal>
@@ -283,7 +283,7 @@ const BlogPage: React.FC = () => {
                       
                       {/* Content */}
                       <div className="p-6">
-                        <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
+                        <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-800 transition-colors line-clamp-2">
                           {blog.title}
                         </h3>
                         <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-4">
@@ -291,7 +291,7 @@ const BlogPage: React.FC = () => {
                         </p>
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-slate-400">{getReadTime(blog.excerpt)}</span>
-                          <span className="flex items-center gap-1 text-emerald-600 text-sm font-semibold group-hover:gap-2 transition-all">
+                          <span className="flex items-center gap-1 text-emerald-800 text-sm font-semibold group-hover:gap-2 transition-all">
                             Read <ArrowRightIcon className="w-4 h-4" />
                           </span>
                         </div>
@@ -330,7 +330,7 @@ const BlogPage: React.FC = () => {
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                     activeFilter === tab.label
                       ? "bg-emerald-600 text-white shadow-lg shadow-emerald-200"
-                      : "bg-white text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 border border-slate-200"
+                      : "bg-white text-slate-600 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200"
                   }`}
                 >
                   {tab.label}
@@ -364,7 +364,7 @@ const BlogPage: React.FC = () => {
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2 leading-snug">
+                      <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-800 transition-colors line-clamp-2 leading-snug">
                         {blog.title}
                       </h3>
 
@@ -379,7 +379,7 @@ const BlogPage: React.FC = () => {
                           <span className="text-xs font-medium text-slate-700">{blog.author}</span>
                           <span className="text-xs text-slate-400">{blog.publishDate}</span>
                         </div>
-                        <span className="flex items-center gap-1 text-emerald-600 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="flex items-center gap-1 text-emerald-800 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity">
                           Read <ArrowRightIcon className="w-4 h-4" />
                         </span>
                       </div>
@@ -394,7 +394,7 @@ const BlogPage: React.FC = () => {
           {visibleBlogs < filteredBlogs.length && (
             <div ref={loaderRef} className="flex justify-center py-12">
               {isLoading ? (
-                <div className="flex items-center gap-3 text-emerald-600">
+                <div className="flex items-center gap-3 text-emerald-800">
                   <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>

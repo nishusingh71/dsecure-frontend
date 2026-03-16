@@ -206,7 +206,7 @@ const ProductVideosPage: React.FC = memo(() => {
             <Reveal>
               <div className="text-center">
                 <div className="mb-8">
-                  <Link to="/support" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4 transition-colors">
+                  <Link to="/support" className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-4 transition-colors">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
@@ -254,13 +254,13 @@ const ProductVideosPage: React.FC = memo(() => {
             <Reveal>
               <div className="grid md:grid-cols-4 gap-8 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-emerald-600 mb-2">
+                  <div className="text-3xl font-bold text-emerald-800 mb-2">
                     {videos.length}
                   </div>
                   <div className="text-slate-600">Total Videos</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-600 mb-2">
+                  <div className="text-3xl font-bold text-emerald-800 mb-2">
                     {Math.round(videos.reduce((total, video) => {
                       const [minutes, seconds] = video.duration.split(':').map(Number);
                       return total + minutes + (seconds / 60);
@@ -269,13 +269,13 @@ const ProductVideosPage: React.FC = memo(() => {
                   <div className="text-slate-600">Total Content</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-600 mb-2">
+                  <div className="text-3xl font-bold text-emerald-800 mb-2">
                     {formatViews(videos.reduce((total, video) => total + video.views, 0))}
                   </div>
                   <div className="text-slate-600">Total Views</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-600 mb-2">
+                  <div className="text-3xl font-bold text-emerald-800 mb-2">
                     4K
                   </div>
                   <div className="text-slate-600">Video Quality</div>
@@ -381,7 +381,7 @@ const ProductVideosPage: React.FC = memo(() => {
                           <span className="text-sm text-slate-500">{formatViews(video.views)} views</span>
                         </div>
 
-                        <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                        <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                           {video.title}
                         </h3>
 
@@ -393,7 +393,7 @@ const ProductVideosPage: React.FC = memo(() => {
                           <span>{formatDate(video.publishDate)}</span>
                           <button
                             onClick={() => setSelectedVideo(video.id)}
-                            className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
+                            className="text-emerald-800 hover:text-emerald-700 font-medium transition-colors"
                           >
                             Watch Video →
                           </button>
@@ -460,7 +460,7 @@ const ProductVideosPage: React.FC = memo(() => {
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                         {playlist.title}
                       </h3>
                       <p className="text-slate-600 text-sm leading-relaxed">

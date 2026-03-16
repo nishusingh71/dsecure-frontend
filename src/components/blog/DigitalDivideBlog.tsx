@@ -46,7 +46,7 @@ const DigitalDivideBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                In a world of artificial intelligence where every answer is just a click away, it's unfortunate that <strong className="text-emerald-600">one-third of the global population</strong> still has no internet access. This represents approximately 2.6 billion people, according to the UN's International Telecommunication Union (ITU).
+                                In a world of artificial intelligence where every answer is just a click away, it's unfortunate that <strong className="text-emerald-800">one-third of the global population</strong> still has no internet access. This represents approximately 2.6 billion people, according to the UN's International Telecommunication Union (ITU).
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 For women in the least developed countries, accessing the internet is a reality for only 30% — the cost of a smartphone often exceeds their monthly average income. While conversations around AI and big data dominate mainstream news, a different reality exists in countries like India, Nigeria, and Kenya, where less than 60% of people own a smartphone. This disparity creates what we call the <strong>digital divide</strong>.

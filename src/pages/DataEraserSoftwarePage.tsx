@@ -18,6 +18,7 @@ import {
   HoverIcon,
   CheckIcon,
 } from "@/components/FlatIcons";
+import { Activity, Cpu, HardDrive } from "lucide-react";
 
 /* ───────────── data ───────────── */
 
@@ -30,11 +31,32 @@ const solutions = [
     link: "/products/drive-eraser",
   },
   {
+    title: "Drive Eraser Diagnostic",
+    desc: "Combines secure data wiping with comprehensive hardware health diagnostics. Assesses drive health, SMART data, and surface scans to ensure device reusability along with secure erasure and compliance reporting.",
+    icon: Activity,
+    color: "cyan",
+    link: "/products/drive-eraser-diagnostic",
+  },
+  {
     title: "D-Secure File Eraser",
-    desc: "Selectively erase files, folders, free space, system traces, browser history & cloud storage data on Windows, macOS & Linux. Schedule automated erasure tasks, drag-and-drop file selection, and generate detailed PDF reports for compliance documentation.",
+    desc: "Selectively erase files, folders, free space, system traces, browser history & cloud storage data on Windows, macOS & Linux. Schedule automated erasure tasks, drag-and-drop file selection, and generate detailed PDF reports.",
     icon: ClipboardIcon,
     color: "teal",
     link: "/products/file-eraser",
+  },
+  {
+    title: "Hardware Diagnostics",
+    desc: "Comprehensive diagnostic tools for hardware health and integrity checking. Test components precisely to identify failing hardware before deployment or after data erasure, ensuring system reliability.",
+    icon: Cpu,
+    color: "blue",
+    link: "/products/hardware-diagnostics",
+  },
+  {
+    title: "SMART Diagnostics",
+    desc: "Real-time health monitoring, S.M.A.R.T tracking & disk cloning for your drives. Set personalized alerts for temperature thresholds and critical disk health events to prevent data loss safely.",
+    icon: HardDrive,
+    color: "indigo",
+    link: "/products/hard-drive-monitor",
   },
 ];
 
@@ -136,7 +158,7 @@ const colorMap: Record<string, { bg: string; border: string; text: string; iconB
   emerald: {
     bg: "from-emerald-50 to-emerald-100/50",
     border: "border-emerald-200/60 hover:border-emerald-400",
-    text: "text-emerald-600",
+    text: "text-emerald-800",
     iconBg: "from-emerald-500 to-emerald-600",
   },
   teal: {
@@ -275,7 +297,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                     className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                       activeSection === item.id
                         ? "bg-emerald-500 text-white shadow-md"
-                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-600"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
                     }`}
                   >
                     {item.label}
@@ -345,7 +367,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                     </Link>
                     <Link
                       to="/pricing-and-plan"
-                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-600 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
+                      className="inline-flex items-center justify-center gap-2 border-2 border-emerald-500 text-emerald-800 px-8 py-4 rounded-xl font-bold hover:bg-emerald-50 transition-all duration-300"
                     >
                       <svg
                         className="w-5 h-5"
@@ -438,7 +460,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                           }}
                         >
                           <svg
-                            className="w-5 h-5 lg:w-6 lg:h-6 text-emerald-600"
+                            className="w-5 h-5 lg:w-6 lg:h-6 text-emerald-800"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="1.8"
@@ -638,19 +660,19 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
             <Reveal>
               <div className="text-center mb-14">
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                  Our Data Erasure{" "}
+                  Our Comprehensive{" "}
                   <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                    Products
+                    Solutions
                   </span>
                 </h2>
                 <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-                  Two powerful solutions designed for complete data sanitization
-                  — from full-disk erasure to selective file wiping
+                  Powerful software products designed for complete data sanitization
+                  and comprehensive hardware diagnostics.
                 </p>
               </div>
             </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 relative z-10">
               {solutions.map((s, i) => {
                 const c = colorMap[s.color] || colorMap.emerald;
                 const Icon = s.icon;
@@ -850,7 +872,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                   </span>{" "}
                   To Meet Your Needs
                 </h2>
-                <p className="text-emerald-600 font-semibold mb-4">
+                <p className="text-emerald-800 font-semibold mb-4">
                   100% Data Erasure Beyond Data Recovery
                 </p>
               </div>
@@ -876,7 +898,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                       className="group bg-gradient-to-br from-slate-50 to-white rounded-xl border border-slate-200/60 p-6 hover:shadow-xl hover:border-emerald-300 transition-all duration-300 hover:-translate-y-1 block h-full"
                     >
                       <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
-                        <Icon className="w-6 h-6 text-emerald-600" />
+                        <Icon className="w-6 h-6 text-emerald-800" />
                       </div>
                       <h3 className="text-lg font-bold text-slate-900 mb-2">
                         {s.title}
@@ -998,7 +1020,7 @@ const DataEraserSoftwarePage: React.FC = memo(function DataEraserSoftwarePage() 
                   Didn't find your answer? We are happy to help.{" "}
                   <Link
                     to="/contact"
-                    className="text-emerald-600 font-semibold hover:underline"
+                    className="text-emerald-800 font-semibold hover:underline"
                   >
                     Ask us
                   </Link>

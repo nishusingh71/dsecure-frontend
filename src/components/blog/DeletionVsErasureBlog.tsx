@@ -46,7 +46,7 @@ const DeletionVsErasureBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                You might think of <strong className="text-emerald-600">"data deletion"</strong> as emptying a file from the Recycle Bin or using SHIFT+DEL to remove a file from a visible location. Similarly, <strong className="text-emerald-600">"data erasure"</strong> might seem like erasing information from storage media so it vanishes completely.
+                                You might think of <strong className="text-emerald-800">"data deletion"</strong> as emptying a file from the Recycle Bin or using SHIFT+DEL to remove a file from a visible location. Similarly, <strong className="text-emerald-800">"data erasure"</strong> might seem like erasing information from storage media so it vanishes completely.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 The reality is that both processes are fundamentally different in every sense — from their purpose and mechanism to end results. This distinction has significant implications in today's world of data vulnerabilities and data protection regulations. Understanding what happens when you DELETE data versus when you ERASE it is essential for proper data security.

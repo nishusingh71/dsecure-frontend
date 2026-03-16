@@ -76,15 +76,15 @@ const MacEraseGuide: React.FC = () => {
                       </h3>
                       <ul className="space-y-3 text-slate-700">
                         <li className="flex items-start">
-                          <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mr-3 mt-0.5 text-sm font-bold">1</span>
+                          <span className="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mr-3 mt-0.5 text-sm font-bold">1</span>
                           Shut down the Mac.
                         </li>
                         <li className="flex items-start">
-                          <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mr-3 mt-0.5 text-sm font-bold">2</span>
+                          <span className="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mr-3 mt-0.5 text-sm font-bold">2</span>
                           Press and hold the Power button until the Options menu appears.
                         </li>
                         <li className="flex items-start">
-                          <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mr-3 mt-0.5 text-sm font-bold">3</span>
+                          <span className="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mr-3 mt-0.5 text-sm font-bold">3</span>
                           Click <strong>Options</strong> then <strong>Continue</strong>.
                         </li>
                       </ul>

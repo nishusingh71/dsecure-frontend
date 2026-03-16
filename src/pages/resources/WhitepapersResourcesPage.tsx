@@ -311,7 +311,7 @@ function WhitepapersResourcesContent() {
                             <ul className="space-y-2">
                               {paper.topics.map((topic, topicIndex) => (
                                 <li key={topicIndex} className="flex items-start gap-2">
-                                  <CheckIcon className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" filled={true} />
+                                  <CheckIcon className="w-4 h-4 text-green-800 flex-shrink-0 mt-0.5" filled={true} />
                                   <span className="text-sm text-slate-700">{topic}</span>
                                 </li>
                               ))}

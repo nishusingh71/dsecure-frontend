@@ -292,7 +292,7 @@ function CaseStudiesResourcesContent() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                             {study.results.map((result, resultIndex) => (
                               <div key={resultIndex} className="flex items-start gap-2">
-                                <CheckIcon className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" filled={true} />
+                                <CheckIcon className="w-5 h-5 text-green-800 flex-shrink-0 mt-0.5" filled={true} />
                                 <span className="text-slate-700">{result}</span>
                               </div>
                             ))}
@@ -389,7 +389,7 @@ function CaseStudiesResourcesContent() {
                     <ul className="space-y-1">
                       {industry.keyAchievements.map((achievement, achievementIndex) => (
                         <li key={achievementIndex} className="flex items-start gap-2">
-                          <CheckIcon className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" filled={true} />
+                          <CheckIcon className="w-4 h-4 text-green-800 flex-shrink-0 mt-0.5" filled={true} />
                           <span className="text-sm text-slate-700">{achievement}</span>
                         </li>
                       ))}

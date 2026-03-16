@@ -229,7 +229,7 @@ const DataSanitizationComplianceBlog: React.FC = () => {
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <ClipboardIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <ClipboardIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">Automated Compliance Reporting</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -238,7 +238,7 @@ const DataSanitizationComplianceBlog: React.FC = () => {
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <ShieldIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <ShieldIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">NIST 800-88 Certified Methods</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -247,7 +247,7 @@ const DataSanitizationComplianceBlog: React.FC = () => {
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <GlobeIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <GlobeIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">Global Regulation Support</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -256,7 +256,7 @@ const DataSanitizationComplianceBlog: React.FC = () => {
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-xl border border-emerald-100">
                         <div className="flex items-center gap-2 mb-3">
-                            <StarIcon className="w-5 h-5 text-emerald-600" filled={true} />
+                            <StarIcon className="w-5 h-5 text-emerald-800" filled={true} />
                             <h4 className="font-bold text-slate-900">7-Year Certificate Retention</h4>
                         </div>
                         <p className="text-sm text-slate-600">
@@ -306,7 +306,7 @@ const DataSanitizationComplianceBlog: React.FC = () => {
                 </p>
                 <Link
                     to="/#products"
-                    className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
+                    className="inline-flex items-center bg-white text-emerald-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>
                         {(filled) => <ShieldIcon className="w-5 h-5 mr-2" filled={filled} />}

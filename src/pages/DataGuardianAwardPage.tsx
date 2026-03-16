@@ -3,6 +3,7 @@ import SEOHead from "../components/SEOHead";
 import { getSEOForPage } from "../utils/seo";
 import { Link } from "react-router-dom";
 import Reveal from "@/components/Reveal";
+import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import {
   ShieldIcon,
   ClipboardIcon,
@@ -100,6 +101,70 @@ const DataGuardianAwardPage: React.FC = () => {
     complianceRequirements: "",
     message: "",
   });
+
+  const [activeSection, setActiveSection] = useState("overview");
+  const [isNavVisible, setIsNavVisible] = useState(false);
+
+  const sectionNavItems = [
+    { id: "overview", label: "Overview" },
+    { id: "what-is-it", label: "About Badge" },
+    { id: "setup", label: "Setup Process" },
+    { id: "verify", label: "Verify" },
+    { id: "faq-section", label: "FAQ" },
+    { id: "contact-form", label: "Apply" },
+  ];
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const shouldShow = scrollPosition > 400;
+      setIsNavVisible(shouldShow);
+
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", {
+            detail: { visible: shouldShow },
+          }),
+        );
+      }
+
+      const sections = sectionNavItems.map((item) =>
+        document.getElementById(item.id),
+      );
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop - 150 <= scrollPosition) {
+          setActiveSection(sectionNavItems[i].id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
+        );
+      }
+    };
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    }
+  };
 
   // Toast functionality
   const showToast = (
@@ -364,9 +429,50 @@ const DataGuardianAwardPage: React.FC = () => {
         </div>
       )}
 
+      {/* ================= STICKY SECTION NAV ================= */}
+      <div
+        className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isNavVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0"
+        }`}
+      >
+        <div className="bg-white border-b border-emerald-100 shadow-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-14">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
+                <ThemeAwareLogo
+                  className="h-7 sm:h-8 w-auto"
+                  responsive={true}
+                />
+              </Link>
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
+                {sectionNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                      activeSection === item.id
+                        ? "bg-emerald-500 text-white shadow-md"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="min-h-screen bg-white">
         {/* Hero Section - Light with Centered Layout */}
-        <section className="relative py-6 xs:py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 xxl:py-18 overflow-hidden bg-gradient-to-br from-emerald-50/50 via-white to-teal-50/30">
+        <section id="overview" className="relative py-6 xs:py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 xxl:py-18 overflow-hidden bg-gradient-to-br from-emerald-50/50 via-white to-teal-50/30">
           {/* Background Elements */}
           <div className="absolute inset-0">
             <div className="absolute top-20 left-1/4 w-72 h-72 bg-emerald-100/40 rounded-full blur-3xl"></div>
@@ -381,11 +487,11 @@ const DataGuardianAwardPage: React.FC = () => {
                   <div>
                     <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 text-slate-900 leading-tight sm:leading-snug">
                       D-Secure <br className="hidden md:block" />
-                      <span className="text-emerald-600">
+                      <span className="text-emerald-800">
                         Data Hygiene
                       </span>{" "}
                       <br className="hidden md:block" />
-                      <span className="text-emerald-600">Assurance</span>
+                      <span className="text-emerald-800">Assurance</span>
                     </h1>
 
                     <p className="text-base sm:text-lg text-slate-600 mb-6 sm:mb-10 leading-relaxed max-w-xl">
@@ -565,7 +671,7 @@ const DataGuardianAwardPage: React.FC = () => {
         {/* Search for Certified Company - Green Banner */}
 
         {/* What is Assurance Badge Section */}
-        <section className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+        <section id="what-is-it" className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Reveal>
               <div className="text-center mb-10 sm:mb-16">
@@ -700,7 +806,7 @@ const DataGuardianAwardPage: React.FC = () => {
         </section>
 
         {/* Data Hygiene Setup Section */}
-        <section className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-slate-50 to-white">
+        <section id="setup" className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-slate-50 to-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Reveal>
               <div className="text-center mb-10 sm:mb-16">
@@ -911,7 +1017,7 @@ const DataGuardianAwardPage: React.FC = () => {
                     <h3 className="text-sm sm:text-base font-bold text-emerald-800 mb-1">
                       {industry.name}
                     </h3>
-                    <p className="text-xs text-emerald-600/70 hidden sm:block">
+                    <p className="text-xs text-emerald-800/70 hidden sm:block">
                       {industry.desc}
                     </p>
                   </div>
@@ -922,7 +1028,7 @@ const DataGuardianAwardPage: React.FC = () => {
         </section>
 
         {/* Certified Partners Map Section */}
-        <section className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 relative overflow-hidden">
+        <section id="verify" className="py-12 sm:py-20 md:py-28 bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 relative overflow-hidden">
           {/* Background Effects */}
           <div className="absolute inset-0">
             <div className="absolute top-20 left-20 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl"></div>
@@ -1225,7 +1331,7 @@ const DataGuardianAwardPage: React.FC = () => {
                       className="flex items-center justify-between w-full cursor-pointer p-3 sm:p-4 text-left"
                     >
                       <h3
-                        className={`text-sm sm:text-lg font-bold transition-colors pr-2 sm:pr-4 ${openFaq === index ? "text-emerald-600" : "text-slate-900"}`}
+                        className={`text-sm sm:text-lg font-bold transition-colors pr-2 sm:pr-4 ${openFaq === index ? "text-emerald-800" : "text-slate-900"}`}
                       >
                         {faq.question}
                       </h3>
@@ -1297,7 +1403,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 e.target.value as "business" | "personal",
                               )
                             }
-                            className="w-5 h-5 text-emerald-600"
+                            className="w-5 h-5 text-emerald-800"
                           />
                           <span className="text-base sm:text-lg font-medium">
                             Business
@@ -1314,7 +1420,7 @@ const DataGuardianAwardPage: React.FC = () => {
                                 e.target.value as "business" | "personal",
                               )
                             }
-                            className="w-5 h-5 text-emerald-600"
+                            className="w-5 h-5 text-emerald-800"
                           />
                           <span className="text-base sm:text-lg font-medium">
                             Personal
@@ -1604,7 +1710,7 @@ const DataGuardianAwardPage: React.FC = () => {
                           by{" "}
                           <a
                             href="/privacy-policy"
-                            className="text-emerald-600 hover:underline"
+                            className="text-emerald-800 hover:underline"
                           >
                             D-Secure Privacy Policy
                           </a>

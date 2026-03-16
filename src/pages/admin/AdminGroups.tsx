@@ -569,7 +569,7 @@ export default function AdminGroups() {
                         (isGroupAdmin && group.id === currentUserGroupId)) && (
                         <button
                           onClick={() => handleAssignGroupLicense(group.id)}
-                          className="text-emerald-600 hover:text-emerald-700 p-1 rounded hover:bg-emerald-50 transition-colors"
+                          className="text-emerald-800 hover:text-emerald-700 p-1 rounded hover:bg-emerald-50 transition-colors"
                           title="Assign License"
                         >
                           <svg
@@ -711,7 +711,7 @@ export default function AdminGroups() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-emerald-100 rounded-full">
                     <svg
-                      className="w-6 h-6 text-emerald-600"
+                      className="w-6 h-6 text-emerald-800"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -769,7 +769,7 @@ export default function AdminGroups() {
                         </span>
                       </div>
                       {licenseCount && !isNaN(Number(licenseCount)) && (
-                        <div className="flex justify-between text-emerald-600 font-medium mt-1 pt-1 border-t">
+                        <div className="flex justify-between text-emerald-800 font-medium mt-1 pt-1 border-t">
                           <span>New Licenses:</span>
                           <span>{Number(licenseCount).toLocaleString()}</span>
                         </div>

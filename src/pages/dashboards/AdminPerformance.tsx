@@ -701,7 +701,7 @@ export default function AdminPerformance() {
                     </div>
                     <div className="flex justify-between items-center text-xs text-slate-400 mb-1">
                       <span>Avg: {metric.avgDuration}</span>
-                      <span className="text-green-600 font-medium">
+                      <span className="text-green-800 font-medium">
                         {metric.successRate}% Success
                       </span>
                     </div>

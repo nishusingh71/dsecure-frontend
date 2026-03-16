@@ -295,7 +295,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                 <div className="mb-6 md:mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
+                    className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
@@ -391,7 +391,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
             <Reveal>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center">
                 <div className="p-3 sm:p-4">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-1 sm:mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-800 mb-1 sm:mb-2">
                     10
                   </div>
                   <div className="text-xs sm:text-sm md:text-base text-slate-600">
@@ -415,7 +415,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                   </div>
                 </div>
                 <div className="p-3 sm:p-4">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-1 sm:mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-800 mb-1 sm:mb-2">
                     15%
                   </div>
                   <div className="text-xs sm:text-sm md:text-base text-slate-600">
@@ -644,7 +644,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                         {item.icon}
                       </span>
                     </div>
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm flex-grow">
@@ -734,7 +734,7 @@ const FirstTimeSetupPage: React.FC = memo(() => {
                     </svg>
                     Download Setup Guide (PDF)
                   </button>
-                  <button className="bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
+                  <button className="bg-white border-2 border-emerald-500 text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"

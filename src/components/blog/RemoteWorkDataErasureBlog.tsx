@@ -42,7 +42,7 @@ const RemoteWorkDataErasureBlog: React.FC = () => {
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <h2 className="text-3xl font-bold text-slate-900 mb-6">The Rise of Remote Work & Data Security Challenges</h2>
                         <p className="text-slate-700 leading-loose text-lg mb-6">
-                            Post-pandemic, remote work culture has increased phenomenally. According to recent workforce statistics, by 2025, almost <strong className="text-emerald-600">32.6 million Americans</strong> will be working remotely — that's <strong className="text-emerald-600">22% of the entire US workforce</strong>. This projection suggests a continuous inclination towards distributed work environments.
+                            Post-pandemic, remote work culture has increased phenomenally. According to recent workforce statistics, by 2025, almost <strong className="text-emerald-800">32.6 million Americans</strong> will be working remotely — that's <strong className="text-emerald-800">22% of the entire US workforce</strong>. This projection suggests a continuous inclination towards distributed work environments.
                         </p>
                         <p className="text-slate-700 leading-loose text-lg mb-6">
                             While remote working offers organizations several benefits such as cost efficiency, access to a diverse talent pool, increased productivity, work flexibility, and environmental benefits, it also brings significant data security challenges — especially in remote IT asset management.
@@ -51,7 +51,7 @@ const RemoteWorkDataErasureBlog: React.FC = () => {
                         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-500 p-6 rounded-r-lg">
                             <h4 className="font-bold text-slate-900 text-xl mb-3">️ Security Risk Alert</h4>
                             <p className="text-slate-700 text-lg leading-loose">
-                                <strong className="text-emerald-600">73% of executives believe remote workers pose a greater security risk.</strong> Remote employees access and process confidential corporate data, which, if compromised, may lead to data breach episodes, resulting in penalties and lawsuits for the organization.
+                                <strong className="text-emerald-800">73% of executives believe remote workers pose a greater security risk.</strong> Remote employees access and process confidential corporate data, which, if compromised, may lead to data breach episodes, resulting in penalties and lawsuits for the organization.
                             </p>
                         </div>
                     </div>

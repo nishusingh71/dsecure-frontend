@@ -46,7 +46,7 @@ const GovernmentDeviceTheftBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                In early 2025, a driver at an international ITAD company <strong className="text-emerald-600">pleaded guilty to theft and sale of hundreds of government-issued IT devices</strong>, highlighting critical security lapses in the IT asset disposition process.
+                                In early 2025, a driver at an international ITAD company <strong className="text-emerald-800">pleaded guilty to theft and sale of hundreds of government-issued IT devices</strong>, highlighting critical security lapses in the IT asset disposition process.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 The employee, working at a Maryland facility from 2019 to 2023, was responsible for providing onsite shredding services and transporting assets from client locations to offsite destruction facilities. Between 2022 and 2023, he and an accomplice stole several hundred IT assets during transit — primarily from federal government agencies.

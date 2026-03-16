@@ -4,6 +4,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import { getSEOForPage } from "@/utils/seo";
 import { useTranslation } from "react-i18next";
+import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import {
   BuildingIcon,
   ShieldIcon,
@@ -36,6 +37,66 @@ function SolutionsPageContent() {
     "enterprise"
   );
   const [searchParams] = useSearchParams();
+  const [activeSection, setActiveSection] = useState("overview");
+  const [isNavVisible, setIsNavVisible] = useState(false);
+
+  const sectionNavItems = [
+    { id: "overview", label: t('solutions.overview', { defaultValue: "Overview" }) },
+    { id: "solutions", label: t('solutions.solutions', { defaultValue: "Solutions" }) },
+    { id: "case-studies", label: t('solutions.caseStudies', { defaultValue: "Case Studies" }) },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const shouldShow = scrollPosition > 400;
+      setIsNavVisible(shouldShow);
+
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", {
+            detail: { visible: shouldShow },
+          }),
+        );
+      }
+
+      const sections = sectionNavItems.map((item) =>
+        document.getElementById(item.id),
+      );
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop - 150 <= scrollPosition) {
+          setActiveSection(sectionNavItems[i].id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        window.dispatchEvent(
+          new CustomEvent("stickyNavVisible", { detail: { visible: false } }),
+        );
+      }
+    };
+  }, [t]);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: "smooth",
+      });
+    }
+  };
 
   // Handle URL parameters to auto-select solutions
   useEffect(() => {
@@ -339,7 +400,7 @@ function SolutionsPageContent() {
       logo: (
         <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
           <svg
-            className="w-6 h-6 text-green-600"
+            className="w-6 h-6 text-green-800"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -376,8 +437,49 @@ function SolutionsPageContent() {
 
   return (
     <>
+      {/* ================= STICKY SECTION NAV ================= */}
+      <div
+        className={`hidden md:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isNavVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0"
+        }`}
+      >
+        <div className="bg-white border-b border-emerald-100 shadow-sm">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center justify-between h-14">
+              <Link
+                to="/"
+                className="flex items-center"
+                aria-label="Return to D-Secure Homepage"
+              >
+                <ThemeAwareLogo
+                  className="h-7 sm:h-8 w-auto"
+                  responsive={true}
+                />
+              </Link>
+              <nav className="flex items-center gap-1 overflow-x-auto py-2">
+                {sectionNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                      activeSection === item.id
+                        ? "bg-emerald-500 text-white shadow-md"
+                        : "text-slate-600 hover:bg-emerald-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
+      <section id="overview" className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(6,182,212,0.08),transparent_50%)]"></div>
         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_30%,rgba(255,255,255,0.1)_50%,transparent_70%)]"></div>
@@ -559,7 +661,7 @@ function SolutionsPageContent() {
                         <div className="absolute bottom-6 left-12 transform -translate-x-1/2 translate-y-1/2">
                           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center shadow-md hover:scale-105 transition-transform">
                             <svg
-                              className="w-6 h-6 text-green-600"
+                              className="w-6 h-6 text-green-800"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -787,7 +889,7 @@ function SolutionsPageContent() {
                   <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3">
                     {solutions[activeIndustry].title}
                   </h3>
-                  <p className="text-base lg:text-lg text-emerald-600 font-medium mb-4">
+                  <p className="text-base lg:text-lg text-emerald-800 font-medium mb-4">
                     {solutions[activeIndustry].subtitle}
                   </p>
                   <p className="text-slate-600 leading-relaxed mb-6 lg:mb-8">
@@ -901,7 +1003,7 @@ function SolutionsPageContent() {
                     <div className="flex items-start gap-3">
                       <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
-                          className="w-4 h-4 text-green-600"
+                          className="w-4 h-4 text-green-800"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -1039,7 +1141,7 @@ function SolutionsPageContent() {
       </section>
 
       {/* Case Studies — EMOJIS REPLACED */}
-      <section className="py-16 md:py-24 bg-slate-50">
+      <section id="case-studies" className="py-16 md:py-24 bg-slate-50">
         <div className="container-responsive">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -1078,7 +1180,7 @@ function SolutionsPageContent() {
                       <div className="font-medium text-slate-900 mb-1">
                         {t('solutions.results')}:
                       </div>
-                      <div className="text-emerald-600 font-medium">
+                      <div className="text-emerald-800 font-medium">
                         {study.results}
                       </div>
                     </div>
@@ -1105,7 +1207,7 @@ function SolutionsPageContent() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                   href="/contact"
-                  className="bg-white text-emerald-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+                  className="bg-white text-emerald-800 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors"
                 >
                   Schedule Consultation
                 </a>

@@ -238,7 +238,7 @@ const DoDVsIEEEBlog: React.FC = () => {
                             <div className="border-l-4 border-emerald-500 pl-8 py-4">
                                 <h3 className="font-bold text-slate-900 text-xl mb-4">Overwrite Methodology: 3-Pass vs 1-Pass</h3>
                                 <p className="text-slate-700 text-lg leading-loose mb-4">
-                                    DoD 5220.22-M traditionally required a 3-pass overwrite method (some variants required 7 passes). However, modern research and guidelines, including those from NIST, confirm that <strong className="text-emerald-600">1-pass overwriting is adequate for irretrievable data erasure</strong> on modern high-density drives.
+                                    DoD 5220.22-M traditionally required a 3-pass overwrite method (some variants required 7 passes). However, modern research and guidelines, including those from NIST, confirm that <strong className="text-emerald-800">1-pass overwriting is adequate for irretrievable data erasure</strong> on modern high-density drives.
                                 </p>
                                 <p className="text-slate-700 text-lg leading-loose">
                                     IEEE 2883-2022 reflects this updated understanding, making it more efficient while maintaining the same level of security. This means faster erasure times without compromising data security.

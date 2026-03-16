@@ -46,7 +46,7 @@ const IPadTabletErasureBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Today, data is considered an invaluable asset, and <strong className="text-emerald-600">maintaining privacy and protecting sensitive information</strong> should be every organization's top priority. For convenience, professionals access emails, documents, legal contracts, creative designs, financial records, and Personally Identifiable Information (PII) on tablets and iPads — all of which may be vulnerable to data leakage.
+                                Today, data is considered an invaluable asset, and <strong className="text-emerald-800">maintaining privacy and protecting sensitive information</strong> should be every organization's top priority. For convenience, professionals access emails, documents, legal contracts, creative designs, financial records, and Personally Identifiable Information (PII) on tablets and iPads — all of which may be vulnerable to data leakage.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Commonly used devices in the professional world include iPad Air, iPad Pro, iPad Mini, Samsung Galaxy Tab S9 Ultra, and OnePlus Pad. Data stored on these devices must be securely erased after serving its purpose — either by IT administrators or company-appointed service providers.

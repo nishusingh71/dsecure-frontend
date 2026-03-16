@@ -300,7 +300,7 @@ const ErrorCodesPage: React.FC = memo(() => {
                 <div className="mb-6 md:mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
+                    className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
@@ -428,7 +428,7 @@ const ErrorCodesPage: React.FC = memo(() => {
                           <div className="text-lg sm:text-xl">{getSeverityIcon(error.severity)}</div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <span className="font-mono text-sm sm:text-base font-bold text-emerald-600">
+                              <span className="font-mono text-sm sm:text-base font-bold text-emerald-800">
                                 {error.code}
                               </span>
                               <span className={`text-xs px-2 py-1 rounded ${getSeverityColor(error.severity)} text-white`}>
@@ -463,7 +463,7 @@ const ErrorCodesPage: React.FC = memo(() => {
                             {/* Solution */}
                             <div>
                               <h4 className="font-semibold text-slate-900 mb-3 text-sm sm:text-base flex items-center">
-                                <svg className="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-4 h-4 mr-2 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 Step-by-Step Solution:
@@ -471,7 +471,7 @@ const ErrorCodesPage: React.FC = memo(() => {
                               <div className="text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
                                 {error.solution.split('Step ').filter(step => step.trim()).map((step, index) => (
                                   <div key={index} className="flex items-start">
-                                    <div className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">
+                                    <div className="w-6 h-6 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">
                                       {index + 1}
                                     </div>
                                     <div className="flex-1">
@@ -539,7 +539,7 @@ const ErrorCodesPage: React.FC = memo(() => {
                   If you encounter an error code not listed here, our D-Secure support team provides 24/7 assistance with detailed diagnostics and immediate solutions.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/support/contact" className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
+                  <Link to="/support/contact" className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>

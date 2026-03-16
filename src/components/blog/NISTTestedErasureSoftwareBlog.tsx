@@ -46,7 +46,7 @@ const NISTTestedErasureSoftwareBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                In the era of formalized data privacy governed by regulations like <strong className="text-emerald-600">GDPR and CCPA</strong>, organizations recognize the critical need to adopt specialized tools for guaranteed media sanitization aligned with data protection laws. For modern IT asset managers, this brings significant responsibility for achieving failsafe data destruction — eradicating data from storage media while leaving no possibilities of retrieval, breach, or leakage.
+                                In the era of formalized data privacy governed by regulations like <strong className="text-emerald-800">GDPR and CCPA</strong>, organizations recognize the critical need to adopt specialized tools for guaranteed media sanitization aligned with data protection laws. For modern IT asset managers, this brings significant responsibility for achieving failsafe data destruction — eradicating data from storage media while leaving no possibilities of retrieval, breach, or leakage.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 In this context, exceptional NIST-tested professional data erasure tools set the "Gold Standard" for attaining failsafe and compliant data destruction. Understanding the growing relevance and necessity for NIST-approved data erasure tools is essential for organizations serious about data security.

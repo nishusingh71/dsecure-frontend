@@ -199,7 +199,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                       className="flex items-center gap-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-4"
                     >
                       <svg
-                        className="w-6 h-6 text-emerald-600 flex-shrink-0"
+                        className="w-6 h-6 text-emerald-800 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -233,7 +233,7 @@ const EnterpriseSolutionsPage: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link
                     to="/contact"
-                    className="bg-white text-emerald-600 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-lg"
+                    className="bg-white text-emerald-800 px-8 py-3 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-lg"
                   >
                     Schedule Consultation
                   </Link>

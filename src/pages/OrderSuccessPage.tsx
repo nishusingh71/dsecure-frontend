@@ -227,7 +227,7 @@ export default function OrderSuccessPage() {
           <div className="text-center mb-10">
             <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6 shadow-lg">
               <svg
-                className="h-12 w-12 text-green-600"
+                className="h-12 w-12 text-green-800"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

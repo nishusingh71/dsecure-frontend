@@ -46,7 +46,7 @@ const OnsiteVsOffsiteDestructionBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                With rising cyberthreats, escalating data breach costs, and stringent data protection laws, businesses must approach <strong className="text-emerald-600">end-of-life data disposal</strong> with utmost seriousness while prioritizing security. Modern organizations across industries have actively incorporated data destruction as a fundamental component of their cybersecurity strategy.
+                                With rising cyberthreats, escalating data breach costs, and stringent data protection laws, businesses must approach <strong className="text-emerald-800">end-of-life data disposal</strong> with utmost seriousness while prioritizing security. Modern organizations across industries have actively incorporated data destruction as a fundamental component of their cybersecurity strategy.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Whether decommissioning old hardware, upgrading IT infrastructure, or disposing of obsolete devices, ensuring permanent data destruction is absolutely non-negotiable. One crucial decision organizations face is determining the most appropriate method to destroy sensitive information from IT assets reaching their end of lifecycle.

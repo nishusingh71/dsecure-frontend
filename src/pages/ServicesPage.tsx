@@ -106,9 +106,9 @@ function ServicesPageContent() {
     } else if (value === 'expanded') {
       return <span className="text-xs text-slate-600">Expanded</span>;
     } else if (typeof value === 'string' && value.includes('included')) {
-      return isEnterprise ? <strong className="text-green-600">{value}</strong> : <span className="text-green-600">{value}</span>;
+      return isEnterprise ? <strong className="text-green-800">{value}</strong> : <span className="text-green-800">{value}</span>;
     } else if (typeof value === 'string' && value.includes('free')) {
-      return isEnterprise ? <strong className="text-green-600">{value}</strong> : <span className="text-green-600">{value}</span>;
+      return isEnterprise ? <strong className="text-green-800">{value}</strong> : <span className="text-green-800">{value}</span>;
     } else if (typeof value === 'string') {
       return <span className="text-xs text-slate-600">{value}</span>;
     }
@@ -404,7 +404,7 @@ function ServicesPageContent() {
                 <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 text-center">
                   <h3 className="text-xl font-bold mb-2">🎉 Try Enterprise FREE for 14 Days</h3>
                   <p className="mb-4">Test all Enterprise features on 1 device - No credit card required</p>
-                  <Link to="/contact" className="bg-white text-green-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
+                  <Link to="/contact" className="bg-white text-green-800 px-6 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
                     Start Free Trial
                   </Link>
                 </div>
@@ -434,8 +434,8 @@ function ServicesPageContent() {
                             <HoverIcon>
                               {(filled) =>
                                 expandedSections.capabilities ?
-                                  <ArrowDownIcon className="w-5 h-5 text-green-600" filled={filled} /> :
-                                  <ArrowRightIcon className="w-5 h-5 text-green-600" filled={filled} />
+                                  <ArrowDownIcon className="w-5 h-5 text-green-800" filled={filled} /> :
+                                  <ArrowRightIcon className="w-5 h-5 text-green-800" filled={filled} />
                               }
                             </HoverIcon>
                           </div>
@@ -694,7 +694,7 @@ function ServicesPageContent() {
                         onMouseEnter={() => showTooltip('included')}
                         onMouseLeave={hideTooltip}
                       >
-                        <span className="text-green-600">✅</span>
+                        <span className="text-green-800">✅</span>
                         {activeTooltip === 'included' && (
                           <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap z-10 shadow-lg">
                             {featureDescriptions.included}
@@ -810,7 +810,7 @@ function ServicesPageContent() {
                   Test all Enterprise features on 1 device - No credit card required, No purchase needed
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/contact" className="bg-white text-green-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition-colors">
+                  <Link to="/contact" className="bg-white text-green-800 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition-colors">
                     🚀 Start Free Enterprise Trial
                   </Link>
                   <Link to="/contact" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">

@@ -199,7 +199,7 @@ const DataErasureForNonProfits: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border">
                 <div className="flex items-center gap-2 mb-3">
-                  <ShieldIcon className="w-5 h-5 text-green-600" filled />
+                  <ShieldIcon className="w-5 h-5 text-green-800" filled />
                   <h4 className="font-bold">Regulatory Alignment</h4>
                 </div>
                 <p className="text-sm text-slate-600">
@@ -210,7 +210,7 @@ const DataErasureForNonProfits: React.FC = () => {
 
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border">
                 <div className="flex items-center gap-2 mb-3">
-                  <ClipboardIcon className="w-5 h-5 text-green-600" filled />
+                  <ClipboardIcon className="w-5 h-5 text-green-800" filled />
                   <h4 className="font-bold">Audit-Ready Documentation</h4>
                 </div>
                 <p className="text-sm text-slate-600">
@@ -221,7 +221,7 @@ const DataErasureForNonProfits: React.FC = () => {
 
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border">
                 <div className="flex items-center gap-2 mb-3">
-                  <ShieldIcon className="w-5 h-5 text-green-600" filled />
+                  <ShieldIcon className="w-5 h-5 text-green-800" filled />
                   <h4 className="font-bold">Risk Reduction</h4>
                 </div>
                 <p className="text-sm text-slate-600">
@@ -232,7 +232,7 @@ const DataErasureForNonProfits: React.FC = () => {
 
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border">
                 <div className="flex items-center gap-2 mb-3">
-                  <ClipboardIcon className="w-5 h-5 text-green-600" filled />
+                  <ClipboardIcon className="w-5 h-5 text-green-800" filled />
                   <h4 className="font-bold">Operational Efficiency</h4>
                 </div>
                 <p className="text-sm text-slate-600">
@@ -262,7 +262,7 @@ const DataErasureForNonProfits: React.FC = () => {
 
             <Link
               to="/#products"
-              className="inline-flex items-center bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition shadow-lg"
+              className="inline-flex items-center bg-white text-green-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition shadow-lg"
             >
               <HoverIcon>
                 {(filled) => (

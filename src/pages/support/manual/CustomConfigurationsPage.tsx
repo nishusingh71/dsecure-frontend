@@ -15,7 +15,7 @@ const CustomConfigurationsPage: React.FC = memo(() => {
                         <Reveal>
                             <div className="text-center">
                                 <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-                                    Custom <span className="text-emerald-600">Configurations</span>
+                                    Custom <span className="text-emerald-800">Configurations</span>
                                 </h1>
                                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                                     Create custom D-Secure erasure profiles and organization policies tailored to your specific requirements
@@ -38,7 +38,7 @@ const CustomConfigurationsPage: React.FC = memo(() => {
                                     </h2>
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div className="space-y-4">
-                                            <h3 className="text-lg font-semibold text-emerald-600">Profile Components</h3>
+                                            <h3 className="text-lg font-semibold text-emerald-800">Profile Components</h3>
                                             <ul className="space-y-2 text-slate-700">
                                                 <li>• Erasure algorithm selection</li>
                                                 <li>• Number of overwrite passes</li>
@@ -108,7 +108,7 @@ const CustomConfigurationsPage: React.FC = memo(() => {
                                             <h3 className="text-lg font-semibold text-slate-900 mb-4">Visual Configuration Tool</h3>
                                             <div className="grid md:grid-cols-2 gap-6">
                                                 <div className="bg-white rounded-lg p-4 border border-slate-200">
-                                                    <h4 className="font-medium text-emerald-600 mb-3">Step 1: Algorithm Selection</h4>
+                                                    <h4 className="font-medium text-emerald-800 mb-3">Step 1: Algorithm Selection</h4>
                                                     <div className="space-y-2">
                                                         <div className="flex items-center space-x-2">
                                                             <input type="radio" className="text-emerald-500" />
@@ -148,7 +148,7 @@ const CustomConfigurationsPage: React.FC = memo(() => {
                                     </h2>
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div className="space-y-4">
-                                            <h3 className="text-lg font-semibold text-emerald-600">Performance Tuning</h3>
+                                            <h3 className="text-lg font-semibold text-emerald-800">Performance Tuning</h3>
                                             <ul className="space-y-2 text-slate-700">
                                                 <li>• Buffer size optimization</li>
                                                 <li>• Thread count configuration</li>
@@ -179,7 +179,7 @@ const CustomConfigurationsPage: React.FC = memo(() => {
                                     <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-lg p-6">
                                         <div className="grid md:grid-cols-3 gap-6 text-center">
                                             <div>
-                                                <div className="text-3xl font-bold text-emerald-600 mb-2">50+</div>
+                                                <div className="text-3xl font-bold text-emerald-800 mb-2">50+</div>
                                                 <p className="text-sm text-slate-700">Custom Templates</p>
                                             </div>
                                             <div>

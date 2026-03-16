@@ -255,7 +255,7 @@ const PdfSettingsModal: React.FC<PdfSettingsModalProps> = ({
               />
               {(pdfFormData.headerLeftLogo ||
                 imageBase64.headerLeftLogo) && (
-                <p className="text-xs text-green-600 mt-1">
+                <p className="text-xs text-green-800 mt-1">
                   ✓{" "}
                   {pdfFormData.headerLeftLogo
                     ? "Image uploaded"
@@ -275,7 +275,7 @@ const PdfSettingsModal: React.FC<PdfSettingsModalProps> = ({
               />
               {(pdfFormData.headerRightLogo ||
                 imageBase64.headerRightLogo) && (
-                <p className="text-xs text-green-600 mt-1">
+                <p className="text-xs text-green-800 mt-1">
                   ✓{" "}
                   {pdfFormData.headerRightLogo
                     ? "Image uploaded"
@@ -297,7 +297,7 @@ const PdfSettingsModal: React.FC<PdfSettingsModalProps> = ({
               className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
             />
             {(pdfFormData.watermarkImage || imageBase64.watermarkImage) && (
-              <p className="text-xs text-green-600 mt-1">
+              <p className="text-xs text-green-800 mt-1">
                 ✓{" "}
                 {pdfFormData.watermarkImage
                   ? "Watermark uploaded"
@@ -322,7 +322,7 @@ const PdfSettingsModal: React.FC<PdfSettingsModalProps> = ({
               />
               {(pdfFormData.technicianSignature ||
                 imageBase64.technicianSignature) && (
-                <p className="text-xs text-green-600 mt-1">
+                <p className="text-xs text-green-800 mt-1">
                   ✓{" "}
                   {pdfFormData.technicianSignature
                     ? "Signature uploaded"
@@ -342,7 +342,7 @@ const PdfSettingsModal: React.FC<PdfSettingsModalProps> = ({
               />
               {(pdfFormData.validatorSignature ||
                 imageBase64.validatorSignature) && (
-                <p className="text-xs text-green-600 mt-1">
+                <p className="text-xs text-green-800 mt-1">
                   ✓{" "}
                   {pdfFormData.validatorSignature
                     ? "Signature uploaded"

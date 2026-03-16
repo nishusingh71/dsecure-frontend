@@ -129,7 +129,7 @@ const DSecureFAQPage: React.FC = () => {
                 {/* Erasure Process */}
                 <div className="space-y-6" id="erasure">
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center">
-                    <Shield className="w-6 h-6 mr-3 text-green-600" />
+                    <Shield className="w-6 h-6 mr-3 text-green-800" />
                     Erasure Process
                   </h2>
 
@@ -362,7 +362,7 @@ const DSecureFAQPage: React.FC = () => {
                 {/* Key Features */}
                 <div className="bg-green-50 rounded-lg p-6">
                   <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                    <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
+                    <CheckCircle className="w-5 h-5 mr-2 text-green-800" />
                     Key Features
                   </h3>
                   <div className="space-y-3 text-sm text-gray-700">

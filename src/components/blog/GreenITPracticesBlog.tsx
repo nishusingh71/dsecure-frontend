@@ -41,7 +41,7 @@ const GreenITPracticesBlog: React.FC = () => {
                 <Reveal>
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <p className="text-slate-700 leading-loose text-xl">
-                            Global e-waste generation is estimated to increase by <strong className="text-emerald-600">32% to produce 82 million tonnes in 2030</strong>, as reported by the UN's fourth Global E-waste Monitor. The actual amount of e-waste generation is surpassing documented recycling by 5 times.
+                            Global e-waste generation is estimated to increase by <strong className="text-emerald-800">32% to produce 82 million tonnes in 2030</strong>, as reported by the UN's fourth Global E-waste Monitor. The actual amount of e-waste generation is surpassing documented recycling by 5 times.
                         </p>
                         <p className="text-slate-700 leading-loose text-lg">
                             Toxic substances released by burning or improper disposal of IT assets lead to pollution. Hazardous elements like lead and mercury can create neurodevelopmental and respiratory problems. However, <strong>Green IT practices</strong> can ensure a long-term solution in combating these issues.

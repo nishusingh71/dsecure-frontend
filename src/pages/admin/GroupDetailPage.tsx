@@ -150,18 +150,18 @@ export default function GroupDetailPage() {
                         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="p-3 bg-emerald-100 rounded-lg">
-                                    <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-6 h-6 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                                     </svg>
                                 </div>
-                                <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                                <span className="text-xs font-medium text-emerald-800 bg-emerald-50 px-2 py-1 rounded-full">
                                     {Math.round(((resources?.allocatedLicenses || 0) / (resources?.totalLicenses || 1)) * 100)}% used
                                 </span>
                             </div>
                             <p className="text-sm text-slate-500 mb-1">Total Licenses</p>
                             <p className="text-2xl font-bold text-slate-900">{resources?.totalLicenses || 0}</p>
                             <div className="mt-3 flex gap-4 text-xs">
-                                <span className="text-emerald-600">Available: {resources?.availableLicenses || 0}</span>
+                                <span className="text-emerald-800">Available: {resources?.availableLicenses || 0}</span>
                                 <span className="text-slate-500">Allocated: {resources?.allocatedLicenses || 0}</span>
                             </div>
                         </div>
@@ -195,7 +195,7 @@ export default function GroupDetailPage() {
                             <p className="text-sm text-slate-500 mb-1">Total Users</p>
                             <p className="text-2xl font-bold text-slate-900">{resources?.totalUsers || 0}</p>
                             <div className="mt-3 flex gap-4 text-xs">
-                                <span className="text-green-600">Active: {resources?.activeUsers || 0}</span>
+                                <span className="text-green-800">Active: {resources?.activeUsers || 0}</span>
                                 <span className="text-slate-500">Inactive: {resources?.inactiveUsers || 0}</span>
                             </div>
                         </div>
@@ -374,7 +374,7 @@ export default function GroupDetailPage() {
                                             value="license"
                                             checked={transferType === 'license'}
                                             onChange={() => setTransferType('license')}
-                                            className="text-emerald-600 focus:ring-emerald-500"
+                                            className="text-emerald-800 focus:ring-emerald-500"
                                         />
                                         <span className="text-sm text-slate-700">Licenses ({selectedUser.allocatedLicenses} available)</span>
                                     </label>
@@ -385,7 +385,7 @@ export default function GroupDetailPage() {
                                             value="key"
                                             checked={transferType === 'key'}
                                             onChange={() => setTransferType('key')}
-                                            className="text-emerald-600 focus:ring-emerald-500"
+                                            className="text-emerald-800 focus:ring-emerald-500"
                                         />
                                         <span className="text-sm text-slate-700">Keys ({selectedUser.activeKeys} available)</span>
                                     </label>

@@ -100,7 +100,7 @@ const ManualPageTemplate: React.FC<ManualPageTemplateProps> = memo(({
                 <div className="mb-6 md:mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
+                    className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
@@ -250,7 +250,7 @@ const ManualPageTemplate: React.FC<ManualPageTemplateProps> = memo(({
                                   className="flex items-center justify-between p-3 sm:p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors group"
                                 >
                                   <div className="flex-1">
-                                    <h4 className="font-medium text-slate-900 group-hover:text-emerald-600 transition-colors mb-1 text-sm sm:text-base">
+                                    <h4 className="font-medium text-slate-900 group-hover:text-emerald-800 transition-colors mb-1 text-sm sm:text-base">
                                       {subsection.title}
                                     </h4>
                                     <p className="text-xs sm:text-sm text-slate-600">
@@ -316,7 +316,7 @@ const ManualPageTemplate: React.FC<ManualPageTemplateProps> = memo(({
                           {item.icon}
                         </span>
                       </div>
-                      <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                      <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                         {item.title}
                       </h3>
                       <p className="text-slate-600 text-xs sm:text-sm flex-grow">

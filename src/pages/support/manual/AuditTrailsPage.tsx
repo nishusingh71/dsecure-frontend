@@ -23,7 +23,7 @@ const AuditTrailsPage: React.FC = memo(() => {
  <Reveal>
  <div className="text-center">
  <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
- Audit <span className="text-emerald-600">Trails</span>
+ Audit <span className="text-emerald-800">Trails</span>
  </h1>
  <p className="text-xl text-slate-700 max-w-3xl mx-auto">
  Maintain comprehensive audit trails with D-Secure's detailed logging for compliance and forensic analysis
@@ -44,7 +44,7 @@ const AuditTrailsPage: React.FC = memo(() => {
  </h2>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="space-y-4">
- <h3 className="text-lg font-semibold text-emerald-600">System Events</h3>
+ <h3 className="text-lg font-semibold text-emerald-800">System Events</h3>
  <ul className="space-y-2 text-slate-700">
  <li>• User authentication events</li>
  <li>• System startup/shutdown</li>
@@ -74,7 +74,7 @@ const AuditTrailsPage: React.FC = memo(() => {
  <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-lg p-6">
  <div className="grid md:grid-cols-3 gap-6 text-center">
  <div>
- <div className="text-3xl font-bold text-emerald-600 mb-2">7 Years</div>
+ <div className="text-3xl font-bold text-emerald-800 mb-2">7 Years</div>
  <p className="text-sm text-slate-700">Default Retention</p>
  </div>
  <div>
@@ -98,7 +98,7 @@ const AuditTrailsPage: React.FC = memo(() => {
  </h2>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="bg-emerald-50 rounded-lg p-6">
- <h3 className="text-lg font-semibold text-emerald-600 mb-4">Automated Reports</h3>
+ <h3 className="text-lg font-semibold text-emerald-800 mb-4">Automated Reports</h3>
  <ul className="space-y-2 text-slate-700 text-sm">
  <li>• Daily activity summaries</li>
  <li>• Weekly compliance reports</li>

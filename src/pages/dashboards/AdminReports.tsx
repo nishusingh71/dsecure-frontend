@@ -3640,7 +3640,7 @@ export default function AdminReports() {
                   </span>
                 )}
                 {!pdfSettingsLoading && pdfSettingsLoaded && (
-                  <span className="text-sm text-green-600 flex items-center gap-1">
+                  <span className="text-sm text-green-800 flex items-center gap-1">
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -3834,7 +3834,7 @@ export default function AdminReports() {
                   />
                   {(pdfFormData.headerLeftLogo ||
                     imageBase64.headerLeftLogo) && (
-                    <p className="text-xs text-green-600 mt-1">
+                    <p className="text-xs text-green-800 mt-1">
                       ✓{" "}
                       {pdfFormData.headerLeftLogo
                         ? "Image uploaded"
@@ -3854,7 +3854,7 @@ export default function AdminReports() {
                   />
                   {(pdfFormData.headerRightLogo ||
                     imageBase64.headerRightLogo) && (
-                    <p className="text-xs text-green-600 mt-1">
+                    <p className="text-xs text-green-800 mt-1">
                       ✓{" "}
                       {pdfFormData.headerRightLogo
                         ? "Image uploaded"
@@ -3876,7 +3876,7 @@ export default function AdminReports() {
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                 />
                 {(pdfFormData.watermarkImage || imageBase64.watermarkImage) && (
-                  <p className="text-xs text-green-600 mt-1">
+                  <p className="text-xs text-green-800 mt-1">
                     ✓{" "}
                     {pdfFormData.watermarkImage
                       ? "Watermark uploaded"
@@ -3901,7 +3901,7 @@ export default function AdminReports() {
                   />
                   {(pdfFormData.technicianSignature ||
                     imageBase64.technicianSignature) && (
-                    <p className="text-xs text-green-600 mt-1">
+                    <p className="text-xs text-green-800 mt-1">
                       ✓{" "}
                       {pdfFormData.technicianSignature
                         ? "Signature uploaded"
@@ -3921,7 +3921,7 @@ export default function AdminReports() {
                   />
                   {(pdfFormData.validatorSignature ||
                     imageBase64.validatorSignature) && (
-                    <p className="text-xs text-green-600 mt-1">
+                    <p className="text-xs text-green-800 mt-1">
                       ✓{" "}
                       {pdfFormData.validatorSignature
                         ? "Signature uploaded"

@@ -45,7 +45,7 @@ const ChangeHealthcareAttackBlog: React.FC = () => {
                             In February 2024, Change Healthcare, one of the largest healthcare technology companies in the United States, fell victim to a devastating ransomware attack that sent shockwaves throughout the entire U.S. healthcare system. The attack paralyzed critical healthcare operations, affecting millions of patients and healthcare providers across the nation.
                         </p>
                         <p className="text-slate-700 leading-loose text-lg mb-6">
-                            Change Healthcare processes more than <strong className="text-emerald-600">15 billion healthcare transactions annually</strong>, making it a critical infrastructure component of the American healthcare system. The company handles everything from pharmacy services and medical claims to payment processing and prior authorizations for healthcare providers nationwide.
+                            Change Healthcare processes more than <strong className="text-emerald-800">15 billion healthcare transactions annually</strong>, making it a critical infrastructure component of the American healthcare system. The company handles everything from pharmacy services and medical claims to payment processing and prior authorizations for healthcare providers nationwide.
                         </p>
 
                         <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-500 p-6 rounded-r-lg">

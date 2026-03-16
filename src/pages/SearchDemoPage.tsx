@@ -161,14 +161,14 @@ export default function SearchDemoPage() {
                   <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-200/60 hover:shadow-xl transition-all hover:border-emerald-200">
                     <div className="flex items-start justify-between mb-3">
                       <h3 className="text-lg font-bold text-slate-900">{product.name}</h3>
-                      <span className="text-emerald-600 font-bold text-lg">${product.price}</span>
+                      <span className="text-emerald-800 font-bold text-lg">${product.price}</span>
                     </div>
                     <p className="text-slate-600 text-sm mb-4">{product.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full">
                         {product.category}
                       </span>
-                      <button className="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                      <button className="text-emerald-800 hover:text-emerald-700 text-sm font-medium">
                         Learn More →
                       </button>
                     </div>

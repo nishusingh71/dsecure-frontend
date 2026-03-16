@@ -23,7 +23,7 @@ const ChainCustodyPage: React.FC = memo(() => {
  <Reveal>
  <div className="text-center">
  <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
- Chain of <span className="text-emerald-600">Custody</span>
+ Chain of <span className="text-emerald-800">Custody</span>
  </h1>
  <p className="text-xl text-slate-700 max-w-3xl mx-auto">
  Document device handling throughout the D-Secure erasure process with comprehensive chain of custody tracking
@@ -44,7 +44,7 @@ const ChainCustodyPage: React.FC = memo(() => {
  </h2>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="space-y-4">
- <h3 className="text-lg font-semibold text-emerald-600">Required Information</h3>
+ <h3 className="text-lg font-semibold text-emerald-800">Required Information</h3>
  <ul className="space-y-2 text-slate-700">
  <li>• Device serial numbers</li>
  <li>• Custodian identification</li>
@@ -116,7 +116,7 @@ const ChainCustodyPage: React.FC = memo(() => {
  <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-lg p-6">
  <div className="grid md:grid-cols-3 gap-6 text-center">
  <div>
- <div className="text-3xl font-bold text-emerald-600 mb-2">100%</div>
+ <div className="text-3xl font-bold text-emerald-800 mb-2">100%</div>
  <p className="text-sm text-slate-700">Audit Compliance</p>
  </div>
  <div>

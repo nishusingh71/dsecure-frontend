@@ -256,7 +256,7 @@ export default function AddGroup() {
                             e.target.checked,
                           )
                         }
-                        className="mt-1 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                        className="mt-1 rounded border-slate-300 text-emerald-800 focus:ring-emerald-500"
                       />
                       <div className="flex-1">
                         <label

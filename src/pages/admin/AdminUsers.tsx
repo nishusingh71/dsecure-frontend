@@ -337,7 +337,7 @@ export default function AdminUsers() {
                       <span
                         className={`inline-flex items-center gap-1 ${
                           user.status === "active"
-                            ? "text-green-600"
+                            ? "text-green-800"
                             : "text-slate-500"
                         }`}
                       >
@@ -375,7 +375,7 @@ export default function AdminUsers() {
                         </button>
                         <button
                           onClick={() => handleAssignLicense(user.id)}
-                          className="text-emerald-600 hover:text-emerald-700 text-sm font-medium px-2 py-1 rounded hover:bg-emerald-50 transition-colors"
+                          className="text-emerald-800 hover:text-emerald-700 text-sm font-medium px-2 py-1 rounded hover:bg-emerald-50 transition-colors"
                         >
                           Assign License
                         </button>
@@ -402,7 +402,7 @@ export default function AdminUsers() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-emerald-100 rounded-full">
                     <svg
-                      className="w-6 h-6 text-emerald-600"
+                      className="w-6 h-6 text-emerald-800"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -469,7 +469,7 @@ export default function AdminUsers() {
                         </span>
                       </div>
                       {licenseCount && !isNaN(Number(licenseCount)) && (
-                        <div className="flex justify-between text-emerald-600 font-medium mt-1 pt-1 border-t">
+                        <div className="flex justify-between text-emerald-800 font-medium mt-1 pt-1 border-t">
                           <span>New Licenses:</span>
                           <span>{Number(licenseCount)}</span>
                         </div>

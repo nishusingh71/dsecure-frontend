@@ -173,7 +173,7 @@ const FAQ: React.FC = () => {
               <p className="text-sm text-gray-700 mb-2">
                 Browse articles, tutorials, and troubleshooting guides.
               </p>
-              <a href="#" className="text-green-600 text-sm font-medium hover:underline">
+              <a href="#" className="text-green-800 text-sm font-medium hover:underline">
                 Visit Knowledge Base →
               </a>
             </div>

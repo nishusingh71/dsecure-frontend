@@ -46,7 +46,7 @@ const DataPrivacyObligationsBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Whether an organization is disposing of storage assets by donating to charity, working with responsible recyclers, or returning leased IT assets — there exists a <strong className="text-emerald-600">legal and ethical obligation</strong> to ensure no incident of data breach occurs. These obligations fall under various international laws and company policies that demand strict compliance.
+                                Whether an organization is disposing of storage assets by donating to charity, working with responsible recyclers, or returning leased IT assets — there exists a <strong className="text-emerald-800">legal and ethical obligation</strong> to ensure no incident of data breach occurs. These obligations fall under various international laws and company policies that demand strict compliance.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 In an event of data compromise, the organization and its officers face severe financial penalties and risk imprisonment. Understanding and fulfilling these obligations is not optional — it's a fundamental requirement for responsible data stewardship.

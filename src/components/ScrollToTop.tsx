@@ -34,14 +34,10 @@ const ScrollToTop = memo(function ScrollToTop({ threshold = 300, className = '' 
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, [toggleVisibility])
 
-  if (!isVisible) {
-    return null
-  }
-
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-6 right-6 z-50 p-3 bg-brand text-white rounded-full shadow-lg hover:bg-brand-600 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-brand/50 group ${className}`}
+      className={`fixed bottom-6 right-6 z-50 p-3 bg-brand text-white rounded-full shadow-lg hover:bg-brand-600 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-brand/50 group ${className} ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
       aria-label="Scroll to top"
       title="Back to top"
       type="button"

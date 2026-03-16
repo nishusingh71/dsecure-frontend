@@ -147,7 +147,7 @@ const GetStartedPage: React.FC = memo(() => {
                 <div className="mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4 transition-colors"
+                    className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-4 transition-colors"
                   >
                     <svg
                       className="w-5 h-5 mr-2"
@@ -195,7 +195,7 @@ const GetStartedPage: React.FC = memo(() => {
               <Reveal delayMs={100}>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-2xl font-bold text-emerald-600">
+                    <span className="text-2xl font-bold text-emerald-800">
                       1
                     </span>
                   </div>
@@ -212,7 +212,7 @@ const GetStartedPage: React.FC = memo(() => {
               <Reveal delayMs={200}>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-2xl font-bold text-emerald-600">
+                    <span className="text-2xl font-bold text-emerald-800">
                       2
                     </span>
                   </div>
@@ -229,7 +229,7 @@ const GetStartedPage: React.FC = memo(() => {
               <Reveal delayMs={300}>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span className="text-2xl font-bold text-emerald-600">
+                    <span className="text-2xl font-bold text-emerald-800">
                       3
                     </span>
                   </div>
@@ -337,7 +337,7 @@ const GetStartedPage: React.FC = memo(() => {
                         <div>
                           <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
                             <svg
-                              className="w-5 h-5 text-emerald-600 mr-2"
+                              className="w-5 h-5 text-emerald-800 mr-2"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -370,7 +370,7 @@ const GetStartedPage: React.FC = memo(() => {
                         <div>
                           <h4 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
                             <svg
-                              className="w-5 h-5 text-yellow-600 mr-2"
+                              className="w-5 h-5 text-yellow-800 mr-2"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -391,7 +391,7 @@ const GetStartedPage: React.FC = memo(() => {
                                 className="flex items-start gap-3"
                               >
                                 <svg
-                                  className="flex-shrink-0 w-5 h-5 text-yellow-600 mt-0.5"
+                                  className="flex-shrink-0 w-5 h-5 text-yellow-800 mt-0.5"
                                   fill="none"
                                   stroke="currentColor"
                                   viewBox="0 0 24 24"
@@ -501,7 +501,7 @@ const GetStartedPage: React.FC = memo(() => {
                     >
                       <span className="text-2xl">{resource.icon}</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                       {resource.title}
                     </h3>
                     <p className="text-slate-600 text-sm">

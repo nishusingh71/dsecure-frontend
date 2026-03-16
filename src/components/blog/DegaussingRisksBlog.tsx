@@ -45,13 +45,13 @@ const DegaussingRisksBlog: React.FC = () => {
                             Degaussing is a data destruction method that uses powerful magnetic fields to erase data from magnetic storage media such as hard disk drives (HDDs) and magnetic tapes. The process works by disrupting and randomizing the magnetic domains on the storage media's surface, theoretically making the data unrecoverable.
                         </p>
                         <p className="text-slate-700 leading-loose text-lg mb-6">
-                            While degaussing can be effective when performed correctly, it is a <strong className="text-emerald-600">manually intensive process</strong> that is highly prone to human errors. These errors can compromise data security, leaving organizations vulnerable to data breaches and regulatory non-compliance.
+                            While degaussing can be effective when performed correctly, it is a <strong className="text-emerald-800">manually intensive process</strong> that is highly prone to human errors. These errors can compromise data security, leaving organizations vulnerable to data breaches and regulatory non-compliance.
                         </p>
 
                         <div className="bg-amber-50 border border-amber-200 rounded-xl p-8">
                             <h4 className="font-bold text-slate-900 text-xl mb-3">️ Critical Understanding</h4>
                             <p className="text-slate-700 text-lg leading-loose">
-                                Given its manually intensive nature, degaussing is prone to oversights. <strong className="text-emerald-600">Just one misstep can jeopardize data security.</strong> Organizations must understand these risks before relying on degaussing as their primary data destruction method.
+                                Given its manually intensive nature, degaussing is prone to oversights. <strong className="text-emerald-800">Just one misstep can jeopardize data security.</strong> Organizations must understand these risks before relying on degaussing as their primary data destruction method.
                             </p>
                         </div>
                     </div>

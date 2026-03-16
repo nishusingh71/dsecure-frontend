@@ -210,11 +210,11 @@ function ComplianceResourcesContent() {
   const getColorClasses = (color: string) => {
     const colorMap = {
       blue: 'bg-blue-50 text-blue-600 border-blue-200',
-      green: 'bg-green-50 text-green-600 border-green-200',
+      green: 'bg-green-50 text-green-800 border-green-200',
       purple: 'bg-purple-50 text-purple-600 border-purple-200',
       indigo: 'bg-indigo-50 text-indigo-600 border-indigo-200',
       red: 'bg-red-50 text-red-600 border-red-200',
-      emerald: 'bg-emerald-50 text-emerald-600 border-emerald-200'
+      emerald: 'bg-emerald-50 text-emerald-800 border-emerald-200'
     }
     return colorMap[color as keyof typeof colorMap] || 'bg-gray-50 text-gray-600 border-gray-200'
   }
@@ -297,7 +297,7 @@ function ComplianceResourcesContent() {
                       <ul className="space-y-1">
                         {standard.coverage.slice(0, 3).map((item, itemIndex) => (
                           <li key={itemIndex} className="flex items-start gap-2">
-                            <CheckIcon className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" filled={true} />
+                            <CheckIcon className="w-4 h-4 text-green-800 flex-shrink-0 mt-0.5" filled={true} />
                             <span className="text-sm text-slate-700">{item}</span>
                           </li>
                         ))}

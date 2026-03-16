@@ -57,7 +57,7 @@ export default function WhyDSecurePage() {
             <div className="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <div className="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6">
                 <svg
-                  className="w-7 h-7 text-emerald-600"
+                  className="w-7 h-7 text-emerald-800"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

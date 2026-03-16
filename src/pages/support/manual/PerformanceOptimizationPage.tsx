@@ -234,8 +234,8 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case "Easy": return "text-green-600 bg-green-50";
-      case "Moderate": return "text-yellow-600 bg-yellow-50";
+      case "Easy": return "text-green-800 bg-green-50";
+      case "Moderate": return "text-yellow-800 bg-yellow-50";
       case "Advanced": return "text-orange-600 bg-orange-50";
       case "Expert": return "text-red-600 bg-red-50";
       default: return "text-gray-600 bg-gray-50";
@@ -263,7 +263,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                 <div className="mb-6 md:mb-8">
                   <Link
                     to="/support"
-                    className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
+                    className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-3 md:mb-4 transition-colors text-sm sm:text-base"
                   >
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
@@ -367,7 +367,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center">
               <Reveal delayMs={100}>
                 <div className="p-4 sm:p-6">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-800 mb-2">
                     25GB/s
                   </div>
                   <div className="text-slate-600 text-sm sm:text-base">Max Throughput</div>
@@ -394,7 +394,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
               </Reveal>
               <Reveal delayMs={400}>
                 <div className="p-4 sm:p-6">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600 mb-2">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-800 mb-2">
                     99.9%
                   </div>
                   <div className="text-slate-600 text-sm sm:text-base">Reliability</div>
@@ -456,7 +456,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
 
                     <div className="space-y-3">
                       <h4 className="font-semibold text-slate-900 text-sm sm:text-base flex items-center">
-                        <svg className="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 mr-2 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                         Implementation Steps:
@@ -464,7 +464,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                       <div className="space-y-2">
                         {tip.steps.map((step, stepIndex) => (
                           <div key={stepIndex} className="flex items-start">
-                            <div className="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">
+                            <div className="w-5 h-5 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">
                               {stepIndex + 1}
                             </div>
                             <div className="text-slate-700 text-sm flex-1">
@@ -655,7 +655,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                     <p className="text-slate-600 text-xs sm:text-sm mb-2">
                       {tool.description}
                     </p>
-                    <div className="text-xs text-emerald-600 font-medium">
+                    <div className="text-xs text-emerald-800 font-medium">
                       {tool.platform}
                     </div>
                   </div>
@@ -677,7 +677,7 @@ const PerformanceOptimizationPage: React.FC = memo(() => {
                   Our performance experts can help you achieve maximum throughput and efficiency for your specific hardware configuration and use case.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/support/contact" className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
+                  <Link to="/support/contact" className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors text-base sm:text-lg inline-flex items-center gap-2 justify-center">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>

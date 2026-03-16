@@ -188,19 +188,19 @@ function CloudErasureContent() {
                     <h3 className="text-lg font-semibold text-slate-900 mb-4">Service Highlights</h3>
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
-                        <CheckIcon className="w-5 h-5 text-green-600" filled={true} />
+                        <CheckIcon className="w-5 h-5 text-green-800" filled={true} />
                         <span className="text-slate-700">Multi-cloud platform support</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <CheckIcon className="w-5 h-5 text-green-600" filled={true} />
+                        <CheckIcon className="w-5 h-5 text-green-800" filled={true} />
                         <span className="text-slate-700">200+ SaaS integrations</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <CheckIcon className="w-5 h-5 text-green-600" filled={true} />
+                        <CheckIcon className="w-5 h-5 text-green-800" filled={true} />
                         <span className="text-slate-700">AI-powered data discovery</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <CheckIcon className="w-5 h-5 text-green-600" filled={true} />
+                        <CheckIcon className="w-5 h-5 text-green-800" filled={true} />
                         <span className="text-slate-700">Blockchain verification</span>
                       </div>
                     </div>

@@ -130,7 +130,7 @@ export default function EnhancedUserDashboard() {
 
               {/* Token expiration warning */}
               {tokenInfo.isAboutToExpire && (
-                <p className="flex items-center gap-2 text-yellow-600">
+                <p className="flex items-center gap-2 text-yellow-800">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -183,11 +183,11 @@ export default function EnhancedUserDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div>
                   <span className="text-blue-600 font-medium">Authentication:</span>
-                  <span className="ml-2 text-green-600 font-semibold">✓ Active</span>
+                  <span className="ml-2 text-green-800 font-semibold">✓ Active</span>
                 </div>
                 <div>
                   <span className="text-blue-600 font-medium">Token Expires:</span>
-                  <span className={`ml-2 font-semibold ${tokenInfo.isAboutToExpire ? 'text-yellow-600' : 'text-green-600'}`}>
+                  <span className={`ml-2 font-semibold ${tokenInfo.isAboutToExpire ? 'text-yellow-800' : 'text-green-800'}`}>
                     {formatTime(tokenInfo.timeUntilExpiry)}
                   </span>
                 </div>
@@ -246,7 +246,7 @@ export default function EnhancedUserDashboard() {
                     </p>
                   </div>
                   <div className="p-3 bg-green-100 rounded-full">
-                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-green-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
                     </svg>
                   </div>
@@ -265,7 +265,7 @@ export default function EnhancedUserDashboard() {
                   </p>
                 </div>
                 <div className="p-3 bg-emerald-100 rounded-full">
-                  <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>

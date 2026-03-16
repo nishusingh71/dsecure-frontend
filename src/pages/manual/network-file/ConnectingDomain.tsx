@@ -256,7 +256,7 @@ const ConnectingDomain: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-5">
               <div className="border-2 border-green-300 rounded-xl p-5 bg-green-50/30">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2 text-base">
-                  <Users className="w-6 h-6 text-green-600" />
+                  <Users className="w-6 h-6 text-green-800" />
                   Organizational Unit Tree
                 </h3>
                 <p className="text-gray-700 mb-3">
@@ -392,25 +392,25 @@ const ConnectingDomain: React.FC = () => {
                 <p className="font-medium text-gray-900 mb-2">Common Reasons:</p>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start gap-2">
-                    <span className="text-yellow-600 mt-1">•</span>
+                    <span className="text-yellow-800 mt-1">•</span>
                     <div>
                       <strong>Firewall Blocking:</strong> Windows Firewall or third-party firewall blocking ICMP (ping) or SMB protocols - add D-Secure exceptions
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-yellow-600 mt-1">•</span>
+                    <span className="text-yellow-800 mt-1">•</span>
                     <div>
                       <strong>Sleep/Hibernate Mode:</strong> Computer entered power-saving state - configure to stay awake or wake-on-LAN
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-yellow-600 mt-1">•</span>
+                    <span className="text-yellow-800 mt-1">•</span>
                     <div>
                       <strong>Network Partition:</strong> Computer on different subnet or VLAN with routing issues
                     </div>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-yellow-600 mt-1">•</span>
+                    <span className="text-yellow-800 mt-1">•</span>
                     <div>
                       <strong>Stale Status Cache:</strong> Disconnect and reconnect to domain to refresh status
                     </div>

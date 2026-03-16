@@ -463,7 +463,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
                     <div className="p-6 text-slate-600 text-lg">
                       {row.traditional}
                     </div>
-                    <div className="p-6 text-emerald-600 font-medium text-lg">
+                    <div className="p-6 text-emerald-800 font-medium text-lg">
                       {row.crypto}
                     </div>
                   </div>
@@ -553,7 +553,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
                                     className="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors group"
                                   >
                                     <div className="flex-1">
-                                      <h4 className="font-medium text-slate-900 group-hover:text-emerald-600 transition-colors mb-1 text-lg">
+                                      <h4 className="font-medium text-slate-900 group-hover:text-emerald-800 transition-colors mb-1 text-lg">
                                         {subsection.title}
                                       </h4>
                                       <p className="text-sm text-slate-600">
@@ -623,7 +623,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
               ].map((item, index) => (
                 <Reveal key={item.standard} delayMs={index * 100}>
                   <div className="bg-white rounded-xl p-6 text-center border border-emerald-100 shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div className="text-xl font-bold text-emerald-600 mb-2">
+                    <div className="text-xl font-bold text-emerald-800 mb-2">
                       {item.standard}
                     </div>
                     <div className="text-sm text-slate-600">
@@ -691,7 +691,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
                     >
                       <span className="text-2xl text-white">{item.icon}</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2 group-hover:text-emerald-800 transition-colors">
                       {item.title}
                     </h3>
                     <p className="text-slate-600 text-sm flex-grow">
@@ -720,7 +720,7 @@ const CryptographicErasurePage: React.FC = memo(() => {
                 <div className="flex flex-col md:flex-row gap-4 justify-center">
                   <a
                     href="/services/cryptographic-erasure"
-                    className="bg-white text-emerald-600 hover:bg-emerald-50 font-semibold px-8 py-4 rounded-xl transition-colors text-lg inline-flex items-center justify-center"
+                    className="bg-white text-emerald-800 hover:bg-emerald-50 font-semibold px-8 py-4 rounded-xl transition-colors text-lg inline-flex items-center justify-center"
                   >
                     <span className="mr-2">🔐</span>
                     Start Cryptographic Erasure

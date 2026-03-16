@@ -40,7 +40,7 @@ const Support: React.FC = () => {
         {/* Contact Methods */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-            <Mail className="w-7 h-7 text-green-600" />
+            <Mail className="w-7 h-7 text-green-800" />
             Contact Technical Support
           </h2>
           
@@ -48,7 +48,7 @@ const Support: React.FC = () => {
             {/* Email Support */}
             <div className="border-l-4 border-green-500 bg-green-50 rounded-r-lg p-6">
               <div className="flex items-start gap-4">
-                <Mail className="w-8 h-8 text-green-600 mt-1" />
+                <Mail className="w-8 h-8 text-green-800 mt-1" />
                 <div className="flex-1">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Email Support</h3>
                   <p className="text-gray-700 text-lg mb-3">
@@ -56,7 +56,7 @@ const Support: React.FC = () => {
                   </p>
                   <div className="bg-white rounded-lg p-4 border border-green-200">
                     <p className="text-gray-600 text-sm mb-2">Send your queries to:</p>
-                    <a href="mailto:techsupport@dsecuretech.com" className="text-green-600 font-semibold text-lg hover:text-green-700">
+                    <a href="mailto:techsupport@dsecuretech.com" className="text-green-800 font-semibold text-lg hover:text-green-700">
                       techsupport@dsecuretech.com
                     </a>
                   </div>
@@ -252,35 +252,35 @@ const Support: React.FC = () => {
           
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 mt-0.5 shrink-0" />
+              <CheckCircle className="w-6 h-6 text-green-800 mt-0.5 shrink-0" />
               <div className="text-lg text-gray-700">
                 <strong className="text-gray-900">Provide Version Number:</strong> Include your software version (found in Help → About)
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 mt-0.5 shrink-0" />
+              <CheckCircle className="w-6 h-6 text-green-800 mt-0.5 shrink-0" />
               <div className="text-lg text-gray-700">
                 <strong className="text-gray-900">Include Error Messages:</strong> Copy exact error messages or take screenshots
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 mt-0.5 shrink-0" />
+              <CheckCircle className="w-6 h-6 text-green-800 mt-0.5 shrink-0" />
               <div className="text-lg text-gray-700">
                 <strong className="text-gray-900">Describe Steps to Reproduce:</strong> Explain what you were doing when the issue occurred
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 mt-0.5 shrink-0" />
+              <CheckCircle className="w-6 h-6 text-green-800 mt-0.5 shrink-0" />
               <div className="text-lg text-gray-700">
                 <strong className="text-gray-900">System Information:</strong> Mention OS version, network environment, and AD setup
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 mt-0.5 shrink-0" />
+              <CheckCircle className="w-6 h-6 text-green-800 mt-0.5 shrink-0" />
               <div className="text-lg text-gray-700">
                 <strong className="text-gray-900">License Key Ready:</strong> Have your activation key available for verification
               </div>

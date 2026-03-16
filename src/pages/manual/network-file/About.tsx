@@ -41,7 +41,7 @@ const About: React.FC = () => {
               <div className="text-gray-700 font-medium">Countries Served</div>
             </div>
             <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg">
-              <div className="text-4xl font-bold text-green-600 mb-2">100+</div>
+              <div className="text-4xl font-bold text-green-800 mb-2">100+</div>
               <div className="text-gray-700 font-medium">Proprietary Tools</div>
             </div>
             <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg">
@@ -69,7 +69,7 @@ const About: React.FC = () => {
         {/* Product Portfolio */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-            <Award className="w-7 h-7 text-green-600" />
+            <Award className="w-7 h-7 text-green-800" />
             Product Portfolio
           </h2>
 
@@ -81,11 +81,11 @@ const About: React.FC = () => {
               </h3>
               <ul className="space-y-2 text-lg text-gray-700">
                 <li className="flex items-start gap-2">
-                  <Zap className="w-5 h-5 text-green-600 mt-1 shrink-0" />
+                  <Zap className="w-5 h-5 text-green-800 mt-1 shrink-0" />
                   <span><strong>DSecureTech Data Recovery (Windows/Mac):</strong> Comprehensive file recovery from drives, partitions, and storage media</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Zap className="w-5 h-5 text-green-600 mt-1 shrink-0" />
+                  <Zap className="w-5 h-5 text-green-800 mt-1 shrink-0" />
                   <span><strong>DSecureTech Photo Recovery:</strong> Specialized recovery for photos, videos, and multimedia files</span>
                 </li>
               </ul>
@@ -168,7 +168,7 @@ const About: React.FC = () => {
 
             <div className="flex items-start gap-4">
               <div className="shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Shield className="w-6 h-6 text-green-600" />
+                <Shield className="w-6 h-6 text-green-800" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Security regulated</h3>

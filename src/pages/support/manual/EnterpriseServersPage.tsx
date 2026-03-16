@@ -15,7 +15,7 @@ const EnterpriseServersPage: React.FC = memo(() => {
                         <Reveal>
                             <div className="text-center">
                                 <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-                                    Enterprise <span className="text-emerald-600">Servers</span>
+                                    Enterprise <span className="text-emerald-800">Servers</span>
                                 </h1>
                                 <p className="text-xl text-slate-700 max-w-3xl mx-auto">
                                     Comprehensive guide to D-Secure enterprise server erasure for data centers and virtualization platforms
@@ -38,7 +38,7 @@ const EnterpriseServersPage: React.FC = memo(() => {
                                     </h2>
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div className="space-y-4">
-                                            <h3 className="text-lg font-semibold text-emerald-600">Physical Servers</h3>
+                                            <h3 className="text-lg font-semibold text-emerald-800">Physical Servers</h3>
                                             <ul className="space-y-2 text-slate-700">
                                                 <li>• Dell PowerEdge Series</li>
                                                 <li>• HP ProLiant Servers</li>
@@ -106,7 +106,7 @@ const EnterpriseServersPage: React.FC = memo(() => {
                                     <div className="space-y-6">
                                         <div className="grid md:grid-cols-2 gap-6">
                                             <div className="bg-emerald-50 rounded-lg p-6">
-                                                <h3 className="text-lg font-semibold text-emerald-600 mb-4">Network Boot (PXE)</h3>
+                                                <h3 className="text-lg font-semibold text-emerald-800 mb-4">Network Boot (PXE)</h3>
                                                 <ul className="space-y-2 text-slate-700 text-sm">
                                                     <li>• Centralized deployment</li>
                                                     <li>• No local installation required</li>
@@ -138,7 +138,7 @@ const EnterpriseServersPage: React.FC = memo(() => {
                                     <div className="bg-gradient-to-r from-cyan-50 to-emerald-50 rounded-lg p-6">
                                         <div className="grid md:grid-cols-3 gap-6">
                                             <div className="text-center">
-                                                <div className="text-2xl font-bold text-emerald-600 mb-2">15TB/hr</div>
+                                                <div className="text-2xl font-bold text-emerald-800 mb-2">15TB/hr</div>
                                                 <p className="text-sm text-slate-700">Average Throughput</p>
                                             </div>
                                             <div className="text-center">

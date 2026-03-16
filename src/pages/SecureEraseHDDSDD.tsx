@@ -228,7 +228,7 @@ const SecureEraseHDDSDD: React.FC = () => {
                             Write random or specific patterns multiple times
                             across entire drive surface.
                           </p>
-                          <ul className="text-emerald-600 text-xs space-y-1">
+                          <ul className="text-emerald-800 text-xs space-y-1">
                             <li>• 3-pass: Random, complement, random</li>
                             <li>• 7-pass: DoD 5220.22-M standard</li>
                             <li>• 35-pass: Gutmann method (legacy)</li>
@@ -308,7 +308,7 @@ const SecureEraseHDDSDD: React.FC = () => {
                             Most effective method for SSDs, erases all cells
                             including over-provisioned areas.
                           </p>
-                          <ul className="text-emerald-600 text-xs space-y-1">
+                          <ul className="text-emerald-800 text-xs space-y-1">
                             <li>• Hardware-level secure erase</li>
                             <li>• Handles wear leveling</li>
                             <li>• Fast execution (minutes)</li>

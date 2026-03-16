@@ -20,7 +20,7 @@ const FirstScanPage: React.FC = memo(() => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
             <Reveal>
               <div className="text-center">
-                <Link to="/support/manual/first-time-setup" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4 transition-colors">
+                <Link to="/support/manual/first-time-setup" className="inline-flex items-center text-emerald-800 hover:text-emerald-700 font-medium mb-4 transition-colors">
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
@@ -52,7 +52,7 @@ const FirstScanPage: React.FC = memo(() => {
                       </div>
                       <h3 className="font-semibold text-slate-900 mb-2">Quick Scan</h3>
                       <p className="text-sm text-slate-700 mb-3">Scans critical system areas</p>
-                      <div className="text-xs text-emerald-600 font-medium">~5 minutes</div>
+                      <div className="text-xs text-emerald-800 font-medium">~5 minutes</div>
                     </div>
                     <div className="bg-teal-50 rounded-lg p-6 text-center">
                       <div className="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center mx-auto mb-4">

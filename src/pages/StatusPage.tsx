@@ -84,9 +84,9 @@ export default function StatusPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "operational":
-        return "text-green-600 bg-green-100 light:bg-green-900/30 light:text-green-400";
+        return "text-green-800 bg-green-100 light:bg-green-900/30 light:text-green-400";
       case "degraded":
-        return "text-yellow-600 bg-yellow-100 light:bg-yellow-900/30 light:text-yellow-400";
+        return "text-yellow-800 bg-yellow-100 light:bg-yellow-900/30 light:text-yellow-400";
       case "maintenance":
         return "text-blue-600 bg-blue-100 light:bg-blue-900/30 light:text-blue-400";
       case "outage":
@@ -270,7 +270,7 @@ export default function StatusPage() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xs:gap-7 sm:gap-8 md:gap-9 lg:gap-10 xl:gap-11 xxl:gap-12">
               <div className="bg-white light:bg-slate-800 border border-slate-200 light:border-slate-700 rounded-lg p-6 xs:p-7 sm:p-8 md:p-8 lg:p-9 xl:p-10 xxl:p-11 text-center">
-                <div className="text-2xl xs:text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl xxl:text-3xl font-bold text-green-600 light:text-green-400 mb-2 xs:mb-2 sm:mb-3 md:mb-3 lg:mb-4 xl:mb-4 xxl:mb-5">
+                <div className="text-2xl xs:text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-4xl xxl:text-3xl font-bold text-green-800 light:text-green-400 mb-2 xs:mb-2 sm:mb-3 md:mb-3 lg:mb-4 xl:mb-4 xxl:mb-5">
                   99.98%
                 </div>
                 <div className="text-base xs:text-base sm:text-lg md:text-lg lg:text-xl xl:text-xl xxl:text-2xl font-medium text-slate-900 light:text-white mb-1 xs:mb-1 sm:mb-2 md:mb-2 lg:mb-3 xl:mb-3 xxl:mb-4">
@@ -327,7 +327,7 @@ export default function StatusPage() {
             <div className="bg-slate-50 light:bg-slate-800 border border-slate-200 light:border-slate-700 rounded-lg p-6 xs:p-7 sm:p-8 md:p-9 lg:p-10 xl:p-11 xxl:p-12 text-center">
               <div className="flex items-center justify-center w-12 xs:w-13 sm:w-14 md:w-15 lg:w-16 xl:w-17 xxl:w-18 h-12 xs:h-13 sm:h-14 md:h-15 lg:h-16 xl:h-17 xxl:h-18 bg-green-100 light:bg-green-900/30 rounded-full mx-auto mb-4 xs:mb-5 sm:mb-6 md:mb-6 lg:mb-7 xl:mb-8 xxl:mb-9">
                 <svg
-                  className="w-6 xs:w-7 sm:w-8 md:w-8 lg:w-9 xl:w-10 xxl:w-11 h-6 xs:h-7 sm:h-8 md:h-8 lg:h-9 xl:h-10 xxl:h-11 text-green-600 light:text-green-400"
+                  className="w-6 xs:w-7 sm:w-8 md:w-8 lg:w-9 xl:w-10 xxl:w-11 h-6 xs:h-7 sm:h-8 md:h-8 lg:h-9 xl:h-10 xxl:h-11 text-green-800 light:text-green-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -356,7 +356,7 @@ export default function StatusPage() {
             <div className="bg-white light:bg-slate-800 border border-slate-200 light:border-slate-700 rounded-lg p-6 xs:p-7 sm:p-8 md:p-9 lg:p-10 xl:p-11 xxl:p-12 text-center">
               <div className="flex items-center justify-center w-12 xs:w-13 sm:w-14 md:w-15 lg:w-16 xl:w-17 xxl:w-18 h-12 xs:h-13 sm:h-14 md:h-15 lg:h-16 xl:h-17 xxl:h-18 bg-green-100 light:bg-green-900/30 rounded-full mx-auto mb-4 xs:mb-5 sm:mb-6 md:mb-6 lg:mb-7 xl:mb-8 xxl:mb-9">
                 <svg
-                  className="w-6 xs:w-7 sm:w-8 md:w-8 lg:w-9 xl:w-10 xxl:w-11 h-6 xs:h-7 sm:h-8 md:h-8 lg:h-9 xl:h-10 xxl:h-11 text-green-600 light:text-green-400"
+                  className="w-6 xs:w-7 sm:w-8 md:w-8 lg:w-9 xl:w-10 xxl:w-11 h-6 xs:h-7 sm:h-8 md:h-8 lg:h-9 xl:h-10 xxl:h-11 text-green-800 light:text-green-400"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >

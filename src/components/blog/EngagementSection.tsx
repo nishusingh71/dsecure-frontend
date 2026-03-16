@@ -75,7 +75,7 @@ const EngagementSection: React.FC<EngagementSectionProps> = ({ blogId }) => {
           className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
             userReaction === 'like' 
               ? 'bg-green-600 text-white shadow-lg scale-105' 
-              : 'bg-slate-100 text-slate-700 hover:bg-green-50 hover:text-green-600 hover:shadow-md'
+              : 'bg-slate-100 text-slate-700 hover:bg-green-50 hover:text-green-800 hover:shadow-md'
           }`}
           onClick={handleLike}
         >

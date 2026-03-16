@@ -167,7 +167,7 @@ function FeaturesPageContent() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/download"
-                className="px-8 py-3 bg-white text-emerald-600 font-semibold rounded-xl hover:bg-emerald-50 transition-colors inline-flex items-center gap-2"
+                className="px-8 py-3 bg-white text-emerald-800 font-semibold rounded-xl hover:bg-emerald-50 transition-colors inline-flex items-center gap-2"
               >
                 Download Free Trial
                 <ArrowRightIcon className="w-5 h-5" filled={true} />

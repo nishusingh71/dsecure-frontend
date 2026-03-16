@@ -46,7 +46,7 @@ const EUCSRDBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                The <strong className="text-emerald-600">Corporate Sustainability Reporting Directive (CSRD)</strong> came into effect on January 5, 2023, presenting the European Sustainability Reporting Standard (ESRS) that sets new protocols for organizations to disclose non-financial information including sustainability data.
+                                The <strong className="text-emerald-800">Corporate Sustainability Reporting Directive (CSRD)</strong> came into effect on January 5, 2023, presenting the European Sustainability Reporting Standard (ESRS) that sets new protocols for organizations to disclose non-financial information including sustainability data.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 CSRD is applicable to EU-based large undertakings, listed small and medium-sized enterprises, and non-EU companies with turnover exceeding EUR 150 million in the EU market for two consecutive years. This directive will be implemented in four phases from 2024 to 2029.

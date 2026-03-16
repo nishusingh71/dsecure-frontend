@@ -84,7 +84,7 @@ const CaptionCallSettlementBlog: React.FC = () => {
                                     CaptionCall must develop and implement a privacy & data protection program within 120 days, including designating a Data Privacy Officer and developing a data retention schedule that specifies retention period, purpose of data collection, usage, and disclosure.
                                 </p>
                                 <p className="text-slate-700 text-lg leading-loose mt-3 font-semibold">
-                                    The policy shall ensure the <strong className="text-emerald-600">safe removal and disposal of user data by sanitizing or destroying data-bearing electronic media</strong> when required.
+                                    The policy shall ensure the <strong className="text-emerald-800">safe removal and disposal of user data by sanitizing or destroying data-bearing electronic media</strong> when required.
                                 </p>
                             </div>
 

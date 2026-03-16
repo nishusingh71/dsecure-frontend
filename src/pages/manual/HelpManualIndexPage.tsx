@@ -72,7 +72,7 @@ const HelpManualIndexPage: React.FC = () => {
         <div className="mb-16">
           <div className="flex items-center space-x-3 mb-8">
             <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
-              <Play className="w-6 h-6 text-green-600 dark:text-green-400" />
+              <Play className="w-6 h-6 text-green-800 dark:text-green-400" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Getting Started</h2>
@@ -147,7 +147,7 @@ const HelpManualIndexPage: React.FC = () => {
             >
               <div className="flex items-center space-x-3 mb-3">
                 <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors">
-                  <FileText className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  <FileText className="w-5 h-5 text-green-800 dark:text-green-400" />
                 </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white">Report Management</h3>
               </div>
@@ -234,7 +234,7 @@ const HelpManualIndexPage: React.FC = () => {
         <div className="mb-16">
           <div className="flex items-center space-x-3 mb-8">
             <div className="bg-green-100 dark:bg-green-900/30 p-2 rounded-lg">
-              <Book className="w-6 h-6 text-green-600 dark:text-green-400" />
+              <Book className="w-6 h-6 text-green-800 dark:text-green-400" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Complete Reference</h2>
@@ -248,7 +248,7 @@ const HelpManualIndexPage: React.FC = () => {
           >
             <div className="flex items-start space-x-4">
               <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors">
-                <Book className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <Book className="w-6 h-6 text-green-800 dark:text-green-400" />
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Complete DSecure Manual</h3>
@@ -311,7 +311,7 @@ const HelpManualIndexPage: React.FC = () => {
               to="/support/help-manual/complete-manual" 
               className="text-center p-4 bg-white dark:bg-gray-700 rounded-lg hover:shadow-md transition-shadow"
             >
-              <Book className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+              <Book className="w-8 h-8 text-green-800 dark:text-green-400 mx-auto mb-2" />
               <div className="font-medium text-gray-900 dark:text-white text-sm">Complete Manual</div>
             </Link>
           </div>

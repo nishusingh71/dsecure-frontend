@@ -191,7 +191,7 @@ const CheckoutPage = memo(function CheckoutPage() {
             <p className="text-gray-600">
               Complete your D-Secure purchase in just a few steps
             </p>
-            <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-green-600">
+            <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-green-800">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
@@ -480,7 +480,7 @@ const CheckoutPage = memo(function CheckoutPage() {
                             )}
 
                           {paymentData.totalPrice < subtotal && (
-                            <div className="flex justify-between text-sm text-green-600">
+                            <div className="flex justify-between text-sm text-green-800">
                               <span>Volume/Multi-term Discount:</span>
                               <span>
                                 -$

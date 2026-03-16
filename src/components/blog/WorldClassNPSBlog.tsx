@@ -46,7 +46,7 @@ const WorldClassNPSBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                The secret to building a successful business lies in <strong className="text-emerald-600">consistently understanding and mapping the customer journey</strong> at every stage through an effective feedback mechanism. Regular feedback through surveys enables organizations to identify customer concerns, providing opportunities to improve, innovate, and establish long-term relationships.
+                                The secret to building a successful business lies in <strong className="text-emerald-800">consistently understanding and mapping the customer journey</strong> at every stage through an effective feedback mechanism. Regular feedback through surveys enables organizations to identify customer concerns, providing opportunities to improve, innovate, and establish long-term relationships.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 Such surveys not only help businesses address customer needs but also reinforce trust in the brand's authenticity and commitment to excellence. This process becomes more organized when using measurable parameters on a discrete scale to evaluate how well a business meets customer expectations regarding products and services.

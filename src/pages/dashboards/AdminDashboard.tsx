@@ -2202,7 +2202,7 @@ export default function AdminDashboard() {
                       onClick={() => setActiveTab(tab.id)}
                       className={`flex items-center gap-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                         activeTab === tab.id
-                          ? "border-emerald-500 text-emerald-600"
+                          ? "border-emerald-500 text-emerald-800"
                           : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
                       }`}
                     >
@@ -2291,7 +2291,7 @@ export default function AdminDashboard() {
                       <div
                         className={`flex items-center gap-1 text-sm font-medium ml-2 flex-shrink-0 ${
                           stat.trend === "up"
-                            ? "text-green-600"
+                            ? "text-green-800"
                             : "text-red-600"
                         }`}
                       >
@@ -2459,7 +2459,7 @@ export default function AdminDashboard() {
                     </h2>
                     <Link
                       to="/admin/reports"
-                      className="text-emerald-600 hover:text-emerald-700 text-sm font-medium"
+                      className="text-emerald-800 hover:text-emerald-700 text-sm font-medium"
                     >
                       View All
                     </Link>
@@ -2647,7 +2647,7 @@ export default function AdminDashboard() {
                     </h2>
                     <Link
                       to="/admin/sessions"
-                      className="text-emerald-600 hover:text-emerald-700 text-sm font-medium"
+                      className="text-emerald-800 hover:text-emerald-700 text-sm font-medium"
                     >
                       View All
                     </Link>
@@ -2869,7 +2869,7 @@ export default function AdminDashboard() {
                   className="w-full flex items-center gap-4 p-4 rounded-lg border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 transition-all text-left"
                 >
                   <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
@@ -3854,7 +3854,7 @@ export default function AdminDashboard() {
                                         <span
                                           className={`inline-flex items-center gap-1 ${
                                             activity.status === "active"
-                                              ? "text-green-600"
+                                              ? "text-green-800"
                                               : "text-slate-500"
                                           }`}
                                         >
@@ -4472,7 +4472,7 @@ export default function AdminDashboard() {
                                   </div>
                                   <div className="flex justify-between items-center text-xs text-slate-400 mb-1">
                                     <span>Avg: {metric.avgDuration}</span>
-                                    <span className="text-green-600 font-medium">
+                                    <span className="text-green-800 font-medium">
                                       {metric.successRate}% Success
                                     </span>
                                   </div>
@@ -5037,7 +5037,7 @@ export default function AdminDashboard() {
                                     <span className="text-sm font-medium text-slate-700">
                                       Overall Utilization
                                     </span>
-                                    <span className="text-lg font-bold text-emerald-600">
+                                    <span className="text-lg font-bold text-emerald-800">
                                       {utilizationPercent}%
                                     </span>
                                   </div>
@@ -5054,7 +5054,7 @@ export default function AdminDashboard() {
                                       <div className="font-medium text-slate-900">
                                         Utilized
                                       </div>
-                                      <div className="text-emerald-600 font-semibold">
+                                      <div className="text-emerald-800 font-semibold">
                                         {consumedLicenses.toLocaleString()} (
                                         {utilizationPercent}%)
                                       </div>
@@ -5439,7 +5439,7 @@ export default function AdminDashboard() {
                         <span className="font-medium text-slate-700">
                           Private Cloud:
                         </span>
-                        <span className={`font-semibold ${profileData?.is_private_cloud || storedUserData?.is_private_cloud ? 'text-green-600' : 'text-slate-500'}`}>
+                        <span className={`font-semibold ${profileData?.is_private_cloud || storedUserData?.is_private_cloud ? 'text-green-800' : 'text-slate-500'}`}>
                           {profileData?.is_private_cloud || storedUserData?.is_private_cloud ? 'Enabled' : 'Disabled'}
                         </span>
                       </div> */}
@@ -6231,7 +6231,7 @@ export default function AdminDashboard() {
                             </div>
                             <div className="flex justify-between items-center">
                               <span className="text-sm text-slate-600">Available</span>
-                              <span className="text-lg font-bold text-green-600">{billingDetails.availableLicenses || 0}</span>
+                              <span className="text-lg font-bold text-green-800">{billingDetails.availableLicenses || 0}</span>
                             </div>
                             
                             
@@ -6361,9 +6361,9 @@ export default function AdminDashboard() {
 
                                       let valueClass = "text-slate-900";
                                       if (isStatus) {
-                                        valueClass = value.toLowerCase() === "active" ? "text-emerald-600" : "text-red-600";
+                                        valueClass = value.toLowerCase() === "active" ? "text-emerald-800" : "text-red-600";
                                       } else if (value === "Enabled") {
-                                        valueClass = "text-emerald-600";
+                                        valueClass = "text-emerald-800";
                                       } else if (value === "Disabled") {
                                         valueClass = "text-slate-500";
                                       }
@@ -6420,7 +6420,7 @@ export default function AdminDashboard() {
                                           {icon}
                                           <div className="flex-1 flex justify-between items-center">
                                             <span className="text-sm font-medium text-slate-700 capitalize">{displayLabel}</span>
-                                            <span className={`text-sm font-semibold capitalize ${key.toLowerCase() === "status" ? (displayValue.toLowerCase() === "active" ? "text-emerald-600" : "text-red-600") : "text-slate-900"}`}>
+                                            <span className={`text-sm font-semibold capitalize ${key.toLowerCase() === "status" ? (displayValue.toLowerCase() === "active" ? "text-emerald-800" : "text-red-600") : "text-slate-900"}`}>
                                               {displayValue}
                                             </span>
                                           </div>
@@ -7934,7 +7934,7 @@ export default function AdminDashboard() {
                         <div className="flex-1">
                           <label className="flex items-center gap-2 text-sm font-medium text-slate-700 cursor-pointer">
                             <svg
-                              className="w-5 h-5 text-green-600"
+                              className="w-5 h-5 text-green-800"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"

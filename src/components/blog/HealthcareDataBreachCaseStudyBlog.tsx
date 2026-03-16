@@ -46,7 +46,7 @@ const HealthcareDataBreachCaseStudyBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                A recent healthcare data breach at a community health center has highlighted critical vulnerabilities in <strong className="text-emerald-600">electronic hardware disposal practices</strong>. The incident exposed personal data of patients including Personally Identifiable Information (PII) and Protected Health Information (PHI), resulting from improper disposal of hard drives by an employee at a third-party vendor's storage facility.
+                                A recent healthcare data breach at a community health center has highlighted critical vulnerabilities in <strong className="text-emerald-800">electronic hardware disposal practices</strong>. The incident exposed personal data of patients including Personally Identifiable Information (PII) and Protected Health Information (PHI), resulting from improper disposal of hard drives by an employee at a third-party vendor's storage facility.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 This data breach episode underscores an often-overlooked aspect of data security: data theft resulting from improper disposal of IT assets during their end-of-life, resale, or repurposing. While organizations typically focus on preventing cybersecurity incidents through encryption, firewalls, and anti-malware programs, the physical disposal of storage media presents equally significant risks.

@@ -445,7 +445,7 @@ const ErasingTraces: React.FC = () => {
         {/* System Traces - EXPANDED */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-            <HardDrive className="w-7 h-7 text-green-600" />
+            <HardDrive className="w-7 h-7 text-green-800" />
             Windows System Traces
           </h2>
           

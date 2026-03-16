@@ -106,7 +106,7 @@ const CloudIntegration: React.FC = () => {
                 <span className="shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold flex items-center justify-center mt-0.5">4</span>
                 <div>
                   <strong className="text-gray-900">Verify Connection</strong>
-                  <p className="text-gray-700 mt-1">Status will change to <span className="text-green-600 font-semibold">Connected</span></p>
+                  <p className="text-gray-700 mt-1">Status will change to <span className="text-green-800 font-semibold">Connected</span></p>
                   <div className="mt-2 bg-green-50 border border-green-200 rounded-lg p-3 text-sm">
                     ✓ A green checkmark indicates successful connection to D-Secure Cloud
                   </div>
@@ -119,7 +119,7 @@ const CloudIntegration: React.FC = () => {
         {/* Uploading Reports */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-            <Upload className="w-7 h-7 text-green-600" />
+            <Upload className="w-7 h-7 text-green-800" />
             Uploading Reports to Cloud
           </h2>
           

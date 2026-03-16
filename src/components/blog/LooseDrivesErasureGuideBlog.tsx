@@ -46,7 +46,7 @@ const LooseDrivesErasureGuideBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                Loose drives refer to <strong className="text-emerald-600">any data storage drives removed from their original host devices</strong> — computers, servers, or peripherals like printers. With the growing demand for cloud data storage, data centers are continuously expanding capacity through high-volume loose drives. During IT asset refresh cycles, data centers discard bulk drives that are sometimes sold in the secondary market.
+                                Loose drives refer to <strong className="text-emerald-800">any data storage drives removed from their original host devices</strong> — computers, servers, or peripherals like printers. With the growing demand for cloud data storage, data centers are continuously expanding capacity through high-volume loose drives. During IT asset refresh cycles, data centers discard bulk drives that are sometimes sold in the secondary market.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 If these drives are not properly wiped before discarding, they become a significant source of data theft and leakage. A certified secure wiping solution ensures safe data destruction before IT asset resale or reuse. Understanding different types of loose drives and ideal practices for their sanitization is essential for every organization managing substantial IT infrastructure.

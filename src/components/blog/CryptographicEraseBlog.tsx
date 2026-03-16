@@ -42,7 +42,7 @@ const CryptographicEraseBlog: React.FC = () => {
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <h2 className="text-3xl font-bold text-slate-900 mb-6">Cryptographic Erase Explained</h2>
                         <p className="text-slate-700 leading-loose text-lg">
-                            Under Section 3.2 of NIST SP 800-88 Rev.2, <strong className="text-emerald-600">Cryptographic Erase (CE)</strong> is a purge sanitization technique that sanitizes the key used to encrypt data or prevents access to this key. By erasing the key itself, access to the encrypted information is prevented, leaving the encrypted data (ciphertext) on the storage media.
+                            Under Section 3.2 of NIST SP 800-88 Rev.2, <strong className="text-emerald-800">Cryptographic Erase (CE)</strong> is a purge sanitization technique that sanitizes the key used to encrypt data or prevents access to this key. By erasing the key itself, access to the encrypted information is prevented, leaving the encrypted data (ciphertext) on the storage media.
                         </p>
                         <p className="text-slate-700 leading-loose text-lg">
                             Since CE performs key sanitization, it is comparatively faster than other sanitization techniques and has high assurance. Many storage media today have integrated symmetric-key encryption that is always active and encrypts all stored data. Self-encrypting drives (SEDs) are one example that usually includes sanitization capabilities.

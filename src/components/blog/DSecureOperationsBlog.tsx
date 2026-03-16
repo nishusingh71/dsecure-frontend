@@ -46,7 +46,7 @@ const DSecureOperationsBlog: React.FC = () => {
                         {/* Introduction */}
                         <div className="space-y-6">
                             <p className="text-slate-700 leading-loose text-xl">
-                                D-Secure remains <strong className="text-emerald-600">fully operational and thriving</strong>, providing secure, reliable, and certified data erasure and diagnostic solutions to customers across the globe. Our operations and commitment remain steadfast as we continue to grow and expand our services.
+                                D-Secure remains <strong className="text-emerald-800">fully operational and thriving</strong>, providing secure, reliable, and certified data erasure and diagnostic solutions to customers across the globe. Our operations and commitment remain steadfast as we continue to grow and expand our services.
                             </p>
                             <p className="text-slate-700 leading-loose text-lg">
                                 We have always been committed to supporting businesses in putting their best foot forward — whether by ensuring data security for their customers or by helping them achieve compliance with data protection laws and regulations. Our revolutionary data erasure, diagnostics, and verification software products continue to set industry standards.

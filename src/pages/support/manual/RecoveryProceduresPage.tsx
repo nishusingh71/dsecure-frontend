@@ -23,7 +23,7 @@ const RecoveryProceduresPage: React.FC = memo(() => {
  <Reveal>
  <div className="text-center">
  <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
- Recovery <span className="text-emerald-600">Procedures</span>
+ Recovery <span className="text-emerald-800">Procedures</span>
  </h1>
  <p className="text-xl text-slate-700 max-w-3xl mx-auto">
  Handle failed or interrupted D-Secure erasure operations with comprehensive recovery procedures
@@ -44,7 +44,7 @@ const RecoveryProceduresPage: React.FC = memo(() => {
  </h2>
  <div className="grid md:grid-cols-2 gap-6">
  <div className="space-y-4">
- <h3 className="text-lg font-semibold text-emerald-600">Automatic Detection</h3>
+ <h3 className="text-lg font-semibold text-emerald-800">Automatic Detection</h3>
  <ul className="space-y-2 text-slate-700">
  <li>• Real-time monitoring</li>
  <li>• Progress validation</li>
@@ -112,7 +112,7 @@ const RecoveryProceduresPage: React.FC = memo(() => {
  <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-lg p-6">
  <div className="grid md:grid-cols-3 gap-6 text-center">
  <div>
- <div className="text-3xl font-bold text-emerald-600 mb-2">98%</div>
+ <div className="text-3xl font-bold text-emerald-800 mb-2">98%</div>
  <p className="text-sm text-slate-700">Automatic Recovery</p>
  </div>
  <div>

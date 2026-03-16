@@ -42,7 +42,7 @@ const DataHoardingBlog: React.FC = () => {
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <h2 className="text-3xl font-bold text-slate-900 mb-6">What is Data Hoarding?</h2>
                         <p className="text-slate-700 leading-loose text-lg">
-                            The practice of storing data in huge volumes for an indefinite period of time is known as <strong className="text-emerald-600">data hoarding</strong>. Businesses often collect voluminous data to extract customer insight or business value from it in the future. However, the data may not be optimally used due to a lack of adequate resources, tools, skills, or a clear strategy.
+                            The practice of storing data in huge volumes for an indefinite period of time is known as <strong className="text-emerald-800">data hoarding</strong>. Businesses often collect voluminous data to extract customer insight or business value from it in the future. However, the data may not be optimally used due to a lack of adequate resources, tools, skills, or a clear strategy.
                         </p>
                         <p className="text-slate-700 leading-loose text-lg">
                             This results in an excessive accumulation of redundant and unnecessary data, which can create data security challenges. If this data is compromised, it can have a detrimental impact on the business, turning data from an asset into a liability.

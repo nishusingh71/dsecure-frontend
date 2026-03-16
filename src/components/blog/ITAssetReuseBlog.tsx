@@ -41,7 +41,7 @@ const ITAssetReuseBlog: React.FC = () => {
                 <Reveal>
                     <div className="bg-white rounded-xl shadow-md border border-slate-200/50 p-10 space-y-8">
                         <p className="text-slate-700 leading-loose text-xl">
-                            IT asset reuse is gaining prominence due to ESG practices followed by organizations as they aim to reduce their carbon footprints. Reusing IT assets offers several benefits to organizations, including <strong className="text-emerald-600">cost reduction, conserving resources, reduced environmental impact</strong>, and helping comply with environmental laws.
+                            IT asset reuse is gaining prominence due to ESG practices followed by organizations as they aim to reduce their carbon footprints. Reusing IT assets offers several benefits to organizations, including <strong className="text-emerald-800">cost reduction, conserving resources, reduced environmental impact</strong>, and helping comply with environmental laws.
                         </p>
                     </div>
                 </Reveal>

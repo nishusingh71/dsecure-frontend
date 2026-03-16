@@ -208,17 +208,17 @@ const SECComplianceBlog: React.FC = () => {
                 </p>
                 <div className="grid md:grid-cols-3 gap-4">
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-100">
-                        <ClipboardIcon className="w-6 h-6 text-emerald-600 mb-2" filled={true} />
+                        <ClipboardIcon className="w-6 h-6 text-emerald-800 mb-2" filled={true} />
                         <h4 className="font-bold text-slate-900 text-sm mb-1">Automated Certificates</h4>
                         <p className="text-xs text-slate-600">Device-level destruction verification for SEC exams</p>
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-100">
-                        <ShieldIcon className="w-6 h-6 text-emerald-600 mb-2" filled={true} />
+                        <ShieldIcon className="w-6 h-6 text-emerald-800 mb-2" filled={true} />
                         <h4 className="font-bold text-slate-900 text-sm mb-1">Compliant Methods</h4>
                         <p className="text-xs text-slate-600">DoD 5220.22-M and NIST 800-88 as standard</p>
                     </div>
                     <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-100">
-                        <GlobeIcon className="w-6 h-6 text-emerald-600 mb-2" filled={true} />
+                        <GlobeIcon className="w-6 h-6 text-emerald-800 mb-2" filled={true} />
                         <h4 className="font-bold text-slate-900 text-sm mb-1">Cloud Audit Trail</h4>
                         <p className="text-xs text-slate-600">Immutable records for regulatory review</p>
                     </div>
@@ -235,7 +235,7 @@ const SECComplianceBlog: React.FC = () => {
                 </p>
                 <Link
                     to="/contact"
-                    className="inline-flex items-center bg-white text-emerald-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
+                    className="inline-flex items-center bg-white text-emerald-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
                 >
                     <HoverIcon>
                         {(filled) => <ShieldIcon className="w-5 h-5 mr-2" filled={filled} />}

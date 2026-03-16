@@ -54,7 +54,7 @@ const OverwriteGuide: React.FC = () => {
                       With the exponential growth of digital data and the alarming rise in
                       data breaches, organizations can no longer afford to neglect data
                       security—especially at the end-of-life stage of their IT assets. As
-                      a company founded in 2025, <span className="font-semibold text-emerald-600">DSecureTech</span> recognizes that data erasure
+                      a company founded in 2025, <span className="font-semibold text-emerald-800">DSecureTech</span> recognizes that data erasure
                       is not just a technical process—it's a compliance imperative and a
                       sustainability strategy.
                     </p>

@@ -109,7 +109,7 @@ const EnterprisePage: React.FC = () => {
                   "PCI DSS Standards"
                 ].map((standard, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-emerald-800 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span className="text-slate-700">{standard}</span>
@@ -132,7 +132,7 @@ const EnterprisePage: React.FC = () => {
                   "Network Attached Storage (NAS)"
                 ].map((device, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-emerald-800 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span className="text-slate-700">{device}</span>
