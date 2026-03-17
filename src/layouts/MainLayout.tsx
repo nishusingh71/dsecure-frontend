@@ -114,10 +114,10 @@ export default function MainLayout() {
               : "bg-white/80 backdrop-blur-md shadow-sm border-slate-200/30"
           } supports-[backdrop-filter]:bg-white/80`}
         >
-          <div className="mx-auto max-w-7xl px-4 xs:px-4 sm:px-6 md:px-6 lg:px-8 xl:px-8 xxl:px-10 h-16 xs:h-18 sm:h-20 md:h-20 lg:h-22 xl:h-24 xxl:h-24 flex items-center justify-between">
+          <div className="mx-auto max-w-7xl xxl:max-w-[1536px] px-4 xs:px-4 sm:px-6 md:px-6 lg:px-8 xl:px-10 xxl:px-12 h-16 xs:h-18 sm:h-20 md:h-20 lg:h-22 xl:h-24 xxl:h-24 flex items-center justify-between gap-4">
             <Link
               to="/"
-              className="flex items-center gap-2 xs:gap-3 font-bold text-slate-800 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 xs:gap-3 font-bold text-slate-800 hover:opacity-80 transition-opacity flex-shrink-0"
               aria-label="D-Secure homepage"
             >
               <ThemeAwareLogo
@@ -128,7 +128,7 @@ export default function MainLayout() {
             </Link>
 
             {/* Centered Navigation */}
-            <nav className="hidden lg:flex xl:flex xxl:flex items-center gap-3 lg:gap-4 xl:gap-5 xxl:gap-6 text-sm lg:text-sm xl:text-base xxl:text-base absolute left-1/2 transform -translate-x-1/2">
+            <nav className="hidden lg:flex items-center justify-center gap-4 xl:gap-6 xxl:gap-8 text-sm xl:text-base flex-1">
               {/* <NavLink
               to="/"
               className={({ isActive }) =>
@@ -440,12 +440,12 @@ export default function MainLayout() {
             </nav>
 
             {/* Right side - User Authentication & Mobile Menu */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-shrink-0">
               {/* Language Switcher */}
               {/* <LanguageSwitcher variant="minimal" showLabel={false} className="hidden lg:flex" /> */}
 
               {/* User Authentication Navigation */}
-              <nav className="hidden lg:flex xl:flex xxl:flex items-center gap-3 lg:gap-4 xl:gap-5 xxl:gap-6 text-sm lg:text-sm xl:text-base xxl:text-base">
+              <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-sm xl:text-base">
                 {user ? (
                   <>
                     <NavLink

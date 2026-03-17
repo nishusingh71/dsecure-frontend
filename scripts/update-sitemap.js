@@ -37,6 +37,8 @@ const PRIORITY_ROUTES = {
   "/download": { changefreq: "weekly", priority: "0.8" },
   "/contact": { changefreq: "monthly", priority: "0.7" },
   "/about": { changefreq: "monthly", priority: "0.6" },
+  "/llms.txt": { changefreq: "daily", priority: "0.8" },
+  "/llms-full.txt": { changefreq: "daily", priority: "0.8" },
 };
 
 function extractRoutesFromFiles() {
@@ -109,6 +111,8 @@ function extractRoutesFromFiles() {
     "/solutions?industry=healthcare",
     "/solutions?industry=financial",
     "/solutions?industry=government",
+    "/llms.txt",
+    "/llms-full.txt",
   ];
 
   queryRoutes.forEach((r) => allRoutes.add(r));

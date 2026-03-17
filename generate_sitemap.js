@@ -70,7 +70,9 @@ const routes = [
   '/solutions?industry=enterprise',
   '/solutions?industry=financial',
   '/solutions?industry=government',
-  '/solutions?industry=healthcare'
+  '/solutions?industry=healthcare',
+  '/llms.txt',
+  '/llms-full.txt'
 ];
 
 // 1. Read blog posts to get all dynamic blog links

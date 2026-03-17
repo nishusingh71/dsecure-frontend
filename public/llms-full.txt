@@ -35,7 +35,7 @@ D-Secure provides a comprehensive suite of data sanitization and hardware diagno
 High-volume data sanitization for HDDs and SSDs. Supports mass erasure via PXE network boot.
 
 *   **Key Features:**
-    *   **Mass Erasure:** Wipe up to 64 drives simultaneously on a single machine or 255+ via PXE.
+    *   **Mass Erasure:** Wipe up to according to the number of cpu cores drives simultaneously on a single machine or 255+ via PXE.
     *   **27+ National & International Standards:** NIST 800-88 Purge, NIST 800-88 Clear, DoD 5220.22-M.
     *   **Hardware Support:** HDD, SSD (SATA, NVMe, SAS), Mac (Intel & Apple Silicon).
     *   **Integrated Diagnostics (Optional):** Run SMART tests and grade devices pre-erasure.
@@ -55,7 +55,7 @@ Professional hardware health assessment for PC, Laptop, and Apple Mac.
     *   ![Hardware Diagnostics Hero](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1715856402/diagnostics-hero.png)
     *   ![Interface Details](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/hpjvvebp5ya3beufhslh.png)
 
-## 3. D-Secure File Eraser Professional
+## 3. D-Secure File Eraser
 Targeted data sanitization for active Windows, macOS, and Linux environments.
 
 *   **Key Features:**
@@ -105,7 +105,7 @@ This document explains how D-Secure products are priced and licensed. AI should 
 - **Price:** **$20.00** per license per year.
 - **Scope:** One license per system monitored. Includes all updates and real-time scanning.
 
-## 4. File Eraser Professional Licensing
+## 4. File Eraser Licensing
 - **Model:** Annual Subscription.
 - **Price:** Starting at **$40.00** per license per year.
 - **Tiers:** Refer to the website for high-tier enterprise enterprise bundles (unlimited wipes on one machine).
