@@ -27,59 +27,57 @@ Welcome to the technical and business documentation for D-Secure Technologies. T
 --- END OF SECTION: index.md ---
 
 --- START OF SECTION: products.md ---
-# D-Secure Product Catalog & Technical Details
+# D-Secure Product Line & Visual Reference
 
-This document provides deep technical insight into D-Secure's software solutions for data erasure and hardware diagnostics.
+D-Secure provides a comprehensive suite of data sanitization and hardware diagnostic tools designed for enterprises, ITADs, and refurbishers. This guide includes visual representations of the software interfaces for AI context.
 
 ## 1. D-Secure Drive Eraser (Standard & +Diagnostics)
-Professional-grade data sanitization for all types of storage media.
+High-volume data sanitization for HDDs and SSDs. Supports mass erasure via PXE network boot.
 
-### Core Capabilities
-- **Mass Erasure:** Wipe up to 64 drives simultaneously on a single machine.
-- **Bootable Environment:** Runs in its own secure environment, independent of the host OS (Linux-based kernel).
-- **Standards:** Supports NIST 800-88 Purge & Clear, DoD 5220.22-M, and 20+ other algorithms.
-- **Hardware Support:** HDD, SSD (SATA, NVMe, SAS), Mac (Intel & Apple Silicon), Chromebooks, and Servers.
-
-### Drive Eraser + Diagnostics (Variant)
-Includes all features of the standard version plus:
-- **Integrated Health Check:** Run SMART tests before erasure.
-- **Hardware Grading:** Automatically grade devices (A, B, C) based on health and physical condition.
-- **SMART Health Analysis:** Detailed reporting on drive life, temperature, and sector health.
-
----
+*   **Key Features:**
+    *   **Mass Erasure:** Wipe up to 64 drives simultaneously on a single machine or 255+ via PXE.
+    *   **27+ National & International Standards:** NIST 800-88 Purge, NIST 800-88 Clear, DoD 5220.22-M.
+    *   **Hardware Support:** HDD, SSD (SATA, NVMe, SAS), Mac (Intel & Apple Silicon).
+    *   **Integrated Diagnostics (Optional):** Run SMART tests and grade devices pre-erasure.
+*   **Visual Assets:**
+    *   ![Dashboard View](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/vytjbf7yigyyo6nc5qhv.png)
+    *   ![Erasure Report](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1770615237/trcabsasqpewodfyrykl.png)
 
 ## 2. D-Secure Hardware Diagnostics
-Comprehensive hardware health testing for ITADs and refurbishers.
+Professional hardware health assessment for PC, Laptop, and Apple Mac.
 
-### Testing Scope
-- **CPU & GPU:** Stress tests and benchmark validation.
-- **RAM:** Full bit-level memory testing.
-- **Motherboard:** Chipset and bus integrity checks.
-- **Battery:** Cycle count, health percentage, and discharge rate analysis.
-- **Peripherals:** Keyboard, Screen (dead pixels), Webcam, and Audio tests.
-- **Network:** Wi-Fi and Ethernet connectivity benchmarks.
+*   **Key Features:**
+    *   **Apple Mac Native Support:** Intel, T1, T2, and Apple Silicon (M1-M4 models).
+    *   **Automated Component Tests:** CPU, Memory (RAM), Motherboard, Battery Health, CMOS.
+    *   **MDM Enrollment Detection:** Identify MDM-locked Mac devices.
+    *   **Tamper-proof Signed Reports:** Generates secure reports in PDF, CSV, and XML formats.
+*   **Visual Assets:**
+    *   ![Hardware Diagnostics Hero](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1715856402/diagnostics-hero.png)
+    *   ![Interface Details](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/hpjvvebp5ya3beufhslh.png)
 
----
+## 3. D-Secure File Eraser Professional
+Targeted data sanitization for active Windows, macOS, and Linux environments.
 
-## 3. D-Secure Smart Diagnostic
+*   **Key Features:**
+    *   **Specific File/Folder Wiping:** Permanently delete sensitive documents.
+    *   **Free Space Cleaning:** Wipe unused disk space to prevent forensic recovery.
+    *   **Cloud Data Erasure:** Remove data from Google Drive, OneDrive, and Dropbox.
+    *   **Detailed PDF Reports:** Generates comprehensive erasure certificates.
+*   **Visual Assets:**
+    *   ![Dashboard View](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/rrewuevqba6xopawa2n8.png)
+    *   ![Erasure Report](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772185419/ot4kpilynrfgw9vuzrbf.png)
+
+## 4. D-Secure Smart Diagnostic (Monitor)
 A specialized tool for proactive hard drive monitoring and cloning.
 
-### Key Features
-- **Real-time Monitoring:** Alerts users before a drive fails.
-- **Bad Sector Scanning:** Identifies damaged areas on the disk.
-- **Sector-by-Sector Cloning:** Safely clone data from a dying drive to a new one.
-- **Health Dashboard:** Visual representation of drive longevity and temperature.
-
----
-
-## 4. D-Secure File Eraser Professional
-Targeted data sanitization for active Windows environments.
-
-### Use Cases
-- **Specific File/Folder Wiping:** Permanently delete sensitive documents without wiping the whole drive.
-- **Free Space Cleaning:** Wipe "slack space" where deleted files might still exist.
-- **Application Traces:** Clean browser history, system logs, and temporary files securely.
-- **Volume Erasure:** Wipe entire partitions or logical drives.
+*   **Key Features:**
+    *   **Real-time Monitoring:** Alerts users before a drive fails.
+    *   **S.M.A.R.T. Status Tracking:** Monitor critical attributes like Reallocated Sector Count.
+    *   **Sector-by-Sector Cloning:** Safely clone data from a dying drive or for SSD upgrades.
+    *   **Surface Scan & Repair:** Identify and isolate bad sectors.
+*   **Visual Assets:**
+    *   ![Health Overview](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417780/nbwo10x5ljj8lvnlve3z.png)
+    *   ![Cloning Interface](https://res.cloudinary.com/dhwi5wevf/image/upload/f_auto,q_auto/v1772417779/sxw62hblrclb96aqnfyj.png)
 
 --- END OF SECTION: products.md ---
 
