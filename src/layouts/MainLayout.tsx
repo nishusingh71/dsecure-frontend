@@ -1,6 +1,17 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { useState, useEffect, useCallback, memo } from "react";
+import {
+  LayoutGrid,
+  Search,
+  Zap,
+  Smartphone,
+  Activity,
+  Database,
+  RefreshCcw,
+  Shield,
+  X,
+} from "lucide-react";
 import ThemeAwareLogo from "@/components/ThemeAwareLogo";
 import OptimizedImage from "@/components/OptimizedImage";
 import SEOHead from "@/components/SEOHead";
@@ -20,7 +31,7 @@ export default function MainLayout() {
   const [authKey, setAuthKey] = useState(0); // Force re-render on auth state change
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const [productsDropdownTab, setProductsDropdownTab] = useState<
-    "eraser" | "diagnostics"
+    "eraser" | "migration" | "diagnostics"
   >("eraser");
   const [hideHeader, setHideHeader] = useState(false); // Hide header when sticky section nav is visible
   const [driveEraserHovered, setDriveEraserHovered] = useState(false);
@@ -79,6 +90,18 @@ export default function MainLayout() {
     },
     !!user,
   );
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   // Listen for sticky section nav visibility to hide main header
   useEffect(() => {
@@ -141,7 +164,7 @@ export default function MainLayout() {
               Home
             </NavLink> */}
               {/* Products Dropdown */}
-              <div className="relative" data-products-dropdown>
+              <div data-products-dropdown>
                 <button
                   className={`inline-flex items-center gap-2 py-2 text-slate-600 hover:text-slate-900 ${productsDropdownOpen ? "text-brand font-medium" : ""}`}
                   onClick={() => setProductsDropdownOpen(!productsDropdownOpen)}
@@ -149,235 +172,299 @@ export default function MainLayout() {
                   {t("common.products")}
                 </button>
 
-                {/* Dropdown Panel */}
+                {/* Dropdown Panel — Zoho-style mega menu */}
                 {productsDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-[800px] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
-                    {/* Dropdown Header / Tabs */}
-                    <div className="border-b border-slate-200 pt-5 flex w-full">
-                      <button
-                        className={`flex-1 text-center text-sm font-semibold pb-3 border-b-2 transition-colors ${!productsDropdownTab || productsDropdownTab === "eraser" ? "text-emerald-700 border-emerald-500 bg-emerald-50/30" : "text-slate-500 border-slate-200 hover:text-slate-700 hover:bg-slate-50"}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setProductsDropdownTab("eraser");
-                        }}
-                      >
-                        Eraser
-                        <p
-                          className={`text-xs mt-1 font-normal ${!productsDropdownTab || productsDropdownTab === "eraser" ? "text-slate-500" : "text-slate-400"}`}
-                        >
-                          Wiping Of Sensitive Data Across Storage Devices.
-                        </p>
-                      </button>
-                      <button
-                        className={`flex-1 text-center text-sm font-semibold pb-3 border-b-2 transition-colors ${productsDropdownTab === "diagnostics" ? "text-emerald-700 border-emerald-500 bg-emerald-50/30" : "text-slate-500 border-slate-200 hover:text-slate-700 hover:bg-slate-50"}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setProductsDropdownTab("diagnostics");
-                        }}
-                      >
-                        Diagnostics
-                        <p
-                          className={`text-xs mt-1 font-normal ${productsDropdownTab === "diagnostics" ? "text-slate-500" : "text-slate-400"}`}
-                        >
-                          Hardware Health & Performance Analysis.
-                        </p>
-                      </button>
-                    </div>
+                  <div className="absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-slate-200 z-50 overflow-hidden">
+                    {/* Close Button — top right */}
+                    <button
+                      onClick={() => setProductsDropdownOpen(false)}
+                      className="absolute top-3 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-all z-[60]"
+                      aria-label="Close products menu"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
 
-                    {/* Products Grid - 2 Columns (Row Layout) */}
-                    <div className="p-6 grid grid-cols-2 gap-5 min-h-[140px]">
-                      {(!productsDropdownTab ||
-                        productsDropdownTab === "eraser") && (
-                        <>
-                          {/* Drive Eraser with Refined Hover Styling */}
-                          <div
-                            className="relative group/main"
-                            onMouseEnter={() => setDriveEraserHovered(true)}
-                            onMouseLeave={() => setDriveEraserHovered(false)}
+                    <div className="flex min-h-[340px]">
+                      {/* ── LEFT SIDEBAR — vertical category tabs ── */}
+                      <div className="w-52 flex-shrink-0 border-r border-slate-200 bg-slate-50/80 py-4">
+                        <button
+                          className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
+                            !productsDropdownTab || productsDropdownTab === "eraser"
+                              ? "text-emerald-700 bg-white border-r-2 border-emerald-500 font-semibold"
+                              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                          }`}
+                          onClick={() => setProductsDropdownTab("eraser")}
+                        >
+                          Eraser
+                          {(!productsDropdownTab || productsDropdownTab === "eraser") && (
+                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                          )}
+                        </button>
+                        <button
+                          className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
+                            productsDropdownTab === "migration"
+                              ? "text-emerald-700 bg-white border-r-2 border-emerald-500 font-semibold"
+                              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                          }`}
+                          onClick={() => setProductsDropdownTab("migration")}
+                        >
+                          Migration
+                          {productsDropdownTab === "migration" && (
+                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                          )}
+                        </button>
+                        <button
+                          className={`w-full text-left px-5 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
+                            productsDropdownTab === "diagnostics"
+                              ? "text-emerald-700 bg-white border-r-2 border-emerald-500 font-semibold"
+                              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+                          }`}
+                          onClick={() => setProductsDropdownTab("diagnostics")}
+                        >
+                          Diagnostics
+                          {productsDropdownTab === "diagnostics" && (
+                            <svg className="w-3.5 h-3.5 ml-auto text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                          )}
+                        </button>
+
+                        {/* "Explore all" link at bottom */}
+                        <div className="mt-6 px-5">
+                          <Link
+                            to="/data-eraser-software"
+                            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1"
+                            onClick={() => setProductsDropdownOpen(false)}
                           >
-                            <div
-                              className={`flex items-start gap-3 p-4 rounded-2xl transition-all duration-300 cursor-pointer ${driveEraserHovered ? "bg-gradient-to-r from-emerald-500 to-teal-600 shadow-xl scale-[1.02]" : "hover:bg-slate-50"}`}
-                              onClick={() => {
-                                navigate("/products/drive-eraser");
-                                setProductsDropdownOpen(false);
-                              }}
-                            >
-                              <div
-                                className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${driveEraserHovered ? "bg-white shadow-lg" : "bg-emerald-100"}`}
-                              >
-                                <svg
-                                  className={`w-6 h-6 transition-colors duration-300 ${driveEraserHovered ? "text-emerald-800" : "text-emerald-800"}`}
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
-                                  />
-                                </svg>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between">
-                                  <h4
-                                    className={`font-bold transition-colors duration-300 text-base ${driveEraserHovered ? "text-white" : "text-slate-900 group-hover:text-emerald-800"}`}
-                                  >
-                                    Drive Eraser
-                                  </h4>
-                                  <svg
-                                    className={`w-4 h-4 transition-all duration-300 ${driveEraserHovered ? "rotate-90 text-white translate-x-1" : "text-slate-400"}`}
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M9 5l7 7-7 7"
-                                    />
-                                  </svg>
-                                </div>
-                                <p
-                                  className={`text-sm leading-relaxed transition-colors duration-300 ${driveEraserHovered ? "text-white/90 font-medium" : "text-slate-500"}`}
-                                >
-                                  Software to Erase Data From HDD, SSD, PC, Mac
-                                  & Server
-                                </p>
+                            Explore All Products
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                          </Link>
+                        </div>
+                      </div>
 
-                                {/* Integrated Variants as Horizontal Tags */}
-                                <div
-                                  className={`mt-4 flex flex-wrap gap-2 transition-all duration-300`}
-                                >
+                      {/* ── RIGHT CONTENT — 3-column product grid ── */}
+                      <div className="flex-1 p-6">
+                        {/* Category heading */}
+                        <h3 className="text-lg font-bold text-slate-800 mb-5">
+                          {(!productsDropdownTab || productsDropdownTab === "eraser") && "Eraser"}
+                          {productsDropdownTab === "migration" && "Migration"}
+                          {productsDropdownTab === "diagnostics" && "Diagnostics"}
+                        </h3>
+
+                        <div className="grid grid-cols-3 gap-4">
+                          {/* ═══ ERASER TAB ═══ */}
+                          {(!productsDropdownTab || productsDropdownTab === "eraser") && (
+                            <>
+                              {/* Drive Eraser — with 2 variants */}
+                              <div className="border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                                    </svg>
+                                  </div>
+                                  <h4 className="font-bold text-slate-900">Drive Eraser</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Erase HDD, SSD, PC, Mac & Server data permanently.</p>
+                                <div className="flex flex-wrap gap-2">
                                   <Link
                                     to="/products/drive-eraser"
-                                    className={`px-3 py-1.5 rounded-full border text-[10px] font-bold transition-all ${driveEraserHovered ? "bg-white/10 hover:bg-white/20 border-white/20 text-white" : "bg-emerald-50 hover:bg-emerald-100 border-emerald-100 text-emerald-700"}`}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setProductsDropdownOpen(false);
-                                    }}
+                                    className="px-3 py-1.5 rounded-full border bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700 text-[11px] font-bold transition-all"
+                                    onClick={() => setProductsDropdownOpen(false)}
                                   >
                                     Drive Eraser
                                   </Link>
                                   <Link
                                     to="/products/drive-eraser-diagnostic"
-                                    className={`px-3 py-1.5 rounded-full border text-[10px] font-bold transition-all flex items-center gap-1.5 ${driveEraserHovered ? "bg-white/10 hover:bg-white/20 border-white/20 text-white" : "bg-emerald-50 hover:bg-emerald-100 border-emerald-100 text-emerald-700"}`}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setProductsDropdownOpen(false);
-                                    }}
+                                    className="px-3 py-1.5 rounded-full border bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-700 text-[11px] font-bold transition-all flex items-center gap-1.5"
+                                    onClick={() => setProductsDropdownOpen(false)}
                                   >
                                     <span>Diagnostic & Health</span>
                                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
                                   </Link>
                                 </div>
                               </div>
-                            </div>
-                          </div>
 
-                          {/* File Erasure Software */}
-                          <Link
-                            to="/products/file-eraser"
-                            className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
-                            onClick={() => setProductsDropdownOpen(false)}
-                          >
-                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <svg
-                                className="w-5 h-5 text-blue-500"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                />
-                              </svg>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-800 transition-colors text-base">
-                                File Eraser
-                              </h4>
-                              <p className="text-sm text-slate-500 leading-relaxed">
-                                Software to Wipe Files, Folders, Traces, Browser
-                                History Etc.
-                              </p>
-                            </div>
-                          </Link>
-                        </>
-                      )}
 
-                      {productsDropdownTab === "diagnostics" && (
-                        <>
-                          {/* Hardware Diagnostics */}
-                          <Link
-                            to="/products/hardware-diagnostics"
-                            className="flex items-start gap-3 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
-                            onClick={() => setProductsDropdownOpen(false)}
-                          >
-                            <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <svg
-                                className="w-5 h-5 text-emerald-500"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                              {/* File Eraser */}
+                              <Link
+                                to="/products/file-eraser"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-blue-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                                />
-                              </svg>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-slate-900 group-hover:text-emerald-800 transition-colors text-base">
-                                Hardware Diagnostics
-                              </h4>
-                              <p className="text-sm text-slate-500 leading-relaxed">
-                                Comprehensive diagnostic tools for hardware
-                                health and integrity checking.
-                              </p>
-                            </div>
-                          </Link>
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">File Eraser</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Wipe files, folders, traces & browser history.</p>
+                                <span className="text-xs font-semibold text-blue-600 group-hover:text-blue-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
 
-                          {/* Hard Drive Monitor */}
-                          <Link
-                            to="/products/hard-drive-monitor"
-                            className="flex items-start gap-4 p-4 rounded-lg hover:bg-slate-50 transition-colors group"
-                            onClick={() => setProductsDropdownOpen(false)}
-                          >
-                            <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                              <svg
-                                className="w-5 h-5 text-rose-500"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                              {/* Smartphone Eraser */}
+                              <Link
+                                to="/products/smartphone-eraser"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                                />
-                              </svg>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-slate-900 group-hover:text-rose-600 transition-colors text-base">
-                                SMART Diagnostics
-                              </h4>
-                              <p className="text-sm text-slate-500 leading-relaxed">
-                                Real-time health monitoring, S.M.A.R.T tracking
-                                & disk cloning for home users.
-                              </p>
-                            </div>
-                          </Link>
-                        </>
-                      )}
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Smartphone className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Smartphone Eraser</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Bulk iOS & Android wiping with audit reports.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+                            </>
+                          )}
+
+                          {/* ═══ MIGRATION TAB ═══ */}
+                          {productsDropdownTab === "migration" && (
+                            <>
+                              {/* Data Migration */}
+                              <Link
+                                to="/products/data-migration"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Zap className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Data Migration</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Secure transfer across Cloud & Infrastructure.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Forensic Imaging */}
+                              <Link
+                                to="/products/forensic-imaging"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-cyan-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Database className="w-5 h-5 text-cyan-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-cyan-700 transition-colors">Forensic Imaging</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Bit-for-bit acquisition & cryptographic hashing.</p>
+                                <span className="text-xs font-semibold text-cyan-600 group-hover:text-cyan-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* FreezeState */}
+                              <Link
+                                to="/products/freeze-state"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-blue-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <RefreshCcw className="w-5 h-5 text-blue-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-blue-700 transition-colors">FreezeState</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Reboot-to-restore system protection.</p>
+                                <span className="text-xs font-semibold text-blue-600 group-hover:text-blue-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+                            </>
+                          )}
+
+                          {/* ═══ DIAGNOSTICS TAB ═══ */}
+                          {productsDropdownTab === "diagnostics" && (
+                            <>
+                              {/* Hardware Diagnostics */}
+                              <Link
+                                to="/products/hardware-diagnostics"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    </svg>
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Hardware Diagnostics</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Enterprise-grade diagnostic tools.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Smartphone Diagnostics */}
+                              <Link
+                                to="/products/smartphone-diagnostic"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-teal-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Activity className="w-5 h-5 text-teal-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-teal-700 transition-colors">Smartphone Diagnostics</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">50+ automated tests for mobile health.</p>
+                                <span className="text-xs font-semibold text-teal-600 group-hover:text-teal-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* SMART Diagnostics */}
+                              <Link
+                                to="/products/hard-drive-monitor"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-rose-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-rose-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    </svg>
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-rose-600 transition-colors">SMART Diagnostics</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Health monitoring & disk cloning.</p>
+                                <span className="text-xs font-semibold text-rose-500 group-hover:text-rose-600 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+
+                              {/* Autopilot Detection */}
+                              <Link
+                                to="/products/autopilot-detection"
+                                className="group border border-slate-200 rounded-xl p-5 hover:border-emerald-300 hover:shadow-md transition-all"
+                                onClick={() => setProductsDropdownOpen(false)}
+                              >
+                                <div className="flex items-center gap-3 mb-3">
+                                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <Shield className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  <h4 className="font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">Autopilot Detection</h4>
+                                </div>
+                                <p className="text-sm text-slate-500 leading-relaxed mb-3">Windows Autopilot identification.</p>
+                                <span className="text-xs font-semibold text-emerald-600 group-hover:text-emerald-700 uppercase tracking-wide flex items-center gap-1">
+                                  Learn More <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                                </span>
+                              </Link>
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -564,7 +651,7 @@ export default function MainLayout() {
           {open && (
             <div
               id="mobile-menu"
-              className={`lg:hidden xl:hidden xxl:hidden border-t animate-slide-down ${
+              className={`lg:hidden xl:hidden xxl:hidden border-t animate-slide-down max-h-[calc(100vh-5rem)] overflow-y-auto ${
                 isScrolled
                   ? "bg-white/98 backdrop-blur-xl shadow-lg"
                   : "bg-white/95 backdrop-blur-md"
@@ -579,7 +666,6 @@ export default function MainLayout() {
                     onClick={() => setOpen(false)}
                     to="/#products"
                     className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                    aria-label="View all security products"
                   >
                     <svg
                       className="w-5 h-5 text-slate-400"
@@ -596,166 +682,190 @@ export default function MainLayout() {
                     </svg>
                     {t("common.products")}
                   </NavLink>
-                  {/* Product Sub-items */}
-                  <div className="ml-8 space-y-1 border-l-2 border-emerald-200 pl-4">
-                    <Link
-                      onClick={() => setOpen(false)}
-                      to="/products/drive-eraser"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
-                    >
-                      <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0">
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">Drive Eraser</span>
-                          <span className="text-[8px] font-bold bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full">
-                            VARIANTS
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-400">
-                          Secure Wiping & Health Diagnostics
-                        </p>
-                      </div>
-                    </Link>
-                    {/* Mobile Sub-variants */}
-                    <div className="ml-4 pl-4 border-l border-slate-200 mt-1 mb-2 space-y-1">
+                  {/* Product Grouped Sub-items */}
+                  <div className="ml-8 space-y-4 border-l-2 border-emerald-200 pl-4 py-2">
+                    {/* Eraser Category */}
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">Eraser</p>
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/drive-eraser"
-                        className="block py-1 text-xs text-slate-500 hover:text-emerald-800"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
                       >
-                        • Drive Eraser (Standard)
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                          </svg>
+                        </div>
+                        <span className="font-medium">Drive Eraser</span>
+                      </Link>
+                      {/* Mobile Sub-variants */}
+                      <div className="ml-4 pl-4 border-l border-slate-200 mt-1 mb-2 space-y-1">
+                        <Link
+                          onClick={() => setOpen(false)}
+                          to="/products/drive-eraser"
+                          className="block py-1 text-xs text-slate-500 hover:text-emerald-800"
+                        >
+                          • Drive Eraser (Standard)
+                        </Link>
+                        <Link
+                          onClick={() => setOpen(false)}
+                          to="/products/drive-eraser-diagnostic"
+                          className="flex items-center gap-2 py-1 text-xs text-slate-500 hover:text-emerald-800"
+                        >
+                          • with Diagnostic & Health
+                          <span className="text-[8px] font-bold text-blue-600">NEW</span>
+                        </Link>
+                      </div>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/file-eraser"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </div>
+                        <span className="font-medium">File Eraser</span>
                       </Link>
                       <Link
                         onClick={() => setOpen(false)}
-                        to="/products/drive-eraser-diagnostic"
-                        className="flex items-center gap-2 py-1 text-xs text-slate-500 hover:text-emerald-800"
+                        to="/products/smartphone-eraser"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
                       >
-                        • with Diagnostic & Health
-                        <span className="text-[8px] font-bold text-blue-600">
-                          NEW
-                        </span>
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <Smartphone className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium">Smartphone Eraser</span>
                       </Link>
                     </div>
+
+                    {/* Migration Category */}
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">Migration</p>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/data-migration"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <Zap className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium">Data Migration</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/forensic-imaging"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-700 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <Database className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium">Forensic Imaging</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/freeze-state"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <RefreshCcw className="w-4 h-4" />
+                        </div>
+                        <span className="font-medium">FreezeState</span>
+                      </Link>
+                    </div>
+
+                    {/* Diagnostics Category */}
+                    <div className="space-y-1">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 mb-1">Diagnostics</p>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/hardware-diagnostics"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                          </svg>
+                        </div>
+                        <span className="font-medium">Hardware Diagnostics</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/smartphone-diagnostic"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <Activity className="w-4 h-4 text-white" />
+                        </div>
+                        <span className="font-medium">Smartphone Diagnostics</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/hard-drive-monitor"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                          </svg>
+                        </div>
+                        <span className="font-medium">SMART Diagnostics</span>
+                      </Link>
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/autopilot-detection"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        </div>
+                        <span className="font-medium">Autopilot Detection</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <NavLink
+                    onClick={() => setOpen(false)}
+                    to="/solutions"
+                    className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
+                    aria-label="View all data security solutions"
+                  >
+                    <svg
+                      className="w-5 h-5 text-slate-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                      />
+                    </svg>
+                    {t("solutions.title")}
+                  </NavLink>
+                  <div className="ml-8 space-y-1 border-l-2 border-emerald-200 pl-4">
                     <Link
                       onClick={() => setOpen(false)}
-                      to="/products/file-eraser"
+                      to="/solutions/healthcare"
                       className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors"
                     >
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-md flex items-center justify-center flex-shrink-0">
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-md flex items-center justify-center flex-shrink-0">
+                        <Shield className="w-4 h-4 text-white" />
                       </div>
                       <div>
-                        <span className="font-medium">File Eraser</span>
-                        <p className="text-xs text-slate-400">
-                          Files, Folders, Traces
-                        </p>
-                      </div>
-                    </Link>
-                    <Link
-                      onClick={() => setOpen(false)}
-                      to="/products/hardware-diagnostics"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                    >
-                      <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-600 rounded-md flex items-center justify-center flex-shrink-0">
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <span className="font-medium">
-                          HardWare Diagnostics
-                        </span>
-                        <p className="text-xs text-slate-400">
-                          Tools for Hard Drive Health Monitoring
-                        </p>
-                      </div>
-                    </Link>
-                    <Link
-                      onClick={() => setOpen(false)}
-                      to="/products/hard-drive-monitor"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                    >
-                      <div className="w-8 h-8 bg-gradient-to-br from-rose-500 to-pink-600 rounded-md flex items-center justify-center flex-shrink-0">
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                          />
-                        </svg>
-                      </div>
-                      <div>
-                        <span className="font-medium">SMART Diagnostics</span>
-                        <p className="text-xs text-slate-400">
-                          Health, Temp, S.M.A.R.T
-                        </p>
+                        <span className="font-medium">Healthcare</span>
+                        <p className="text-xs text-slate-400">HIPAA & GDPR Compliance</p>
                       </div>
                     </Link>
                   </div>
                 </div>
-                <NavLink
-                  onClick={() => setOpen(false)}
-                  to="/solutions"
-                  className="flex items-center gap-3 px-4 py-3 text-slate-700 hover:text-slate-900 hover:bg-slate-50/80 rounded-lg transition-colors"
-                  aria-label="View all data security solutions"
-                >
-                  <svg
-                    className="w-5 h-5 text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                    />
-                  </svg>
-                  {t("solutions.title")}
-                </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
                   to="/resources"
@@ -811,7 +921,7 @@ export default function MainLayout() {
                   >
                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                   </svg>
-                  Data Guardian Award
+                  Trust Certificate
                 </NavLink>
                 <NavLink
                   onClick={() => setOpen(false)}
@@ -915,13 +1025,6 @@ export default function MainLayout() {
                     >
                       Login
                     </NavLink>
-                    {/* <NavLink 
-                    to="/register" 
-                    onClick={()=>setOpen(false)} 
-                    className="btn-primary w-full justify-center"
-                  >
-                    Get Started
-                  </NavLink> */}
                   </div>
                 )}
               </div>
@@ -1102,6 +1205,46 @@ export default function MainLayout() {
                           className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
                         >
                           {t("footer.fileErasure")}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/products/smartphone-eraser"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Smartphone Eraser
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/products/data-migration"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Data Migration
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/products/forensic-imaging"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Forensic Imaging
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/products/freeze-state"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          FreezeState
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/products/smartphone-diagnostic"
+                          className="hover:text-brand transition-colors hover:translate-x-1 transform duration-200 inline-block"
+                        >
+                          Smartphone Diagnostics
                         </Link>
                       </li>
                       {/* <li>

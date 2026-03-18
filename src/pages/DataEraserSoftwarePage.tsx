@@ -18,7 +18,7 @@ import {
   HoverIcon,
   CheckIcon,
 } from "@/components/FlatIcons";
-import { Activity, Cpu, HardDrive } from "lucide-react";
+import { Activity, Cpu, HardDrive, Zap, RefreshCcw, Smartphone, Database } from "lucide-react";
 
 /* ───────────── data ───────────── */
 
@@ -39,21 +39,56 @@ const solutions = [
   },
   {
     title: "D-Secure File Eraser",
-    desc: "Selectively erase files, folders, free space, system traces, browser history & cloud storage data on Windows, macOS & Linux. Schedule automated erasure tasks, drag-and-drop file selection, and generate detailed PDF reports.",
+    desc: "Selectively erase files, folders, free space, system traces, browser history & cloud storage data on Windows, macOS & Linux. Schedule automated erasure tasks, generate detailed PDF reports.",
     icon: ClipboardIcon,
     color: "teal",
     link: "/products/file-eraser",
   },
   {
+    title: "Smartphone Eraser",
+    desc: "Securely erase all data from iOS and Android smartphones and tablets. Supports factory reset, secure overwrite, and generates tamper-proof certificates for resale or recycling.",
+    icon: Smartphone,
+    color: "emerald",
+    link: "/products/smartphone-eraser",
+  },
+  {
+    title: "Smartphone Diagnostics",
+    desc: "Comprehensive diagnostic tests for mobile devices. Verify hardware functionality, battery health, screen integrity, and more to determine device value and reliability.",
+    icon: Activity,
+    color: "teal",
+    link: "/products/smartphone-diagnostic",
+  },
+  {
+    title: "Data Migration",
+    desc: "Fast and secure data migration between devices. Transfer OS, applications, and user data seamlessly with minimal downtime and 100% data integrity.",
+    icon: Zap,
+    color: "emerald",
+    link: "/products/data-migration",
+  },
+  {
+    title: "Forensic Imaging",
+    desc: "Create bit-for-bit forensic copies of storage media. Preserve digital evidence for investigation while maintaining chain of custody with cryptographic hashing.",
+    icon: Database,
+    color: "cyan",
+    link: "/products/forensic-imaging",
+  },
+  {
+    title: "FreezeState",
+    desc: "Protect system configurations by freezing the state of your drive. Every reboot restores the system to its original pristine condition, ideal for public kiosks and labs.",
+    icon: RefreshCcw,
+    color: "blue",
+    link: "/products/freeze-state",
+  },
+  {
     title: "Hardware Diagnostics",
-    desc: "Comprehensive diagnostic tools for hardware health and integrity checking. Test components precisely to identify failing hardware before deployment or after data erasure, ensuring system reliability.",
+    desc: "Comprehensive diagnostic tools for hardware health and integrity checking. Test components precisely to identify failing hardware ensuring system reliability.",
     icon: Cpu,
     color: "blue",
     link: "/products/hardware-diagnostics",
   },
   {
     title: "SMART Diagnostics",
-    desc: "Real-time health monitoring, S.M.A.R.T tracking & disk cloning for your drives. Set personalized alerts for temperature thresholds and critical disk health events to prevent data loss safely.",
+    desc: "Real-time health monitoring, S.M.A.R.T tracking & disk cloning for your drives. Set personalized alerts for temperature thresholds and critical disk health events.",
     icon: HardDrive,
     color: "indigo",
     link: "/products/hard-drive-monitor",

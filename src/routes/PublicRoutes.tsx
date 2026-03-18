@@ -1,7 +1,6 @@
-import { Suspense, lazy } from "react";
+import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import PageLoadingSkeleton from "../components/PageLoadingSkeleton";
 
 // Core Pages
 const HomePage = lazy(() => import("../pages/HomePage"));
@@ -15,6 +14,7 @@ const FinancialServices = lazy(() => import("../pages/FinancialServices"));
 const GovernmentPage = lazy(() => import("../pages/GovernmentPage"));
 const HealthcareSolutionsPage = lazy(() => import("../pages/solutions/HealthcareSolutionsPage"));
 const ServiceProvidersSolutionsPage = lazy(() => import("../pages/solutions/ServiceProvidersSolutionsPage"));
+const DataMigrationPage = lazy(() => import("../pages/DataMigrationPage"));
 const ProgrammaticSolutionPage = lazy(() => import("../pages/ProgrammaticSolutionPage"));
 const SearchDemoPage = lazy(() => import("../pages/SearchDemoPage"));
 const ResourcesPage = lazy(() => import("../pages/ResourcesPage"));
@@ -64,6 +64,11 @@ const ITADSolution = lazy(() => import("../pages/ITADSolution"));
 const ApiTestPage = lazy(() => import("../pages/ApiTestPage"));
 const BlogPage = lazy(() => import("../components/blog/BlogPage"));
 const CloneGuidePage = lazy(() => import("../pages/CloneGuidePage"));
+const AutopilotDetectionPage = lazy(() => import("../pages/AutopilotDetectionPage"));
+const SmartphoneEraserPage = lazy(() => import("../pages/SmartphoneEraserPage"));
+const SmartphoneDiagnosticPage = lazy(() => import("../pages/SmartphoneDiagnosticPage"));
+const ForensicImagingPage = lazy(() => import("../pages/ForensicImagingPage"));
+const FreezeStatePage = lazy(() => import("../pages/FreezeStatePage"));
 
 
 export const PublicRoutes = () => (
@@ -102,6 +107,12 @@ export const PublicRoutes = () => (
     <Route path="/products/file-eraser" element={<FileEraserPage />} />
     <Route path="/products/hardware-diagnostics" element={<HardwareDiagnosticsPage />} />
     <Route path="/products/hard-drive-monitor" element={<HardDriveMonitorPage />} />
+    <Route path="/products/autopilot-detection" element={<AutopilotDetectionPage />} />
+    <Route path="/products/smartphone-eraser" element={<SmartphoneEraserPage />} />
+    <Route path="/products/smartphone-diagnostic" element={<SmartphoneDiagnosticPage />} />
+    <Route path="/products/forensic-imaging" element={<ForensicImagingPage />} />
+    <Route path="/products/freeze-state" element={<FreezeStatePage />} />
+    <Route path="/products/data-migration" element={<DataMigrationPage />} />
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="order-success" element={<OrderSuccessPage />} />
     <Route path="order-failure" element={<FailurePage />} />
