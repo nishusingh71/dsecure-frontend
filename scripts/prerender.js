@@ -1,14 +1,11 @@
 /**
- * Post-Build Pre-rendering Script
+ * Post-Build Pre-rendering Script (Cross-Platform / Vercel-Optimized)
  * 
- * Vite build ke baad ye script Puppeteer se key pages ka static HTML snapshot banata hai.
- * Isse AI tools aur bots ko full rendered content milta hai SPA skeleton ki jagah.
- * 
- * Usage: node scripts/prerender.js
- * Build script mein: "build": "vite build && node scripts/prerender.js"
+ * Ye script detect karta hai ki ye Vercel pe chal raha hai ya local (Windows) pe.
+ * Local: Standard Puppeteer use karta hai.
+ * Vercel: puppeteer-core + @sparticuz/chromium use karta hai (fix for missing libraries).
  */
 
-import puppeteer from 'puppeteer';
 import { createServer } from 'node:http';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -17,39 +14,21 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = join(__dirname, '..', 'dist');
 
-// AI aur SEO ke liye important routes jo pre-render karne hain
-const ROUTES_TO_PRERENDER = [
-  '/',
-  '/about',
-  '/contact',
-  '/pricing-and-plan',
-  '/products/drive-eraser',
-  '/products/drive-eraser-diagnostic',
-  '/products/file-eraser',
-  '/products/hardware-diagnostics',
-  '/products/hard-drive-monitor',
-  '/services',
-  '/solutions',
-  '/enterprise',
-  '/support',
-  '/download',
-  '/compliance',
-  '/comparison',
-  '/use-cases',
-  '/glossary',
-  '/security',
-  '/what-is-d-secure',
-  '/why-d-secure',
-  '/ai-overview',
-  '/partners',
-  '/trust-center',
+const ROUTES = [
+  '/', '/about', '/contact', '/pricing-and-plan',
+  '/products/drive-eraser', '/products/drive-eraser-diagnostic',
+  '/products/file-eraser', '/products/hardware-diagnostics',
+  '/products/hard-drive-monitor', '/services', '/solutions',
+  '/enterprise', '/support', '/download', '/compliance',
+  '/comparison', '/use-cases', '/glossary', '/security',
+  '/what-is-d-secure', '/why-d-secure', '/ai-overview',
+  '/partners', '/trust-center'
 ];
 
 const PORT = 4173;
 
 /**
- * Ek simple static file server banata hai dist folder ke liye
- * SPA fallback ke saath (sab routes /index.html pe resolve hote hain)
+ * Static file server for dist folder
  */
 function createStaticServer() {
   const mimeTypes = {
@@ -67,8 +46,6 @@ function createStaticServer() {
 
   return createServer((req, res) => {
     let filePath = join(DIST_DIR, req.url === '/' ? '/index.html' : req.url);
-
-    // Agar file exist nahi karti toh SPA fallback (index.html serve karo)
     if (!existsSync(filePath) || filePath.endsWith('/')) {
       filePath = join(DIST_DIR, 'index.html');
     }
@@ -80,7 +57,6 @@ function createStaticServer() {
       res.writeHead(200, { 'Content-Type': contentType });
       res.end(content);
     } catch {
-      // Fallback to index.html for SPA routes
       const content = readFileSync(join(DIST_DIR, 'index.html'));
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(content);
@@ -89,22 +65,16 @@ function createStaticServer() {
 }
 
 /**
- * Ek route ka HTML snapshot leta hai Puppeteer se
+ * Pre-render single route
  */
 async function prerenderRoute(browser, route) {
   const page = await browser.newPage();
-
-  // Third-party requests block karo (faster rendering)
+  
+  // Third-party scripts block karo (Faster build)
   await page.setRequestInterception(true);
   page.on('request', (req) => {
     const url = req.url();
-    if (
-      url.includes('googletagmanager') ||
-      url.includes('google-analytics') ||
-      url.includes('clarity.ms') ||
-      url.includes('fonts.googleapis.com') ||
-      url.includes('fonts.gstatic.com')
-    ) {
+    if (url.includes('google') || url.includes('clarity')) {
       req.abort();
     } else {
       req.continue();
@@ -114,71 +84,66 @@ async function prerenderRoute(browser, route) {
   try {
     await page.goto(`http://localhost:${PORT}${route}`, {
       waitUntil: 'networkidle0',
-      timeout: 15000,
+      timeout: 25000,
     });
 
-    // React ko render hone ka extra time dena
+    // React components ko heavy rendering ke liye thoda extra time
     await new Promise((resolve) => setTimeout(resolve, 2000));
-
     const html = await page.content();
 
-    // Output path decide karo
-    const outputDir =
-      route === '/'
-        ? DIST_DIR
-        : join(DIST_DIR, route);
+    const outputDir = route === '/' ? DIST_DIR : join(DIST_DIR, route);
+    if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
 
-    // Directory create karo agar exist nahi karti
-    if (!existsSync(outputDir)) {
-      mkdirSync(outputDir, { recursive: true });
-    }
-
-    // HTML file write karo
-    const outputPath = join(outputDir, 'index.html');
-    writeFileSync(outputPath, html, 'utf-8');
-
-    console.log(`  ✅ ${route} → ${outputPath.replace(DIST_DIR, 'dist')}`);
+    writeFileSync(join(outputDir, 'index.html'), html, 'utf-8');
+    console.log(`  ✅ ${route}`);
   } catch (err) {
-    console.error(`  ❌ ${route} — Error: ${err.message}`);
+    console.error(`  ❌ ${route} - ${err.message}`);
   } finally {
     await page.close();
   }
 }
 
-/**
- * Main function - sab routes ko pre-render karta hai
- */
 async function main() {
-  console.log('\n🚀 Pre-rendering shuru ho raha hai...');
-  console.log(`📁 Dist directory: ${DIST_DIR}`);
-  console.log(`📄 Routes: ${ROUTES_TO_PRERENDER.length}\n`);
-
-  // Static server start karo
+  const isVercel = process.env.VERCEL === '1';
+  console.log(`\n🚀 Pre-rendering shuru ho raha hai... (Environment: ${isVercel ? 'Vercel' : 'Local'})`);
+  
   const server = createStaticServer();
   await new Promise((resolve) => server.listen(PORT, resolve));
-  console.log(`🌐 Static server chal raha hai: http://localhost:${PORT}\n`);
 
-  // Browser launch karo
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+  let browser;
 
-  // Routes ko batch mein process karo (4 at a time)
-  const BATCH_SIZE = 4;
-  for (let i = 0; i < ROUTES_TO_PRERENDER.length; i += BATCH_SIZE) {
-    const batch = ROUTES_TO_PRERENDER.slice(i, i + BATCH_SIZE);
-    await Promise.all(batch.map((route) => prerenderRoute(browser, route)));
+  if (isVercel) {
+    // Vercel/Production: use puppeteer-core + sparticuz/chromium
+    console.log('📦 Using Vercel-optimized Chromium...');
+    const puppeteerCore = await import('puppeteer-core');
+    const chromium = (await import('@sparticuz/chromium')).default;
+    
+    browser = await puppeteerCore.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+    });
+  } else {
+    // Local (Windows/Mac): use standard puppeteer
+    console.log('💻 Using local Puppeteer...');
+    const puppeteer = await import('puppeteer');
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
   }
 
-  // Cleanup
+  console.log('🌐 Rendering routes...\n');
+
+  for (const route of ROUTES) {
+    await prerenderRoute(browser, route);
+  }
+
   await browser.close();
   server.close();
 
-  console.log(`\n✅ Pre-rendering complete! ${ROUTES_TO_PRERENDER.length} pages rendered.`);
+  console.log('\n✅ Pre-rendering complete!');
 }
 
-main().catch((err) => {
-  console.error('❌ Pre-rendering failed:', err);
-  process.exit(1);
-});
+main();
