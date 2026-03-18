@@ -4,7 +4,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import viteCompression from 'vite-plugin-compression'
 import { createHtmlPlugin } from 'vite-plugin-html'
-import { createRequire } from 'module';
+import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 // Read critical CSS for inlining

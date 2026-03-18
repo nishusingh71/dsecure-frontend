@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 const date = new Date().toISOString().split('T')[0];
 
@@ -133,7 +133,7 @@ routes.forEach(route => {
   }
 
   const url = `https://dsecuretech.com${route}`;
-  const escapedUrl = url.replace(/&/g, '&amp;');
+  const escapedUrl = url.replaceAll('&', '&amp;');
 
   xml += `  <url>
     <loc>${escapedUrl}</loc>
