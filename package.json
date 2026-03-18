@@ -5,11 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/update-sitemap.js && vite build && node scripts/prerender.js",
-    "build:quick": "node scripts/update-sitemap.js && vite build",
-    "prerender": "node scripts/prerender.js",
+    "build": "node scripts/update-sitemap.js && vite build",
     "type-check": "tsc -b",
-    "full-build": "node scripts/update-sitemap.js && tsc -b && vite build && node scripts/prerender.js",
+    "full-build": "node scripts/update-sitemap.js && tsc -b && vite build",
     "preview": "vite preview",
     "upload-assets": "node scripts/upload-assets.js",
     "test-cloudinary": "node scripts/test-cloudinary.js",
@@ -57,7 +55,6 @@
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^7.0.2",
-    "@sparticuz/chromium": "^131.0.1",
     "@types/file-saver": "^2.0.7",
     "@types/jsdom": "^28.0.0",
     "@types/node": "^24.6.0",
@@ -71,8 +68,6 @@
     "chalk": "^5.6.2",
     "dotenv": "^17.2.3",
     "postcss": "^8.4.47",
-    "puppeteer": "^24.39.1",
-    "puppeteer-core": "^24.39.1",
     "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^3.4.14",
     "terser": "^5.46.0",
@@ -81,7 +76,6 @@
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-html": "^3.2.2",
-    "vite-plugin-prerender": "^1.0.8",
     "vitest": "^4.0.15"
   }
 }
