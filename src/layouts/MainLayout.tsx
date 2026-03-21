@@ -1080,19 +1080,18 @@ export default function MainLayout() {
                           Hardware Diagnostics
                         </span>
                       </Link>
-                      <div className="flex items-center gap-3 px-3 py-2 text-sm text-slate-400 cursor-not-allowed rounded-lg transition-colors opacity-70">
-                        <div className="w-8 h-8 bg-slate-200 rounded-md flex items-center justify-center flex-shrink-0 text-slate-500">
+                      <Link
+                        onClick={() => setOpen(false)}
+                        to="/products/smartphone-diagnostic"
+                        className="flex items-center gap-3 px-3 py-2 text-sm text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-md flex items-center justify-center flex-shrink-0 text-white">
                           <Activity className="w-4 h-4" />
                         </div>
-                        <div className="flex flex-col">
-                          <span className="font-medium">
-                            Smartphone Diagnostics
-                          </span>
-                          <span className="text-[9px] font-bold text-teal-600">
-                            COMING SOON
-                          </span>
-                        </div>
-                      </div>
+                        <span className="font-medium">
+                          Smartphone Diagnostics
+                        </span>
+                      </Link>
                       <Link
                         onClick={() => setOpen(false)}
                         to="/products/hard-drive-monitor"
